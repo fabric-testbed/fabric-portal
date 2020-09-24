@@ -1,4 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# FABRIC Portal
+
+## What is FABRIC Portal?
+
+TODO
+
+## Environment and Configuration
+
+TODO
 
 ## Available Scripts
 
