@@ -4,33 +4,30 @@ import { NavLink } from "react-router-dom";
 import logo from "../imgs/fabric-brand.png";
 
 class HeaderNav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        { name: "Home", path: "/", child: [], exact: "true" },
-        { name: "Resources", path: "/resources", child: [], exact: "false" },
-        {
-          name: "Projects",
-          path: "/projects",
-          child: [
-            { name: "All Projects", path: "/projects/all-projects" },
-            { name: "My Projects", path: "/projects/my-projects" },
-          ],
-          exact: "false",
-        },
-        {
-          name: "Experiments",
-          path: "/experiments",
-          child: [],
-          exact: "false",
-        },
-        { name: "Guide", path: "/guide", child: [], exact: "false" },
-        { name: "Links", path: "/links", child: [], exact: "false" },
-        { name: "User Profile", path: "/user", child: [], exact: "false" },
-      ],
-    };
-  }
+  state = {
+    data: [
+      { name: "Home", path: "/", child: [], exact: true },
+      { name: "Resources", path: "/resources", child: [], exact: false },
+      {
+        name: "Projects",
+        path: "/projects",
+        child: [
+          { name: "All Projects", path: "/projects/all-projects" },
+          { name: "My Projects", path: "/projects/my-projects" },
+        ],
+        exact: false,
+      },
+      {
+        name: "Experiments",
+        path: "/experiments",
+        child: [],
+        exact: false,
+      },
+      { name: "Guide", path: "/guide", child: [], exact: false },
+      { name: "Links", path: "/links", child: [], exact: false },
+      { name: "User Profile", path: "/user", child: [], exact: false },
+    ],
+  };
 
   render() {
     return (
