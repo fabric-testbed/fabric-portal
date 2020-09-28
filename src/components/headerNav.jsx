@@ -8,20 +8,26 @@ class HeaderNav extends React.Component {
     super(props);
     this.state = {
       data: [
-        { name: "Home", path: "/", child: [] },
-        { name: "Resources", path: "/resources", child: [] },
+        { name: "Home", path: "/", child: [], exact: "true" },
+        { name: "Resources", path: "/resources", child: [], exact: "false" },
         {
           name: "Projects",
           path: "/projects",
           child: [
-            { name: "All Projects", path: "/all-projects" },
-            { name: "My Projects", path: "/my-projects" },
+            { name: "All Projects", path: "/projects/all-projects" },
+            { name: "My Projects", path: "/projects/my-projects" },
           ],
+          exact: "false",
         },
-        { name: "Experiments", path: "/experiments", child: [] },
-        { name: "Guide", path: "/guide", child: [] },
-        { name: "Links", path: "/links", child: [] },
-        { name: "User Profile", path: "/user", child: [] },
+        {
+          name: "Experiments",
+          path: "/experiments",
+          child: [],
+          exact: "false",
+        },
+        { name: "Guide", path: "/guide", child: [], exact: "false" },
+        { name: "Links", path: "/links", child: [], exact: "false" },
+        { name: "User Profile", path: "/user", child: [], exact: "false" },
       ],
     };
   }
@@ -70,6 +76,7 @@ class HeaderNav extends React.Component {
                     data-toggle={item.child.length > 0 ? "dropdown" : ""}
                     aria-haspopup="true"
                     aria-expanded="false"
+                    exact={item.exact}
                   >
                     {item.name}
                   </NavLink>
