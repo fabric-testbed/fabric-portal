@@ -11,3 +11,29 @@
   bottom: 0;
   width: 100%;
 }
+
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar-nav {
+  margin-top: 4px;
+}
+
+.nav-item a.active,
+.nav-item a:hover {
+  border-bottom: 2px #5bc0de solid;
+}
+
+.nav-item .dropdown-menu a.active,
+.nav-item .dropdown-menu a:hover {
+  border-bottom: none;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #000;
+  text-decoration: none;
+  background-color: #fff;
+}
