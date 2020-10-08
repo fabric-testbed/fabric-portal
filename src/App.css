@@ -37,3 +37,20 @@
   text-decoration: none;
   background-color: #fff;
 }
+
+.container {
+  margin-top: 2rem;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #007bff;
+  background-color: #fff;
+  border-left: 2px #007bff solid;
+}
+
+.nav-pills .nav-link {
+  border-radius: 0;
+  padding: 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+}
