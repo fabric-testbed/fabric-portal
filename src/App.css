@@ -1,3 +1,4 @@
+/* App Footer */
 .app-footer {
   position: absolute;
   display: flex;
@@ -12,6 +13,7 @@
   width: 100%;
 }
 
+/* App Header Navbar */
 .navbar {
   padding-top: 0;
   padding-bottom: 0;
@@ -38,6 +40,7 @@
   background-color: #fff;
 }
 
+/* Side Navbar */
 .container {
   margin-top: 2rem;
 }
@@ -59,7 +62,7 @@
   color: #5d5d5d;
 }
 
-/* Collapsable Table*/
+/* Collapsable Table */
 .card-header {
   background-color: #d9e3eb;
 }
