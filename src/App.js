@@ -10,8 +10,8 @@ import Guide from "./pages/Guide";
 import Links from "./pages/Links";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
-import HeaderNav from "./components/headerNav";
-import Footer from "./components/footer";
+import HeaderNav from "./components/HeaderNav";
+import Footer from "./components/Footer";
 
 import "./App.css";
 
