@@ -1,61 +1,36 @@
 import React from "react";
 
-const SideNav = () => {
-  return (
-    <div className="col-3">
-      <div
-        class="nav flex-column nav-pills"
-        id="v-pills-tab"
-        role="tablist"
-        aria-orientation="vertical"
-      >
-        <a
-          class="nav-link active"
-          id="v-pills-home-tab"
-          data-toggle="pill"
-          href="#v-pills-home"
-          role="tab"
-          aria-controls="v-pills-home"
-          aria-selected="true"
+class SideNav extends React.Component {
+  render() {
+    return (
+      <div className="col-3 mt-4">
+        <div
+          className="nav flex-column nav-pills"
+          id="v-pills-tab"
+          role="tablist"
+          aria-orientation="vertical"
         >
-          Home
-        </a>
-        <a
-          class="nav-link"
-          id="v-pills-profile-tab"
-          data-toggle="pill"
-          href="#v-pills-profile"
-          role="tab"
-          aria-controls="v-pills-profile"
-          aria-selected="false"
-        >
-          Profile
-        </a>
-        <a
-          class="nav-link"
-          id="v-pills-messages-tab"
-          data-toggle="pill"
-          href="#v-pills-messages"
-          role="tab"
-          aria-controls="v-pills-messages"
-          aria-selected="false"
-        >
-          Messages
-        </a>
-        <a
-          class="nav-link"
-          id="v-pills-settings-tab"
-          data-toggle="pill"
-          href="#v-pills-settings"
-          role="tab"
-          aria-controls="v-pills-settings"
-          aria-selected="false"
-        >
-          Settings
-        </a>
+          {this.props.items.map((item, index) => {
+            return (
+              <a
+                className={"nav-link" + (item.active ? " active" : "")}
+                id="v-pills-home-tab"
+                data-toggle="pill"
+                href="#v-pills-home"
+                role="tab"
+                aria-controls="v-pills-home"
+                aria-selected="true"
+                key={`sidenav-${index}`}
+                onClick={() => this.props.handleChange(index)}
+              >
+                {item.name}
+              </a>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default SideNav;

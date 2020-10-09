@@ -5,7 +5,7 @@ import logo from "../imgs/fabric-brand.png";
 
 class HeaderNav extends React.Component {
   state = {
-    data: [
+    navItems: [
       { name: "Home", path: "/", child: [], exact: true },
       { name: "Resources", path: "/resources", child: [], exact: false },
       {
@@ -55,7 +55,7 @@ class HeaderNav extends React.Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
-            {this.state.data.map((item, index) => {
+            {this.state.navItems.map((item, index) => {
               return (
                 <li
                   className={
