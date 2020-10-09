@@ -46,11 +46,15 @@
 .nav-pills .show > .nav-link {
   color: #007bff;
   background-color: #fff;
-  border-left: 2px #007bff solid;
+  border-left: 3px #007bff solid;
 }
 
 .nav-pills .nav-link {
   border-radius: 0;
   padding: 0.25rem 0.75rem;
   margin: 0.5rem 0;
+}
+
+.nav-pills .nav-link {
+  color: #5d5d5d;
 }
