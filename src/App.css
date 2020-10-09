@@ -44,9 +44,9 @@
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #007bff;
+  color: #5bc0de;
   background-color: #fff;
-  border-left: 3px #007bff solid;
+  border-left: 3px #5bc0de solid;
 }
 
 .nav-pills .nav-link {
@@ -57,4 +57,17 @@
 
 .nav-pills .nav-link {
   color: #5d5d5d;
+}
+
+/* Collapsable Table*/
+.card-header {
+  background-color: #d9e3eb;
+}
+
+h6[aria-expanded="true"] .fa-plus {
+  display: none;
+}
+
+h6[aria-expanded="false"] .fa-minus {
+  display: none;
 }
