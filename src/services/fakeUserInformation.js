@@ -9,8 +9,8 @@ export const userInfo = {
   eppn: "yaxue@unc.edu",
   global_roles: { is_project_lead: true, is_facility_operator: true },
   project_roles: [
-    { project_id: 1, is_project_member: "yes", is_project_owner: "no" },
-    { project_id: 3, is_project_member: "yes", is_project_owner: "yes" },
+    { project_id: 1, is_project_member: true, is_project_owner: false },
+    { project_id: 3, is_project_member: true, is_project_owner: true },
   ],
 };
 

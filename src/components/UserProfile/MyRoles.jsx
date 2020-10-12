@@ -21,8 +21,15 @@ class MyRoles extends React.Component {
       // concatenate project info and user role objects
       myProjects.push({ ...getProject(role.project_id), ...role });
     }
-    console.log(myProjects);
     return myProjects;
+  }
+
+  checkIcon() {
+    return <i className="fa fa-check text-success"></i>;
+  }
+
+  timesIcon() {
+    return <i className="fa fa-check text-danger"></i>;
   }
 
   render() {
@@ -35,16 +42,18 @@ class MyRoles extends React.Component {
           <tbody>
             <tr>
               <td>Project Lead</td>
-              <td>
-                {this.state.user.global_roles.is_project_lead ? "yes" : "no"}
+              <td className="text-center">
+                {this.state.user.global_roles.is_project_lead
+                  ? this.checkIcon()
+                  : this.timesIcon()}
               </td>
             </tr>
             <tr>
               <td>Facility Operator</td>
-              <td>
-                {this.state.user.global_roles.is_facility_operator
-                  ? "yes"
-                  : "no"}
+              <td className="text-center">
+                {this.state.user.global_roles.is_project_lead
+                  ? this.checkIcon()
+                  : this.timesIcon()}
               </td>
             </tr>
           </tbody>
