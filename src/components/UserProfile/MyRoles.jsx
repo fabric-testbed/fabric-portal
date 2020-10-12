@@ -6,7 +6,6 @@ class MyRoles extends React.Component {
   state = {
     user: getUserInfo(),
     projectRoleCols: [
-      { display: "Project Name", field: "name" },
       { display: "Description", field: "description" },
       { display: "Tags", field: "tags" },
       { display: "Project Member", field: "is_project_member" },
@@ -26,7 +25,7 @@ class MyRoles extends React.Component {
 
   renderTags(tags) {
     return tags.map((tag, index) => {
-      return <span className="btn-sm btn-secondary m-1">{tag}</span>;
+      return <span className="btn-sm btn-light m-1">{tag}</span>;
     });
   }
 
@@ -34,6 +33,7 @@ class MyRoles extends React.Component {
     // boolean: show check icon for true and times icon for false;
     // string: only show the first 20 words to keep UI succinct if it's too long;
     // array (object): show elements separated by space;
+    // for tags: add style to each tag;
     switch (typeof param) {
       case "boolean":
         return param === true ? (
@@ -83,6 +83,7 @@ class MyRoles extends React.Component {
         <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
             <tr>
+              <th>Project Name</th>
               {this.state.projectRoleCols.map((col, index) => {
                 return (
                   <th key={`project-role-header-${index}`}>{col.display}</th>
@@ -92,6 +93,15 @@ class MyRoles extends React.Component {
             {this.getMyProjects().map((row, index) => {
               return (
                 <tr key={`project-role-row-${index}`}>
+                  <td>
+                    <a
+                      href={row.project_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {row.name}
+                    </a>
+                  </td>
                   {this.state.projectRoleCols.map((col, index) => {
                     return (
                       <td key={`project-role-col-${index}`}>

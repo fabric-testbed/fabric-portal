@@ -75,3 +75,12 @@ h6[aria-expanded="true"] .fa-plus {
 h6[aria-expanded="false"] .fa-minus {
   display: none;
 }
+
+a {
+  color: #1490ac;
+}
+
+a:hover {
+  color: #00627d;
+  text-decoration: underline;
+}
