@@ -7,8 +7,11 @@ export const userInfo = {
   affliation: "University of North Carolina at Chapel Hill",
   cilogon_id: "26542073",
   eppn: "yaxue@unc.edu",
-  global_roles: ["Project Lead", "Facility Operator"],
-  project_roles: [{ role: "", project_id: 123 }],
+  global_roles: { is_project_lead: true, is_facility_operator: true },
+  project_roles: [
+    { project_id: 1, is_project_member: true, is_project_owner: false },
+    { project_id: 3, is_project_member: true, is_project_owner: true },
+  ],
 };
 
 export function getUserInfo() {
