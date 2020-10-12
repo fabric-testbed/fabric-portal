@@ -43,6 +43,7 @@
 /* Side Navbar */
 .container {
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .nav-pills .nav-link.active,

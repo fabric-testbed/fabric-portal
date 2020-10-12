@@ -9,8 +9,8 @@ class MyRoles extends React.Component {
       { display: "Project Name", field: "name" },
       { display: "Description", field: "description" },
       { display: "Tags", field: "tags" },
-      { display: "Is Project Member", field: "is_project_member" },
-      { display: "Is Project Owner", field: "is_project_owner" },
+      { display: "Project Member", field: "is_project_member" },
+      { display: "Project Owner", field: "is_project_owner" },
     ],
   };
 
@@ -24,12 +24,26 @@ class MyRoles extends React.Component {
     return myProjects;
   }
 
-  checkIcon() {
-    return <i className="fa fa-check text-success"></i>;
-  }
-
-  timesIcon() {
-    return <i className="fa fa-check text-danger"></i>;
+  renderRoleTableFields(param) {
+    // boolean: show check icon for true and times icon for false;
+    // string: only show the first 20 words to keep UI succinct if it's too long;
+    // array (object): show elements separated by space;
+    switch (typeof param) {
+      case "boolean":
+        return param === true ? (
+          <i className="fa fa-check text-success"></i>
+        ) : (
+          <i className="fa fa-times text-danger"></i>
+        );
+      case "string":
+        return param.length > 100
+          ? param.split(" ").slice(0, 20).join(" ").concat(" ...")
+          : param;
+      case "object":
+        return JSON.stringify(param);
+      default:
+        return param;
+    }
   }
 
   render() {
@@ -43,24 +57,24 @@ class MyRoles extends React.Component {
             <tr>
               <td>Project Lead</td>
               <td className="text-center">
-                {this.state.user.global_roles.is_project_lead
-                  ? this.checkIcon()
-                  : this.timesIcon()}
+                {this.renderRoleTableFields(
+                  this.state.user.global_roles.is_project_lead
+                )}
               </td>
             </tr>
             <tr>
               <td>Facility Operator</td>
               <td className="text-center">
-                {this.state.user.global_roles.is_project_lead
-                  ? this.checkIcon()
-                  : this.timesIcon()}
+                {this.renderRoleTableFields(
+                  this.state.user.global_roles.is_facility_operator
+                )}
               </td>
             </tr>
           </tbody>
         </table>
 
         <h4 className="mt-4">Project Roles</h4>
-        <table className="table table-striped table-bordered my-4">
+        <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
             <tr>
               {this.state.projectRoleCols.map((col, index) => {
@@ -75,7 +89,7 @@ class MyRoles extends React.Component {
                   {this.state.projectRoleCols.map((col, index) => {
                     return (
                       <td key={`project-role-col-${index}`}>
-                        {row[col.field]}
+                        {this.renderRoleTableFields(row[col.field])}
                       </td>
                     );
                   })}
