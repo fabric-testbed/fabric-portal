@@ -24,6 +24,12 @@ class MyRoles extends React.Component {
     return myProjects;
   }
 
+  renderTags(tags) {
+    return tags.map((tag, index) => {
+      return <span className="btn-sm btn-secondary m-1">{tag}</span>;
+    });
+  }
+
   renderRoleTableFields(param) {
     // boolean: show check icon for true and times icon for false;
     // string: only show the first 20 words to keep UI succinct if it's too long;
@@ -40,7 +46,7 @@ class MyRoles extends React.Component {
           ? param.split(" ").slice(0, 20).join(" ").concat(" ...")
           : param;
       case "object":
-        return JSON.stringify(param);
+        return this.renderTags(param);
       default:
         return param;
     }
