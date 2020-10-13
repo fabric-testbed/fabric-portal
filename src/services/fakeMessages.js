@@ -34,3 +34,11 @@ export const messages = [
 export function getMessages() {
   return messages;
 }
+
+export function getActiveMessages() {
+  return messages.filter((m) => m.active);
+}
+
+export function getTrashMessages() {
+  return messages.filter((m) => !m.active);
+}
