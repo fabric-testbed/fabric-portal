@@ -1,3 +1,4 @@
+/* App Footer */
 .app-footer {
   position: absolute;
   display: flex;
@@ -10,4 +11,82 @@
   left: 0;
   bottom: 0;
   width: 100%;
+}
+
+/* Custom Radio Buttons */
+.custom-control-label::before {
+  background-color: #5bc0de;
+}
+
+/* App Header Navbar */
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar-nav {
+  margin-top: 4px;
+  padding-bottom: 2px;
+}
+
+.nav-item a.active,
+.nav-item a:hover {
+  border-bottom: 2px #5bc0de solid;
+}
+
+.nav-item .dropdown-menu a.active,
+.nav-item .dropdown-menu a:hover {
+  border-bottom: none;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #000;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+/* Side Navbar */
+.container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #5bc0de;
+  background-color: #fff;
+  border-left: 3px #5bc0de solid;
+}
+
+.nav-pills .nav-link {
+  border-radius: 0;
+  padding: 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.nav-pills .nav-link {
+  color: #5d5d5d;
+}
+
+/* Collapsable Table */
+.card-header {
+  background-color: #d9e3eb;
+}
+
+h6[aria-expanded="true"] .fa-plus {
+  display: none;
+}
+
+h6[aria-expanded="false"] .fa-minus {
+  display: none;
+}
+
+a {
+  color: #1490ac;
+}
+
+a:hover {
+  color: #00627d;
+  text-decoration: underline;
 }
