@@ -11,7 +11,7 @@ class User extends React.Component {
       { name: "MY ROLES", active: false },
       { name: "MESSAGE CENTER", active: false },
     ],
-    activeIndex: 1,
+    activeIndex: 0,
     componentNames: [AccountInfo, MyRoles, MessageCenter],
   };
 

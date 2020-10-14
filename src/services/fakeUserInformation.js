@@ -5,7 +5,7 @@ export const userInfo = {
   full_name: "Yaxue Guo",
   email: "yaxueguo@renci.org",
   affliation: "University of North Carolina at Chapel Hill",
-  cilogon_id: "26542073",
+  cilogon_id: "http://cilogon.org/serverT/users/26542073",
   eppn: "yaxue@unc.edu",
   global_roles: { is_project_lead: true, is_facility_operator: true },
   project_roles: [
