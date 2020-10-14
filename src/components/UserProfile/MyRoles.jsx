@@ -25,7 +25,11 @@ class MyRoles extends React.Component {
 
   renderTags(tags) {
     return tags.map((tag, index) => {
-      return <span className="btn-sm btn-light m-1">{tag}</span>;
+      return (
+        <span className="btn-sm btn-warning m-1" key={`tag-${index}`}>
+          {tag}
+        </span>
+      );
     });
   }
 
