@@ -1,3 +1,4 @@
+@import "./styles/custom.scss";
 /* App Footer */
 .app-footer {
   position: absolute;
@@ -15,7 +16,7 @@
 
 /* Custom Radio Buttons */
 .custom-control-label::before {
-  background-color: #5bc0de;
+  background-color: $primary-color;
 }
 
 /* App Header Navbar */
@@ -31,7 +32,7 @@
 
 .nav-item a.active,
 .nav-item a:hover {
-  border-bottom: 2px #5bc0de solid;
+  border-bottom: 3px $primary-color solid;
 }
 
 .nav-item .dropdown-menu a.active,
@@ -41,9 +42,9 @@
 
 .dropdown-item.active,
 .dropdown-item:active {
-  color: #000;
+  color: $black;
   text-decoration: none;
-  background-color: #fff;
+  background-color: $white;
 }
 
 /* Side Navbar */
@@ -54,9 +55,9 @@
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #5bc0de;
+  color: $primary-color;
   background-color: #fff;
-  border-left: 3px #5bc0de solid;
+  border-left: 3px $primary-color solid;
 }
 
 .nav-pills .nav-link {
@@ -66,12 +67,12 @@
 }
 
 .nav-pills .nav-link {
-  color: #5d5d5d;
+  color: $grey-darken-2;
 }
 
 /* Collapsable Table */
 .card-header {
-  background-color: #d9e3eb;
+  background-color: $grey-lighten-2;
 }
 
 h6[aria-expanded="true"] .fa-plus {
@@ -83,10 +84,10 @@ h6[aria-expanded="false"] .fa-minus {
 }
 
 a {
-  color: #1490ac;
+  color: $primary-color-dark;
 }
 
 a:hover {
-  color: #00627d;
-  text-decoration: underline;
+  color: $primary-color-light;
+  text-decoration: none;
 }
