@@ -5,11 +5,11 @@ class Projects extends React.Component {
   state = {
     projects: [],
     projectCols: [
-      { display: "Project Name", field: "name" },
-      { display: "Description", field: "description" },
-      { display: "Facility", field: "facility" },
-      { display: "Created By", field: "created_by" },
-      { display: "UUID", field: "uuid" },
+      { display: "Project Name", field: "name", subfield: null },
+      { display: "Description", field: "description", subfield: null },
+      { display: "Facility", field: "facility", subfield: null },
+      { display: "Created By", field: "created_by", subfield: "name" },
+      { display: "UUID", field: "uuid", subfield: null },
     ],
   };
 
@@ -36,7 +36,11 @@ class Projects extends React.Component {
                 <tr key={`project-row-${index}`}>
                   {this.state.projectCols.map((col, index) => {
                     return (
-                      <td key={`project-col-${index}`}>{project[col.field]}</td>
+                      <td key={`project-col-${index}`}>
+                        {col.subfield
+                          ? project[col.field][col.subfield]
+                          : project[col.field]}
+                      </td>
                     );
                   })}
                 </tr>
