@@ -11,3 +11,7 @@ const axiosConfig = {
 export function getProjects() {
   return axios.get(apiEndpoint, axiosConfig);
 }
+
+export function getProject(id) {
+  return axios.get(apiEndpoint + "/" + id, axiosConfig);
+}
