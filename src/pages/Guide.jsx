@@ -1,7 +1,7 @@
 import React from "react";
 
 const Guide = () => {
-  return <div>Guide</div>;
+  return <div className="container">Guide</div>;
 };
 
 export default Guide;
