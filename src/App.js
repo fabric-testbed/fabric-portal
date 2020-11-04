@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
+import ProjectForm from "./pages/ProjectForm";
 
 import Experiments from "./pages/Experiments";
 import Guide from "./pages/Guide";
@@ -23,6 +24,7 @@ function App() {
         <Switch>
           <Route path="/" component={Home} exact />
           <Route path="/resources" component={Resources} />
+          <Route path="/projects/:id" component={ProjectForm} />
           <Route path="/projects" component={Projects} />
           <Route path="/experiments" component={Experiments} />
           <Route path="/guide" component={Guide} />

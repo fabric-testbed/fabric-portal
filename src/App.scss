@@ -1,7 +1,15 @@
 @import "./styles/custom.scss";
+html,
+body {
+  height: 100%;
+}
+
+.container {
+  min-height: 82vh;
+}
+
 /* App Footer */
 .app-footer {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
