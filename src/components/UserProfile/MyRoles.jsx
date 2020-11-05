@@ -26,7 +26,11 @@ class MyRoles extends React.Component {
   renderTags(tags) {
     return tags.map((tag, index) => {
       return (
+<<<<<<< HEAD
         <span className="btn-sm btn-info m-1" key={`tag-${index}`}>
+=======
+        <span className="btn-sm btn-warning m-1" key={`tag-${index}`}>
+>>>>>>> master
           {tag}
         </span>
       );
@@ -60,12 +64,20 @@ class MyRoles extends React.Component {
     return (
       <div className="col-9">
         <h1>My Roles</h1>
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
         <h4 className="mt-4">Global Roles</h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
             <tr>
               <td>Project Lead</td>
+<<<<<<< HEAD
               <td>
+=======
+              <td className="text-center">
+>>>>>>> master
                 {this.renderRoleTableFields(
                   this.state.user.global_roles.is_project_lead
                 )}
@@ -73,7 +85,11 @@ class MyRoles extends React.Component {
             </tr>
             <tr>
               <td>Facility Operator</td>
+<<<<<<< HEAD
               <td>
+=======
+              <td className="text-center">
+>>>>>>> master
                 {this.renderRoleTableFields(
                   this.state.user.global_roles.is_facility_operator
                 )}
@@ -83,7 +99,11 @@ class MyRoles extends React.Component {
         </table>
 
         <h4 className="mt-4">Project Roles</h4>
+<<<<<<< HEAD
         <table className="table table-striped table-bordered my-4">
+=======
+        <table className="table table-striped table-bordered my-4 text-center">
+>>>>>>> master
           <tbody>
             <tr>
               <th>Project Name</th>
