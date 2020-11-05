@@ -12,8 +12,13 @@ class HeaderNav extends React.Component {
         name: "Projects",
         path: "/projects",
         child: [
+<<<<<<< HEAD
           // { name: "All Projects", path: "/projects/all-projects" },
           // { name: "My Projects", path: "/projects/my-projects" },
+=======
+          { name: "All Projects", path: "/projects/all-projects" },
+          { name: "My Projects", path: "/projects/my-projects" },
+>>>>>>> master
         ],
         exact: false,
       },
