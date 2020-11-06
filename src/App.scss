@@ -13,6 +13,7 @@ body {
 .home-container {
   min-height: 88vh;
   margin: 0;
+  margin-bottom: 4rem;
 }
 
 .home-upper {
@@ -44,6 +45,11 @@ body {
 .home-upper-text p,
 .home-upper-text button {
   color: $white;
+}
+
+.home-lower {
+  width: 80%;
+  margin: auto;
 }
 
 /* App Footer */
