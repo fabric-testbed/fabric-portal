@@ -11,7 +11,7 @@ export const updates = [
     title: "Title for Update 2",
     content:
       "Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth.",
-    date: "2020-11-05",
+    date: "2020-11-08",
   },
   {
     id: 3,
@@ -24,4 +24,11 @@ export const updates = [
 
 export function getUpdates() {
   return updates;
+}
+
+export function getLatestUpdates(n) {
+  // return n updates with newest date.
+  return updates
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, n);
 }
