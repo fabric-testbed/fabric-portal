@@ -26,7 +26,7 @@ body {
   height: 26rem;
   background: url("./imgs/home-bg.jpg");
   background-size: 100%;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   opacity: 0.8;
   top: 0;
   left: 0;
@@ -36,9 +36,17 @@ body {
   z-index: -1;
 }
 
+/* For small screen */
 .home-upper-text {
-  padding: 3rem 4rem;
-  width: 60%;
+  padding: 2rem 2rem;
+  width: 85%;
+}
+
+@media only screen and (min-width: 1024px) {
+  .home-upper-text {
+    padding: 2.5rem 4rem;
+    width: 60%;
+  }
 }
 
 .home-upper-text h1,

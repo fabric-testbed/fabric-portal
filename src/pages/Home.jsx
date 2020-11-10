@@ -3,8 +3,9 @@ import React from "react";
 import CardOfItems from "../components/common/CardOfItems";
 
 import { homepageIntro } from "../services/portalData.json";
-import { getUpdates } from "../services/fakeFacilityUpdate";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
+
+import bg from "../imgs/home-bg.jpg";
 
 class Home extends React.Component {
   state = {
