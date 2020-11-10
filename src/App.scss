@@ -6,6 +6,58 @@ body {
 
 .container {
   min-height: 82vh;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.home-container {
+  min-height: 88vh;
+  margin: 0;
+  margin-bottom: 4rem;
+}
+
+.home-upper {
+  margin: 0;
+  height: 26rem;
+}
+
+.home-upper::after {
+  content: "";
+  height: 26rem;
+  background: url("./imgs/home-bg.jpg");
+  background-size: 100%;
+  background-repeat: repeat;
+  opacity: 0.8;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+/* For small screen */
+.home-upper-text {
+  padding: 2rem 2rem;
+  width: 85%;
+}
+
+@media only screen and (min-width: 1024px) {
+  .home-upper-text {
+    padding: 2.5rem 4rem;
+    width: 60%;
+  }
+}
+
+.home-upper-text h1,
+.home-upper-text p,
+.home-upper-text button {
+  color: $white;
+}
+
+.home-lower {
+  width: 80%;
+  margin: auto;
 }
 
 /* App Footer */
@@ -56,11 +108,6 @@ body {
 }
 
 /* Side Navbar */
-.container {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: $primary-color;
