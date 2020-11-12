@@ -1,7 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form.jsx";
-import { getProject } from "../services/projectRegistryService";
+import { getProject, saveProject } from "../services/projectRegistryService";
+import { getFacilities } from "../services/fakeFacilityService";
 
 class projectForm extends Form {
   state = {
@@ -15,6 +16,7 @@ class projectForm extends Form {
       project_members: [],
       project_owners: [],
     },
+    facilities: [],
     errors: {},
   };
 
@@ -38,8 +40,14 @@ class projectForm extends Form {
     }
   }
 
+  async populateFacilities() {
+    const facilities = getFacilities();
+    this.setState({ facilities });
+  }
+
   async componentDidMount() {
     await this.populateProject();
+    this.populateFacilities();
   }
 
   mapToViewModel(project) {
@@ -57,16 +65,28 @@ class projectForm extends Form {
     };
   }
 
+  doSubmit = async () => {
+    await saveProject(this.state.data);
+
+    this.props.history.push("/projects");
+  };
+
   render() {
+    const projectId = this.props.match.params.id;
     return (
       <div className="container">
-        <h1>Project - {this.state.data.name}</h1>
+        {projectId === "new" ? (
+          <h1>New Project</h1>
+        ) : (
+          <h1>Project - {this.state.data.name}</h1>
+        )}
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
           {this.renderInput("description", "Description")}
-          {this.renderInput("facility", "Facility")}
+          {this.renderSelect("facility", "Facility", this.state.facilities)}
           {this.renderButton("Save")}
         </form>
+        {/*
         <table className="table table-striped table-bordered w-50 my-4">
           <tbody>
             <tr>
@@ -134,6 +154,7 @@ class projectForm extends Form {
             })}
           </tbody>
         </table>
+       */}
       </div>
     );
   }

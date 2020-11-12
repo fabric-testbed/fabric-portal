@@ -8,10 +8,28 @@ const axiosConfig = {
   },
 };
 
+function projectUrl(id) {
+  return `${apiEndpoint}/${id}`;
+}
+
 export function getProjects() {
   return axios.get(apiEndpoint, axiosConfig);
 }
 
 export function getProject(id) {
   return axios.get(apiEndpoint + "/" + id, axiosConfig);
+}
+
+export function saveProject(project) {
+  if (project._id) {
+    const body = { ...project };
+    delete body._id;
+    axios.put(projectUrl(project._id), body);
+  }
+
+  return axios.post(apiEndpoint + "/create", project);
+}
+
+export function deleteProject(projectId) {
+  return axios.delete(projectUrl(projectId));
 }
