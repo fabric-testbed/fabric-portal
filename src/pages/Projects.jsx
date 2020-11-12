@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import ProjectsTable from "./ProjectsTable";
@@ -80,8 +79,17 @@ class Projects extends React.Component {
     return (
       <div className="container">
         <h1>Projects</h1>
+        <div className="toolbar">
+          <SearchBox
+            value={searchQuery}
+            onChange={this.handleSearch}
+            className="my-0"
+          />
+          <Link to="/projects/new" className="btn btn-primary">
+            Create Project
+          </Link>
+        </div>
         <p>Showing {totalCount} projects in the database.</p>
-        <SearchBox value={searchQuery} onChange={this.handleSearch} />
         <ProjectsTable
           projects={data}
           sortColumn={sortColumn}

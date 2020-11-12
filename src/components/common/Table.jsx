@@ -4,7 +4,7 @@ import TableHeader from "./TableHeader";
 
 const Table = ({ columns, onSort, sortColumn, data }) => {
   return (
-    <table className="table">
+    <table className="table table-hover">
       <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
       <TableBody columns={columns} data={data} />
     </table>

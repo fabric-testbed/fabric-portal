@@ -146,3 +146,23 @@ a:hover {
   color: $primary-color-light;
   text-decoration: none;
 }
+
+/* Project */
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.toolbar input {
+  margin: 0 !important;
+}
+
+.toolbar a {
+  padding: 0.5rem;
+  height: 2.5rem;
+  width: 9rem;
+  margin-left: 3rem;
+}
