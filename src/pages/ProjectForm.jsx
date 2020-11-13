@@ -2,8 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form.jsx";
 import SideNav from "../components/common/SideNav";
-import ProjectMemberTable from "../components/Project/ProjectMemberTable";
-import ProjectOwnerTable from "../components/Project/ProjectOwnerTable";
+import ProjectUserTable from "../components/Project/ProjectUserTable";
 
 import { getProject, saveProject } from "../services/projectRegistryService";
 import { getFacilities } from "../services/fakeFacilityService";
@@ -28,6 +27,7 @@ class projectForm extends Form {
       { name: "PROJECT MEMBERS", active: false },
     ],
     activeIndex: 0,
+    sortColumn: { path: "name", order: "asc" },
     // componentNames: [BasicInfo, ProjectMembers, ProjectOwners],
   };
 
@@ -93,10 +93,13 @@ class projectForm extends Form {
     // change the main content of right side.
   };
 
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
   render() {
     const projectId = this.props.match.params.id;
     // const TagName = this.state.componentNames[this.state.activeIndex];
-
     return (
       <div className="container">
         {projectId === "new" ? (
@@ -147,47 +150,23 @@ class projectForm extends Form {
             className={`${this.state.activeIndex !== 1 ? "d-none" : "col-9"}`}
           >
             <h2 className="my-4">Project Owners</h2>
-            <table className="table table-striped table-bordered">
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>ID</th>
-                </tr>
-                {this.state.data.project_owners.map((owner, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{owner.name}</td>
-                      <td>{owner.email}</td>
-                      <td>{owner.uuid}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <ProjectUserTable
+              users={this.state.data.project_owners}
+              sortColumn={this.state.sortColumn}
+              onSort={this.handleSort}
+              // onDelete={this.handleDelete}
+            />
           </div>
           <div
             className={`${this.state.activeIndex !== 2 ? "d-none" : "col-9"}`}
           >
             <h2 className="my-4">Project Members</h2>
-            <table className="table table-striped table-bordered">
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>ID</th>
-                </tr>
-                {this.state.data.project_members.map((member, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{member.name}</td>
-                      <td>{member.email}</td>
-                      <td>{member.uuid}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <ProjectUserTable
+              users={this.state.data.project_members}
+              sortColumn={this.state.sortColumn}
+              onSort={this.handleSort}
+              // onDelete={this.handleDelete}
+            />
           </div>
         </div>
       </div>

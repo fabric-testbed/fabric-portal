@@ -2,54 +2,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
-import ProjectsTable from "./ProjectsTable";
+import ProjectUserTable from "./ProjectUserTable";
 
-import { getProjects } from "../services/projectRegistryService";
-import { deleteProject } from "../services/projectRegistryService";
+import { deleteUser } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
 
-class Projects extends React.Component {
+class ProjectUsers extends React.Component {
   state = {
-    projects: [],
-    projectCols: [
-      { display: "Project Name", field: "name", subfield: null },
-      { display: "Description", field: "description", subfield: null },
-      { display: "Facility", field: "facility", subfield: null },
-      { display: "Created By", field: "created_by", subfield: "name" },
-      { display: "UUID", field: "uuid", subfield: null },
-    ],
+    projectId: "",
+    userType: "",
+    page_head: "",
+    users: [],
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
   };
 
-  async componentDidMount() {
-    const { data: projects } = await getProjects();
-    this.setState({ projects });
-  }
-
-  handleDelete = async (project) => {
-    const originalProjects = this.state.projects;
+  handleDelete = async (user) => {
+    const originalUsers = this.state.users;
     // update the state of the component.
-    // create a new projects array without current selected project.
-    const projects = originalProjects.filter((p) => {
-      return p._id !== project._id;
+    // create a new users array without current selected user.
+    const users = originalUsers.filter((u) => {
+      return u._id !== user._id;
     });
 
     // new projects obj will overwrite old one in state
-    this.setState({ projects: projects });
+    this.setState({ users: users });
 
     try {
-      await deleteProject(project._id);
+      await deleteUser(this.state.userType, this.state.projectId, user._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        console.log("This project has already been deleted");
+        console.log("This user has already been deleted");
     }
 
-    this.setState({ projects: originalProjects });
+    this.setState({ users: originalUsers });
   };
 
   handlePageChange = (page) => {
@@ -107,12 +97,10 @@ class Projects extends React.Component {
             onChange={this.handleSearch}
             className="my-0"
           />
-          <Link to="/projects/new" className="btn btn-primary">
-            Create Project
-          </Link>
+          <button className="btn btn-primary">Add User</button>
         </div>
         <p>Showing {totalCount} projects in the database.</p>
-        <ProjectsTable
+        <ProjectUserTable
           projects={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
@@ -129,4 +117,4 @@ class Projects extends React.Component {
   }
 }
 
-export default Projects;
+export default ProjectUsers;
