@@ -3,9 +3,14 @@ import Joi from "joi-browser";
 import Form from "../components/common/Form.jsx";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
+import { Link } from "react-router-dom";
+import SearchBox from "../components/common/SearchBox";
 
 import { getProject, saveProject } from "../services/projectRegistryService";
 import { getFacilities } from "../services/fakeFacilityService";
+
+import paginate from "../utils/paginate";
+import _ from "lodash";
 
 class projectForm extends Form {
   state = {
@@ -26,6 +31,10 @@ class projectForm extends Form {
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
     ],
+    pageSize: 5,
+    currentPage: 1,
+    searchOwnerQuery: "",
+    searchMemberQuery: "",
     activeIndex: 0,
     sortColumn: { path: "name", order: "asc" },
     // componentNames: [BasicInfo, ProjectMembers, ProjectOwners],
@@ -97,6 +106,30 @@ class projectForm extends Form {
     this.setState({ sortColumn });
   };
 
+  getPageData = () => {
+    const {
+      pageSize,
+      currentPage,
+      sortColumn,
+      searchQuery,
+      users: allUsers,
+    } = this.state;
+
+    // filter -> sort -> paginate
+    let filtered = allUsers;
+    if (searchQuery) {
+      filtered = allUsers.filter((u) =>
+        u.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const users = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filtered.length, data: users };
+  };
+
   render() {
     const projectId = this.props.match.params.id;
     // const TagName = this.state.componentNames[this.state.activeIndex];
@@ -150,22 +183,39 @@ class projectForm extends Form {
             className={`${this.state.activeIndex !== 1 ? "d-none" : "col-9"}`}
           >
             <h2 className="my-4">Project Owners</h2>
+            <div className="toolbar">
+              <SearchBox
+                value={this.state.searchOwnerQuery}
+                onChange={this.handleSearch}
+                className="my-0"
+              />
+              <button className="btn btn-primary">Add Owner</button>
+            </div>
             <ProjectUserTable
               users={this.state.data.project_owners}
               sortColumn={this.state.sortColumn}
               onSort={this.handleSort}
-              // onDelete={this.handleDelete}
+              onDelete={this.handleDelete}
             />
           </div>
           <div
             className={`${this.state.activeIndex !== 2 ? "d-none" : "col-9"}`}
           >
             <h2 className="my-4">Project Members</h2>
+            <div className="toolbar">
+              <SearchBox
+                value={this.state.searchMemberQuery}
+                onChange={this.handleSearch}
+                className="my-0"
+              />
+              <button className="btn btn-primary">Add Member</button>
+            </div>
+            {/* <p>Showing {totalCount} projects in the database.</p> */}
             <ProjectUserTable
               users={this.state.data.project_members}
               sortColumn={this.state.sortColumn}
               onSort={this.handleSort}
-              // onDelete={this.handleDelete}
+              onDelete={this.handleDelete}
             />
           </div>
         </div>

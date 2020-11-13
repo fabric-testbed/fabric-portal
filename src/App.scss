@@ -160,7 +160,8 @@ a:hover {
   margin: 0 !important;
 }
 
-.toolbar a {
+.toolbar a,
+.toolbar button {
   padding: 0.5rem;
   height: 2.5rem;
   width: 9rem;
