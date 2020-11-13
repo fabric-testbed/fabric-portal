@@ -166,3 +166,9 @@ a:hover {
   width: 9rem;
   margin-left: 3rem;
 }
+
+.pagination-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

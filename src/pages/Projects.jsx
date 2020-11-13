@@ -5,6 +5,7 @@ import SearchBox from "../components/common/SearchBox";
 import ProjectsTable from "./ProjectsTable";
 
 import { getProjects } from "../services/projectRegistryService";
+import { deleteProject } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -19,7 +20,7 @@ class Projects extends React.Component {
       { display: "Created By", field: "created_by", subfield: "name" },
       { display: "UUID", field: "uuid", subfield: null },
     ],
-    pageSize: 3,
+    pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
@@ -29,6 +30,27 @@ class Projects extends React.Component {
     const { data: projects } = await getProjects();
     this.setState({ projects });
   }
+
+  handleDelete = async (project) => {
+    const originalProjects = this.state.projects;
+    // update the state of the component.
+    // create a new projects array without current selected project.
+    const projects = originalProjects.filter((m) => {
+      return m._id !== project._id;
+    });
+
+    // new projects obj will overwrite old one in state
+    this.setState({ projects: projects });
+
+    try {
+      await deleteProject(project._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        console.log("This project has already been deleted");
+    }
+
+    this.setState({ projects: originalProjects });
+  };
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -93,8 +115,8 @@ class Projects extends React.Component {
         <ProjectsTable
           projects={data}
           sortColumn={sortColumn}
-          onLike={this.handleLike}
           onSort={this.handleSort}
+          onDelete={this.handleDelete}
         />
         <Pagination
           itemsCount={totalCount}

@@ -1,6 +1,10 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form.jsx";
+import SideNav from "../components/common/SideNav";
+import ProjectMemberTable from "../components/Project/ProjectMemberTable";
+import ProjectOwnerTable from "../components/Project/ProjectOwnerTable";
+
 import { getProject, saveProject } from "../services/projectRegistryService";
 import { getFacilities } from "../services/fakeFacilityService";
 
@@ -18,6 +22,13 @@ class projectForm extends Form {
     },
     facilities: [],
     errors: {},
+    SideNavItems: [
+      { name: "BASIC INFORMATION", active: true },
+      { name: "PROJECT OWNERS", active: false },
+      { name: "PROJECT MEMBERS", active: false },
+    ],
+    activeIndex: 0,
+    // componentNames: [BasicInfo, ProjectMembers, ProjectOwners],
   };
 
   schema = {
@@ -25,6 +36,10 @@ class projectForm extends Form {
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
+    created_by: Joi.string(),
+    created_time: Joi.string(),
+    project_members: Joi.string(),
+    project_owners: Joi.string(),
   };
 
   async populateProject() {
@@ -71,8 +86,17 @@ class projectForm extends Form {
     this.props.history.push("/projects");
   };
 
+  handleChange = (newIndex) => {
+    // change active item in side nav.
+    this.setState({ activeIndex: newIndex });
+
+    // change the main content of right side.
+  };
+
   render() {
     const projectId = this.props.match.params.id;
+    // const TagName = this.state.componentNames[this.state.activeIndex];
+
     return (
       <div className="container">
         {projectId === "new" ? (
@@ -80,81 +104,92 @@ class projectForm extends Form {
         ) : (
           <h1>Project - {this.state.data.name}</h1>
         )}
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name")}
-          {this.renderInput("description", "Description")}
-          {this.renderSelect("facility", "Facility", this.state.facilities)}
-          {this.renderButton("Save")}
-        </form>
-        {/*
-        <table className="table table-striped table-bordered w-50 my-4">
-          <tbody>
-            <tr>
-              <td>Project ID</td>
-              <td>{this.state.data._id}</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2 className="my-4">Creator Information</h2>
-        <table className="table table-striped table-bordered w-50">
-          <tbody>
-            <tr>
-              <td>Name</td>
-              <td>{this.state.data.created_by.name}</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td>{this.state.data.created_by.email}</td>
-            </tr>
-            <tr>
-              <td>Creator ID</td>
-              <td>{this.state.data.created_by.uuid}</td>
-            </tr>
-            <tr>
-              <td>Created Time</td>
-              <td>{this.state.data.created_time}</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2 className="my-4">Project Owners</h2>
-        <table className="table table-striped table-bordered w-75">
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>ID</th>
-            </tr>
-            {this.state.data.project_owners.map((owner, index) => {
-              return (
-                <tr key={index}>
-                  <td>{owner.name}</td>
-                  <td>{owner.email}</td>
-                  <td>{owner.uuid}</td>
+        <div className="row mt-4">
+          <SideNav
+            items={this.state.SideNavItems}
+            handleChange={this.handleChange}
+          />
+          <div
+            className={`${this.state.activeIndex !== 0 ? "d-none" : "col-9"}`}
+          >
+            <form onSubmit={this.handleSubmit}>
+              {this.renderInput("name", "Name")}
+              {this.renderInput("description", "Description")}
+              {this.renderInput("facility", "Facility")}
+              {this.renderButton("Save")}
+            </form>
+            <table className="table table-striped table-bordered mt-4">
+              <tbody>
+                <tr>
+                  <td>Project ID</td>
+                  <td>{this.state.data._id}</td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <h2 className="my-4">Project Members</h2>
-        <table className="table table-striped table-bordered w-75">
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>ID</th>
-            </tr>
-            {this.state.data.project_members.map((member, index) => {
-              return (
-                <tr key={index}>
-                  <td>{member.name}</td>
-                  <td>{member.email}</td>
-                  <td>{member.uuid}</td>
+                <tr>
+                  <td>Creator Name</td>
+                  <td>{this.state.data.created_by.name}</td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-       */}
+                <tr>
+                  <td>Creator Email</td>
+                  <td>{this.state.data.created_by.email}</td>
+                </tr>
+                <tr>
+                  <td>Creator ID</td>
+                  <td>{this.state.data.created_by.uuid}</td>
+                </tr>
+                <tr>
+                  <td>Created Time</td>
+                  <td>{this.state.data.created_time}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            className={`${this.state.activeIndex !== 1 ? "d-none" : "col-9"}`}
+          >
+            <h2 className="my-4">Project Owners</h2>
+            <table className="table table-striped table-bordered">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>ID</th>
+                </tr>
+                {this.state.data.project_owners.map((owner, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{owner.name}</td>
+                      <td>{owner.email}</td>
+                      <td>{owner.uuid}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div
+            className={`${this.state.activeIndex !== 2 ? "d-none" : "col-9"}`}
+          >
+            <h2 className="my-4">Project Members</h2>
+            <table className="table table-striped table-bordered">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>ID</th>
+                </tr>
+                {this.state.data.project_members.map((member, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{member.name}</td>
+                      <td>{member.email}</td>
+                      <td>{member.uuid}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
   }

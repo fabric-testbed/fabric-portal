@@ -31,5 +31,7 @@ export function saveProject(project) {
 }
 
 export function deleteProject(projectId) {
-  return axios.delete(projectUrl(projectId));
+  return axios.delete(
+    apiEndpoint + "/delete?uuid=d9e21cc6-8134-42f3-81ca-b627f5b1df66"
+  );
 }
