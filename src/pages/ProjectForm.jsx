@@ -26,18 +26,24 @@ class projectForm extends Form {
     },
     facilities: [],
     errors: {},
+    activeIndex: 0,
     SideNavItems: [
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
     ],
-    pageSize: 5,
-    currentPage: 1,
-    searchOwnerQuery: "",
-    searchMemberQuery: "",
-    activeIndex: 0,
-    sortColumn: { path: "name", order: "asc" },
-    // componentNames: [BasicInfo, ProjectMembers, ProjectOwners],
+    ownerSetting: {
+      pageSize: 5,
+      currentPage: 1,
+      searchQuery: "",
+      sortColumn: { path: "name", order: "asc" },
+    },
+    memberSetting: {
+      pageSize: 5,
+      currentPage: 1,
+      searchQuery: "",
+      sortColumn: { path: "name", order: "asc" },
+    },
   };
 
   schema = {
@@ -97,23 +103,32 @@ class projectForm extends Form {
 
   handleChange = (newIndex) => {
     // change active item in side nav.
+    // change the display of main content of right side accordingly.
     this.setState({ activeIndex: newIndex });
-
-    // change the main content of right side.
   };
 
   handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
+    if (this.state.activeIndex === 1) {
+      this.setState({
+        ownerSetting: { ...this.state.ownerSetting, sortColumn: sortColumn },
+      });
+    } else if (this.state.activeIndex === 2) {
+      this.setState({
+        memberSetting: { ...this.state.memberSetting, sortColumn: sortColumn },
+      });
+    }
   };
 
-  getPageData = () => {
-    const {
-      pageSize,
-      currentPage,
-      sortColumn,
-      searchQuery,
-      users: allUsers,
-    } = this.state;
+  getData = (userType) => {
+    const { pageSize, currentPage, sortColumn, searchQuery } =
+      userType === "project_owner"
+        ? this.state.ownerSetting
+        : this.state.memberSetting;
+
+    const allUsers =
+      userType === "project_owner"
+        ? this.state.data.project_owners
+        : this.state.data.project_members;
 
     // filter -> sort -> paginate
     let filtered = allUsers;
@@ -127,12 +142,18 @@ class projectForm extends Form {
 
     const users = paginate(sorted, currentPage, pageSize);
 
-    return { totalCount: filtered.length, data: users };
+    if (userType === "project_owner") {
+      return { totalOwnerCount: filtered.length, owners: users };
+    } else {
+      return { totalMemberCount: filtered.length, members: users };
+    }
   };
 
   render() {
     const projectId = this.props.match.params.id;
-    // const TagName = this.state.componentNames[this.state.activeIndex];
+    const { totalOwnerCount, owners } = this.getData("project_owner");
+    const { totalMemberCount, members } = this.getData("project_member");
+
     return (
       <div className="container">
         {projectId === "new" ? (
@@ -185,15 +206,16 @@ class projectForm extends Form {
             <h2 className="my-4">Project Owners</h2>
             <div className="toolbar">
               <SearchBox
-                value={this.state.searchOwnerQuery}
+                value={this.state.ownerSetting.searchQuery}
                 onChange={this.handleSearch}
                 className="my-0"
               />
               <button className="btn btn-primary">Add Owner</button>
             </div>
+            <p>Showing {totalOwnerCount} owners of this project.</p>
             <ProjectUserTable
-              users={this.state.data.project_owners}
-              sortColumn={this.state.sortColumn}
+              users={owners}
+              sortColumn={this.state.ownerSetting.sortColumn}
               onSort={this.handleSort}
               onDelete={this.handleDelete}
             />
@@ -204,16 +226,16 @@ class projectForm extends Form {
             <h2 className="my-4">Project Members</h2>
             <div className="toolbar">
               <SearchBox
-                value={this.state.searchMemberQuery}
+                value={this.state.memberSetting.searchQuery}
                 onChange={this.handleSearch}
                 className="my-0"
               />
               <button className="btn btn-primary">Add Member</button>
             </div>
-            {/* <p>Showing {totalCount} projects in the database.</p> */}
+            <p>Showing {totalMemberCount} members of this project.</p>
             <ProjectUserTable
-              users={this.state.data.project_members}
-              sortColumn={this.state.sortColumn}
+              users={members}
+              sortColumn={this.state.memberSetting.sortColumn}
               onSort={this.handleSort}
               onDelete={this.handleDelete}
             />
