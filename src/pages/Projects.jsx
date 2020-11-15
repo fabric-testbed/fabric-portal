@@ -93,7 +93,9 @@ class Projects extends React.Component {
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
     if (count === 0) {
-      return <p>There are no project in the database.</p>;
+      return (
+        <div className="container">There are no project in the database.</div>
+      );
     }
 
     const { totalCount, data } = this.getPageData();

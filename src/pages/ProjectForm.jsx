@@ -2,9 +2,10 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form.jsx";
 import SideNav from "../components/common/SideNav";
-import ProjectUserTable from "../components/Project/ProjectUserTable";
-import { Link } from "react-router-dom";
+import Pagination from "../components/common/Pagination";
+// import { Link } from "react-router-dom";
 import SearchBox from "../components/common/SearchBox";
+import ProjectUserTable from "../components/Project/ProjectUserTable";
 
 import { getProject, saveProject } from "../services/projectRegistryService";
 import { getFacilities } from "../services/fakeFacilityService";
@@ -39,7 +40,7 @@ class projectForm extends Form {
       sortColumn: { path: "name", order: "asc" },
     },
     memberSetting: {
-      pageSize: 5,
+      pageSize: 3,
       currentPage: 1,
       searchQuery: "",
       sortColumn: { path: "name", order: "asc" },
@@ -135,6 +136,18 @@ class projectForm extends Form {
     } else if (this.state.activeIndex === 2) {
       this.setState({
         memberSetting: { ...this.state.memberSetting, sortColumn: sortColumn },
+      });
+    }
+  };
+
+  handlePageChange = (page) => {
+    if (this.state.activeIndex === 1) {
+      this.setState({
+        ownerSetting: { ...this.state.ownerSetting, currentPage: page },
+      });
+    } else if (this.state.activeIndex === 2) {
+      this.setState({
+        memberSetting: { ...this.state.memberSetting, currentPage: page },
       });
     }
   };
@@ -239,6 +252,12 @@ class projectForm extends Form {
               onSort={this.handleSort}
               onDelete={this.handleDelete}
             />
+            <Pagination
+              itemsCount={totalOwnerCount}
+              pageSize={this.state.ownerSetting.pageSize}
+              currentPage={this.state.ownerSetting.currentPage}
+              onPageChange={this.handlePageChange}
+            />
           </div>
           <div
             className={`${this.state.activeIndex !== 2 ? "d-none" : "col-9"}`}
@@ -258,6 +277,12 @@ class projectForm extends Form {
               sortColumn={this.state.memberSetting.sortColumn}
               onSort={this.handleSort}
               onDelete={this.handleDelete}
+            />
+            <Pagination
+              itemsCount={totalMemberCount}
+              pageSize={this.state.memberSetting.pageSize}
+              currentPage={this.state.memberSetting.currentPage}
+              onPageChange={this.handlePageChange}
             />
           </div>
         </div>
