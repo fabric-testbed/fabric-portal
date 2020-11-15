@@ -107,6 +107,26 @@ class projectForm extends Form {
     this.setState({ activeIndex: newIndex });
   };
 
+  handleSearch = (query) => {
+    if (this.state.activeIndex === 1) {
+      this.setState({
+        ownerSetting: {
+          ...this.state.ownerSetting,
+          searchQuery: query,
+          currentPage: 1,
+        },
+      });
+    } else if (this.state.activeIndex === 2) {
+      this.setState({
+        memberSetting: {
+          ...this.state.memberSetting,
+          searchQuery: query,
+          currentPage: 1,
+        },
+      });
+    }
+  };
+
   handleSort = (sortColumn) => {
     if (this.state.activeIndex === 1) {
       this.setState({
