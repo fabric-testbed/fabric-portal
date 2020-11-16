@@ -13,13 +13,6 @@ import _ from "lodash";
 class Projects extends React.Component {
   state = {
     projects: [],
-    projectCols: [
-      { display: "Project Name", field: "name", subfield: null },
-      { display: "Description", field: "description", subfield: null },
-      { display: "Facility", field: "facility", subfield: null },
-      { display: "Created By", field: "created_by", subfield: "name" },
-      { display: "UUID", field: "uuid", subfield: null },
-    ],
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
