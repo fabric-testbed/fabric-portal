@@ -53,15 +53,16 @@ class projectForm extends Form {
       searchQuery: "",
       sortColumn: { path: "name", order: "asc" },
     },
+    originalProjectName: "",
   };
 
   schema = {
-    uuid: Joi.string(),
+    uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
     created_by: Joi.object(),
-    created_time: Joi.string(),
+    created_time: Joi.string().allow(""),
     project_members: Joi.array(),
     project_owners: Joi.array(),
   };
@@ -72,6 +73,8 @@ class projectForm extends Form {
       if (projectId === "new") return;
 
       const { data: project } = await getProject(projectId);
+      // keep a shallow copy of project name for project form header
+      this.state.originalProjectName = project.name;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
@@ -99,7 +102,6 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
-    console.log("do submit in Project form!");
     await saveProject(this.state.data);
     this.props.history.push("/projects");
   };
@@ -234,18 +236,18 @@ class projectForm extends Form {
       return (
         <div className="container">
           <h1>New Project</h1>
-          <form onSubmit={this.doSubmit}>
+          <form onSubmit={this.handleSubmit}>
             {this.renderInput("name", "Name")}
             {this.renderInput("description", "Description")}
             {this.renderInput("facility", "Facility")}
-            {this.renderButton("Save")}
+            {this.renderButton("Create")}
           </form>
         </div>
       );
     } else {
       return (
         <div className="container">
-          <h1>Project - {this.state.data.name}</h1>
+          <h1>Project - {this.state.originalProjectName}</h1>
           <div className="row mt-4">
             <SideNav
               items={this.state.SideNavItems}
