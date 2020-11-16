@@ -32,24 +32,24 @@ class Projects extends React.Component {
   }
 
   handleDelete = async (project) => {
+    console.log(project);
     const originalProjects = this.state.projects;
     // update the state of the component.
     // create a new projects array without current selected project.
     const projects = originalProjects.filter((p) => {
-      return p._id !== project._id;
+      return p.uuid !== project.uuid;
     });
 
     // new projects obj will overwrite old one in state
     this.setState({ projects: projects });
 
     try {
-      await deleteProject(project._id);
+      await deleteProject(project.uuid);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         console.log("This project has already been deleted");
+      this.setState({ projects: originalProjects });
     }
-
-    this.setState({ projects: originalProjects });
   };
 
   handlePageChange = (page) => {

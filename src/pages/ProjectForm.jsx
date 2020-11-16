@@ -40,7 +40,7 @@ class projectForm extends Form {
       sortColumn: { path: "name", order: "asc" },
     },
     memberSetting: {
-      pageSize: 3,
+      pageSize: 5,
       currentPage: 1,
       searchQuery: "",
       sortColumn: { path: "name", order: "asc" },
