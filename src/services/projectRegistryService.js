@@ -48,7 +48,7 @@ export function deleteUser(userType, projectId, userId) {
   if (userType === "project_member") {
     return axios.put(
       apiEndpoint +
-        "/remove_member?uuid=" +
+        "/remove_members?uuid=" +
         projectId +
         "&project_members=" +
         userId
@@ -58,7 +58,7 @@ export function deleteUser(userType, projectId, userId) {
   if (userType === "project_owner") {
     return axios.put(
       apiEndpoint +
-        "/remove_owner?uuid=" +
+        "/remove_owners?uuid=" +
         projectId +
         "&project_owners=" +
         userId

@@ -25,7 +25,6 @@ class Projects extends React.Component {
   }
 
   handleDelete = async (project) => {
-    console.log(project);
     const originalProjects = this.state.projects;
     // update the state of the component.
     // create a new projects array without current selected project.

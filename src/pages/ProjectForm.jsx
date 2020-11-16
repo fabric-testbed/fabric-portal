@@ -6,7 +6,11 @@ import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 
-import { getProject, saveProject } from "../services/projectRegistryService";
+import {
+  getProject,
+  saveProject,
+  deleteUser,
+} from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -20,8 +24,8 @@ class projectForm extends Form {
       facility: "",
       created_by: {},
       created_time: "",
-      project_members: [],
       project_owners: [],
+      project_members: [],
     },
     projectStaticInfoRows: [
       { label: "Project ID", path: "uuid" },
@@ -147,6 +151,47 @@ class projectForm extends Form {
       this.setState({
         memberSetting: { ...this.state.memberSetting, currentPage: page },
       });
+    }
+  };
+
+  handleDelete = async (user) => {
+    if (this.state.activeIndex === 1) {
+      const originalUsers = this.state.data.project_owners;
+      // update the state of the component.
+      // create a new users array without current selected user.
+      const users = originalUsers.filter((u) => {
+        return u.uuid !== user.uuid;
+      });
+
+      // new projects obj will overwrite old one in state
+      this.setState({ data: { ...this.state.data, project_owners: users } });
+
+      try {
+        await deleteUser("project_owner", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404)
+          console.log("This user has already been deleted");
+        this.setState({
+          data: { ...this.state.data, project_owners: originalUsers },
+        });
+      }
+    } else if (this.state.activeIndex === 2) {
+      const originalUsers = this.state.data.project_members;
+      const users = originalUsers.filter((u) => {
+        return u.uuid !== user.uuid;
+      });
+
+      this.setState({ data: { ...this.state.data, project_members: users } });
+
+      try {
+        await deleteUser("project_member", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        if (ex.response && ex.response.status === 404)
+          console.log("This user has already been deleted");
+        this.setState({
+          data: { ...this.state.data, project_members: originalUsers },
+        });
+      }
     }
   };
 
