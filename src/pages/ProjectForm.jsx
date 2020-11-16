@@ -3,12 +3,10 @@ import Joi from "joi-browser";
 import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import Pagination from "../components/common/Pagination";
-// import { Link } from "react-router-dom";
 import SearchBox from "../components/common/SearchBox";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 
 import { getProject, saveProject } from "../services/projectRegistryService";
-import { getFacilities } from "../services/fakeFacilityService";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -32,7 +30,6 @@ class projectForm extends Form {
       { label: "Creator Email", path: "created_by.email" },
       { label: "Creator ID", path: "created_by.uuid" },
     ],
-    facilities: [],
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -78,14 +75,8 @@ class projectForm extends Form {
     }
   }
 
-  async populateFacilities() {
-    const facilities = getFacilities();
-    this.setState({ facilities });
-  }
-
   async componentDidMount() {
     await this.populateProject();
-    this.populateFacilities();
   }
 
   mapToViewModel(project) {
