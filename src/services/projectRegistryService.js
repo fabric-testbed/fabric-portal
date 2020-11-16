@@ -21,13 +21,22 @@ export function getProject(id) {
 }
 
 export function saveProject(project) {
-  if (project._id) {
+  if (project.uuid) {
     const body = { ...project };
-    delete body._id;
-    axios.put(projectUrl(project._id), body);
+    delete body.uuid;
+    axios.put(projectUrl(project.uuid), body);
+  } else {
+    return axios.post(
+      apiEndpoint +
+        "/create?name=" +
+        project.name +
+        "&description=" +
+        project.description +
+        "&facility=" +
+        project.facility
+    );
+    // return axios.post(apiEndpoint, project);
   }
-
-  return axios.post(apiEndpoint + "/create", project);
 }
 
 export function deleteProject(projectId) {

@@ -56,10 +56,10 @@ class projectForm extends Form {
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    created_by: Joi.string(),
+    created_by: Joi.object(),
     created_time: Joi.string(),
-    project_members: Joi.string(),
-    project_owners: Joi.string(),
+    project_members: Joi.array(),
+    project_owners: Joi.array(),
   };
 
   async populateProject() {
@@ -95,12 +95,12 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
+    console.log("do submit in Project form!");
     await saveProject(this.state.data);
-
     this.props.history.push("/projects");
   };
 
-  handleChange = (newIndex) => {
+  handleSideNavChange = (newIndex) => {
     // change active item in side nav.
     // change the display of main content of right side accordingly.
     this.setState({ activeIndex: newIndex });
@@ -189,7 +189,7 @@ class projectForm extends Form {
       return (
         <div className="container">
           <h1>New Project</h1>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.doSubmit}>
             {this.renderInput("name", "Name")}
             {this.renderInput("description", "Description")}
             {this.renderInput("facility", "Facility")}
@@ -204,7 +204,7 @@ class projectForm extends Form {
           <div className="row mt-4">
             <SideNav
               items={this.state.SideNavItems}
-              handleChange={this.handleChange}
+              handleChange={this.handleSideNavChange}
             />
             <div
               className={`${this.state.activeIndex !== 0 ? "d-none" : "col-9"}`}
