@@ -86,7 +86,12 @@ class Projects extends React.Component {
 
     if (count === 0) {
       return (
-        <div className="container">There are no project in the database.</div>
+        <div className="container">
+          <Link to="/projects/new" className="btn btn-primary">
+            Create Project
+          </Link>
+          <p className="mt-4">There are no project in the database.</p>
+        </div>
       );
     }
 
