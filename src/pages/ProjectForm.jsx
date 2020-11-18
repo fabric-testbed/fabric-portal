@@ -5,6 +5,7 @@ import SideNav from "../components/common/SideNav";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
+import SearchInput from "../components/Project/SearchInput";
 
 import {
   getProject,
@@ -54,6 +55,7 @@ class projectForm extends Form {
       sortColumn: { path: "name", order: "asc" },
     },
     originalProjectName: "",
+    nOfInputToAddOwner: 0,
   };
 
   schema = {
@@ -197,6 +199,10 @@ class projectForm extends Form {
     }
   };
 
+  handleAddUser = () => {
+    this.setState({ nOfInputToAddOwner: this.state.nOfInputToAddOwner + 1 });
+  };
+
   getData = (userType) => {
     const { pageSize, currentPage, sortColumn, searchQuery } =
       userType === "project_owner"
@@ -233,6 +239,13 @@ class projectForm extends Form {
     const { totalMemberCount, members } = this.getData("project_member");
 
     if (projectId === "new") {
+      const ownerInputChildren = [];
+
+      for (let i = 0; i < this.state.nOfInputToAddOwner; i += 1) {
+        ownerInputChildren.push(
+          <SearchInput name={`owner-${i}`} key={`owner-${i}`} />
+        );
+      }
       return (
         <div className="container">
           <h1>New Project</h1>
@@ -242,6 +255,11 @@ class projectForm extends Form {
             {this.renderInput("facility", "Facility")}
             {this.renderButton("Create")}
           </form>
+          <div className="add-project-owner">
+            <h5>Project Owners</h5>
+            <button onClick={this.handleAddUser}>Add Item</button>
+            {ownerInputChildren}
+          </div>
         </div>
       );
     } else {
