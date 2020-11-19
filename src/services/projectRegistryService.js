@@ -23,13 +23,12 @@ export function saveProject(project) {
     axios.put(url);
   } else {
     // combine array of project owners into string, separated by comma
-    let p_o_str = project.project_owners.join(",");
-
     const params = new URLSearchParams({
       name: project.name,
       description: project.description,
       facility: project.facility,
-      project_owners: p_o_str,
+      project_owners: project.project_owners.join(","),
+      project_members: project.project_members.join(","),
     }).toString();
     const url = apiEndpoint + "/create?" + params;
     console.log("calling project registry");

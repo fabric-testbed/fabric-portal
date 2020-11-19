@@ -54,9 +54,10 @@ class NewProjectForm extends Form {
 
   doSubmit = async () => {
     let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
-    console.log(ownerIDs);
+    let memberIDs = this.state.addedMembers.map((user) => user.uuid);
     let data = { ...this.state.data };
     data.project_owners.push(ownerIDs);
+    data.project_members.push(memberIDs);
     this.setState({ data });
     console.log("------");
     console.log(this.state.data);
@@ -101,7 +102,7 @@ class NewProjectForm extends Form {
     const found = added.filter((a) => a.uuid === user.uuid).length > 0;
     if (!found) {
       added.push(user);
-      this.state.activeTabIndex === "owner"
+      this.state.activeTabIndex === 0
         ? this.setState({ addedOwners: added })
         : this.setState({ addedMembers: added });
     }
