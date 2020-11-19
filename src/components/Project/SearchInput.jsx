@@ -20,10 +20,15 @@ class SearchInput extends React.Component {
   };
 
   handleSearch = async (value) => {
-    if (value.length > 3) {
-      const { data: users } = await getPeopleByName(value);
-      this.setState({ users });
-    } else {
+    try {
+      if (value.length > 3) {
+        const { data: users } = await getPeopleByName(value);
+        this.setState({ users });
+      } else {
+        this.setState({ users: [] });
+      }
+    } catch (err) {
+      console.warn(err);
       this.setState({ users: [] });
     }
   };
