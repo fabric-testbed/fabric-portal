@@ -22,10 +22,18 @@ class NewProjectForm extends Form {
       project_members: [],
     },
     errors: {},
-    users: [],
-    addedUsers: [],
-    activeTableIndex: 0,
+    owners: [],
+    addedOwners: [],
+    members: [],
+    addedMembers: [],
+    activeTabIndex: 0,
     ownerSetting: {
+      pageSize: 5,
+      currentPage: 1,
+      searchQuery: "",
+      sortColumn: { path: "name", order: "asc" },
+    },
+    memberSetting: {
       pageSize: 5,
       currentPage: 1,
       searchQuery: "",
@@ -45,7 +53,7 @@ class NewProjectForm extends Form {
   };
 
   doSubmit = async () => {
-    let ownerIDs = this.state.addedUsers.map((user) => user.uuid);
+    let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
     console.log(ownerIDs);
     let data = { ...this.state.data };
     data.project_owners.push(ownerIDs);
@@ -58,36 +66,49 @@ class NewProjectForm extends Form {
   };
 
   handleSearch = async (value) => {
-    try {
-      if (value.length > 3) {
-        const { data: users } = await getPeopleByName(value);
-        this.setState({ users });
-      } else {
-        this.setState({ users: [] });
+    if (this.state.activeTabIndex === 0) {
+      try {
+        if (value.length > 3) {
+          const { data: owners } = await getPeopleByName(value);
+          this.setState({ owners });
+        } else {
+          this.setState({ owners: [] });
+        }
+      } catch (err) {
+        console.warn(err);
+        this.setState({ owners: [] });
       }
-    } catch (err) {
-      console.warn(err);
-      this.setState({ users: [] });
+    } else if (this.state.activeTabIndex === 1) {
+      try {
+        if (value.length > 3) {
+          const { data: members } = await getPeopleByName(value);
+          this.setState({ members });
+        } else {
+          this.setState({ members: [] });
+        }
+      } catch (err) {
+        console.warn(err);
+        this.setState({ members: [] });
+      }
     }
   };
 
   handleAddUser = (user) => {
-    const added = this.state.addedUsers;
-    let found = false;
-    for (let i = 0; i < added.length; i++) {
-      if (added[i].eppn === user.eppn) {
-        found = true;
-        break;
-      }
-    }
+    const added =
+      this.state.activeTabIndex === 0
+        ? this.state.addedOwners
+        : this.state.addedMembers;
+    const found = added.filter((a) => a.uuid === user.uuid).length > 0;
     if (!found) {
       added.push(user);
-      this.setState({ addedUsers: added });
+      this.state.activeTabIndex === "owner"
+        ? this.setState({ addedOwners: added })
+        : this.setState({ addedMembers: added });
     }
   };
 
   handleSort = (sortColumn) => {
-    if (this.state.activeTableIndex === 0) {
+    if (this.state.activeTabIndex === 0) {
       this.setState({
         ownerSetting: { ...this.state.ownerSetting, sortColumn: sortColumn },
       });
@@ -100,9 +121,19 @@ class NewProjectForm extends Form {
 
   handleDelete = (user) => {
     // only delete a added user from state, no interaction with api.
-    let added = this.state.addedUsers;
-    added = added.filter((u) => u.eppn !== user.eppn);
-    this.setState({ addedUsers: added });
+    if (this.state.activeTabIndex === 0) {
+      let added = this.state.addedOwners;
+      added = added.filter((u) => u.eppn !== user.eppn);
+      this.setState({ addedOwners: added });
+    } else if (this.state.activeTabIndex === 1) {
+      let added = this.state.addedMembers;
+      added = added.filter((u) => u.eppn !== user.eppn);
+      this.setState({ addedMembers: added });
+    }
+  };
+
+  handleToggleTab = (index) => {
+    this.setState({ activeTabIndex: index });
   };
 
   render() {
@@ -116,46 +147,89 @@ class NewProjectForm extends Form {
           {this.renderInput("facility", "Facility")}
           {this.renderButton("Create")}
         </form>
-        <div className="add-project-owner">
-          <div className="d-flex flex-row my-4">
-            <h6>Project Owners</h6>
-            <button
-              className="btn btn-sm btn-secondary ml-4"
-              onClick={this.handleAddUser}
-            >
-              Add Item
-            </button>
-          </div>
-        </div>
-        <input
-          name={this.props.name}
-          className="form-control"
-          onChange={(e) => this.handleSearch(e.currentTarget.value)}
-        />
-        <div>
-          <ul>
-            {this.state.users.map((user, index) => {
-              return (
-                <li key={index}>
-                  {user.name}
-                  <button
-                    className="btn btn-danger ml-2"
-                    onClick={() => that.handleAddUser(user)}
-                  >
-                    <FontAwesomeIcon icon={faPlus} />
-                  </button>
-                </li>
-              );
-            })}
+        <div className="mt-4">
+          <ul className="nav nav-tabs mb-4">
+            <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
+              <span
+                className={`nav-link ${
+                  this.state.activeTabIndex === 0 ? "active" : ""
+                }`}
+              >
+                Add Project Owners
+              </span>
+            </li>
+            <li className="nav-item" onClick={() => this.handleToggleTab(1)}>
+              <span
+                className={`nav-link ${
+                  this.state.activeTabIndex === 1 ? "active" : ""
+                }`}
+              >
+                Add Project Members
+              </span>
+            </li>
           </ul>
         </div>
-        <div>
-          <ProjectUserTable
-            users={this.state.addedUsers}
-            sortColumn={this.state.ownerSetting.sortColumn}
-            onSort={this.handleSort}
-            onDelete={this.handleDelete}
+        <div className={`${this.state.activeTabIndex !== 0 ? "d-none" : ""}`}>
+          <input
+            className="form-control"
+            onChange={(e) => this.handleSearch(e.currentTarget.value)}
           />
+          <div>
+            <ul>
+              {this.state.owners.map((user, index) => {
+                return (
+                  <li key={index}>
+                    {user.name}
+                    <button
+                      className="btn btn-danger ml-2"
+                      onClick={() => that.handleAddUser(user)}
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div>
+            <ProjectUserTable
+              users={this.state.addedOwners}
+              sortColumn={this.state.ownerSetting.sortColumn}
+              onSort={this.handleSort}
+              onDelete={this.handleDelete}
+            />
+          </div>
+        </div>
+        <div className={`${this.state.activeTabIndex !== 1 ? "d-none" : ""}`}>
+          <input
+            className="form-control"
+            onChange={(e) => this.handleSearch(e.currentTarget.value)}
+          />
+          <div>
+            <ul>
+              {this.state.members.map((user, index) => {
+                return (
+                  <li key={index}>
+                    {user.name}
+                    <button
+                      className="btn btn-danger ml-2"
+                      onClick={() => that.handleAddUser(user)}
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div>
+            <ProjectUserTable
+              users={this.state.addedMembers}
+              sortColumn={this.state.memberSetting.sortColumn}
+              onSort={this.handleSort}
+              onDelete={this.handleDelete}
+            />
+          </div>
         </div>
       </div>
     );
