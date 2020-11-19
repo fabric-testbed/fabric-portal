@@ -39,6 +39,8 @@ class NewProjectForm extends Form {
       searchQuery: "",
       sortColumn: { path: "name", order: "asc" },
     },
+    ownerSearchInput: "",
+    memberSearchInput: "",
   };
 
   schema = {
@@ -68,6 +70,7 @@ class NewProjectForm extends Form {
 
   handleSearch = async (value) => {
     if (this.state.activeTabIndex === 0) {
+      this.setState({ ownerSearchInput: value });
       try {
         if (value.length > 3) {
           const { data: owners } = await getPeopleByName(value);
@@ -80,6 +83,7 @@ class NewProjectForm extends Form {
         this.setState({ owners: [] });
       }
     } else if (this.state.activeTabIndex === 1) {
+      this.setState({ memberSearchInput: value });
       try {
         if (value.length > 3) {
           const { data: members } = await getPeopleByName(value);
@@ -102,9 +106,14 @@ class NewProjectForm extends Form {
     const found = added.filter((a) => a.uuid === user.uuid).length > 0;
     if (!found) {
       added.push(user);
-      this.state.activeTabIndex === 0
-        ? this.setState({ addedOwners: added })
-        : this.setState({ addedMembers: added });
+      if (this.state.activeTabIndex === 0) {
+        this.setState({ addedOwners: added });
+        // clear search input field.
+        this.setState({ ownerSearchInput: "" });
+      } else {
+        this.setState({ addedMembers: added });
+        this.setState({ memberSearchInput: "" });
+      }
     }
   };
 
@@ -172,7 +181,9 @@ class NewProjectForm extends Form {
         </div>
         <div className={`${this.state.activeTabIndex !== 0 ? "d-none" : ""}`}>
           <input
-            className="form-control"
+            className="form-control search-owner-input"
+            value={this.state.ownerSearchInput}
+            placeholder="Search by user name (at least 4 letters)..."
             onChange={(e) => this.handleSearch(e.currentTarget.value)}
           />
           <div>
@@ -203,7 +214,9 @@ class NewProjectForm extends Form {
         </div>
         <div className={`${this.state.activeTabIndex !== 1 ? "d-none" : ""}`}>
           <input
-            className="form-control"
+            className="form-control search-member-input"
+            placeholder="Search by user name (at least 4 letters)..."
+            value={this.state.memberSearchInput}
             onChange={(e) => this.handleSearch(e.currentTarget.value)}
           />
           <div>
