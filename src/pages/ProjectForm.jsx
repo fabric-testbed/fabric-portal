@@ -256,8 +256,16 @@ class projectForm extends Form {
             {this.renderButton("Create")}
           </form>
           <div className="add-project-owner">
-            <h5>Project Owners</h5>
-            <button onClick={this.handleAddUser}>Add Item</button>
+            <div className="d-flex flex-row my-4">
+              <h6>Project Owners</h6>
+              <button
+                className="btn btn-sm btn-secondary ml-4"
+                onClick={this.handleAddUser}
+              >
+                Add Item
+              </button>
+            </div>
+            <SearchInput name="haha" />
             {ownerInputChildren}
           </div>
         </div>
