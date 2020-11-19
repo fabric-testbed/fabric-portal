@@ -26,8 +26,11 @@ export function saveProject(project) {
       name: project.name,
       description: project.description,
       facility: project.facility,
+      project_owners: project.project_owners,
     }).toString();
     const url = apiEndpoint + "/create?" + params;
+    console.log("calling project registry");
+    console.log(url);
     return axios.post(url);
     // return axios.post(apiEndpoint, project);
   }
