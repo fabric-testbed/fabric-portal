@@ -101,6 +101,7 @@ class NewProjectForm extends Form {
         : this.state.addedMembers;
     const found = added.filter((a) => a.uuid === user.uuid).length > 0;
     if (!found) {
+      console.log(user);
       added.push(user);
       if (this.state.activeTabIndex === 0) {
         this.setState({ addedOwners: added });

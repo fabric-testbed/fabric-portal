@@ -123,9 +123,22 @@ class projectForm extends Form {
   handleAddUser = async (user) => {
     // call api to update the project by a user.
     if (this.state.activeIndex === 1) {
-      // add a owner
+      const originalUsers = this.state.data.project_owners;
+      // update the state of the component.
+      // create a new users array without current selected user.
+      const users = originalUsers;
+      users.push(user);
+      // new projects obj will overwrite old one in state
+      this.setState({ data: { ...this.state.data, project_owners: users } });
       await addUser("project_owner", this.state.data.uuid, user.uuid);
     } else if (this.state.activeIndex === 2) {
+      const originalUsers = this.state.data.project_members;
+      // update the state of the component.
+      // create a new users array without current selected user.
+      const users = originalUsers.push(user);
+
+      // new projects obj will overwrite old one in state
+      this.setState({ data: { ...this.state.data, project_members: users } });
       // add a member
       await addUser("project_member", this.state.data.uuid, user.uuid);
     }
