@@ -23,18 +23,48 @@ export function saveProject(project) {
     axios.put(url);
   } else {
     // combine array of project owners into string, separated by comma
+    if (
+      project.project_owners.length > 1 &&
+      project.project_members.length > 1
+    ) {
+      const params = new URLSearchParams({
+        name: project.name,
+        description: project.description,
+        facility: project.facility,
+        project_owners: project.project_owners.join(","),
+        project_members: project.project_members.join(","),
+      }).toString();
+      const url = apiEndpoint + "/create?" + params;
+      return axios.post(url);
+    }
+
+    if (project.project_owners.length > 1) {
+      const params = new URLSearchParams({
+        name: project.name,
+        description: project.description,
+        facility: project.facility,
+        project_owners: project.project_owners.join(","),
+      }).toString();
+      const url = apiEndpoint + "/create?" + params;
+      return axios.post(url);
+    }
+    if (project.project_members.length > 1) {
+      const params = new URLSearchParams({
+        name: project.name,
+        description: project.description,
+        facility: project.facility,
+        project_members: project.project_members.join(","),
+      }).toString();
+      const url = apiEndpoint + "/create?" + params;
+      return axios.post(url);
+    }
     const params = new URLSearchParams({
       name: project.name,
       description: project.description,
       facility: project.facility,
-      project_owners: project.project_owners.join(","),
-      project_members: project.project_members.join(","),
     }).toString();
     const url = apiEndpoint + "/create?" + params;
-    console.log("calling project registry");
-    console.log(url);
     return axios.post(url);
-    // return axios.post(apiEndpoint, project);
   }
 }
 

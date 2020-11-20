@@ -1,6 +1,5 @@
 import React from "react";
 import Joi from "joi-browser";
-
 import ProjectUserTable from "./ProjectUserTable";
 import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +14,7 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: "",
+      facility: "FABRIC",
       created_by: {},
       created_time: "",
       project_owners: [],
@@ -62,7 +61,7 @@ class NewProjectForm extends Form {
     data.project_members.push(memberIDs);
     this.setState({ data });
     await saveProject(this.state.data);
-    // this.props.history.push("/projects");
+    this.props.history.push("/projects");
   };
 
   handleSearch = async (value) => {

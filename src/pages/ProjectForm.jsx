@@ -7,6 +7,10 @@ import SearchBox from "../components/common/SearchBox";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
+import { getPeopleByName } from "../../services/userInformationService";
 import {
   getProject,
   saveProject,
@@ -42,6 +46,11 @@ class projectForm extends Form {
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
     ],
+    originalProjectName: "",
+    owners: [],
+    addedOwners: [],
+    members: [],
+    addedMembers: [],
     ownerSetting: {
       pageSize: 5,
       currentPage: 1,
@@ -54,7 +63,8 @@ class projectForm extends Form {
       searchQuery: "",
       sortColumn: { path: "name", order: "asc" },
     },
-    originalProjectName: "",
+    ownerSearchInput: "",
+    memberSearchInput: "",
   };
 
   schema = {
@@ -236,7 +246,7 @@ class projectForm extends Form {
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm />
+          <NewProjectForm history={this.props.history} />
         </div>
       );
     } else {
