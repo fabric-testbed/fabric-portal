@@ -2,19 +2,18 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
-import Pagination from "../components/common/Pagination";
-import SearchBox from "../components/common/SearchBox";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { getPeopleByName } from "../../services/userInformationService";
+import { getPeopleByName } from "../services/userInformationService";
 import {
   getProject,
   saveProject,
   deleteUser,
+  addUser,
 } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
@@ -48,9 +47,7 @@ class projectForm extends Form {
     ],
     originalProjectName: "",
     owners: [],
-    addedOwners: [],
     members: [],
-    addedMembers: [],
     ownerSetting: {
       pageSize: 5,
       currentPage: 1,
@@ -123,23 +120,45 @@ class projectForm extends Form {
     this.setState({ activeIndex: newIndex });
   };
 
-  handleSearch = (query) => {
+  handleAddUser = async (user) => {
+    // call api to update the project by a user.
     if (this.state.activeIndex === 1) {
-      this.setState({
-        ownerSetting: {
-          ...this.state.ownerSetting,
-          searchQuery: query,
-          currentPage: 1,
-        },
-      });
+      // add a owner
+      await addUser("project_owner", this.state.data.uuid, user.uuid);
     } else if (this.state.activeIndex === 2) {
-      this.setState({
-        memberSetting: {
-          ...this.state.memberSetting,
-          searchQuery: query,
-          currentPage: 1,
-        },
-      });
+      // add a member
+      await addUser("project_member", this.state.data.uuid, user.uuid);
+    }
+  };
+
+  handleSearch = async (value) => {
+    // owners/ members are search result.
+    if (this.state.activeIndex === 1) {
+      this.setState({ ownerSearchInput: value });
+      try {
+        if (value.length > 3) {
+          const { data: owners } = await getPeopleByName(value);
+          this.setState({ owners });
+        } else {
+          this.setState({ owners: [] });
+        }
+      } catch (err) {
+        console.warn(err);
+        this.setState({ owners: [] });
+      }
+    } else if (this.state.activeIndex === 2) {
+      this.setState({ memberSearchInput: value });
+      try {
+        if (value.length > 3) {
+          const { data: members } = await getPeopleByName(value);
+          this.setState({ members });
+        } else {
+          this.setState({ members: [] });
+        }
+      } catch (err) {
+        console.warn(err);
+        this.setState({ members: [] });
+      }
     }
   };
 
@@ -240,8 +259,7 @@ class projectForm extends Form {
 
   render() {
     const projectId = this.props.match.params.id;
-    const { totalOwnerCount, owners } = this.getData("project_owner");
-    const { totalMemberCount, members } = this.getData("project_member");
+    const that = this;
 
     if (projectId === "new") {
       return (
@@ -280,57 +298,81 @@ class projectForm extends Form {
                 </tbody>
               </table>
             </div>
-            <div
-              className={`${this.state.activeIndex !== 1 ? "d-none" : "col-9"}`}
-            >
-              <h2 className="my-4">Project Owners</h2>
-              <div className="toolbar">
-                <SearchBox
-                  value={this.state.ownerSetting.searchQuery}
-                  onChange={this.handleSearch}
-                  className="my-0"
-                />
-                <button className="btn btn-primary">Add Owner</button>
-              </div>
-              <p>Showing {totalOwnerCount} owners of this project.</p>
+          </div>
+          <div
+            className={`${
+              this.state.activeIndex !== 1 ? "d-none" : "col-9 d-flex flex-row"
+            }`}
+          >
+            <div className="w-75">
+              <input
+                className="form-control search-owner-input mb-4"
+                value={this.state.ownerSearchInput}
+                placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                onChange={(e) => this.handleSearch(e.currentTarget.value)}
+              />
               <ProjectUserTable
-                users={owners}
+                users={this.state.data.project_owners}
                 sortColumn={this.state.ownerSetting.sortColumn}
                 onSort={this.handleSort}
                 onDelete={this.handleDelete}
               />
-              <Pagination
-                itemsCount={totalOwnerCount}
-                pageSize={this.state.ownerSetting.pageSize}
-                currentPage={this.state.ownerSetting.currentPage}
-                onPageChange={this.handlePageChange}
-              />
             </div>
-            <div
-              className={`${this.state.activeIndex !== 2 ? "d-none" : "col-9"}`}
-            >
-              <h2 className="my-4">Project Members</h2>
-              <div className="toolbar">
-                <SearchBox
-                  value={this.state.memberSetting.searchQuery}
-                  onChange={this.handleSearch}
-                  className="my-0"
-                />
-                <button className="btn btn-primary">Add Member</button>
-              </div>
-              <p>Showing {totalMemberCount} members of this project.</p>
+            <div className="search-result w-25 border ml-2 p-2">
+              <ul className="list-group text-center m-2">
+                <li className="list-group-item">Search Result:</li>
+                {this.state.owners.map((user, index) => {
+                  return (
+                    <li key={index} className="list-group-item">
+                      <span>{user.name}</span>
+                      <button
+                        className="btn btn-sm btn-primary ml-2"
+                        onClick={() => that.handleAddUser(user)}
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+          <div
+            className={`${
+              this.state.activeIndex !== 2 ? "d-none" : "col-9 d-flex flex-row"
+            }`}
+          >
+            <div className="w-75">
+              <input
+                className="form-control search-member-input mb-4"
+                placeholder="Search by user name (at least 4 letters) to add more project members..."
+                value={this.state.memberSearchInput}
+                onChange={(e) => this.handleSearch(e.currentTarget.value)}
+              />
               <ProjectUserTable
-                users={members}
+                users={this.state.data.project_members}
                 sortColumn={this.state.memberSetting.sortColumn}
                 onSort={this.handleSort}
                 onDelete={this.handleDelete}
               />
-              <Pagination
-                itemsCount={totalMemberCount}
-                pageSize={this.state.memberSetting.pageSize}
-                currentPage={this.state.memberSetting.currentPage}
-                onPageChange={this.handlePageChange}
-              />
+            </div>
+            <div className="search-result w-25 border ml-2 p-2">
+              <ul className="list-group text-center m-2">
+                <li className="list-group-item">Search Result:</li>
+                {this.state.members.map((user, index) => {
+                  return (
+                    <li key={index} className="list-group-item">
+                      <span>{user.name}</span>
+                      <button
+                        className="btn btn-sm btn-primary ml-2"
+                        onClick={() => that.handleAddUser(user)}
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </div>
         </div>

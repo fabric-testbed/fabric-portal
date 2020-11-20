@@ -11,6 +11,26 @@ export function getProject(id) {
   return axios.get(apiEndpoint + "/" + id);
 }
 
+export function addUser(type, project_id, user_id) {
+  let params = "";
+  let url = "";
+  // applies to an existing project
+  if (type === "project_owner") {
+    params = new URLSearchParams({
+      uuid: project_id,
+      project_owners: user_id,
+    }).toString();
+    url = apiEndpoint + "/add_owners?" + params;
+  } else if (type === "project_member") {
+    params = new URLSearchParams({
+      uuid: project_id,
+      project_members: user_id,
+    }).toString();
+    url = apiEndpoint + "/add_members?" + params;
+  }
+  axios.put(url);
+}
+
 export function saveProject(project) {
   if (project.uuid) {
     const params = new URLSearchParams({
@@ -88,29 +108,6 @@ export function deleteUser(userType, projectId, userId) {
     return axios.put(
       apiEndpoint +
         "/remove_owners?uuid=" +
-        projectId +
-        "&project_owners=" +
-        userId
-    );
-  }
-}
-
-export function addUser(userType, projectId, userId) {
-  // userType: project_member, project_owner
-  if (userType === "project_member") {
-    return axios.put(
-      apiEndpoint +
-        "/add_members?uuid=" +
-        projectId +
-        "&project_members=" +
-        userId
-    );
-  }
-
-  if (userType === "project_owner") {
-    return axios.put(
-      apiEndpoint +
-        "/add_owners?uuid=" +
         projectId +
         "&project_owners=" +
         userId
