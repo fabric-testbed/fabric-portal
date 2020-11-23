@@ -30,6 +30,7 @@ class projectForm extends Form {
       created_time: "",
       project_owners: [],
       project_members: [],
+      tags: [],
     },
     projectStaticInfoRows: [
       { label: "Project ID", path: "uuid" },
@@ -73,6 +74,7 @@ class projectForm extends Form {
     created_time: Joi.string().allow(""),
     project_members: Joi.array(),
     project_owners: Joi.array(),
+    tags: Joi.array(),
   };
 
   async populateProject() {
@@ -106,6 +108,7 @@ class projectForm extends Form {
       created_time: project.created_time,
       project_owners: project.project_owners,
       project_members: project.project_members,
+      tags: project.tags,
     };
   }
 
@@ -124,22 +127,17 @@ class projectForm extends Form {
     // call api to update the project by a user.
     if (this.state.activeIndex === 1) {
       const originalUsers = this.state.data.project_owners;
-      // update the state of the component.
-      // create a new users array without current selected user.
       const users = originalUsers;
       users.push(user);
-      // new projects obj will overwrite old one in state
       this.setState({ data: { ...this.state.data, project_owners: users } });
+
       await addUser("project_owner", this.state.data.uuid, user.uuid);
     } else if (this.state.activeIndex === 2) {
       const originalUsers = this.state.data.project_members;
-      // update the state of the component.
-      // create a new users array without current selected user.
-      const users = originalUsers.push(user);
-
-      // new projects obj will overwrite old one in state
+      const users = originalUsers;
+      users.push(user);
       this.setState({ data: { ...this.state.data, project_members: users } });
-      // add a member
+
       await addUser("project_member", this.state.data.uuid, user.uuid);
     }
   };
@@ -296,6 +294,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name")}
                 {this.renderInput("description", "Description")}
                 {this.renderInput("facility", "Facility")}
+                {this.renderInput("tags", "Tags")}
                 {this.renderButton("Save")}
               </form>
               <table className="table table-striped table-bordered mt-4">
@@ -311,81 +310,85 @@ class projectForm extends Form {
                 </tbody>
               </table>
             </div>
-          </div>
-          <div
-            className={`${
-              this.state.activeIndex !== 1 ? "d-none" : "col-9 d-flex flex-row"
-            }`}
-          >
-            <div className="w-75">
-              <input
-                className="form-control search-owner-input mb-4"
-                value={this.state.ownerSearchInput}
-                placeholder="Search by user name (at least 4 letters) to add more project owners..."
-                onChange={(e) => this.handleSearch(e.currentTarget.value)}
-              />
-              <ProjectUserTable
-                users={this.state.data.project_owners}
-                sortColumn={this.state.ownerSetting.sortColumn}
-                onSort={this.handleSort}
-                onDelete={this.handleDelete}
-              />
+            <div
+              className={`${
+                this.state.activeIndex !== 1
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-75">
+                <input
+                  className="form-control search-owner-input mb-4"
+                  value={this.state.ownerSearchInput}
+                  placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                />
+                <ProjectUserTable
+                  users={this.state.data.project_owners}
+                  sortColumn={this.state.ownerSetting.sortColumn}
+                  onSort={this.handleSort}
+                  onDelete={this.handleDelete}
+                />
+              </div>
+              <div className="search-result w-25 border ml-2 p-2">
+                <ul className="list-group text-center m-2">
+                  <li className="list-group-item">Search Result:</li>
+                  {this.state.owners.map((user, index) => {
+                    return (
+                      <li key={index} className="list-group-item">
+                        <span>{user.name}</span>
+                        <button
+                          className="btn btn-sm btn-primary ml-2"
+                          onClick={() => that.handleAddUser(user)}
+                        >
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
-            <div className="search-result w-25 border ml-2 p-2">
-              <ul className="list-group text-center m-2">
-                <li className="list-group-item">Search Result:</li>
-                {this.state.owners.map((user, index) => {
-                  return (
-                    <li key={index} className="list-group-item">
-                      <span>{user.name}</span>
-                      <button
-                        className="btn btn-sm btn-primary ml-2"
-                        onClick={() => that.handleAddUser(user)}
-                      >
-                        <FontAwesomeIcon icon={faPlus} />
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-          <div
-            className={`${
-              this.state.activeIndex !== 2 ? "d-none" : "col-9 d-flex flex-row"
-            }`}
-          >
-            <div className="w-75">
-              <input
-                className="form-control search-member-input mb-4"
-                placeholder="Search by user name (at least 4 letters) to add more project members..."
-                value={this.state.memberSearchInput}
-                onChange={(e) => this.handleSearch(e.currentTarget.value)}
-              />
-              <ProjectUserTable
-                users={this.state.data.project_members}
-                sortColumn={this.state.memberSetting.sortColumn}
-                onSort={this.handleSort}
-                onDelete={this.handleDelete}
-              />
-            </div>
-            <div className="search-result w-25 border ml-2 p-2">
-              <ul className="list-group text-center m-2">
-                <li className="list-group-item">Search Result:</li>
-                {this.state.members.map((user, index) => {
-                  return (
-                    <li key={index} className="list-group-item">
-                      <span>{user.name}</span>
-                      <button
-                        className="btn btn-sm btn-primary ml-2"
-                        onClick={() => that.handleAddUser(user)}
-                      >
-                        <FontAwesomeIcon icon={faPlus} />
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+            <div
+              className={`${
+                this.state.activeIndex !== 2
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-75">
+                <input
+                  className="form-control search-member-input mb-4"
+                  placeholder="Search by user name (at least 4 letters) to add more project members..."
+                  value={this.state.memberSearchInput}
+                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                />
+                <ProjectUserTable
+                  users={this.state.data.project_members}
+                  sortColumn={this.state.memberSetting.sortColumn}
+                  onSort={this.handleSort}
+                  onDelete={this.handleDelete}
+                />
+              </div>
+              <div className="search-result w-25 border ml-2 p-2">
+                <ul className="list-group text-center m-2">
+                  <li className="list-group-item">Search Result:</li>
+                  {this.state.members.map((user, index) => {
+                    return (
+                      <li key={index} className="list-group-item">
+                        <span>{user.name}</span>
+                        <button
+                          className="btn btn-sm btn-primary ml-2"
+                          onClick={() => that.handleAddUser(user)}
+                        >
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -44,8 +44,8 @@ export function saveProject(project) {
   } else {
     // combine array of project owners into string, separated by comma
     if (
-      project.project_owners.length > 1 &&
-      project.project_members.length > 1
+      project.project_owners.length > 0 &&
+      project.project_members.length > 0
     ) {
       const params = new URLSearchParams({
         name: project.name,
@@ -58,7 +58,7 @@ export function saveProject(project) {
       return axios.post(url);
     }
 
-    if (project.project_owners.length > 1) {
+    if (project.project_owners.length > 0) {
       const params = new URLSearchParams({
         name: project.name,
         description: project.description,
@@ -68,7 +68,7 @@ export function saveProject(project) {
       const url = apiEndpoint + "/create?" + params;
       return axios.post(url);
     }
-    if (project.project_members.length > 1) {
+    if (project.project_members.length > 0) {
       const params = new URLSearchParams({
         name: project.name,
         description: project.description,
