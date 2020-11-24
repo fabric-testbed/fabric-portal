@@ -31,6 +31,17 @@ export function addUser(type, project_id, user_id) {
   axios.put(url);
 }
 
+export function addTags(project) {
+  if (project.uuid) {
+    const params = new URLSearchParams({
+      uuid: project.uuid,
+      tags: project.tags.join(),
+    }).toString();
+    const url = apiEndpoint + "/add_tags?" + params;
+    axios.put(url);
+  }
+}
+
 export function saveProject(project) {
   if (project.uuid) {
     const params = new URLSearchParams({
