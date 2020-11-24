@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./Input.jsx";
+import InputTag from "./InputTag.jsx";
 
 class Form extends Component {
   state = {
@@ -76,6 +77,18 @@ class Form extends Component {
         label={label}
         onChange={this.handleChange}
         error={errors[name]}
+      />
+    );
+  }
+
+  renderInputTag(name, label) {
+    const { data } = this.state;
+    return (
+      <InputTag
+        name={name}
+        tags={data.tags}
+        label={label}
+        onChange={this.handleTagChange}
       />
     );
   }

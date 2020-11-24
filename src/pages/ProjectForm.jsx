@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/Form";
+// import InputTag from "../components/common/InputTag";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
@@ -294,9 +295,13 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name")}
                 {this.renderInput("description", "Description")}
                 {this.renderInput("facility", "Facility")}
-                {this.renderInput("tags", "Tags")}
+                {this.renderInputTag("tags", "Tags")}
                 {this.renderButton("Save")}
               </form>
+              {/* <div className="project-tags">
+                <h6>Tags</h6>
+                <InputTag tags={this.state.data.tags} />
+              </div> */}
               <table className="table table-striped table-bordered mt-4">
                 <tbody>
                   {this.state.projectStaticInfoRows.map((row, index) => {
