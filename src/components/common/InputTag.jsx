@@ -19,6 +19,7 @@ class InputTag extends React.Component {
       ) {
         return;
       }
+      e.preventDefault();
       const newTags = [...this.props.tags];
       newTags.push(val);
       this.props.onTagChange(newTags);

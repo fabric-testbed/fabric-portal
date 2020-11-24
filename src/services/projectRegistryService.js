@@ -62,6 +62,7 @@ export function saveProject(project) {
         name: project.name,
         description: project.description,
         facility: project.facility,
+        tags: project.tags.join(),
         project_owners: project.project_owners.join(","),
         project_members: project.project_members.join(","),
       }).toString();
@@ -74,6 +75,7 @@ export function saveProject(project) {
         name: project.name,
         description: project.description,
         facility: project.facility,
+        tags: project.tags.join(),
         project_owners: project.project_owners.join(","),
       }).toString();
       const url = apiEndpoint + "/create?" + params;
@@ -84,6 +86,7 @@ export function saveProject(project) {
         name: project.name,
         description: project.description,
         facility: project.facility,
+        tags: project.tags.join(),
         project_members: project.project_members.join(","),
       }).toString();
       const url = apiEndpoint + "/create?" + params;
@@ -93,6 +96,7 @@ export function saveProject(project) {
       name: project.name,
       description: project.description,
       facility: project.facility,
+      tags: project.tags.join(),
     }).toString();
     const url = apiEndpoint + "/create?" + params;
     return axios.post(url);

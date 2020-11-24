@@ -19,6 +19,7 @@ class NewProjectForm extends Form {
       created_time: "",
       project_owners: [],
       project_members: [],
+      tags: [],
     },
     errors: {},
     owners: [],
@@ -51,6 +52,7 @@ class NewProjectForm extends Form {
     created_time: Joi.string().allow(""),
     project_members: Joi.array(),
     project_owners: Joi.array(),
+    tags: Joi.array(),
   };
 
   doSubmit = async () => {
@@ -61,7 +63,7 @@ class NewProjectForm extends Form {
     data.project_members.push(memberIDs);
     this.setState({ data });
     await saveProject(this.state.data);
-    this.props.history.push("/projects");
+    // this.props.history.push("/projects");
   };
 
   handleSearch = async (value) => {
@@ -152,6 +154,7 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name")}
           {this.renderInput("description", "Description")}
           {this.renderInput("facility", "Facility")}
+          {this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">
