@@ -116,7 +116,7 @@ class projectForm extends Form {
   doSubmit = async () => {
     await saveProject(this.state.data);
     await addTags(this.state.data);
-    // this.props.history.push("/projects");
+    this.props.history.push("/projects");
   };
 
   handleSideNavChange = (newIndex) => {

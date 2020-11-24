@@ -63,7 +63,7 @@ class NewProjectForm extends Form {
     data.project_members.push(memberIDs);
     this.setState({ data });
     await saveProject(this.state.data);
-    // this.props.history.push("/projects");
+    this.props.history.push("/projects");
   };
 
   handleSearch = async (value) => {

@@ -11,121 +11,96 @@ export function getProject(id) {
   return axios.get(apiEndpoint + "/" + id);
 }
 
-export function addUser(type, project_id, user_id) {
-  let params = "";
+export function addUser(type, projectId, userId) {
   let url = "";
   // applies to an existing project
   if (type === "project_owner") {
-    params = new URLSearchParams({
-      uuid: project_id,
-      project_owners: user_id,
+    const query = new URLSearchParams({
+      uuid: projectId,
+      project_owners: userId,
     }).toString();
-    url = apiEndpoint + "/add_owners?" + params;
+    url = apiEndpoint + "/add_owners?" + query;
   } else if (type === "project_member") {
-    params = new URLSearchParams({
-      uuid: project_id,
-      project_members: user_id,
+    const query = new URLSearchParams({
+      uuid: projectId,
+      project_members: userId,
     }).toString();
-    url = apiEndpoint + "/add_members?" + params;
+    url = apiEndpoint + "/add_members?" + query;
   }
   axios.put(url);
 }
 
+export function deleteUser(userType, projectId, userId) {
+  let url = "";
+  // userType: project_member, project_owner
+  if (userType === "project_member") {
+    const query = new URLSearchParams({
+      uuid: projectId,
+      project_members: userId,
+    }).toString();
+    url = apiEndpoint + "/remove_members?" + query;
+  }
+
+  if (userType === "project_owner") {
+    const query = new URLSearchParams({
+      uuid: projectId,
+      project_owners: userId,
+    }).toString();
+    url = apiEndpoint + "/remove_owners?" + query;
+  }
+
+  return axios.put(url);
+}
+
 export function addTags(project) {
   if (project.uuid) {
-    const params = new URLSearchParams({
+    const query = new URLSearchParams({
       uuid: project.uuid,
       tags: project.tags.join(),
     }).toString();
-    const url = apiEndpoint + "/add_tags?" + params;
+    const url = apiEndpoint + "/add_tags?" + query;
     axios.put(url);
   }
 }
 
 export function saveProject(project) {
   if (project.uuid) {
-    const params = new URLSearchParams({
+    const query = new URLSearchParams({
       uuid: project.uuid,
       name: project.name,
       description: project.description,
       facility: project.facility,
     }).toString();
-    const url = apiEndpoint + "/update?" + params;
+    const url = apiEndpoint + "/update?" + query;
     axios.put(url);
   } else {
     // combine array of project owners into string, separated by comma
-    if (
-      project.project_owners.length > 0 &&
-      project.project_members.length > 0
-    ) {
-      const params = new URLSearchParams({
-        name: project.name,
-        description: project.description,
-        facility: project.facility,
-        tags: project.tags.join(),
-        project_owners: project.project_owners.join(","),
-        project_members: project.project_members.join(","),
-      }).toString();
-      const url = apiEndpoint + "/create?" + params;
-      return axios.post(url);
-    }
-
-    if (project.project_owners.length > 0) {
-      const params = new URLSearchParams({
-        name: project.name,
-        description: project.description,
-        facility: project.facility,
-        tags: project.tags.join(),
-        project_owners: project.project_owners.join(","),
-      }).toString();
-      const url = apiEndpoint + "/create?" + params;
-      return axios.post(url);
-    }
-    if (project.project_members.length > 0) {
-      const params = new URLSearchParams({
-        name: project.name,
-        description: project.description,
-        facility: project.facility,
-        tags: project.tags.join(),
-        project_members: project.project_members.join(","),
-      }).toString();
-      const url = apiEndpoint + "/create?" + params;
-      return axios.post(url);
-    }
-    const params = new URLSearchParams({
+    // required fields: name, description, facility
+    let query = {
       name: project.name,
       description: project.description,
       facility: project.facility,
       tags: project.tags.join(),
-    }).toString();
-    const url = apiEndpoint + "/create?" + params;
+      project_owners: project.project_owners.join(","),
+      project_members: project.project_members.join(","),
+    };
+
+    // remove empty useless params from query
+    for (let param in query) {
+      if (
+        query[param] === undefined ||
+        query[param] === null ||
+        query[param] === ""
+      )
+        delete query[param];
+    }
+    // transform clean query object to query string
+    query = new URLSearchParams(query).toString();
+    const url = apiEndpoint + "/create?" + query;
     return axios.post(url);
   }
 }
 
 export function deleteProject(projectId) {
   return axios.delete(apiEndpoint + "/delete?uuid=" + projectId);
-}
-
-export function deleteUser(userType, projectId, userId) {
-  // userType: project_member, project_owner
-  if (userType === "project_member") {
-    return axios.put(
-      apiEndpoint +
-        "/remove_members?uuid=" +
-        projectId +
-        "&project_members=" +
-        userId
-    );
-  }
-
-  if (userType === "project_owner") {
-    return axios.put(
-      apiEndpoint +
-        "/remove_owners?uuid=" +
-        projectId +
-        "&project_owners=" +
-        userId
-    );
-  }
 }
