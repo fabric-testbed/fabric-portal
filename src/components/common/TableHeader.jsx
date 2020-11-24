@@ -9,7 +9,6 @@ class TableHeader extends Component {
   // logic to determine the sort order.
   raiseSort = (path) => {
     const sortColumn = { ...this.props.sortColumn };
-
     // click twice on the same col to reverse sorting.
     // click the first time will ascend at default.
     if (sortColumn.path === path) {
