@@ -58,6 +58,12 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleTagChange = (newTags) => {
+    const data = { ...this.state.data };
+    data.tags = newTags;
+    this.setState({ data });
+  };
+
   renderButton(label) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">
@@ -88,7 +94,7 @@ class Form extends Component {
         name={name}
         tags={data.tags}
         label={label}
-        onChange={this.handleTagChange}
+        onTagChange={this.handleTagChange}
       />
     );
   }
