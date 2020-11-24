@@ -1,3 +1,4 @@
 {
-  "projectRegistryApiUrl": "https://dev-1.fabric-testbed.net/projects"
+  "projectRegistryApiUrl": "https://dp-dev-2.cyberimpact.us/projects",
+  "userInformationApiUrl": "http://dev-5.fabric-testbed.net:5000/people"
 }
