@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from "lodash";
 import { projectRegistryApiUrl } from "../config.json";
 
 const apiEndpoint = projectRegistryApiUrl;
@@ -52,13 +53,28 @@ export function deleteUser(userType, projectId, userId) {
   return axios.put(url);
 }
 
-export function addTags(project) {
-  if (project.uuid) {
+export function updateTags(originalTags, project) {
+  const newTags = project.tags;
+  // compare original tags with new tags to decide
+  // whether calling add_tags or remove_tags endpoint.
+  const tagsToAdd = _.difference(newTags, originalTags);
+  const tagsToRemove = _.difference(originalTags, newTags);
+
+  if (tagsToAdd.length > 0) {
     const query = new URLSearchParams({
       uuid: project.uuid,
-      tags: project.tags.join(),
+      tags: tagsToAdd.join(),
     }).toString();
     const url = apiEndpoint + "/add_tags?" + query;
+    axios.put(url);
+  }
+
+  if (tagsToRemove.length > 0) {
+    const query = new URLSearchParams({
+      uuid: project.uuid,
+      tags: tagsToRemove.join(),
+    }).toString();
+    const url = apiEndpoint + "/remove_tags?" + query;
     axios.put(url);
   }
 }

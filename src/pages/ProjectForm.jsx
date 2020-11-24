@@ -14,7 +14,7 @@ import {
   saveProject,
   deleteUser,
   addUser,
-  addTags,
+  updateTags,
 } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
@@ -49,6 +49,7 @@ class projectForm extends Form {
       { name: "PROJECT MEMBERS", active: false },
     ],
     originalProjectName: "",
+    originalTags: [],
     owners: [],
     members: [],
     ownerSetting: {
@@ -87,6 +88,8 @@ class projectForm extends Form {
       const { data: project } = await getProject(projectId);
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
+      // keep a copy of original tags for comparing on submit.
+      this.state.originalTags = project.tags;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
@@ -116,7 +119,7 @@ class projectForm extends Form {
 
   doSubmit = async () => {
     await saveProject(this.state.data);
-    await addTags(this.state.data);
+    await updateTags(this.state.originalTags, this.state.data);
     this.props.history.push("/projects");
   };
 
@@ -274,7 +277,7 @@ class projectForm extends Form {
   renderTags(tags) {
     return tags.map((tag, index) => {
       return (
-        <span className="btn-sm btn-info m-1" key={`tag-${index}`}>
+        <span className="btn-sm btn-info mr-1" key={`tag-${index}`}>
           {tag}
         </span>
       );
