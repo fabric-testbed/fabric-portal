@@ -1,6 +1,7 @@
 import React from "react";
 import { getActiveMessages } from "../../services/fakeMessages.js";
 import { getTrashMessages } from "../../services/fakeMessages.js";
+import RadioBtnGroup from "../common/RadioBtnGroup.jsx";
 
 class MessageCenter extends React.Component {
   state = {
@@ -10,15 +11,24 @@ class MessageCenter extends React.Component {
       { display: "Content", field: "content" },
       { display: "Date", field: "date" },
     ],
-    active: "inbox",
+    radioBtnValues: [
+      { display: "Active", value: "active", isActive: true },
+      { display: "Trash", value: "inactive", isActive: false },
+    ],
   };
 
-  toggleRadioBtn = (e) => {
-    if (e.target.value === "inbox") {
-      this.setState({ active: "inbox" });
+  toggleRadioBtn = (value) => {
+    // set isActive field for radio button input style change
+    this.setState((prevState) => ({
+      radioBtnValues: prevState.radioBtnValues.map((el) =>
+        el.value === value
+          ? { ...el, isActive: true }
+          : { ...el, isActive: false }
+      ),
+    }));
+    if (value === "active") {
       this.setState({ messages: getActiveMessages() });
-    } else {
-      this.setState({ active: "trash" });
+    } else if (value === "inactive") {
       this.setState({ messages: getTrashMessages() });
     }
   };
@@ -27,33 +37,10 @@ class MessageCenter extends React.Component {
     return (
       <div className="col-9">
         <h1>Message Center</h1>
-        <div className="toolbar pt-2">
-          <div className="form-check-inline mr-4">
-            <label className="form-check-label">
-              <input
-                type="radio"
-                className="form-check-input"
-                name="optradio"
-                value="inbox"
-                checked={this.state.active === "inbox"}
-                onChange={this.toggleRadioBtn}
-              />
-              Inbox
-            </label>
-          </div>
-          <div className="form-check-inline"></div>
-          <label className="form-check-label">
-            <input
-              type="radio"
-              className="form-check-input"
-              name="optradio"
-              value="trash"
-              checked={this.state.active === "trash"}
-              onChange={this.toggleRadioBtn}
-            />
-            Trash
-          </label>
-        </div>
+        <RadioBtnGroup
+          values={this.state.radioBtnValues}
+          onChange={this.toggleRadioBtn}
+        />
         <table className="table table-striped table-bordered my-4">
           <tbody>
             <tr>

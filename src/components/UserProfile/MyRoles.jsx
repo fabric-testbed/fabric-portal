@@ -60,7 +60,6 @@ class MyRoles extends React.Component {
     return (
       <div className="col-9">
         <h1>My Roles</h1>
-
         <h4 className="mt-4">Global Roles</h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
