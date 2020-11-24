@@ -35,6 +35,7 @@ class projectForm extends Form {
     },
     projectStaticInfoRows: [
       { label: "Project ID", path: "uuid" },
+      { label: "Project Tags", path: "tags" },
       { label: "Created Time", path: "created_time" },
       { label: "Creator Name", path: "created_by.name" },
       { label: "Creator Email", path: "created_by.email" },
@@ -270,6 +271,16 @@ class projectForm extends Form {
     }
   };
 
+  renderTags(tags) {
+    return tags.map((tag, index) => {
+      return (
+        <span className="btn-sm btn-info m-1" key={`tag-${index}`}>
+          {tag}
+        </span>
+      );
+    });
+  }
+
   render() {
     const projectId = this.props.match.params.id;
     const that = this;
@@ -305,7 +316,11 @@ class projectForm extends Form {
                     return (
                       <tr key={`project-basic-info-${index}`}>
                         <td>{row.label}</td>
-                        <td>{_.get(this.state.data, row.path)}</td>
+                        <td>
+                          {row.path !== "tags"
+                            ? _.get(this.state.data, row.path)
+                            : this.renderTags(_.get(this.state.data, row.path))}
+                        </td>
                       </tr>
                     );
                   })}
