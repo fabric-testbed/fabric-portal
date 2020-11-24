@@ -1,5 +1,5 @@
 import React from "react";
-import SideNav from "../components/SideNav";
+import SideNav from "../components/common/SideNav";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import MessageCenter from "../components/UserProfile/MessageCenter";
