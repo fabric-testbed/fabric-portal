@@ -4,7 +4,7 @@ cd /code
 
 if [[ "$1" == 'run_server' ]]; then
   # defaults to running on port 5000
-  npm install --silent
+  npm install --verbose
   npm run build
   npm install -g serve
   serve -s build
