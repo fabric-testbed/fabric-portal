@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 import HeaderNav from "./components/HeaderNav";
 import Footer from "./components/Footer";
 
-import "./App.scss";
+import "./styles/App.scss";
 
 function App() {
   return (

@@ -1,4 +1,4 @@
-@import "./styles/custom.scss";
+@import "./custom.scss";
 html,
 body {
   height: 100%;
@@ -24,7 +24,7 @@ body {
 .home-upper::after {
   content: "";
   height: 26rem;
-  background: url("./imgs/home-bg.jpg");
+  background: url("../imgs/home-bg.jpg");
   background-size: 100%;
   background-repeat: repeat;
   opacity: 0.8;
