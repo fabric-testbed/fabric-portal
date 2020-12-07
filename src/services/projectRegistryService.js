@@ -3,13 +3,14 @@ import _ from "lodash";
 import { projectRegistryApiUrl } from "../config.json";
 
 const apiEndpoint = projectRegistryApiUrl;
+const config = { withCredentials: true };
 
 export function getProjects() {
-  return axios.get(apiEndpoint);
+  return axios.get(apiEndpoint, config);
 }
 
 export function getProject(id) {
-  return axios.get(apiEndpoint + "/" + id);
+  return axios.get(apiEndpoint + "/" + id, config);
 }
 
 export function addUser(type, projectId, userId) {
@@ -28,7 +29,7 @@ export function addUser(type, projectId, userId) {
     }).toString();
     url = apiEndpoint + "/add_members?" + query;
   }
-  axios.put(url);
+  axios.put(url, config);
 }
 
 export function deleteUser(userType, projectId, userId) {
@@ -50,7 +51,7 @@ export function deleteUser(userType, projectId, userId) {
     url = apiEndpoint + "/remove_owners?" + query;
   }
 
-  return axios.put(url);
+  return axios.put(url, config);
 }
 
 export function updateTags(originalTags, project) {
@@ -66,7 +67,7 @@ export function updateTags(originalTags, project) {
       tags: tagsToAdd.join(),
     }).toString();
     const url = apiEndpoint + "/add_tags?" + query;
-    axios.put(url);
+    axios.put(url, config);
   }
 
   if (tagsToRemove.length > 0) {
@@ -75,7 +76,7 @@ export function updateTags(originalTags, project) {
       tags: tagsToRemove.join(),
     }).toString();
     const url = apiEndpoint + "/remove_tags?" + query;
-    axios.put(url);
+    axios.put(url, config);
   }
 }
 
@@ -88,7 +89,7 @@ export function saveProject(project) {
       facility: project.facility,
     }).toString();
     const url = apiEndpoint + "/update?" + query;
-    axios.put(url);
+    axios.put(url, config);
   } else {
     // combine array of project owners into string, separated by comma
     // required fields: name, description, facility
@@ -113,10 +114,10 @@ export function saveProject(project) {
     // transform clean query object to query string
     query = new URLSearchParams(query).toString();
     const url = apiEndpoint + "/create?" + query;
-    return axios.post(url);
+    return axios.post(url, config);
   }
 }
 
 export function deleteProject(projectId) {
-  return axios.delete(apiEndpoint + "/delete?uuid=" + projectId);
+  return axios.delete(apiEndpoint + "/delete?uuid=" + projectId, config);
 }
