@@ -1,13 +1,14 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
+import { hasCookie } from "../../services/dummyAuth";
+
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
-  const token = localStorage.getItem("token");
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (!token || token === "undefined") {
+        if (!hasCookie("fabric-service")) {
           return (
             <Redirect
               to={{

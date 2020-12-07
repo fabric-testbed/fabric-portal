@@ -1,5 +1,8 @@
+import { faCookie } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { NavLink } from "react-router-dom";
+
+import { hasCookie } from "../services/dummyAuth";
 
 import logo from "../imgs/fabric-brand.png";
 
@@ -27,15 +30,6 @@ class HeaderNav extends React.Component {
       { name: "Links", path: "/links", child: [], exact: false },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
-    token: localStorage.getItem("token"),
-  };
-
-  handleLogout = () => () => {
-    // remove auth token in browser.
-    localStorage.removeItem("token");
-
-    // let nginx process logout.
-    window.location.href = "/logout";
   };
 
   render() {
@@ -62,7 +56,7 @@ class HeaderNav extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {(this.state.token === null || this.state.token === "undefined") && (
+        {!hasCookie("fabric-service") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -83,7 +77,7 @@ class HeaderNav extends React.Component {
             </ul>
           </div>
         )}
-        {(this.state.token === null || this.state.token !== "undefined") && (
+        {hasCookie("fabric-service") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               {this.state.navItems.map((item, index) => {
@@ -132,7 +126,9 @@ class HeaderNav extends React.Component {
               <React.Fragment>
                 <li className="nav-item ml-4">
                   <button
-                    onClick={this.handleLogout()}
+                    onClick={() => {
+                      window.location.href = "/logout";
+                    }}
                     className="btn btn-md btn-warning text-white"
                   >
                     Logout
