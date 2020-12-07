@@ -34,8 +34,10 @@
                 data[key] = thisItem.substring(thisItem.indexOf(':') + 1);
             }
 
-            // store the auth cookie in browser.
-            localStorage.setItem("token", data["cookie"]);
+            if (data["cookie"] && data["cookie"].substring(0, 10).includes("fabric")) {
+              // store the auth cookie in browser.
+              localStorage.setItem("token", data["cookie"]);
+            }
         }
     </script>
   </head>

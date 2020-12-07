@@ -62,7 +62,7 @@ class HeaderNav extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {this.state.token === null && (
+        {(this.state.token === null || this.state.token === "undefined") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -83,7 +83,7 @@ class HeaderNav extends React.Component {
             </ul>
           </div>
         )}
-        {this.state.token !== null && (
+        {(this.state.token === null || this.state.token !== "undefined") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               {this.state.navItems.map((item, index) => {
