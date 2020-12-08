@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 import HeaderNav from "./components/HeaderNav";
 import Footer from "./components/Footer";
 
-import ProtectedRoute from "./components/common/protectedRoute";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 import "./App.scss";
 
