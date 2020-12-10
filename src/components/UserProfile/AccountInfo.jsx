@@ -11,6 +11,7 @@ class AccountInfo extends React.Component {
     toggledRows: [
       { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" },
+      { display: "CILogon ID", field: "oidc_claim_sub"},
     ],
   };
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { getCurrentUser } from "../../services/prPeopleService.js";
-import { getGlobalRoles} from "../../services/prPeopleService.js";
 
 class MyRoles extends React.Component {
   state = {
@@ -15,20 +14,27 @@ class MyRoles extends React.Component {
 
   async componentDidMount(){
     const { data: user } = await getCurrentUser();
+    console.log("test");
+    console.log(user)
+    console.log(user.roles)
+    console.log(user.projects)
     this.setState({ user });
+    console.log(this.state.user)
+    console.log(this.state.user.roles)
+    console.log(this.state.user.projects)
   }
   
   checkProjectRole(projectID, role) {
     let role_str = projectID + "-" + role;
-    return this.state.user["roles"].includes(role_str);
+    return this.state.user.roles.indexOf(role_str) > -1;
   }
 
   getMyProjects() {
     const myProjects = [];
-    for (const p of this.state.user["projects"]) {
-      const is_project_member = this.checkProjectRolep(p["uuid"],"pm");
-      const is_project_owner = this.checkProjectRole(p["uuid"],"po");
-      const roles = { is_project_member, is_project_member };
+    for (const p of this.state.user.projects) {
+      const is_project_member = this.checkProjectRolep(p.uuid,"pm");
+      const is_project_owner = this.checkProjectRole(p.uuid,"po");
+      const roles = { is_project_member, is_project_owner };
       myProjects.push({ ...p, ...roles });
     }
     return myProjects;
@@ -60,13 +66,14 @@ class MyRoles extends React.Component {
       <div className="col-9">
         <h1>My Roles</h1>
         <h4 className="mt-4">Global Roles</h4>
-        <table className="table table-striped table-bordered my-4 w-50">
+        {/* <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
             <tr>
               <td>Project Lead</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user["roles"].includes("project-leads")
+                  // this.state.user.roles.indexOf("project-leads") > -1
+                  true
                 )}
               </td>
             </tr>
@@ -74,7 +81,8 @@ class MyRoles extends React.Component {
               <td>Facility Operator</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user["roles"].includes("facility-operator")
+                  // this.state.user.roles.indexOf("facility-operator") > -1
+                  true
                 )}
               </td>
             </tr>
@@ -115,7 +123,7 @@ class MyRoles extends React.Component {
               );
             })}
           </tbody>
-        </table>
+        </table> */}
       </div>
     );
   }

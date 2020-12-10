@@ -1,4 +1,3 @@
-import { faCookie } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { NavLink } from "react-router-dom";
 

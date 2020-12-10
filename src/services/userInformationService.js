@@ -9,5 +9,5 @@ export function getPeopleByName(name) {
 }
 
 export function getWhoAmI(){
-  return axios.get(apiEndpoint + "/oidc_claim_sub?oidc_claim_sub=something", config);
+  return axios.get(apiEndpoint + "/whoami", config);
 }
