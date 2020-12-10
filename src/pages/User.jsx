@@ -4,6 +4,9 @@ import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import MessageCenter from "../components/UserProfile/MessageCenter";
 
+import { getWhoAmI } from "../services/userInformationService.js";
+import { getCurrentUser } from "../services/prPeopleService.js";
+
 class User extends React.Component {
   state = {
     SideNavItems: [
@@ -11,9 +14,18 @@ class User extends React.Component {
       { name: "MY ROLES", active: false },
       { name: "MESSAGE CENTER", active: false },
     ],
+    user: {},
+    people: {},
     activeIndex: 0,
     componentNames: [AccountInfo, MyRoles, MessageCenter],
   };
+
+  async componentDidMount(){
+    const { data: user } = await getWhoAmI();
+    localStorage.setItem("userID", user.uuid);
+    const { data: people } = await getCurrentUser();
+    this.setState({ user, people });
+  }
 
   handleChange = (newIndex) => {
     this.setState({ activeIndex: newIndex });
@@ -29,7 +41,7 @@ class User extends React.Component {
             items={this.state.SideNavItems}
             handleChange={this.handleChange}
           />
-          <TagName />
+          <TagName user={this.state.user} people={this.state.people}/>
         </div>
       </div>
     );

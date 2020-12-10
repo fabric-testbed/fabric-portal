@@ -3,7 +3,6 @@ import { getWhoAmI } from "../../services/userInformationService.js";
 
 class AccountInfo extends React.Component {
   state = {
-    user: {},
     visibleRows: [
       { display: "Name", field: "name" },
       { display: "Email", field: "email" },
@@ -15,12 +14,6 @@ class AccountInfo extends React.Component {
     ],
   };
 
-  async componentDidMount(){
-    const { data: user } = await getWhoAmI();
-    localStorage.setItem("userID", user.uuid);
-    this.setState({ user });
-  }
-
   render() {
     return (
       <div className="col-9">
@@ -31,7 +24,7 @@ class AccountInfo extends React.Component {
               return (
                 <tr key={`account-info-${index}`}>
                   <th scope="row">{row.display}</th>
-                  <td>{this.state.user[row.field]}</td>
+                  <td>{this.props.user[row.field]}</td>
                 </tr>
               );
             })}
@@ -62,7 +55,7 @@ class AccountInfo extends React.Component {
                 return (
                   <tr key={`account-info-${index}`}>
                     <th scope="row">{row.display}</th>
-                    <td>{this.state.user[row.field]}</td>
+                    <td>{this.props.user[row.field]}</td>
                   </tr>
                 );
               })}

@@ -1,9 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 
 class MyRoles extends React.Component {
   state = {
-    user: {},
     projectRoleCols: [
       { display: "Description", field: "description" },
       { display: "Facility", field: "facility" },
@@ -12,33 +12,21 @@ class MyRoles extends React.Component {
     ],
   };
 
-  async componentDidMount(){
-    const { data: user } = await getCurrentUser();
-    console.log("test");
-    console.log(user)
-    console.log(user.roles)
-    console.log(user.projects)
-    this.setState({ user });
-    console.log(this.state.user)
-    console.log(this.state.user.roles)
-    console.log(this.state.user.projects)
-  }
-  
-  checkProjectRole(projectID, role) {
+  checkProjectRole = (projectID, role) => {
     let role_str = projectID + "-" + role;
-    return this.state.user.roles.indexOf(role_str) > -1;
-  }
+    return this.props.people.roles.indexOf(role_str) > -1;
+  };
 
-  getMyProjects() {
+  getMyProjects = () => {
     const myProjects = [];
-    for (const p of this.state.user.projects) {
+    for (const p of this.props.people.projects) {
       const is_project_member = this.checkProjectRolep(p.uuid,"pm");
       const is_project_owner = this.checkProjectRole(p.uuid,"po");
       const roles = { is_project_member, is_project_owner };
       myProjects.push({ ...p, ...roles });
     }
     return myProjects;
-  }
+  };
 
   renderRoleTableFields(param) {
     // boolean: show check icon for true and times icon for false;
@@ -62,18 +50,20 @@ class MyRoles extends React.Component {
   }
 
   render() {
+    const { projectRoleCols } = this.state;
+    const { people } = this.props;
+
     return (
       <div className="col-9">
         <h1>My Roles</h1>
         <h4 className="mt-4">Global Roles</h4>
-        {/* <table className="table table-striped table-bordered my-4 w-50">
+        <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
             <tr>
               <td>Project Lead</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  // this.state.user.roles.indexOf("project-leads") > -1
-                  true
+                  people.roles.indexOf("project-leads") > -1
                 )}
               </td>
             </tr>
@@ -81,8 +71,7 @@ class MyRoles extends React.Component {
               <td>Facility Operator</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  // this.state.user.roles.indexOf("facility-operator") > -1
-                  true
+                  people.roles.indexOf("facility-operator") > -1
                 )}
               </td>
             </tr>
@@ -94,28 +83,22 @@ class MyRoles extends React.Component {
           <tbody>
             <tr>
               <th>Project Name</th>
-              {this.state.projectRoleCols.map((col, index) => {
+              {projectRoleCols.map((col, index) => {
                 return (
                   <th key={`project-role-header-${index}`}>{col.display}</th>
                 );
               })}
             </tr>
-            {this.getMyProjects().map((row, index) => {
+            {this.getMyProjects().map((project, index) => {
               return (
                 <tr key={`project-role-row-${index}`}>
                   <td>
-                    <a
-                      href={row.project_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {row.name}
-                    </a>
+                    <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
                   </td>
-                  {this.state.projectRoleCols.map((col, index) => {
+                  {projectRoleCols.map((col, index) => {
                     return (
                       <td key={`project-role-col-${index}`}>
-                        {this.renderRoleTableFields(row[col.field])}
+                        {this.renderRoleTableFields(project[col.field])}
                       </td>
                     );
                   })}
@@ -123,7 +106,7 @@ class MyRoles extends React.Component {
               );
             })}
           </tbody>
-        </table> */}
+        </table>
       </div>
     );
   }
