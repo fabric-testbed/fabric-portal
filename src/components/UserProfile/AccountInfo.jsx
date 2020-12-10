@@ -1,19 +1,23 @@
 import React from "react";
-import { getUserInfo } from "../../services/fakeUserInformation.js";
+import { getWhoAmI } from "../../services/userInformationService.js";
 
 class AccountInfo extends React.Component {
   state = {
-    user: getUserInfo(),
+    user: {},
     visibleRows: [
-      { display: "Name", field: "full_name" },
+      { display: "Name", field: "name" },
       { display: "Email", field: "email" },
-      { display: "Affiliation", field: "affliation" },
     ],
     toggledRows: [
       { display: "EPPN", field: "eppn" },
-      { display: "CILogon ID", field: "cilogon_id" },
+      { display: "UUID", field: "uuid" },
     ],
   };
+
+  async componentDidMount(){
+    const { data: user } = await getWhoAmI();
+    this.setState({ user });
+  }
 
   render() {
     return (
