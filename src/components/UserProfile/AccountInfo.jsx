@@ -16,6 +16,7 @@ class AccountInfo extends React.Component {
 
   async componentDidMount(){
     const { data: user } = await getWhoAmI();
+    localStorage.setItem("userID", user.uuid);
     this.setState({ user });
   }
 

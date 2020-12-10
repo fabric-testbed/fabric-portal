@@ -1,36 +1,37 @@
 import React from "react";
-import { getUserInfo } from "../../services/fakeUserInformation.js";
-import { getProject } from "../../services/fakeProjectInformation.js";
+import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getGlobalRoles} from "../../services/prPeopleService.js";
 
 class MyRoles extends React.Component {
   state = {
-    user: getUserInfo(),
+    user: {},
     projectRoleCols: [
       { display: "Description", field: "description" },
-      { display: "Tags", field: "tags" },
+      { display: "Facility", field: "facility" },
       { display: "Project Member", field: "is_project_member" },
       { display: "Project Owner", field: "is_project_owner" },
     ],
   };
 
-  getMyProjects() {
-    // fetch project full information by project id.
-    const myProjects = [];
-    for (const role of this.state.user.project_roles) {
-      // concatenate project info and user role objects
-      myProjects.push({ ...getProject(role.project_id), ...role });
-    }
-    return myProjects;
+  async componentDidMount(){
+    const { data: user } = await getCurrentUser();
+    this.setState({ user });
+  }
+  
+  checkProjectRole(projectID, role) {
+    let role_str = projectID + "-" + role;
+    return this.state.user["roles"].includes(role_str);
   }
 
-  renderTags(tags) {
-    return tags.map((tag, index) => {
-      return (
-        <span className="btn-sm btn-warning m-1" key={`tag-${index}`}>
-          {tag}
-        </span>
-      );
-    });
+  getMyProjects() {
+    const myProjects = [];
+    for (const p of this.state.user["projects"]) {
+      const is_project_member = this.checkProjectRolep(p["uuid"],"pm");
+      const is_project_owner = this.checkProjectRole(p["uuid"],"po");
+      const roles = { is_project_member, is_project_member };
+      myProjects.push({ ...p, ...roles });
+    }
+    return myProjects;
   }
 
   renderRoleTableFields(param) {
@@ -49,8 +50,6 @@ class MyRoles extends React.Component {
         return param.length > 100
           ? param.split(" ").slice(0, 20).join(" ").concat(" ...")
           : param;
-      case "object":
-        return this.renderTags(param);
       default:
         return param;
     }
@@ -67,7 +66,7 @@ class MyRoles extends React.Component {
               <td>Project Lead</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user.global_roles.is_project_lead
+                  this.state.user["roles"].includes("project-leads")
                 )}
               </td>
             </tr>
@@ -75,7 +74,7 @@ class MyRoles extends React.Component {
               <td>Facility Operator</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user.global_roles.is_facility_operator
+                  this.state.user["roles"].includes("facility-operator")
                 )}
               </td>
             </tr>
