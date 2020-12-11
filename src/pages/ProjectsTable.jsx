@@ -14,10 +14,9 @@ class ProjectsTable extends Component {
     { path: "description", label: "Description" },
     { path: "facility", label: "Facility" },
     {
-      path: "created_by.email",
+      path: "created_by.uuid",
       label: "Created By",
     },
-    // { path: "uuid", label: "UUID" },
   ];
 
   deletedColumn = {

@@ -20,7 +20,7 @@ class MyRoles extends React.Component {
   getMyProjects = () => {
     const myProjects = [];
     for (const p of this.props.people.projects) {
-      const is_project_member = this.checkProjectRolep(p.uuid,"pm");
+      const is_project_member = this.checkProjectRole(p.uuid,"pm");
       const is_project_owner = this.checkProjectRole(p.uuid,"po");
       const roles = { is_project_member, is_project_owner };
       myProjects.push({ ...p, ...roles });
