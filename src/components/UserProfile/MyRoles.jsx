@@ -1,37 +1,32 @@
 import React from "react";
-import { getUserInfo } from "../../services/fakeUserInformation.js";
-import { getProject } from "../../services/fakeProjectInformation.js";
+import { Link } from "react-router-dom";
+import { getCurrentUser } from "../../services/prPeopleService.js";
 
 class MyRoles extends React.Component {
   state = {
-    user: getUserInfo(),
     projectRoleCols: [
       { display: "Description", field: "description" },
-      { display: "Tags", field: "tags" },
+      { display: "Facility", field: "facility" },
       { display: "Project Member", field: "is_project_member" },
       { display: "Project Owner", field: "is_project_owner" },
     ],
   };
 
-  getMyProjects() {
-    // fetch project full information by project id.
+  checkProjectRole = (projectID, role) => {
+    let role_str = projectID + "-" + role;
+    return this.props.people.roles.indexOf(role_str) > -1;
+  };
+
+  getMyProjects = () => {
     const myProjects = [];
-    for (const role of this.state.user.project_roles) {
-      // concatenate project info and user role objects
-      myProjects.push({ ...getProject(role.project_id), ...role });
+    for (const p of this.props.people.projects) {
+      const is_project_member = this.checkProjectRole(p.uuid,"pm");
+      const is_project_owner = this.checkProjectRole(p.uuid,"po");
+      const roles = { is_project_member, is_project_owner };
+      myProjects.push({ ...p, ...roles });
     }
     return myProjects;
-  }
-
-  renderTags(tags) {
-    return tags.map((tag, index) => {
-      return (
-        <span className="btn-sm btn-warning m-1" key={`tag-${index}`}>
-          {tag}
-        </span>
-      );
-    });
-  }
+  };
 
   renderRoleTableFields(param) {
     // boolean: show check icon for true and times icon for false;
@@ -49,14 +44,15 @@ class MyRoles extends React.Component {
         return param.length > 100
           ? param.split(" ").slice(0, 20).join(" ").concat(" ...")
           : param;
-      case "object":
-        return this.renderTags(param);
       default:
         return param;
     }
   }
 
   render() {
+    const { projectRoleCols } = this.state;
+    const { people } = this.props;
+
     return (
       <div className="col-9">
         <h1>My Roles</h1>
@@ -67,7 +63,7 @@ class MyRoles extends React.Component {
               <td>Project Lead</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user.global_roles.is_project_lead
+                  people.roles.indexOf("project-leads") > -1
                 )}
               </td>
             </tr>
@@ -75,7 +71,7 @@ class MyRoles extends React.Component {
               <td>Facility Operator</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  this.state.user.global_roles.is_facility_operator
+                  people.roles.indexOf("facility-operator") > -1
                 )}
               </td>
             </tr>
@@ -87,28 +83,22 @@ class MyRoles extends React.Component {
           <tbody>
             <tr>
               <th>Project Name</th>
-              {this.state.projectRoleCols.map((col, index) => {
+              {projectRoleCols.map((col, index) => {
                 return (
                   <th key={`project-role-header-${index}`}>{col.display}</th>
                 );
               })}
             </tr>
-            {this.getMyProjects().map((row, index) => {
+            {this.getMyProjects().map((project, index) => {
               return (
                 <tr key={`project-role-row-${index}`}>
                   <td>
-                    <a
-                      href={row.project_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {row.name}
-                    </a>
+                    <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
                   </td>
-                  {this.state.projectRoleCols.map((col, index) => {
+                  {projectRoleCols.map((col, index) => {
                     return (
                       <td key={`project-role-col-${index}`}>
-                        {this.renderRoleTableFields(row[col.field])}
+                        {this.renderRoleTableFields(project[col.field])}
                       </td>
                     );
                   })}
