@@ -1,17 +1,16 @@
 import React from "react";
-import { getUserInfo } from "../../services/fakeUserInformation.js";
+import { getWhoAmI } from "../../services/userInformationService.js";
 
 class AccountInfo extends React.Component {
   state = {
-    user: getUserInfo(),
     visibleRows: [
-      { display: "Name", field: "full_name" },
+      { display: "Name", field: "name" },
       { display: "Email", field: "email" },
-      { display: "Affiliation", field: "affliation" },
     ],
     toggledRows: [
       { display: "EPPN", field: "eppn" },
-      { display: "CILogon ID", field: "cilogon_id" },
+      { display: "UUID", field: "uuid" },
+      { display: "CILogon ID", field: "oidc_claim_sub"},
     ],
   };
 
@@ -25,7 +24,7 @@ class AccountInfo extends React.Component {
               return (
                 <tr key={`account-info-${index}`}>
                   <th scope="row">{row.display}</th>
-                  <td>{this.state.user[row.field]}</td>
+                  <td>{this.props.user[row.field]}</td>
                 </tr>
               );
             })}
@@ -56,7 +55,7 @@ class AccountInfo extends React.Component {
                 return (
                   <tr key={`account-info-${index}`}>
                     <th scope="row">{row.display}</th>
-                    <td>{this.state.user[row.field]}</td>
+                    <td>{this.props.user[row.field]}</td>
                   </tr>
                 );
               })}
