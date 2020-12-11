@@ -40,6 +40,10 @@ For IDE, [Visual Studio Code](https://code.visualstudio.com/) is highly recommen
 
 In the project directory, you can run:
 
+### `npm install`
+
+Install all modules listed as dependencies in package.json.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />

@@ -14,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import HeaderNav from "./components/HeaderNav";
 import Footer from "./components/Footer";
 
+import ProtectedRoute from "./components/common/ProtectedRoute";
+
 import "./App.scss";
 
 function App() {
@@ -23,13 +25,13 @@ function App() {
         <HeaderNav />
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/resources" component={Resources} />
-          <Route path="/projects/:id" component={ProjectForm} />
-          <Route path="/projects" component={Projects} />
-          <Route path="/experiments" component={Experiments} />
-          <Route path="/guide" component={Guide} />
-          <Route path="/links" component={Links} />
-          <Route path="/user" component={User} />
+          <ProtectedRoute path="/resources" component={Resources} />
+          <ProtectedRoute path="/projects/:id" component={ProjectForm} />
+          <ProtectedRoute path="/projects" component={Projects} />
+          <ProtectedRoute path="/experiments" component={Experiments} />
+          <ProtectedRoute path="/guide" component={Guide} />
+          <ProtectedRoute path="/links" component={Links} />
+          <ProtectedRoute path="/user" component={User} />
           <Route component={NotFound} />
         </Switch>
       </Router>

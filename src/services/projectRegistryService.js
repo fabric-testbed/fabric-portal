@@ -2,6 +2,8 @@ import axios from "axios";
 import _ from "lodash";
 import { projectRegistryApiUrl } from "../config.json";
 
+axios.defaults.withCredentials = true;
+
 const apiEndpoint = projectRegistryApiUrl;
 
 export function getProjects() {

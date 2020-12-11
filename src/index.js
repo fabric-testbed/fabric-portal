@@ -4,7 +4,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "font-awesome/css/font-awesome.css";
-import "./index.scss";
+import "./styles/index.scss";
 import "./styles/custom.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
