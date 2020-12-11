@@ -14,8 +14,8 @@ class ProjectsTable extends Component {
     { path: "description", label: "Description" },
     { path: "facility", label: "Facility" },
     {
-      path: "created_by.uuid",
-      label: "Created By",
+      path: "created_by",
+      label: "Creator ID",
     },
   ];
 
