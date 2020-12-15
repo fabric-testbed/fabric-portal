@@ -3,6 +3,9 @@ import { NavLink } from "react-router-dom";
 
 import { hasCookie } from "../services/dummyAuth";
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import logo from "../imgs/fabric-brand.png";
 
 class HeaderNav extends React.Component {
@@ -13,10 +16,7 @@ class HeaderNav extends React.Component {
       {
         name: "Projects",
         path: "/projects",
-        child: [
-          // { name: "All Projects", path: "/projects/all-projects" },
-          // { name: "My Projects", path: "/projects/my-projects" },
-        ],
+        child: [],
         exact: false,
       },
       {
@@ -30,6 +30,23 @@ class HeaderNav extends React.Component {
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
+
+  handleLogin = () => {
+    if (localStorage.getItem("cookieConsent")) {
+      window.location.href = "/login";
+    } else {
+      toast("Please acknowledge our cookie policy first: click OK on the bottom banner before login.");
+    }
+  }
+
+  handleLogout = () => {
+    // remove stored user ID got from UIS whoami.
+    localStorage.removeItem("userID");
+      // remove cookie for cookie consent choice.
+    localStorage.removeItem("cookieConsent");
+    document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = "/logout";
+  }
 
   render() {
     return (
@@ -65,9 +82,7 @@ class HeaderNav extends React.Component {
               </li>
               <li className="nav-item ml-4">
                 <button
-                  onClick={() => {
-                    window.location.href = "/login";
-                  }}
+                  onClick={this.handleLogin}
                   className="btn btn-md btn-warning text-white"
                 >
                   Login
@@ -125,9 +140,7 @@ class HeaderNav extends React.Component {
               <React.Fragment>
                 <li className="nav-item ml-4">
                   <button
-                    onClick={() => {
-                      window.location.href = "/logout";
-                    }}
+                    onClick={this.handleLogout}
                     className="btn btn-md btn-warning text-white"
                   >
                     Logout
