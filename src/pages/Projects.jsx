@@ -4,14 +4,10 @@ import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import ProjectsTable from "./ProjectsTable";
 
-<<<<<<< HEAD
-import { getProjects } from "../services/projectRegistryService";
-=======
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
 
 // import { getProjects } from "../services/projectRegistryService";
->>>>>>> master
 import { deleteProject } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
