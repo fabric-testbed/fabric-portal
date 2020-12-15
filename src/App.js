@@ -14,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import HeaderNav from "./components/HeaderNav";
 import Footer from "./components/Footer";
 
+import { ToastContainer } from 'react-toastify';
+
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
 import "./styles/App.scss";
@@ -22,6 +24,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <ToastContainer />
         <HeaderNav />
         <Switch>
           <Route path="/" component={Home} exact />

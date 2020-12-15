@@ -31,6 +31,7 @@ class Home extends React.Component {
           cookieName="cookieConsent"
           style={{ background: "#2B373B" }}
           buttonStyle={{ color: "#4e503b", fontSize: "18px" }}
+          onAccept={() => {localStorage.setItem("cookieConsent", true)}}
         >
           This Website Uses Cookies.
           <div className="mt-1 text-sm">
