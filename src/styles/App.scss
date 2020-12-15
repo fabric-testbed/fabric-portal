@@ -227,6 +227,8 @@ ul {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
+  background: #2b373b !important;
+  opacity: 0.8 !important;
 }
 
 .CookieConsent .text-sm {
@@ -235,4 +237,6 @@ ul {
 
 .CookieConsent button {
   border-radius: 5px !important;
+  color: #4e503b;
+  font-size: 1.25rem;
 }
