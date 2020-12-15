@@ -229,10 +229,16 @@ ul {
   justify-content: center !important;
   background: #2b373b !important;
   opacity: 0.8 !important;
+  line-height: 150%;
+  padding: 0.2rem 2rem;
 }
 
 .CookieConsent .text-sm {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.CookieConsent .text-lg {
+  font-size: 1.5rem;
 }
 
 .CookieConsent button {

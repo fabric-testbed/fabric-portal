@@ -33,7 +33,7 @@ class Home extends React.Component {
             localStorage.setItem("cookieConsent", true)
           }}
         >
-          This Website Uses Cookies.
+          <span className="text-lg">This Website Uses Cookies.</span>
           <div className="mt-1 text-sm">
             We use cookies to provide you access to FABRIC Resources and
             to personalize the content of this site. Your information
