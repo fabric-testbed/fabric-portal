@@ -222,3 +222,17 @@ ul {
 }
 
 /* cookie banner */
+.CookieConsent {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.CookieConsent .text-sm {
+  font-size: 0.7rem;
+}
+
+.CookieConsent button {
+  border-radius: 5px !important;
+}
