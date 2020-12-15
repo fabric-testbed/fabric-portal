@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
-import "./App.scss";
+import "./styles/App.scss";
 
 function App() {
   return (
