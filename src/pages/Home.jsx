@@ -29,6 +29,9 @@ class Home extends React.Component {
           location="bottom"
           buttonText="OK"
           cookieName="cookieConsent"
+          onAccept={() => {
+            localStorage.setItem("cookieConsent", true)
+          }}
         >
           This Website Uses Cookies.
           <div className="mt-1 text-sm">
