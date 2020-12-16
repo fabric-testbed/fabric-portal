@@ -3,29 +3,23 @@ import { toast } from "react-toastify";
 
 axios.defaults.withCredentials = true;
 
-// toast error messages.
 axios.interceptors.response.use(null, (error) => {
-  // check unexpected errors.
-  const expectedError =
+  const clientError =
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
   
+  const serverError = error.response && error.response.status >= 500 ;
 
-  if (error.response && error.response.status >= 400 && error.response.status < 500) {
+  if (clientError) {
     toast.error("A client-side error occurred.");
-  }
-
-  if (error.response && error.response.status >= 500) {
+  } else if (serverError){
     toast.error("A server-side error occurred.");
-  }
-
-  if (!expectedError) {
-    // logger.log(error);
+  } else {
     toast.error("An unexpected error occurred.");
   }
 
-  return Promise.reject(error);
+  return Promise.reject(error); 
 });
 
 export default {
