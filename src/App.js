@@ -24,7 +24,6 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <ToastContainer />
         <Header />
         <Switch>
           <Route path="/" component={Home} exact />
@@ -38,6 +37,7 @@ function App() {
           <Route component={NotFound} />
         </Switch>
       </Router>
+      <ToastContainer />
       <Footer />
     </div>
   );
