@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import logo from "../imgs/fabric-brand.png";
 
-class HeaderNav extends React.Component {
+class Header extends React.Component {
   state = {
     navItems: [
       { name: "Home", path: "/", child: [], exact: true },
@@ -155,4 +155,4 @@ class HeaderNav extends React.Component {
   }
 }
 
-export default HeaderNav;
+export default Header;
