@@ -11,7 +11,7 @@ import Guide from "./pages/Guide";
 import Links from "./pages/Links";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
-import HeaderNav from "./components/HeaderNav";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 import { ToastContainer } from 'react-toastify';
@@ -25,7 +25,7 @@ function App() {
     <div className="App">
       <Router>
         <ToastContainer />
-        <HeaderNav />
+        <Header />
         <Switch>
           <Route path="/" component={Home} exact />
           <ProtectedRoute path="/resources" component={Resources} />
