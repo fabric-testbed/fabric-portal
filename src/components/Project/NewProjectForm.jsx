@@ -16,7 +16,7 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: "FABRIC",
+      facility: "",
       created_by: {},
       created_time: "",
       project_owners: [],
@@ -155,7 +155,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
           {this.renderInput("description", "Description")}
-          {this.renderSelect("facility", "Facility", facilityOptions)}
+          {this.renderSelect("facility", "Facility", null, facilityOptions)}
           {this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>

@@ -7,7 +7,7 @@ import ProjectsTable from "./ProjectsTable";
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
 
-// import { getProjects } from "../services/projectRegistryService";
+import { getProjects } from "../services/projectRegistryService";
 import { deleteProject } from "../services/projectRegistryService";
 
 import paginate from "../utils/paginate";
