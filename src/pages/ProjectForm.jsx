@@ -310,7 +310,7 @@ class projectForm extends Form {
             >
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name")}
-                {this.renderInput("description", "Description")}
+                {this.renderTextarea("description", "Description")}
                 {this.renderSelect("facility", "Facility", this.state.data.facility, facilityOptions)}
                 {this.renderInputTag("tags", "Tags")}
                 {this.renderButton("Save")}
