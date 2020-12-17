@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./Input.jsx";
+import Textarea from "./Textarea.jsx";
 import Select from "./Select.jsx";
 import InputTag from "./InputTag.jsx";
 
@@ -88,6 +89,21 @@ class Form extends Component {
     );
   }
 
+  renderTextarea(name, label, type = "text") {
+    const { data, errors } = this.state;
+
+    return (
+      <Textarea
+        type={type}
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
   renderInputTag(name, label) {
     const { data } = this.state;
     return (
@@ -101,7 +117,7 @@ class Form extends Component {
   }
 
 
-  renderSelect(name, label, options) {
+  renderSelect(name, label, currentOption, options) {
     const { data, errors } = this.state;
 
     return (
@@ -109,6 +125,7 @@ class Form extends Component {
             name={name}
             value={data[name]} 
             label={label}
+            currentOption={currentOption}
             options={options}
             onChange={this.handleChange}
             error={errors[name]}

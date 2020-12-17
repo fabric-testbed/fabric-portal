@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getPeopleByName } from "../services/userInformationService";
-import { facilityOptions } from "../../services/portalData.json";
+import { facilityOptions } from "../services/portalData.json";
 
 import {
   getProject,
