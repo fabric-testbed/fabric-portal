@@ -8,13 +8,15 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
 
+import { facilityOptions } from "../../services/portalData.json";
+
 class NewProjectForm extends Form {
   state = {
     data: {
       name: "",
       uuid: "",
       description: "",
-      facility: "FABRIC",
+      facility: "",
       created_by: {},
       created_time: "",
       project_owners: [],
@@ -152,8 +154,8 @@ class NewProjectForm extends Form {
         <h1>New Project</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name")}
-          {this.renderInput("description", "Description")}
-          {this.renderInput("facility", "Facility")}
+          {this.renderTextarea("description", "Description")}
+          {this.renderSelect("facility", "Facility", null, facilityOptions)}
           {this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
