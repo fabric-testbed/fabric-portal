@@ -10,6 +10,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
+import { getCurrentUser } from "../services/prPeopleService.js";
 
 import {
   getProject,
@@ -35,6 +36,7 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
+    roles: [],
     projectStaticInfoRows: [
       { label: "Project ID", path: "uuid" },
       { label: "Project Tags", path: "tags" },
@@ -101,6 +103,8 @@ class projectForm extends Form {
 
   async componentDidMount() {
     await this.populateProject();
+    const { data: people } = await getCurrentUser();
+    this.setState({ roles: people.roles })
   }
 
   mapToViewModel(project) {
@@ -289,6 +293,20 @@ class projectForm extends Form {
   render() {
     const projectId = this.props.match.params.id;
     const that = this;
+    const {
+      data,
+      originalProjectName,
+      SideNavItems,
+      activeIndex,
+      roles,
+      projectStaticInfoRows,
+      ownerSearchInput,
+      ownerSetting,
+      owners,
+      memberSearchInput,
+      memberSetting,
+      members,
+    } = this.state;
 
     if (projectId === "new") {
       return (
@@ -299,32 +317,36 @@ class projectForm extends Form {
     } else {
       return (
         <div className="container">
-          <h1>Project - {this.state.originalProjectName}</h1>
+          <h1>Project - {originalProjectName}</h1>
           <div className="row mt-4">
             <SideNav
-              items={this.state.SideNavItems}
+              items={SideNavItems}
               handleChange={this.handleSideNavChange}
             />
             <div
-              className={`${this.state.activeIndex !== 0 ? "d-none" : "col-9"}`}
+              className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
             >
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name")}
                 {this.renderTextarea("description", "Description")}
-                {this.renderSelect("facility", "Facility", this.state.data.facility, facilityOptions)}
-                {this.renderInputTag("tags", "Tags")}
+                {this.renderSelect("facility", "Facility", data.facility, facilityOptions)}
+                {
+                  roles.indexOf("facility-operators") > -1
+                  &&
+                  this.renderInputTag("tags", "Tags")
+                }
                 {this.renderButton("Save")}
               </form>
               <table className="table table-striped table-bordered mt-4">
                 <tbody>
-                  {this.state.projectStaticInfoRows.map((row, index) => {
+                  {projectStaticInfoRows.map((row, index) => {
                     return (
                       <tr key={`project-basic-info-${index}`}>
                         <td>{row.label}</td>
                         <td>
                           {row.path !== "tags"
-                            ? _.get(this.state.data, row.path)
-                            : this.renderTags(_.get(this.state.data, row.path))}
+                            ? _.get(data, row.path)
+                            : this.renderTags(_.get(data, row.path))}
                         </td>
                       </tr>
                     );
@@ -334,7 +356,7 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                this.state.activeIndex !== 1
+                activeIndex !== 1
                   ? "d-none"
                   : "col-9 d-flex flex-row"
               }`}
@@ -342,13 +364,13 @@ class projectForm extends Form {
               <div className="w-75">
                 <input
                   className="form-control search-owner-input mb-4"
-                  value={this.state.ownerSearchInput}
+                  value={ownerSearchInput}
                   placeholder="Search by user name (at least 4 letters) to add more project owners..."
                   onChange={(e) => this.handleSearch(e.currentTarget.value)}
                 />
                 <ProjectUserTable
-                  users={this.state.data.project_owners}
-                  sortColumn={this.state.ownerSetting.sortColumn}
+                  users={data.project_owners}
+                  sortColumn={ownerSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
                 />
@@ -356,7 +378,7 @@ class projectForm extends Form {
               <div className="search-result w-25 border ml-2 p-2">
                 <ul className="list-group text-center m-2">
                   <li className="list-group-item">Search Result:</li>
-                  {this.state.owners.map((user, index) => {
+                  {owners.map((user, index) => {
                     return (
                       <li key={index} className="list-group-item">
                         <span>{user.name}</span>
@@ -374,7 +396,7 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                this.state.activeIndex !== 2
+                activeIndex !== 2
                   ? "d-none"
                   : "col-9 d-flex flex-row"
               }`}
@@ -383,12 +405,12 @@ class projectForm extends Form {
                 <input
                   className="form-control search-member-input mb-4"
                   placeholder="Search by user name (at least 4 letters) to add more project members..."
-                  value={this.state.memberSearchInput}
+                  value={memberSearchInput}
                   onChange={(e) => this.handleSearch(e.currentTarget.value)}
                 />
                 <ProjectUserTable
-                  users={this.state.data.project_members}
-                  sortColumn={this.state.memberSetting.sortColumn}
+                  users={data.project_members}
+                  sortColumn={memberSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
                 />
@@ -396,7 +418,7 @@ class projectForm extends Form {
               <div className="search-result w-25 border ml-2 p-2">
                 <ul className="list-group text-center m-2">
                   <li className="list-group-item">Search Result:</li>
-                  {this.state.members.map((user, index) => {
+                  {members.map((user, index) => {
                     return (
                       <li key={index} className="list-group-item">
                         <span>{user.name}</span>
