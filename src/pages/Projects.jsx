@@ -19,6 +19,7 @@ class Projects extends React.Component {
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
+    roles: [],
     sortColumn: { path: "name", order: "asc" },
   };
 
@@ -26,7 +27,7 @@ class Projects extends React.Component {
     const { data: user } = await getWhoAmI();
     localStorage.setItem("userID", user.uuid);
     const { data: people } = await getCurrentUser();
-    this.setState({ projects: people.projects })
+    this.setState({ projects: people.projects, roles: people.roles })
   }
 
   handleDelete = async (project) => {
@@ -87,14 +88,23 @@ class Projects extends React.Component {
 
   render() {
     const { length: count } = this.state.projects;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, roles } = this.state;
 
     if (count === 0) {
       return (
         <div className="container">
-          <Link to="/projects/new" className="btn btn-primary">
-            Create Project
-          </Link>
+          {
+            (
+              roles.indexOf("project-leads") > -1 || 
+              roles.indexOf("facility-operators") > -1
+            )
+            &&
+            (
+              <Link to="/projects/new" className="btn btn-primary">
+                Create Project
+              </Link>
+            )
+          }
           <p className="mt-4">There are no project in the database.</p>
         </div>
       );
@@ -111,9 +121,18 @@ class Projects extends React.Component {
             onChange={this.handleSearch}
             className="my-0"
           />
-          <Link to="/projects/new" className="btn btn-primary">
-            Create Project
-          </Link>
+          {
+            (
+              roles.indexOf("project-leads") > -1 || 
+              roles.indexOf("facility-operators") > -1
+            )
+            &&
+            (
+              <Link to="/projects/new" className="btn btn-primary">
+                Create Project
+              </Link>
+            )
+          }
         </div>
         <p>Showing {totalCount} projects in the database.</p>
         <ProjectsTable
