@@ -154,9 +154,9 @@ class NewProjectForm extends Form {
       <div>
         <h1>New Project</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name")}
-          {this.renderTextarea("description", "Description")}
-          {this.renderSelect("facility", "Facility", null, facilityOptions)}
+          {this.renderInput("name", "Name", true)}
+          {this.renderTextarea("description", "Description", true)}
+          {this.renderSelect("facility", "Facility", true, null, facilityOptions)}
           {isFacilityOperator && this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>

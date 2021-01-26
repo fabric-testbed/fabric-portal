@@ -343,9 +343,9 @@ class projectForm extends Form {
               className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
             >
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name")}
-                {this.renderTextarea("description", "Description")}
-                {this.renderSelect("facility", "Facility", data.facility, facilityOptions)}
+                {this.renderInput("name", "Name", canUpdate)}
+                {this.renderTextarea("description", "Description", canUpdate)}
+                {this.renderSelect("facility", "Facility", canUpdate, data.facility, facilityOptions)}
                 {isFacilityOperator && this.renderInputTag("tags", "Tags")}
                 {canUpdate && this.renderButton("Save")}
               </form>
