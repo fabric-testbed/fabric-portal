@@ -313,8 +313,9 @@ class projectForm extends Form {
       members,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
-    // only facility operator or project creator can update owner;
-    let canUpdateOwner = isFacilityOperator || 
+    // only facility operator or project creator
+    // can update project/ delete project/ update owner;
+    let canUpdate = isFacilityOperator || 
       data.created_by.uuid === localStorage.getItem("userID");
     // only facility operator or project owner can update member;
     let canUpdateMember = isFacilityOperator || 
@@ -345,12 +346,8 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name")}
                 {this.renderTextarea("description", "Description")}
                 {this.renderSelect("facility", "Facility", data.facility, facilityOptions)}
-                {
-                  isFacilityOperator
-                  &&
-                  this.renderInputTag("tags", "Tags")
-                }
-                {this.renderButton("Save")}
+                {isFacilityOperator && this.renderInputTag("tags", "Tags")}
+                {canUpdate && this.renderButton("Save")}
               </form>
               <table className="table table-striped table-bordered mt-4">
                 <tbody>
@@ -378,7 +375,7 @@ class projectForm extends Form {
             >
               <div className="w-75">
                 { 
-                  canUpdateOwner
+                  canUpdate
                   &&
                   <input
                     className="form-control search-owner-input mb-4"
@@ -392,11 +389,11 @@ class projectForm extends Form {
                   sortColumn={ownerSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
-                  canUpdate={canUpdateOwner}
+                  canUpdate={canUpdate}
                 />
               </div>
               { 
-                canUpdateOwner
+                canUpdate
                 &&
                 <div className="search-result w-25 border ml-2 p-2">
                   <ul className="list-group text-center m-2">
