@@ -312,17 +312,21 @@ class projectForm extends Form {
       memberSetting,
       members,
     } = this.state;
+    let isFacilityOperator = roles.indexOf("facility-operators") > -1;
     // only facility operator or project creator can update owner;
-    let canUpdateOwner = roles.indexOf("facility-operators") > -1 || 
+    let canUpdateOwner = isFacilityOperator || 
       data.created_by.uuid === localStorage.getItem("userID");
     // only facility operator or project owner can update member;
-    let canUpdateMember = roles.indexOf("facility-operators") > -1 || 
+    let canUpdateMember = isFacilityOperator || 
       this.checkProjectRole(data.uuid, "po");
 
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm history={this.props.history} />
+          <NewProjectForm
+            history={this.props.history}
+            isFacilityOperator={isFacilityOperator}
+          />
         </div>
       );
     } else {
@@ -342,7 +346,7 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description")}
                 {this.renderSelect("facility", "Facility", data.facility, facilityOptions)}
                 {
-                  roles.indexOf("facility-operators") > -1
+                  isFacilityOperator
                   &&
                   this.renderInputTag("tags", "Tags")
                 }
