@@ -290,6 +290,11 @@ class projectForm extends Form {
     });
   }
 
+  checkProjectRole = (projectID, role) => {
+    let role_str = projectID + "-" + role;
+    return this.state.roles.indexOf(role_str) > -1;
+  };
+
   render() {
     const projectId = this.props.match.params.id;
     const that = this;
@@ -307,6 +312,12 @@ class projectForm extends Form {
       memberSetting,
       members,
     } = this.state;
+    // only facility operator or project creator can update owner;
+    let canUpdateOwner = roles.indexOf("facility-operators") > -1 || 
+      data.created_by.uuid === localStorage.getItem("userID");
+    // only facility operator or project owner can update member;
+    let canUpdateMember = roles.indexOf("facility-operators") > -1 || 
+      this.checkProjectRole(data.uuid, "po");
 
     if (projectId === "new") {
       return (
@@ -362,37 +373,46 @@ class projectForm extends Form {
               }`}
             >
               <div className="w-75">
-                <input
-                  className="form-control search-owner-input mb-4"
-                  value={ownerSearchInput}
-                  placeholder="Search by user name (at least 4 letters) to add more project owners..."
-                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                />
+                { 
+                  canUpdateOwner
+                  &&
+                  <input
+                    className="form-control search-owner-input mb-4"
+                    value={ownerSearchInput}
+                    placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                  />
+                }
                 <ProjectUserTable
                   users={data.project_owners}
                   sortColumn={ownerSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
+                  canUpdate={canUpdateOwner}
                 />
               </div>
-              <div className="search-result w-25 border ml-2 p-2">
-                <ul className="list-group text-center m-2">
-                  <li className="list-group-item">Search Result:</li>
-                  {owners.map((user, index) => {
-                    return (
-                      <li key={index} className="list-group-item">
-                        <span>{user.name}</span>
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => that.handleAddUser(user)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              { 
+                canUpdateOwner
+                &&
+                <div className="search-result w-25 border ml-2 p-2">
+                  <ul className="list-group text-center m-2">
+                    <li className="list-group-item">Search Result:</li>
+                    {owners.map((user, index) => {
+                      return (
+                        <li key={index} className="list-group-item">
+                          <span>{user.name}</span>
+                          <button
+                            className="btn btn-sm btn-primary ml-2"
+                            onClick={() => that.handleAddUser(user)}
+                          >
+                            <FontAwesomeIcon icon={faPlus} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              }
             </div>
             <div
               className={`${
@@ -402,37 +422,46 @@ class projectForm extends Form {
               }`}
             >
               <div className="w-75">
-                <input
-                  className="form-control search-member-input mb-4"
-                  placeholder="Search by user name (at least 4 letters) to add more project members..."
-                  value={memberSearchInput}
-                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                />
+                { 
+                  canUpdateMember
+                  &&
+                  <input
+                    className="form-control search-member-input mb-4"
+                    placeholder="Search by user name (at least 4 letters) to add more project members..."
+                    value={memberSearchInput}
+                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                  />
+                }
                 <ProjectUserTable
                   users={data.project_members}
                   sortColumn={memberSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
+                  canUpdate={canUpdateMember}
                 />
               </div>
-              <div className="search-result w-25 border ml-2 p-2">
-                <ul className="list-group text-center m-2">
-                  <li className="list-group-item">Search Result:</li>
-                  {members.map((user, index) => {
-                    return (
-                      <li key={index} className="list-group-item">
-                        <span>{user.name}</span>
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => that.handleAddUser(user)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              {
+                canUpdateMember
+                &&
+                <div className="search-result w-25 border ml-2 p-2">
+                  <ul className="list-group text-center m-2">
+                    <li className="list-group-item">Search Result:</li>
+                    {members.map((user, index) => {
+                      return (
+                        <li key={index} className="list-group-item">
+                          <span>{user.name}</span>
+                          <button
+                            className="btn btn-sm btn-primary ml-2"
+                            onClick={() => that.handleAddUser(user)}
+                          >
+                            <FontAwesomeIcon icon={faPlus} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              }
             </div>
           </div>
         </div>
