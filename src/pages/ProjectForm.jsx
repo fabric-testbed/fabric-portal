@@ -4,6 +4,7 @@ import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
+import DeleteModal from "../components/common/DeleteModal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -378,14 +379,13 @@ class projectForm extends Form {
                   {
                     canUpdate && 
                     <tr>
-                      <td>Delete Project</td>
+                      <td>Danger Zone</td>
                       <td>
-                        <button
-                          onClick={() => {this.handleDeleteProject(that.state.data)}}
-                          className="btn btn-danger btn-sm"
-                        >
-                          Delete
-                        </button>
+                        <DeleteModal
+                          name={"Delete Project"}
+                          text={"Are you sure you want to delete the project? This process cannot be undone."}
+                          onDeleteProject={() => this.handleDeleteProject(that.state.data)}
+                        />
                       </td>
                     </tr>
                   }
