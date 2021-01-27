@@ -11,6 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
+import { deleteProject } from "../services/projectRegistryService";
 
 import {
   getProject,
@@ -209,6 +210,17 @@ class projectForm extends Form {
     }
   };
 
+  handleDeleteProject = async (project) => {
+    try {
+      await deleteProject(project.uuid);
+      this.props.history.push("/projects");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        console.log("This project has been deleted.");
+      }
+    }
+  };
+
   handleDelete = async (user) => {
     if (this.state.activeIndex === 1) {
       const originalUsers = this.state.data.project_owners;
@@ -363,6 +375,20 @@ class projectForm extends Form {
                       </tr>
                     );
                   })}
+                  {
+                    canUpdate && 
+                    <tr>
+                      <td>Delete Project</td>
+                      <td>
+                        <button
+                          onClick={() => {this.handleDeleteProject(that.state.data)}}
+                          className="btn btn-danger btn-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>

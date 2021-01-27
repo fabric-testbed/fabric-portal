@@ -7,8 +7,6 @@ import ProjectsTable from "./ProjectsTable";
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
 
-import { deleteProject } from "../services/projectRegistryService";
-
 import paginate from "../utils/paginate";
 import _ from "lodash";
 
@@ -28,26 +26,6 @@ class Projects extends React.Component {
     const { data: people } = await getCurrentUser();
     this.setState({ projects: people.projects, roles: people.roles })
   }
-
-  handleDelete = async (project) => {
-    const originalProjects = this.state.projects;
-    // update the state of the component.
-    // create a new projects array without current selected project.
-    const projects = originalProjects.filter((p) => {
-      return p.uuid !== project.uuid;
-    });
-
-    // new projects obj will overwrite old one in state
-    this.setState({ projects: projects });
-
-    try {
-      await deleteProject(project.uuid);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        console.log("This project has already been deleted");
-      this.setState({ projects: originalProjects });
-    }
-  };
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -104,7 +82,7 @@ class Projects extends React.Component {
               </Link>
             )
           }
-          <p className="mt-4">There are no project in the database.</p>
+          <p className="mt-4">There is no project that you have permission.</p>
         </div>
       );
     }
@@ -133,12 +111,11 @@ class Projects extends React.Component {
             )
           }
         </div>
-        <p>Showing {totalCount} projects in the database.</p>
+        <p>Showing {totalCount} projects that you have permission.</p>
         <ProjectsTable
           projects={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
-          onDelete={this.handleDelete}
         />
         <Pagination
           itemsCount={totalCount}
