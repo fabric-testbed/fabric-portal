@@ -74,7 +74,7 @@ class Form extends Component {
     );
   }
 
-  renderInput(name, label, type = "text") {
+  renderInput(name, label, notDisabled, type = "text") {
     const { data, errors } = this.state;
 
     return (
@@ -85,11 +85,12 @@ class Form extends Component {
         label={label}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={!notDisabled}
       />
     );
   }
 
-  renderTextarea(name, label, type = "text") {
+  renderTextarea(name, label, notDisabled, type = "text") {
     const { data, errors } = this.state;
 
     return (
@@ -100,6 +101,7 @@ class Form extends Component {
         label={label}
         onChange={this.handleChange}
         error={errors[name]}
+        disabled={!notDisabled}
       />
     );
   }
@@ -117,7 +119,7 @@ class Form extends Component {
   }
 
 
-  renderSelect(name, label, currentOptionName, options) {
+  renderSelect(name, label, notDisabled, currentOptionName, options) {
     const { data, errors } = this.state;
 
     return (
@@ -129,6 +131,7 @@ class Form extends Component {
             options={options}
             onChange={this.handleChange}
             error={errors[name]}
+            disabled={!notDisabled}
         />
     );
 }

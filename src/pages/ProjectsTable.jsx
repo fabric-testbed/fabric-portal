@@ -19,23 +19,6 @@ class ProjectsTable extends Component {
     },
   ];
 
-  deletedColumn = {
-    key: "delete",
-    content: (project) => (
-      <button
-        onClick={() => this.props.onDelete(project)}
-        className="btn btn-danger btn-sm"
-      >
-        Delete
-      </button>
-    ),
-  };
-
-  constructor() {
-    super();
-    this.columns.push(this.deletedColumn);
-  }
-
   render() {
     const { projects, onSort, sortColumn } = this.props;
     return (
