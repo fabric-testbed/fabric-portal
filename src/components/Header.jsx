@@ -42,7 +42,7 @@ class Header extends React.Component {
   handleLogout = () => {
     // remove stored user ID got from UIS whoami.
     localStorage.removeItem("userID");
-      // remove cookie for cookie consent choice.
+    // remove cookie for cookie consent choice.
     localStorage.removeItem("cookieConsent");
     document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     window.location.href = "/logout";

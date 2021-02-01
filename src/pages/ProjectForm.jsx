@@ -4,12 +4,15 @@ import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
+import DeleteModal from "../components/common/DeleteModal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
+import { getCurrentUser } from "../services/prPeopleService.js";
+import { deleteProject } from "../services/projectRegistryService";
 
 import {
   getProject,
@@ -35,6 +38,7 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
+    roles: [],
     projectStaticInfoRows: [
       { label: "Project ID", path: "uuid" },
       { label: "Project Tags", path: "tags" },
@@ -101,6 +105,8 @@ class projectForm extends Form {
 
   async componentDidMount() {
     await this.populateProject();
+    const { data: people } = await getCurrentUser();
+    this.setState({ roles: people.roles })
   }
 
   mapToViewModel(project) {
@@ -205,6 +211,17 @@ class projectForm extends Form {
     }
   };
 
+  handleDeleteProject = async (project) => {
+    try {
+      await deleteProject(project.uuid);
+      this.props.history.push("/projects");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        console.log("This project has been deleted.");
+      }
+    }
+  };
+
   handleDelete = async (user) => {
     if (this.state.activeIndex === 1) {
       const originalUsers = this.state.data.project_owners;
@@ -286,131 +303,192 @@ class projectForm extends Form {
     });
   }
 
+  checkProjectRole = (projectID, role) => {
+    let role_str = projectID + "-" + role;
+    return this.state.roles.indexOf(role_str) > -1;
+  };
+
   render() {
     const projectId = this.props.match.params.id;
     const that = this;
+    const {
+      data,
+      originalProjectName,
+      SideNavItems,
+      activeIndex,
+      roles,
+      projectStaticInfoRows,
+      ownerSearchInput,
+      ownerSetting,
+      owners,
+      memberSearchInput,
+      memberSetting,
+      members,
+    } = this.state;
+    let isFacilityOperator = roles.indexOf("facility-operators") > -1;
+    // only facility operator or project creator
+    // can update project/ delete project/ update owner;
+    let canUpdate = isFacilityOperator || 
+      data.created_by.uuid === localStorage.getItem("userID");
+    // only facility operator or project owner can update member;
+    let canUpdateMember = isFacilityOperator || 
+      this.checkProjectRole(data.uuid, "po");
 
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm history={this.props.history} />
+          <NewProjectForm
+            history={this.props.history}
+            isFacilityOperator={isFacilityOperator}
+          />
         </div>
       );
     } else {
       return (
         <div className="container">
-          <h1>Project - {this.state.originalProjectName}</h1>
+          <h1>Project - {originalProjectName}</h1>
           <div className="row mt-4">
             <SideNav
-              items={this.state.SideNavItems}
+              items={SideNavItems}
               handleChange={this.handleSideNavChange}
             />
             <div
-              className={`${this.state.activeIndex !== 0 ? "d-none" : "col-9"}`}
+              className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
             >
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name")}
-                {this.renderTextarea("description", "Description")}
-                {this.renderSelect("facility", "Facility", this.state.data.facility, facilityOptions)}
-                {this.renderInputTag("tags", "Tags")}
-                {this.renderButton("Save")}
+                {this.renderInput("name", "Name", canUpdate)}
+                {this.renderTextarea("description", "Description", canUpdate)}
+                {this.renderSelect("facility", "Facility", canUpdate, data.facility, facilityOptions)}
+                {isFacilityOperator && this.renderInputTag("tags", "Tags")}
+                {canUpdate && this.renderButton("Save")}
               </form>
               <table className="table table-striped table-bordered mt-4">
                 <tbody>
-                  {this.state.projectStaticInfoRows.map((row, index) => {
+                  {projectStaticInfoRows.map((row, index) => {
                     return (
                       <tr key={`project-basic-info-${index}`}>
                         <td>{row.label}</td>
                         <td>
                           {row.path !== "tags"
-                            ? _.get(this.state.data, row.path)
-                            : this.renderTags(_.get(this.state.data, row.path))}
+                            ? _.get(data, row.path)
+                            : this.renderTags(_.get(data, row.path))}
                         </td>
                       </tr>
                     );
                   })}
+                  {
+                    canUpdate && 
+                    <tr>
+                      <td>Danger Zone</td>
+                      <td>
+                        <DeleteModal
+                          name={"Delete Project"}
+                          text={"Are you sure you want to delete the project? This process cannot be undone."}
+                          onDeleteProject={() => this.handleDeleteProject(that.state.data)}
+                        />
+                      </td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>
             <div
               className={`${
-                this.state.activeIndex !== 1
+                activeIndex !== 1
                   ? "d-none"
                   : "col-9 d-flex flex-row"
               }`}
             >
               <div className="w-75">
-                <input
-                  className="form-control search-owner-input mb-4"
-                  value={this.state.ownerSearchInput}
-                  placeholder="Search by user name (at least 4 letters) to add more project owners..."
-                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                />
+                { 
+                  canUpdate
+                  &&
+                  <input
+                    className="form-control search-owner-input mb-4"
+                    value={ownerSearchInput}
+                    placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                  />
+                }
                 <ProjectUserTable
-                  users={this.state.data.project_owners}
-                  sortColumn={this.state.ownerSetting.sortColumn}
+                  users={data.project_owners}
+                  sortColumn={ownerSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
+                  canUpdate={canUpdate}
                 />
               </div>
-              <div className="search-result w-25 border ml-2 p-2">
-                <ul className="list-group text-center m-2">
-                  <li className="list-group-item">Search Result:</li>
-                  {this.state.owners.map((user, index) => {
-                    return (
-                      <li key={index} className="list-group-item">
-                        <span>{user.name}</span>
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => that.handleAddUser(user)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              { 
+                canUpdate
+                &&
+                <div className="search-result w-25 border ml-2 p-2">
+                  <ul className="list-group text-center m-2">
+                    <li className="list-group-item">Search Result:</li>
+                    {owners.map((user, index) => {
+                      return (
+                        <li key={index} className="list-group-item">
+                          <span>{user.name}</span>
+                          <button
+                            className="btn btn-sm btn-primary ml-2"
+                            onClick={() => that.handleAddUser(user)}
+                          >
+                            <FontAwesomeIcon icon={faPlus} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              }
             </div>
             <div
               className={`${
-                this.state.activeIndex !== 2
+                activeIndex !== 2
                   ? "d-none"
                   : "col-9 d-flex flex-row"
               }`}
             >
               <div className="w-75">
-                <input
-                  className="form-control search-member-input mb-4"
-                  placeholder="Search by user name (at least 4 letters) to add more project members..."
-                  value={this.state.memberSearchInput}
-                  onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                />
+                { 
+                  canUpdateMember
+                  &&
+                  <input
+                    className="form-control search-member-input mb-4"
+                    placeholder="Search by user name (at least 4 letters) to add more project members..."
+                    value={memberSearchInput}
+                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
+                  />
+                }
                 <ProjectUserTable
-                  users={this.state.data.project_members}
-                  sortColumn={this.state.memberSetting.sortColumn}
+                  users={data.project_members}
+                  sortColumn={memberSetting.sortColumn}
                   onSort={this.handleSort}
                   onDelete={this.handleDelete}
+                  canUpdate={canUpdateMember}
                 />
               </div>
-              <div className="search-result w-25 border ml-2 p-2">
-                <ul className="list-group text-center m-2">
-                  <li className="list-group-item">Search Result:</li>
-                  {this.state.members.map((user, index) => {
-                    return (
-                      <li key={index} className="list-group-item">
-                        <span>{user.name}</span>
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => that.handleAddUser(user)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              {
+                canUpdateMember
+                &&
+                <div className="search-result w-25 border ml-2 p-2">
+                  <ul className="list-group text-center m-2">
+                    <li className="list-group-item">Search Result:</li>
+                    {members.map((user, index) => {
+                      return (
+                        <li key={index} className="list-group-item">
+                          <span>{user.name}</span>
+                          <button
+                            className="btn btn-sm btn-primary ml-2"
+                            onClick={() => that.handleAddUser(user)}
+                          >
+                            <FontAwesomeIcon icon={faPlus} />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              }
             </div>
           </div>
         </div>

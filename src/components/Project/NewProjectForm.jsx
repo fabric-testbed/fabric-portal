@@ -149,14 +149,15 @@ class NewProjectForm extends Form {
 
   render() {
     const that = this;
+    const { isFacilityOperator } = this.props;
     return (
       <div>
         <h1>New Project</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name")}
-          {this.renderTextarea("description", "Description")}
-          {this.renderSelect("facility", "Facility", null, facilityOptions)}
-          {this.renderInputTag("tags", "Tags")}
+          {this.renderInput("name", "Name", true)}
+          {this.renderTextarea("description", "Description", true)}
+          {this.renderSelect("facility", "Facility", true, null, facilityOptions)}
+          {isFacilityOperator && this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">
