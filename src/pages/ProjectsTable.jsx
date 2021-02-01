@@ -14,8 +14,8 @@ class ProjectsTable extends Component {
     { path: "description", label: "Description" },
     { path: "facility", label: "Facility" },
     {
-      path: "created_by",
-      label: "Creator ID",
+      path: "created_time",
+      label: "Created Time",
     },
   ];
 
