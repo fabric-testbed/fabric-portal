@@ -13,9 +13,14 @@ const projectStaticInfoRows = [
   { label: "Created Time", path: "created_time" },
 ];
 
+const handleClick = () => {
+  alert("This function is to be developed!")
+}
+
 const BasicProjectForm = ({project}) =>{
     return (
       <div>
+        <h1>Project - {project.name}</h1>
         <table className="table table-striped table-bordered mt-4">
           <tbody>
             {projectStaticInfoRows.map((row, index) => {
@@ -30,6 +35,12 @@ const BasicProjectForm = ({project}) =>{
             })}
           </tbody>
         </table>
+        <button
+          onClick={() => handleClick()}
+          className="btn btn-primary"
+        >
+          Request to Join
+        </button>
       </div>
     )
 }
