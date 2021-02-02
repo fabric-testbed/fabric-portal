@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
-import ProjectsTable from "./ProjectsTable";
+import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
+import BasicProjectForm from "../components/Project/BasicProjectForm";
 
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
@@ -193,6 +194,7 @@ class Projects extends React.Component {
     return (
       <div className="container">
         <h1>Projects</h1>
+        <BasicProjectForm project={this.state.myProjects[0]} />
         <div className="toolbar">
           <SearchBox
             value={searchQuery}
