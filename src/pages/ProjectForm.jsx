@@ -4,6 +4,7 @@ import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
+import BasicProjectForm from "../components/Project/BasicProjectForm";
 import DeleteModal from "../components/common/DeleteModal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -326,6 +327,11 @@ class projectForm extends Form {
       members,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
+    // ***** FO/ Project Member or not *****
+    let canViewForm = isFacilityOperator || 
+      this.checkProjectRole(data.uuid, "pm");
+
+    // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
     let canUpdate = isFacilityOperator || 
@@ -333,7 +339,8 @@ class projectForm extends Form {
     // only facility operator or project owner can update member;
     let canUpdateMember = isFacilityOperator || 
       this.checkProjectRole(data.uuid, "po");
-
+    
+    // 1. New project.
     if (projectId === "new") {
       return (
         <div className="container">
@@ -344,6 +351,16 @@ class projectForm extends Form {
         </div>
       );
     } else {
+      // 2. Only show basic project info table
+      // when the user is not Facility Operator/ Project Member.
+      if (!canViewForm) {
+        return (
+          <div className="container">
+            <BasicProjectForm project={data} />
+          </div>
+        )
+      } else {
+       // 3. Show detailed project form.
       return (
         <div className="container">
           <h1>Project - {originalProjectName}</h1>
@@ -494,6 +511,7 @@ class projectForm extends Form {
         </div>
       );
     }
+  }
   }
 }
 
