@@ -1,21 +1,29 @@
 import React from "react";
 
-const Modal = ({ id, title, content, error, ...rest }) => {
+const Modal = ({ name, label, error, ...rest }) => {
   return (
     <div>
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-toggle="modal"
+        data-target="#exampleModalCenter"
+      >
+        Launch demo modal
+      </button>
       <div
         className="modal fade"
-        id={id}
+        id="exampleModalCenter"
         tabindex="-1"
         role="dialog"
-        aria-labelledby={`${id}-title`}
+        aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id={`${id}-title`}>
-                {title}
+              <h5 className="modal-title" id="exampleModalLongTitle">
+                Modal title
               </h5>
               <button
                 type="button"
@@ -26,25 +34,22 @@ const Modal = ({ id, title, content, error, ...rest }) => {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-              {content}
-            </div>
+            <div className="modal-body">...</div>
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
               >
-                Cancel
+                Close
               </button>
               <button type="button" className="btn btn-primary">
-                Next
+                Save changes
               </button>
             </div>
           </div>
         </div>
       </div>
-      {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );
 };

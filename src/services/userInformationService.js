@@ -1,12 +1,13 @@
-import http from './httpService';
+import axios from "axios";
 import { userInformationApiUrl } from "../config.json";
 
 const apiEndpoint = userInformationApiUrl;
+const config = { withCredentials: true };
 
 export function getPeopleByName(name) {
-  return http.get(apiEndpoint + "?person_name=" + name);
+  return axios.get(apiEndpoint + "?person_name=" + name, config);
 }
 
 export function getWhoAmI(){
-  return http.get(apiEndpoint + "/whoami");
+  return axios.get(apiEndpoint + "/whoami", config);
 }

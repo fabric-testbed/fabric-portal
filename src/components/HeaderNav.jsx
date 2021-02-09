@@ -3,12 +3,9 @@ import { NavLink } from "react-router-dom";
 
 import { hasCookie } from "../services/dummyAuth";
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import logo from "../imgs/fabric-brand.png";
 
-class Header extends React.Component {
+class HeaderNav extends React.Component {
   state = {
     navItems: [
       { name: "Home", path: "/", child: [], exact: true },
@@ -16,7 +13,10 @@ class Header extends React.Component {
       {
         name: "Projects",
         path: "/projects",
-        child: [],
+        child: [
+          // { name: "All Projects", path: "/projects/all-projects" },
+          // { name: "My Projects", path: "/projects/my-projects" },
+        ],
         exact: false,
       },
       {
@@ -30,23 +30,6 @@ class Header extends React.Component {
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
-
-  handleLogin = () => {
-    if (localStorage.getItem("cookieConsent")) {
-      window.location.href = "/login";
-    } else {
-      toast("Please acknowledge our cookie policy first: click OK on the bottom banner before login.");
-    }
-  }
-
-  handleLogout = () => {
-    // remove stored user ID got from UIS whoami.
-    localStorage.removeItem("userID");
-      // remove cookie for cookie consent choice.
-    localStorage.removeItem("cookieConsent");
-    document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.location.href = "/logout";
-  }
 
   render() {
     return (
@@ -82,7 +65,9 @@ class Header extends React.Component {
               </li>
               <li className="nav-item ml-4">
                 <button
-                  onClick={this.handleLogin}
+                  onClick={() => {
+                    window.location.href = "/login";
+                  }}
                   className="btn btn-md btn-warning text-white"
                 >
                   Login
@@ -140,7 +125,9 @@ class Header extends React.Component {
               <React.Fragment>
                 <li className="nav-item ml-4">
                   <button
-                    onClick={this.handleLogout}
+                    onClick={() => {
+                      window.location.href = "/logout";
+                    }}
                     className="btn btn-md btn-warning text-white"
                   >
                     Logout
@@ -155,4 +142,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default HeaderNav;

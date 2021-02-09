@@ -9,8 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getPeopleByName } from "../services/userInformationService";
-import { facilityOptions } from "../services/portalData.json";
-
 import {
   getProject,
   saveProject,
@@ -310,8 +308,8 @@ class projectForm extends Form {
             >
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name")}
-                {this.renderTextarea("description", "Description")}
-                {this.renderSelect("facility", "Facility", this.state.data.facility, facilityOptions)}
+                {this.renderInput("description", "Description")}
+                {this.renderInput("facility", "Facility")}
                 {this.renderInputTag("tags", "Tags")}
                 {this.renderButton("Save")}
               </form>

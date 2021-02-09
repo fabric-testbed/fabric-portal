@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Modal from "../common/Modal";
-
 import { getCurrentUser } from "../../services/prPeopleService.js";
-import { projectLeadRequest } from "../../services/portalData.json";
 
 class MyRoles extends React.Component {
   state = {
@@ -80,21 +77,7 @@ class MyRoles extends React.Component {
             </tr>
           </tbody>
         </table>
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-toggle="modal"
-            data-target="#request-project-lead-modal"
-          >
-            Request to be Project Lead
-          </button>
-          <Modal
-            id={"request-project-lead-modal"}
-            title={projectLeadRequest.title}
-            content={projectLeadRequest.content}
-          />
-        </div>
+
         <h4 className="mt-4">Project Roles</h4>
         <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
