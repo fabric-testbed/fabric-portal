@@ -2,13 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
-import ProjectsTable from "./ProjectsTable";
+import ProjectsTable from "../components/Project/ProjectsTable";
+import RadioBtnGroup from "../components/common/RadioBtnGroup";
 
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
-
-// import { getProjects } from "../services/projectRegistryService";
-import { deleteProject } from "../services/projectRegistryService";
+import { getProjects } from "../services/projectRegistryService.js";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -16,38 +15,34 @@ import _ from "lodash";
 class Projects extends React.Component {
   state = {
     projects: [],
+    allProjects: [],
+    myProjects: [],
+    otherProjects: [],
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
+    roles: [],
     sortColumn: { path: "name", order: "asc" },
+    radioBtnValues: [
+      { display: "My Projects", value: "active", isActive: true },
+      { display: "Other Projects", value: "inactive", isActive: false },
+    ],
+    projectType: "myProjects",
   };
 
   async componentDidMount() {
     const { data: user } = await getWhoAmI();
     localStorage.setItem("userID", user.uuid);
     const { data: people } = await getCurrentUser();
-    this.setState({ projects: people.projects })
+    const { data: allProjects } = await getProjects();
+    this.setState({ 
+      projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
+      myProjects: people.projects,
+      allProjects: allProjects,
+      roles: people.roles,
+      otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
+    })
   }
-
-  handleDelete = async (project) => {
-    const originalProjects = this.state.projects;
-    // update the state of the component.
-    // create a new projects array without current selected project.
-    const projects = originalProjects.filter((p) => {
-      return p.uuid !== project.uuid;
-    });
-
-    // new projects obj will overwrite old one in state
-    this.setState({ projects: projects });
-
-    try {
-      await deleteProject(project.uuid);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        console.log("This project has already been deleted");
-      this.setState({ projects: originalProjects });
-    }
-  };
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -85,21 +80,35 @@ class Projects extends React.Component {
     return { totalCount: filtered.length, data: projects };
   };
 
-  render() {
-    const { length: count } = this.state.projects;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+  toggleRadioBtn = (value) => {
+    // set isActive field for radio button input style change
+    this.setState((prevState) => ({
+      radioBtnValues: prevState.radioBtnValues.map((el) =>
+        el.value === value
+          ? { ...el, isActive: true }
+          : { ...el, isActive: false }
+      ),
+    }));
 
-    if (count === 0) {
-      return (
-        <div className="container">
-          <Link to="/projects/new" className="btn btn-primary">
-            Create Project
-          </Link>
-          <p className="mt-4">There are no project in the database.</p>
-        </div>
-      );
+    if (value === "active") {
+      if (this.state.roles.indexOf("facility-operators") > -1) {
+        this.setState({ projects: this.state.allProjects, projectType: "myProjects" });
+      } else {
+        this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
+      }
+    } else if (value === "inactive") {
+      if (this.state.roles.indexOf("facility-operators") > -1) { 
+        this.setState({ projects: [], projectType: "otherProjects" });
+      } else {
+        this.setState({ projects: this.state.otherProjects, projectType: "otherProjects" });
+      }
     }
 
+    this.setState({ currentPage: 1 });
+  };
+
+  render() {
+    const { pageSize, currentPage, sortColumn, searchQuery, roles } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -111,16 +120,34 @@ class Projects extends React.Component {
             onChange={this.handleSearch}
             className="my-0"
           />
-          <Link to="/projects/new" className="btn btn-primary">
-            Create Project
-          </Link>
+          {
+            (
+              roles.indexOf("project-leads") > -1 || 
+              roles.indexOf("facility-operators") > -1
+            )
+            &&
+            (
+              <Link to="/projects/new" className="btn btn-primary">
+                Create Project
+              </Link>
+            )
+          }
         </div>
-        <p>Showing {totalCount} projects in the database.</p>
+        <div className="d-flex flex-row justify-content-between">
+          <RadioBtnGroup
+            values={this.state.radioBtnValues}
+            onChange={this.toggleRadioBtn}
+          />
+          { this.state.radioBtnValues[0].isActive ?
+            <p>Showing {totalCount} projects that you have access to view details.</p> :
+            <p>Showing {totalCount} projects that you need join to view details.</p>
+          }
+        </div>
         <ProjectsTable
           projects={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
-          onDelete={this.handleDelete}
+          type={this.state.projectType}
         />
         <Pagination
           itemsCount={totalCount}

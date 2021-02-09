@@ -74,7 +74,7 @@ class MyRoles extends React.Component {
               <td>Facility Operator</td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("facility-operator") > -1
+                  people.roles.indexOf("facility-operators") > -1
                 )}
               </td>
             </tr>
