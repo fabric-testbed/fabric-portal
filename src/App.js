@@ -11,18 +11,20 @@ import Guide from "./pages/Guide";
 import Links from "./pages/Links";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
-import HeaderNav from "./components/HeaderNav";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
+
+import { ToastContainer } from 'react-toastify';
 
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
-import "./App.scss";
+import "./styles/App.scss";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <HeaderNav />
+        <Header />
         <Switch>
           <Route path="/" component={Home} exact />
           <ProtectedRoute path="/resources" component={Resources} />
@@ -35,6 +37,7 @@ function App() {
           <Route component={NotFound} />
         </Switch>
       </Router>
+      <ToastContainer />
       <Footer />
     </div>
   );
