@@ -14,80 +14,10 @@ import _ from "lodash";
 
 class Projects extends React.Component {
   state = {
-    projects: [
-      {
-        "created_by": "00000000-0000-0000-0000-000000000000",
-        "created_time": "2020-12-07 20:29:56",
-        "description": "INSERT_PROJECT_DESCRIPTION",
-        "facility": "FABRIC",
-        "name": "Test Project",
-        "uuid": "abf0014e-72f5-44ab-ac63-5ec5a5debbb8"
-      },
-      {
-        "created_by": "c3ce756d-c5b6-4501-b369-1478e4f47b6a",
-        "created_time": "2021-01-29 14:35:45",
-        "description": "Test Project by Account 2 (PL)",
-        "facility": "FABRIC",
-        "name": "Test Project by Account 2 (PL)",
-        "uuid": "f519a2b3-14f4-4fc9-90af-8bd625bb6894"
-      }
-    ],
-    allProjects: [
-      {
-        "created_by": {
-          "email": "anonymous@fabric-testbed.net",
-          "name": "anonymous user",
-          "uuid": "00000000-0000-0000-0000-000000000000"
-        },
-        "created_time": "2020-12-07 20:29:56",
-        "description": "INSERT_PROJECT_DESCRIPTION",
-        "facility": "FABRIC",
-        "name": "Test Project",
-        "uuid": "abf0014e-72f5-44ab-ac63-5ec5a5debbb8"
-      },
-      {
-        "created_by": {
-          "email": "fabric.tb.1@gmail.com",
-          "name": "FABRIC Test Account 1",
-          "uuid": "e5d64d09-fb37-4101-b90a-9a899a1cc468"
-        },
-        "created_time": "2021-01-29 15:00:55",
-        "description": "Test Project by Account 1 (FO)",
-        "facility": "FABRIC",
-        "name": "Test Project by Account 1 (FO)",
-        "uuid": "fd53b04d-3b31-4576-a253-03d3c1bcbaac"
-      },
-      {
-        "created_by": {
-          "email": "fabric.tb.2@gmail.com",
-          "name": "FABRIC Test Account 2",
-          "uuid": "c3ce756d-c5b6-4501-b369-1478e4f47b6a"
-        },
-        "created_time": "2021-01-29 14:35:45",
-        "description": "Test Project by Account 2 (PL)",
-        "facility": "FABRIC",
-        "name": "Test Project by Account 2 (PL)",
-        "uuid": "f519a2b3-14f4-4fc9-90af-8bd625bb6894"
-      }
-    ],
-    myProjects: [
-      {
-        "created_by": "00000000-0000-0000-0000-000000000000",
-        "created_time": "2020-12-07 20:29:56",
-        "description": "INSERT_PROJECT_DESCRIPTION",
-        "facility": "FABRIC",
-        "name": "Test Project",
-        "uuid": "abf0014e-72f5-44ab-ac63-5ec5a5debbb8"
-      },
-      {
-        "created_by": "c3ce756d-c5b6-4501-b369-1478e4f47b6a",
-        "created_time": "2021-01-29 14:35:45",
-        "description": "Test Project by Account 2 (PL)",
-        "facility": "FABRIC",
-        "name": "Test Project by Account 2 (PL)",
-        "uuid": "f519a2b3-14f4-4fc9-90af-8bd625bb6894"
-      }
-    ],
+    projects: [],
+    allProjects: [],
+    myProjects: [],
+    otherProjects: [],
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
@@ -100,18 +30,19 @@ class Projects extends React.Component {
     projectType: "myProjects",
   };
 
-  // async componentDidMount() {
-  //   const { data: user } = await getWhoAmI();
-  //   localStorage.setItem("userID", user.uuid);
-  //   const { data: people } = await getCurrentUser();
-  //   const { data: allProjects } = await getProjects();
-  //   this.setState({ 
-  //     projects: people.projects,
-  //     myProjects: people.projects,
-  //     allProjects: allProjects,
-  //     roles: people.roles,
-  //   })
-  // }
+  async componentDidMount() {
+    const { data: user } = await getWhoAmI();
+    localStorage.setItem("userID", user.uuid);
+    const { data: people } = await getCurrentUser();
+    const { data: allProjects } = await getProjects();
+    this.setState({ 
+      projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
+      myProjects: people.projects,
+      allProjects: allProjects,
+      roles: people.roles,
+      otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
+    })
+  }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -160,38 +91,24 @@ class Projects extends React.Component {
     }));
 
     if (value === "active") {
-      this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
+      if (this.state.roles.indexOf("facility-operators") > -1) {
+        this.setState({ projects: this.state.allProjects, projectType: "myProjects" });
+      } else {
+        this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
+      }
     } else if (value === "inactive") {
-      this.setState({ projects: this.state.allProjects, projectType: "otherProjects" });
+      if (this.state.roles.indexOf("facility-operators") > -1) { 
+        this.setState({ projects: [], projectType: "otherProjects" });
+      } else {
+        this.setState({ projects: this.state.otherProjects, projectType: "otherProjects" });
+      }
     }
 
     this.setState({ currentPage: 1 });
   };
 
   render() {
-    const { length: count } = this.state.projects;
     const { pageSize, currentPage, sortColumn, searchQuery, roles } = this.state;
-
-    if (count === 0) {
-      return (
-        <div className="container">
-          {
-            (
-              roles.indexOf("project-leads") > -1 || 
-              roles.indexOf("facility-operators") > -1
-            )
-            &&
-            (
-              <Link to="/projects/new" className="btn btn-primary">
-                Create Project
-              </Link>
-            )
-          }
-          <p className="mt-4">There is no project in the database.</p>
-        </div>
-      );
-    }
-
     const { totalCount, data } = this.getPageData();
 
     return (
