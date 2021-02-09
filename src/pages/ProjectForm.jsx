@@ -326,6 +326,8 @@ class projectForm extends Form {
       members,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
+
+    // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
     let canUpdate = isFacilityOperator || 
@@ -333,7 +335,8 @@ class projectForm extends Form {
     // only facility operator or project owner can update member;
     let canUpdateMember = isFacilityOperator || 
       this.checkProjectRole(data.uuid, "po");
-
+    
+    // 1. New project.
     if (projectId === "new") {
       return (
         <div className="container">
@@ -344,6 +347,7 @@ class projectForm extends Form {
         </div>
       );
     } else {
+      // 2. Show detailed project form.
       return (
         <div className="container">
           <h1>Project - {originalProjectName}</h1>
