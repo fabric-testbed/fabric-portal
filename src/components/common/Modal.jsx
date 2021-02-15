@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ id, title, content, error, ...rest }) => {
+const Modal = ({ id, title, link, content, error, ...rest }) => {
   return (
     <div>
       <div
@@ -37,7 +37,11 @@ const Modal = ({ id, title, content, error, ...rest }) => {
               >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                href={link}
+              >
                 Next
               </button>
             </div>
