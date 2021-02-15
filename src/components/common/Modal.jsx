@@ -6,7 +6,7 @@ const Modal = ({ id, title, link, content, error, ...rest }) => {
       <div
         className="modal fade"
         id={id}
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-labelledby={`${id}-title`}
         aria-hidden="true"
@@ -40,7 +40,6 @@ const Modal = ({ id, title, link, content, error, ...rest }) => {
               <button
                 type="button"
                 className="btn btn-primary"
-                href={link}
               >
                 Next
               </button>
