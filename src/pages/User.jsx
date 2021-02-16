@@ -15,36 +15,7 @@ class User extends React.Component {
       { name: "MESSAGE CENTER", active: false },
     ],
     user: {},
-    people: {
-      "email": "yaxueguo@renci.org",
-      "name": "Yaxue Guo",
-      "oidc_claim_sub": "http://cilogon.org/serverT/users/26542073",
-      "projects": [
-        {
-          "created_by": "00000000-0000-0000-0000-000000000000",
-          "created_time": "2020-12-07 20:29:56",
-          "description": "INSERT_PROJECT_DESCRIPTION",
-          "facility": "FABRIC",
-          "name": "Test Project",
-          "uuid": "abf0014e-72f5-44ab-ac63-5ec5a5debbb8"
-        },
-        {
-          "created_by": "c3ce756d-c5b6-4501-b369-1478e4f47b6a",
-          "created_time": "2021-01-29 14:35:45",
-          "description": "Test Project by Account 2 (PL)",
-          "facility": "FABRIC",
-          "name": "Test Project by Account 2 (PL)",
-          "uuid": "f519a2b3-14f4-4fc9-90af-8bd625bb6894"
-        }
-      ],
-      "roles": [
-        "facility-operators",
-        "abf0014e-72f5-44ab-ac63-5ec5a5debbb8-pm",
-        "f519a2b3-14f4-4fc9-90af-8bd625bb6894-po",
-        "f519a2b3-14f4-4fc9-90af-8bd625bb6894-pm"
-      ],
-      "uuid": "602928fd-1e4b-43f4-aa9b-d31c9fe9d7a0"
-    },
+    people: {},
     activeIndex: 0,
     componentNames: [AccountInfo, MyRoles, MessageCenter],
   };
