@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 
-import { getCurrentUser } from "../../services/prPeopleService.js";
 import { projectLeadRequest } from "../../services/portalData.json";
 
 class MyRoles extends React.Component {
