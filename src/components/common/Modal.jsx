@@ -1,7 +1,6 @@
 import React from "react";
 
 class Modal extends React.Component {
-
   render() {
     const { id, title, link, content } = this.props;
     return (

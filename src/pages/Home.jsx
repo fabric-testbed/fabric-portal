@@ -1,7 +1,7 @@
 import React from "react";
 
 import CardOfItems from "../components/common/CardOfItems";
-import Modal from "../components/common/Modal";
+import ReactModal from "../components/common/ReactModal";
 
 import { selfEnrollRequest } from "../services/portalData.json";
 import { homepageIntro } from "../services/portalData.json";
@@ -10,15 +10,6 @@ import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import CookieConsent from "react-cookie-consent";
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-  }
-
-  state = {
-    updates: getLatestUpdates(2),
-  };
-
   componentDidMount() {
     // React.findDOMNode(this.refs[selfEnrollRequest.id]).modal("show");
   }
@@ -34,16 +25,17 @@ class Home extends React.Component {
           </div>
         </div>
         <div className="self-enroll-container">
-          <Modal
+          {/* <Modal
             ref={selfEnrollRequest.id}
             id={selfEnrollRequest.id}
             title={selfEnrollRequest.title}
             link={selfEnrollRequest.link}
             content={selfEnrollRequest.content}
-          />
+          /> */}
+          <ReactModal />
         </div>
         <div className="home-lower">
-          <CardOfItems header={"Facility Updates"} data={this.state.updates} />
+          <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
         </div>
         <CookieConsent
           location="bottom"
