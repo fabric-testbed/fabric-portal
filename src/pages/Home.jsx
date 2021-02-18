@@ -6,10 +6,27 @@ import ReactModal from "../components/common/ReactModal";
 import { selfEnrollRequest } from "../services/portalData.json";
 import { homepageIntro } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
+import { getWhoAmI } from "../services/userInformationService.js";
 
 import CookieConsent from "react-cookie-consent";
 
 class Home extends React.Component {
+  state = {
+    user: {},
+    isActiveUser: true,
+  }
+
+  async componentDidMount(){
+    try {
+      const { data: user } = await getWhoAmI();
+      localStorage.setItem("userID", user.uuid);
+    } catch(err) {
+      console.log("/whoami " + err);
+      // not actice user, show self-enrollment modal
+      this.setState({ isActiveUser: false })
+    }
+  }
+
   render() {
     return (
       <div className="home-container">
@@ -20,14 +37,18 @@ class Home extends React.Component {
             <button className="btn btn-warning">Learn More</button>
           </div>
         </div>
-        <div className="self-enroll-container">
-          <ReactModal
-            id={selfEnrollRequest.id}
-            title={selfEnrollRequest.title}
-            link={selfEnrollRequest.link}
-            content={selfEnrollRequest.content}
-          />
-        </div>
+
+        {
+          !this.state.isActiveUser &&
+          <div className="self-enroll-container">
+            <ReactModal
+              id={selfEnrollRequest.id}
+              title={selfEnrollRequest.title}
+              link={selfEnrollRequest.link}
+              content={selfEnrollRequest.content}
+            />
+          </div>
+        }
         <div className="home-lower">
           <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
         </div>

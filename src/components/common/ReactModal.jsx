@@ -5,28 +5,22 @@ import Button from 'react-bootstrap/Button'
 import Parser from 'html-react-parser';
 
 function ReactModal(props) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true, false);
 
   const logout = () => {
     // clear fabric-service auth cookie.
     // portal goes back to login page/ navbar with login button.
     document.cookie = "fabric-service=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    console.log("cleared fabric-service cookie...")
   }
 
   const handleClose = () => {
     setShow(false);
     logout();
   }
-  const handleShow = () => {
-    setShow(true);
-  };
 
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>
-        {props.id}
-      </Button>
-
       <Modal
         size="lg"
         show={show}
