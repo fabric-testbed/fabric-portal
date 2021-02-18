@@ -8,6 +8,8 @@ import { homepageIntro } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { getWhoAmI } from "../services/userInformationService.js";
 
+import { hasCookie } from "../services/dummyAuth";
+
 import CookieConsent from "react-cookie-consent";
 
 class Home extends React.Component {
@@ -30,16 +32,8 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-container">
-        <div className="home-upper">
-          <div className="home-upper-text">
-            <h1>FABRIC Portal</h1>
-            <p>{homepageIntro}</p>
-            <button className="btn btn-warning">Learn More</button>
-          </div>
-        </div>
-
         {
-          !this.state.isActiveUser &&
+          (!this.state.isActiveUser && hasCookie("fabric-service"))&&
           <div className="self-enroll-container">
             <ReactModal
               id={selfEnrollRequest.id}
@@ -49,6 +43,13 @@ class Home extends React.Component {
             />
           </div>
         }
+        <div className="home-upper">
+          <div className="home-upper-text">
+            <h1>FABRIC Portal</h1>
+            <p>{homepageIntro}</p>
+            <button className="btn btn-warning">Learn More</button>
+          </div>
+        </div>
         <div className="home-lower">
           <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
         </div>
