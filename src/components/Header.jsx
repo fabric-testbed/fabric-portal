@@ -43,10 +43,10 @@ class Header extends React.Component {
     // remove stored user ID got from UIS whoami.
     localStorage.removeItem("userID");
     // remove cookie consent choice in local storage.
-    localStorage.removeItem("cookieConsent");
+    // localStorage.removeItem("cookieConsent");
     // remove cookie consent and fabric-service auth cookie in cookies.
-    document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "fabric-service=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "fabric-service=; domain=fabric-testbed.net; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     window.location.href = "/logout";
   }
 
