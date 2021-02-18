@@ -9,6 +9,7 @@ function ReactModal(props) {
 
   const handleClose = () => {
     setShow(false);
+    window.open(props.link, "_blank");
     window.location.href = "/logout";
   }
 
@@ -28,9 +29,7 @@ function ReactModal(props) {
           { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
-          <a href={props.link} target="_blank">
-            <Button variant="primary" onClick={handleClose}>Signup</Button>
-          </a>
+          <Button variant="primary" onClick={handleClose}>Signup</Button>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
