@@ -6,8 +6,20 @@ import Parser from 'html-react-parser';
 
 function ReactModal(props) {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const logout = () => {
+    // clear fabric-service auth cookie.
+    // portal goes back to login page/ navbar with login button.
+    document.cookie = "fabric-service=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
+  const handleClose = () => {
+    setShow(false);
+    logout();
+  }
+  const handleShow = () => {
+    setShow(true);
+  };
 
   return (
     <div>
@@ -30,7 +42,7 @@ function ReactModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <a href={props.link} target="_blank">
-            <Button variant="primary">Signup</Button>
+            <Button variant="primary" onClick={handleClose}>Signup</Button>
           </a>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
