@@ -1,4 +1,5 @@
 import React from "react";
+import Parser from 'html-react-parser';
 
 class Modal extends React.Component {
   render() {
@@ -21,7 +22,7 @@ class Modal extends React.Component {
                 </h5>
               </div>
               <div className="modal-body">
-                {content}
+                { Parser(content) }
               </div>
               <div className="modal-footer">
                 <a href={link}>

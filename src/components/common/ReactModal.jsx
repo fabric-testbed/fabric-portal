@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function ReactModal() {
+import Parser from 'html-react-parser';
+
+function ReactModal(props) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -10,27 +12,27 @@ function ReactModal() {
   return (
     <div>
       <Button variant="primary" onClick={handleShow}>
-        Launch static backdrop modal
+        {props.id}
       </Button>
 
       <Modal
+        size="lg"
         show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+        <Modal.Header>
+          <Modal.Title>{props.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          I will not close if you click outside me. Don't even try to press
-          escape key.
+          { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="primary">Signup</Button>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Cancel
           </Button>
-          <Button variant="primary">Understood</Button>
         </Modal.Footer>
       </Modal>
     </div>
