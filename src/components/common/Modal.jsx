@@ -4,6 +4,10 @@ import Parser from 'html-react-parser';
 class Modal extends React.Component {
   render() {
     const { id, title, link, content } = this.props;
+    const handleSignup = () => {
+      window.open(link, "_blank");
+    }
+
     return (
       <div>
         <div
@@ -25,15 +29,14 @@ class Modal extends React.Component {
                 { Parser(content) }
               </div>
               <div className="modal-footer">
-                <a href={link} target="_blank">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-dismiss="modal"
-                  >
-                    Request
-                  </button>
-                </a>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSignup}
+                  data-dismiss="modal"
+                >
+                  Request
+                </button>
                 <button
                   type="button"
                   className="btn btn-secondary"
