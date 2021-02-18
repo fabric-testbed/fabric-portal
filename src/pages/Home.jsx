@@ -1,7 +1,9 @@
 import React from "react";
 
 import CardOfItems from "../components/common/CardOfItems";
+import Modal from "../components/common/Modal";
 
+import { selfEnrollRequest } from "../services/portalData.json";
 import { homepageIntro } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 
@@ -21,6 +23,14 @@ class Home extends React.Component {
             <p>{homepageIntro}</p>
             <button className="btn btn-warning">Learn More</button>
           </div>
+        </div>
+        <div className="self-enroll-container">
+          <Modal
+            id={"self-enroll-request-modal"}
+            title={selfEnrollRequest.title}
+            link={selfEnrollRequest.link}
+            content={selfEnrollRequest.content}
+          />
         </div>
         <div className="home-lower">
           <CardOfItems header={"Facility Updates"} data={this.state.updates} />
