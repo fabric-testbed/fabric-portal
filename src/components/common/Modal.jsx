@@ -26,7 +26,11 @@ class Modal extends React.Component {
               </div>
               <div className="modal-footer">
                 <a href={link} target="_blank">
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-dismiss="modal"
+                  >
                     Request
                   </button>
                 </a>

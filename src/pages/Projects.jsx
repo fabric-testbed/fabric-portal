@@ -140,7 +140,7 @@ class Projects extends React.Component {
           />
           { this.state.radioBtnValues[0].isActive ?
             <p>Showing {totalCount} projects that you have access to view details.</p> :
-            <p>Showing {totalCount} projects that you need join to view details.</p>
+            <p>Showing {totalCount} projects that you can join to view details.</p>
           }
         </div>
         <ProjectsTable
