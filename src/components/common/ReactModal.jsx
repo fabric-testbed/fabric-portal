@@ -7,11 +7,14 @@ import Parser from 'html-react-parser';
 function ReactModal(props) {
   const [show, setShow] = useState(true, false);
 
-  const handleClose = (action) => {
+  const handleClose = () => {
     setShow(false);
-    if (action === "signup") {
-      window.open(props.link, "_blank");
-    }
+    window.location.href = "/logout";
+  }
+
+  const handleSignup = () => {
+    setShow(false);
+    window.open(props.link, "_blank");
     window.location.href = "/logout";
   }
 
@@ -31,8 +34,8 @@ function ReactModal(props) {
           { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose("signup")}>Signup</Button>
-          <Button variant="secondary" onClick={handleClose("cancel")}>
+          <Button variant="primary" onClick={handleSignup}>Signup</Button>
+          <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
         </Modal.Footer>
