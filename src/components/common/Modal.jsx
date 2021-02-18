@@ -25,9 +25,9 @@ class Modal extends React.Component {
                 { Parser(content) }
               </div>
               <div className="modal-footer">
-                <a href={link}>
+                <a href={link} target="_blank">
                   <button type="button" className="btn btn-primary">
-                    Next
+                    Request
                   </button>
                 </a>
                 <button

@@ -29,7 +29,9 @@ function ReactModal(props) {
           { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary">Signup</Button>
+          <a href={props.link} target="_blank">
+            <Button variant="primary">Signup</Button>
+          </a>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
