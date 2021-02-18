@@ -10,9 +10,18 @@ import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import CookieConsent from "react-cookie-consent";
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+
   state = {
     updates: getLatestUpdates(2),
   };
+
+  componentDidMount() {
+    // React.findDOMNode(this.refs[selfEnrollRequest.id]).modal("show");
+  }
 
   render() {
     return (
@@ -26,7 +35,8 @@ class Home extends React.Component {
         </div>
         <div className="self-enroll-container">
           <Modal
-            id={"self-enroll-request-modal"}
+            ref={selfEnrollRequest.id}
+            id={selfEnrollRequest.id}
             title={selfEnrollRequest.title}
             link={selfEnrollRequest.link}
             content={selfEnrollRequest.content}

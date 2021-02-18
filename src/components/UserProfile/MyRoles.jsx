@@ -86,12 +86,12 @@ class MyRoles extends React.Component {
               type="button"
               className="btn btn-primary"
               data-toggle="modal"
-              data-target="#request-project-lead-modal"
+              data-target={`#${projectLeadRequest.id}`}
             >
               Request to be Project Lead
             </button>
             <Modal
-              id={"request-project-lead-modal"}
+              id={projectLeadRequest.id}
               title={projectLeadRequest.title}
               link={projectLeadRequest.link}
               content={projectLeadRequest.content}
