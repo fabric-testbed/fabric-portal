@@ -49,7 +49,7 @@ class NewProjectForm extends Form {
     uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
-    facility: Joi.label("Facility"),
+    facility: Joi.string().required().label("Facility"),
     created_by: Joi.object(),
     created_time: Joi.string().allow(""),
     project_members: Joi.array(),
@@ -156,7 +156,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderSelect("facility", "Facility", true, defaultFacility, facilityOptions)}
+          {this.renderSelect("facility", "Facility", true, null, facilityOptions)}
           {isFacilityOperator && this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
