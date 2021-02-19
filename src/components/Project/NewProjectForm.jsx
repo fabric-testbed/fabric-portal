@@ -191,7 +191,7 @@ class NewProjectForm extends Form {
             <input
               className="form-control search-owner-input mb-4"
               value={this.state.ownerSearchInput}
-              placeholder="Search by user name (at least 4 letters)..."
+              placeholder="Search by name or email (at least 4 letters)..."
               onChange={(e) => this.handleSearch(e.currentTarget.value)}
             />
             <ProjectUserTable
@@ -228,7 +228,7 @@ class NewProjectForm extends Form {
           <div className="w-75">
             <input
               className="form-control search-member-input mb-4"
-              placeholder="Search by user name (at least 4 letters)..."
+              placeholder="Search by name or email (at least 4 letters)..."
               value={this.state.memberSearchInput}
               onChange={(e) => this.handleSearch(e.currentTarget.value)}
             />
