@@ -49,7 +49,7 @@ class NewProjectForm extends Form {
     uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
-    facility: Joi.string().required().label("Facility"),
+    facility: Joi.string().label("Facility"),
     created_by: Joi.object(),
     created_time: Joi.string().allow(""),
     project_members: Joi.array(),
