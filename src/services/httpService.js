@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, (error) => {
-  if (error.response.status === 401) {
+  if (error.response && error.response.status === 401) {
     // user is not active and need signup
     // do not toast error message.
     return Promise.reject(error); 
