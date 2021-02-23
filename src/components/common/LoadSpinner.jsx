@@ -30,6 +30,7 @@ function LoadSpinner(props){
             {...props}
             style={{
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              margin: "-0.4rem 0 0 0",
               width: "100%",
               height: "100vh",
               overflow: "hidden",
