@@ -1,14 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 import Overlay from 'react-bootstrap/Overlay';
 import Button from 'react-bootstrap/Button';
 
-function LoadSpinner(){
-  const [show, setShow] = useState(false);
+function LoadSpinner(props){
   const target = useRef(null);
+  const {text, showSpinner} = props;
+  
   return (
     <div>
-      <Button ref={target} onClick={() => setShow(!show)}
+      <Button ref={target}
        style={{
         position:"absolute",
         top: 0,
@@ -23,7 +24,7 @@ function LoadSpinner(){
       >
         Hidden
       </Button>
-      <Overlay target={target.current} show={show} placement="auto">
+      <Overlay target={target.current} show={showSpinner} placement="auto">
         {({ placement, arrowProps, show: _show, popper, ...props }) => (
           <div
             {...props}
@@ -38,7 +39,7 @@ function LoadSpinner(){
             }}
             className="d-flex align-items-center justify-content-center"
           >
-            Creating project...
+            {text}
             <Spinner animation="border" role="status" variant="white" />
           </div>
         )}

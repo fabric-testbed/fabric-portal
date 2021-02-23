@@ -5,7 +5,7 @@ const Resources = () => {
   return (
   <div className="container">
     Resources
-    <LoadSpinner />
+    <LoadSpinner text={"Creating Project..."} showSpinner={false} />
   </div>
   );
 };
