@@ -4,6 +4,7 @@ import ProjectUserTable from "./ProjectUserTable";
 import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import LoadSpinner from "../common/LoadSpinner";
 
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
@@ -43,6 +44,7 @@ class NewProjectForm extends Form {
     },
     ownerSearchInput: "",
     memberSearchInput: "",
+    showSpinner: false,
   };
 
   schema = {
@@ -58,6 +60,10 @@ class NewProjectForm extends Form {
   };
 
   doSubmit = async () => {
+    // Show loading spinner and when waiting API response
+    // to prevent user clicks "submit" many times.
+    this.setState({ showSpinner: true });
+
     let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
     let memberIDs = this.state.addedMembers.map((user) => user.uuid);
     let data = { ...this.state.data };
@@ -258,6 +264,7 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
+        <LoadSpinner text={"Creating Project..."} showSpinner={this.state.showSpinner} />
       </div>
     );
   }
