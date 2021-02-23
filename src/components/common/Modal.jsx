@@ -1,19 +1,15 @@
 import React from "react";
+import Parser from 'html-react-parser';
 
 class Modal extends React.Component {
-
   render() {
     const { id, title, link, content } = this.props;
+    const handleSignup = () => {
+      window.open(link, "_blank");
+    }
+
     return (
       <div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          data-toggle="modal"
-          data-target={`#${id}`}
-        >
-          Request to be Project Lead
-        </button>
         <div
           className="modal fade"
           id={id}
@@ -28,24 +24,19 @@ class Modal extends React.Component {
                 <h5 className="modal-title" id={`${id}-title`}>
                   {title}
                 </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
               </div>
               <div className="modal-body">
-                {content}
+                { Parser(content) }
               </div>
               <div className="modal-footer">
-                <a href={link}>
-                  <button type="button" className="btn btn-primary">
-                    Next
-                  </button>
-                </a>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSignup}
+                  data-dismiss="modal"
+                >
+                  Request
+                </button>
                 <button
                   type="button"
                   className="btn btn-secondary"

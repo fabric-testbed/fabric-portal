@@ -82,8 +82,16 @@ class MyRoles extends React.Component {
         {
           people.roles.indexOf("project-leads") === -1 &&
           <div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-toggle="modal"
+              data-target={`#${projectLeadRequest.id}`}
+            >
+              Request to be Project Lead
+            </button>
             <Modal
-              id={"request-project-lead-modal"}
+              id={projectLeadRequest.id}
               title={projectLeadRequest.title}
               link={projectLeadRequest.link}
               content={projectLeadRequest.content}

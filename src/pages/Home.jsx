@@ -1,20 +1,50 @@
 import React from "react";
 
 import CardOfItems from "../components/common/CardOfItems";
+import ReactModal from "../components/common/ReactModal";
 
+import { selfEnrollRequest } from "../services/portalData.json";
 import { homepageIntro } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
+import { getWhoAmI } from "../services/userInformationService.js";
+
+import { hasCookie } from "../services/dummyAuth";
 
 import CookieConsent from "react-cookie-consent";
 
 class Home extends React.Component {
   state = {
-    updates: getLatestUpdates(2),
-  };
+    user: {},
+    isActiveUser: true,
+  }
+
+  async componentDidMount(){
+    if (hasCookie("fabric-service")) {
+      try {
+        const { data: user } = await getWhoAmI();
+        localStorage.setItem("userID", user.uuid);
+      } catch(err) {
+        console.log("/whoami " + err);
+        // not actice user, show self-enrollment modal
+        this.setState({ isActiveUser: false })
+      }
+    }
+  }
 
   render() {
     return (
       <div className="home-container">
+        {
+          (!this.state.isActiveUser && hasCookie("fabric-service"))&&
+          <div className="self-enroll-container">
+            <ReactModal
+              id={selfEnrollRequest.id}
+              title={selfEnrollRequest.title}
+              link={selfEnrollRequest.link}
+              content={selfEnrollRequest.content}
+            />
+          </div>
+        }
         <div className="home-upper">
           <div className="home-upper-text">
             <h1>FABRIC Portal</h1>
@@ -23,7 +53,7 @@ class Home extends React.Component {
           </div>
         </div>
         <div className="home-lower">
-          <CardOfItems header={"Facility Updates"} data={this.state.updates} />
+          <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
         </div>
         <CookieConsent
           location="bottom"

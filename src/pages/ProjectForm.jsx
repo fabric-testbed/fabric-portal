@@ -410,7 +410,7 @@ class projectForm extends Form {
                   <input
                     className="form-control search-owner-input mb-4"
                     value={ownerSearchInput}
-                    placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                    placeholder="Search by name or email (at least 4 letters) to add more project owners..."
                     onChange={(e) => this.handleSearch(e.currentTarget.value)}
                   />
                 }
@@ -458,7 +458,7 @@ class projectForm extends Form {
                   &&
                   <input
                     className="form-control search-member-input mb-4"
-                    placeholder="Search by user name (at least 4 letters) to add more project members..."
+                    placeholder="Search by name or email (at least 4 letters) to add more project members..."
                     value={memberSearchInput}
                     onChange={(e) => this.handleSearch(e.currentTarget.value)}
                   />
