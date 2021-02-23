@@ -2,9 +2,7 @@ import React from "react";
 
 const Resources = () => {
   return (
-  <div className="container">
-    Resources
-  </div>
+  <div className="container">Resources</div>
   );
 };
 
