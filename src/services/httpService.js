@@ -4,15 +4,15 @@ import { toast } from "react-toastify";
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, (error) => {
-  if (error.response) {
+
     console.log("------");
+    console.log("error" + error);
     console.log("error.reponse" + error.reponse);
     console.log("error.reponse.headers" + error.reponse.headers);
     console.log("error.reponse.headers['Content-Type']" + error.reponse.headers['Content-Type']);
     console.log("error.reponse.headers['X-Error']" + error.reponse.headers['X-Error']);
     console.log("------");
-  }
-  
+
   if (error.response && error.response.status === 401) {
     // user is not active and need signup
     // do not toast error message.
