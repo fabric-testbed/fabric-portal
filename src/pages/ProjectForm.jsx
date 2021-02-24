@@ -442,8 +442,10 @@ class projectForm extends Form {
                             className="btn btn-sm btn-primary ml-2"
                             onClick={() => that.handleAddUser(user)}
                           >
-                            <FontAwesomeIcon icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus} size="xs"/>
                           </button>
+                          <br></br>
+                          <span>{user.email}</span>
                         </li>
                       );
                     })}
