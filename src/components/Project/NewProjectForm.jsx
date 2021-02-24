@@ -212,14 +212,16 @@ class NewProjectForm extends Form {
               <li className="list-group-item">Search Result:</li>
               {this.state.owners.map((user, index) => {
                 return (
-                  <li key={index} className="list-group-item">
+                  <li key={index} className="list-group-item overflow-auto">
                     <span>{user.name}</span>
                     <button
                       className="btn btn-sm btn-primary ml-2"
                       onClick={() => that.handleAddUser(user)}
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon icon={faPlus} size="xs"/>
                     </button>
+                    <br></br>
+                    <span>{user.email}</span>
                   </li>
                 );
               })}
@@ -250,14 +252,16 @@ class NewProjectForm extends Form {
               <li className="list-group-item">Search Result:</li>
               {this.state.members.map((user, index) => {
                 return (
-                  <li key={index} className="list-group-item">
+                  <li key={index} className="list-group-item overflow-auto">
                     <span>{user.name}</span>
                     <button
                       className="btn btn-sm btn-primary ml-2"
                       onClick={() => that.handleAddUser(user)}
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon icon={faPlus} size="xs"/>
                     </button>
+                    <br></br>
+                    <span>{user.email}</span>
                   </li>
                 );
               })}

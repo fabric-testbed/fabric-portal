@@ -436,7 +436,7 @@ class projectForm extends Form {
                     <li className="list-group-item">Search Result:</li>
                     {owners.map((user, index) => {
                       return (
-                        <li key={index} className="list-group-item">
+                        <li key={index} className="list-group-item overflow-auto">
                           <span>{user.name}</span>
                           <button
                             className="btn btn-sm btn-primary ml-2"
@@ -487,15 +487,17 @@ class projectForm extends Form {
                     <li className="list-group-item">Search Result:</li>
                     {members.map((user, index) => {
                       return (
-                        <li key={index} className="list-group-item">
-                          <span>{user.name}</span>
-                          <button
-                            className="btn btn-sm btn-primary ml-2"
-                            onClick={() => that.handleAddUser(user)}
-                          >
-                            <FontAwesomeIcon icon={faPlus} />
-                          </button>
-                        </li>
+                        <li key={index} className="list-group-item overflow-auto">
+                        <span>{user.name}</span>
+                        <button
+                          className="btn btn-sm btn-primary ml-2"
+                          onClick={() => that.handleAddUser(user)}
+                        >
+                          <FontAwesomeIcon icon={faPlus} size="xs"/>
+                        </button>
+                        <br></br>
+                        <span>{user.email}</span>
+                      </li>
                       );
                     })}
                   </ul>
