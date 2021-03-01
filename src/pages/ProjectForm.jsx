@@ -101,8 +101,8 @@ class projectForm extends Form {
       this.state.originalTags = project.tags;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
-      console.log("failed to delete project: " + ex.response.data);
-      toast.error("Failed to delete project.");
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
     }
   }
 
@@ -226,6 +226,9 @@ class projectForm extends Form {
       if (ex.response && ex.response.status === 404) {
         console.log("This project has been deleted.");
       }
+      console.log("failed to delete project: " + ex.response.data);
+      toast.error("Failed to delete project.");
+      this.props.history.push("/projects");
     }
   };
 

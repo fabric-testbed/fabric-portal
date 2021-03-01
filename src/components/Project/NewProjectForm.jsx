@@ -77,6 +77,7 @@ class NewProjectForm extends Form {
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
       toast.error("Failed to create project.");
+      this.props.history.push("/projects");
     }
   };
 
