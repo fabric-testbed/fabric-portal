@@ -5,6 +5,7 @@ import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import LoadSpinner from "../common/LoadSpinner";
+import { toast } from "react-toastify";
 
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
@@ -63,15 +64,20 @@ class NewProjectForm extends Form {
     // Show loading spinner and when waiting API response
     // to prevent user clicks "submit" many times.
     this.setState({ showSpinner: true });
-
-    let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
-    let memberIDs = this.state.addedMembers.map((user) => user.uuid);
-    let data = { ...this.state.data };
-    data.project_owners.push(ownerIDs);
-    data.project_members.push(memberIDs);
-    this.setState({ data });
-    await saveProject(this.state.data);
-    this.props.history.push("/projects");
+    try {
+      let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
+      let memberIDs = this.state.addedMembers.map((user) => user.uuid);
+      let data = { ...this.state.data };
+      data.project_owners.push(ownerIDs);
+      data.project_members.push(memberIDs);
+      this.setState({ data });
+      await saveProject(this.state.data);
+      this.props.history.push("/projects");
+    }
+    catch (ex) {
+      console.log("failed to create project: " + ex.response.data);
+      toast.error("Failed to create project.");
+    }
   };
 
   handleSearch = async (value) => {
