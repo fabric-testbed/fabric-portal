@@ -5,7 +5,6 @@ import SearchBox from "../components/common/SearchBox";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 
-import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
 
@@ -31,8 +30,6 @@ class Projects extends React.Component {
   };
 
   async componentDidMount() {
-    const { data: user } = await getWhoAmI();
-    localStorage.setItem("userID", user.uuid);
     const { data: people } = await getCurrentUser();
     const { data: allProjects } = await getProjects();
     this.setState({ 

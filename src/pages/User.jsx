@@ -22,7 +22,6 @@ class User extends React.Component {
 
   async componentDidMount(){
     const { data: user } = await getWhoAmI();
-    localStorage.setItem("userID", user.uuid);
     const { data: people } = await getCurrentUser();
     this.setState({ user, people });
   }
