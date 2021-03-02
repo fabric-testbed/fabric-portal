@@ -24,7 +24,6 @@ import {
   updateTags,
 } from "../services/projectRegistryService";
 
-import paginate from "../utils/paginate";
 import _ from "lodash";
 
 class projectForm extends Form {
@@ -60,18 +59,6 @@ class projectForm extends Form {
     originalTags: [],
     owners: [],
     members: [],
-    ownerSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
-    memberSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
     ownerSearchInput: "",
     memberSearchInput: "",
     showSpinner: false,
@@ -218,30 +205,6 @@ class projectForm extends Form {
     }
   };
 
-  handleSort = (sortColumn) => {
-    if (this.state.activeIndex === 1) {
-      this.setState({
-        ownerSetting: { ...this.state.ownerSetting, sortColumn: sortColumn },
-      });
-    } else if (this.state.activeIndex === 2) {
-      this.setState({
-        memberSetting: { ...this.state.memberSetting, sortColumn: sortColumn },
-      });
-    }
-  };
-
-  handlePageChange = (page) => {
-    if (this.state.activeIndex === 1) {
-      this.setState({
-        ownerSetting: { ...this.state.ownerSetting, currentPage: page },
-      });
-    } else if (this.state.activeIndex === 2) {
-      this.setState({
-        memberSetting: { ...this.state.memberSetting, currentPage: page },
-      });
-    }
-  };
-
   handleDeleteProject = async (project) => {
     // Show loading spinner and when waiting API response
     // to prevent user clicks "delete" many times.
@@ -311,36 +274,6 @@ class projectForm extends Form {
     }
   };
 
-  getData = (userType) => {
-    const { pageSize, currentPage, sortColumn, searchQuery } =
-      userType === "project_owner"
-        ? this.state.ownerSetting
-        : this.state.memberSetting;
-
-    const allUsers =
-      userType === "project_owner"
-        ? this.state.data.project_owners
-        : this.state.data.project_members;
-
-    // filter -> sort -> paginate
-    let filtered = allUsers;
-    if (searchQuery) {
-      filtered = allUsers.filter((u) =>
-        u.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const users = paginate(sorted, currentPage, pageSize);
-
-    if (userType === "project_owner") {
-      return { totalOwnerCount: filtered.length, owners: users };
-    } else {
-      return { totalMemberCount: filtered.length, members: users };
-    }
-  };
-
   renderTags(tags) {
     return tags.map((tag, index) => {
       return (
@@ -367,10 +300,8 @@ class projectForm extends Form {
       roles,
       projectStaticInfoRows,
       ownerSearchInput,
-      ownerSetting,
       owners,
       memberSearchInput,
-      memberSetting,
       members,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
@@ -464,8 +395,6 @@ class projectForm extends Form {
                 }
                 <ProjectUserTable
                   users={data.project_owners}
-                  sortColumn={ownerSetting.sortColumn}
-                  onSort={this.handleSort}
                   onDelete={this.handleDelete}
                   canUpdate={canUpdate}
                 />
@@ -515,8 +444,6 @@ class projectForm extends Form {
                 }
                 <ProjectUserTable
                   users={data.project_members}
-                  sortColumn={memberSetting.sortColumn}
-                  onSort={this.handleSort}
                   onDelete={this.handleDelete}
                   canUpdate={canUpdateMember}
                 />

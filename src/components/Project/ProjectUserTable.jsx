@@ -30,12 +30,12 @@ class ProjectUserTable extends Component {
   }
 
   render() {
-    const { users, onSort, sortColumn } = this.props;
+    const { users, onSort } = this.props;
     return (
       <Table
         columns={this.columns}
         data={users}
-        sortColumn={sortColumn}
+        sortColumn={null}
         onSort={onSort}
       />
     );
