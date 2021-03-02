@@ -300,7 +300,7 @@ class projectForm extends Form {
           console.log("This user has already been deleted");
         }
         this.setState({
-          data: { ...this.state.data, project_members: originalUsers, project_owners: originalOwners },
+          data: { ...this.state.data, project_members: originalMembers, project_owners: originalOwners },
         });
       }
     }
