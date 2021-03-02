@@ -129,9 +129,16 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
-    await saveProject(this.state.data);
-    await updateTags(this.state.originalTags, this.state.data);
-    this.props.history.push("/projects");
+    try {
+      await saveProject(this.state.data);
+      await updateTags(this.state.originalTags, this.state.data);
+      this.props.history.push("/projects");
+    }
+    catch (ex) {
+      console.log("failed to save project: " + ex.response.data);
+      toast.error("Failed to save project.");
+      this.props.history.push("/projects");
+    }
   };
 
   handleSideNavChange = (newIndex) => {
