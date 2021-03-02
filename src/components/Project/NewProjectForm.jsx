@@ -18,7 +18,7 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: "",
+      facility: defaultFacility,
       created_by: {},
       created_time: "",
       project_owners: [],
