@@ -160,15 +160,25 @@ class projectForm extends Form {
       const members = originalMembers;
       members.push(user);
       this.setState({ data: { ...this.state.data, project_owners: owners, project_members: members } });
-
-      await addUser("project_owner", this.state.data.uuid, user.uuid);
+      try {
+        await addUser("project_owner", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        console.log("failed to add project owner: " + ex.response.data);
+        toast.error("Failed to add project owner.");
+        this.setState({ data: { ...this.state.data, project_owners: originalOwners, project_members: originalMembers } });
+      }
     } else if (this.state.activeIndex === 2) {
-      const originalUsers = this.state.data.project_members;
-      const users = originalUsers;
-      users.push(user);
-      this.setState({ data: { ...this.state.data, project_members: users } });
-
-      await addUser("project_member", this.state.data.uuid, user.uuid);
+      const originalMembers = this.state.data.project_members;
+      const members = originalMembers;
+      members.push(user);
+      this.setState({ data: { ...this.state.data, project_members: members } });
+      try {
+        await addUser("project_member", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        console.log("failed to add project member: " + ex.response.data);
+        toast.error("Failed to add project member.");
+        this.setState({ data: { ...this.state.data, project_members: originalMembers } });
+      }
     }
   };
 
@@ -260,27 +270,37 @@ class projectForm extends Form {
       try {
         await deleteUser("project_owner", this.state.data.uuid, user.uuid);
       } catch (ex) {
-        if (ex.response && ex.response.status === 404)
+        toast.error("Failed to delete project owner.");
+        if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
+        }
         this.setState({
           data: { ...this.state.data, project_owners: originalUsers },
         });
       }
     } else if (this.state.activeIndex === 2) {
-      const originalUsers = this.state.data.project_members;
-      const users = originalUsers.filter((u) => {
+      // when delete from member, delete from owner automatically.
+      // delete owner accordingly in UI (not reload from API)
+      const originalMembers = this.state.data.project_members;
+      const members = originalMembers.filter((u) => {
+        return u.uuid !== user.uuid;
+      });
+      const originalOwners = this.state.data.project_owners;
+      const owners = originalOwners.filter((u) => {
         return u.uuid !== user.uuid;
       });
 
-      this.setState({ data: { ...this.state.data, project_members: users } });
+      this.setState({ data: { ...this.state.data, project_members: members, project_owners: owners } });
 
       try {
         await deleteUser("project_member", this.state.data.uuid, user.uuid);
       } catch (ex) {
-        if (ex.response && ex.response.status === 404)
+        toast.error("Failed to delete project member.");
+        if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
+        }
         this.setState({
-          data: { ...this.state.data, project_members: originalUsers },
+          data: { ...this.state.data, project_members: originalUsers, project_owners: originalOwners },
         });
       }
     }
