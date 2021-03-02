@@ -154,11 +154,16 @@ class projectForm extends Form {
       const originalOwners = this.state.data.project_owners;
       const owners = originalOwners;
       owners.push(user);
-      // add this user as project member in UI automatically
+      // add this user as project member in UI automatically if not member yet.
       // (not re-render by calling api again)
       const originalMembers = this.state.data.project_members;
       const members = originalMembers;
-      members.push(user);
+      console.log("user-----");
+      console.log(user);
+      // is not member yet, add to member from UI.
+      if (_.findIndex(members, (member) => _.isMatch(member, user)) === -1) {
+        members.push(user);
+      }
       this.setState({ data: { ...this.state.data, project_owners: owners, project_members: members } });
       try {
         await addUser("project_owner", this.state.data.uuid, user.uuid);
