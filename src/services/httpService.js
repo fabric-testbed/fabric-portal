@@ -16,6 +16,8 @@ axios.interceptors.response.use(null, (error) => {
   if (error.response && error.response.status === 401) {
     // user is not active and need signup
     // do not toast error message.
+    toast.error("test error");
+    toast.error(error.response.headers['X-Error']);
     return Promise.reject(error); 
   }
 
