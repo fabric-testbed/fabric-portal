@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, (error) => {
-  // console.log("error" + error);
+  console.log("error" + error);
+  console.log("response" + response);
   // console.log("error.response" + error.response);
   // console.log("error.response.status" + error.response.status);
   // console.log("error.response.headers" + error.response.headers);
