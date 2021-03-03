@@ -21,9 +21,14 @@ class User extends React.Component {
   };
 
   async componentDidMount(){
-    const { data: user } = await getWhoAmI();
-    const { data: people } = await getCurrentUser();
-    this.setState({ user, people });
+    try {
+      const { data: user } = await getWhoAmI();
+      const { data: people } = await getCurrentUser();
+      this.setState({ user, people });
+    } catch (ex) {
+      toast.error("Failed to load user information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
+    }
   }
 
   handleChange = (newIndex) => {

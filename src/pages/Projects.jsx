@@ -10,6 +10,7 @@ import { getProjects } from "../services/projectRegistryService.js";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class Projects extends React.Component {
   state = {
@@ -30,15 +31,20 @@ class Projects extends React.Component {
   };
 
   async componentDidMount() {
-    const { data: people } = await getCurrentUser();
-    const { data: allProjects } = await getProjects();
-    this.setState({ 
-      projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
-      myProjects: people.projects,
-      allProjects: allProjects,
-      roles: people.roles,
-      otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
-    })
+    try {
+      const { data: people } = await getCurrentUser();
+      const { data: allProjects } = await getProjects();
+      this.setState({ 
+        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
+        myProjects: people.projects,
+        allProjects: allProjects,
+        roles: people.roles,
+        otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
+      })
+    } catch (ex) {
+      toast.error("Failed to load projects. Please reload this page.");
+      console.log("Failed to load projects: " + ex.response.data);
+    }
   }
 
   handlePageChange = (page) => {

@@ -88,8 +88,11 @@ class projectForm extends Form {
       this.state.originalTags = project.tags;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
+      toast.error("Failed to load project.");
+      console.log("Failed to load project: " + ex.response.data);
+      if (ex.response && ex.response.status === 404) {
         this.props.history.replace("/not-found");
+      }
     }
   }
 
@@ -99,8 +102,9 @@ class projectForm extends Form {
       const { data: people } = await getCurrentUser();
       this.setState({ roles: people.roles })
     } catch (ex) {
-      console.log("Cannot get user info from Project Registry by UUID.");
       toast.error("Failed to get user information.");
+      console.log("Cannot get user info from Project Registry by UUID");
+      console.log(ex.response.data);
       this.props.history.push("/projects");
     }
   }
@@ -193,6 +197,7 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find user. Please check your input.");
         this.setState({ owners: [] });
       }
     } else if (this.state.activeIndex === 2) {
@@ -206,6 +211,7 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find user. Please check your input.");
         this.setState({ members: [] });
       }
     }
@@ -245,6 +251,7 @@ class projectForm extends Form {
         await deleteUser("project_owner", this.state.data.uuid, user.uuid);
       } catch (ex) {
         toast.error("Failed to delete project owner.");
+        console.log("Failed to delete project owner: " + ex.response.data);
         if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
         }
@@ -270,6 +277,7 @@ class projectForm extends Form {
         await deleteUser("project_member", this.state.data.uuid, user.uuid);
       } catch (ex) {
         toast.error("Failed to delete project member.");
+        console.log("Failed to delete project member: " + ex.response.data);
         if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
         }
