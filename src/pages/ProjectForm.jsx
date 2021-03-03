@@ -95,8 +95,14 @@ class projectForm extends Form {
 
   async componentDidMount() {
     await this.populateProject();
-    const { data: people } = await getCurrentUser();
-    this.setState({ roles: people.roles })
+    try {
+      const { data: people } = await getCurrentUser();
+      this.setState({ roles: people.roles })
+    } catch (ex) {
+      console.log("Cannot get user info from Project Registry by UUID.");
+      toast.error("Failed to get user information.");
+      this.props.history.push("/projects");
+    }
   }
 
   mapToViewModel(project) {
