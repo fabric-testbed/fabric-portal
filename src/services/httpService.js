@@ -3,25 +3,13 @@ import { toast } from "react-toastify";
 
 axios.defaults.withCredentials = true;
 
-axios.interceptors.response.use(
-  (response) => {
-    // Any status code that lies within the range of 2xx cause this function.
-    console.log("res" + response);
-    console.log("res.headers" + response.headers);
-    console.log("response.status" + response.status);
-    console.log("res.headers" + response.headers['content-type']);
-    return response;
-  }, 
-  (error) => {
+axios.interceptors.response.use(null, (error) => {
     // Any status code that falls outside the range of 2xx cause this function.
-    console.log("error" + error);
     console.log("error.response.data: " + error.response.data);
     console.log("error.response.status" + error.response.status);
     console.log("error.response.headers keys: " + Object.keys(error.response.headers));
     console.log("error.response.headers['content-type']" + error.response.headers['content-type']);
     console.log("error.response.headers['x-error']" + error.response.headers['x-error']);
-
-    // toast.error(error.response.data);
 
     if (error.response && error.response.status === 401) {
       // user is not active and need signup
@@ -29,19 +17,9 @@ axios.interceptors.response.use(
       return Promise.reject(error); 
     }
 
-    const clientError =
-      error.response &&
-      error.response.status >= 400 &&
-      error.response.status < 500;
-    
-    const serverError = error.response && error.response.status >= 500 ;
-
-    if (clientError) {
-      toast.error("A client-side error occurred.");
-    } else if (serverError){
-      toast.error("A server-side error occurred.");
-    } else {
-      toast.error("An unexpected error occurred.");
+    if (error.response && error.response.data) {
+      // toast the error message of x-error.
+      toast.error(error.response.data);
     }
 
     return Promise.reject(error); 

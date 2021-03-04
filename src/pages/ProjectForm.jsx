@@ -88,8 +88,7 @@ class projectForm extends Form {
       this.state.originalTags = project.tags;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
-      toast.error("Failed to load project: " + ex.response.data);
-      console.log("Failed to load project: " + ex.response.data);
+      toast.error("Failed to load project.");
       if (ex.response && ex.response.status === 404) {
         this.props.history.replace("/not-found");
       }
