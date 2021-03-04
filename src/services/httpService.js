@@ -15,13 +15,14 @@ axios.interceptors.response.use(
   (error) => {
     // Any status code that falls outside the range of 2xx cause this function.
     console.log("error" + error);
-    console.log("error.status" + error.status);
-    console.log("error.headers" + error.headers);
-    console.log("error.headers['Content-Type']" + error.headers['Content-Type']);
-    console.log("error.headers['X-Error']" + error.headers['X-Error']);
+    console.log("error.response.status" + error.response.status);
+    console.log("error.response.headers" + error.response.headers);
+    console.log("error.response.headers['content-type']" + error.response.headers['content-type']);
+    console.log("error.response.headers['x-error']" + error.response.headers['x-error']);
 
     toast.error("test error");
-    toast.error(error.headers['X-Error']);
+    toast.error(error.response.headers['content-type']);
+    toast.error(error.response.headers['x-error']);
 
     if (error.response && error.response.status === 401) {
       // user is not active and need signup
