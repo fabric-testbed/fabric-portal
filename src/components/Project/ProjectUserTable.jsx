@@ -23,10 +23,6 @@ class ProjectUserTable extends Component {
     ),
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidUpdate() {
     if (this.columns.length === 3 && this.props.canUpdate) {
       this.columns.push(this.deletedColumn);
@@ -34,12 +30,12 @@ class ProjectUserTable extends Component {
   }
 
   render() {
-    const { users, onSort, sortColumn } = this.props;
+    const { users, onSort } = this.props;
     return (
       <Table
         columns={this.columns}
         data={users}
-        sortColumn={sortColumn}
+        sortColumn={null}
         onSort={onSort}
       />
     );

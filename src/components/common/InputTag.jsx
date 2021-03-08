@@ -13,7 +13,7 @@ class InputTag extends React.Component {
 
   raiseInputKeyDown = (e) => {
     const val = e.target.value;
-    if (e.key === "Enter" || e.key ==="," && val) {
+    if ((e.key === "Enter" || e.key ===",") && val) {
       if (
         this.props.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())
       ) {

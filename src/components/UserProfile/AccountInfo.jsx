@@ -1,5 +1,4 @@
 import React from "react";
-import { getWhoAmI } from "../../services/userInformationService.js";
 
 class AccountInfo extends React.Component {
   state = {

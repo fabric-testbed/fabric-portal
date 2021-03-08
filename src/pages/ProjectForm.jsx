@@ -5,6 +5,8 @@ import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import DeleteModal from "../components/common/DeleteModal";
+import LoadSpinner from "../components/common/LoadSpinner";
+import { toast } from "react-toastify";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -22,7 +24,6 @@ import {
   updateTags,
 } from "../services/projectRegistryService";
 
-import paginate from "../utils/paginate";
 import _ from "lodash";
 
 class projectForm extends Form {
@@ -58,20 +59,9 @@ class projectForm extends Form {
     originalTags: [],
     owners: [],
     members: [],
-    ownerSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
-    memberSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
     ownerSearchInput: "",
     memberSearchInput: "",
+    showSpinner: false,
   };
 
   schema = {
@@ -98,15 +88,24 @@ class projectForm extends Form {
       this.state.originalTags = project.tags;
       this.setState({ data: this.mapToViewModel(project) });
     } catch (ex) {
-      if (ex.response && ex.response.status === 404)
+      toast.error("Failed to load project.");
+      if (ex.response && ex.response.status === 404) {
         this.props.history.replace("/not-found");
+      }
     }
   }
 
   async componentDidMount() {
     await this.populateProject();
-    const { data: people } = await getCurrentUser();
-    this.setState({ roles: people.roles })
+    try {
+      const { data: people } = await getCurrentUser();
+      this.setState({ roles: people.roles })
+    } catch (ex) {
+      toast.error("Failed to get user information.");
+      console.log("Cannot get user info from Project Registry by UUID");
+      console.log(ex.response.data);
+      this.props.history.push("/projects");
+    }
   }
 
   mapToViewModel(project) {
@@ -126,9 +125,16 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
-    await saveProject(this.state.data);
-    await updateTags(this.state.originalTags, this.state.data);
-    this.props.history.push("/projects");
+    try {
+      await saveProject(this.state.data);
+      await updateTags(this.state.originalTags, this.state.data);
+      this.props.history.push("/projects");
+    }
+    catch (ex) {
+      console.log("failed to save project: " + ex.response.data);
+      toast.error("Failed to save project.");
+      this.props.history.push("/projects");
+    }
   };
 
   handleSideNavChange = (newIndex) => {
@@ -140,19 +146,40 @@ class projectForm extends Form {
   handleAddUser = async (user) => {
     // call api to update the project by a user.
     if (this.state.activeIndex === 1) {
-      const originalUsers = this.state.data.project_owners;
-      const users = originalUsers;
-      users.push(user);
-      this.setState({ data: { ...this.state.data, project_owners: users } });
-
-      await addUser("project_owner", this.state.data.uuid, user.uuid);
+      // add user to project owners
+      const originalOwners = this.state.data.project_owners;
+      const owners = originalOwners;
+      owners.push(user);
+      // add this user as project member in UI automatically if not member yet.
+      // (not re-render by calling api again)
+      const originalMembers = this.state.data.project_members;
+      const members = originalMembers;
+      console.log("user-----");
+      console.log(user);
+      // is not member yet, add to member from UI.
+      if (_.findIndex(members, (member) => _.isMatch(member, user)) === -1) {
+        members.push(user);
+      }
+      this.setState({ data: { ...this.state.data, project_owners: owners, project_members: members } });
+      try {
+        await addUser("project_owner", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        console.log("failed to add project owner: " + ex.response.data);
+        toast.error("Failed to add project owner.");
+        this.setState({ data: { ...this.state.data, project_owners: originalOwners, project_members: originalMembers } });
+      }
     } else if (this.state.activeIndex === 2) {
-      const originalUsers = this.state.data.project_members;
-      const users = originalUsers;
-      users.push(user);
-      this.setState({ data: { ...this.state.data, project_members: users } });
-
-      await addUser("project_member", this.state.data.uuid, user.uuid);
+      const originalMembers = this.state.data.project_members;
+      const members = originalMembers;
+      members.push(user);
+      this.setState({ data: { ...this.state.data, project_members: members } });
+      try {
+        await addUser("project_member", this.state.data.uuid, user.uuid);
+      } catch (ex) {
+        console.log("failed to add project member: " + ex.response.data);
+        toast.error("Failed to add project member.");
+        this.setState({ data: { ...this.state.data, project_members: originalMembers } });
+      }
     }
   };
 
@@ -169,6 +196,7 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find user. Please check your input.");
         this.setState({ owners: [] });
       }
     } else if (this.state.activeIndex === 2) {
@@ -182,36 +210,17 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find user. Please check your input.");
         this.setState({ members: [] });
       }
     }
   };
 
-  handleSort = (sortColumn) => {
-    if (this.state.activeIndex === 1) {
-      this.setState({
-        ownerSetting: { ...this.state.ownerSetting, sortColumn: sortColumn },
-      });
-    } else if (this.state.activeIndex === 2) {
-      this.setState({
-        memberSetting: { ...this.state.memberSetting, sortColumn: sortColumn },
-      });
-    }
-  };
-
-  handlePageChange = (page) => {
-    if (this.state.activeIndex === 1) {
-      this.setState({
-        ownerSetting: { ...this.state.ownerSetting, currentPage: page },
-      });
-    } else if (this.state.activeIndex === 2) {
-      this.setState({
-        memberSetting: { ...this.state.memberSetting, currentPage: page },
-      });
-    }
-  };
-
   handleDeleteProject = async (project) => {
+    // Show loading spinner and when waiting API response
+    // to prevent user clicks "delete" many times.
+    this.setState({ showSpinner: true });
+
     try {
       await deleteProject(project.uuid);
       this.props.history.push("/projects");
@@ -219,6 +228,9 @@ class projectForm extends Form {
       if (ex.response && ex.response.status === 404) {
         console.log("This project has been deleted.");
       }
+      console.log("failed to delete project: " + ex.response.data);
+      toast.error("Failed to delete project.");
+      this.props.history.push("/projects");
     }
   };
 
@@ -237,59 +249,41 @@ class projectForm extends Form {
       try {
         await deleteUser("project_owner", this.state.data.uuid, user.uuid);
       } catch (ex) {
-        if (ex.response && ex.response.status === 404)
+        toast.error("Failed to delete project owner.");
+        console.log("Failed to delete project owner: " + ex.response.data);
+        if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
+        }
         this.setState({
           data: { ...this.state.data, project_owners: originalUsers },
         });
       }
     } else if (this.state.activeIndex === 2) {
-      const originalUsers = this.state.data.project_members;
-      const users = originalUsers.filter((u) => {
+      // when delete from member, delete from owner automatically.
+      // delete owner accordingly in UI (not reload from API)
+      const originalMembers = this.state.data.project_members;
+      const members = originalMembers.filter((u) => {
+        return u.uuid !== user.uuid;
+      });
+      const originalOwners = this.state.data.project_owners;
+      const owners = originalOwners.filter((u) => {
         return u.uuid !== user.uuid;
       });
 
-      this.setState({ data: { ...this.state.data, project_members: users } });
+      this.setState({ data: { ...this.state.data, project_members: members, project_owners: owners } });
 
       try {
         await deleteUser("project_member", this.state.data.uuid, user.uuid);
       } catch (ex) {
-        if (ex.response && ex.response.status === 404)
+        toast.error("Failed to delete project member.");
+        console.log("Failed to delete project member: " + ex.response.data);
+        if (ex.response && ex.response.status === 404) {
           console.log("This user has already been deleted");
+        }
         this.setState({
-          data: { ...this.state.data, project_members: originalUsers },
+          data: { ...this.state.data, project_members: originalMembers, project_owners: originalOwners },
         });
       }
-    }
-  };
-
-  getData = (userType) => {
-    const { pageSize, currentPage, sortColumn, searchQuery } =
-      userType === "project_owner"
-        ? this.state.ownerSetting
-        : this.state.memberSetting;
-
-    const allUsers =
-      userType === "project_owner"
-        ? this.state.data.project_owners
-        : this.state.data.project_members;
-
-    // filter -> sort -> paginate
-    let filtered = allUsers;
-    if (searchQuery) {
-      filtered = allUsers.filter((u) =>
-        u.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const users = paginate(sorted, currentPage, pageSize);
-
-    if (userType === "project_owner") {
-      return { totalOwnerCount: filtered.length, owners: users };
-    } else {
-      return { totalMemberCount: filtered.length, members: users };
     }
   };
 
@@ -319,10 +313,8 @@ class projectForm extends Form {
       roles,
       projectStaticInfoRows,
       ownerSearchInput,
-      ownerSetting,
       owners,
       memberSearchInput,
-      memberSetting,
       members,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
@@ -410,14 +402,12 @@ class projectForm extends Form {
                   <input
                     className="form-control search-owner-input mb-4"
                     value={ownerSearchInput}
-                    placeholder="Search by user name (at least 4 letters) to add more project owners..."
+                    placeholder="Search by name or email (at least 4 letters) to add more project owners..."
                     onChange={(e) => this.handleSearch(e.currentTarget.value)}
                   />
                 }
                 <ProjectUserTable
                   users={data.project_owners}
-                  sortColumn={ownerSetting.sortColumn}
-                  onSort={this.handleSort}
                   onDelete={this.handleDelete}
                   canUpdate={canUpdate}
                 />
@@ -430,14 +420,16 @@ class projectForm extends Form {
                     <li className="list-group-item">Search Result:</li>
                     {owners.map((user, index) => {
                       return (
-                        <li key={index} className="list-group-item">
+                        <li key={index} className="list-group-item overflow-auto">
                           <span>{user.name}</span>
                           <button
                             className="btn btn-sm btn-primary ml-2"
                             onClick={() => that.handleAddUser(user)}
                           >
-                            <FontAwesomeIcon icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus} size="xs"/>
                           </button>
+                          <br></br>
+                          <span>{user.email}</span>
                         </li>
                       );
                     })}
@@ -458,15 +450,13 @@ class projectForm extends Form {
                   &&
                   <input
                     className="form-control search-member-input mb-4"
-                    placeholder="Search by user name (at least 4 letters) to add more project members..."
+                    placeholder="Search by name or email (at least 4 letters) to add more project members..."
                     value={memberSearchInput}
                     onChange={(e) => this.handleSearch(e.currentTarget.value)}
                   />
                 }
                 <ProjectUserTable
                   users={data.project_members}
-                  sortColumn={memberSetting.sortColumn}
-                  onSort={this.handleSort}
                   onDelete={this.handleDelete}
                   canUpdate={canUpdateMember}
                 />
@@ -479,15 +469,17 @@ class projectForm extends Form {
                     <li className="list-group-item">Search Result:</li>
                     {members.map((user, index) => {
                       return (
-                        <li key={index} className="list-group-item">
-                          <span>{user.name}</span>
-                          <button
-                            className="btn btn-sm btn-primary ml-2"
-                            onClick={() => that.handleAddUser(user)}
-                          >
-                            <FontAwesomeIcon icon={faPlus} />
-                          </button>
-                        </li>
+                        <li key={index} className="list-group-item overflow-auto">
+                        <span>{user.name}</span>
+                        <button
+                          className="btn btn-sm btn-primary ml-2"
+                          onClick={() => that.handleAddUser(user)}
+                        >
+                          <FontAwesomeIcon icon={faPlus} size="xs"/>
+                        </button>
+                        <br></br>
+                        <span>{user.email}</span>
+                      </li>
                       );
                     })}
                   </ul>
@@ -495,6 +487,7 @@ class projectForm extends Form {
               }
             </div>
           </div>
+          <LoadSpinner text={"Deleting Project..."} showSpinner={this.state.showSpinner} />
         </div>
       );
     }
