@@ -4,11 +4,13 @@ import ProjectUserTable from "./ProjectUserTable";
 import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import LoadSpinner from "../common/LoadSpinner";
+import { toast } from "react-toastify";
 
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
 
-import { facilityOptions } from "../../services/portalData.json";
+import { facilityOptions, defaultFacility } from "../../services/portalData.json";
 
 class NewProjectForm extends Form {
   state = {
@@ -16,7 +18,7 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: "",
+      facility: defaultFacility,
       created_by: {},
       created_time: "",
       project_owners: [],
@@ -43,6 +45,7 @@ class NewProjectForm extends Form {
     },
     ownerSearchInput: "",
     memberSearchInput: "",
+    showSpinner: false,
   };
 
   schema = {
@@ -58,14 +61,24 @@ class NewProjectForm extends Form {
   };
 
   doSubmit = async () => {
-    let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
-    let memberIDs = this.state.addedMembers.map((user) => user.uuid);
-    let data = { ...this.state.data };
-    data.project_owners.push(ownerIDs);
-    data.project_members.push(memberIDs);
-    this.setState({ data });
-    await saveProject(this.state.data);
-    this.props.history.push("/projects");
+    // Show loading spinner and when waiting API response
+    // to prevent user clicks "submit" many times.
+    this.setState({ showSpinner: true });
+    try {
+      let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
+      let memberIDs = this.state.addedMembers.map((user) => user.uuid);
+      let data = { ...this.state.data };
+      data.project_owners.push(ownerIDs);
+      data.project_members.push(memberIDs);
+      this.setState({ data });
+      await saveProject(this.state.data);
+      this.props.history.push("/projects");
+    }
+    catch (ex) {
+      console.log("failed to create project: " + ex.response.data);
+      toast.error("Failed to create project.");
+      this.props.history.push("/projects");
+    }
   };
 
   handleSearch = async (value) => {
@@ -156,7 +169,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderSelect("facility", "Facility", true, null, facilityOptions)}
+          {this.renderSelect("facility", "Facility", true, defaultFacility, facilityOptions)}
           {isFacilityOperator && this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
@@ -191,7 +204,7 @@ class NewProjectForm extends Form {
             <input
               className="form-control search-owner-input mb-4"
               value={this.state.ownerSearchInput}
-              placeholder="Search by user name (at least 4 letters)..."
+              placeholder="Search by name or email (at least 4 letters)..."
               onChange={(e) => this.handleSearch(e.currentTarget.value)}
             />
             <ProjectUserTable
@@ -206,14 +219,16 @@ class NewProjectForm extends Form {
               <li className="list-group-item">Search Result:</li>
               {this.state.owners.map((user, index) => {
                 return (
-                  <li key={index} className="list-group-item">
+                  <li key={index} className="list-group-item overflow-auto">
                     <span>{user.name}</span>
                     <button
                       className="btn btn-sm btn-primary ml-2"
                       onClick={() => that.handleAddUser(user)}
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon icon={faPlus} size="xs"/>
                     </button>
+                    <br></br>
+                    <span>{user.email}</span>
                   </li>
                 );
               })}
@@ -228,7 +243,7 @@ class NewProjectForm extends Form {
           <div className="w-75">
             <input
               className="form-control search-member-input mb-4"
-              placeholder="Search by user name (at least 4 letters)..."
+              placeholder="Search by name or email (at least 4 letters)..."
               value={this.state.memberSearchInput}
               onChange={(e) => this.handleSearch(e.currentTarget.value)}
             />
@@ -244,20 +259,23 @@ class NewProjectForm extends Form {
               <li className="list-group-item">Search Result:</li>
               {this.state.members.map((user, index) => {
                 return (
-                  <li key={index} className="list-group-item">
+                  <li key={index} className="list-group-item overflow-auto">
                     <span>{user.name}</span>
                     <button
                       className="btn btn-sm btn-primary ml-2"
                       onClick={() => that.handleAddUser(user)}
                     >
-                      <FontAwesomeIcon icon={faPlus} />
+                      <FontAwesomeIcon icon={faPlus} size="xs"/>
                     </button>
+                    <br></br>
+                    <span>{user.email}</span>
                   </li>
                 );
               })}
             </ul>
           </div>
         </div>
+        <LoadSpinner text={"Creating Project..."} showSpinner={this.state.showSpinner} />
       </div>
     );
   }

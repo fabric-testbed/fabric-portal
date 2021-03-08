@@ -5,12 +5,12 @@ import SearchBox from "../components/common/SearchBox";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 
-import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class Projects extends React.Component {
   state = {
@@ -31,17 +31,20 @@ class Projects extends React.Component {
   };
 
   async componentDidMount() {
-    const { data: user } = await getWhoAmI();
-    localStorage.setItem("userID", user.uuid);
-    const { data: people } = await getCurrentUser();
-    const { data: allProjects } = await getProjects();
-    this.setState({ 
-      projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
-      myProjects: people.projects,
-      allProjects: allProjects,
-      roles: people.roles,
-      otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
-    })
+    try {
+      const { data: people } = await getCurrentUser();
+      const { data: allProjects } = await getProjects();
+      this.setState({ 
+        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
+        myProjects: people.projects,
+        allProjects: allProjects,
+        roles: people.roles,
+        otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
+      })
+    } catch (ex) {
+      toast.error("Failed to load projects. Please reload this page.");
+      console.log("Failed to load projects: " + ex.response.data);
+    }
   }
 
   handlePageChange = (page) => {
@@ -140,7 +143,7 @@ class Projects extends React.Component {
           />
           { this.state.radioBtnValues[0].isActive ?
             <p>Showing {totalCount} projects that you have access to view details.</p> :
-            <p>Showing {totalCount} projects that you need join to view details.</p>
+            <p>Showing {totalCount} projects that you can join to view details.</p>
           }
         </div>
         <ProjectsTable

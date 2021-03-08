@@ -106,21 +106,6 @@ class Form extends Component {
     );
   }
 
-  renderTextarea(name, label, type = "text") {
-    const { data, errors } = this.state;
-
-    return (
-      <Textarea
-        type={type}
-        name={name}
-        value={data[name]}
-        label={label}
-        onChange={this.handleChange}
-        error={errors[name]}
-      />
-    );
-  }
-
   renderInputTag(name, label) {
     const { data } = this.state;
     return (

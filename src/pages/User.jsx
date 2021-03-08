@@ -3,6 +3,7 @@ import SideNav from "../components/common/SideNav";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import MessageCenter from "../components/UserProfile/MessageCenter";
+import { toast } from "react-toastify";
 
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser } from "../services/prPeopleService.js";
@@ -21,10 +22,14 @@ class User extends React.Component {
   };
 
   async componentDidMount(){
-    const { data: user } = await getWhoAmI();
-    localStorage.setItem("userID", user.uuid);
-    const { data: people } = await getCurrentUser();
-    this.setState({ user, people });
+    try {
+      const { data: user } = await getWhoAmI();
+      const { data: people } = await getCurrentUser();
+      this.setState({ user, people });
+    } catch (ex) {
+      toast.error("Failed to load user information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
+    }
   }
 
   handleChange = (newIndex) => {
