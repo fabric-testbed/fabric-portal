@@ -34,18 +34,7 @@ const Topomap = props => {
       }
     </Geographies>
 
-    {topomap.international_lines.map(({ from, to }) => (
-      <Line
-        key={`line-${from}-to-${to}`}
-        from={topomap.coordinates[from]}
-        to={topomap.coordinates[to]}
-        stroke="#FF5533"
-        strokeWidth={1}
-        strokeLinecap="round"
-      />
-    ))}
-
-    {topomap.usa_lines.map(({ from, to }) => (
+    {topomap.fab_lines.map(({ from, to }) => (
       <Line
         key={`line-${from}-to-${to}`}
         from={topomap.coordinates[from]}
@@ -66,21 +55,8 @@ const Topomap = props => {
           strokeLinecap="round"
         />
     ))}
-    
-    {topomap.international_nodes.map(({ name, markerOffset }) => (
-      <Marker key={name} coordinates={topomap.coordinates[name]}>
-        <circle r={3} fill="#f26522" />
-        <text
-          textAnchor="middle"
-          y={markerOffset}
-          style={{ fill: "#5D5A6D", fontSize: ".7rem", fontWeight: "600" }}
-        >
-          {name}
-        </text>
-      </Marker>
-    ))}
 
-    {topomap.usa_core_nodes.map(({ name, markerOffset }) => (
+    {topomap.fab_nodes.map(({ name, markerOffset }) => (
       <Marker key={name} coordinates={topomap.coordinates[name]}>
         <circle r={3} fill="#27aae1" />
         <text

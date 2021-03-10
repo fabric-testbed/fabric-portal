@@ -200,14 +200,14 @@ export const topomap = {
       { from: "San Diego", to: "Dallas" },
     ],
   },
-  international_nodes: [
+  fab_nodes: [
+    // international nodes
     { markerOffset: -8, name: "University of Tokyo" },
     { markerOffset: 12, name: "University of Bristol" },
     { markerOffset: -8, name: "University of Amsterdam" },
     { markerOffset: 12, name: "CERN" },
     {  markerOffset: 12, name: "RNP&ANSP&RedCLARA"},
-  ],
-  usa_core_nodes: [
+    // U.S. core nodes
     { markerOffset: -8, name: "New York" },
     { markerOffset: -8, name: "Seattle" },
     { markerOffset: -8, name: "Salt Lake City" },
@@ -219,14 +219,14 @@ export const topomap = {
     { markerOffset: 12, name: "Washington" },
     { markerOffset: 12, name: "FIU" },
   ],
-  international_lines: [
+  usa_core_nodes: [
+  ],
+  fab_lines: [
     { from: "Seattle", to: "University of Tokyo" },
     { from: "New York", to: "University of Bristol" },
     { from: "New York", to: "University of Amsterdam" },
     { from: "New York", to: "CERN" },
     { from: "RNP&ANSP&RedCLARA", to: "FIU" },
-  ],
-  usa_lines: [
     { from: "Seattle", to: "Salt Lake City" },
     { from: "Seattle", to: "San Diego" },
     { from: "San Diego", to: "Salt Lake City" },
