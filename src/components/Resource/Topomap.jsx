@@ -43,6 +43,8 @@ const Topomap = props => {
       <ZoomableGroup
         zoom={position.zoom}
         center={position.coordinates}
+        minZoom={1}
+        maxZoom={3}
         onMoveEnd={handleMoveEnd}
       >
         <Geographies
@@ -73,7 +75,7 @@ const Topomap = props => {
               from={topomap.coordinates[from]}
               to={topomap.coordinates[to]}
               stroke="#ffde17"
-              strokeWidth={5}
+              strokeWidth={3}
               strokeLinecap="round"
             />
         ))}
@@ -84,7 +86,20 @@ const Topomap = props => {
             <text
               textAnchor="middle"
               y={markerOffset}
-              style={{ fill: "#5D5A6D", fontSize: ".5rem", fontWeight: "600" }}
+              style={{ fill: "#5D5A6D", fontSize: ".45rem", fontWeight: "600" }}
+            >
+              {name}
+            </text>
+          </Marker>
+        ))}
+        
+        {topomap.edge_nodes.map(({ name, markerOffset }) => (
+          <Marker key={name} coordinates={topomap.coordinates[name]}>
+            <circle r={1.5} fill="#27aae1" />
+            <text
+              textAnchor="middle"
+              y={markerOffset}
+              style={{ fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "600" }}
             >
               {name}
             </text>
