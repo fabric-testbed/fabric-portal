@@ -14,15 +14,16 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });
-  
+  const positionDiff = [-40, 20];
+
   function handleZoomIn() {
-    if (position.zoom >= 4) return;
-    setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
+    if (position.zoom >= 3) return;
+    setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p + positionDiff[i]), zoom: pos.zoom + 2 }));
   }
 
   function handleZoomOut() {
     if (position.zoom <= 1) return;
-    setPosition(pos => ({ ...pos, zoom: pos.zoom / 2 }));
+    setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p - positionDiff[i]), zoom: pos.zoom - 2 }));
   }
 
   function handleMoveEnd(position) {
@@ -30,7 +31,7 @@ const Topomap = props => {
   }
 
   return (
-    <div style={{marginTop: "1rem"}} className="fabric-map">
+    <div>
     <ComposableMap
       projection="geoEqualEarth"
       width={800}
@@ -106,34 +107,15 @@ const Topomap = props => {
           </Marker>
         ))}
       </ZoomableGroup>
-  </ComposableMap>
-  <div className="controls">
-        <button onClick={handleZoomIn}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="3"
-          >
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </button>
-        <button onClick={handleZoomOut}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="3"
-          >
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </button>
-      </div>
+    </ComposableMap>
+    <div className="controls">
+      <button className="btn btn-outline-primary" onClick={handleZoomIn}>
+        <i className="fa fa-plus"></i>
+      </button>
+      <button className="btn btn-outline-primary" onClick={handleZoomOut}>
+        <i className="fa fa-minus"></i>
+      </button>
+    </div>
  </div>
   )
 }
