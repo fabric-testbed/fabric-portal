@@ -50,7 +50,7 @@ const Topomap = props => {
       >
         <Geographies
           geography={geoUrl}
-          fill="#cde4ef"
+          fill="#EEEEEE"
           stroke="#FFFFFF"
           strokeWidth={0.5}
         >
@@ -64,7 +64,7 @@ const Topomap = props => {
             key={`line-${from}-to-${to}`}
             from={topomap.coordinates[from]}
             to={topomap.coordinates[to]}
-            stroke="#27aae1"
+            stroke="#6edcff"
             strokeWidth={1}
             strokeLinecap="round"
           />
@@ -76,18 +76,18 @@ const Topomap = props => {
               from={topomap.coordinates[from]}
               to={topomap.coordinates[to]}
               stroke="#ffde17"
-              strokeWidth={3}
+              strokeWidth={2.5}
               strokeLinecap="round"
             />
         ))}
 
         {topomap.fab_nodes.map(({ name, markerOffset }) => (
           <Marker key={name} coordinates={topomap.coordinates[name]}>
-            <circle r={3} fill="#27aae1" />
+            <circle r={3} fill="#078ac1" />
             <text
               textAnchor="middle"
               y={markerOffset}
-              style={{ fill: "#5D5A6D", fontSize: ".45rem", fontWeight: "600" }}
+              style={{ fill: "#5D5A6D", fontSize: ".35rem", fontWeight: "600" }}
             >
               {name}
             </text>
@@ -96,11 +96,11 @@ const Topomap = props => {
         
         {topomap.edge_nodes.map(({ name, markerOffset }) => (
           <Marker key={name} coordinates={topomap.coordinates[name]}>
-            <circle r={1.5} fill="#27aae1" />
+            <circle r={1.5} fill="#078ac1" />
             <text
               textAnchor="middle"
               y={markerOffset}
-              style={{ fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "600" }}
+              style={{ fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "400" }}
             >
               {name}
             </text>
@@ -108,11 +108,11 @@ const Topomap = props => {
         ))}
       </ZoomableGroup>
     </ComposableMap>
-    <div className="controls">
-      <button className="btn btn-outline-primary" onClick={handleZoomIn}>
+    <div className="controls mt-1 d-flex justify-content-center">
+      <button className="btn btn-sm btn-outline-primary mr-1" onClick={handleZoomIn}>
         <i className="fa fa-plus"></i>
       </button>
-      <button className="btn btn-outline-primary" onClick={handleZoomOut}>
+      <button className="btn btn-sm btn-outline-primary" onClick={handleZoomOut}>
         <i className="fa fa-minus"></i>
       </button>
     </div>

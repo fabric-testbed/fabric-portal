@@ -1,33 +1,36 @@
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
 const DetailTable = props => {
   return (
     <div>
-      <table className="table table-bordered">
+      <table className="table">
         <thead>
           <tr>
-            <th scope="col">Availability</th>
-            <th scope="col">Site 1</th>
+            <th scope="col" colSpan="2" className="text-center">Starlight</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="col">Status</th>
-            <td>Up</td>
+            <td scope="col">Status</td>
+            <td className="align-middle text-center">
+              <span className="badge badge-pill badge-success px-2">Up</span>
+            </td>
           </tr>
           <tr>
-            <th scope="row">VM</th>
-            <td>2/10</td>
+            <td scope="row">VM</td>
+            <td className="align-middle"><ProgressBar variant="success" now={85} label={"85%"} /></td>
           </tr>
           <tr>
-            <th scope="row">GPU</th>
-            <td>3/5</td>
+            <td scope="row">GPU</td>
+            <td className="align-middle"><ProgressBar variant="success" now={85} label={"60%"} /></td>
           </tr>
           <tr>
-            <th scope="row">VM</th>
-            <td>2/10</td>
+            <td scope="row">VM</td>
+            <td className="align-middle"><ProgressBar variant="success" now={50} label={"50%"} /></td>
           </tr>
           <tr>
-            <th scope="row">GPU</th>
-            <td>3/5</td>
+            <td scope="row">GPU</td>
+            <td className="align-middle"><ProgressBar variant="danger" now={100} label={"100%"} /></td>
           </tr>
         </tbody>
       </table>
