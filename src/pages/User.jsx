@@ -13,7 +13,7 @@ class User extends React.Component {
     SideNavItems: [
       { name: "ACCOUNT INFORMATION", active: true },
       { name: "MY ROLES", active: false },
-      { name: "MESSAGE CENTER", active: false },
+      // { name: "MESSAGE CENTER", active: false },
     ],
     user: {},
     people: {},
