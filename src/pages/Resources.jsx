@@ -16,6 +16,7 @@ class Resources extends Component {
     pageSize: 2,
     currentPage: 1,
     searchQuery: "",
+    activeDetailName: "StarLight",
   }
 
   handlePageChange = (page) => {
@@ -29,6 +30,10 @@ class Resources extends Component {
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
+
+  handleActiveDetailChange = (name) => {
+    this.setState({ activeDetailName: name });
+  }
 
   getPageData = () => {
     const {
@@ -55,7 +60,7 @@ class Resources extends Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, roles } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, roles, activeDetailName } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -63,10 +68,12 @@ class Resources extends Component {
         <h1>Resources</h1>
         <div className="row">
           <div className="col-9">
-            <Topomap />
+            <Topomap onChange={this.handleActiveDetailChange} />
           </div>
           <div className="col-3">
-            <DetailTable />
+            <DetailTable 
+              name={activeDetailName}
+            />
           </div>
         </div>
         <div className="row mt-4">

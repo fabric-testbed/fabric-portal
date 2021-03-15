@@ -14,16 +14,26 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });
-  const positionDiff = [-40, 20];
+  // const positionDiff = [-40, 20];
+
+  // function handleZoomIn() {
+  //   if (position.zoom >= 3) return;
+  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p + positionDiff[i]), zoom: pos.zoom + 2 }));
+  // }
+
+  // function handleZoomOut() {
+  //   if (position.zoom <= 1) return;
+  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p - positionDiff[i]), zoom: pos.zoom - 2 }));
+  // }
 
   function handleZoomIn() {
-    if (position.zoom >= 3) return;
-    setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p + positionDiff[i]), zoom: pos.zoom + 2 }));
+    if (position.zoom >= 4) return;
+    setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
   }
 
   function handleZoomOut() {
     if (position.zoom <= 1) return;
-    setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p - positionDiff[i]), zoom: pos.zoom - 2 }));
+    setPosition(pos => ({ ...pos, zoom: pos.zoom / 2 }));
   }
 
   function handleMoveEnd(position) {
@@ -67,6 +77,9 @@ const Topomap = props => {
             stroke="#6edcff"
             strokeWidth={1}
             strokeLinecap="round"
+            onMouseEnter={() => {
+              // console.log("Hello" + from);
+            }}
           />
         ))}
 
@@ -82,7 +95,11 @@ const Topomap = props => {
         ))}
 
         {topomap.fab_nodes.map(({ name, markerOffset }) => (
-          <Marker key={name} coordinates={topomap.coordinates[name]}>
+          <Marker
+            key={name}
+            coordinates={topomap.coordinates[name]}
+            onMouseEnter={() => { props.onChange(name); }}
+          >
             <circle r={3} fill="#078ac1" />
             <text
               textAnchor="middle"
@@ -95,7 +112,11 @@ const Topomap = props => {
         ))}
         
         {topomap.edge_nodes.map(({ name, markerOffset }) => (
-          <Marker key={name} coordinates={topomap.coordinates[name]}>
+          <Marker
+            key={name}
+            coordinates={topomap.coordinates[name]}
+            onMouseEnter={() => { props.onChange(name); }}
+          >
             <circle r={1.5} fill="#078ac1" />
             <text
               textAnchor="middle"
