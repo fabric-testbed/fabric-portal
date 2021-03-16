@@ -246,3 +246,8 @@ ul {
   color: #4e503b;
   font-size: 1.25rem;
 }
+
+.hoverable-node:hover {
+  fill: #ff8542;
+  r: 5;
+}
