@@ -15,24 +15,24 @@ class TestbedTable extends Component {
   render() {
     const { sum } = this.props;
     return (
-      <table class="table table-sm table-bordered mx-3 mt-2 text-center">
+      <table className="table table-sm table-bordered mx-3 mt-2 text-center">
       <thead>
         <tr>
           {
             this.columns.map((col, index) => {
               return (
-                <td>{col.label}</td>
+                <td key={`testbed-table-header-${index}`}>{col.label}</td>
               )
             })
           }
         </tr>
       </thead>
-      <tbody>
+      <tbody className="table-primary">
         <tr>
         {
             this.columns.map((col, index) => {
               return (
-                <td>{sum[col.path]}</td>
+                <td key={`testbed-table-body-${index}`}>{sum[col.path]}</td>
               )
             })
           }
