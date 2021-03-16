@@ -1,5 +1,3 @@
-import { ZoomableGroup } from "react-simple-maps";
-
 export const resources = [
   {
     id: 1,
@@ -45,4 +43,21 @@ export function getResources() {
 
 export function getResource(id) {
   return resources.find((r) => r.id === id);
+}
+
+export function getResourcesSum() {
+  const sum = {
+    id: 999,
+    name: "FABRIC Testbed",
+    totalCores: 0,
+    totalGPUs: 0,
+    totalNICs: 0,
+    totalNVMEs: 0,
+    freeCores: 0,
+    freeGPUs: 0,
+    freeNICs: 0,
+    freeNVMEs: 0,
+  };
+
+  return sum;
 }

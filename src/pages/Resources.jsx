@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Topomap from "../components/Resource/Topomap";
+import TestbedTable from "../components/Resource/TestbedTable";
 import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
@@ -66,7 +67,10 @@ class Resources extends Component {
     return (
       <div className="container">
         <h1>Resources</h1>
-        <div className="row">
+        <div className="row my-2">
+          <TestbedTable sum={getResourcesSum()} />
+        </div>
+        <div className="row my-2">
           <div className="col-9">
             <Topomap onChange={this.handleActiveDetailChange} />
           </div>
@@ -77,7 +81,7 @@ class Resources extends Component {
             />
           </div>
         </div>
-        <div className="row mt-4">
+        <div className="row my-2">
           <div className="col-12">
             <SearchBox
               value={searchQuery}
