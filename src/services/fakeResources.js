@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const resources = [
   {
     id: 1,
@@ -46,18 +48,25 @@ export function getResource(id) {
 }
 
 export function getResourcesSum() {
+  const selectedLabels = [
+     "totalCores",
+     "freeCores",
+     "totalGPUs",
+     "freeGPUs",
+     "totalNICs",
+     "freeNICs",
+     "totalNVMEs",
+     "freeNVMEs",
+  ]
+
   const sum = {
     id: 999,
     name: "FABRIC Testbed",
-    totalCores: 0,
-    totalGPUs: 0,
-    totalNICs: 0,
-    totalNVMEs: 0,
-    freeCores: 0,
-    freeGPUs: 0,
-    freeNICs: 0,
-    freeNVMEs: 0,
   };
+
+  _.each(resources, (resource) => {
+    _.each(selectedLabels, (label) => sum[label] = (sum[label] || 0) + resource[label]);
+  });
 
   return sum;
 }
