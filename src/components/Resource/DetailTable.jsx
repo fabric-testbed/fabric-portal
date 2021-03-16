@@ -1,7 +1,23 @@
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
+const generateProgressBar = (total, free) => {
+  return (
+    <ProgressBar
+      variant="success"
+      now={Math.floor(free * 100 / total)}
+      label={`${free}/${total}`}
+    />
+  )
+}
+
 const DetailTable = props => {
-  const name = props.name
+  const {name, resource} = props;
+  const rows = [
+    ["Cores", "totalCores", "freeCores"],
+    ["GPUs", "totalGPUs", "freeGPUs"],
+    ["NICs", "totalNICs", "freeNICs"],
+    ["NVMEs", "totalNVMEs", "freeNVMEs"],
+  ]
   return (
     <div>
       <table className="table">
@@ -17,22 +33,18 @@ const DetailTable = props => {
               <span className="badge badge-pill badge-success px-2">Up</span>
             </td>
           </tr>
-          <tr>
-            <td scope="row">VM</td>
-            <td className="align-middle"><ProgressBar variant="success" now={85} label={"85/100"} /></td>
-          </tr>
-          <tr>
-            <td scope="row">GPU</td>
-            <td className="align-middle"><ProgressBar variant="success" now={85} label={"30/50"} /></td>
-          </tr>
-          <tr>
-            <td scope="row">NIC</td>
-            <td className="align-middle"><ProgressBar variant="success" now={50} label={"5/10"} /></td>
-          </tr>
-          <tr>
-            <td scope="row">Switch</td>
-            <td className="align-middle"><ProgressBar variant="danger" now={100} label={"100/100"} /></td>
-          </tr>
+          {
+            rows.map((row, index) => {
+              return (
+                <tr key={`resource-detail-${index}`}>
+                  <td scope="row">{row[0]}</td>
+                  <td className="align-middle">
+                    {generateProgressBar(resource[row[1]], resource[row[2]])}
+                  </td>
+                </tr>
+            )
+            })
+          }
         </tbody>
       </table>
     </div>

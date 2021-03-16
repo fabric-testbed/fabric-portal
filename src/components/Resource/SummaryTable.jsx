@@ -7,11 +7,14 @@ class SummaryTable extends Component {
       path: "name",
       label: "Site Name",
     },
-    { path: "status", label: "Status" },
-    { path: "totalVM", label: "Total VM" },
-    { path: "freeVM", label: "Free VM" },
-    { path: "totalGPU", label: "Total GPU" },
-    { path: "freeGPU", label: "Free GPU" },
+    { path: "totalCores", label: "Total Cores" },
+    { path: "freeCores", label: "Free Cores" },
+    { path: "totalGPUs", label: "Total GPUs" },
+    { path: "freeGPUs", label: "Free GPUs" },
+    { path: "totalNICs", label: "Total NICs" },
+    { path: "freeNICs", label: "Free NICs" },
+    { path: "totalNVMEs", label: "Total NVMEs" },
+    { path: "freeNVMEs", label: "Free NVMEs" },
   ];
 
   render() {

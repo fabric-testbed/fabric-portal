@@ -43,6 +43,7 @@ const Topomap = props => {
   return (
     <div>
     <ComposableMap
+      className="resource-map"
       projection="geoEqualEarth"
       width={800}
       height={500}

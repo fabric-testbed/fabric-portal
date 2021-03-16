@@ -4,7 +4,7 @@ import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
-import { getResources } from "../services/fakeResources.js";
+import { getResources, getResource, getResourcesSum } from "../services/fakeResources.js";
 
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -13,7 +13,7 @@ class Resources extends Component {
   state = {
     resources: getResources(),
     sortColumn: { path: "name", order: "asc" },
-    pageSize: 2,
+    pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
@@ -71,8 +71,9 @@ class Resources extends Component {
             <Topomap onChange={this.handleActiveDetailChange} />
           </div>
           <div className="col-3">
-            <DetailTable 
+            <DetailTable
               name={activeDetailName}
+              resource={getResource(1)}
             />
           </div>
         </div>
