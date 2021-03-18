@@ -7,14 +7,10 @@ class SummaryTable extends Component {
       path: "name",
       label: "Site Name",
     },
-    { path: "totalCores", label: "Total Cores" },
-    { path: "freeCores", label: "Free Cores" },
-    { path: "totalGPUs", label: "Total GPUs" },
-    { path: "freeGPUs", label: "Free GPUs" },
-    { path: "totalNICs", label: "Total NICs" },
-    { path: "freeNICs", label: "Free NICs" },
-    { path: "totalNVMEs", label: "Total NVMEs" },
-    { path: "freeNVMEs", label: "Free NVMEs" },
+    { path: ["freeCores", "totalCores"], label: "Cores" },
+    { path: ["freeGPUs", "totalGPUs"], label: "GPUs" },
+    { path: ["freeNICs", "totalNICs"], label: "NICs" },
+    { path: ["freeNVMEs", "totalNVMEs"], label: "NVMEs" },
   ];
 
   render() {

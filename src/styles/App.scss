@@ -40,17 +40,36 @@ body {
 .home-upper-text {
   padding: 2rem 2rem;
   width: 85%;
+  font-size: 0.6rem;
+}
+
+@media only screen and (min-width: 700px) {
+  .home-upper-text {
+    padding: 2rem 2rem;
+    width: 85%;
+    font-size: 1rem;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
   .home-upper-text {
+    padding: 2rem 4rem;
+    width: 75%;
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (min-width: 1160px) {
+  .home-upper-text {
     padding: 2.5rem 4rem;
-    width: 60%;
+    width: 65%;
+    font-size: 1rem;
   }
 }
 
 .home-upper-text h1,
 .home-upper-text p,
+.home-upper-text li,
 .home-upper-text button {
   color: $white;
 }

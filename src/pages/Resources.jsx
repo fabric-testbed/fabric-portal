@@ -53,7 +53,13 @@ class Resources extends Component {
       );
     }
 
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+    let sorted = [];
+
+    if (Array.isArray(sortColumn.path)) {
+      sorted = _.orderBy(filtered, [sortColumn.path[0]], [sortColumn.order]);
+    } else {
+      sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+    }
 
     const resources = paginate(sorted, currentPage, pageSize);
 

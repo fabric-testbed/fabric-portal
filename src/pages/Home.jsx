@@ -19,16 +19,16 @@ class Home extends React.Component {
   }
 
   async componentDidMount(){
-    if (hasCookie("fabric-service")) {
-      try {
-        const { data: user } = await getWhoAmI();
-        localStorage.setItem("userID", user.uuid);
-      } catch(err) {
-        console.log("/whoami " + err);
-        // not actice user, show self-enrollment modal
-        this.setState({ isActiveUser: false })
-      }
-    }
+    // if (hasCookie("fabric-service")) {
+    //   try {
+    //     const { data: user } = await getWhoAmI();
+    //     localStorage.setItem("userID", user.uuid);
+    //   } catch(err) {
+    //     console.log("/whoami " + err);
+    //     // not actice user, show self-enrollment modal
+    //     this.setState({ isActiveUser: false })
+    //   }
+    // }
   }
 
   render() {
@@ -48,7 +48,12 @@ class Home extends React.Component {
         <div className="home-upper">
           <div className="home-upper-text">
             <h1>FABRIC Portal</h1>
-            <p>{homepageIntro}</p>
+            <p>FABRIC portal is your guide, helping make your experiment a success.</p>
+            <ul>
+              <li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li>
+              <li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li>
+              <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
+            </ul>
             <button className="btn btn-warning">Learn More</button>
           </div>
         </div>

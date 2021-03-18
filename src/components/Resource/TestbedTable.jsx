@@ -2,14 +2,10 @@ import React, { Component } from "react";
 
 class TestbedTable extends Component {
   columns = [
-    { path: "totalCores", label: "Total Cores" },
-    { path: "freeCores", label: "Free Cores" },
-    { path: "totalGPUs", label: "Total GPUs" },
-    { path: "freeGPUs", label: "Free GPUs" },
-    { path: "totalNICs", label: "Total NICs" },
-    { path: "freeNICs", label: "Free NICs" },
-    { path: "totalNVMEs", label: "Total NVMEs" },
-    { path: "freeNVMEs", label: "Free NVMEs" },
+    { path: ["freeCores", "totalCores"], label: "Cores" },
+    { path: ["freeGPUs", "totalGPUs"], label: "GPUs" },
+    { path: ["freeNICs", "totalNICs"], label: "NICs" },
+    { path: ["freeNVMEs", "totalNVMEs"], label: "NVMEs" },
   ];
 
   render() {
@@ -32,7 +28,9 @@ class TestbedTable extends Component {
         {
             this.columns.map((col, index) => {
               return (
-                <td key={`testbed-table-body-${index}`}>{sum[col.path]}</td>
+                <td key={`testbed-table-body-${index}`}>
+                  {`${sum[col.path[0]]} / ${sum[col.path[1]]}`}
+                </td>
               )
             })
           }
