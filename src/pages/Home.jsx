@@ -18,16 +18,16 @@ class Home extends React.Component {
   }
 
   async componentDidMount(){
-    // if (hasCookie("fabric-service")) {
-    //   try {
-    //     const { data: user } = await getWhoAmI();
-    //     localStorage.setItem("userID", user.uuid);
-    //   } catch(err) {
-    //     console.log("/whoami " + err);
-    //     // not actice user, show self-enrollment modal
-    //     this.setState({ isActiveUser: false })
-    //   }
-    // }
+    if (hasCookie("fabric-service")) {
+      try {
+        const { data: user } = await getWhoAmI();
+        localStorage.setItem("userID", user.uuid);
+      } catch(err) {
+        console.log("/whoami " + err);
+        // not actice user, show self-enrollment modal
+        this.setState({ isActiveUser: false })
+      }
+    }
   }
 
   render() {
