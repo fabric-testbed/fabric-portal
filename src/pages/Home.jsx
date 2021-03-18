@@ -4,7 +4,6 @@ import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
 
 import { selfEnrollRequest } from "../services/portalData.json";
-import { homepageIntro } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { getWhoAmI } from "../services/userInformationService.js";
 
@@ -54,7 +53,13 @@ class Home extends React.Component {
               <li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li>
               <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
             </ul>
-            <button className="btn btn-warning">Learn More</button>
+            <a
+              href="https://fabric-testbed.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="btn btn-warning">Learn More</button>
+            </a>
           </div>
         </div>
         <div className="home-lower">
