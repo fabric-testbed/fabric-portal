@@ -22,9 +22,17 @@ const CardOfItems = ({ header, data, ...rest }) => {
               <h6 className="card-title">{item.date}</h6>
               <h5 className="card-title">{item.title}</h5>
               <p className="card-text">{item.content}</p>
-              <a href={item.id} className="btn btn-primary">
-                Read More
-              </a>
+              {
+                item.link && (
+                  <a
+                    href={item.link}
+                    className="btn btn-primary"
+                    target="_blank"
+                  >
+                  { item.button ? item.button : "Read More"}
+                </a>
+                )
+              }
             </div>
           );
         })}
