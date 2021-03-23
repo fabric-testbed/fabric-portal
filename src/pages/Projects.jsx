@@ -120,6 +120,7 @@ class Projects extends React.Component {
         <div className="toolbar">
           <SearchBox
             value={searchQuery}
+            placeholder={"Search projects..."}
             onChange={this.handleSearch}
             className="my-0"
           />
