@@ -26,7 +26,9 @@ class Header extends React.Component {
         exact: false,
       },
       { name: "Guide", path: "/guide", child: [], exact: false },
-      { name: "Links", path: "/links", child: [], exact: false },
+      { name: "Links", path: "/links", child: [
+        { name: "JupyterHub", href: "https://jupyter.fabric-testbed.net/", path: "" },
+      ], exact: false },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
@@ -125,13 +127,14 @@ class Header extends React.Component {
                       >
                         {item.child.map((sub_item, sub_index) => {
                           return (
-                            <NavLink
+                            <a
                               className="dropdown-item"
-                              to={sub_item.path}
                               key={sub_index}
+                              href={sub_item.href}
+                              target="_blank"
                             >
                               {sub_item.name}
-                            </NavLink>
+                            </a>
                           );
                         })}
                       </div>
