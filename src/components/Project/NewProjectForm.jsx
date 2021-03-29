@@ -61,9 +61,10 @@ class NewProjectForm extends Form {
   };
 
   handleTimeout = () =>{
+    const that = this;
     setTimeout(function() {
       toast.warning("Request timeout. Please try again.")
-      this.props.history.push("/projects");
+      that.props.history.push("/projects");
     }, 5000)
   }
 
@@ -82,6 +83,7 @@ class NewProjectForm extends Form {
       // to prevent users waiting forever
       this.handleTimeout();
       await saveProject(this.state.data);
+      clearTimeout(this.handleTimeout);
       this.props.history.push("/projects")
     }
     catch (ex) {
