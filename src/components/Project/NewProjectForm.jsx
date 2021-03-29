@@ -65,7 +65,7 @@ class NewProjectForm extends Form {
     setTimeout(function() {
       toast.warning("Request timeout. Please try again.")
       that.props.history.push("/projects");
-    }, 5000)
+    }, 20000)
   }
 
   doSubmit = async () => {
