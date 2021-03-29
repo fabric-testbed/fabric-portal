@@ -27,7 +27,7 @@ class Header extends React.Component {
       },
       { name: "Guide", path: "/guide", child: [], exact: false },
       { name: "Links", path: "/links", child: [
-        { name: "JupyterHub", href: "https://jupyter.fabric-testbed.net/", path: "" },
+        { name: "JupyterHub", href: "https://jupyter-beta.fabric-testbed.net/", path: "" },
       ], exact: false },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
