@@ -60,14 +60,6 @@ class NewProjectForm extends Form {
     tags: Joi.array(),
   };
 
-  handleTimeout = () =>{
-    const that = this;
-    setTimeout(function() {
-      toast.warning("Request timeout. Please try again.")
-      that.props.history.push("/projects");
-    }, 20000)
-  }
-
   doSubmit = async () => {
     // Show loading spinner and when waiting API response
     // to prevent user clicks "submit" many times.
@@ -79,12 +71,8 @@ class NewProjectForm extends Form {
       data.project_owners.push(ownerIDs);
       data.project_members.push(memberIDs);
       this.setState({ data });
-      // go back to projects page when timeout
-      // to prevent users waiting forever
-      this.handleTimeout();
       await saveProject(this.state.data);
-      clearTimeout(this.handleTimeout);
-      this.props.history.push("/projects")
+      this.props.history.push("/projects");
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);

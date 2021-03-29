@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 axios.defaults.withCredentials = true;
+axios.defaults.timeout = 3000;
 
 axios.interceptors.response.use(null, (error) => {
     // Any status code that falls outside the range of 2xx cause this function.
