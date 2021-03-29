@@ -61,8 +61,10 @@ class NewProjectForm extends Form {
   };
 
   handleTimeout = () =>{
-    toast.warning("Request timeout. Please try again.")
-    this.props.history.push("/projects");
+    setTimeout(function() {
+      toast.warning("Request timeout. Please try again.")
+      this.props.history.push("/projects");
+    }, 5000)
   }
 
   doSubmit = async () => {
@@ -78,7 +80,7 @@ class NewProjectForm extends Form {
       this.setState({ data });
       // go back to projects page when timeout
       // to prevent users waiting forever
-      setTimeout(this.handleTimeout(), 3000);
+      this.handleTimeout();
       await saveProject(this.state.data);
       this.props.history.push("/projects")
     }
