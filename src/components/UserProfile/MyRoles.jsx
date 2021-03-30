@@ -57,7 +57,16 @@ class MyRoles extends React.Component {
 
     return (
       <div className="col-9">
-        <h1>My Roles</h1>
+        <div className="d-flex flex-row justify-content-start align-items-center">
+          <h1>My Roles</h1>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary h-50 ml-2"
+          >
+            <i className="fa fa-refresh mr-2"></i>
+            Refresh Roles
+          </button>
+        </div>
         <h4 className="mt-4">Global Roles</h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
