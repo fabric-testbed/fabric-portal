@@ -15,6 +15,7 @@ axios.interceptors.response.use(null, (error) => {
     // Timeout error.
     if(error.code === 'ECONNABORTED') {
       toast.error("Request timeout. Please try again.");
+      return Promise.reject(error); 
     }
   
     if (error.response && error.response.data) {

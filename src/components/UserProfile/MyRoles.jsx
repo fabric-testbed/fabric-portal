@@ -62,6 +62,7 @@ class MyRoles extends React.Component {
           <button
             type="button"
             className="btn btn-sm btn-primary h-50 ml-2"
+            onClick={() => this.props.onRoleRefresh()}
           >
             <i className="fa fa-refresh mr-2"></i>
             Refresh Roles
