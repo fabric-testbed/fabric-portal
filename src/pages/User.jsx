@@ -5,8 +5,10 @@ import MyRoles from "../components/UserProfile/MyRoles";
 import MessageCenter from "../components/UserProfile/MessageCenter";
 import { toast } from "react-toastify";
 
+import sleep from "../utils/sleep";
+
 import { getWhoAmI } from "../services/userInformationService.js";
-import { getCurrentUser } from "../services/prPeopleService.js";
+import { getCurrentUser, refreshRoles } from "../services/prPeopleService.js";
 
 class User extends React.Component {
   state = {
@@ -36,6 +38,21 @@ class User extends React.Component {
     this.setState({ activeIndex: newIndex });
   };
 
+  handleRoleRefresh = async () => {
+    try {
+      // Refresh role first, then get updated people info.
+      // two async/ await calls in series.
+      await refreshRoles();
+      // wait 1 second for PR updates.
+      await sleep(1000);
+      const { data: people } = await getCurrentUser();
+      this.setState({ people });
+    } catch (ex) {
+      toast.error("Failed to refresh roles. Please try again.");
+      console.log("Failed to refresh roles " + ex.response.data);
+    }
+  }
+
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
 
@@ -46,7 +63,11 @@ class User extends React.Component {
             items={this.state.SideNavItems}
             handleChange={this.handleChange}
           />
-          <TagName user={this.state.user} people={this.state.people}/>
+          <TagName
+            user={this.state.user}
+            people={this.state.people}
+            onRoleRefresh={this.handleRoleRefresh}
+          />
         </div>
       </div>
     );
