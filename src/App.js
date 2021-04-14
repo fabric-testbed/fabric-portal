@@ -35,7 +35,7 @@ function App() {
           <ProtectedRoute path="/guide" component={Guide} />
           <ProtectedRoute path="/links" component={Links} />
           <ProtectedRoute path="/user" component={User} />
-          <ProtectedRoute path="/signup" component={Signup} />
+          <ProtectedRoute path="/signup/:id" component={Signup} />
           <Route component={NotFound} />
         </Switch>
       </Router>

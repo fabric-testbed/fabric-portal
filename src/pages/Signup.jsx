@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  useParams
+} from "react-router-dom";
+
 // import the progress bar
 import StepProgressBar from 'react-step-progress';
 // import the stylesheet
@@ -15,30 +19,20 @@ const step2Content = <Step2 />;
 const step3Content = <Step3 />;
 
 const Signup = () => {
+  let { id } = useParams();
   return (
     <div className="container">
       <h1>FABRIC SignUp</h1>
-      <StepProgressBar
-        startingStep={0}
-        steps={[
-          {
-            label: 'Step 1',
-            name: 'step 1',
-            content: step1Content
-          },
-          {
-            label: 'Step 2',
-            name: 'step 2',
-            content: step2Content,
-          },
-          {
-            label: 'Step 3',
-            name: 'step 3',
-            content: step3Content,
-          }
-        ]}
-      />
-      <StepProgress />
+      <StepProgress step={id} />
+      {
+        id == 0 && <Step1 />
+      }
+      {
+        id == 1 && <Step2 />
+      }
+      {
+        id == 2 && <Step3 />
+      }
     </div>
   );
 };
