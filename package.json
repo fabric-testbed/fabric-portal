@@ -27,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2",
     "react-simple-maps": "^2.3.0",
+    "react-step-progress": "^1.0.3",
     "react-toastify": "^6.2.0",
     "reactstrap": "^8.6.0"
   },
