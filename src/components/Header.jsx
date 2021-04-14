@@ -76,28 +76,39 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {!hasCookie("fabric-service") && (
+        {/* {!hasCookie("fabric-service") && ( */}
+        {true && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav">
+            <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item ml-4">
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <NavLink to="/login">
                 <button
                   onClick={this.handleLogin}
-                  className="btn btn-md btn-warning text-white"
+                  className="btn btn-outline-success my-2 my-sm-0 mr-2"
                 >
                   Login
                 </button>
-              </li>
-            </ul>
+              </NavLink>
+              <NavLink to="/signup/1">
+                <button
+                  className="btn btn-outline-primary my-2 my-sm-0"
+                >
+                  Signup
+                </button>
+              </NavLink>
+            </form>
           </div>
         )}
-        {hasCookie("fabric-service") && (
+        {/* {hasCookie("fabric-service") && ( */}
+        {false && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav">
+            <ul  className="navbar-nav mr-auto">
               {this.state.navItems.map((item, index) => {
                 return (
                   <li
@@ -142,17 +153,17 @@ class Header extends React.Component {
                   </li>
                 );
               })}
-              <React.Fragment>
-                <li className="nav-item ml-4">
-                  <button
-                    onClick={this.handleLogout}
-                    className="btn btn-md btn-warning text-white"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </React.Fragment>
             </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <NavLink to="/logout">
+                <button
+                  onClick={this.handleLogout}
+                  className="btn btn-outline-success my-2 my-sm-0"
+                >
+                  Logout
+                </button>
+              </NavLink>
+            </form>
           </div>
         )}
       </nav>
