@@ -17,7 +17,7 @@ const Step1 = () => {
           Please note: you will <b>always</b> use your institutional credentials to login to FABRIC portal via your institution's Identity Provider - <b>we do not and will never store your password or login information</b>. Any password changes that you go through with your institutional account will also affect how you login to the FABRIC portal.
         </p>
       </div>
-      <button className="btn btn-primary">Proceed</button>
+      <button className="btn btn-primary mt-2">Proceed</button>
     </div>
   )
 }
