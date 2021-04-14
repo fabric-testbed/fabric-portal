@@ -6,6 +6,7 @@ import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
 import ProjectForm from "./pages/ProjectForm";
 
+import Signup from "./pages/Signup";
 import Experiments from "./pages/Experiments";
 import Guide from "./pages/Guide";
 import Links from "./pages/Links";
@@ -34,6 +35,7 @@ function App() {
           <ProtectedRoute path="/guide" component={Guide} />
           <ProtectedRoute path="/links" component={Links} />
           <ProtectedRoute path="/user" component={User} />
+          <ProtectedRoute path="/signup" component={Signup} />
           <Route component={NotFound} />
         </Switch>
       </Router>
