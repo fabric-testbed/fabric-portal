@@ -1,12 +1,10 @@
-import React from "react";
-
-const StepProgress= () => {
+const StepProgress= (props) => {
   return (
     <div>
-      <ul class="progressbar">
-        <li class="active">Step 1</li>
-        <li>Step 2</li>
-        <li>Step 3</li>
+      <ul className="progressbar">
+        <li className={props.stepId == 1 && "active"}>Step 1</li>
+        <li className={props.stepId == 2 && "active"}>Step 2</li>
+        <li className={props.stepId == 3 && "active"}>Step 3</li>
       </ul>
     </div>
   )

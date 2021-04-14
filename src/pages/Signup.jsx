@@ -23,15 +23,15 @@ const Signup = () => {
   return (
     <div className="container">
       <h1>FABRIC SignUp</h1>
-      <StepProgress step={id} />
+      <StepProgress stepId={id} />
       {
-        id == 0 && <Step1 />
+        id == 1 && <Step1 />
       }
       {
-        id == 1 && <Step2 />
+        id == 2 && <Step2 />
       }
       {
-        id == 2 && <Step3 />
+        id == 3 && <Step3 />
       }
     </div>
   );
