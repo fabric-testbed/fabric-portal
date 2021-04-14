@@ -4,6 +4,7 @@ import StepProgressBar from 'react-step-progress';
 // import the stylesheet
 import 'react-step-progress/dist/index.css';
 
+import StepProgress from '../components/Signup/StepProgress';
 import Step1 from '../components/Signup/Step1';
 import Step2 from '../components/Signup/Step2';
 import Step3 from '../components/Signup/Step3';
@@ -37,6 +38,7 @@ const Signup = () => {
           }
         ]}
       />
+      <StepProgress />
     </div>
   );
 };
