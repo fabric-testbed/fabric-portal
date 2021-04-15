@@ -1,4 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
 import { selfEnrollRequest } from "../../services/portalData.json";
 
 const Step1 = () => {
@@ -6,7 +8,7 @@ const Step1 = () => {
     <div>
       <div>
         <p>Dear Experimenter,</p>
-        <p>Welcome to FABRIC! Before you sign up we would like you to familiarize yourself with our facility Acceptable Use Policy (AUP). </p>
+        <p>Welcome to FABRIC! Before you sign up we would like you to familiarize yourself with our facility <NavLink to="/aup">Acceptable Use Policy (AUP)</NavLink>. </p>
         <p>
           In order to begin using FABRIC you will have to take the following steps:
         </p>
