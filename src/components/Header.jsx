@@ -92,14 +92,14 @@ class Header extends React.Component {
                   onClick={this.handleLogin}
                   className="btn btn-outline-success my-2 my-sm-0 mr-2"
                 >
-                  Login
+                  Log in
                 </button>
               </NavLink>
               <NavLink to="/signup/1">
                 <button
                   className="btn btn-outline-primary my-2 my-sm-0"
                 >
-                  Signup
+                  Sign up
                 </button>
               </NavLink>
             </form>
@@ -160,7 +160,7 @@ class Header extends React.Component {
                   onClick={this.handleLogout}
                   className="btn btn-outline-success my-2 my-sm-0"
                 >
-                  Logout
+                  Log out
                 </button>
               </NavLink>
             </form>
