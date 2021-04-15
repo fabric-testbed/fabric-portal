@@ -10,19 +10,20 @@ import Step3 from '../components/Signup/Step3';
 
 const Signup = () => {
   let { id } = useParams();
+  let stepId = parseInt(id)
   return (
     <div className="container">
       <h2 className="text-center">FABRIC SignUp</h2>
-      <StepProgress stepId={id} />
+      <StepProgress stepId={stepId} />
       <div>
         {
-          id == 1 && <Step1 />
+          stepId === 1 && <Step1 />
         }
         {
-          id == 2 && <Step2 />
+          stepId === 2 && <Step2 />
         }
         {
-          id == 3 && <Step3 />
+          stepId === 3 && <Step3 />
         }
       </div>
     </div>

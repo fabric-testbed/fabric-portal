@@ -281,6 +281,7 @@ ul {
   width: 100%;
   counter-reset: step;
 }
+
 .progressbar li {
   list-style-type: none;
   width: 33.33%;
@@ -292,6 +293,7 @@ ul {
   text-transform: uppercase;
   color: #7d7d7d;
 }
+
 .progressbar li:before {
   width: 3rem;
   height: 3rem;
@@ -305,25 +307,30 @@ ul {
   border-radius: 50%;
   background-color: white;
 }
+
 .progressbar li:after {
   width: 100%;
   height: 0.5rem;
   content: "";
   position: absolute;
   background-color: $secondary;
-  top: 1rem;
+  top: 1.2rem;
   left: -50%;
   z-index: -1;
 }
+
 .progressbar li:first-child:after {
   content: none;
 }
+
 .progressbar li.active {
   color: $success;
 }
+
 .progressbar li.active:before {
   border-color: $success;
 }
-.progressbar li.active + li:after {
+
+.progressbar li.active:after {
   background-color: $success;
 }
