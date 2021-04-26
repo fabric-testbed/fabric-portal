@@ -8,6 +8,7 @@ import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { getWhoAmI } from "../services/userInformationService.js";
 
 import { hasCookie } from "../services/dummyAuth";
+import { NavLink } from "react-router-dom";
 
 import CookieConsent from "react-cookie-consent";
 
@@ -33,7 +34,7 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-container">
-        {
+        {/* {
           (!this.state.isActiveUser && hasCookie("fabric-service"))&&
           <div className="self-enroll-container">
             <ReactModal
@@ -43,7 +44,7 @@ class Home extends React.Component {
               content={selfEnrollRequest.content}
             />
           </div>
-        }
+        } */}
         <div className="home-upper">
           <div className="home-upper-text">
             <h1>FABRIC Portal</h1>
@@ -75,12 +76,8 @@ class Home extends React.Component {
         >
           <span className="text-lg">This Website Uses Cookies.</span>
           <div className="mt-1 text-sm">
-            We use cookies to provide you access to FABRIC Resources and
-            to personalize the content of this site. Your information
-            comes to us by way of your selected Identity Provider,
-            which is most likely your home institution. We do not share
-            your personal information with anyone, other than providing
-            aggregate statistics to our funders.
+          We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
+          Please accept our Cookie Policy by clicking ‘OK’. For more details, visit the <NavLink className="text-primary-light" to="/cookiepolicy"><b>Cookie Policy Page</b></NavLink>. 
           </div>
         </CookieConsent>
       </div>
