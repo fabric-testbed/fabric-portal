@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const CookiePolicy = () => {
   return (
@@ -52,7 +53,7 @@ const CookiePolicy = () => {
        <i className="fa fa-info-circle"></i> Which information do we share?
       </h3>
       <p>
-        We collect and report aggregate statistics about FABRIC facility use based on identity attributes of our users made available to us by their respective institutional identity providers via CI Logon. These attributes include the institution they belong to and whether they are staff, faculty or students. For more information, see the more detailed privacy policy.
+        We collect and report aggregate statistics about FABRIC facility use based on identity attributes of our users made available to us by their respective institutional identity providers via CI Logon. These attributes include the institution they belong to and whether they are staff, faculty or students. For more information, see the more detailed <NavLink to="/privacypolicy">privacy policy</NavLink>.
       </p>
     </div>
   );
