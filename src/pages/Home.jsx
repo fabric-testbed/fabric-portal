@@ -34,7 +34,7 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-container">
-        {/* {
+        {
           (!this.state.isActiveUser && hasCookie("fabric-service"))&&
           <div className="self-enroll-container">
             <ReactModal
@@ -44,7 +44,7 @@ class Home extends React.Component {
               content={selfEnrollRequest.content}
             />
           </div>
-        } */}
+        }
         <div className="home-upper">
           <div className="home-upper-text">
             <h1>FABRIC Portal</h1>

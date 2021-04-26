@@ -76,8 +76,7 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {/* {!hasCookie("fabric-service") && ( */}
-        {true && (
+        {!hasCookie("fabric-service") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -105,8 +104,7 @@ class Header extends React.Component {
             </form>
           </div>
         )}
-        {/* {hasCookie("fabric-service") && ( */}
-        {false && (
+        {hasCookie("fabric-service") && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul  className="navbar-nav mr-auto">
               {this.state.navItems.map((item, index) => {
