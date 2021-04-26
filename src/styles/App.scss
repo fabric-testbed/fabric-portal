@@ -161,6 +161,11 @@ a {
   color: $primary-color-dark;
 }
 
+p a {
+  color: $primary-color;
+  font-weight: 600;
+}
+
 a:hover {
   color: $primary-color-light;
   text-decoration: none;
