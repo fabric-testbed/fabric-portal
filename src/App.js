@@ -6,6 +6,10 @@ import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
 import ProjectForm from "./pages/ProjectForm";
 
+import Signup from "./pages/static/Signup";
+import AUP from "./pages/static/AUP";
+import CookiePolicy from "./pages/static/CookiePolicy";
+import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
 import Guide from "./pages/Guide";
 import Links from "./pages/Links";
@@ -27,6 +31,10 @@ function App() {
         <Header />
         <Switch>
           <Route path="/" component={Home} exact />
+          <Route path="/aup" component={AUP} />
+          <Route path="/cookiepolicy" component={CookiePolicy} />
+          <Route path="/privacypolicy" component={PrivacyPolicy} />
+          <Route path="/signup/:id" component={Signup} />
           <ProtectedRoute path="/resources" component={Resources} />
           <ProtectedRoute path="/projects/:id" component={ProjectForm} />
           <ProtectedRoute path="/projects" component={Projects} />
