@@ -25,6 +25,7 @@ class Home extends React.Component {
         localStorage.setItem("userID", user.uuid);
       } catch(err) {
         console.log("/whoami " + err);
+        console.log(err.code);
         // not actice user, show self-enrollment modal
         this.setState({ isActiveUser: false })
       }
