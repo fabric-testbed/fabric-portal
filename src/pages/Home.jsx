@@ -5,9 +5,7 @@ import ReactModal from "../components/common/ReactModal";
 
 import { selfEnrollRequest } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
-import { getWhoAmI } from "../services/userInformationService.js";
 
-import { hasCookie } from "../services/dummyAuth";
 import { NavLink } from "react-router-dom";
 
 import CookieConsent from "react-cookie-consent";
@@ -18,24 +16,11 @@ class Home extends React.Component {
     isActiveUser: true,
   }
 
-  async componentDidMount(){
-    if (hasCookie("fabric-service")) {
-      try {
-        const { data: user } = await getWhoAmI();
-        localStorage.setItem("userID", user.uuid);
-      } catch(err) {
-        console.log("/whoami " + err);
-        // not actice user, show self-enrollment modal
-        this.setState({ isActiveUser: false })
-      }
-    }
-  }
-
   render() {
     return (
       <div className="home-container">
         {
-          (!this.state.isActiveUser && hasCookie("fabric-service"))&&
+          (localStorage.getItem("userStatus") === "inactive") &&
           <div className="self-enroll-container">
             <ReactModal
               id={selfEnrollRequest.id}

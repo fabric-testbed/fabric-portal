@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { hasCookie } from "../services/dummyAuth";
+import { getWhoAmI } from "../services/userInformationService.js";
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,8 +33,33 @@ class Header extends React.Component {
     ],
   };
 
+  async componentDidMount(){
+    // if no user status info is stored, call UIS getWhoAmI.
+    if (!localStorage.getItem("userStatus")) {
+      try {
+        const { data: user } = await getWhoAmI();
+        localStorage.setItem("userID", user.uuid);
+        localStorage.setItem("userStatus", "active");
+      } catch(err) {
+        console.log("/whoami " + err);
+        console.log(err.response.status);
+        if (err.response.status === 401) {
+          // not logged in, unauthorized:
+          localStorage.setItem("userStatus", "unauthorized");
+        }
+        if (err.response.status === 403) {
+          // logged in, but not self signup, unauthenticated:
+          localStorage.setItem("userStatus", "inactive");
+        }
+      }
+    }
+  }
+  
   handleLogin = () => {
     if (localStorage.getItem("cookieConsent")) {
+      // remove old user status stored in browser.
+      localStorage.removeItem("userStatus");
+      // nginx handle login url.
       window.location.href = "/login";
     } else {
       toast("Please acknowledge our cookie policy first: click OK on the bottom banner before login.");
@@ -44,11 +69,9 @@ class Header extends React.Component {
   handleLogout = () => {
     // remove stored user ID got from UIS whoami.
     localStorage.removeItem("userID");
-    // remove cookie consent choice in local storage.
-    // localStorage.removeItem("cookieConsent");
-    // remove cookie consent and fabric-service auth cookie in cookies.
-    // document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "fabric-service=; domain=fabric-testbed.net; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // remove old user status stored in browser.
+    localStorage.removeItem("userStatus");
+    // nginx handle logout url.
     window.location.href = "/logout";
   }
 
@@ -76,7 +99,7 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {!hasCookie("fabric-service") && (
+        {localStorage.getItem("userStatus") !== "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -86,14 +109,12 @@ class Header extends React.Component {
               </li>
             </ul>
             <form className="form-inline my-2 my-lg-0">
-              <NavLink to="/login">
-                <button
-                  onClick={this.handleLogin}
-                  className="btn btn-outline-success my-2 my-sm-0 mr-2"
-                >
-                  Log in
-                </button>
-              </NavLink>
+              <button
+                onClick={this.handleLogin}
+                className="btn btn-outline-success my-2 my-sm-0 mr-2"
+              >
+                Log in
+              </button>
               <NavLink to="/signup/1">
                 <button
                   className="btn btn-outline-primary my-2 my-sm-0"
@@ -104,7 +125,7 @@ class Header extends React.Component {
             </form>
           </div>
         )}
-        {hasCookie("fabric-service") && (
+        {localStorage.getItem("userStatus") === "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul  className="navbar-nav mr-auto">
               {this.state.navItems.map((item, index) => {
@@ -153,14 +174,12 @@ class Header extends React.Component {
               })}
             </ul>
             <form className="form-inline my-2 my-lg-0">
-              <NavLink to="/logout">
-                <button
-                  onClick={this.handleLogout}
-                  className="btn btn-outline-success my-2 my-sm-0"
-                >
-                  Log out
-                </button>
-              </NavLink>
+              <button
+                onClick={this.handleLogout}
+                className="btn btn-outline-success my-2 my-sm-0"
+              >
+                Log out
+              </button>
             </form>
           </div>
         )}
