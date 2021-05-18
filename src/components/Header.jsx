@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { hasCookie } from "../services/dummyAuth";
+import { getWhoAmI } from "../services/userInformationService.js";
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,6 +33,28 @@ class Header extends React.Component {
     ],
   };
 
+  async componentDidMount(){
+    // if no user status info is stored, call UIS getWhoAmI.
+    if (!localStorage.getItem("userStatus")) {
+      try {
+        const { data: user } = await getWhoAmI();
+        localStorage.setItem("userID", user.uuid);
+        localStorage.setItem("userStatus", "active");
+      } catch(err) {
+        console.log("/whoami " + err);
+        console.log(err.response.status);
+        if (err.response.status === 401) {
+          // not logged in:
+          localStorage.setItem("userStatus", "unauthorized");
+        }
+        if (err.response.status === 403) {
+          // logged in, but not self signup:
+          localStorage.setItem("userStatus", "inactive");
+        }
+      }
+    }
+  }
+  
   handleLogin = () => {
     if (localStorage.getItem("cookieConsent")) {
       window.location.href = "/login";
@@ -76,7 +98,7 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {!hasCookie("fabric-service") && (
+        {localStorage.getItem("userStatus") !== "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -102,7 +124,7 @@ class Header extends React.Component {
             </form>
           </div>
         )}
-        {hasCookie("fabric-service") && (
+        {localStorage.getItem("userStatus") === "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul  className="navbar-nav mr-auto">
               {this.state.navItems.map((item, index) => {
