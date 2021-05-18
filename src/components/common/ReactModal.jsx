@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import { NavLink } from "react-router-dom";
+
 import Parser from 'html-react-parser';
 
 function ReactModal(props) {
@@ -14,6 +14,8 @@ function ReactModal(props) {
 
   const handleSignup = () => {
     setShow(false);
+    window.open(props.link, "_blank");
+    window.location.href = "/logout";
   }
 
   return (
@@ -32,7 +34,7 @@ function ReactModal(props) {
           { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
-          <NavLink to="/signup/1"><Button variant="primary" onClick={handleSignup}>Signup</Button></NavLink>
+          <Button variant="primary" onClick={handleSignup}>Signup</Button>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
