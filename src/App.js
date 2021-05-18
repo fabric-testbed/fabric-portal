@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { getWhoAmI } from "./services/userInformationService.js";
+
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -24,31 +26,62 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 
 import "./styles/App.scss";
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Header />
-        <Switch>
-          <Route path="/" component={Home} exact />
-          <Route path="/aup" component={AUP} />
-          <Route path="/cookiepolicy" component={CookiePolicy} />
-          <Route path="/privacypolicy" component={PrivacyPolicy} />
-          <Route path="/signup/:id" component={Signup} />
-          <ProtectedRoute path="/resources" component={Resources} />
-          <ProtectedRoute path="/projects/:id" component={ProjectForm} />
-          <ProtectedRoute path="/projects" component={Projects} />
-          <ProtectedRoute path="/experiments" component={Experiments} />
-          <ProtectedRoute path="/guide" component={Guide} />
-          <ProtectedRoute path="/links" component={Links} />
-          <ProtectedRoute path="/user" component={User} />
-          <Route component={NotFound} />
-        </Switch>
-      </Router>
-      <ToastContainer />
-      <Footer />
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    userStatus: "",
+  };
+
+  async componentDidMount(){
+    // if no user status info is stored, call UIS getWhoAmI.
+    if (!localStorage.getItem("userStatus")) {
+      try {
+        const { data: user } = await getWhoAmI();
+        localStorage.setItem("userID", user.uuid);
+        localStorage.setItem("userStatus", "active");
+      } catch(err) {
+        console.log("/whoami " + err);
+        console.log(err.response.status);
+        if (err.response.status === 401) {
+          // not logged in, unauthorized:
+          localStorage.setItem("userStatus", "unauthorized");
+        }
+        if (err.response.status === 403) {
+          // logged in, but not self signup, unauthenticated:
+          localStorage.setItem("userStatus", "inactive");
+        }
+      }
+    }
+
+    this.setState({ userStatus: localStorage.getItem("userStatus") });
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <Router>
+          <Header userStatus={this.state.userStatus} />
+          <Switch>
+            <Route path="/" component={Home} exact />
+            <Route path="/aup" component={AUP} />
+            <Route path="/cookiepolicy" component={CookiePolicy} />
+            <Route path="/privacypolicy" component={PrivacyPolicy} />
+            <Route path="/signup/:id" component={Signup} />
+            <ProtectedRoute path="/resources" component={Resources} />
+            <ProtectedRoute path="/projects/:id" component={ProjectForm} />
+            <ProtectedRoute path="/projects" component={Projects} />
+            <ProtectedRoute path="/experiments" component={Experiments} />
+            <ProtectedRoute path="/guide" component={Guide} />
+            <ProtectedRoute path="/links" component={Links} />
+            <ProtectedRoute path="/user" component={User} />
+            <Route component={NotFound} />
+          </Switch>
+        </Router>
+        <ToastContainer />
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;
