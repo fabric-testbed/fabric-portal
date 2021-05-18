@@ -44,11 +44,11 @@ class Header extends React.Component {
         console.log("/whoami " + err);
         console.log(err.response.status);
         if (err.response.status === 401) {
-          // not logged in:
+          // not logged in, unauthorized:
           localStorage.setItem("userStatus", "unauthorized");
         }
         if (err.response.status === 403) {
-          // logged in, but not self signup:
+          // logged in, but not self signup, unauthenticated:
           localStorage.setItem("userStatus", "inactive");
         }
       }
@@ -57,6 +57,9 @@ class Header extends React.Component {
   
   handleLogin = () => {
     if (localStorage.getItem("cookieConsent")) {
+      // remove old user status stored in browser.
+      localStorage.removeItem("userStatus");
+      // nginx handle login url.
       window.location.href = "/login";
     } else {
       toast("Please acknowledge our cookie policy first: click OK on the bottom banner before login.");
@@ -66,11 +69,9 @@ class Header extends React.Component {
   handleLogout = () => {
     // remove stored user ID got from UIS whoami.
     localStorage.removeItem("userID");
-    // remove cookie consent choice in local storage.
-    // localStorage.removeItem("cookieConsent");
-    // remove cookie consent and fabric-service auth cookie in cookies.
-    // document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "fabric-service=; domain=fabric-testbed.net; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // remove old user status stored in browser.
+    localStorage.removeItem("userStatus");
+    // nginx handle logout url.
     window.location.href = "/logout";
   }
 
