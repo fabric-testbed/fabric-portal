@@ -7,13 +7,7 @@ axios.defaults.timeout = 20000;
 
 axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
-      // the user has not logged in
-      // do not toast error message.
-      return Promise.reject(error); 
-    }
-
-    if (error.response && error.response.status === 403) {
-      // the user has logged in but hasn't completed self-signup yet
+      // user is not active and need signup
       // do not toast error message.
       return Promise.reject(error); 
     }
