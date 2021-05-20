@@ -40,7 +40,6 @@ class App extends React.Component {
         localStorage.setItem("userStatus", "active");
       } catch(err) {
         console.log("/whoami " + err);
-        console.log(err.response.status);
         if (err.response.status === 401) {
           // not logged in, unauthorized:
           localStorage.setItem("userStatus", "unauthorized");
@@ -63,6 +62,8 @@ class App extends React.Component {
           <Header userStatus={this.state.userStatus} />
           <Switch>
             <Route path="/" component={Home} exact />
+            <Route path="/login" component={Home} />
+            <Route path="/logout" component={Home} />
             <Route path="/aup" component={AUP} />
             <Route path="/cookiepolicy" component={CookiePolicy} />
             <Route path="/privacypolicy" component={PrivacyPolicy} />
