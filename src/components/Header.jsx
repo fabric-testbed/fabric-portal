@@ -1,8 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { getWhoAmI } from "../services/userInformationService.js";
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,28 +30,6 @@ class Header extends React.Component {
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
-
-  async componentDidMount(){
-    // if no user status info is stored, call UIS getWhoAmI.
-    if (!localStorage.getItem("userStatus")) {
-      try {
-        const { data: user } = await getWhoAmI();
-        localStorage.setItem("userID", user.uuid);
-        localStorage.setItem("userStatus", "active");
-      } catch(err) {
-        console.log("/whoami " + err);
-        console.log(err.response.status);
-        if (err.response.status === 401) {
-          // not logged in, unauthorized:
-          localStorage.setItem("userStatus", "unauthorized");
-        }
-        if (err.response.status === 403) {
-          // logged in, but not self signup, unauthenticated:
-          localStorage.setItem("userStatus", "inactive");
-        }
-      }
-    }
-  }
   
   handleLogin = () => {
     if (localStorage.getItem("cookieConsent")) {
@@ -99,7 +75,7 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {localStorage.getItem("userStatus") !== "active" && (
+        {this.props.userStatus !== "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
@@ -108,13 +84,15 @@ class Header extends React.Component {
                 </NavLink>
               </li>
             </ul>
-            <form className="form-inline my-2 my-lg-0">
-              <button
-                onClick={this.handleLogin}
-                className="btn btn-outline-success my-2 my-sm-0 mr-2"
-              >
-                Log in
-              </button>
+             <form className="form-inline my-2 my-lg-0">
+              <NavLink to="/login">
+                <button
+                  onClick={this.handleLogin}
+                  className="btn btn-outline-success my-2 my-sm-0 mr-2"
+                >
+                  Log in
+                </button>
+              </NavLink>
               <NavLink to="/signup/1">
                 <button
                   className="btn btn-outline-primary my-2 my-sm-0"
@@ -125,7 +103,7 @@ class Header extends React.Component {
             </form>
           </div>
         )}
-        {localStorage.getItem("userStatus") === "active" && (
+        {this.props.userStatus === "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul  className="navbar-nav mr-auto">
               {this.state.navItems.map((item, index) => {
@@ -173,13 +151,15 @@ class Header extends React.Component {
                 );
               })}
             </ul>
-            <form className="form-inline my-2 my-lg-0">
-              <button
-                onClick={this.handleLogout}
-                className="btn btn-outline-success my-2 my-sm-0"
-              >
-                Log out
-              </button>
+              <form className="form-inline my-2 my-lg-0">
+              <NavLink to="/logout">
+                <button
+                  onClick={this.handleLogout}
+                  className="btn btn-outline-success my-2 my-sm-0"
+                >
+                  Log out
+                </button>
+              </NavLink>
             </form>
           </div>
         )}
