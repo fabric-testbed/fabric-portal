@@ -7,9 +7,10 @@ axios.defaults.timeout = 20000;
 
 axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
-      // the user has not logged in
+      // the user has not logged in or the auth cookie is expired
+      localStorage.setItem("userStatus", "unauthorized");
       // do not toast error message.
-      return Promise.reject(error); 
+      return Promise.reject(error);
     }
 
     if (error.response && error.response.status === 403) {

@@ -40,12 +40,12 @@ class App extends React.Component {
         localStorage.setItem("userStatus", "active");
       } catch(err) {
         console.log("/whoami " + err);
-        if (err.response.status === 401) {
-          // not logged in, unauthorized:
-          localStorage.setItem("userStatus", "unauthorized");
-        }
+        // situation 1: err.response.status === 401
+        // not logged in or auth cookie expired
+        // http service has set userStatus to unauthorized.
+
+        // situation 2: logged in, but not self signup, unauthenticated
         if (err.response.status === 403) {
-          // logged in, but not self signup, unauthenticated:
           localStorage.setItem("userStatus", "inactive");
         }
       }
