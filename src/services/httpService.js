@@ -9,6 +9,7 @@ axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
       // the user has not logged in or the auth cookie is expired
       localStorage.setItem("userStatus", "unauthorized");
+      window.location.reload();
       // do not toast error message.
       return Promise.reject(error);
     }
