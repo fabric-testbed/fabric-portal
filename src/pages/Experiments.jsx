@@ -11,13 +11,25 @@ import { toast } from "react-toastify";
 class Experiments extends React.Component {
 
   state = {
-    token: ""
+    created_token: "",
+  }
+
+  generateTokenJson = (id_token) => {
+    // format:
+    //   {
+    //     "created_at": "Timestamp at which the tokens were generated",
+    //     "id_token": "Identity Token",
+    //     "refresh_token": "Refresh Token"
+    //   }
+    const res_json = {"created_at" : Date.now(), "id_token": id_token};
+    
+    return JSON.stringify(res_json);
   }
 
   createToken = async () => {
     try {
       const { data } = await createIdToken();
-      this.setState({ token: data.id_token });
+      this.setState({ created_token: this.generateTokenJson(data.id_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
     }
@@ -65,7 +77,7 @@ class Experiments extends React.Component {
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control as="textarea" rows={4} />
+                <Form.Control as="textarea" placeholder={this.state.created_token} rows={4} />
               </Form.Group>
             </Card.Body>
           </Card>
