@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 import { createIdToken } from "../services/credentialManagerService.js";
 import { toast } from "react-toastify";
@@ -12,7 +13,7 @@ class Experiments extends React.Component {
 
   state = {
     created_token: "",
-    copySuccess: "",
+    copySuccess: false,
   }
 
   generateTokenJson = (id_token) => {
@@ -30,6 +31,7 @@ class Experiments extends React.Component {
   createToken = async () => {
     try {
       // const { data } = await createIdToken();
+      this.setState({ copySuccess: false });
       this.setState({ created_token: this.generateTokenJson("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUz") });
     } catch (ex) {
       toast.error("Failed to create token.");
@@ -40,7 +42,16 @@ class Experiments extends React.Component {
     this.textArea.select();
     document.execCommand('copy');
     e.target.focus();
-    this.setState({ copySuccess: 'Copied!' });
+    this.setState({ copySuccess: true });
+  }
+
+  downloadToken = () => {
+    const element = document.createElement("a");
+    const file = new Blob([document.getElementById('createTokenTextArea').value], {type: 'application/json'});
+    element.href = URL.createObjectURL(file);
+    element.download = "id_token.json";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
   }
 
   render() {
@@ -79,7 +90,7 @@ class Experiments extends React.Component {
             </Col>
           </Row>
           <Card>
-            <Card.Header className="d-flex bg-light">
+            <Card.Header className="d-flex flex-row bg-light">
               <Button
                 onClick={this.copyToken}
                 variant="primary"
@@ -88,20 +99,31 @@ class Experiments extends React.Component {
               >
                 Copy
               </Button>
-              <Button variant="primary" size="sm">Download</Button>
-              {this.state.copySuccess}
+              <Button
+                onClick={this.downloadToken}
+                variant="primary"
+                size="sm"
+              >
+                Download
+              </Button>
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Control
                   ref={(textarea) => this.textArea = textarea}
                   as="textarea"
-                  placeholder={this.state.created_token}
+                  id="createTokenTextArea"
+                  defaultValue={this.state.created_token}
                   rows={4}
                 />
               </Form.Group>
             </Card.Body>
           </Card>
+          {this.state.copySuccess && (
+            <Alert variant="success">
+              Copied to clipboard successfully!
+            </Alert>
+          )}
         </Form>
         <h2 className="my-4">Refresh Token</h2>
         <Form>
