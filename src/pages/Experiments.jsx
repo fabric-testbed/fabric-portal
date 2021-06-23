@@ -12,6 +12,7 @@ class Experiments extends React.Component {
 
   state = {
     created_token: "",
+    copySuccess: "",
   }
 
   generateTokenJson = (id_token) => {
@@ -23,16 +24,23 @@ class Experiments extends React.Component {
     //   }
     const res_json = {"created_at" : Date.now(), "id_token": id_token};
     
-    return JSON.stringify(res_json);
+    return JSON.stringify(res_json, undefined, 4);
   }
 
   createToken = async () => {
     try {
-      const { data } = await createIdToken();
-      this.setState({ created_token: this.generateTokenJson(data.id_token) });
+      // const { data } = await createIdToken();
+      this.setState({ created_token: this.generateTokenJson("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUz") });
     } catch (ex) {
       toast.error("Failed to create token.");
     }
+  }
+
+  copyToken = (e) => {
+    this.textArea.select();
+    document.execCommand('copy');
+    e.target.focus();
+    this.setState({ copySuccess: 'Copied!' });
   }
 
   render() {
@@ -72,12 +80,25 @@ class Experiments extends React.Component {
           </Row>
           <Card>
             <Card.Header className="d-flex bg-light">
-              <Button variant="primary" size="sm" className="mr-3">Copy</Button>
+              <Button
+                onClick={this.copyToken}
+                variant="primary"
+                size="sm"
+                className="mr-3"
+              >
+                Copy
+              </Button>
               <Button variant="primary" size="sm">Download</Button>
+              {this.state.copySuccess}
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control as="textarea" placeholder={this.state.created_token} rows={4} />
+                <Form.Control
+                  ref={(textarea) => this.textArea = textarea}
+                  as="textarea"
+                  placeholder={this.state.created_token}
+                  rows={4}
+                />
               </Form.Group>
             </Card.Body>
           </Card>
