@@ -13,6 +13,7 @@ class Experiments extends React.Component {
 
   state = {
     created_token: "",
+    createSuccess: false,
     copySuccess: false,
     refreshSuccess: false,
     revokeSuccess: false,
@@ -42,7 +43,7 @@ class Experiments extends React.Component {
   createToken = async () => {
     try {
       const { data } = await createIdToken();
-      this.setState({ copySuccess: false });
+      this.setState({ copySuccess: false, createSuccess: true });
       this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
@@ -122,7 +123,8 @@ class Experiments extends React.Component {
               </Button>
             </Col>
           </Row>
-          <Card>
+          { this.state.createSuccess && (
+            <Card>
             <Card.Header className="d-flex flex-row bg-light">
               <Button
                 onClick={this.copyToken}
@@ -151,7 +153,8 @@ class Experiments extends React.Component {
                 />
               </Form.Group>
             </Card.Body>
-          </Card>
+            </Card>
+          )}
           {this.state.copySuccess && (
             <Alert variant="success">
               Copied to clipboard successfully!
@@ -190,7 +193,7 @@ class Experiments extends React.Component {
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Control
                   as="textarea"
-                  rows={4}
+                  rows={3}
                   id="refreshTokenTextArea"
                 />
               </Form.Group>
@@ -217,7 +220,7 @@ class Experiments extends React.Component {
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Control
                   as="textarea"
-                  rows={4}
+                  rows={3}
                   id="revokeTokenTextArea"
                   onChange={this.changeRevokeToken}
                 />
