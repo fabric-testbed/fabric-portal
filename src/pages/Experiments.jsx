@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-import { createIdToken, revokeToken } from "../services/credentialManagerService.js";
+import { createIdToken, refreshToken, revokeToken } from "../services/credentialManagerService.js";
 import { toast } from "react-toastify";
 
 class Experiments extends React.Component {
@@ -14,7 +14,13 @@ class Experiments extends React.Component {
   state = {
     created_token: "",
     copySuccess: false,
+    refreshSuccess: false,
     revokeSuccess: false,
+    scopeOptions: {
+      "All": "all",
+      "Control Framework": "cf",
+      "Measurement Framework": "mf",
+    }
   }
 
   generateTokenJson = (id_token, refresh_token) => {
@@ -40,6 +46,17 @@ class Experiments extends React.Component {
       this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
+    }
+  }
+
+  refreshToken = async () => {
+    try {
+      await refreshToken(document.getElementById('refreshTokenTextArea').value);
+      this.setState({ refreshSuccess: true });
+    }
+    catch (ex) {
+      this.setState({ refreshSuccess: false });
+      toast.error("Failed to refresh token.")
     }
   }
 
@@ -130,7 +147,7 @@ class Experiments extends React.Component {
                   as="textarea"
                   id="createTokenTextArea"
                   defaultValue={this.state.created_token}
-                  rows={4}
+                  rows={6}
                 />
               </Form.Group>
             </Card.Body>
@@ -171,12 +188,22 @@ class Experiments extends React.Component {
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control as="textarea" rows={4} />
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  id="refreshTokenTextArea"
+                />
               </Form.Group>
             </Card.Body>
           </Card>
+          {this.state.refreshSuccess && (
+            <Alert variant="success">
+              The token is refreshed successfully!
+            </Alert>
+          )}
         </Form>
         <Button
+          onClick={this.refreshToken}
           className="btn-success mt-3"
         >
           Refresh Token
