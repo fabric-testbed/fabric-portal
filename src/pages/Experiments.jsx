@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-import { createIdToken } from "../services/credentialManagerService.js";
+import { createIdToken, revokeToken } from "../services/credentialManagerService.js";
 import { toast } from "react-toastify";
 
 class Experiments extends React.Component {
@@ -14,6 +14,7 @@ class Experiments extends React.Component {
   state = {
     created_token: "",
     copySuccess: false,
+    revokeSuccess: false,
   }
 
   generateTokenJson = (id_token, refresh_token) => {
@@ -39,6 +40,17 @@ class Experiments extends React.Component {
       this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
+    }
+  }
+
+  revokeToken = async () => {
+    try {
+      await revokeToken(document.getElementById('revokeTokenTextArea').value);
+      this.setState({ revokeSuccess: true });
+    }
+    catch (ex) {
+      this.setState({ revokeSuccess: false });
+      toast.error("Failed to revoke token.")
     }
   }
 
@@ -176,11 +188,22 @@ class Experiments extends React.Component {
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control as="textarea" rows={4} />
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  id="revokeTokenTextArea"
+                  onChange={this.changeRevokeToken}
+                />
               </Form.Group>
             </Card.Body>
           </Card>
+          {this.state.revokeSuccess && (
+            <Alert variant="success">
+              The token is revoked successfully!
+            </Alert>
+          )}
         <Button
+          onClick={this.revokeToken}
           className="btn-danger mt-3"
         >
           Revoke Token

@@ -11,6 +11,9 @@ export function refreshToken() {
   return http.post(apiEndpoint + "/refresh?projectName=all&scope=all");
 }
 
-export function revokeToken() {
-  return http.post(apiEndpoint + "/revoke");
+export function revokeToken(refresh_token) {
+  const data = {
+    "refresh_token": refresh_token
+  }
+  return http.post(apiEndpoint + "/revoke", data);
 }
