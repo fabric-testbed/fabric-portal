@@ -16,23 +16,27 @@ class Experiments extends React.Component {
     copySuccess: false,
   }
 
-  generateTokenJson = (id_token) => {
+  generateTokenJson = (id_token, refresh_token) => {
     // format:
     //   {
     //     "created_at": "Timestamp at which the tokens were generated",
     //     "id_token": "Identity Token",
     //     "refresh_token": "Refresh Token"
     //   }
-    const res_json = {"created_at" : Date.now(), "id_token": id_token};
+    const res_json = {
+      "created_at" : Date.now(),
+      "id_token": id_token,
+      "refresh_token": refresh_token,
+    };
     
     return JSON.stringify(res_json, undefined, 4);
   }
 
   createToken = async () => {
     try {
-      // const { data } = await createIdToken();
+      const { data } = await createIdToken();
       this.setState({ copySuccess: false });
-      this.setState({ created_token: this.generateTokenJson("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUz") });
+      this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
     }
