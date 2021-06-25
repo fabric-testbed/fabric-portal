@@ -41,15 +41,16 @@ class Experiments extends React.Component {
     }
   }
 
+  generateTimeStamp = () => {
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const time = today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
+    return (date + ' '+ time);
+  }
+
   generateTokenJson = (id_token, refresh_token) => {
-    // format:
-    //   {
-    //     "created_at": "Timestamp at which the tokens were generated",
-    //     "id_token": "Identity Token",
-    //     "refresh_token": "Refresh Token"
-    //   }
     const res_json = {
-      "created_at" : Date.now(),
+      "created_at" : this.generateTimeStamp,
       "id_token": id_token,
       "refresh_token": refresh_token,
     };
