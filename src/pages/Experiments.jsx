@@ -7,12 +7,14 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 import { createIdToken, refreshToken, revokeToken } from "../services/credentialManagerService.js";
+import { getCurrentUser } from "../services/prPeopleService.js";
+
 import { toast } from "react-toastify";
-import { faAllergies } from "@fortawesome/free-solid-svg-icons";
 
 class Experiments extends React.Component {
 
   state = {
+    projects: [],
     created_token: "",
     createSuccess: false,
     copySuccess: false,
@@ -25,6 +27,18 @@ class Experiments extends React.Component {
     ],
     selectedCreateScope: "all",
     selectedRefreshScope: "all",
+    selectedCreateProject: "all",
+    selectedRefreshProject: "all",
+  }
+
+  async componentDidMount(){
+    try {
+      const { data: user } = await getCurrentUser();
+      this.setState({ projects: user.projects });
+    } catch (ex) {
+      toast.error("Failed to load user's project information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
+    }
   }
 
   generateTokenJson = (id_token, refresh_token) => {
@@ -45,7 +59,9 @@ class Experiments extends React.Component {
 
   createToken = async () => {
     try {
-      const { data } = await createIdToken(this.state.selectedCreateScope);
+      const project = this.state.selectedCreateProject;
+      const scope = this.state.selectedCreateScope;
+      const { data } = await createIdToken(project, scope);
       this.setState({ copySuccess: false, createSuccess: true });
       this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
@@ -55,8 +71,9 @@ class Experiments extends React.Component {
 
   refreshToken = async () => {
     try {
-      await refreshToken(this.state.selectedRefreshScope,
-        document.getElementById('refreshTokenTextArea').value);
+      const project = this.state.selectedRefreshProject;
+      const scope = this.state.selectedRefreshScope;
+      await refreshToken(project, scope, document.getElementById('refreshTokenTextArea').value);
       this.setState({ refreshSuccess: true });
     }
     catch (ex) {
@@ -92,6 +109,15 @@ class Experiments extends React.Component {
     element.click();
   }
 
+  handleSelectCreateProject = (e) =>{
+    this.setState({ selectedCreateProject: e.target.value });
+  }
+
+  handleSelectRefreshProject = (e) =>{
+    this.setState({ selectedRefreshProject: e.target.value });
+  }
+
+
   handleSelectCreateScope = (e) =>{
     this.setState({ selectedCreateScope: e.target.value });
   }
@@ -109,10 +135,15 @@ class Experiments extends React.Component {
             <Col>
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select Project</Form.Label>
-                <Form.Control as="select">
-                  <option>All</option>
-                  <option>Project Name 1</option>
-                  <option>Project Name 2</option>
+                <Form.Control as="select" onChange={this.handleSelectRefreshProject}>
+                  <option value="all">All</option>
+                  {
+                    this.state.projects.map(project => {
+                      return (
+                        <option value={project.name}>{project.name}</option>
+                      )
+                    })
+                  }
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -188,10 +219,15 @@ class Experiments extends React.Component {
             <Col>
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select Project</Form.Label>
-                <Form.Control as="select">
-                  <option>All</option>
-                  <option>Project Name 1</option>
-                  <option>Project Name 2</option>
+                <Form.Control as="select" onChange={this.handleSelectRefreshProject}>
+                  <option value="all">All</option>
+                  {
+                    this.state.projects.map(project => {
+                      return (
+                        <option value={project.name}>{project.name}</option>
+                      )
+                    })
+                  }
                 </Form.Control>
               </Form.Group>
             </Col>
