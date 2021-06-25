@@ -41,16 +41,14 @@ class Experiments extends React.Component {
     }
   }
 
-  generateTimeStamp = () => {
+  generateTokenJson = (id_token, refresh_token) => {
     const today = new Date();
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     const time = today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
-    return (date + ' '+ time);
-  }
+    const time_stamp = date + ' '+ time;
 
-  generateTokenJson = (id_token, refresh_token) => {
     const res_json = {
-      "created_at" : this.generateTimeStamp,
+      "created_at" : time_stamp,
       "id_token": id_token,
       "refresh_token": refresh_token,
     };
@@ -136,7 +134,7 @@ class Experiments extends React.Component {
             <Col>
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select Project</Form.Label>
-                <Form.Control as="select" onChange={this.handleSelectRefreshProject}>
+                <Form.Control as="select" onChange={this.handleSelectCreateProject}>
                   <option value="all">All</option>
                   {
                     this.state.projects.map(project => {
