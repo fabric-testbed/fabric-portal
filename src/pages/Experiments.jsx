@@ -8,6 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import { createIdToken, refreshToken, revokeToken } from "../services/credentialManagerService.js";
 import { toast } from "react-toastify";
+import { faAllergies } from "@fortawesome/free-solid-svg-icons";
 
 class Experiments extends React.Component {
 
@@ -17,11 +18,13 @@ class Experiments extends React.Component {
     copySuccess: false,
     refreshSuccess: false,
     revokeSuccess: false,
-    scopeOptions: {
-      "All": "all",
-      "Control Framework": "cf",
-      "Measurement Framework": "mf",
-    }
+    scopeOptions: [
+      { id: 1, value: "all", display: "All"},
+      { id: 2, value: "cf", display: "Control Framework"},
+      { id: 3, value: "mf", display: "Measurement Framework"},
+    ],
+    selectedCreateScope: "all",
+    selectedRefreshScope: "all",
   }
 
   generateTokenJson = (id_token, refresh_token) => {
@@ -42,7 +45,7 @@ class Experiments extends React.Component {
 
   createToken = async () => {
     try {
-      const { data } = await createIdToken();
+      const { data } = await createIdToken(this.state.selectedCreateScope);
       this.setState({ copySuccess: false, createSuccess: true });
       this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
@@ -52,7 +55,8 @@ class Experiments extends React.Component {
 
   refreshToken = async () => {
     try {
-      await refreshToken(document.getElementById('refreshTokenTextArea').value);
+      await refreshToken(this.state.selectedRefreshScope,
+        document.getElementById('refreshTokenTextArea').value);
       this.setState({ refreshSuccess: true });
     }
     catch (ex) {
@@ -88,6 +92,14 @@ class Experiments extends React.Component {
     element.click();
   }
 
+  handleSelectCreateScope = (e) =>{
+    this.setState({ selectedCreateScope: e.target.value });
+  }
+
+  handleSelectRefreshScope = (e) =>{
+    this.setState({ selectedRefreshScope: e.target.value });
+  }
+
   render() {
     return (
       <div className="container">
@@ -107,10 +119,19 @@ class Experiments extends React.Component {
             <Col>
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select Scope</Form.Label>
-                <Form.Control as="select">
-                  <option>All</option>
-                  <option>Control Framework</option>
-                  <option>Measurement Framework</option>
+                <Form.Control as="select" onChange={this.handleSelectCreateScope}>
+                  { 
+                    this.state.scopeOptions.map(option => {
+                      return (
+                        <option
+                          id={`createTokenScope${option.id}`}
+                          value={option.value}
+                        >
+                          {option.display}
+                        </option>
+                      )
+                    })
+                  }
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -177,10 +198,19 @@ class Experiments extends React.Component {
             <Col>
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select Scope</Form.Label>
-                <Form.Control as="select">
-                  <option>All</option>
-                  <option>Control Framework</option>
-                  <option>Measurement Framework</option>
+                <Form.Control as="select" onChange={this.handleSelectRefreshScope}>
+                 { 
+                    this.state.scopeOptions.map(option => {
+                      return (
+                        <option
+                          id={`createTokenScope${option.id}`}
+                          value={option.value}
+                        >
+                          {option.display}
+                        </option>
+                      )
+                    })
+                  }
                 </Form.Control>
               </Form.Group>
             </Col>
