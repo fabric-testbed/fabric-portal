@@ -14,7 +14,7 @@ import _ from "lodash";
 
 class Resources extends Component {
   state = {
-    resources: "",
+    resources: {},
     sortColumn: { path: "name", order: "asc" },
     pageSize: 5,
     currentPage: 1,
@@ -24,12 +24,33 @@ class Resources extends Component {
 
   async componentDidMount(){
     try {
-      const { data: resources } = await getResources();
-      this.setState({ resources });
+      const { data } = await getResources();
+      this.setState({ resources: this.siteParser(data) });
+      console.log(this.state.resources)
     } catch (ex) {
       toast.error("Failed to load resource information. Please reload this page.");
       console.log("Failed to load resource information: " + ex.response.data);
     }
+  }
+
+  siteParser = (data) => {
+    let abqm_elements = JSON.parse(data.value.bqm);
+    const nodes = abqm_elements.nodes;
+    console.log(nodes)
+    const parsedSites = [];
+    /************ retrieve site data from all nodes. ************/ 
+    nodes.forEach(node => {
+      if (node.Class === "CompositeNode") {
+        const site = {};
+        site.id = node.id;
+        site.nodeId = node.NodeID;
+        site.name = node.Name;
+        site.capacities = JSON.parse(node.Capacities);
+        site.allocatedCapacities = node.CapacityAllocations ? JSON.parse(node.CapacityAllocations) : {};
+        parsedSites.push(site);
+      }
+    })
+    return parsedSites;
   }
 
   handlePageChange = (page) => {
@@ -98,7 +119,7 @@ class Resources extends Component {
               resource={getResource(1)}
             />
           </div>
-        </div>
+        </div> */}
         <div className="row my-2">
           <div className="col-12">
             <SearchBox
@@ -120,7 +141,7 @@ class Resources extends Component {
               onPageChange={this.handlePageChange}
             />
           </div>
-        </div> */}
+        </div>
       </div>
     );
   }
