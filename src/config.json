@@ -1,5 +1,6 @@
 {
   "projectRegistryApiUrl": "https://dev-1.fabric-testbed.net/projects",
   "userInformationApiUrl": "https://dev-5.fabric-testbed.net/people",
-  "prPeopleApiUrl":"https://dev-1.fabric-testbed.net/people"
+  "prPeopleApiUrl":"https://dev-1.fabric-testbed.net/people",
+  "resourcesApiUrl": "https://dev-3.fabric-testbed.net/portalresources?graphFormat=JSON_NODELINK"
 }

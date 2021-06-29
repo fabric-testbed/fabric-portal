@@ -5,19 +5,31 @@ import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
-import { getResources, getResource, getResourcesSum } from "../services/fakeResources.js";
+import { getResource, getResourcesSum } from "../services/fakeResources.js";
 
+import { getResources } from "../services/resourcesService.js";
+import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
 
 class Resources extends Component {
   state = {
-    resources: getResources(),
+    resources: "",
     sortColumn: { path: "name", order: "asc" },
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
+  }
+
+  async componentDidMount(){
+    try {
+      const { data: resources } = await getResources();
+      this.setState({ resources });
+    } catch (ex) {
+      toast.error("Failed to load resource information. Please reload this page.");
+      console.log("Failed to load resource information: " + ex.response.data);
+    }
   }
 
   handlePageChange = (page) => {
@@ -73,7 +85,7 @@ class Resources extends Component {
     return (
       <div className="container">
         <h1>Resources</h1>
-        <div className="row my-2">
+        {/* <div className="row my-2">
           <TestbedTable sum={getResourcesSum()} />
         </div>
         <div className="row my-2">
@@ -108,7 +120,7 @@ class Resources extends Component {
               onPageChange={this.handlePageChange}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
