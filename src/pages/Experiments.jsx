@@ -96,7 +96,7 @@ class Experiments extends React.Component {
   }
 
   copyToken = (e, option) => {
-    this.textArea.select();
+    document.getElementById(`${option}TokenTextArea`).select();
     document.execCommand('copy');
     e.target.focus();
     if (option === "create") {
