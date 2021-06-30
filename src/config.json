@@ -1,5 +1,6 @@
 {
   "projectRegistryApiUrl": "https://dev-1.fabric-testbed.net/projects",
   "userInformationApiUrl": "https://dev-5.fabric-testbed.net/people",
-  "prPeopleApiUrl":"https://dev-1.fabric-testbed.net/people"
+  "prPeopleApiUrl":"https://dev-1.fabric-testbed.net/people",
+  "credentialManagerApiUrl": "https://dev-2.fabric-testbed.net/tokens"
 }
