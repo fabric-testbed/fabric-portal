@@ -15,10 +15,12 @@ class Experiments extends React.Component {
 
   state = {
     projects: [],
-    created_token: "",
+    createToken: "",
+    refreshToken: "",
     createSuccess: false,
-    copySuccess: false,
+    createCopySuccess: false,
     refreshSuccess: false,
+    refreshCopySuccess: false,
     revokeSuccess: false,
     scopeOptions: [
       { id: 1, value: "all", display: "All"},
@@ -61,8 +63,8 @@ class Experiments extends React.Component {
       const project = this.state.selectedCreateProject;
       const scope = this.state.selectedCreateScope;
       const { data } = await createIdToken(project, scope);
-      this.setState({ copySuccess: false, createSuccess: true });
-      this.setState({ created_token: this.generateTokenJson(data.id_token, data.refresh_token) });
+      this.setState({ createCopySuccess: false, createSuccess: true });
+      this.setState({ createToken: this.generateTokenJson(data.id_token, data.refresh_token) });
     } catch (ex) {
       toast.error("Failed to create token.");
     }
@@ -72,12 +74,13 @@ class Experiments extends React.Component {
     try {
       const project = this.state.selectedRefreshProject;
       const scope = this.state.selectedRefreshScope;
-      await refreshToken(project, scope, document.getElementById('refreshTokenTextArea').value);
-      this.setState({ refreshSuccess: true });
+      const { data } = await refreshToken(project, scope, document.getElementById('refreshTokenTextArea').value);
+      this.setState({ refreshCopySuccess: false, refreshSuccess: true });
+      this.setState({ refreshToken: this.generateTokenJson(data.id_token, data.refresh_token) });
     }
     catch (ex) {
       this.setState({ refreshSuccess: false });
-      toast.error("Failed to refresh token.")
+      toast.error("Please re-login to refresh the token again.")
     }
   }
 
@@ -92,16 +95,21 @@ class Experiments extends React.Component {
     }
   }
 
-  copyToken = (e) => {
+  copyToken = (e, option) => {
     this.textArea.select();
     document.execCommand('copy');
     e.target.focus();
-    this.setState({ copySuccess: true });
+    if (option === "create") {
+      this.setState({ createCopySuccess: true });
+    }
+    if (option === "refresh") {
+      this.setState({ refreshCopySuccess: true });
+    }
   }
 
-  downloadToken = () => {
+  downloadToken = (e, option) => {
     const element = document.createElement("a");
-    const file = new Blob([document.getElementById('createTokenTextArea').value], {type: 'application/json'});
+    const file = new Blob([document.getElementById(`${option}TokenTextArea`).value], {type: 'application/json'});
     element.href = URL.createObjectURL(file);
     element.download = "id_token.json";
     document.body.appendChild(element); // Required for this to work in FireFox
@@ -176,37 +184,37 @@ class Experiments extends React.Component {
           </Row>
           { this.state.createSuccess && (
             <Card>
-            <Card.Header className="d-flex flex-row bg-light">
-              <Button
-                onClick={this.copyToken}
-                variant="primary"
-                size="sm"
-                className="mr-3"
-              >
-                Copy
-              </Button>
-              <Button
-                onClick={this.downloadToken}
-                variant="primary"
-                size="sm"
-              >
-                Download
-              </Button>
-            </Card.Header>
-            <Card.Body>
-              <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control
-                  ref={(textarea) => this.textArea = textarea}
-                  as="textarea"
-                  id="createTokenTextArea"
-                  defaultValue={this.state.created_token}
-                  rows={6}
-                />
-              </Form.Group>
-            </Card.Body>
+              <Card.Header className="d-flex flex-row bg-light">
+                <Button
+                  onClick={e => this.copyToken(e, "create")}
+                  variant="primary"
+                  size="sm"
+                  className="mr-3"
+                >
+                  Copy
+                </Button>
+                <Button
+                  onClick={e => this.downloadToken(e, "create")}
+                  variant="primary"
+                  size="sm"
+                >
+                  Download
+                </Button>
+              </Card.Header>
+              <Card.Body>
+                <Form.Group controlId="exampleForm.ControlTextarea1">
+                  <Form.Control
+                    ref={(textarea) => this.textArea = textarea}
+                    as="textarea"
+                    id="createTokenTextArea"
+                    defaultValue={this.state.createToken}
+                    rows={6}
+                  />
+                </Form.Group>
+              </Card.Body>
             </Card>
           )}
-          {this.state.copySuccess && (
+          {this.state.createCopySuccess && (
             <Alert variant="success">
               Copied to clipboard successfully!
             </Alert>
@@ -250,36 +258,74 @@ class Experiments extends React.Component {
               </Form.Group>
             </Col>
           </Row>
-          <Card>
-            <Card.Header className="d-flex bg-light">
-              Input the refresh token value:
-            </Card.Header>
-            <Card.Body>
-              <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Control
+          {!this.state.refreshSuccess && (
+            <Card>
+              <Card.Header className="d-flex bg-light">
+                Input the refresh token value:
+              </Card.Header>
+              <Card.Body>
+                <Form.Group controlId="exampleForm.ControlTextarea1">
+                  <Form.Control
                   as="textarea"
                   rows={3}
                   id="refreshTokenTextArea"
                 />
+                </Form.Group>
+              </Card.Body>
+            </Card>
+          )}
+          {this.state.refreshSuccess && (
+            <Card>
+            <Card.Header className="d-flex flex-row bg-light">
+              <Button
+                onClick={e => this.copyToken(e, "refresh")}
+                variant="primary"
+                size="sm"
+                className="mr-3"
+              >
+                Copy
+              </Button>
+              <Button
+                onClick={e => this.downloadToken(e, "refresh")}
+                variant="primary"
+                size="sm"
+              >
+                Download
+              </Button>
+            </Card.Header>
+            <Card.Body>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Control
+                  ref={(textarea) => this.textArea = textarea}
+                  as="textarea"
+                  id="refreshTokenTextArea"
+                  defaultValue={this.state.refreshToken}
+                  rows={6}
+                />
               </Form.Group>
             </Card.Body>
           </Card>
-          {this.state.refreshSuccess && (
-            <Alert variant="success">
-              The token is refreshed successfully!
-            </Alert>
-          )}
+        )}
+        {this.state.refreshSuccess && this.state.createCopySuccess && (
+          <Alert variant="success">
+            Copied to clipboard successfully!
+          </Alert>
+        )}
         </Form>
-        <Button
-          onClick={this.refreshToken}
-          className="btn-success mt-3"
-        >
-          Refresh Token
-        </Button>
+        {
+          !this.state.refreshSuccess && (
+            <Button
+              onClick={this.refreshToken}
+              className="btn-success mt-3"
+            >
+              Refresh Token
+            </Button>
+          )
+        }
         <h2 className="my-4">Revoke Token</h2>
           <Card>
             <Card.Header className="d-flex bg-light">
-              Paste the token to revoke:
+              Paste the refresh token to revoke:
             </Card.Header>
             <Card.Body>
               <Form.Group controlId="exampleForm.ControlTextarea1">
