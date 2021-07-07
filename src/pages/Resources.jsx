@@ -19,6 +19,11 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
+    nameDict: {
+      "RENCI" : "RENC",
+      "UKY": "UKY",
+      "LBNL": "LBNL",
+    }
   }
 
   async componentDidMount(){
@@ -107,6 +112,11 @@ class Resources extends Component {
    return sum;
   }
 
+  getResourceByName = (resources, name) => {
+    const resource = resources.find(resource => resource.name === name);
+    return resource ? resource : null;
+  }
+
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
@@ -168,10 +178,10 @@ class Resources extends Component {
             <Topomap onChange={this.handleActiveDetailChange} />
           </div>
           <div className="col-3">
-            {/* <DetailTable
+            <DetailTable
               name={activeDetailName}
-              resource={getResource(1)}
-            /> */}
+              resource={this.getResourceByName(this.state.resources, this.state.nameDict[activeDetailName])}
+            />
           </div>
         </div>
         <div className="row my-2">
