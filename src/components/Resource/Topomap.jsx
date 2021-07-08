@@ -83,34 +83,23 @@ const Topomap = props => {
               />
           ))}
 
-          {topomap.fab_nodes.map(({ name, markerOffset }) => (
+          {topomap.nodes.map(({ name, markerOffset, type }) => (
             <Marker
               key={name}
               coordinates={topomap.coordinates[name]}
               onMouseEnter={() => { props.onChange(name); }}
             >
-              <circle r={3} fill="#078ac1" className="hoverable-node" />
+              <circle
+                r={type === "edge" ? 1.5 : 3} 
+                fill="#078ac1" className="hoverable-node" />
               <text
                 textAnchor="middle"
                 y={markerOffset}
-                style={{ fill: "#5D5A6D", fontSize: ".35rem", fontWeight: "600" }}
-              >
-                {name}
-              </text>
-            </Marker>
-          ))}
-          
-          {topomap.edge_nodes.map(({ name, markerOffset }) => (
-            <Marker
-              key={name}
-              coordinates={topomap.coordinates[name]}
-              onMouseEnter={() => { props.onChange(name); }}
-            >
-              <circle r={1.5} fill="#078ac1" className="hoverable-node" />
-              <text
-                textAnchor="middle"
-                y={markerOffset}
-                style={{ fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "400" }}
+                style={
+                  type === "edge" ?
+                  { fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "400" }:
+                  { fill: "#5D5A6D", fontSize: ".35rem", fontWeight: "600" }
+                }
               >
                 {name}
               </text>
