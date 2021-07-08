@@ -14,17 +14,6 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });
-  // const positionDiff = [-40, 20];
-
-  // function handleZoomIn() {
-  //   if (position.zoom >= 3) return;
-  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p + positionDiff[i]), zoom: pos.zoom + 2 }));
-  // }
-
-  // function handleZoomOut() {
-  //   if (position.zoom <= 1) return;
-  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p - positionDiff[i]), zoom: pos.zoom - 2 }));
-  // }
 
   function handleZoomIn() {
     if (position.zoom >= 4) return;
