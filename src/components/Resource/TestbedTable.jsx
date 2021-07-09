@@ -30,7 +30,7 @@ class TestbedTable extends Component {
             this.columns.map((col, index) => {
               return (
                 <td key={`testbed-table-body-${index}`}>
-                  {`${sum[col.path[0]]} / ${sum[col.path[1]]}`}
+                  {sum[col.path[0]] ? `${sum[col.path[0]]} / ${sum[col.path[1]]}` : `loading...`}
                 </td>
               )
             })
