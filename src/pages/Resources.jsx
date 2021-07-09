@@ -19,11 +19,17 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
-    nameDict: {
+    nameToCode: {
       "RENCI" : "RENC",
       "UKY": "UKY",
       "LBNL": "LBNL",
-    }
+    },
+    codeToName: {
+      "RENC" : "RENCI",
+      "UKY": "UKY",
+      "LBNL": "LBNL",
+    },
+    siteNames: [],
   }
 
   async componentDidMount(){
@@ -51,6 +57,7 @@ class Resources extends Component {
     let abqm_elements = JSON.parse(data.value.bqm);
     const nodes = abqm_elements.nodes;
     const parsedSites = [];
+    const siteNames = [];
     /************ retrieve site data from all nodes. ************/ 
     nodes.forEach(node => {
       if (node.Class === "CompositeNode") {
@@ -80,9 +87,11 @@ class Resources extends Component {
         site.freeUnit = site.totalUnit - site.allocatedUnit;
         
         parsedSites.push(site);
+        siteNames.push(this.state.codeToName[site.name]);
       }
     })
 
+    this.setState({ siteNames: siteNames });
     return parsedSites;
   }
 
@@ -175,12 +184,12 @@ class Resources extends Component {
         </div>
         <div className="row my-2">
           <div className="col-9">
-            <Topomap onChange={this.handleActiveDetailChange} />
+            <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
           </div>
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, this.state.nameDict[activeDetailName])}
+              resource={this.getResourceByName(this.state.resources, this.state.nameToCode[activeDetailName])}
             />
           </div>
         </div>

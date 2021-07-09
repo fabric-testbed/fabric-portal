@@ -18,6 +18,7 @@ const Topomap = props => {
   function handleZoomIn() {
     if (position.zoom >= 4) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
+    console.log(props.sites)
   }
 
   function handleZoomOut() {
@@ -27,6 +28,11 @@ const Topomap = props => {
 
   function handleMoveEnd(position) {
     setPosition(position);
+  }
+
+  function checkStatus(name) {
+    // return "up" or "down" 
+    return props.sites.includes(name) ? "up" : "down";
   }
 
   return (
@@ -91,7 +97,9 @@ const Topomap = props => {
             >
               <circle
                 r={type === "edge" ? 1.5 : 3} 
-                fill="#078ac1" className="hoverable-node" />
+                fill={ checkStatus(name) === "up" ? "#078ac1" : "#838385"}
+                className="hoverable-node"
+              />
               <text
                 textAnchor="middle"
                 y={markerOffset}
