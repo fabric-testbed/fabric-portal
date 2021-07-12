@@ -10,10 +10,90 @@ import { NavLink } from "react-router-dom";
 
 import CookieConsent from "react-cookie-consent";
 
+import Topomap from "../components/Resource/Topomap";
+import DetailTable from "../components/Resource/DetailTable";
+
+import { getResources } from "../services/resourcesService.js";
+import { toast } from "react-toastify";
+
 class Home extends React.Component {
   state = {
     user: {},
     isActiveUser: true,
+    resources: [],
+    activeDetailName: "StarLight",
+    nameToCode: {
+      "RENCI" : "RENC",
+      "UKY": "UKY",
+      "LBNL": "LBNL",
+    },
+    codeToName: {
+      "RENC" : "RENCI",
+      "UKY": "UKY",
+      "LBNL": "LBNL",
+    },
+    siteNames: [],
+  }
+
+  async componentDidMount(){
+    try {
+      const { data } = await getResources();
+      this.setState({ resources: this.siteParser(data) });
+    } catch (ex) {
+      toast.error("Failed to load resource information. Please reload this page.");
+      console.log("Failed to load resource information: " + ex.response.data);
+    }
+  }
+
+  siteParser = (data) => {
+    let abqm_elements = JSON.parse(data.value.bqm);
+    const nodes = abqm_elements.nodes;
+    const parsedSites = [];
+    const siteNames = [];
+    /************ retrieve site data from all nodes. ************/ 
+    nodes.forEach(node => {
+      if (node.Class === "CompositeNode") {
+        const site = {};
+        site.id = node.id;
+        site.nodeId = node.NodeID;
+        site.name = node.Name;
+        // total capacities:
+        site.capacities = node.Capacities ? JSON.parse(node.Capacities) : {};
+        site.totalCPU = site.capacities.cpu ? site.capacities.cpu : 0;
+        site.totalCore = site.capacities.core ? site.capacities.core : 0;
+        site.totalDisk = site.capacities.disk ? site.capacities.disk : 0;
+        site.totalRAM = site.capacities.ram ? site.capacities.ram : 0;
+        site.totalUnit = site.capacities.unit ? site.capacities.unit: 0;
+        // allocated capacities:
+        site.allocatedCapacities = node.CapacityAllocations ? JSON.parse(node.CapacityAllocations) : {};
+        site.allocatedCPU = site.allocatedCapacities.cpu ? site.allocatedCapacities.cpu : 0;
+        site.allocatedCore = site.allocatedCapacities.core ? site.allocatedCapacities.core : 0;
+        site.allocatedDisk = site.allocatedCapacities.disk ? site.allocatedCapacities.disk : 0;
+        site.allocatedRAM = site.allocatedCapacities.ram ? site.allocatedCapacities.ram : 0;
+        site.allocatedUnit = site.allocatedCapacities.unit ? site.allocatedCapacities.unit: 0;
+        // free capacities
+        site.freeCPU = site.totalCPU - site.allocatedCPU;
+        site.freeCore = site.totalCore - site.allocatedCore;
+        site.freeDisk = site.totalDisk - site.allocatedDisk;
+        site.freeRAM = site.totalRAM - site.allocatedRAM;
+        site.freeUnit = site.totalUnit - site.allocatedUnit;
+        
+        parsedSites.push(site);
+        siteNames.push(this.state.codeToName[site.name]);
+      }
+    })
+
+    this.setState({ siteNames: siteNames });
+    return parsedSites;
+  }
+
+  getResourceByName = (resources, name) => {
+    const resource = resources.find(resource => resource.name === name);
+    return resource ? resource : null;
+  }
+
+  handleActiveDetailChange = (name) => {
+    this.setState({ activeDetailName: name });
   }
 
   render() {
@@ -50,6 +130,17 @@ class Home extends React.Component {
         </div>
         <div className="home-lower">
           <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
+          <div className="row my-2 mt-4">
+            <div className="col-9">
+              <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
+            </div>
+            <div className="col-3">
+              <DetailTable
+                name={this.state.activeDetailName}
+                resource={this.getResourceByName(this.state.resources, this.state.nameToCode[this.state.activeDetailName])}
+              />
+            </div>
+          </div>
         </div>
         <CookieConsent
           location="bottom"
