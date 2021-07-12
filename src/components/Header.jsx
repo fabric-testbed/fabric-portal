@@ -8,7 +8,11 @@ import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
   state = {
-    navItems: [
+    nonAuthNavItems: [
+      { name: "Home", path: "/", child: [], exact: true },
+      { name: "Resources", path: "/resources", child: [], exact: false },
+    ],
+    authNavItems: [
       { name: "Home", path: "/", child: [], exact: true },
       { name: "Resources", path: "/resources", child: [], exact: false },
       {
@@ -52,6 +56,8 @@ class Header extends React.Component {
   }
 
   render() {
+    const navItems = this.props.userStatus !== "active" ? 
+      this.state.nonAuthNavItems : this.state.authNavItems;
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <NavLink className="navbar-brand" to="/">
@@ -75,38 +81,10 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        {this.props.userStatus !== "active" && (
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">
-                  Home
-                </NavLink>
-              </li>
-            </ul>
-             <form className="form-inline my-2 my-lg-0">
-              <NavLink to="/login">
-                <button
-                  onClick={this.handleLogin}
-                  className="btn btn-outline-success my-2 my-sm-0 mr-2"
-                >
-                  Log in
-                </button>
-              </NavLink>
-              <NavLink to="/signup/1">
-                <button
-                  className="btn btn-outline-primary my-2 my-sm-0"
-                >
-                  Sign up
-                </button>
-              </NavLink>
-            </form>
-          </div>
-        )}
-        {this.props.userStatus === "active" && (
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul  className="navbar-nav mr-auto">
-              {this.state.navItems.map((item, index) => {
+            {
+              navItems.map((item, index) => {
                 return (
                   <li
                     className={
@@ -151,18 +129,36 @@ class Header extends React.Component {
                 );
               })}
             </ul>
+            { this.props.userStatus !== "active" ? 
               <form className="form-inline my-2 my-lg-0">
-              <NavLink to="/logout">
-                <button
-                  onClick={this.handleLogout}
-                  className="btn btn-outline-success my-2 my-sm-0"
-                >
-                  Log out
-                </button>
-              </NavLink>
-            </form>
+                <NavLink to="/login">
+                  <button
+                    onClick={this.handleLogin}
+                    className="btn btn-outline-success my-2 my-sm-0 mr-2"
+                  >
+                    Log in
+                  </button>
+                </NavLink>
+                <NavLink to="/signup/1">
+                  <button
+                    className="btn btn-outline-primary my-2 my-sm-0"
+                  >
+                    Sign up
+                  </button>
+                </NavLink>
+              </form> :
+              <form className="form-inline my-2 my-lg-0">
+                <NavLink to="/logout">
+                  <button
+                    onClick={this.handleLogout}
+                    className="btn btn-outline-success my-2 my-sm-0"
+                  >
+                    Log out
+                  </button>
+                </NavLink>
+              </form>
+            }
           </div>
-        )}
       </nav>
     );
   }

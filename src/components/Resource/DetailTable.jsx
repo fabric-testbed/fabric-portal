@@ -13,10 +13,11 @@ const generateProgressBar = (total, free) => {
 const DetailTable = props => {
   const {name, resource} = props;
   const rows = [
-    ["Cores", "totalCores", "freeCores"],
-    ["GPUs", "totalGPUs", "freeGPUs"],
-    ["NICs", "totalNICs", "freeNICs"],
-    ["NVMEs", "totalNVMEs", "freeNVMEs"],
+    ["Core", "totalCore", "freeCore"],
+    ["CPU", "totalCPU", "freeCPU"],
+    ["Disk", "totalDisk", "freeDisk"],
+    ["RAM", "totalRAM", "freeRAM"],
+    ["Unit", "totalUnit", "freeUnit"],
   ]
   return (
     <div>
@@ -30,11 +31,16 @@ const DetailTable = props => {
           <tr>
             <td scope="col">Status</td>
             <td className="align-middle text-center">
-              <span className="badge badge-pill badge-success px-2">Up</span>
+              {
+                resource ? (
+                  <span className="badge badge-pill badge-success px-2">Up</span>
+                ) : (<span className="badge badge-pill badge-danger px-2">Down</span>)
+              }
+              
             </td>
           </tr>
           {
-            rows.map((row, index) => {
+            resource && rows.map((row, index) => {
               return (
                 <tr key={`resource-detail-${index}`}>
                   <td scope="row">{row[0]}</td>

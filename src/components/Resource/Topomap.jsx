@@ -14,21 +14,11 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });
-  // const positionDiff = [-40, 20];
-
-  // function handleZoomIn() {
-  //   if (position.zoom >= 3) return;
-  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p + positionDiff[i]), zoom: pos.zoom + 2 }));
-  // }
-
-  // function handleZoomOut() {
-  //   if (position.zoom <= 1) return;
-  //   setPosition(pos => ({coordinates: position.coordinates.map((p, i) => p - positionDiff[i]), zoom: pos.zoom - 2 }));
-  // }
 
   function handleZoomIn() {
     if (position.zoom >= 4) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
+    console.log(props.sites)
   }
 
   function handleZoomOut() {
@@ -38,6 +28,11 @@ const Topomap = props => {
 
   function handleMoveEnd(position) {
     setPosition(position);
+  }
+
+  function checkStatus(name) {
+    // return "up" or "down" 
+    return props.sites.includes(name) ? "up" : "down";
   }
 
   return (
@@ -94,34 +89,25 @@ const Topomap = props => {
               />
           ))}
 
-          {topomap.fab_nodes.map(({ name, markerOffset }) => (
+          {topomap.nodes.map(({ name, markerOffset, type }) => (
             <Marker
               key={name}
               coordinates={topomap.coordinates[name]}
               onMouseEnter={() => { props.onChange(name); }}
             >
-              <circle r={3} fill="#078ac1" className="hoverable-node" />
+              <circle
+                r={type === "edge" ? 1.5 : 3} 
+                fill={ checkStatus(name) === "up" ? "#078ac1" : "#838385"}
+                className="hoverable-node"
+              />
               <text
                 textAnchor="middle"
                 y={markerOffset}
-                style={{ fill: "#5D5A6D", fontSize: ".35rem", fontWeight: "600" }}
-              >
-                {name}
-              </text>
-            </Marker>
-          ))}
-          
-          {topomap.edge_nodes.map(({ name, markerOffset }) => (
-            <Marker
-              key={name}
-              coordinates={topomap.coordinates[name]}
-              onMouseEnter={() => { props.onChange(name); }}
-            >
-              <circle r={1.5} fill="#078ac1" className="hoverable-node" />
-              <text
-                textAnchor="middle"
-                y={markerOffset}
-                style={{ fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "400" }}
+                style={
+                  type === "edge" ?
+                  { fill: "#5D5A6D", fontSize: ".3rem", fontWeight: "400" }:
+                  { fill: "#5D5A6D", fontSize: ".35rem", fontWeight: "600" }
+                }
               >
                 {name}
               </text>
