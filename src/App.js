@@ -13,7 +13,6 @@ import AUP from "./pages/static/AUP";
 import CookiePolicy from "./pages/static/CookiePolicy";
 import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
-import Guide from "./pages/Guide";
 import Links from "./pages/Links";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
@@ -72,7 +71,6 @@ class App extends React.Component {
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
             <ProtectedRoute path="/projects" component={Projects} />
             <ProtectedRoute path="/experiments" component={Experiments} />
-            <ProtectedRoute path="/guide" component={Guide} />
             <ProtectedRoute path="/links" component={Links} />
             <ProtectedRoute path="/user" component={User} />
             <Route component={NotFound} />
