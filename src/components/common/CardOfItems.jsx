@@ -6,7 +6,7 @@ import React from "react";
 
 const CardOfItems = ({ header, data, ...rest }) => {
   return (
-    <div className="card">
+    <div className="homepage-card card">
       <div className="card-header text-center">
         <b>{header}</b>
       </div>
@@ -14,7 +14,7 @@ const CardOfItems = ({ header, data, ...rest }) => {
         {data.map((item, index) => {
           return (
             <div
-              className={`p-4 mx-4 ${
+              className={`py-4 mx-4 ${
                 index < data.length - 1 ? "border-bottom" : ""
               }`}
               key={`card-item-${index}`}
