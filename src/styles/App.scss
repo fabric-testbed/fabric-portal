@@ -40,10 +40,18 @@ body {
 .home-upper-text {
   padding: 2rem 2rem;
   width: 85%;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 576px) {
+  .home-upper-text {
+    padding: 2rem 2rem;
+    width: 85%;
+    font-size: 0.75rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
   .home-upper-text {
     padding: 2rem 2rem;
     width: 85%;
@@ -51,19 +59,35 @@ body {
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 992px) {
   .home-upper-text {
-    padding: 2rem 4rem;
-    width: 75%;
+    padding: 2rem 2rem;
+    width: 80%;
     font-size: 1rem;
   }
 }
 
-@media only screen and (min-width: 1160px) {
+@media only screen and (min-width: 1200px) {
   .home-upper-text {
     padding: 2.5rem 4rem;
-    width: 65%;
+    width: 75%;
     font-size: 1rem;
+  }
+
+  .homepage-card {
+    height: 33rem;
+    max-height: 33rem;
+    min-height: 33rem;
+    overflow: scroll;
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .homepage-card {
+    height: 40rem;
+    max-height: 40rem;
+    min-height: 40rem;
+    overflow: scroll;
   }
 }
 
