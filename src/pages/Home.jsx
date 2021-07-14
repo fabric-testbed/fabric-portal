@@ -128,18 +128,29 @@ class Home extends React.Component {
             </a>
           </div>
         </div>
-        <div className="home-lower">
-          <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
-          <div className="row my-2 mt-4">
-            <div className="col-9">
-              <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
+        <div className="home-lower row">
+          <div className="col-xl-9 col-lg-12">
+            <div class="card homepage-card mb-4">
+              <div className="card-header text-center">
+                <b>Resources</b>
+              </div>
+              <div class="card-body">
+                <div className="row my-2">
+                  <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
+                    <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
+                  </div>
+                  <div className="col-xl-3 col-lg-4 col-sm-12">
+                    <DetailTable
+                      name={this.state.activeDetailName}
+                      resource={this.getResourceByName(this.state.resources, this.state.nameToCode[this.state.activeDetailName])}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="col-3">
-              <DetailTable
-                name={this.state.activeDetailName}
-                resource={this.getResourceByName(this.state.resources, this.state.nameToCode[this.state.activeDetailName])}
-              />
-            </div>
+          </div>
+          <div className="col-xl-3 col-lg-12">
+            <CardOfItems  header={"Facility Updates"}  data={getLatestUpdates(2)}/>
           </div>
         </div>
         <CookieConsent

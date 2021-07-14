@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { knowledgeBaseLink, jupyterHubLink } from "../services/portalData.json";
+
 import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
@@ -27,10 +29,15 @@ class Header extends React.Component {
         child: [],
         exact: false,
       },
-      { name: "Guide", path: "/guide", child: [], exact: false },
-      { name: "Links", path: "/links", child: [
-      { name: "JupyterHub", href: "https://jupyter-beta.fabric-testbed.net/", path: "" },
-      ], exact: false },
+      { 
+        name: "Links",
+        path: "/links",
+        child: [
+          { name: "Knowledge Base", href: knowledgeBaseLink, path: ""},
+          { name: "JupyterHub", href: jupyterHubLink, path: ""}
+          ],
+          exact: false
+        },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
