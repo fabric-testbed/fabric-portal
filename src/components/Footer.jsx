@@ -17,7 +17,7 @@ const Footer = () => {
             <li>Cookie Policy</li>
             <li>Privacy Policy</li>
             <br></br>
-            <li>© FABRIC {new Date().getFullYear()}</li>
+            <li><u><b>© FABRIC {new Date().getFullYear()}</b></u></li>
           </ul>
         </div>
         <div className="col">
@@ -30,10 +30,18 @@ const Footer = () => {
         </div>
         <div className="col footer-social-icons">
           <div className="d-flex flex-row justify-content-between w-50">
-            <FontAwesomeIcon icon={faTwitter} size="lg" />
-            <FontAwesomeIcon icon={faGithub} size="lg" />
-            <FontAwesomeIcon icon={faYoutube} size="lg" />
-            <FontAwesomeIcon icon={faEnvelope} size="lg" />
+            <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faTwitter} size="lg" />
+            </a>
+            <a href="https://github.com/fabric-testbed" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faGithub} size="lg" />
+            </a>
+            <a href="http://bit.ly/FABRICYouTube" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faYoutube} size="lg" />
+            </a>
+            <a href="info@fabric-testbed.net" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faEnvelope} size="lg" />
+            </a>
           </div>
         </div>
       </div>
