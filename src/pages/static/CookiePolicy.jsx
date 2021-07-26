@@ -38,7 +38,7 @@ const CookiePolicy = () => {
       <p>
         <ul>
           <li>
-            We use a persistent cookie (which stays on your device for a set period of time or until you delete it) to keep track of your consent to the cookie policy. 
+            We use a persistent cookie (which stays on your device for a set period of time or until you delete it) to keep track of your consent to the cookie policy.
           </li>
           <li>
             We use session cookies (which expire once you close your web browser) to provide you with services while you are logged to the Portal via <a href="https://cilogon.org" target="_blank" rel="noopener noreferrer">CI Logon</a> and using the Portal to create your experiments. See the <a href="https://www.cilogon.org/privacy" target="_blank" rel="noopener noreferrer">CILogon Privacy Policy</a> for details of how CILogon manages your information.
@@ -50,10 +50,10 @@ const CookiePolicy = () => {
       </p>
 
       <h3 className="mt-4 text-success">
-       <i className="fa fa-info-circle"></i> Which information do we share?
+        <i className="fa fa-info-circle"></i> Which information do we share?
       </h3>
       <p>
-        We collect and report aggregate statistics about FABRIC facility use based on identity attributes of our users made available to us by their respective institutional identity providers via CI Logon. These attributes include the institution they belong to and whether they are staff, faculty or students. For more information, see the more detailed <NavLink to="/privacypolicy">privacy policy</NavLink>.
+        We collect and report aggregate statistics about FABRIC facility use based on identity attributes of our users made available to us by their respective institutional identity providers via CI Logon. These attributes include the institution they belong to and whether they are staff, faculty or students. For more information, see the more detailed <NavLink to="/privacy-policy">privacy policy</NavLink>.
       </p>
     </div>
   );

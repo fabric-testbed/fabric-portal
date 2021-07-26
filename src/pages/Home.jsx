@@ -23,19 +23,19 @@ class Home extends React.Component {
     resources: [],
     activeDetailName: "StarLight",
     nameToCode: {
-      "RENCI" : "RENC",
+      "RENCI": "RENC",
       "UKY": "UKY",
       "LBNL": "LBNL",
     },
     codeToName: {
-      "RENC" : "RENCI",
+      "RENC": "RENCI",
       "UKY": "UKY",
       "LBNL": "LBNL",
     },
     siteNames: [],
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     try {
       const { data } = await getResources();
       this.setState({ resources: this.siteParser(data) });
@@ -50,7 +50,7 @@ class Home extends React.Component {
     const nodes = abqm_elements.nodes;
     const parsedSites = [];
     const siteNames = [];
-    /************ retrieve site data from all nodes. ************/ 
+    /************ retrieve site data from all nodes. ************/
     nodes.forEach(node => {
       if (node.Class === "CompositeNode") {
         const site = {};
@@ -63,21 +63,21 @@ class Home extends React.Component {
         site.totalCore = site.capacities.core ? site.capacities.core : 0;
         site.totalDisk = site.capacities.disk ? site.capacities.disk : 0;
         site.totalRAM = site.capacities.ram ? site.capacities.ram : 0;
-        site.totalUnit = site.capacities.unit ? site.capacities.unit: 0;
+        site.totalUnit = site.capacities.unit ? site.capacities.unit : 0;
         // allocated capacities:
         site.allocatedCapacities = node.CapacityAllocations ? JSON.parse(node.CapacityAllocations) : {};
         site.allocatedCPU = site.allocatedCapacities.cpu ? site.allocatedCapacities.cpu : 0;
         site.allocatedCore = site.allocatedCapacities.core ? site.allocatedCapacities.core : 0;
         site.allocatedDisk = site.allocatedCapacities.disk ? site.allocatedCapacities.disk : 0;
         site.allocatedRAM = site.allocatedCapacities.ram ? site.allocatedCapacities.ram : 0;
-        site.allocatedUnit = site.allocatedCapacities.unit ? site.allocatedCapacities.unit: 0;
+        site.allocatedUnit = site.allocatedCapacities.unit ? site.allocatedCapacities.unit : 0;
         // free capacities
         site.freeCPU = site.totalCPU - site.allocatedCPU;
         site.freeCore = site.totalCore - site.allocatedCore;
         site.freeDisk = site.totalDisk - site.allocatedDisk;
         site.freeRAM = site.totalRAM - site.allocatedRAM;
         site.freeUnit = site.totalUnit - site.allocatedUnit;
-        
+
         parsedSites.push(site);
         siteNames.push(this.state.codeToName[site.name]);
       }
@@ -137,7 +137,7 @@ class Home extends React.Component {
               <div class="card-body">
                 <div className="row my-2">
                   <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
-                    <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
+                    <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames} />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-12">
                     <DetailTable
@@ -150,7 +150,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="col-xl-3 col-lg-12">
-            <CardOfItems  header={"Facility Updates"}  data={getLatestUpdates(2)}/>
+            <CardOfItems header={"Facility Updates"} data={getLatestUpdates(2)} />
           </div>
         </div>
         <CookieConsent
@@ -163,8 +163,8 @@ class Home extends React.Component {
         >
           <span className="text-lg">This Website Uses Cookies.</span>
           <div className="mt-1 text-sm">
-          We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
-          Please accept our Cookie Policy by clicking ‘OK’. For more details, visit the <NavLink className="text-primary-light" to="/cookiepolicy"><b>Cookie Policy Page</b></NavLink>. 
+            We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
+            Please accept our Cookie Policy by clicking ‘OK’. For more details, visit the <NavLink className="text-primary-light" to="/cookie-policy"><b>Cookie Policy Page</b></NavLink>.
           </div>
         </CookieConsent>
       </div>
