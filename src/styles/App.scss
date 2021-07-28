@@ -136,10 +136,11 @@ body {
 
 .footer-social-icons{
   margin-top: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .footer-social-icons a {
+  margin-right: 1rem;
   color: $grey-darken-4;
 }
 
@@ -164,9 +165,13 @@ body {
   padding-bottom: 0;
 }
 
-.navbar-nav {
-  margin-top: 4px;
+.nav-item {
+  padding-top: 4px;
   padding-bottom: 2px;
+}
+
+.nav-item a {
+  border-bottom: 3px $bg-light solid;
 }
 
 .nav-item a.active,

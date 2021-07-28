@@ -41,7 +41,6 @@ class Home extends React.Component {
       this.setState({ resources: this.siteParser(data) });
     } catch (ex) {
       toast.error("Failed to load resource information. Please reload this page.");
-      console.log("Failed to load resource information: " + ex.response.data);
     }
   }
 

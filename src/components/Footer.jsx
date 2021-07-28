@@ -15,6 +15,9 @@ class Footer extends React.Component {
           <ul>
             <li><b>Useful Links</b></li>
             <li>
+              <a href="https://fabric-testbed.net/" target="_blank" rel="noopener noreferrer">FABRIC Website</a>
+            </li>
+            <li>
               <Link to="/aup">Acceptable Use Policy</Link>
             </li>
             <li><Link to="/cookie-policy">Cookie Policy</Link></li>
@@ -34,16 +37,16 @@ class Footer extends React.Component {
             <li><b>Social</b></li>
             <li><div className="d-flex flex-row justify-content-between w-50 footer-social-icons">
               <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faTwitter} size="lg" />
+                <FontAwesomeIcon icon={faTwitter} />
               </a>
               <a href="https://github.com/fabric-testbed" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faGithub} size="lg" />
+                <FontAwesomeIcon icon={faGithub} />
               </a>
               <a href="http://bit.ly/FABRICYouTube" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faYoutube} size="lg" />
+                <FontAwesomeIcon icon={faYoutube} />
               </a>
               <a href="mailto:info@fabric-testbed.net">
-                <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                <FontAwesomeIcon icon={faEnvelope} />
               </a>
             </div></li>
           </ul>
