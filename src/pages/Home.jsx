@@ -129,11 +129,11 @@ class Home extends React.Component {
         </div>
         <div className="home-lower row">
           <div className="col-xl-9 col-lg-12">
-            <div class="card homepage-card mb-4">
+            <div className="card homepage-card mb-4">
               <div className="card-header text-center">
                 <b>Resources</b>
               </div>
-              <div class="card-body">
+              <div className="card-body">
                 <div className="row my-2">
                   <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
                     <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames} />
