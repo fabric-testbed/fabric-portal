@@ -30,14 +30,14 @@ class App extends React.Component {
     userStatus: "",
   };
 
-  async componentDidMount(){
+  async componentDidMount() {
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
       try {
         const { data: user } = await getWhoAmI();
         localStorage.setItem("userID", user.uuid);
         localStorage.setItem("userStatus", "active");
-      } catch(err) {
+      } catch (err) {
         console.log("/whoami " + err);
         // situation 1: err.response.status === 401
         // not logged in or auth cookie expired
@@ -54,7 +54,6 @@ class App extends React.Component {
   }
 
   render() {
-
     return (
       <div className="App">
         <Router>
@@ -64,8 +63,8 @@ class App extends React.Component {
             <Route path="/login" component={Home} />
             <Route path="/logout" component={Home} />
             <Route path="/aup" component={AUP} />
-            <Route path="/cookiepolicy" component={CookiePolicy} />
-            <Route path="/privacypolicy" component={PrivacyPolicy} />
+            <Route path="/cookie-policy" component={CookiePolicy} />
+            <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/signup/:id" component={Signup} />
             <Route path="/resources" component={Resources} />
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
@@ -75,9 +74,9 @@ class App extends React.Component {
             <ProtectedRoute path="/user" component={User} />
             <Route component={NotFound} />
           </Switch>
+          <Footer />
         </Router>
         <ToastContainer />
-        <Footer />
       </div>
     );
   }

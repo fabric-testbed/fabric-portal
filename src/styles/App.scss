@@ -11,7 +11,7 @@ body {
 }
 
 .home-container {
-  min-height: 88vh;
+  min-height: 75vh;
   margin: 0;
   margin-bottom: 4rem;
 }
@@ -43,6 +43,25 @@ body {
   font-size: 0.5rem;
 }
 
+/* App Footer */
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 33rem;
+  margin-top: 0;
+  padding: 2rem 4rem;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.app-footer div {
+  width: 100%;
+}
+
 @media only screen and (min-width: 576px) {
   .home-upper-text {
     padding: 2rem 2rem;
@@ -56,6 +75,10 @@ body {
     padding: 2rem 2rem;
     width: 85%;
     font-size: 1rem;
+  }
+
+  .app-footer {
+    height: 18rem;
   }
 }
 
@@ -80,14 +103,22 @@ body {
     min-height: 33rem;
     overflow: scroll;
   }
+
+  .app-footer div {
+    width: 85%;
+  }
 }
 
-@media only screen and (min-width: 1500px) {
+@media only screen and (min-width: 1400px) {
   .homepage-card {
-    height: 40rem;
-    max-height: 40rem;
-    min-height: 40rem;
+    height: 60vh;
+    max-height: 60vh;
+    min-height: 60vh;
     overflow: scroll;
+  }
+
+  .app-footer div {
+    width: 75%;
   }
 }
 
@@ -103,18 +134,24 @@ body {
   margin: auto;
 }
 
-/* App Footer */
-.app-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 4em;
-  margin-top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+.footer-social-icons{
+  margin-top: 0.5rem;
+  font-size: 2rem;
+}
+
+.footer-social-icons a {
+  margin-right: 1rem;
+  color: $grey-darken-4;
+}
+
+.footer-social-icons a:hover {
+  color: $grey-darken-2;
+}
+
+
+.app-footer ul {
+  list-style-type: none;
+  line-height: 2rem;
 }
 
 /* Custom Radio Buttons */
@@ -128,9 +165,13 @@ body {
   padding-bottom: 0;
 }
 
-.navbar-nav {
-  margin-top: 4px;
+.nav-item {
+  padding-top: 4px;
   padding-bottom: 2px;
+}
+
+.nav-item a {
+  border-bottom: 3px $bg-light solid;
 }
 
 .nav-item a.active,
