@@ -39,7 +39,7 @@ class Footer extends React.Component {
             <ul>
               <li><b>Social</b></li>
               <li>
-                <div className="d-flex flex-row justify-content-between w-50 footer-social-icons">
+                <div className="d-flex flex-row justify-content-between w-75 footer-social-icons">
                   <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faTwitter} />
                   </a>
