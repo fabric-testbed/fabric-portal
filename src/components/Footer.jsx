@@ -7,6 +7,8 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
+import nsfLogo from "../imgs/nsf.png";
+
 class Footer extends React.Component {
   render() {
     return (<div className="app-footer bg-light">
@@ -33,30 +35,46 @@ class Footer extends React.Component {
           </ul>
         </div>
         <div className="col-sm-12 col-md-4">
-          <ul>
-            <li><b>Social</b></li>
-            <li><div className="d-flex flex-row justify-content-between w-50 footer-social-icons">
-              <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faTwitter} />
-              </a>
-              <a href="https://github.com/fabric-testbed" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faGithub} />
-              </a>
-              <a href="http://bit.ly/FABRICYouTube" target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faYoutube} />
-              </a>
-              <a href="mailto:info@fabric-testbed.net">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </a>
-            </div></li>
-          </ul>
+          <div>
+            <ul>
+              <li><b>Social</b></li>
+              <li>
+                <div className="d-flex flex-row justify-content-between w-50 footer-social-icons">
+                  <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faTwitter} />
+                  </a>
+                  <a href="https://github.com/fabric-testbed" target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faGithub} />
+                  </a>
+                  <a href="http://bit.ly/FABRICYouTube" target="_blank" rel="noopener noreferrer">
+                    <FontAwesomeIcon icon={faYoutube} />
+                  </a>
+                  <a href="mailto:info@fabric-testbed.net">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div className="row">
-        <div className="col">
+        <div className="col-sm-12 col-md-3">
           <ul>
             <li><u><b>© FABRIC {new Date().getFullYear()}</b></u></li>
           </ul>
+        </div>
+        <div className="col-sm-12 col-md-9 d-flex flex-column align-items-center">
+          <div className="d-flex align-items-center mb-4">
+            <img
+              src={nsfLogo}
+              width="40"
+              height="40"
+              className="d-inline-block align-top mr-2"
+              alt=""
+            />
+            <u><i>FABRIC is supported in part by a Mid-Scale RI-1 NSF award under Grant No. 1935966.</i></u>
+          </div>
         </div>
       </div>
     </div>)
