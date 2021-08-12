@@ -1,12 +1,12 @@
 import React from "react";
 import UnderConstruction from "../components/common/UnderConstruction";
 
-const Links = () => {
+const SliceViewer = () => {
   return (
-    <div className="container"><h1>Links</h1>
+    <div className="container"><h1>Slice Viewer</h1>
       <UnderConstruction />
     </div>
   );
 };
 
-export default Links;
+export default SliceViewer;

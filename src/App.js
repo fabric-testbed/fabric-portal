@@ -13,7 +13,7 @@ import AUP from "./pages/static/AUP";
 import CookiePolicy from "./pages/static/CookiePolicy";
 import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
-import Links from "./pages/Links";
+import SliceViewer from "./pages/SliceViewer";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
@@ -67,10 +67,10 @@ class App extends React.Component {
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/signup/:id" component={Signup} />
             <Route path="/resources" component={Resources} />
+            <Route path="/slice-viewer" component={SliceViewer} />
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
             <ProtectedRoute path="/projects" component={Projects} />
             <ProtectedRoute path="/experiments" component={Experiments} />
-            <ProtectedRoute path="/links" component={Links} />
             <ProtectedRoute path="/user" component={User} />
             <Route component={NotFound} />
           </Switch>
