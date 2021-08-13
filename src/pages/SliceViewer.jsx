@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import SideToolbar from './SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
-// import DetailForm from './DetailForm';
+import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 
 // import jsonData from "../data/graph.json";
@@ -507,11 +507,11 @@ export default class SliceViewer extends Component {
           onNodeSelect={this.handleNodeSelect}
         />
       </div>
-      {/* <DetailForm
+      <DetailForm
         data={this.state.selectedData}
         onNodeDelete={this.handleNodeDelete}
         onNodeUpdate={this.handleNodeUpdate}
-      /> */}
+      />
      </div>
     )
   }
