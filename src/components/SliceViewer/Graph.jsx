@@ -159,6 +159,7 @@ export default class Graph extends Component {
           elements={this.props.elements}
           layout={layout}
           style={{ width: this.state.w, height: this.state.h }}
+          wheelSensitivity={0.1}
           cy={(cy) => {this.cy = setCytoscape(cy)}}
           stylesheet={[
             {

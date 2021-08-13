@@ -4,368 +4,39 @@ import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 
-// import jsonData from "../data/graph.json";
+import abqm from "../data/1-site.json";
+import sliceParser from "../services/parser/sliceParser.js";
 
 export default class SliceViewer extends Component { 
   state = {
-    elements: [
-      // { data: { id: 2, label: 'MyVM1', parent: 12, type: "rectangle", capacities: { core: 32, ram: 512, disk: 100 } } },
-      // { data: { id: 1, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "GPU", model: "Tesla T4"}, capacities: { unit: 4 } }, position: { x: 115, y: 100 }, classes: "graphGPU" },
-      // { data: { id: 3, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 100 }, classes: "graphNVMe" },
-      // { data: { id: 4, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "SharedNIC", model: "ConnectX-6", interfaces: ["16", "17"], capacities: { unit: 2 } }, capacities: { unit: 3 } }, position: { x: 385, y: 100 }, classes: "graphSmartNIC" },
-      // { data: { id: 5, label: 'MyVM3', parent: 12, type: "rectangle", capacities: { core: 20, ram: 300, disk: 50 } } },
-      // { data: { id: 6, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-6"}, capacities: { unit: 2 } }, position: { x: 115, y: 375 }, classes: "graphSmartNIC" },
-      // { data: { id: 7, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 375 }, classes: "graphNVMe" },
-      // { data: { id: 8, label: 'MyVM2', parent: 12, type: "rectangle", capacities: { core: 10, ram: 200, disk: 30 } } },
-      // { data: { id: 9, parent: 8, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-5"}, capacities: { unit: 2 } }, position: { x: 400, y: 475 }, classes: "graphSmartNIC" },
-      // { data: { id: 10, parent: 8, type: "roundrectangle", properties:  {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 550, y: 475 }, classes: "graphNVMe" },
-      // { data: { id: 11, label: 'MyP4Switch', type: "roundrectangle", parent: 12, properties: {class:"Component", type: "Switch", model: "Model"} }, classes: "graphSwitchFabric" },
-      // { data: { id: 12, label: 'RENC', type: "roundrectangle", properties: {class: "Composite Node"} } },
-      // { data: { id: 13, label: 'MyLink', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 100 } }, position: { x: 150, y: 225 }, classes: "graphLink", },
-      // { data: { id: 14, label: 'MyLink2', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 50 } }, position: { x: 400, y: 200 }, classes: "graphLink"},
-      // { data: { id: 15, label: 'MyLink1', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 60 } }, position: { x: 450, y: 360 }, classes: "graphLink"},
-      // { data: { source: 1, target: 13 } },
-      // { data: { source: 13, target: 6 }, },
-      // { data: { source: 17, target: 14 } },
-      // { data: { source: 14, target: 11 } },
-      // { data: { source: 11, target: 15 } },
-      // { data: { source: 15, target: 9 } },
-      // { data: { id: 16, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 1", is_interface: true} }, position: { x: 360, y: 140 }, classes: "graphInterfaces" },
-      // { data: { id: 17, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 2", is_interface: true} }, position: { x: 410, y: 140 }, classes: "graphInterfaces" },
-      // { data: { id: 18, parent: 11, type: "rectangle", properties: {name: "Switch Interface 1", is_interface: true} }, position: { x: 400, y: 305 }, classes: "graphInterfaces" },
-      // { data: { id: 19, parent: 11, type: "rectangle", properties: {name: "Switch Interface 2", is_interface: true} }, position: { x: 430, y: 305 }, classes: "graphInterfaces" },
-      {
-        data: {
-          id: 1000,
-          label: 'RENC',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 11,
-          label: '11.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 13,
-          label: '13.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 15,
-          label: '15.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 25,
-          label: '25.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 27,
-          label: '27.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 29,
-          label: '29.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 10,
-          label: '10.ns',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 24,
-          label: '24.ns',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 12,
-          label: '12.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 14,
-          label: '14.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 16,
-          label: '16.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 26,
-          label: '26.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 28,
-          label: '28.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 30,
-          label: '30.Link',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: [Object],
-          classes: 'graphLink'
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 1,
-          id: 3,
-          label: '3.SharedNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 1,
-          id: 17,
-          label: '17.SharedNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 2,
-          id: 6,
-          label: '6.SmartNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 2,
-          id: 20,
-          label: '20.SmartNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 3,
-          id: 5,
-          label: '5.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      { data: { source: 5, target: 12 }, classes: 'graphundefined' },
-      {
-        data: {
-          parent: 6,
-          id: 8,
-          label: '8.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 6,
-          id: 9,
-          label: '9.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      { data: { source: 8, target: 14 }, classes: 'graphundefined' },
-      { data: { source: 9, target: 16 }, classes: 'graphundefined' },
-      { data: { source: 10, target: 11 }, classes: 'graphundefined' },
-      { data: { source: 10, target: 13 }, classes: 'graphundefined' },
-      { data: { source: 10, target: 15 }, classes: 'graphundefined' },
-      { data: { source: 11, target: 12 }, classes: 'graphundefined' },
-      { data: { source: 13, target: 14 }, classes: 'graphundefined' },
-      { data: { source: 15, target: 16 }, classes: 'graphundefined' },
-      {
-        data: {
-          parent: 17,
-          id: 19,
-          label: '19.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      { data: { source: 19, target: 26 }, classes: 'graphundefined' },
-      {
-        data: {
-          parent: 20,
-          id: 22,
-          label: '22.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          parent: 20,
-          id: 23,
-          label: '23.cp',
-          type: 'roundrectangle',
-          properties: [Object]
-        },
-        classes: 'graphroundrectangle'
-      },
-      { data: { source: 22, target: 28 }, classes: 'graphundefined' },
-      { data: { source: 23, target: 30 }, classes: 'graphundefined' },
-      { data: { source: 24, target: 25 }, classes: 'graphundefined' },
-      { data: { source: 24, target: 27 }, classes: 'graphundefined' },
-      { data: { source: 24, target: 29 }, classes: 'graphundefined' },
-      { data: { source: 25, target: 26 }, classes: 'graphundefined' },
-      { data: { source: 27, target: 28 }, classes: 'graphundefined' },
-      { data: { source: 29, target: 30 }, classes: 'graphundefined' },
-      {
-        data: {
-          id: 1,
-          label: '1.VM',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null,
-          parent: 1000
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 2,
-          label: '2.VM',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null,
-          parent: 1000
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 3,
-          label: '3.SharedNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 6,
-          label: '6.SmartNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 17,
-          label: '17.SharedNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      },
-      {
-        data: {
-          id: 20,
-          label: '20.SmartNIC',
-          type: 'roundrectangle',
-          properties: [Object],
-          capacities: null
-        },
-        classes: 'graphroundrectangle'
-      }
-    ],
+    elements: sliceParser(abqm),
+    // [
+    //   { data: { id: 2, label: 'MyVM1', parent: 12, type: "rectangle", capacities: { core: 32, ram: 512, disk: 100 } } },
+    //   { data: { id: 1, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "GPU", model: "Tesla T4"}, capacities: { unit: 4 } }, position: { x: 115, y: 100 }, classes: "graphGPU" },
+    //   { data: { id: 3, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 100 }, classes: "graphNVMe" },
+    //   { data: { id: 4, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "SharedNIC", model: "ConnectX-6", interfaces: ["16", "17"], capacities: { unit: 2 } }, capacities: { unit: 3 } }, position: { x: 385, y: 100 }, classes: "graphSmartNIC" },
+    //   { data: { id: 5, label: 'MyVM3', parent: 12, type: "rectangle", capacities: { core: 20, ram: 300, disk: 50 } } },
+    //   { data: { id: 6, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-6"}, capacities: { unit: 2 } }, position: { x: 115, y: 375 }, classes: "graphSmartNIC" },
+    //   { data: { id: 7, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 375 }, classes: "graphNVMe" },
+    //   { data: { id: 8, label: 'MyVM2', parent: 12, type: "rectangle", capacities: { core: 10, ram: 200, disk: 30 } } },
+    //   { data: { id: 9, parent: 8, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-5"}, capacities: { unit: 2 } }, position: { x: 400, y: 475 }, classes: "graphSmartNIC" },
+    //   { data: { id: 10, parent: 8, type: "roundrectangle", properties:  {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 550, y: 475 }, classes: "graphNVMe" },
+    //   { data: { id: 11, label: 'MyP4Switch', type: "roundrectangle", parent: 12, properties: {class:"Component", type: "Switch", model: "Model"} }, classes: "graphSwitchFabric" },
+    //   { data: { id: 12, label: 'RENC', type: "roundrectangle", properties: {class: "Composite Node"} } },
+    //   { data: { id: 13, label: 'MyLink', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 100 } }, position: { x: 150, y: 225 }, classes: "graphLink", },
+    //   { data: { id: 14, label: 'MyLink2', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 50 } }, position: { x: 400, y: 200 }, classes: "graphLink"},
+    //   { data: { id: 15, label: 'MyLink1', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 60 } }, position: { x: 450, y: 360 }, classes: "graphLink"},
+    //   { data: { source: 1, target: 13 } },
+    //   { data: { source: 13, target: 6 }, },
+    //   { data: { source: 17, target: 14 } },
+    //   { data: { source: 14, target: 11 } },
+    //   { data: { source: 11, target: 15 } },
+    //   { data: { source: 15, target: 9 } },
+    //   { data: { id: 16, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 1", is_interface: true} }, position: { x: 360, y: 140 }, classes: "graphInterfaces" },
+    //   { data: { id: 17, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 2", is_interface: true} }, position: { x: 410, y: 140 }, classes: "graphInterfaces" },
+    //   { data: { id: 18, parent: 11, type: "rectangle", properties: {name: "Switch Interface 1", is_interface: true} }, position: { x: 400, y: 305 }, classes: "graphInterfaces" },
+    //   { data: { id: 19, parent: 11, type: "rectangle", properties: {name: "Switch Interface 2", is_interface: true} }, position: { x: 430, y: 305 }, classes: "graphInterfaces" },
+    // ],
     // elements: jsonData.elements,
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
