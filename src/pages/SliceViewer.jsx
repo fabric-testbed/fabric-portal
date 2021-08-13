@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import SideToolbar from './SideToolbar';
+import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
@@ -498,10 +498,10 @@ export default class SliceViewer extends Component {
           </div>
         </div>
       <div className="d-flex flex-row justify-content-center mt-4">
-        {/* <SideToolbar
+        <SideToolbar
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
-        /> */}
+        />
         <Graph
           className="align-self-end" elements={this.state.elements}
           onNodeSelect={this.handleNodeSelect}
