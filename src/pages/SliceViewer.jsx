@@ -131,7 +131,7 @@ export default class SliceViewer extends Component {
               </div>
               <div className="modal-body">
                 <select className="custom-select" id="inputGroupSelect01">
-                  <option selected>Choose A Site</option>
+                  <option value="0">Choose A Site</option>
                   <option value="1">RENC</option>
                   <option value="2">UKY</option>
                   <option value="3">LBNL</option>
@@ -155,7 +155,7 @@ export default class SliceViewer extends Component {
               </div>
               <div className="modal-body">
                 <select className="custom-select" id="inputGroupSelect02">
-                  <option selected>Add VM to Site</option>
+                  <option value="0">Add VM to Site</option>
                   <option value="1">RENC</option>
                   <option value="2">UKY</option>
                   <option value="3">LBNL</option>

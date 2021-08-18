@@ -202,7 +202,7 @@ nodes.forEach(node => {
   elements.forEach(el => {
     cyElements.push({ data: el, classes: `graph${el.type}` })
   })
-  console.log(cyElements)
+  // console.log(cyElements)
 
   return cyElements;
 }

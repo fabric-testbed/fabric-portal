@@ -34,7 +34,6 @@ class AccountInfo extends React.Component {
           className="card-header my-4"
           data-toggle="collapse"
           data-target="#moreAccountInfo"
-          aria-expanded="false"
           aria-controls="moreAccountInfo"
         >
           Additional Information
