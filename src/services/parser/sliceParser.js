@@ -84,21 +84,30 @@ export default function parseSlice(abqm) {
 // *************************************************
 // *************************************************
 // *************************************************
-// Create NetworkService with type "L2Bridge", which has parent site
 nodes.forEach(node => {
+  let data = {};
   if (node.Class === "NetworkService" && node.Type === "L2Bridge") {
-    const data = {
+    // Create NetworkService with type "L2Bridge", which has parent site
+    data = {
       parent: getSiteIdbyName(node.Site),
       id: node.id,
       label: `${node.id}.ns`,
       type: "roundrectangle",
+      properties: { class: "Network Service" }
+   }
+   elements.push(data);
+  } else if (node.Class === "NetworkService" && node.Type === "L2STS") {
+    // Create NetworkService with type "L2STS", site to site, no parent
+    data = {
+      id: node.id,
+      label: `${node.id}.L2STS`,
+      type: "roundrectangle",
       properties: { class: "Network Service" },
     };
-
     elements.push(data);
   }
 })
-  
+
   // *************************************************
   // *************************************************
   // *************************************************
@@ -155,11 +164,11 @@ nodes.forEach(node => {
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
       && objNodes[link.target].Type === "ServicePort"
-      && objNodes[link.source].Type === "L2Bridge"){
+      && (["L2Bridge", "L2STS"].includes(objNodes[link.source].Type))){
         data = {
           parent: link.source,
           id: link.target,
-          label: `${link.target}`,
+          label: `${link.target}.sp`,
           type: "roundrectangle",
           properties: { class: "Service Port" },
         };
