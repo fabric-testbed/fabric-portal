@@ -4,7 +4,7 @@ import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 
-import abqm from "../data/2-site.json";
+import abqm from "../data/1-site.json";
 import sliceParser from "../services/parser/sliceParser.js";
 
 export default class SliceViewer extends Component { 

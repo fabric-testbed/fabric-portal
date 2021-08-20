@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Cytoscape from 'cytoscape';
 // import edgehandles from 'cytoscape-edgehandles';
 import COSEBilkent from 'cytoscape-cose-bilkent';
-import compoundDragAndDrop from 'cytoscape-compound-drag-and-drop';
+// import compoundDragAndDrop from 'cytoscape-compound-drag-and-drop';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
@@ -14,7 +14,7 @@ import IconNVMe from '../../imgs/SliceComponentIcons/SSD.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 
 Cytoscape.use(COSEBilkent);
-Cytoscape.use(compoundDragAndDrop);
+// Cytoscape.use(compoundDragAndDrop);
 // Cytoscape.use(edgehandles);
 
 function setCytoscape(cy){
@@ -96,7 +96,7 @@ function setCytoscape(cy){
   //   }
   // };
   // cy.edgehandles(defaults);
-  cy.compoundDragAndDrop();
+  // cy.compoundDragAndDrop();
   return cy;
 }
 

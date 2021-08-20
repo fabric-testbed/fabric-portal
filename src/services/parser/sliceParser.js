@@ -209,9 +209,14 @@ nodes.forEach(node => {
   // wrapping each cy element in separate "data" obj that Cytoscape accepts
   const cyElements = [];
   elements.forEach(el => {
-    cyElements.push({ data: el, classes: `graph${el.type}` })
+    if (el.properties) {
+      cyElements.push({ data: el, classes: `graph${el.properties.type}` })
+    } else {
+      cyElements.push({ data: el })
+    }
+    
   })
-  // console.log(cyElements)
+  console.log(cyElements)
 
   return cyElements;
 }
