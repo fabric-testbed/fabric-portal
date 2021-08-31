@@ -110,7 +110,7 @@ export default class Graph extends Component {
   componentDidMount = () => {
     this.setState({
       w: window.innerWidth * 0.75,
-      h:window.innerHeight * 0.7,
+      h:window.innerHeight * 0.75,
      // elements: jsonData.elements.nodes,
     })
     // this.cy can only be declared after the component has been mounted
@@ -158,6 +158,8 @@ export default class Graph extends Component {
         <CytoscapeComponent
           elements={this.props.elements}
           layout={layout}
+          zoom={0.75}
+          pan={ { x: 100, y: 75 } }
           style={{ width: this.state.w, height: this.state.h }}
           // wheelSensitivity={0.1}
           cy={(cy) => {this.cy = setCytoscape(cy)}}

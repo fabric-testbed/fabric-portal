@@ -4,12 +4,13 @@ import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 
-import abqm from "../data/1-site.json";
+import { getSliceById } from "../services/fakeSlices.js";
+import abqm from "../data/2-site.json";
 import sliceParser from "../services/parser/sliceParser.js";
 
 export default class SliceViewer extends Component { 
   state = {
-    elements: sliceParser(abqm),
+    elements: sliceParser(getSliceById(this.props.match.params.id)),
     // [
     //   { data: { id: 2, label: 'MyVM1', parent: 12, type: "rectangle", capacities: { core: 32, ram: 512, disk: 100 } } },
     //   { data: { id: 1, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "GPU", model: "Tesla T4"}, capacities: { unit: 4 } }, position: { x: 115, y: 100 }, classes: "graphGPU" },
@@ -37,7 +38,6 @@ export default class SliceViewer extends Component {
     //   { data: { id: 18, parent: 11, type: "rectangle", properties: {name: "Switch Interface 1", is_interface: true} }, position: { x: 400, y: 305 }, classes: "graphInterfaces" },
     //   { data: { id: 19, parent: 11, type: "rectangle", properties: {name: "Switch Interface 2", is_interface: true} }, position: { x: 430, y: 305 }, classes: "graphInterfaces" },
     // ],
-    // elements: jsonData.elements,
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
