@@ -5,7 +5,6 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 
 import { getSliceById } from "../services/fakeSlices.js";
-import abqm from "../data/2-site.json";
 import sliceParser from "../services/parser/sliceParser.js";
 
 export default class SliceViewer extends Component { 
