@@ -4,7 +4,7 @@ The portal is a web based reflection of the user's rights and project associatio
 
 ## Overview
 
-![FABRIC Portal Site Map v2](https://user-images.githubusercontent.com/37635744/94174176-f2ae9800-fe62-11ea-91e3-060e59ebb29e.png)
+![FABRIC Portal Site Map](https://user-images.githubusercontent.com/37635744/131748062-4e7ac992-d9bd-4515-b7be-c538ebbfc65e.png)
 
 The portal provides a graphical user interface to many testbed functions. Those include:
 
@@ -20,7 +20,7 @@ The portal provides a graphical user interface to many testbed functions. Those 
 - The portal provides links to the user support system and JupyterHub for convenience;
 - User guide page. This page works as a knowledge base including portal tutorials with rich text and images, FAQs supporting user search and feedback methods such as email and phone.
 
-![FABRIC Portal - portal design v2](https://user-images.githubusercontent.com/37635744/94175976-694c9500-fe65-11ea-987f-2d3e9b75d2c2.png)
+![FABRIC Portal Design](https://user-images.githubusercontent.com/37635744/131748086-c5ca9b57-25f7-4240-8b3b-72654e3ddb28.png)
 
 FABRIC System Services and Portal consist of multiple components:
 
