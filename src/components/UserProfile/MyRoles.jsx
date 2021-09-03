@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 
-import { projectLeadRequest } from "../../services/portalData.json";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
+import { projectLeadRequest, projectLeadDescription, facilityOperatorDescription } from "../../services/portalData.json";
 
 class MyRoles extends React.Component {
   state = {
@@ -54,6 +56,11 @@ class MyRoles extends React.Component {
   render() {
     const { projectRoleCols } = this.state;
     const { people } = this.props;
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return (
       <div className="col-9">
@@ -61,18 +68,29 @@ class MyRoles extends React.Component {
           <h1>My Roles</h1>
           <button
             type="button"
-            className="btn btn-sm btn-primary h-50 ml-2"
+            className="btn btn-sm btn-outline-primary h-50 ml-3"
             onClick={() => this.props.onRoleRefresh()}
           >
             <i className="fa fa-refresh mr-2"></i>
             Refresh Roles
           </button>
         </div>
-        <h4 className="mt-4">Global Roles</h4>
+        <h4 className="mt-4">
+          Global Roles
+        </h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
             <tr>
-              <td>Project Lead</td>
+              <td>
+                Project Lead
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 100, hide: 300 }}
+                  overlay={renderTooltip("pl-tooltip", projectLeadDescription)}
+                >
+                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                </OverlayTrigger>
+              </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
                   people.roles.indexOf("project-leads") > -1
@@ -80,7 +98,16 @@ class MyRoles extends React.Component {
               </td>
             </tr>
             <tr>
-              <td>Facility Operator</td>
+              <td>
+                Facility Operator
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 100, hide: 300 }}
+                  overlay={renderTooltip("fo-tooltip", facilityOperatorDescription)}
+                >
+                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                </OverlayTrigger>
+              </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
                   people.roles.indexOf("facility-operators") > -1
@@ -94,10 +121,11 @@ class MyRoles extends React.Component {
           <div>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-sm btn-outline-primary"
               data-toggle="modal"
               data-target={`#${projectLeadRequest.id}`}
             >
+              <i className="fa fa-sign-in mr-2"></i>
               Request to be Project Lead
             </button>
             <Modal
@@ -107,7 +135,7 @@ class MyRoles extends React.Component {
               content={projectLeadRequest.content}
             />
           </div>
-        }
+         }
         <h4 className="mt-4">Project Roles</h4>
         <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
