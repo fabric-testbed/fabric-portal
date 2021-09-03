@@ -40,7 +40,7 @@ class MyRoles extends React.Component {
         return param === true ? (
           <i className="fa fa-check text-success"></i>
         ) : (
-          <i className="fa fa-times text-danger"></i>
+          <i className="fa fa-ban text-danger"></i>
         );
       case "string":
         return param.length > 100
