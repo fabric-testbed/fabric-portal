@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchBoxWithDropdown = ({ value, placeholder, onChange }) => {
+const SearchBoxWithDropdown = ({ activeDropdownVal, dropdownValues, value, placeholder, onDropdownChange, onInputChange }) => {
   return (
     <div className="input-group my-3">
       <div className="input-group-prepend">
@@ -11,12 +11,20 @@ const SearchBoxWithDropdown = ({ value, placeholder, onChange }) => {
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Name
+          {activeDropdownVal}
         </button>
         <div className="dropdown-menu">
-          <span className="dropdown-item">Project Creator</span>
-          <span className="dropdown-item">Description</span>
-          <span className="dropdown-item">Facility</span>
+          {
+            dropdownValues.map(value => activeDropdownVal !== value ?
+              <span
+                className="dropdown-item"
+                key={`project-dropdown${value}`}
+                onClick={() => onDropdownChange(value)}
+              >
+                {value}
+              </span> : null
+            )
+          }
         </div>
       </div>
       <input
@@ -25,7 +33,7 @@ const SearchBoxWithDropdown = ({ value, placeholder, onChange }) => {
         className="form-control"
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChange={(e) => onInputChange(e.currentTarget.value)}
       />
     </div>
   );
