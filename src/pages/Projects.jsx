@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
-import SearchBox from "../components/common/SearchBox";
+import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 
@@ -14,14 +14,91 @@ import { toast } from "react-toastify";
 
 class Projects extends React.Component {
   state = {
-    projects: [],
-    allProjects: [],
-    myProjects: [],
+    projects: [
+      {
+        "created_by": {
+          "email": "anonymous@fabric-testbed.net",
+          "name": "anonymous user",
+          "uuid": "00000000-0000-0000-0000-000000000000"
+        },
+        "created_time": "2021-06-22 18:43:56",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "CF Test",
+        "uuid": "10c0094a-abaf-4ef9-a532-2be53e2a896b"
+      },
+      {
+        "created_by": {
+          "email": "anonymous@fabric-testbed.net",
+          "name": "anonymous user",
+          "uuid": "00000000-0000-0000-0000-000000000000"
+        },
+        "created_time": "2021-06-30 19:57:59",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "Ilya's project",
+        "uuid": "afa75253-a9a6-45ec-b397-e8d29ff7c8bd"
+      },
+    ],
+    allProjects: [
+      {
+        "created_by": {
+          "email": "anonymous@fabric-testbed.net",
+          "name": "anonymous user",
+          "uuid": "00000000-0000-0000-0000-000000000000"
+        },
+        "created_time": "2021-06-22 18:43:56",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "CF Test",
+        "uuid": "10c0094a-abaf-4ef9-a532-2be53e2a896b"
+      },
+      {
+        "created_by": {
+          "email": "anonymous@fabric-testbed.net",
+          "name": "anonymous user",
+          "uuid": "00000000-0000-0000-0000-000000000000"
+        },
+        "created_time": "2021-06-30 19:57:59",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "Ilya's project",
+        "uuid": "afa75253-a9a6-45ec-b397-e8d29ff7c8bd"
+      },
+      {
+        "created_by": {
+          "email": "yaxueguo@renci.org",
+          "name": "Yaxue Guo",
+          "uuid": "69f9b1a6-c3c3-4c53-8693-21c63e771c78"
+        },
+        "created_time": "2021-05-24 17:24:30",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "Test Project",
+        "uuid": "c3e4b3ce-ca83-4bd7-ad5b-6ce6423eeb33"
+      }
+    ],
+    myProjects: [
+      {
+        "created_by": "69f9b1a6-c3c3-4c53-8693-21c63e771c78",
+        "created_time": "2021-05-24 17:24:30",
+        "description": "INSERT_PROJECT_DESCRIPTION",
+        "facility": "FABRIC",
+        "name": "Test Project",
+        "uuid": "c3e4b3ce-ca83-4bd7-ad5b-6ce6423eeb33"
+      }
+    ],
     otherProjects: [],
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
-    roles: [],
+    roles: [
+      "fabric-active-users",
+      "project-leads",
+      "c3e4b3ce-ca83-4bd7-ad5b-6ce6423eeb33-pc",
+      "c3e4b3ce-ca83-4bd7-ad5b-6ce6423eeb33-po",
+      "c3e4b3ce-ca83-4bd7-ad5b-6ce6423eeb33-pm"
+    ],
     sortColumn: { path: "name", order: "asc" },
     radioBtnValues: [
       { display: "My Projects", value: "active", isActive: true },
@@ -30,22 +107,22 @@ class Projects extends React.Component {
     projectType: "myProjects",
   };
 
-  async componentDidMount() {
-    try {
-      const { data: people } = await getCurrentUser();
-      const { data: allProjects } = await getProjects();
-      this.setState({ 
-        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
-        myProjects: people.projects,
-        allProjects: allProjects,
-        roles: people.roles,
-        otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
-      })
-    } catch (ex) {
-      toast.error("Failed to load projects. Please reload this page.");
-      console.log("Failed to load projects: " + ex.response.data);
-    }
-  }
+  // async componentDidMount() {
+  //   try {
+  //     const { data: people } = await getCurrentUser();
+  //     const { data: allProjects } = await getProjects();
+  //     this.setState({ 
+  //       projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : people.projects,
+  //       myProjects: people.projects,
+  //       allProjects: allProjects,
+  //       roles: people.roles,
+  //       otherProjects: _.differenceWith(allProjects, people.projects, (x, y) => x.uuid === y.uuid),
+  //     })
+  //   } catch (ex) {
+  //     toast.error("Failed to load projects. Please reload this page.");
+  //     console.log("Failed to load projects: " + ex.response.data);
+  //   }
+  // }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -118,7 +195,7 @@ class Projects extends React.Component {
       <div className="container">
         <h1>Projects</h1>
         <div className="toolbar">
-          <SearchBox
+          <SearchBoxWithDropdown
             value={searchQuery}
             placeholder={"Search projects..."}
             onChange={this.handleSearch}
@@ -131,7 +208,7 @@ class Projects extends React.Component {
             )
             &&
             (
-              <Link to="/projects/new" className="btn btn-primary">
+              <Link to="/projects/new" className="btn btn-primary create-project-btn">
                 Create Project
               </Link>
             )
