@@ -31,7 +31,7 @@ class Footer extends React.Component {
             <li><b>Help &amp; Support</b></li>
             <li><a href="https://learn.fabric-testbed.net/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
             <li><a href="https://learn.fabric-testbed.net/faq/" target="_blank" rel="noopener noreferrer">FAQ</a></li>
-            <li><a href="https://learn.fabric-testbed.net/submit-a-ticket/" target="_blank" rel="noopener noreferrer">Contact Us</a></li>
+            <li><a href="https://learn.fabric-testbed.net/forums/forum/fabric-general-questions-and-discussion/" target="_blank" rel="noopener noreferrer">Contact Us</a></li>
           </ul>
         </div>
         <div className="col-sm-12 col-md-4">
