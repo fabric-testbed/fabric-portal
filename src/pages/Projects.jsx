@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
-import SearchBox from "../components/common/SearchBox";
+import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 
@@ -20,6 +20,7 @@ class Projects extends React.Component {
     otherProjects: [],
     pageSize: 5,
     currentPage: 1,
+    filterQuery: "Name",
     searchQuery: "",
     roles: [],
     sortColumn: { path: "name", order: "asc" },
@@ -51,6 +52,10 @@ class Projects extends React.Component {
     this.setState({ currentPage: page });
   };
 
+  handleFilter = (query) => {
+    this.setState({ filterQuery: query, currentPage: 1 });
+  };
+
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
@@ -64,15 +69,28 @@ class Projects extends React.Component {
       pageSize,
       currentPage,
       sortColumn,
+      filterQuery,
       searchQuery,
       projects: allProjects,
     } = this.state;
 
     // filter -> sort -> paginate
     let filtered = allProjects;
+    
+    const filterMap = {
+      "Name": "name",
+      "Description": "description",
+      "Facility": "facility",
+    }
+
     if (searchQuery) {
-      filtered = allProjects.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = allProjects.filter((p) => {
+        if (filterQuery ==="Project Creator") {
+          return p.created_by.name.toLowerCase().includes(searchQuery.toLowerCase());
+        } else {
+          return  p[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase());
+        }
+      }
       );
     }
 
@@ -111,17 +129,20 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, roles } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="container">
         <h1>Projects</h1>
         <div className="toolbar">
-          <SearchBox
+          <SearchBoxWithDropdown
+            activeDropdownVal={filterQuery}
+            dropdownValues={["Name", "Project Creator", "Description", "Facility"]}
             value={searchQuery}
-            placeholder={"Search projects..."}
-            onChange={this.handleSearch}
+            placeholder={`Search projects by ${filterQuery}...`}
+            onDropdownChange={this.handleFilter}
+            onInputChange={this.handleSearch}
             className="my-0"
           />
           {
@@ -131,7 +152,7 @@ class Projects extends React.Component {
             )
             &&
             (
-              <Link to="/projects/new" className="btn btn-primary">
+              <Link to="/projects/new" className="btn btn-primary create-project-btn">
                 Create Project
               </Link>
             )
