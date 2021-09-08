@@ -14,7 +14,7 @@ class User extends React.Component {
   state = {
     SideNavItems: [
       { name: "ACCOUNT INFORMATION", active: true },
-      { name: "MY ROLES", active: false },
+      { name: "MY ROLES & PROJECTS", active: false },
       // { name: "MESSAGE CENTER", active: false },
     ],
     user: {},
