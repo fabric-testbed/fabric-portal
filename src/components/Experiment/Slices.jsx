@@ -64,7 +64,7 @@ class Slices extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div className="container">
+      <div className="col-9">
         <h1>Slices</h1>
         <div className="toolbar">
           <SearchBox

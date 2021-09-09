@@ -135,7 +135,7 @@ class Tokens extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="col-9">
         <h2 className="mb-4">Create Token</h2>
         <Form>
           <Row>
@@ -175,10 +175,10 @@ class Tokens extends React.Component {
             </Col>
             <Col xs={2} className="d-flex flex-row align-items-center justify-content-end">
               <Button
-                className="btn-success mt-3"
+                className="btn-success mt-3 w-75"
                 onClick={this.createToken}
               >
-                Create Token
+                Create
               </Button>
             </Col>
           </Row>
@@ -318,7 +318,7 @@ class Tokens extends React.Component {
               onClick={this.refreshToken}
               className="btn-success mt-3"
             >
-              Refresh Token
+              Refresh
             </Button>
           )
         }
@@ -347,7 +347,7 @@ class Tokens extends React.Component {
           onClick={this.revokeToken}
           className="btn-danger mt-3"
         >
-          Revoke Token
+          Revoke
         </Button>
       </div>
     )
