@@ -84,14 +84,7 @@ class Projects extends React.Component {
     }
 
     if (searchQuery) {
-      filtered = allProjects.filter((p) => {
-        if (filterQuery ==="Project Creator") {
-          return p.created_by.name.toLowerCase().includes(searchQuery.toLowerCase());
-        } else {
-          return  p[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase());
-        }
-      }
-      );
+      filtered = allProjects.filter(p => p[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
@@ -138,7 +131,7 @@ class Projects extends React.Component {
         <div className="toolbar">
           <SearchBoxWithDropdown
             activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "Project Creator", "Description", "Facility"]}
+            dropdownValues={["Name", "Description", "Facility"]}
             value={searchQuery}
             placeholder={`Search projects by ${filterQuery}...`}
             onDropdownChange={this.handleFilter}
