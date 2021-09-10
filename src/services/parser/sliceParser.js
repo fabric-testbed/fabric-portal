@@ -2,8 +2,12 @@ export default function parseSlice(abqm) {
   
   const nodes = abqm.nodes;
 
+  console.log("----nodes-----")
+  console.log(nodes)
+
   const links = abqm.links;
-  
+  console.log("----links-----")
+  console.log(links)
   // Max graph depth - 4 or 5? whether to show NetworkService node.
   // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
   
@@ -20,7 +24,7 @@ export default function parseSlice(abqm) {
   nodes.forEach(node => {
     if (node.Class === "NetworkNode" && !sitesName.includes(node.Site)) {
       sitesName.push(node.Site);
-      sites.push({ id: node.id + 999, name: node.Site });
+      sites.push({ id: node.id + 999999, name: node.Site });
     }
   })
   
@@ -38,6 +42,9 @@ export default function parseSlice(abqm) {
   nodes.forEach(node => {
     objNodes[node.id] = node
   })
+
+  console.log("objNodes")
+  console.log(objNodes)
   
   const getSiteIdbyName = name => {
     let siteId = null;
@@ -73,7 +80,7 @@ export default function parseSlice(abqm) {
   const findParentNode = (id) => {
     let parentId = -1;
     for (let i = 0; i < links.length; i++) {
-      if (links[i].Class === "has" && links[i].target === id) {
+      if (links[i].label === "has" && links[i].target === id) {
         parentId = links[i].source;
         break;
       }
@@ -135,7 +142,8 @@ nodes.forEach(node => {
   links.forEach(link => {
     let data = {};
     // "has" => parent/ child nodes.
-    if (link.Class === "has") {
+    if (link.label === "has") {
+      console.log("hasssssss")
       if (!parentNodeIds.includes(link.source)) {
         parentNodeIds.push(link.source);
       }
@@ -148,8 +156,7 @@ nodes.forEach(node => {
     }
   
     // 'connects' => edge
-    // TODO: edge as node object??? 
-    if (link.Class === "connects") {
+    if (link.label === "connects") {
       // if NetworkService to CP, then add CP node inside NS's parent, don't add edge.
       if (objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
@@ -214,8 +221,9 @@ nodes.forEach(node => {
     } else {
       cyElements.push({ data: el })
     }
-    
   })
+
+  console.log("!!!!!!!!cyelements")
   console.log(cyElements)
 
   return cyElements;

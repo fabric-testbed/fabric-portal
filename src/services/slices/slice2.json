@@ -1,0 +1,419 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkNode",
+      "NodeID": "11d48e7b-ed0b-4d57-b81e-397f2354e9fa",
+      "Name": "n1",
+      "Type": "VM",
+      "Site": "RENC",
+      "StitchNode": "false",
+      "id": 28
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkNode",
+      "NodeID": "488599ad-3a4f-4165-b5d8-6bbc16f6c657",
+      "Name": "n2",
+      "Type": "VM",
+      "Site": "RENC",
+      "StitchNode": "false",
+      "id": 29
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkNode",
+      "NodeID": "455d6dcf-eef4-4f49-9901-3ec60c657fda",
+      "Name": "n3",
+      "Type": "VM",
+      "Site": "UKY",
+      "StitchNode": "false",
+      "id": 30
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Component",
+      "NodeID": "a89e70b1-8d8d-48bf-aaf7-ff8b26d06165",
+      "Name": "nic1",
+      "Type": "SharedNIC",
+      "Model": "ConnectX-6",
+      "Details": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
+      "StitchNode": "false",
+      "id": 31
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkService",
+      "NodeID": "95b6f873-2d67-40e9-988d-ae694c2e83ee",
+      "Name": "n1-nic1-l2ovs",
+      "Type": "OVS",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 32
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "38ad48db-d970-4a96-a6e7-2386b0d597ba",
+      "Name": "nic1-p1",
+      "Type": "SharedPort",
+      "Capacities": "{\"bw\": 100, \"unit\": 1}",
+      "StitchNode": "false",
+      "id": 33
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Component",
+      "NodeID": "ac503180-229b-4d2e-92e2-d36129884e02",
+      "Name": "drive1",
+      "Type": "NVME",
+      "Model": "P4510",
+      "Details": "Dell Express Flash NVMe P4510 1TB SFF",
+      "StitchNode": "false",
+      "id": 34
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Component",
+      "NodeID": "d6acabb2-1e5a-445f-8155-96639d6252cd",
+      "Name": "nic1",
+      "Type": "SmartNIC",
+      "Model": "ConnectX-6",
+      "Details": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
+      "StitchNode": "false",
+      "id": 35
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkService",
+      "NodeID": "ec8db655-a21b-46b9-828c-d86517b115cd",
+      "Name": "n2-nic1-l2ovs",
+      "Type": "OVS",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 36
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "6d7b64bb-d0c9-468a-851b-4451384d3777",
+      "Name": "nic1-p1",
+      "Type": "DedicatedPort",
+      "Capacities": "{\"bw\": 100, \"unit\": 1}",
+      "StitchNode": "false",
+      "id": 37
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "8d5d3c77-550c-4cb9-bd82-f5e8e83eb403",
+      "Name": "nic1-p2",
+      "Type": "DedicatedPort",
+      "Capacities": "{\"bw\": 100, \"unit\": 1}",
+      "StitchNode": "false",
+      "id": 38
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Component",
+      "NodeID": "89d497a7-339f-4817-b62b-f33f31f3a71d",
+      "Name": "gpu1",
+      "Type": "GPU",
+      "Model": "RTX6000",
+      "Details": "NVIDIA Corporation TU102GL [Quadro RTX 6000/8000] (rev a1)",
+      "StitchNode": "false",
+      "id": 39
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Component",
+      "NodeID": "d75b11ab-03d8-4c5c-b8c8-7cc92055106c",
+      "Name": "nic1",
+      "Type": "SmartNIC",
+      "Model": "ConnectX-5",
+      "Details": "Mellanox ConnectX-5 Dual Port 10/25GbE",
+      "StitchNode": "false",
+      "id": 40
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkService",
+      "NodeID": "ad63c7af-3e43-4c23-b02c-6a2953d3a17a",
+      "Name": "n3-nic1-l2ovs",
+      "Type": "OVS",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 41
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "8662ccf9-c6f3-430b-9e76-8bd3bb3071f2",
+      "Name": "nic1-p1",
+      "Type": "DedicatedPort",
+      "Capacities": "{\"bw\": 25, \"unit\": 1}",
+      "StitchNode": "false",
+      "id": 42
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "283eb2a8-fd33-433d-a7a8-0a27275bd62e",
+      "Name": "nic1-p2",
+      "Type": "DedicatedPort",
+      "Capacities": "{\"bw\": 25, \"unit\": 1}",
+      "StitchNode": "false",
+      "id": 43
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "NetworkService",
+      "NodeID": "751d57cd-b60d-4b1a-9380-cc8b233f7aef",
+      "Name": "bridge1",
+      "Type": "L2STS",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 44
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "0372e5ba-2fcf-4d40-b9b0-2f08c994ea66",
+      "Name": "bridge1-nic1-p1",
+      "Type": "ServicePort",
+      "StitchNode": "false",
+      "id": 45
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Link",
+      "NodeID": "6f75a0d9-82d2-4262-b968-222bcd8e82e1",
+      "Name": "bridge1-nic1-p1-link",
+      "Type": "L2Path",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 46
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "4af351a5-521d-4396-97dd-a30a88bd28e8",
+      "Name": "bridge1-nic1-p1",
+      "Type": "ServicePort",
+      "StitchNode": "false",
+      "id": 47
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Link",
+      "NodeID": "ffc3558e-701e-4fe8-9aeb-00453a8691cc",
+      "Name": "bridge1-nic1-p1-link",
+      "Type": "Patch",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 48
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "d98e70a4-c409-4c7b-8d4b-66cfe4ee2c33",
+      "Name": "bridge1-nic1-p2",
+      "Type": "ServicePort",
+      "StitchNode": "false",
+      "id": 49
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Link",
+      "NodeID": "d93a63fc-4ba1-4b47-a6ae-3a092334a9bc",
+      "Name": "bridge1-nic1-p2-link",
+      "Type": "Patch",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 50
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "f91b019a-3dd7-44f3-92b4-7b941c9c3c5c",
+      "Name": "bridge1-nic1-p1",
+      "Type": "ServicePort",
+      "StitchNode": "false",
+      "id": 51
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Link",
+      "NodeID": "b18f6b29-70af-4952-a2d6-26f675579ae0",
+      "Name": "bridge1-nic1-p1-link",
+      "Type": "Patch",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 52
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "ConnectionPoint",
+      "NodeID": "bdc6450b-11f0-41bd-be6e-586046435ead",
+      "Name": "bridge1-nic1-p2",
+      "Type": "ServicePort",
+      "StitchNode": "false",
+      "id": 53
+    },
+    {
+      "GraphID": "5424bb7d-edbf-4d12-8472-7a4fa58f5ecd",
+      "Class": "Link",
+      "NodeID": "ff26fcfc-4a7f-4482-9bfd-e28f311d2d7f",
+      "Name": "bridge1-nic1-p2-link",
+      "Type": "Patch",
+      "StitchNode": "false",
+      "Layer": "L2",
+      "id": 54
+    }
+  ],
+  "links": [
+    {
+      "label": "has",
+      "source": 28,
+      "target": 31
+    },
+    {
+      "label": "has",
+      "source": 28,
+      "target": 34
+    },
+    {
+      "label": "has",
+      "source": 29,
+      "target": 35
+    },
+    {
+      "label": "has",
+      "source": 29,
+      "target": 39
+    },
+    {
+      "label": "has",
+      "source": 30,
+      "target": 40
+    },
+    {
+      "label": "has",
+      "source": 31,
+      "target": 32
+    },
+    {
+      "label": "connects",
+      "source": 32,
+      "target": 33
+    },
+    {
+      "label": "connects",
+      "source": 33,
+      "target": 46
+    },
+    {
+      "label": "has",
+      "source": 35,
+      "target": 36
+    },
+    {
+      "label": "connects",
+      "source": 36,
+      "target": 37
+    },
+    {
+      "label": "connects",
+      "source": 36,
+      "target": 38
+    },
+    {
+      "label": "connects",
+      "source": 37,
+      "target": 48
+    },
+    {
+      "label": "connects",
+      "source": 38,
+      "target": 50
+    },
+    {
+      "label": "has",
+      "source": 40,
+      "target": 41
+    },
+    {
+      "label": "connects",
+      "source": 41,
+      "target": 42
+    },
+    {
+      "label": "connects",
+      "source": 41,
+      "target": 43
+    },
+    {
+      "label": "connects",
+      "source": 42,
+      "target": 52
+    },
+    {
+      "label": "connects",
+      "source": 43,
+      "target": 54
+    },
+    {
+      "label": "connects",
+      "source": 44,
+      "target": 45
+    },
+    {
+      "label": "connects",
+      "source": 44,
+      "target": 47
+    },
+    {
+      "label": "connects",
+      "source": 44,
+      "target": 49
+    },
+    {
+      "label": "connects",
+      "source": 44,
+      "target": 51
+    },
+    {
+      "label": "connects",
+      "source": 44,
+      "target": 53
+    },
+    {
+      "label": "connects",
+      "source": 45,
+      "target": 46
+    },
+    {
+      "label": "connects",
+      "source": 47,
+      "target": 48
+    },
+    {
+      "label": "connects",
+      "source": 49,
+      "target": 50
+    },
+    {
+      "label": "connects",
+      "source": 51,
+      "target": 52
+    },
+    {
+      "label": "connects",
+      "source": 53,
+      "target": 54
+    }
+  ]
+}
