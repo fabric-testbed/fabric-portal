@@ -8,6 +8,21 @@ class KeysTable extends Component {
       { path: "id", label: "ID" },
       { path: "create_date", label: "Create Date" },
       { path: "expire_date", label: "Expire Date" },
+      {
+        content: () => (
+          <div className="btn-group">
+            <button type="button" className="btn btn-sm btn-outline-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i className="fa fa-ellipsis-h"></i>
+            </button>
+            <div className="dropdown-menu">
+              <span className="dropdown-item">Download</span>
+              <span className="dropdown-item">Finger Print</span>
+              <div className="dropdown-divider"></div>
+              <span className="dropdown-item">Delete</span>
+            </div>
+          </div>
+        ),
+      },
     ];
 
   render() {

@@ -17,7 +17,7 @@ class Keys extends React.Component {
   state = {
     keys: getKeys(),
     allKeys: getKeys(),
-    pageSize: 5,
+    pageSize: 3,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
@@ -38,6 +38,10 @@ class Keys extends React.Component {
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
+
+  handleKeyGenerate = () => {
+    alert("hi")
+  }
 
   getPageData = () => {
     const {
@@ -98,7 +102,11 @@ class Keys extends React.Component {
             placeholder="Input the Key Pair Name..."
             aria-label="SSH Key Name"
           />
-          <Button className="ml-4" variant="success">
+          <Button
+            className="ml-4"
+            variant="success"
+            onClick={this.handleKeyGenerate}
+          >
             Generate Key Pair
           </Button>
         </InputGroup>
