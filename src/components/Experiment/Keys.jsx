@@ -40,7 +40,7 @@ class Keys extends React.Component {
   };
 
   handleKeyGenerate = () => {
-    alert("hi")
+
   }
 
   getPageData = () => {
@@ -106,9 +106,53 @@ class Keys extends React.Component {
             className="ml-4"
             variant="success"
             onClick={this.handleKeyGenerate}
+            data-toggle="modal"
+            data-target="#generatedKeyModal"
           >
             Generate Key Pair
           </Button>
+          <div
+            className="modal fade"
+            id={"generatedKeyModal"}
+            data-backdrop="static"
+            data-keyboard="false"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby={"generatedKeyModal-title"}
+            aria-hidden="true"
+          >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  Generated Key Pair
+                </h5>
+                <button className="btn btn-sm btn-outline-secondary" data-dismiss="modal" aria-label="Close">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+              <div className="modal-body">
+                <li>
+                  Public Key: <a href="#">your_key_name.pub</a>
+                  <button className="btn btn-outline-primary btn-sm ml-2">
+                    <i className="fa fa-download"></i>
+                  </button>
+                </li>
+                <li className="my-4">
+                  Private Key: <a href="#">your_key_name</a>
+                  <button className="btn btn-outline-primary btn-sm ml-2">
+                    <i className="fa fa-download"></i>
+                  </button>
+                </li>
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  The private key will be no longer accessible through the portal once you closed this window.
+                  Please download and keep your private keys safe.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         </InputGroup>
         <h3 className="my-4">Upload Public Key</h3>
         <Card>
