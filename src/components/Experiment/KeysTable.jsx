@@ -16,7 +16,7 @@ class KeysTable extends Component {
             </button>
             <div className="dropdown-menu">
               <span className="dropdown-item">Download</span>
-              <span className="dropdown-item">Finger Print</span>
+              <span className="dropdown-item">Fingerprint</span>
               <div className="dropdown-divider"></div>
               <span className="dropdown-item">Delete</span>
             </div>

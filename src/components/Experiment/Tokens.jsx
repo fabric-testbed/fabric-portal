@@ -33,15 +33,15 @@ class Tokens extends React.Component {
     selectedRefreshProject: "all",
   }
 
-  // async componentDidMount(){
-  //   try {
-  //     const { data: user } = await getCurrentUser();
-  //     this.setState({ projects: user.projects });
-  //   } catch (ex) {
-  //     toast.error("Failed to load user's project information. Please reload this page.");
-  //     console.log("Failed to load user information: " + ex.response.data);
-  //   }
-  // }
+  async componentDidMount(){
+    try {
+      const { data: user } = await getCurrentUser();
+      this.setState({ projects: user.projects });
+    } catch (ex) {
+      toast.error("Failed to load user's project information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
+    }
+  }
 
   generateTokenJson = (id_token, refresh_token) => {
     const today = new Date();

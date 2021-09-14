@@ -125,6 +125,7 @@ class Header extends React.Component {
                               key={sub_index}
                               href={sub_item.href}
                               target="_blank"
+                              rel="noreferrer"
                             >
                               {sub_item.name}
                             </a>

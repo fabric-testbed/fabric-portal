@@ -116,7 +116,7 @@ class Keys extends React.Component {
             id={"generatedKeyModal"}
             data-backdrop="static"
             data-keyboard="false"
-            tabindex="-1"
+            tabIndex="-1"
             role="dialog"
             aria-labelledby={"generatedKeyModal-title"}
             aria-hidden="true"
@@ -128,7 +128,7 @@ class Keys extends React.Component {
                   Generated Key Pair
                 </h5>
                 <button className="btn btn-sm btn-outline-secondary" data-dismiss="modal" aria-label="Close">
-                  <i class="fa fa-times"></i>
+                  <i className="fa fa-times"></i>
                 </button>
               </div>
               <div className="modal-body">
@@ -160,7 +160,7 @@ class Keys extends React.Component {
             Please paste the public key here:
           </Card.Header>
           <Card.Body>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Group>
               <Form.Control
                 ref={(textarea) => this.textArea = textarea}
                 as="textarea"

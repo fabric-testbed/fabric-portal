@@ -162,7 +162,7 @@ class Resources extends Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, roles, activeDetailName } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
