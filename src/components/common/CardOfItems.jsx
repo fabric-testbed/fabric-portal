@@ -28,6 +28,7 @@ const CardOfItems = ({ header, data, ...rest }) => {
                     href={item.link}
                     className="btn btn-primary"
                     target="_blank"
+                    rel="noreferrer"
                   >
                   { item.button ? item.button : "Read More"}
                 </a>
