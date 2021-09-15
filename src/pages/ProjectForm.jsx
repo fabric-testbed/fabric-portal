@@ -1,5 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
+import { Link } from "react-router-dom";
 import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
@@ -154,8 +155,6 @@ class projectForm extends Form {
       // (not re-render by calling api again)
       const originalMembers = this.state.data.project_members;
       const members = originalMembers;
-      console.log("user-----");
-      console.log(user);
       // is not member yet, add to member from UI.
       if (_.findIndex(members, (member) => _.isMatch(member, user)) === -1) {
         members.push(user);
@@ -342,7 +341,17 @@ class projectForm extends Form {
       // 2. Show detailed project form.
       return (
         <div className="container">
-          <h1>Project - {originalProjectName}</h1>
+          <div className="d-flex flex-row justify-content-between">
+            <h1>Project - {originalProjectName}</h1>
+            <Link to="/projects">
+              <button
+                className="btn btn-sm btn-outline-primary my-3"
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Back to Project List
+              </button>
+            </Link>
+          </div>
           <div className="row mt-4">
             <SideNav
               items={SideNavItems}

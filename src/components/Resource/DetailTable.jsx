@@ -29,7 +29,7 @@ const DetailTable = props => {
         </thead>
         <tbody>
           <tr>
-            <th scope="col">Status</th>
+            <td>Status</td>
             <td className="align-middle text-center">
               {
                 resource ? (
@@ -43,7 +43,7 @@ const DetailTable = props => {
             resource && rows.map((row, index) => {
               return (
                 <tr key={`resource-detail-${index}`}>
-                  <th scope="row">{row[0]}</th>
+                  <td>{row[0]}</td>
                   <td className="align-middle">
                     {generateProgressBar(resource[row[1]], resource[row[2]])}
                   </td>

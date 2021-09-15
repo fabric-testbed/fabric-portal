@@ -35,6 +35,7 @@ class AccountInfo extends React.Component {
           data-toggle="collapse"
           data-target="#moreAccountInfo"
           aria-controls="moreAccountInfo"
+          aria-expanded="false"
         >
           Additional Information
           <span className="attributes-collapse pull-right">

@@ -17,7 +17,6 @@ class SlicesTable extends Component {
 
   render() {
     const { slices, onSort, sortColumn } = this.props;
-    console.log(slices)
     return (
       <Table
         columns={this.columns}
