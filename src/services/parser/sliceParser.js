@@ -1,13 +1,6 @@
 export default function parseSlice(abqm) {
-  
   const nodes = abqm.nodes;
-
-  console.log("----nodes-----")
-  console.log(nodes)
-
   const links = abqm.links;
-  console.log("----links-----")
-  console.log(links)
   // Max graph depth - 4 or 5? whether to show NetworkService node.
   // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
   
@@ -42,9 +35,6 @@ export default function parseSlice(abqm) {
   nodes.forEach(node => {
     objNodes[node.id] = node
   })
-
-  console.log("objNodes")
-  console.log(objNodes)
   
   const getSiteIdbyName = name => {
     let siteId = null;
@@ -143,7 +133,6 @@ nodes.forEach(node => {
     let data = {};
     // "has" => parent/ child nodes.
     if (link.label === "has") {
-      console.log("hasssssss")
       if (!parentNodeIds.includes(link.source)) {
         parentNodeIds.push(link.source);
       }
@@ -180,12 +169,29 @@ nodes.forEach(node => {
           properties: { class: "Service Port" },
         };
         elements.push(data);
+      } else if (objNodes[link.target].Class === "NetworkService"
+      && objNodes[link.source].Type === "ServicePort"
+      && (["L2Bridge", "L2STS"].includes(objNodes[link.target].Type))){
+        data = {
+          parent: link.target,
+          id: link.source,
+          label: `${link.source}.sp`,
+          type: "roundrectangle",
+          properties: { class: "Service Port" },
+        };
+        elements.push(data);
       } else if (objNodes[link.target].Class === "Link"){
         // bypass link as node object, connect connection point directly.
         // connect two link.source with the same link.target together.
         !toConnectWithSameTarget[link.target] ? 
           toConnectWithSameTarget[link.target] = [link.source] :
           toConnectWithSameTarget[link.target].push(link.source);
+      } else if (objNodes[link.source].Class === "Link"){
+        // bypass link as node object, connect connection point directly.
+        // connect two link.source with the same link.target together.
+        !toConnectWithSameTarget[link.source] ? 
+          toConnectWithSameTarget[link.source] = [link.target] :
+          toConnectWithSameTarget[link.source].push(link.target);
       } else {
         data.source = link.source;
         data.target = link.target;
@@ -222,9 +228,6 @@ nodes.forEach(node => {
       cyElements.push({ data: el })
     }
   })
-
-  console.log("!!!!!!!!cyelements")
-  console.log(cyElements)
 
   return cyElements;
 }

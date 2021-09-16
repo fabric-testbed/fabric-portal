@@ -13,7 +13,7 @@ class Slices extends React.Component {
   state = {
     slices: getSlices(),
     allSlices: getSlices(),
-    pageSize: 5,
+    pageSize: 10,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
