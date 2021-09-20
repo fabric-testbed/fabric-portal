@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 import { getKeys } from "../../services/fakeSSHKeys.js";
 
@@ -102,6 +103,15 @@ class Keys extends React.Component {
             placeholder="Input the Key Pair Name..."
             aria-label="SSH Key Name"
           />
+          <Dropdown>
+            <Dropdown.Toggle variant="outline-success" className="ml-4">
+              Select Type
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1">Bastion</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Sliver</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           <Button
             className="ml-4"
             variant="success"
@@ -176,9 +186,18 @@ class Keys extends React.Component {
             placeholder="Input the Public Key Name..."
             aria-label="SSH Key Name"
           />
-          <Button className="ml-4" variant="success">
-          Upload Public Key
-          </Button>
+            <Dropdown>
+              <Dropdown.Toggle variant="outline-success" className="ml-4">
+                Select Type
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Bastion</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Sliver</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Button className="ml-4" variant="success">
+            Upload Public Key
+            </Button>
         </InputGroup>
       </div>
     );
