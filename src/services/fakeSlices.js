@@ -1,7 +1,3 @@
-// import slice1 from "./slices/slice1.json";
-// import slice2 from "./slices/slice1.json";
-// import slice3 from "./slices/slice1.json";
-
 const slices = [
   {
     "graph_id": "1",
@@ -69,7 +65,5 @@ export function getSlices() {
 }
 
 export function getSliceById(uuid) {
-  console.log("--------")
-  console.log(sliceProperties[uuid])
   return sliceProperties[uuid];
 }

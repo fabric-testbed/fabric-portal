@@ -37,7 +37,7 @@ const SideToolbar = (props) => {
     <div className="card">
       <div className="card-header py-1">
         <button className="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Links
+          Network Service
         </button>
       </div>
       <div id="collapseThree" className="show collapse" aria-labelledby="headingThree" data-parent="#accordion">
