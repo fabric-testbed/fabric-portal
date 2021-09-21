@@ -3,6 +3,8 @@ import Pagination from "../common/Pagination";
 import SearchBox from "../common/SearchBox";
 import KeysTable from "./KeysTable";
 
+import { Link } from "react-router-dom";
+
 import { getKeys } from "../../services/fakeSSHKeys.js";
 
 import paginate from "../../utils/paginate";
@@ -68,7 +70,17 @@ class Keys extends React.Component {
 
     return (
       <div className="col-9">
-        <h1>SSH Keys</h1>
+        <div className="d-flex flex-row justify-content-between">
+          <h1>SSH Keys</h1>
+          <Link to="/experiments">
+            <button
+              className="btn btn-sm btn-outline-primary my-3"
+            >
+              <i className="fa fa-sign-in mr-2"></i>
+              Go to Key Management
+            </button>
+          </Link>
+        </div>
         <div className="toolbar">
           <SearchBox
             value={searchQuery}

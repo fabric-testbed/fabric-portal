@@ -14,27 +14,27 @@ import { getCurrentUser, refreshRoles } from "../services/prPeopleService.js";
 class User extends React.Component {
   state = {
     SideNavItems: [
-      { name: "ACCOUNT INFORMATION", active: true },
+      { name: "ACCOUNT INFORMATION", active: false },
       { name: "MY ROLES & PROJECTS", active: false },
       // { name: "MESSAGE CENTER", active: false },
-      { name: "MY SSH KEYS", active: false },
+      { name: "MY SSH KEYS", active: true },
     ],
     user: {},
     people: {},
-    activeIndex: 0,
+    activeIndex: 2,
     componentNames: [AccountInfo, MyRoles, Keys],
   };
 
-  async componentDidMount(){
-    try {
-      const { data: user } = await getWhoAmI();
-      const { data: people } = await getCurrentUser();
-      this.setState({ user, people });
-    } catch (ex) {
-      toast.error("Failed to load user information. Please reload this page.");
-      console.log("Failed to load user information: " + ex.response.data);
-    }
-  }
+  // async componentDidMount(){
+  //   try {
+  //     const { data: user } = await getWhoAmI();
+  //     const { data: people } = await getCurrentUser();
+  //     this.setState({ user, people });
+  //   } catch (ex) {
+  //     toast.error("Failed to load user information. Please reload this page.");
+  //     console.log("Failed to load user information: " + ex.response.data);
+  //   }
+  // }
 
   handleChange = (newIndex) => {
     this.setState({ activeIndex: newIndex });
