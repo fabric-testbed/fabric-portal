@@ -72,7 +72,7 @@ class Keys extends React.Component {
       <div className="col-9">
         <div className="d-flex flex-row justify-content-between">
           <h1>SSH Keys</h1>
-          <Link to="/experiments">
+          <Link to="/experiments#sshKeys">
             <button
               className="btn btn-sm btn-outline-primary my-3"
             >

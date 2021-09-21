@@ -73,7 +73,7 @@ class Keys extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div className="col-9">
+      <div className="col-9" id="sshKeys">
         <h1>SSH Keys</h1>
         <div className="toolbar">
           <SearchBox
