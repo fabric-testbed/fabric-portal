@@ -17,13 +17,38 @@ class Experiments extends React.Component {
     componentNames: [Slices, Tokens, Keys],
   };
 
+  async componentDidMount() {
+    // url anchor: #slices, #tokens, #sshKeys
+    const hash = this.props.location.hash;
+    const activeMap = {
+      "#slices": 0,
+      "#tokens": 1,
+      "#sshKeys": 2,
+    }
+
+    if (hash) {
+      this.setState({ activeIndex: activeMap[hash] });
+      this.setState({ SideNavItems: [
+        { name: "MY SLICES", active: hash === "#slices" },
+        { name: "MANAGE TOKENS", active: hash === "#tokens" },
+        { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
+      ]})
+    }
+  }
+
   handleChange = (newIndex) => {
+    const indexToHash = {
+      0: "#slices",
+      1: "#tokens",
+      2: "#sshKeys",
+    }
     this.setState({ activeIndex: newIndex });
+    this.props.history.push(`/experiments${indexToHash[newIndex]}`);
   };
 
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-
+    
     return (
       <div className="container">
         <div className="row">
