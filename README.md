@@ -46,6 +46,12 @@ For IDE, [Visual Studio Code](https://code.visualstudio.com/) is highly recommen
 - Replace \*\*\*\*\*\* with API domain names;
 - Delete the 4 lines of comments and save.
 
+```
+cd src
+cp config.template config.json            # create the config.json file
+vim config.json                           # set api urls accordingly
+```
+
 ## Scripts
 
 In the project directory, you can run:
