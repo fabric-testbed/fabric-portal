@@ -33,11 +33,18 @@ FABRIC System Services and Portal consist of multiple components:
 - **Knowledge Base**: contains user support documentation, allows users to ask questions and discuss about the testbed, provide feedback to operators etc;
 - **JupyterHub**: provides on-demand notebooks for experimenters.
 
-## Environment Setup
+## Environment and Configuration
 
 For local development you will need install [Node JS](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) will automatically be installed.
 
 For IDE, [Visual Studio Code](https://code.visualstudio.com/) is highly recommended. After installation of VS Code, there are two helpful extensions to install for better development experience: [Simple React Snippets](https://marketplace.visualstudio.com/items?itemName=burkeholland.simple-react-snippets) and [Prettier Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
+
+`config.template`
+
+- This is the config file containing API url information;
+- Copy and paste this file as config.json in /src;
+- Replace \*\*\*\*\*\* with API domain names;
+- Delete the 4 lines of comments and save.
 
 ## Scripts
 
