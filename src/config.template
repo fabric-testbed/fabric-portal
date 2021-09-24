@@ -1,0 +1,11 @@
+# API url file
+# copy and paste this file as config.json in /src
+# replace ****** with API domain names
+# delete the 4 lines of comments and save
+{
+  "projectRegistryApiUrl": "https://******/projects",
+  "userInformationApiUrl": "https://******/people",
+  "prPeopleApiUrl":"https://******/people",
+  "credentialManagerApiUrl": "https://******/tokens",
+  "resourcesApiUrl": "https://******/portalresources?graphFormat=JSON_NODELINK"
+}
