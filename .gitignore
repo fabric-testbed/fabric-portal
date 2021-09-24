@@ -25,3 +25,4 @@ yarn-error.log*
 # secret
 /vouch/config
 /vouch/secret
+/src/config.json
