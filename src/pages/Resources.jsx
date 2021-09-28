@@ -6,6 +6,7 @@ import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
 
+import sitesNameMapping from "../data/sites";
 import { getResources } from "../services/resourcesService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
@@ -19,16 +20,8 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
-    nameToCode: {
-      "RENCI" : "RENC",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
-    codeToName: {
-      "RENC" : "RENCI",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
+    nameToAcronym: sitesNameMapping.nameToAcronym,
+    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
@@ -76,7 +69,7 @@ class Resources extends Component {
         site.freeUnit = site.totalUnit - site.allocatedUnit;
         
         parsedSites.push(site);
-        siteNames.push(this.state.codeToName[site.name]);
+        siteNames.push(this.state.ancronymToName[site.name]);
       }
     })
 
@@ -178,7 +171,7 @@ class Resources extends Component {
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, this.state.nameToCode[activeDetailName])}
+              resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[activeDetailName])}
             />
           </div>
         </div>

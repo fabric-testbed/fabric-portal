@@ -5,6 +5,7 @@ import ReactModal from "../components/common/ReactModal";
 
 import { selfEnrollRequest } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
+import sitesNameMapping from "../data/sites";
 
 import { NavLink } from "react-router-dom";
 
@@ -22,16 +23,8 @@ class Home extends React.Component {
     isActiveUser: true,
     resources: [],
     activeDetailName: "StarLight",
-    nameToCode: {
-      "RENCI": "RENC",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
-    codeToName: {
-      "RENC": "RENCI",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
+    nameToAcronym: sitesNameMapping.nameToAcronym,
+    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
@@ -78,7 +71,7 @@ class Home extends React.Component {
         site.freeUnit = site.totalUnit - site.allocatedUnit;
 
         parsedSites.push(site);
-        siteNames.push(this.state.codeToName[site.name]);
+        siteNames.push(this.state.ancronymToName[site.name]);
       }
     })
 
@@ -141,7 +134,7 @@ class Home extends React.Component {
                   <div className="col-xl-3 col-lg-4 col-sm-12">
                     <DetailTable
                       name={this.state.activeDetailName}
-                      resource={this.getResourceByName(this.state.resources, this.state.nameToCode[this.state.activeDetailName])}
+                      resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[this.state.activeDetailName])}
                     />
                   </div>
                 </div>
