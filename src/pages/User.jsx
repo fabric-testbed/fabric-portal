@@ -3,7 +3,7 @@ import SideNav from "../components/common/SideNav";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 // import MessageCenter from "../components/UserProfile/MessageCenter";
-import Keys from "../components/UserProfile/Keys";
+// import Keys from "../components/UserProfile/Keys";
 import { toast } from "react-toastify";
 
 import sleep from "../utils/sleep";
@@ -17,12 +17,13 @@ class User extends React.Component {
       { name: "ACCOUNT INFORMATION", active: true },
       { name: "MY ROLES & PROJECTS", active: false },
       // { name: "MESSAGE CENTER", active: false },
-      { name: "MY SSH KEYS", active: false },
+      // { name: "MY SSH KEYS", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    componentNames: [AccountInfo, MyRoles, Keys],
+    // componentNames: [AccountInfo, MyRoles, Keys],
+    componentNames: [AccountInfo, MyRoles],
   };
 
   async componentDidMount(){
