@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 
 export default class DetailForm extends Component {  
-  handleDelete = (e) => {
-    e.preventDefault();
-    this.props.onNodeDelete(this.props.data.id);
-  }
+  // handleDelete = (e) => {
+  //   e.preventDefault();
+  //   this.props.onNodeDelete(this.props.data.id);
+  // }
 
-  handleSave = (e) => {
-    e.preventDefault();
-    this.props.onNodeUpdate(this.props.data.id);
-  }
+  // handleSave = (e) => {
+  //   e.preventDefault();
+  //   this.props.onNodeUpdate(this.props.data.id);
+  // }
 
   render() {
     const data = this.props.data;
@@ -23,10 +23,20 @@ export default class DetailForm extends Component {
               <span> Click an element to view details. </span>
             )
           }
+          
+          {
+            data && data.properties && data.properties.name && (
+              <div className="col">
+              <label>Name</label>
+              <input type="text" className="form-control" placeholder={ data.properties.name} />
+            </div>
+            )
+          }
+
           {
             data && data.label && (
             <div className="col">
-              <label>Name</label>
+              <label>Type</label>
               <input type="text" className="form-control" placeholder={ data.label } />
             </div>
             )
@@ -74,16 +84,15 @@ export default class DetailForm extends Component {
           }
 
           {
-            data && data.properties && data.properties.name && (
+            data && data.properties && data.properties.class && (
               <div className="col">
-              <label>Name</label>
-              <input type="text" className="form-control" placeholder={ data.properties.name} />
+              <label>Class</label>
+              <input type="text" className="form-control" placeholder={ data.properties.class} />
             </div>
             )
           }
-
           </div>
-          {
+          {/* {
             data && data.properties && !data.properties.is_interface && (
               <div className="mt-2">
                 <button
@@ -100,7 +109,7 @@ export default class DetailForm extends Component {
                 </button>
               </div>
             )
-          }
+          } */}
         </form>
       </div>
       );

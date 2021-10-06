@@ -154,8 +154,6 @@ export default function parseSlice(abqm) {
           type: "roundrectangle",
           properties: { class: "Connection Point" },
         };
-        console.log("----target")
-        console.log(data)
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Type === "ServicePort"
