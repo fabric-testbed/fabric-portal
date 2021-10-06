@@ -50,7 +50,8 @@ export default function parseSlice(abqm) {
     const properties = {};
     const originalNode = objNodes[id];
     data.id = originalNode.id;
-    data.label = originalNode.id + '.' + originalNode.Type;
+    // data.label = originalNode.id + '.' + originalNode.Type;
+    data.label = originalNode.Type;
     data.type = "roundrectangle";
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
@@ -89,7 +90,8 @@ export default function parseSlice(abqm) {
       data = {
         parent: getSiteIdbyName(node.Site),
         id: node.id,
-        label: `${node.id}.ns`,
+        // label: `${node.id}.ns`,
+        label: "Network Service",
         type: "roundrectangle",
         properties: { class: "Network Service" }
     }
@@ -98,7 +100,8 @@ export default function parseSlice(abqm) {
       // Create NetworkService with type "L2STS", site to site, no parent
       data = {
         id: node.id,
-        label: `${node.id}.L2STS`,
+        // label: `${node.id}.L2STS`,
+        label: "L2STS",
         type: "roundrectangle",
         properties: { class: "Network Service" },
       };
@@ -146,7 +149,8 @@ export default function parseSlice(abqm) {
         data = {
           parent: findParentNode(link.source),
           id: link.target,
-          label: `${link.target}.cp`,
+          // label: `${link.target}.cp`,
+          label: "",
           type: "roundrectangle",
           properties: { class: "Connection Point" },
         };
@@ -159,7 +163,8 @@ export default function parseSlice(abqm) {
           data = {
             parent: link.source,
             id: link.target,
-            label: `${link.target}.sp`,
+            // label: `${link.target}.sp`,
+            label: "",
             type: "roundrectangle",
             properties: { class: "Service Port" },
           };
