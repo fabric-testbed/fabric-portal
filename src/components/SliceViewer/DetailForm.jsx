@@ -17,16 +17,16 @@ export default class DetailForm extends Component {
     return (
       <div className="w-100 border px-4 py-3">
         <form>
-        <div className="form-row">
+        <div className="form-col">
           {
             !data && (
               <span> Click an element to view details. </span>
             )
           }
-          
+
           {
             data && data.properties && data.properties.name && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Name</label>
               <input type="text" className="form-control" placeholder={ data.properties.name} />
             </div>
@@ -35,7 +35,7 @@ export default class DetailForm extends Component {
 
           {
             data && data.label && (
-            <div className="col">
+            <div className="row mb-2">
               <label>Type</label>
               <input type="text" className="form-control" placeholder={ data.label } />
             </div>
@@ -43,7 +43,7 @@ export default class DetailForm extends Component {
           }
           {
             data && data.capacities && data.capacities.core && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Core (1~32)</label>
               <input type="text" className="form-control" placeholder={data.capacities.core} />
             </div>
@@ -51,7 +51,7 @@ export default class DetailForm extends Component {
           }
           {
             data && data.capacities && data.capacities.ram && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Ram (1~512 GB)</label>
               <input type="text" className="form-control" placeholder={`${data.capacities.ram} GB`} />
             </div>
@@ -59,7 +59,7 @@ export default class DetailForm extends Component {
           }
           {
             data && data.capacities && data.capacities.bandwidth && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Bandwidth (1~100 Gbps)</label>
               <input type="text" className="form-control" placeholder={`${data.capacities.bandwidth} Gbps`} />
             </div>
@@ -67,7 +67,7 @@ export default class DetailForm extends Component {
           }
           {
             data && data.capacities && data.capacities.disk && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Disk (1~100 GB)</label>
               <input type="text" className="form-control" placeholder={`${data.capacities.disk} GB`} />
             </div>
@@ -76,7 +76,7 @@ export default class DetailForm extends Component {
 
           {
             data && data.properties && data.properties.model && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Model</label>
               <input type="text" className="form-control" placeholder={ data.properties.model} />
             </div>
@@ -85,7 +85,7 @@ export default class DetailForm extends Component {
 
           {
             data && data.properties && data.properties.class && (
-              <div className="col">
+              <div className="row mb-2">
               <label>Class</label>
               <input type="text" className="form-control" placeholder={ data.properties.class} />
             </div>

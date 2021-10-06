@@ -10,33 +10,6 @@ import sliceParser from "../services/parser/sliceParser.js";
 export default class SliceViewer extends Component { 
   state = {
     elements: sliceParser(getSliceById(this.props.match.params.id)),
-    // [
-    //   { data: { id: 2, label: 'MyVM1', parent: 12, type: "rectangle", capacities: { core: 32, ram: 512, disk: 100 } } },
-    //   { data: { id: 1, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "GPU", model: "Tesla T4"}, capacities: { unit: 4 } }, position: { x: 115, y: 100 }, classes: "graphGPU" },
-    //   { data: { id: 3, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 100 }, classes: "graphNVMe" },
-    //   { data: { id: 4, parent: 2, type: "roundrectangle", properties: {class:"Component", type: "SharedNIC", model: "ConnectX-6", interfaces: ["16", "17"], capacities: { unit: 2 } }, capacities: { unit: 3 } }, position: { x: 385, y: 100 }, classes: "graphSmartNIC" },
-    //   { data: { id: 5, label: 'MyVM3', parent: 12, type: "rectangle", capacities: { core: 20, ram: 300, disk: 50 } } },
-    //   { data: { id: 6, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-6"}, capacities: { unit: 2 } }, position: { x: 115, y: 375 }, classes: "graphSmartNIC" },
-    //   { data: { id: 7, parent: 5, type: "roundrectangle", properties: {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 250, y: 375 }, classes: "graphNVMe" },
-    //   { data: { id: 8, label: 'MyVM2', parent: 12, type: "rectangle", capacities: { core: 10, ram: 200, disk: 30 } } },
-    //   { data: { id: 9, parent: 8, type: "roundrectangle", properties: {class:"Component", type: "SmartNIC", model: "ConnectX-5"}, capacities: { unit: 2 } }, position: { x: 400, y: 475 }, classes: "graphSmartNIC" },
-    //   { data: { id: 10, parent: 8, type: "roundrectangle", properties:  {class:"Component", type: "NVMe", model: "P4510"}, capacities: {disk: 10000, unit: 10 } }, position: { x: 550, y: 475 }, classes: "graphNVMe" },
-    //   { data: { id: 11, label: 'MyP4Switch', type: "roundrectangle", parent: 12, properties: {class:"Component", type: "Switch", model: "Model"} }, classes: "graphSwitchFabric" },
-    //   { data: { id: 12, label: 'RENC', type: "roundrectangle", properties: {class: "Composite Node"} } },
-    //   { data: { id: 13, label: 'MyLink', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 100 } }, position: { x: 150, y: 225 }, classes: "graphLink", },
-    //   { data: { id: 14, label: 'MyLink2', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 50 } }, position: { x: 400, y: 200 }, classes: "graphLink"},
-    //   { data: { id: 15, label: 'MyLink1', parent: 12, type: "roundrectangle", properties: {class:"has"}, capacities: { bandwidth: 60 } }, position: { x: 450, y: 360 }, classes: "graphLink"},
-    //   { data: { source: 1, target: 13 } },
-    //   { data: { source: 13, target: 6 }, },
-    //   { data: { source: 17, target: 14 } },
-    //   { data: { source: 14, target: 11 } },
-    //   { data: { source: 11, target: 15 } },
-    //   { data: { source: 15, target: 9 } },
-    //   { data: { id: 16, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 1", is_interface: true} }, position: { x: 360, y: 140 }, classes: "graphInterfaces" },
-    //   { data: { id: 17, parent: 2, type: "rectangle", properties: {name: "ConnectX-6 Interface 2", is_interface: true} }, position: { x: 410, y: 140 }, classes: "graphInterfaces" },
-    //   { data: { id: 18, parent: 11, type: "rectangle", properties: {name: "Switch Interface 1", is_interface: true} }, position: { x: 400, y: 305 }, classes: "graphInterfaces" },
-    //   { data: { id: 19, parent: 11, type: "rectangle", properties: {name: "Switch Interface 2", is_interface: true} }, position: { x: 430, y: 305 }, classes: "graphInterfaces" },
-    // ],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
@@ -118,8 +91,9 @@ export default class SliceViewer extends Component {
   
   render() {
     return(
-      <div className="mx-4 mb-4">
-        <div className="modal fade" id="siteModal" tabIndex="-1" role="dialog" aria-labelledby="siteModalLabel" aria-hidden="true">
+      <div className="mx-5 mb-4">
+        <h1 className="my-4">Slice Viewer</h1>
+        {/* <div className="modal fade" id="siteModal" tabIndex="-1" role="dialog" aria-labelledby="siteModalLabel" aria-hidden="true">
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
@@ -166,22 +140,22 @@ export default class SliceViewer extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       <div className="d-flex flex-row justify-content-center mt-4">
-        <SideToolbar
+        {/* <SideToolbar
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
-        />
+        /> */}
         <Graph
           className="align-self-end" elements={this.state.elements}
           onNodeSelect={this.handleNodeSelect}
         />
+        <DetailForm
+          data={this.state.selectedData}
+          // onNodeDelete={this.handleNodeDelete}
+          // onNodeUpdate={this.handleNodeUpdate}
+        />
       </div>
-      <DetailForm
-        data={this.state.selectedData}
-        onNodeDelete={this.handleNodeDelete}
-        onNodeUpdate={this.handleNodeUpdate}
-      />
      </div>
     )
   }
