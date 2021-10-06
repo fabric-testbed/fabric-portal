@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Pagination from "../common/Pagination";
-import SearchBox from "../common/SearchBox";
-import SlicesTable from "../Slice/SlicesTable";
+import Pagination from "../components/common/Pagination";
+import SearchBox from "../components/common/SearchBox";
+import SlicesTable from "../components/Slice/SlicesTable";
 
-import { getSlices } from "../../services/fakeSlices.js";
+import { getSlices } from "../services/fakeSlices.js";
 
-import paginate from "../../utils/paginate";
+import paginate from "../utils/paginate";
 import _ from "lodash";
 
 class Slices extends React.Component {
   state = {
     slices: getSlices(),
     allSlices: getSlices(),
-    pageSize: 10,
+    pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
@@ -64,7 +64,7 @@ class Slices extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div className="col-9">
+      <div className="container">
         <h1>Slices</h1>
         <div className="toolbar">
           <SearchBox
