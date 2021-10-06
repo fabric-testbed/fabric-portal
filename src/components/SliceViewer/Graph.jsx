@@ -30,8 +30,8 @@ export default class Graph extends Component {
 
   componentDidMount = () => {
     this.setState({
-      w: window.innerWidth * 0.8,
-      h:window.innerHeight * 0.8,
+      w: window.innerWidth * 0.75,
+      h:window.innerHeight * 0.75,
      // elements: jsonData.elements.nodes,
     })
     // this.cy can only be declared after the component has been mounted

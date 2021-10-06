@@ -3,6 +3,7 @@ import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 import { getSliceById } from "../services/fakeSlices.js";
 import sliceParser from "../services/parser/sliceParser.js";
@@ -91,8 +92,18 @@ export default class SliceViewer extends Component {
   
   render() {
     return(
-      <div className="mx-5 mb-4">
-        <h1 className="my-4">Slice Viewer</h1>
+      <div className="mx-5 my-4">
+         <div className="d-flex flex-row justify-content-between">
+            <h1>Slice Viewer</h1>
+            <Link to="/experiments#slices">
+              <button
+                className="btn btn-sm btn-outline-primary my-3"
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Back to Slice List
+              </button>
+            </Link>
+          </div>
         {/* <div className="modal fade" id="siteModal" tabIndex="-1" role="dialog" aria-labelledby="siteModalLabel" aria-hidden="true">
           <div className="modal-dialog" role="document">
             <div className="modal-content">
