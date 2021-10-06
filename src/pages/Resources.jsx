@@ -6,6 +6,8 @@ import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
 
+import { sitesNameMapping } from "../data/sites";
+import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
@@ -19,69 +21,19 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
-    nameToCode: {
-      "RENCI" : "RENC",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
-    codeToName: {
-      "RENC" : "RENCI",
-      "UKY": "UKY",
-      "LBNL": "LBNL",
-    },
+    nameToAcronym: sitesNameMapping.nameToAcronym,
+    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     try {
       const { data } = await getResources();
-      this.setState({ resources: this.siteParser(data) });
+      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
     } catch (ex) {
       toast.error("Failed to load resource information. Please reload this page.");
-      // console.log("Failed to load resource information: " + ex.response.data);
     }
-  }
-
-  siteParser = (data) => {
-    let abqm_elements = JSON.parse(data.value.bqm);
-    const nodes = abqm_elements.nodes;
-    const parsedSites = [];
-    const siteNames = [];
-    /************ retrieve site data from all nodes. ************/ 
-    nodes.forEach(node => {
-      if (node.Class === "CompositeNode") {
-        const site = {};
-        site.id = node.id;
-        site.nodeId = node.NodeID;
-        site.name = node.Name;
-        // total capacities:
-        site.capacities = node.Capacities ? JSON.parse(node.Capacities) : {};
-        site.totalCPU = site.capacities.cpu ? site.capacities.cpu : 0;
-        site.totalCore = site.capacities.core ? site.capacities.core : 0;
-        site.totalDisk = site.capacities.disk ? site.capacities.disk : 0;
-        site.totalRAM = site.capacities.ram ? site.capacities.ram : 0;
-        site.totalUnit = site.capacities.unit ? site.capacities.unit: 0;
-        // allocated capacities:
-        site.allocatedCapacities = node.CapacityAllocations ? JSON.parse(node.CapacityAllocations) : {};
-        site.allocatedCPU = site.allocatedCapacities.cpu ? site.allocatedCapacities.cpu : 0;
-        site.allocatedCore = site.allocatedCapacities.core ? site.allocatedCapacities.core : 0;
-        site.allocatedDisk = site.allocatedCapacities.disk ? site.allocatedCapacities.disk : 0;
-        site.allocatedRAM = site.allocatedCapacities.ram ? site.allocatedCapacities.ram : 0;
-        site.allocatedUnit = site.allocatedCapacities.unit ? site.allocatedCapacities.unit: 0;
-        // free capacities
-        site.freeCPU = site.totalCPU - site.allocatedCPU;
-        site.freeCore = site.totalCore - site.allocatedCore;
-        site.freeDisk = site.totalDisk - site.allocatedDisk;
-        site.freeRAM = site.totalRAM - site.allocatedRAM;
-        site.freeUnit = site.totalUnit - site.allocatedUnit;
-        
-        parsedSites.push(site);
-        siteNames.push(this.state.codeToName[site.name]);
-      }
-    })
-
-    this.setState({ siteNames: siteNames });
-    return parsedSites;
   }
 
   getResourcesSum = (resources) => {
@@ -178,7 +130,7 @@ class Resources extends Component {
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, this.state.nameToCode[activeDetailName])}
+              resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[activeDetailName])}
             />
           </div>
         </div>
