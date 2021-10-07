@@ -7,5 +7,6 @@
   "userInformationApiUrl": "https://******/people",
   "prPeopleApiUrl":"https://******/people",
   "credentialManagerApiUrl": "https://******/tokens",
-  "resourcesApiUrl": "https://******/portalresources?graphFormat=JSON_NODELINK"
+  "resourcesApiUrl": "https://******/portalresources?graphFormat=JSON_NODELINK",
+  "orchestratorApiUrl": "https://******/slices"
 }

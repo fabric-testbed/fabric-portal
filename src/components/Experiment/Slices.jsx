@@ -5,35 +5,37 @@ import SearchBox from "../common/SearchBox";
 import SlicesTable from "../Slice/SlicesTable";
 
 import { createIdToken, refreshToken, revokeToken } from "../../services/credentialManagerService.js";
-import { getSlices } from "../../services/fakeSlices.js";
+import { getSlices } from "../../services/orchestratorService.js";
 
 import paginate from "../../utils/paginate";
 import _ from "lodash";
 
 class Slices extends React.Component {
   state = {
-    slices: getSlices(),
-    allSlices: getSlices(),
+    slices: [],
     pageSize: 10,
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
   };
 
+  generateTokens = async () => {
+    // call credential manager to generate tokens 
+    const { data } = await createIdToken("all", "all");
+    localStorage.setItem("idToken", data.id_token);
+    localStorage.setItem("refreshToken", data.refresh_token);
+    return data;
+  }
+
   async componentDidMount() {
     // call credential manager to generate tokens 
     // if nothing found in browser storage
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-      const { data } = await createIdToken("all", "all");
-      localStorage.setItem("idToken", data.id_token);
-      localStorage.setItem("refreshToken", data.refresh_token);
+      this.generateTokens().then(async () => {
+        const { slices } = await getSlices();
+        this.setState({ slices });
+      });
     }
-
-    // call orchestrator API with token credential
-    // to retrieve slices data.
-    
-
-
   }
 
   handlePageChange = (page) => {
