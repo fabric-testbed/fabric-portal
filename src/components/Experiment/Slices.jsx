@@ -4,6 +4,7 @@ import Pagination from "../common/Pagination";
 import SearchBox from "../common/SearchBox";
 import SlicesTable from "../Slice/SlicesTable";
 
+import { createIdToken, refreshToken, revokeToken } from "../../services/credentialManagerService.js";
 import { getSlices } from "../../services/fakeSlices.js";
 
 import paginate from "../../utils/paginate";
@@ -20,7 +21,11 @@ class Slices extends React.Component {
   };
 
   async componentDidMount() {
-
+    if (!localStorage.getItem("idToken")) {
+      const { data } = await createIdToken("all", "all");
+      localStorage.setItem("idToken", data.id_token);
+      localStorage.setItem("refreshToken", data.refresh_token);
+    }
   }
 
   handlePageChange = (page) => {
