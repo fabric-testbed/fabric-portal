@@ -1,7 +1,5 @@
 export default function parseSlice(response) {
-  console.log(response);
   const abqm = JSON.parse(response.value.slice_model);
-  console.log(abqm);
   const nodes = abqm.nodes;
   const links = abqm.links;
   // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
