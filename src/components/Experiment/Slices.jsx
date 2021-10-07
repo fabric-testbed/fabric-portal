@@ -21,11 +21,19 @@ class Slices extends React.Component {
   };
 
   async componentDidMount() {
-    if (!localStorage.getItem("idToken")) {
+    // call credential manager to generate tokens 
+    // if nothing found in browser storage
+    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
       const { data } = await createIdToken("all", "all");
       localStorage.setItem("idToken", data.id_token);
       localStorage.setItem("refreshToken", data.refresh_token);
     }
+
+    // call orchestrator API with token credential
+    // to retrieve slices data.
+    
+
+
   }
 
   handlePageChange = (page) => {

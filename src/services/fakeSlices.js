@@ -48,6 +48,13 @@ const slices = [
     "slice_name": "slice 7",
     "slice_state": "StableOK"
   },
+  {
+    "graph_id": "8",
+    "lease_end": "2021-09-02 14:56:57",
+    "slice_id": "8",
+    "slice_name": "slice 8",
+    "slice_state": "StableOK"
+  },
 ];
 
 const sliceProperties = {
@@ -58,6 +65,7 @@ const sliceProperties = {
   "5": require('./slices/slice5.json'),
   "6": require('./slices/slice6.json'),
   "7": require('./slices/slice7.json'),
+  "8": require('./slices/slice8.json'),
 }
 
 export function getSlices() {
