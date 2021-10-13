@@ -6,7 +6,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 
 // import { getSliceById } from "../services/fakeSlices.js";
-import { getSliceById } from "../services/credentialManagerService.js";
+import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 
 import { toast } from "react-toastify";
@@ -24,6 +24,7 @@ export default class SliceViewer extends Component {
        this.setState({ elements: sliceParser(slice)})
     } catch(err) {
       toast("Failed to load slice indformation.");
+      toast.error("Please logout and login back to view the slice.");
     }
   }
 
