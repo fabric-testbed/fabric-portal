@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Table from "../common/Table";
 
 class ProjectsTable extends Component {
-  handleClick = (project) => {
-    alert(`Request to join project: ${project.uuid}`)
-  }
+  // handleClick = (project) => {
+  //   alert(`Request to join project: ${project.uuid}`)
+  // }
 
   columns = 
     {
@@ -47,8 +47,9 @@ class ProjectsTable extends Component {
       {
         content: (project) => (
           <button
-            onClick={() => this.handleClick(project)}
+            // onClick={() => this.handleClick(project)}
             className="btn btn-sm btn-primary"
+            disabled={true}
           >
             Request to Join
           </button>
