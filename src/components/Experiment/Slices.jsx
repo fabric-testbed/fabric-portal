@@ -6,6 +6,7 @@ import SlicesTable from "../Slice/SlicesTable";
 
 import { createIdToken, refreshToken, revokeToken } from "../../services/credentialManagerService.js";
 import { getSlices } from "../../services/orchestratorService.js";
+import { toast } from "react-toastify";
 
 import paginate from "../../utils/paginate";
 import _ from "lodash";
@@ -41,7 +42,8 @@ class Slices extends React.Component {
         const { slices } = await getSlices();
         this.setState({ slices });
       } catch {
-        alert("Please logout and login back to view the slices.")
+        // if the token refresh won't work, the user has to logout and login back.
+        toast.error("Please logout and login back to view the slices.");
       }
     }
   }
