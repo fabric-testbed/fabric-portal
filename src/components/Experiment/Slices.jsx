@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 import paginate from "../../utils/paginate";
 import _ from "lodash";
+import { cloneWithShallow } from "joi-browser";
 
 class Slices extends React.Component {
   state = {
@@ -41,7 +42,8 @@ class Slices extends React.Component {
       try {
         const { slices } = await getSlices();
         this.setState({ slices });
-      } catch {
+      } catch(err) {
+        console.log("Error in getting slices: " + err);
         // if the token refresh won't work, the user has to logout and login back.
         toast.error("Please logout and login back to view the slices.");
       }
