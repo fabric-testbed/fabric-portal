@@ -20,8 +20,8 @@ export default class SliceViewer extends Component {
 
   async componentDidMount() {
     try {
-       const { slice } = await getSliceById(this.props.match.params.id);
-       this.setState({ elements: sliceParser(slice)})
+       const { data } = await getSliceById(this.props.match.params.id);
+       this.setState({ elements: sliceParser(data["value"]["slice_model"])})
     } catch(err) {
       toast("Failed to load slice indformation.");
       toast.error("Please logout and login back to view the slice.");
