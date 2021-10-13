@@ -40,11 +40,12 @@ class Slices extends React.Component {
     } else {
       // the token has been stored in the browser and is ready to be used.
       try {
-        const { slices } = await getSlices();
-        this.setState({ slices });
+        const { data } = await getSlices();
+        this.setState({ slices: data["value"]["slices"] });
       } catch(err) {
         console.log("Error in getting slices: " + err);
         // if the token refresh won't work, the user has to logout and login back.
+        toast.error("Failed to load slices.");
         toast.error("Please logout and login back to view the slices.");
       }
     }
