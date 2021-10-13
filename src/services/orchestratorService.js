@@ -6,5 +6,5 @@ const apiEndpoint = orchestratorApiUrl;
 export function getSlices() {
   return http.get(apiEndpoint + "?states=StableOK", {
     headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
-  }).slices;
+  }).value.slices;
 }
