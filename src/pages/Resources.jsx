@@ -40,14 +40,20 @@ class Resources extends Component {
     const selectedLabels = [
       "totalCore",
       "freeCore",
-      "totalCPU",
-      "freeCPU",
       "totalDisk",
       "freeDisk",
       "totalRAM",
       "freeRAM",
-      "totalUnit",
-      "freeUnit",
+      "totalGPU",
+      "freeGPU",
+      "totalNVME",
+      "freeNVME",
+      "totalSmartNIC",
+      "freeSmartNIC",
+      "totalSharedNIC",
+      "freeSharedNIC",
+      "totalFPGA",
+      "freeFPGA",
    ]
  
    const sum = {
@@ -138,7 +144,7 @@ class Resources extends Component {
           <div className="col-12">
             <SearchBox
               value={searchQuery}
-              placeholder={"Search resources..."}
+              placeholder={"Search Resources by Site Name..."}
               onChange={this.handleSearch}
               className="my-0"
             />
