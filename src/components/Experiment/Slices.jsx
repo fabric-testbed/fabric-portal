@@ -35,6 +35,14 @@ class Slices extends React.Component {
         const { slices } = await getSlices();
         this.setState({ slices });
       });
+    } else {
+      // the token has been stored in the browser and is ready to be used.
+      try {
+        const { slices } = await getSlices();
+        this.setState({ slices });
+      } catch {
+        alert("Please logout and login back to view the slices.")
+      }
     }
   }
 
