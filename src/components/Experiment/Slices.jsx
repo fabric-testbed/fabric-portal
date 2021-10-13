@@ -34,8 +34,8 @@ class Slices extends React.Component {
     // if nothing found in browser storage
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
       this.generateTokens().then(async () => {
-        const { slices } = await getSlices();
-        this.setState({ slices });
+        const { data } = await getSlices();
+        this.setState({ slices: data["value"]["slices"] });
       });
     } else {
       // the token has been stored in the browser and is ready to be used.
