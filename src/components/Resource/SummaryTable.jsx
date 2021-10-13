@@ -5,13 +5,16 @@ class SummaryTable extends Component {
   columns = [
     {
       path: "name",
-      label: "Site Name",
+      label: "Site",
     },
     { path: ["freeCore", "totalCore"], label: "Core" },
-    { path: ["freeCPU", "totalCPU"], label: "CPU" },
     { path: ["freeDisk", "totalDisk"], label: "Disk" },
     { path: ["freeRAM", "totalRAM"], label: "RAM" },
-    { path: ["freeUnit", "totalUnit"], label: "Unit" },
+    { path: ["freeGPU", "totalGPU"], label: "GPU" },
+    { path: ["freeNVME", "totalNVME"], label: "NVME" },
+    { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },
+    { path: ["freeSharedNIC", "totalSharedNIC"], label: "SharedNIC" },
+    { path: ["freeFPGA", "totalFPGA"], label: "FPGA" },
   ];
 
   render() {
