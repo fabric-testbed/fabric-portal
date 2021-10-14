@@ -4,7 +4,9 @@
     { "_id": 1, "name": "FABRIC"}
   ],
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
-  "jupyterHubLink": "https://jupyter-beta.fabric-testbed.net/",
+  "jupyterHubLinkAlpha": "https://jupyter-beta.fabric-testbed.net/",
+  "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
+  "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
   "projectLeadRequest": {
     "id": "request-project-lead-modal",
     "title": "Request to be Project Lead",
