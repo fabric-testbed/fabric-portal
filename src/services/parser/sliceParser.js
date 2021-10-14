@@ -153,7 +153,7 @@ export default function parseSlice(slice) {
           // label: `${link.target}.cp`,
           label: "",
           type: "roundrectangle",
-          properties: { class: "Connection Point" },
+          properties: { type: "Connection Point" },
         };
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
@@ -224,6 +224,6 @@ export default function parseSlice(slice) {
       cyElements.push({ data: el })
     }
   })
-
+  console.log(cyElements);
   return cyElements;
 }

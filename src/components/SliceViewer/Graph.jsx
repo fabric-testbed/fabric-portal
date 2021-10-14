@@ -72,8 +72,8 @@ export default class Graph extends Component {
     return(
       <div className="border">
         <div className="d-flex flex-row-reverse">
-          <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">Download JSON</button>
-          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download PNG</button>
+          <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">Download in JSON</button>
+          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
           {/* <button onClick={this.saveChanges} className="btn btn-sm btn-outline-success mr-2">Submit Changes</button> */}
         </div>
         <CytoscapeComponent
