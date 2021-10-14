@@ -4,11 +4,23 @@ import { NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { knowledgeBaseLink, jupyterHubLink } from "../services/portalData.json";
+import {
+  knowledgeBaseLink, 
+  jupyterHubLinkAlpha,
+  jupyterHubLinkBeta,
+  jupyterHubLinkProduction
+} from "../services/portalData.json";
 
+import checkPortalType from "../utils/checkPortalType";
 import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
+  jupyterLinkMap =  {
+    "alpha": jupyterHubLinkAlpha,
+    "beta": jupyterHubLinkBeta,
+    "production": jupyterHubLinkProduction,
+  }
+  
   state = {
     nonAuthNavItems: [
       { name: "Home", path: "/", child: [], exact: true },
@@ -34,14 +46,14 @@ class Header extends React.Component {
         path: "/links",
         child: [
           { name: "Knowledge Base", href: knowledgeBaseLink, path: ""},
-          { name: "JupyterHub", href: jupyterHubLink, path: ""}
+          { name: "JupyterHub", href: this.jupyterLinkMap[checkPortalType(window.location.href)], path: ""}
           ],
           exact: false
         },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
-  
+
   handleLogin = () => {
     if (localStorage.getItem("cookieConsent")) {
       // remove old user status stored in browser.
