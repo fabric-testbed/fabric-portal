@@ -7,6 +7,16 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
+import {
+  knowledgeBaseLink, 
+  knowledgeBaseFAQLink,
+  knowledgeBaseForumLink,
+  fabricWebsiteLink,
+  fabricTwitterLink,
+  fabricGithubLink,
+  fabricYoutubeLink
+} from "../services/portalData.json";
+
 import nsfLogo from "../imgs/nsf.png";
 
 class Footer extends React.Component {
@@ -17,7 +27,7 @@ class Footer extends React.Component {
           <ul>
             <li><b>Useful Links</b></li>
             <li>
-              <a href="https://fabric-testbed.net/" target="_blank" rel="noopener noreferrer">FABRIC Website</a>
+              <a href={fabricWebsiteLink} target="_blank" rel="noopener noreferrer">FABRIC Website</a>
             </li>
             <li>
               <Link to="/aup">Acceptable Use Policy</Link>
@@ -29,9 +39,9 @@ class Footer extends React.Component {
         <div className="col-sm-12 col-md-4">
           <ul>
             <li><b>Help &amp; Support</b></li>
-            <li><a href="https://learn.fabric-testbed.net/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
-            <li><a href="https://learn.fabric-testbed.net/faq/" target="_blank" rel="noopener noreferrer">FAQ</a></li>
-            <li><a href="https://learn.fabric-testbed.net/forums/forum/fabric-general-questions-and-discussion/" target="_blank" rel="noopener noreferrer">Contact Us</a></li>
+            <li><a href={knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
+            <li><a href={knowledgeBaseFAQLink} target="_blank" rel="noopener noreferrer">FAQ</a></li>
+            <li><a href={knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Contact Us</a></li>
           </ul>
         </div>
         <div className="col-sm-12 col-md-4">
@@ -40,13 +50,13 @@ class Footer extends React.Component {
               <li><b>Social</b></li>
               <li>
                 <div className="d-flex flex-row justify-content-between w-75 footer-social-icons">
-                  <a href="https://twitter.com/FABRICtestbed" target="_blank" rel="noopener noreferrer">
+                  <a href={fabricTwitterLink} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faTwitter} />
                   </a>
-                  <a href="https://github.com/fabric-testbed" target="_blank" rel="noopener noreferrer">
+                  <a href={fabricGithubLink} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faGithub} />
                   </a>
-                  <a href="http://bit.ly/FABRICYouTube" target="_blank" rel="noopener noreferrer">
+                  <a href={fabricYoutubeLink} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faYoutube} />
                   </a>
                   <a href="mailto:info@fabric-testbed.net">
