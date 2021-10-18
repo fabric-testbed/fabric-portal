@@ -29,10 +29,19 @@ export default class DetailForm extends Component {
             }
 
             {
-              data && data.properties && data.properties.type && (
+              data && data.properties && data.properties.name && (
                 <div className="row mb-2">
                 <label>Name</label>
-                <input type="text" className="form-control" placeholder={ data.properties.type} />
+                <input type="text" className="form-control" placeholder={ data.properties.name} />
+              </div>
+              )
+            }
+
+            {
+              data && data.capacities && data.capacities.unit && (
+                <div className="row mb-2">
+                <label>Unit</label>
+                <input type="text" className="form-control" placeholder={data.capacities.unit} />
               </div>
               )
             }
@@ -45,6 +54,7 @@ export default class DetailForm extends Component {
               </div>
               )
             }
+
             {
               data && data.capacities && data.capacities.ram && (
                 <div className="row mb-2">
@@ -78,6 +88,16 @@ export default class DetailForm extends Component {
               </div>
               )
             }
+
+            {
+              data && data.properties && data.properties.detail && (
+                <div className="row mb-2">
+                <label>Detail</label>
+                <textarea type="text" className="form-control" placeholder={ data.properties.detail} />
+              </div>
+              )
+            }
+
             </div>
             {/* {
               data && data.properties && !data.properties.is_interface && (
