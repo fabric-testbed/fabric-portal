@@ -4,7 +4,7 @@ import { orchestratorApiUrl } from "../config.json";
 const apiEndpoint = orchestratorApiUrl;
 
 export function getSlices() {
-  return http.get(apiEndpoint + "?states=['Nascent', 'Configuring', 'StableOK', 'StableError', 'Closing', 'Dead']", {
+  return http.get(apiEndpoint + "?states=Nascent&states=Configuring&states=StableOK&states=StableError&states=Closing&states=Dead", {
     headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
   });
 }
