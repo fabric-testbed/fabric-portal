@@ -5,29 +5,29 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 
-import { getSliceById } from "../services/fakeSlices.js";
-// import { getSliceById } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/fakeSlices.js";
+import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
-    // elements: [],
-    elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slice_model"]),
+    elements: [],
+    // elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slice_model"]),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
 
-  // async componentDidMount() {
-  //   try {
-  //      const { data } = await getSliceById(this.props.match.params.id);
-  //      this.setState({ elements: sliceParser(data["value"]["slice_model"])})
-  //   } catch(err) {
-  //     toast("Failed to load slice indformation.");
-  //     toast.error("Please logout and login back to view the slice.");
-  //   }
-  // }
+  async componentDidMount() {
+    try {
+       const { data } = await getSliceById(this.props.match.params.id);
+       this.setState({ elements: sliceParser(data["value"]["slice_model"])})
+    } catch(err) {
+      toast("Failed to load slice indformation.");
+      toast.error("Please logout and login back to view the slice.");
+    }
+  }
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
