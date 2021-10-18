@@ -13,6 +13,48 @@ export default class DetailForm extends Component {
 
   render() {
     const data = this.props.data;
+    const properties = [
+      {
+        display: "Name",
+        field: "name",
+      },
+      {
+        display: "Model",
+        field: "model",
+      },
+      {
+        display: "Detail",
+        field: "detail",
+      },
+    ]
+
+    const capacities = [
+      {
+        display: "Unit",
+        field: "unit",
+        unit: "",
+      },
+      {
+        display: "Core (1~32)",
+        field: "core",
+        unit: "",
+      },
+      {
+        display: "Ram (1~512 GB)",
+        field: "ram",
+        unit: "GB",
+      },
+      {
+        display: "Bandwidth (1~100 Gbps)",
+        field: "bandwidth",
+        unit: "Gbps",
+      },
+      {
+        display: "Disk (1~100 GB)",
+        field: "disk",
+        unit: "GB",
+      },
+    ]
 
     return (
       <div className="w-100 card ml-4">
@@ -29,75 +71,31 @@ export default class DetailForm extends Component {
             }
 
             {
-              data && data.properties && data.properties.name && (
-                <div className="row mb-2">
-                <label>Name</label>
-                <input type="text" className="form-control" placeholder={ data.properties.name} />
-              </div>
-              )
+              properties.map((property) => {
+                return (
+                  data && data.properties && data.properties[property.field]
+                  && (
+                    <div className="row mb-2">
+                      <label>{ property.display } </label>
+                      {
+                        property.field === "detail" ? <textarea disabled type="text" className="form-control" placeholder={ data.properties[property.field]} /> :
+                        <input disabled type="text" className="form-control" placeholder={ data.properties[property.field]} />
+                      }
+                    </div>
+                  ))})
             }
 
             {
-              data && data.capacities && data.capacities.unit && (
-                <div className="row mb-2">
-                <label>Unit</label>
-                <input type="text" className="form-control" placeholder={data.capacities.unit} />
-              </div>
-              )
+              capacities.map((capacity) => {
+                return (
+                  data && data.capacities && data.capacities[capacity.field]
+                  && (
+                    <div className="row mb-2">
+                      <label>{ capacity.display } </label>
+                      <input disabled type="text" className="form-control" placeholder={ `${data.capacities[capacity.field]} ${capacity.unit}`} />
+                    </div>
+                  ))})
             }
-
-            {
-              data && data.capacities && data.capacities.core && (
-                <div className="row mb-2">
-                <label>Core (1~32)</label>
-                <input type="text" className="form-control" placeholder={data.capacities.core} />
-              </div>
-              )
-            }
-
-            {
-              data && data.capacities && data.capacities.ram && (
-                <div className="row mb-2">
-                <label>Ram (1~512 GB)</label>
-                <input type="text" className="form-control" placeholder={`${data.capacities.ram} GB`} />
-              </div>
-              )
-            }
-            {
-              data && data.capacities && data.capacities.bandwidth && (
-                <div className="row mb-2">
-                <label>Bandwidth (1~100 Gbps)</label>
-                <input type="text" className="form-control" placeholder={`${data.capacities.bandwidth} Gbps`} />
-              </div>
-              )
-            }
-            {
-              data && data.capacities && data.capacities.disk && (
-                <div className="row mb-2">
-                <label>Disk (1~100 GB)</label>
-                <input type="text" className="form-control" placeholder={`${data.capacities.disk} GB`} />
-              </div>
-              )
-            }
-
-            {
-              data && data.properties && data.properties.model && (
-                <div className="row mb-2">
-                <label>Model</label>
-                <input type="text" className="form-control" placeholder={ data.properties.model} />
-              </div>
-              )
-            }
-
-            {
-              data && data.properties && data.properties.detail && (
-                <div className="row mb-2">
-                <label>Detail</label>
-                <textarea type="text" className="form-control" placeholder={ data.properties.detail} />
-              </div>
-              )
-            }
-
             </div>
             {/* {
               data && data.properties && !data.properties.is_interface && (
