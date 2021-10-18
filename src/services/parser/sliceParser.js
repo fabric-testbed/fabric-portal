@@ -64,6 +64,22 @@ export default function parseSlice(slice) {
     // add parent site node if it's network node.
     if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
   }
+
+  const generateConnectionPoint = (data, link) => {
+    const properties = {};
+    const originalNode = objNodes[link.target];
+    data.id = originalNode.id;
+    data.parent = findParentNode(link.source);
+    data.label = "";
+    data.type = "roundrectangle";
+    properties.name = originalNode.Name;
+    properties.class = originalNode.Class;
+    properties.type = originalNode.Type;
+    properties.model = originalNode.Model;
+    properties.detail = originalNode.Details;
+    data.properties = properties;
+    data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+  }
   
   const findParentNode = (id) => {
     let parentId = -1;
@@ -147,14 +163,7 @@ export default function parseSlice(slice) {
       if (objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
         && objNodes[link.source].Type === "OVS") {
-        data = {
-          parent: findParentNode(link.source),
-          id: link.target,
-          // label: `${link.target}.cp`,
-          label: "",
-          type: "roundrectangle",
-          properties: { type: "Connection Point" },
-        };
+        generateConnectionPoint(data, link);
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Type === "ServicePort"
