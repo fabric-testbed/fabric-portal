@@ -13,6 +13,8 @@ import IconNIC25G from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconNVMe from '../../imgs/SliceComponentIcons/SSD.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 Cytoscape.use(COSEBilkent);
 // Cytoscape.use(compoundDragAndDrop);
 // Cytoscape.use(edgehandles);
@@ -68,11 +70,25 @@ export default class Graph extends Component {
 
   render() {
     const layout = { name: 'cose-bilkent' };
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return(
       <div className="border">
         <div className="d-flex flex-row-reverse">
-          <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">Download in JSON</button>
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
+            >
+              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
+                Download in JSON
+              </button>
+            </OverlayTrigger>
+          
           <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
           {/* <button onClick={this.saveChanges} className="btn btn-sm btn-outline-success mr-2">Submit Changes</button> */}
         </div>
