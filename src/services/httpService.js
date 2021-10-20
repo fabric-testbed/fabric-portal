@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 axios.defaults.withCredentials = true;
 // set timeout to be 20 seconds
-axios.defaults.timeout = 20000;
+// axios.defaults.timeout = 20000;
 
 axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
@@ -15,6 +15,10 @@ axios.interceptors.response.use(null, (error) => {
       // if cookie expired, reload; 
       // otherwise the user is not logged in and no need to reload.
       if (isCookieExpired) {
+        // removed local storage items.
+        localStorage.removeItem("idToken");
+        localStorage.removeItem("refreshToken");
+        // reload the page.
         window.location.reload();
       }
       // do not toast error message.

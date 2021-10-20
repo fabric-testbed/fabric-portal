@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import SideToolbar from '../components/SliceViewer/SideToolbar';
+// import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
@@ -24,8 +24,7 @@ export default class SliceViewer extends Component {
        const { data } = await getSliceById(this.props.match.params.id);
        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
     } catch(err) {
-      toast("Failed to load slice indformation.");
-      toast.error("Please logout and login back to view the slice.");
+      toast.error("Failed to load slice indformation. Please try again.");
     }
   }
 
