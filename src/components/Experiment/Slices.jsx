@@ -20,19 +20,54 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
   };
 
+  revokeToken = async () => {
+    try {
+      await revokeToken(localStorage.getItem("refreshToken"));
+    } catch(err) {
+      console.log(err);
+      console.log("Failed to revoke token.");
+      // TO DO: anything to do when revoke token fails?
+    }
+  }
+
   generateTokens = async () => {
-    // call credential manager to generate tokens 
-    const { data } = await createIdToken("all", "all");
-    localStorage.setItem("idToken", data.id_token);
-    localStorage.setItem("refreshToken", data.refresh_token);
-    return data;
+    try {
+      // call credential manager to generate tokens.
+      // parameters: project and scope, "all" for both by default.
+      const { data } = await createIdToken("all", "all");
+      localStorage.setItem("idToken", data.id_token);
+      localStorage.setItem("refreshToken", data.refresh_token);
+      return data;
+    } catch(err) {
+      console.log(err);
+      toast.error("Failed to generate necessary tokens to view slices. Please try again later.");
+    }
+  }
+
+  refreshTokens = async () => {
+    const oldRefreshToken = localStorage.getItem("refreshToken");
+    try {
+      const { data } = await refreshToken("all", "all", oldRefreshToken);
+      localStorage.setItem("idToken", data.id_token);
+      localStorage.setItem("refreshToken", data.refresh_token);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to refresh necessary tokens to view slices. Please try again later.");
+      // if refresh_token isn't working either
+      // start over by calling create_token when user reloads the page
+      // 1. call cm revoke_token with old refresh token
+      this.revokeToken();
+      // 2. clear id_token and refresh_token in local storage
+      localStorage.removeItem("idToken");
+      localStorage.removeItem("refreshToken");
+    }
   }
 
   async componentDidMount() {
     // call credential manager to generate tokens 
     // if nothing found in browser storage
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-      this.generateTokens().then(async () => {
+        this.generateTokens().then(async () => {
         const { data } = await getSlices();
         this.setState({ slices: data["value"]["slices"] });
       });
@@ -43,7 +78,12 @@ class Slices extends React.Component {
         this.setState({ slices: data["value"]["slices"] });
       } catch(err) {
         console.log("Error in getting slices: " + err);
-        toast.error("Failed to load slices. Please try again.");
+        toast.error("Failed to load slices. Please try again later.");
+        if (err.response.status === 401) {
+          // 401 Error: Provided token is not valid.
+          // refresh the token by calling credential manager refresh_token.
+          this.refreshTokens();
+        }
       }
     }
   }
