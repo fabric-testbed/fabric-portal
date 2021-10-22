@@ -8,7 +8,6 @@ import { knowledgeBaseLink, jupyterHubLink } from "../services/portalData.json";
 import { revokeToken } from "../services/credentialManagerService.js";
 
 import logo from "../imgs/fabric-brand.png";
-import { refreshRoles } from "../services/prPeopleService";
 
 class Header extends React.Component {
   state = {

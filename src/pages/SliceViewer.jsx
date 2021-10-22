@@ -25,6 +25,9 @@ export default class SliceViewer extends Component {
        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
     } catch(err) {
       toast.error("Failed to load slice indformation. Please try again.");
+      // TO DO: ?
+      // force the user to go back to my slices page again
+      // to generate/ refresh necessary tokens for authentication of orchestrator. 
     }
   }
 
