@@ -26,7 +26,7 @@ class Slices extends React.Component {
     } catch(err) {
       console.log(err);
       console.log("Failed to revoke token.");
-      // TO DO: anything to do when revoke token fails?
+      // TO DO: what if revoke token fails?
     }
   }
 

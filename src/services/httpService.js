@@ -12,6 +12,7 @@ axios.interceptors.response.use(null, (error) => {
       const isCookieExpired = localStorage.getItem("userStatus", "active");
       // set status to unauthorized
       localStorage.setItem("userStatus", "unauthorized");
+      localStorage.removeItem("userID");
       // if cookie expired, reload; 
       // otherwise the user is not logged in and no need to reload.
       if (isCookieExpired) {
