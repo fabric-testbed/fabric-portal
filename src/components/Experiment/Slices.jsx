@@ -146,12 +146,18 @@ class Slices extends React.Component {
     this.setState({ sortColumn });
   };
 
+  handleIncludeDeadSlices = () => {
+    const currentChoice = this.state.includeDeadSlices;
+    this.setState( { includeDeadSlices: !currentChoice });
+  }
+
   getPageData = () => {
     const {
       pageSize,
       currentPage,
       sortColumn,
       searchQuery,
+      includeDeadSlices,
       slices: allSlices,
     } = this.state;
 
@@ -161,6 +167,12 @@ class Slices extends React.Component {
       filtered = allSlices.filter((s) =>
         s.slice_name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+    }
+
+    if (!includeDeadSlices) {
+      filtered = filtered.filter((s) => 
+        s.slice_state !== "Dead"
+      )
     }
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
@@ -191,6 +203,7 @@ class Slices extends React.Component {
             label={"Include Dead Slices"}
             id={"checkbox-include-dead-slices"}
             isChecked={this.state.includeDeadSlices}
+            onCheck={this.handleIncludeDeadSlices}
           />
         </div>
         <SlicesTable
