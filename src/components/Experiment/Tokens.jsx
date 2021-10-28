@@ -91,7 +91,7 @@ class Tokens extends React.Component {
         <Form>
           <Row>
             <Col>
-              <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Group>
                 <Form.Label>Select Project</Form.Label>
                 <Form.Control as="select" onChange={this.handleSelectCreateProject}>
                   <option value="all">All</option>
@@ -106,7 +106,7 @@ class Tokens extends React.Component {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Group>
                 <Form.Label>Select Scope</Form.Label>
                 <Form.Control as="select" onChange={this.handleSelectCreateScope}>
                   { 
@@ -136,7 +136,7 @@ class Tokens extends React.Component {
           { this.state.createSuccess && (
             <div>
               <Alert variant="warning">
-                <i class="fa fa-exclamation-triangle"></i> Click the <b>Download</b> button 
+                <i className="fa fa-exclamation-triangle"></i> Click the <b>Download</b> button 
                 below to download the newly generated id_token and refresh_token. 
                 The portal will log out automatically and you need to log in again after the download.
               </Alert>
@@ -149,7 +149,7 @@ class Tokens extends React.Component {
               </Button>
               <Card style={{display: "none"}}>
                 <Card.Body>
-                  <Form.Group controlId="exampleForm.ControlTextarea1">
+                  <Form.Group>
                     <Form.Control
                       ref={(textarea) => this.textArea = textarea}
                       as="textarea"

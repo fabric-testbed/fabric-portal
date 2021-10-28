@@ -8,10 +8,10 @@ const Checkbox = ({ label, id, isChecked, onCheck }) => {
         type="checkbox"
         value=""
         id={ id }
-        checked={ isChecked }
+        defaultChecked={ isChecked }
         onClick={ onCheck }
       />
-      <label className="form-check-label" for="flexCheckDefault">
+      <label className="form-check-label">
         { label }
       </label>
     </div>

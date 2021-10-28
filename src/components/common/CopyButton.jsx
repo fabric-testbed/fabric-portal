@@ -3,27 +3,15 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class CopyButton extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      value: '',
-      copied: false,
-    };
-    this.makeTimer();
+  state = {
+    copied: false,
   }
-  
 
   renderTooltip = (id, content) => (
     <Tooltip id={id}>
       {content}
     </Tooltip>
   );
-
-  makeTimer(){
-    setInterval(() => {
-      this.setState( { copied: false })
-    }, 3000)
-  }
 
   render() {
     const { id, text } = this.props;
@@ -39,10 +27,13 @@ class CopyButton extends Component {
       >
         <CopyToClipboard
           text={id}
-          onCopy={() => this.setState({copied: true})}
+          onCopy={() => this.setState({ copied: true })}
         >
-          <button className="btn btn-sm btn-primary">
-            <i class="fa fa-copy"></i> { text }
+          <button
+            className="btn btn-sm btn-primary"
+            onMouseLeave={() => this.setState({ copied: false })}
+          >
+            <i className="fa fa-copy"></i> { text }
           </button>
         </CopyToClipboard>
       </OverlayTrigger>
