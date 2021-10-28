@@ -73,6 +73,8 @@ class Tokens extends React.Component {
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
     // Force logout.
+    localStorage.removeItem("userStatus");
+    localStorage.removeItem("userID");
     window.location.href = "/logout";
   }
 
