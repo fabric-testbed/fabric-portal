@@ -137,10 +137,12 @@ class Tokens extends React.Component {
           </Row>
           { this.state.createSuccess && (
             <div>
+              <Alert variant="success">
+                <i className="fa fa-check-circle"> Tokens are successfully generated!</i> Click the <b>Download</b> button 
+                below to save the id_token and refresh_token. 
+              </Alert>
               <Alert variant="warning">
-                <i className="fa fa-exclamation-triangle"></i> Click the <b>Download</b> button 
-                below to download the newly generated id_token and refresh_token. 
-                The portal will log out automatically and you need to log in again after the download.
+                <i className="fa fa-exclamation-triangle"></i> The portal will log out automatically and you need to log in again after the download.
               </Alert>
               <Button
                 onClick={e => this.downloadToken(e, "create")}
