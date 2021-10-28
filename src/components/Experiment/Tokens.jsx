@@ -73,6 +73,8 @@ class Tokens extends React.Component {
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
     // Force logout.
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("userStatus");
     localStorage.removeItem("userID");
     window.location.href = "/logout";
@@ -138,8 +140,8 @@ class Tokens extends React.Component {
           { this.state.createSuccess && (
             <div>
               <Alert variant="success">
-                <i className="fa fa-check-circle"> Tokens are successfully generated!</i> Click the <b>Download</b> button 
-                below to save the id_token and refresh_token. 
+                <i className="fa fa-check-circle"></i> Tokens are successfully generated! Click the <b>Download</b> button 
+                below to save the id token and refresh token. 
               </Alert>
               <Alert variant="warning">
                 <i className="fa fa-exclamation-triangle"></i> The portal will log out automatically and you need to log in again after the download.
