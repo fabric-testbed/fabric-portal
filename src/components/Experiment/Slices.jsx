@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
-import SearchBox from "../common/SearchBox";
+import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 
 import { createIdToken, refreshToken, revokeToken } from "../../services/credentialManagerService.js";
@@ -62,6 +62,7 @@ class Slices extends React.Component {
     includeDeadSlices: false,
     pageSize: 10,
     currentPage: 1,
+    filterQuery: "Name",
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
   };
@@ -138,6 +139,10 @@ class Slices extends React.Component {
     this.setState({ currentPage: page });
   };
 
+  handleFilter = (query) => {
+    this.setState({ filterQuery: query, currentPage: 1 });
+  };
+
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
@@ -156,6 +161,7 @@ class Slices extends React.Component {
       pageSize,
       currentPage,
       sortColumn,
+      filterQuery,
       searchQuery,
       includeDeadSlices,
       slices: allSlices,
@@ -163,10 +169,15 @@ class Slices extends React.Component {
 
     // filter -> sort -> paginate
     let filtered = allSlices;
+
+    const filterMap = {
+      "Name": "slice_name",
+      "ID": "slice_id",
+      "State": "slice_state",
+    }
+
     if (searchQuery) {
-      filtered = allSlices.filter((s) =>
-        s.slice_name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = allSlices.filter(s => s[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
     if (!includeDeadSlices) {
@@ -183,17 +194,20 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="col-9">
         <h1>Slices</h1>
         <div className="toolbar">
-          <SearchBox
+          <SearchBoxWithDropdown
+            activeDropdownVal={filterQuery}
+            dropdownValues={["Name", "ID", "State"]}
             value={searchQuery}
-            placeholder={"Search slices..."}
-            onChange={this.handleSearch}
+            placeholder={`Search Slices by ${filterQuery}...`}
+            onDropdownChange={this.handleFilter}
+            onInputChange={this.handleSearch}
             className="my-0"
           />
         </div>
