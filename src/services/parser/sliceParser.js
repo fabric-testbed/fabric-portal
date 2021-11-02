@@ -110,7 +110,7 @@ export default function parseSlice(slice) {
         // label: `${node.id}.ns`,
         label: "Network Service",
         type: "roundrectangle",
-        properties: { class: "Network Service" }
+        properties: { class: "Network Service", type: "NetworkService" }
     }
     elements.push(data);
     } else if (node.Class === "NetworkService" && node.Type === "L2STS") {
@@ -120,7 +120,7 @@ export default function parseSlice(slice) {
         // label: `${node.id}.L2STS`,
         label: "L2STS",
         type: "roundrectangle",
-        properties: { class: "Network Service" },
+        properties: { class: "Network Service", type: "NetworkService" },
       };
       elements.push(data);
     }
