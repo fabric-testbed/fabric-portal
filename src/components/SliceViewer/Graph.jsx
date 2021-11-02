@@ -71,12 +71,6 @@ export default class Graph extends Component {
   render() {
     const layout = {
       name: 'cose-bilkent',
-      // Called on `layoutready`
-      ready: function () {
-      },
-      // Called on `layoutstop`
-      stop: function () {
-      },
     };
 
     const renderTooltip = (id, content) => (
