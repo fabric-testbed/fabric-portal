@@ -6,12 +6,17 @@ import COSEBilkent from 'cytoscape-cose-bilkent';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
+import IconVM from '../../imgs/SliceComponentIcons/VM.png';
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
+import IconNIC10G from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconNIC25G from '../../imgs/SliceComponentIcons/NIC25G.png';
-import IconNVMe from '../../imgs/SliceComponentIcons/SSD.png';
+import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
+import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
+import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
+
 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -71,6 +76,9 @@ export default class Graph extends Component {
   render() {
     const layout = {
       name: 'cose-bilkent',
+      // Called on `layoutready`
+      ready: function () {
+      },
     };
 
     const renderTooltip = (id, content) => (
@@ -129,40 +137,23 @@ export default class Graph extends Component {
               }
             },
             {
-              "selector": ".graphSite",
-              "style": {
-                "background-color": "#d3d3d3",
-                "min-width": 200,
-                "min-height": 200,
-              }
-            },
-            {
               "selector": ".graphVM",
               "style": {
+                "background-image": `${IconVM}`,
+                "background-fit": "contain",
                 "background-color": "#fff",
                 "min-width": 150,
                 "min-height": 150,
               }
             },
             {
-              "selector": ".fakeNode",
-              "style": {
-                "height": 3,
-                "width": 3,
-              }
-            },
-            {
               "selector": ".graphSwitchFabric",
               "style": {
                 "background-image": `${IconSwitch}`,
-                // "min-width": 70,
-                // "min-height": 55,
-                // "background-fit": "cover",
                 "background-color": "#fff",
                 "background-fit": "contain",
                 "height": 70,
                 "width": 100,
-                // "min-height-bias-top": 0.9,
               }
             },
             {
@@ -188,7 +179,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphNVMe",
               "style": {
-                "background-image": `${IconNVMe}`,
+                "background-image": `${IconNVME}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -199,6 +190,36 @@ export default class Graph extends Component {
               "selector": ".graphLink",
               "style": {
                 "background-image": `${IconLink}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 20,
+                "width": 40,
+              }
+            },
+            {
+              "selector": ".graphNetworkService",
+              "style": {
+                "background-image": `${IconNS}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 20,
+                "width": 40,
+              }
+            },
+            {
+              "selector": ".graphSSD",
+              "style": {
+                "background-image": `${IconSSD}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 20,
+                "width": 40,
+              }
+            },
+            {
+              "selector": ".graphSwitch",
+              "style": {
+                "background-image": `${IconSwitch}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 20,
