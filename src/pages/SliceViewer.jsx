@@ -4,7 +4,7 @@ import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
+import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 // import { getSliceById } from "../services/fakeSlices.js";
 import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
