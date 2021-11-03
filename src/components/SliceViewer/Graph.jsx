@@ -10,13 +10,11 @@ import IconVM from '../../imgs/SliceComponentIcons/VM.png';
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
-import IconNIC10G from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconNIC25G from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
-
 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -78,6 +76,9 @@ export default class Graph extends Component {
       name: 'cose-bilkent',
       // Called on `layoutready`
       ready: function () {
+      },
+      // Called on `layoutstop`
+      stop: function () {
       },
     };
 
@@ -158,6 +159,16 @@ export default class Graph extends Component {
             },
             {
               "selector": ".graphSmartNIC",
+              "style": {
+                "background-image": `${IconNIC25G}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
+              "selector": ".graphSharedNIC",
               "style": {
                 "background-image": `${IconNIC25G}`,
                 "background-fit": "contain",
