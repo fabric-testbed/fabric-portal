@@ -21,7 +21,7 @@ export const autoCreateTokens = async () => {
     return data;
   } catch(err) {
     console.log(err);
-    toast.error("Failed to generate necessary tokens to view slices. Please try again later.");
+    toast.error("Failed to generate necessary tokens to view slice information. Please try again later.");
   }
 }
 
@@ -33,7 +33,7 @@ export const autoRefreshTokens = async () => {
     localStorage.setItem("refreshToken", data.refresh_token);
   } catch (err) {
     console.log(err);
-    toast.error("Failed to refresh necessary tokens to view slices. Please try again later.");
+    toast.error("Failed to refresh necessary tokens to view slice information. Please try again later.");
     // if refresh_token isn't working either
     // start over by calling create_token when user reloads the page
     // 1. call cm revoke_token with old refresh token
