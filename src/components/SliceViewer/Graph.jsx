@@ -6,7 +6,7 @@ import COSEBilkent from 'cytoscape-cose-bilkent';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
-import IconVM from '../../imgs/SliceComponentIcons/VM.png';
+// import IconVM from '../../imgs/SliceComponentIcons/VM.png';
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
@@ -140,8 +140,8 @@ export default class Graph extends Component {
             {
               "selector": ".graphVM",
               "style": {
-                "background-image": `${IconVM}`,
-                "background-fit": "contain",
+                // "background-image": `${IconVM}`,
+                // "background-fit": "contain",
                 "background-color": "#fff",
                 "min-width": 150,
                 "min-height": 150,
