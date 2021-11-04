@@ -1,4 +1,4 @@
-FROM node:current
+FROM node:lts
 MAINTAINER Michael J. Stealey
 
 VOLUME /code
