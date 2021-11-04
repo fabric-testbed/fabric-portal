@@ -80,6 +80,7 @@ export default class Graph extends Component {
       // Called on `layoutstop`
       stop: function () {
       },
+      animate: false,
     };
 
     const renderTooltip = (id, content) => (
