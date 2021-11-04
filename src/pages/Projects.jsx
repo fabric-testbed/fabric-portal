@@ -133,7 +133,7 @@ class Projects extends React.Component {
             activeDropdownVal={filterQuery}
             dropdownValues={["Name", "Description", "Facility"]}
             value={searchQuery}
-            placeholder={`Search projects by ${filterQuery}...`}
+            placeholder={`Search Projects by ${filterQuery}...`}
             onDropdownChange={this.handleFilter}
             onInputChange={this.handleSearch}
             className="my-0"
