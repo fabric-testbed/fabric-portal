@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
+import CopyButton from "../common/CopyButton";
 
 class SlicesTable extends Component {
   columns = [
@@ -13,6 +14,14 @@ class SlicesTable extends Component {
       },
       { path: "slice_state", label: "Slice State" },
       { path: "lease_end", label: "Lease End" },
+      {
+        content: (slice) => (
+          <CopyButton
+            id={slice.slice_id}
+            text={"Slice ID"}
+          />
+        ),
+      },
     ];
 
   render() {

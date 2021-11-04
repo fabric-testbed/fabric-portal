@@ -11,6 +11,7 @@ function ReactModal(props) {
     setShow(false);
     // remove old user status stored in browser.
     localStorage.removeItem("userStatus");
+    localStorage.removeItem("userID");
     window.location.href = "/logout";
   }
 
