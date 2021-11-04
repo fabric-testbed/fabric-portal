@@ -4,7 +4,15 @@
     { "_id": 1, "name": "FABRIC"}
   ],
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
-  "jupyterHubLink": "https://jupyter-beta.fabric-testbed.net/",
+  "knowledgeBaseFAQLink": "https://learn.fabric-testbed.net/faq/",
+  "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
+  "fabricWebsiteLink": "https://fabric-testbed.net/",
+  "fabricTwitterLink": "https://twitter.com/FABRICtestbed",
+  "fabricGithubLink": "https://github.com/fabric-testbed",
+  "fabricYoutubeLink": "http://bit.ly/FABRICYouTube",
+  "jupyterHubLinkAlpha": "https://jupyter-beta.fabric-testbed.net/",
+  "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
+  "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
   "projectLeadRequest": {
     "id": "request-project-lead-modal",
     "title": "Request to be Project Lead",
