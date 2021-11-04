@@ -20,7 +20,7 @@ export default class SliceViewer extends Component {
   }
 
   async componentDidMount() {
-      // call credential manager to generate tokens 
+    // call credential manager to generate tokens 
     // if nothing found in browser storage
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
       autoCreateTokens().then(async () => {
@@ -47,7 +47,7 @@ export default class SliceViewer extends Component {
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
     // ------------ TODO: ----------------
-    console.log(selectedData)
+    // console.log(selectedData)
   }
 
 
@@ -113,7 +113,6 @@ export default class SliceViewer extends Component {
   handleNodeUpdate = (id) => {
     console.log(id);
   }
-  
   
   render() {
     return(
