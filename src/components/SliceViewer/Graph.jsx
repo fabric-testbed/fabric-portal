@@ -6,7 +6,6 @@ import COSEBilkent from 'cytoscape-cose-bilkent';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
-// import IconVM from '../../imgs/SliceComponentIcons/VM.png';
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
@@ -37,7 +36,6 @@ export default class Graph extends Component {
     this.setState({
       w: window.innerWidth * 0.75,
       h:window.innerHeight * 0.75,
-     // elements: jsonData.elements.nodes,
     })
     // this.cy can only be declared after the component has been mounted
     // call functions that set up the interactivity inside componentDidMount
@@ -58,13 +56,12 @@ export default class Graph extends Component {
 
   saveJSON = () => {
     var jsonBlob = new Blob([ JSON.stringify( this.cy.json() ) ], { type: 'application/javascript;charset=utf-8' });
-
-    saveAs( jsonBlob, 'graph.json' );
+    saveAs( jsonBlob, 'slice_viewer.json' );
   }
 
   savePNG = () => {
     var png64 = this.cy.png();
-    saveAs( png64, 'graph.png' );
+    saveAs( png64, 'slice_viewer.png' );
   }
 
   saveChanges = () =>{
@@ -80,7 +77,8 @@ export default class Graph extends Component {
       // Called on `layoutstop`
       stop: function () {
       },
-      animate: false,
+      animate: true,
+      randomize: false,
     };
 
     const renderTooltip = (id, content) => (
@@ -103,7 +101,6 @@ export default class Graph extends Component {
             </OverlayTrigger>
           
           <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
-          {/* <button onClick={this.saveChanges} className="btn btn-sm btn-outline-success mr-2">Submit Changes</button> */}
         </div>
         <CytoscapeComponent
           elements={this.props.elements}
@@ -111,7 +108,6 @@ export default class Graph extends Component {
           zoom={0.75}
           pan={ { x: 150, y: 175 } }
           style={{ width: this.state.w, height: this.state.h }}
-          // wheelSensitivity={0.1}
           cy={(cy) => {this.cy = setCytoscape(cy)}}
           stylesheet={[
             {
@@ -124,7 +120,6 @@ export default class Graph extends Component {
             {
               "selector": "edge",
               "style": {
-                // "label": "data(label)",
                 "width": 3,
               }
             },
@@ -141,8 +136,6 @@ export default class Graph extends Component {
             {
               "selector": ".graphVM",
               "style": {
-                // "background-image": `${IconVM}`,
-                // "background-fit": "contain",
                 "background-color": "#fff",
                 "min-width": 150,
                 "min-height": 150,
@@ -243,52 +236,6 @@ export default class Graph extends Component {
               "style": {
                 "height": 15,
                 "width": 15,
-              }
-            },
-             // some style for the extension
-             {
-              selector: '.eh-handle',
-              "style": {
-                'background-color': '#ff8542',
-                'width': 15,
-                'height': 15,
-                'shape': 'rectangle',
-                'overlay-opacity': 0,
-                'border-width': 15, // makes the handle easier to hit
-                'border-opacity': 0
-              }
-            },
-
-            {
-              selector: '.eh-hover',
-              style: {
-                'background-color': '#ff8542'
-              }
-            },
-
-            {
-              selector: '.eh-source',
-              style: {
-                'border-width': 2,
-                'border-color': '#ff8542'
-              }
-            },
-
-            {
-              selector: '.eh-target',
-              style: {
-                'border-width': 2,
-                'border-color': '#ff8542'
-              }
-            },
-
-            {
-              selector: '.eh-preview, .eh-ghost-edge',
-              style: {
-                'background-color': '#ff8542',
-                'line-color': '#ff8542',
-                'target-arrow-color': '#ff8542',
-                'source-arrow-color': '#ff8542'
               }
             },
           ]}
