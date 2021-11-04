@@ -7,7 +7,7 @@ if [[ "$1" == 'run_server' ]]; then
   npm install --verbose
   npm run build
   npm install -g serve
-  serve -s build
+  serve -s build -l 5000
 elif [[ "$1" == 'run_dev' ]]; then
   # defaults to running on port 3000
   # requires stdin_open = true (or "-i" in "docker run ..." command)
