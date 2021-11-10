@@ -63,7 +63,7 @@ class NewProjectForm extends Form {
   doSubmit = async () => {
     // Show loading spinner and when waiting API response
     // to prevent user clicks "submit" many times.
-    this.setState({ showSpinner: true });
+    // this.setState({ showSpinner: true });
     try {
       let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
       let memberIDs = this.state.addedMembers.map((user) => user.uuid);
@@ -71,8 +71,11 @@ class NewProjectForm extends Form {
       data.project_owners.push(ownerIDs);
       data.project_members.push(memberIDs);
       this.setState({ data });
-      await saveProject(this.state.data);
       this.props.history.push("/projects");
+      // redirect users directly to the projects page
+      // while the async call is processing under the hood
+      await saveProject(this.state.data);
+      toast.success("The project is successfully created.")
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
