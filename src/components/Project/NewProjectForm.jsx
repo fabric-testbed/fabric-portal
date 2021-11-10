@@ -4,8 +4,8 @@ import ProjectUserTable from "./ProjectUserTable";
 import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
-import ToastMessageWithLink from "ToastMessageWithLink";
+import { ToastContainer, toast } from "react-toastify";
+import ToastMessageWithLink from "./ToastMessageWithLink";
 
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
@@ -279,6 +279,7 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
+        <ToastContainer />
       </div>
     );
   }
