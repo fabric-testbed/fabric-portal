@@ -6,11 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import ToastMessageWithLink from "./ToastMessageWithLink";
+import { Link } from "react-router-dom";
 
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
 
 import { facilityOptions, defaultFacility } from "../../services/portalData.json";
+
+const Msg = ({newProject}) => (
+  <div>
+    {newProject.uuid}
+    {/* <Link to={`/projects/${newProject.uuid}`}>Click to view the new project.</Link> */}
+  </div>
+)
 
 class NewProjectForm extends Form {
   state = {
@@ -71,12 +79,12 @@ class NewProjectForm extends Form {
       this.props.history.push("/projects");
       toast.info("Creation request in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const newProject = await saveProject(this.state.data);
+      const  { data: newProject } = await saveProject(this.state.data);
       // toast message to users when the api call is successfully done.
       toast.success("Project created successfully.");
-      toast.success(newProject.name)
-      // toast.success(<ToastWithLink project={newProject} />);
-      toast.success(<ToastMessageWithLink project={newProject} />);
+      console.log(newProject);
+      toast(<Msg newProject={newProject} />)
+      //toast.success(<ToastMessageWithLink project={newProject} />);
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
