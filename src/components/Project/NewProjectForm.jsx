@@ -11,6 +11,12 @@ import { saveProject } from "../../services/projectRegistryService";
 
 import { facilityOptions, defaultFacility } from "../../services/portalData.json";
 
+const Msg = (uuid) => (
+  <div>
+    Click to view the new project. {uuid}
+  </div>
+)
+
 class NewProjectForm extends Form {
   state = {
     data: {
@@ -68,11 +74,13 @@ class NewProjectForm extends Form {
       this.setState({ data });
       // redirect users directly to the projects page
       this.props.history.push("/projects");
-      toast.success("Creation request in process. You'll receive a message when the project is successfully created.");
+      toast.info("Creation request in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      await saveProject(this.state.data);
+      const newProject = await saveProject(this.state.data);
+      localStorage.setItem("newProjectID", newProject["uuid"]);
       // toast message to users when the api call is successfully done.
       toast.success("Project created successfully.");
+      toast.success(<Msg />);
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
