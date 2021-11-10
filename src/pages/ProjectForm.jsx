@@ -6,7 +6,6 @@ import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import DeleteModal from "../components/common/DeleteModal";
-import LoadSpinner from "../components/common/LoadSpinner";
 import { toast } from "react-toastify";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,7 +61,6 @@ class projectForm extends Form {
     members: [],
     ownerSearchInput: "",
     memberSearchInput: "",
-    showSpinner: false,
   };
 
   schema = {
@@ -216,10 +214,6 @@ class projectForm extends Form {
   };
 
   handleDeleteProject = async (project) => {
-    // Show loading spinner and when waiting API response
-    // to prevent user clicks "delete" many times.
-    // this.setState({ showSpinner: true });
-
     try {
       // redirect users directly to the projects page
       this.props.history.push("/projects");
@@ -501,7 +495,6 @@ class projectForm extends Form {
               }
             </div>
           </div>
-          <LoadSpinner text={"Deleting Project..."} showSpinner={this.state.showSpinner} />
         </div>
       );
     }
