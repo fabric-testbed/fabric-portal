@@ -74,8 +74,8 @@ class App extends React.Component {
             <Route component={NotFound} />
           </Switch>
           <Footer />
+          <ToastContainer />
         </Router>
-        <ToastContainer />
       </div>
     );
   }
