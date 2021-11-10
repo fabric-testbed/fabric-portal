@@ -63,7 +63,6 @@ class projectForm extends Form {
     ownerSearchInput: "",
     memberSearchInput: "",
     showSpinner: false,
-    searchUserError: false,
   };
 
   schema = {
@@ -184,21 +183,17 @@ class projectForm extends Form {
   };
 
   handleSearch = async (value) => {
-    if (value.length < 3) {
-      this.setState({ searchUserError: false});
-    }
     // owners/ members are search result.
     if (this.state.activeIndex === 1) {
       this.setState({ ownerSearchInput: value });
       try {
-        if (value.length > 3 || !this.state.searchUserError) {
+        if (value.length > 3) {
           const { data: owners } = await getPeopleByName(value);
           this.setState({ owners });
         } else {
           this.setState({ owners: [] });
         }
       } catch (err) {
-        this.setState({ searchUserError: true });
         console.warn(err);
         toast.error("Cannot find user. Please check your input.");
         this.setState({ owners: [] });
@@ -206,14 +201,13 @@ class projectForm extends Form {
     } else if (this.state.activeIndex === 2) {
       this.setState({ memberSearchInput: value });
       try {
-        if (value.length > 3 || !this.state.searchUserError) {
+        if (value.length > 3) {
           const { data: members } = await getPeopleByName(value);
           this.setState({ members });
         } else {
           this.setState({ members: [] });
         }
       } catch (err) {
-        this.setState({ searchUserError: true });
         console.warn(err);
         toast.error("Cannot find user. Please check your input.");
         this.setState({ members: [] });
