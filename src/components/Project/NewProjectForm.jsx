@@ -4,7 +4,7 @@ import ProjectUserTable from "./ProjectUserTable";
 import Form from "../common/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 import { getPeopleByName } from "../../services/userInformationService";
@@ -12,11 +12,11 @@ import { saveProject } from "../../services/projectRegistryService";
 
 import { facilityOptions, defaultFacility } from "../../services/portalData.json";
 
-const Msg = ({newProject}) => (
+const ToastMessageWithLink = ({newProject}) => (
   <div>
-    Project "{newProject.name}" created successfully.
+    <p>Project created successfully.</p>
     <Link to={`/projects/${newProject.uuid}`}>
-      <button className="btn btn-sm btn-outline-primary my-3">
+      <button className="btn btn-sm btn-outline-light my-3">
         View
       </button>
     </Link>
@@ -84,7 +84,7 @@ class NewProjectForm extends Form {
       // while the async call is processing under the hood
       const  { data: newProject } = await saveProject(this.state.data);
       // toast message to users when the api call is successfully done.
-      toast.success(<Msg newProject={newProject} />)
+      toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
@@ -287,7 +287,6 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
-        <ToastContainer />
       </div>
     );
   }
