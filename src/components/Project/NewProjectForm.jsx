@@ -71,11 +71,13 @@ class NewProjectForm extends Form {
       data.project_owners.push(ownerIDs);
       data.project_members.push(memberIDs);
       this.setState({ data });
-      this.props.history.push("/projects");
       // redirect users directly to the projects page
+      this.props.history.push("/projects");
+      toast.success("Creation request in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
       await saveProject(this.state.data);
-      toast.success("The project is successfully created.")
+      // toast message to users when the api call is successfully done.
+      toast.success("Project created successfully.");
     }
     catch (ex) {
       console.log("failed to create project: " + ex.response.data);
