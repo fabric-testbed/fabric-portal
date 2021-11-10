@@ -23,7 +23,7 @@ class Projects extends React.Component {
     filterQuery: "Name",
     searchQuery: "",
     roles: [],
-    sortColumn: { path: "name", order: "asc" },
+    sortColumn: { path: "created_time", order: "desc" },
     radioBtnValues: [
       { display: "My Projects", value: "active", isActive: true },
       { display: "Other Projects", value: "inactive", isActive: false },
