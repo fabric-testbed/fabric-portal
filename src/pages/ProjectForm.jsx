@@ -217,7 +217,7 @@ class projectForm extends Form {
     try {
       // redirect users directly to the projects page
       this.props.history.push("/projects");
-      toast.info("Deletion request in process. You'll receive a message when the project is successfully deleted.")
+      toast.info("Deletion request is in process. You'll receive a message when the project is successfully deleted.")
       // while the async call is processing under the hood
       await deleteProject(project.uuid);
       // toast message to users when the api call is successfully done.

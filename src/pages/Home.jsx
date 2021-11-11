@@ -1,20 +1,14 @@
 import React from "react";
-
 import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
-
 import { selfEnrollRequest } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-
 import { NavLink } from "react-router-dom";
-
 import CookieConsent from "react-cookie-consent";
-
 import Topomap from "../components/Resource/Topomap";
 import DetailTable from "../components/Resource/DetailTable";
-
 import { getResources } from "../services/resourcesService.js";
 import { ToastContainer, toast } from "react-toastify";
 
