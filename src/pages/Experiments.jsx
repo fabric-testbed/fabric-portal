@@ -9,12 +9,13 @@ class Experiments extends React.Component {
     SideNavItems: [
       { name: "MY SLICES", active: true },
       { name: "MANAGE TOKENS", active: false },
-      { name: "MANAGE SSH KEYS", active: false },
+      // { name: "MANAGE SSH KEYS", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    componentNames: [Slices, Tokens, Keys],
+    // componentNames: [Slices, Tokens, Keys],
+    componentNames: [Slices, Tokens],
   };
 
   async componentDidMount() {
@@ -23,7 +24,7 @@ class Experiments extends React.Component {
     const activeMap = {
       "#slices": 0,
       "#tokens": 1,
-      "#sshKeys": 2,
+      // "#sshKeys": 2,
     }
 
     if (hash) {
@@ -31,7 +32,7 @@ class Experiments extends React.Component {
       this.setState({ SideNavItems: [
         { name: "MY SLICES", active: hash === "#slices" },
         { name: "MANAGE TOKENS", active: hash === "#tokens" },
-        { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
+        // { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
       ]})
     }
   }
@@ -40,7 +41,7 @@ class Experiments extends React.Component {
     const indexToHash = {
       0: "#slices",
       1: "#tokens",
-      2: "#sshKeys",
+      // 2: "#sshKeys",
     }
     this.setState({ activeIndex: newIndex });
     this.props.history.push(`/experiments${indexToHash[newIndex]}`);

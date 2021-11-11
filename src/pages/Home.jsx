@@ -1,22 +1,16 @@
 import React from "react";
-
 import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
-
 import { selfEnrollRequest } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-
 import { NavLink } from "react-router-dom";
-
 import CookieConsent from "react-cookie-consent";
-
 import Topomap from "../components/Resource/Topomap";
 import DetailTable from "../components/Resource/DetailTable";
-
 import { getResources } from "../services/resourcesService.js";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 class Home extends React.Component {
   state = {
@@ -119,6 +113,7 @@ class Home extends React.Component {
             Please accept our Cookie Policy by clicking ‘OK’. For more details, visit the <NavLink className="text-primary-light" to="/cookie-policy"><b>Cookie Policy Page</b></NavLink>.
           </div>
         </CookieConsent>
+        <ToastContainer />
       </div>
     );
   }
