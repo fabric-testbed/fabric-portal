@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Table from "../common/Table";
+import Pagination from "../common/Pagination";
+import _ from "lodash";
+import paginate from "../../utils/paginate";
 
 class ProjectUserTable extends Component {
   columns = [
@@ -10,6 +13,12 @@ class ProjectUserTable extends Component {
     { path: "email", label: "Email" },
     { path: "uuid", label: "ID" },
   ];
+
+  state = {
+    pageSize: 8,
+    currentPage: 1,
+    sortColumn: { path: "name", order: "asc" },
+  }
 
   deletedColumn = {
     key: "delete",
@@ -29,15 +38,52 @@ class ProjectUserTable extends Component {
     }
   }
 
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
+  getPageData = () => {
+    const {
+      pageSize,
+      currentPage,
+      sortColumn,
+    } = this.state;
+
+    const { users } = this.props;
+
+    // filter -> sort -> paginate
+    let filtered = users;
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const data = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filtered.length, data: data };
+  };
+
   render() {
-    const { users, onSort } = this.props;
+    const { pageSize, currentPage, sortColumn } = this.state;
+    const { totalCount, data } = this.getPageData();
+
     return (
-      <Table
-        columns={this.columns}
-        data={users}
-        sortColumn={null}
-        onSort={onSort}
-      />
+      <div>
+        <Table
+          columns={this.columns}
+          data={data}
+          sortColumn={sortColumn}
+          onSort={this.handleSort}
+        />
+        <Pagination
+          itemsCount={totalCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
+      </div>
     );
   }
 }
