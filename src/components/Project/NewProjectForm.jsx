@@ -13,11 +13,11 @@ import { saveProject } from "../../services/projectRegistryService";
 import { facilityOptions, defaultFacility } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
-  <div>
+  <div className="p-1 text-white text-center">
     <p>Project created successfully.</p>
     <Link to={`/projects/${newProject.uuid}`}>
-      <button className="btn btn-sm btn-outline-light my-3">
-        View
+      <button className="btn btn-sm btn-outline-light">
+        View New Project
       </button>
     </Link>
   </div>
