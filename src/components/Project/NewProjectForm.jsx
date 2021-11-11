@@ -80,7 +80,7 @@ class NewProjectForm extends Form {
       this.setState({ data });
       // redirect users directly to the projects page
       this.props.history.push("/projects");
-      toast.info("Creation request in process. You'll receive a message when the project is successfully created.");
+      toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
       const  { data: newProject } = await saveProject(this.state.data);
       // toast message to users when the api call is successfully done.
