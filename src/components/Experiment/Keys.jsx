@@ -167,7 +167,7 @@ class Keys extends React.Component {
         <h3 className="my-4">Upload Public Key</h3>
         <Card>
           <Card.Header className="d-flex flex-row bg-light">
-            Please paste the public key here:
+            <i className="fa fa-exclamation-triangle mr-2 mt-1"></i> Uploaded key must be RSA (3072 bits or longer) or ECDSA (256 bits or longer):
           </Card.Header>
           <Card.Body>
             <Form.Group>

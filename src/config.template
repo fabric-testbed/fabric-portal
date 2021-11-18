@@ -8,5 +8,6 @@
   "prPeopleApiUrl":"https://******/people",
   "credentialManagerApiUrl": "https://******/tokens",
   "resourcesApiUrl": "https://******/portalresources?graphFormat=JSON_NODELINK",
-  "orchestratorApiUrl": "https://******/slices"
+  "orchestratorApiUrl": "https://******/slices",
+  "sshKeyApiUrl": "https://******/sshkey"
 }
