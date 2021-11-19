@@ -40,7 +40,7 @@ class Experiments extends React.Component {
     const indexToHash = {
       0: "#slices",
       1: "#tokens",
-      // 2: "#sshKeys",
+      2: "#sshKeys",
     }
     this.setState({ activeIndex: newIndex });
     this.props.history.push(`/experiments${indexToHash[newIndex]}`);

@@ -16,6 +16,10 @@ class GenerateKey extends Form {
       { "_id": 2, "name": "Bastion" }
     ],
     errors: {},
+    nameTooltip: {
+      id: "nameTooltip",
+      content: "A single word without space; length between 5 to 100 characters; Could contain -, ., _, (, ),and @."
+    }
   }
 
   doSubmit = async () => {
@@ -37,11 +41,11 @@ class GenerateKey extends Form {
 
   render() {
     // const that = this;
-    const { data, keyTypes } =  this.state;
+    const { data, keyTypes, nameTooltip } =  this.state;
     return (
       <div className="w-100">
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name", true)}
+          {this.renderInput("name", "Name", true, nameTooltip)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("keyType", "Key Type", true, "", keyTypes)}
           {this.renderButton("Generate Key Pair")}
