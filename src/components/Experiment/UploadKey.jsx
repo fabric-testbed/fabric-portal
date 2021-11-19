@@ -13,6 +13,14 @@ class UploadKey extends Form {
       { "_id": 2, "name": "Bastion" }
     ],
     errors: {},
+    publickeyTooltip: {
+      id: "publicKeyTooltip",
+      content: "Uploaded key must be RSA (3072 bits or longer) or ECDSA (256 bits or longer)."
+    },
+    descriptionTooltip: {
+      id: "descriptionTooltip",
+      content: "Length between 5 to 255 characters."
+    }
   }
 
   schema = {
@@ -22,12 +30,12 @@ class UploadKey extends Form {
   };
 
   render() {
-    const { data, keyTypes } =  this.state;
+    const { keyTypes, publickeyTooltip, descriptionTooltip } =  this.state;
     return (
       <div className="w-100">
         <form onSubmit={this.handleSubmit}>
-          {this.renderTextarea("publickey", "Publickey", true)}
-          {this.renderTextarea("description", "Description", true)}
+          {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
+          {this.renderTextarea("description", "Description", true, descriptionTooltip)}
           {this.renderSelect("keyType", "Key Type", true, "", keyTypes)}
           {this.renderButton("Upload Public Key")}
         </form>

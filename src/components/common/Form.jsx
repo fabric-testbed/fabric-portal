@@ -91,7 +91,7 @@ class Form extends Component {
     );
   }
 
-  renderTextarea(name, label, notDisabled, type = "text") {
+  renderTextarea(name, label, notDisabled, tooltip, type = "text") {
     const { data, errors } = this.state;
 
     return (
@@ -103,6 +103,7 @@ class Form extends Component {
         onChange={this.handleChange}
         error={errors[name]}
         disabled={!notDisabled}
+        tooltip={tooltip}
       />
     );
   }

@@ -19,6 +19,10 @@ class GenerateKey extends Form {
     nameTooltip: {
       id: "nameTooltip",
       content: "A single word without space; length between 5 to 100 characters; Could contain -, ., _, (, ),and @."
+    },
+    descriptionTooltip: {
+      id: "descriptionTooltip",
+      content: "Length between 5 to 255 characters."
     }
   }
 
@@ -40,13 +44,12 @@ class GenerateKey extends Form {
   };
 
   render() {
-    // const that = this;
-    const { data, keyTypes, nameTooltip } =  this.state;
+    const { keyTypes, nameTooltip, descriptionTooltip } =  this.state;
     return (
       <div className="w-100">
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true, nameTooltip)}
-          {this.renderTextarea("description", "Description", true)}
+          {this.renderTextarea("description", "Description", true, descriptionTooltip)}
           {this.renderSelect("keyType", "Key Type", true, "", keyTypes)}
           {this.renderButton("Generate Key Pair")}
         </form>
