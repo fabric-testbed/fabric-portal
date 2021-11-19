@@ -15,14 +15,6 @@ class UploadKey extends Form {
     errors: {},
   }
 
-  handleSubmit = () => {
-
-  }
-
-  handleChange = () => {
-
-  }
-
   schema = {
     publickey: Joi.string().required().label("Public Key"),
     description: Joi.string().required().label("Description"),
@@ -36,7 +28,7 @@ class UploadKey extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderTextarea("publickey", "Publickey", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderSelect("keyType", "keyType", true, "", keyTypes)}
+          {this.renderSelect("keyType", "Key Type", true, "", keyTypes)}
           {this.renderButton("Upload Public Key")}
         </form>
       </div>
