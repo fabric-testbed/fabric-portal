@@ -1,6 +1,9 @@
 import Joi from "joi-browser";
 import Form from "../common/Form";
 
+import { uploadPublicKey } from "../../services/sshKeyService";
+import { toast } from "react-toastify";
+
 class UploadKey extends Form {
   state = {
     data: {
@@ -9,8 +12,8 @@ class UploadKey extends Form {
       keyType: "",
     },
     keyTypes: [
-      { "_id": 1, "name": "Sliver" },
-      { "_id": 2, "name": "Bastion" }
+      { "_id": 1, "name": "sliver" },
+      { "_id": 2, "name": "bastion" }
     ],
     errors: {},
     publickeyTooltip: {
@@ -27,6 +30,17 @@ class UploadKey extends Form {
     publickey: Joi.string().required().label("Public Key"),
     description: Joi.string().required().label("Description"),
     keyType: Joi.string().required().label("Key Type"),
+  };
+
+  doSubmit = async () => {
+    try {
+      const { data } = this.state;
+      await uploadPublicKey(data.keyType, data.publickey, data.description);
+    }
+    catch (ex) {
+      console.log("failed to upload public key: " + ex.response.data);
+      toast.error("Failed to upload public key.");
+    }
   };
 
   render() {

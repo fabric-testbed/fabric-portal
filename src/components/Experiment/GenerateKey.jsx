@@ -12,8 +12,8 @@ class GenerateKey extends Form {
       keyType: "",
     },
     keyTypes: [
-      { "_id": 1, "name": "Sliver" },
-      { "_id": 2, "name": "Bastion" }
+      { "_id": 1, "name": "sliver" },
+      { "_id": 2, "name": "bastion" }
     ],
     errors: {},
     nameTooltip: {
