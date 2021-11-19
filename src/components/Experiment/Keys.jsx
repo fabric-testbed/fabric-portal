@@ -1,13 +1,15 @@
 import React from "react";
+import Joi from "joi-browser";
 import Pagination from "../common/Pagination";
 import SearchBox from "../common/SearchBox";
 import KeysTable from "./KeysTable";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import FormControl from "react-bootstrap/FormControl";
-import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown'
+import Form from "../common/Form";
+import GenerateKey from "./GenerateKey";
+import UploadKey from "./UploadKey";
 
 import { getKeys } from "../../services/fakeSSHKeys.js";
 
@@ -22,6 +24,12 @@ class Keys extends React.Component {
     currentPage: 1,
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
+  };
+
+  schema = {
+    generate_name: Joi.string().allow(""),
+    generate_description: Joi.string().required().label("Name"),
+    upload_description: Joi.string().required().label("Description"),
   };
 
   async componentDidMount() {
@@ -98,21 +106,9 @@ class Keys extends React.Component {
           onPageChange={this.handlePageChange}
         />
         <h3 className="my-4">Generate SSH Key Pair</h3>
+        <GenerateKey />
         <InputGroup className="mb-3">
-          <FormControl
-            placeholder="Input the Key Pair Name..."
-            aria-label="SSH Key Name"
-          />
-          <Dropdown>
-            <Dropdown.Toggle variant="outline-success" className="ml-4">
-              Select Type
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Bastion</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Sliver</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Button
+          {/* <Button
             className="ml-4"
             variant="success"
             onClick={this.handleKeyGenerate}
@@ -120,8 +116,8 @@ class Keys extends React.Component {
             data-target="#generatedKeyModal"
           >
             Generate Key Pair
-          </Button>
-          <div
+          </Button> */}
+          {/* <div
             className="modal fade"
             id={"generatedKeyModal"}
             data-backdrop="static"
@@ -162,43 +158,10 @@ class Keys extends React.Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         </InputGroup>
         <h3 className="my-4">Upload Public Key</h3>
-        <Card>
-          <Card.Header className="d-flex flex-row bg-light">
-            <i className="fa fa-exclamation-triangle mr-2 mt-1"></i> Uploaded key must be RSA (3072 bits or longer) or ECDSA (256 bits or longer):
-          </Card.Header>
-          <Card.Body>
-            <Form.Group>
-              <Form.Control
-                ref={(textarea) => this.textArea = textarea}
-                as="textarea"
-                id="createTokenTextArea"
-                defaultValue={this.state.createToken}
-                rows={6}
-              />
-            </Form.Group>
-          </Card.Body>
-        </Card>
-        <InputGroup className="my-3">
-          <FormControl
-            placeholder="Input the Public Key Name..."
-            aria-label="SSH Key Name"
-          />
-            <Dropdown>
-              <Dropdown.Toggle variant="outline-success" className="ml-4">
-                Select Type
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Bastion</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Sliver</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Button className="ml-4" variant="success">
-            Upload Public Key
-            </Button>
-        </InputGroup>
+        <UploadKey />
       </div>
     );
   }
