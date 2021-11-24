@@ -14,3 +14,7 @@ export function uploadPublicKey(keytype, openssh, description) {
 export function generateKeyPairs(keytype, comment, description) {
   return http.put(`${apiEndpoint}/${keytype}?comment=${comment}&description=${description}`);
 }
+
+export function deleteKey(id) {
+  return http.delete(`${apiEndpoint}/${id}`);
+}
