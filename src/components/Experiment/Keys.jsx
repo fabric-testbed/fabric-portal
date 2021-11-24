@@ -10,11 +10,11 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Form from "../common/Form";
 import GenerateKey from "./GenerateKey";
 import UploadKey from "./UploadKey";
-
 import { getKeys } from "../../services/fakeSSHKeys.js";
-
+import { getActiveKeys } from "../../services/sshKeyService";
 import paginate from "../../utils/paginate";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
@@ -33,7 +33,16 @@ class Keys extends React.Component {
   };
 
   async componentDidMount() {
-
+    try {
+      const { data: keys } = await getActiveKeys();
+      this.setState({ 
+        keys: keys,
+        allKeys: keys,
+      })
+    } catch (ex) {
+      toast.error("Failed to load keys. Please reload this page.");
+      console.log("Failed to load keys: " + ex.response.data);
+    }
   }
 
   handlePageChange = (page) => {

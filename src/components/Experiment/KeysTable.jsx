@@ -3,11 +3,13 @@ import Table from "../common/Table";
 
 class KeysTable extends Component {
   columns = [
-      { path: "name", label: "Name" },
-      { path: "type", label: "Type" },
-      { path: "id", label: "ID" },
-      { path: "create_date", label: "Create Date" },
-      { path: "expire_date", label: "Expire Date" },
+      { path: "comment", label: "Name" },
+      { path: "created_on", label: "Create Date" },
+      { path: "expires_on", label: "Expiration Date" },
+      { path: "description", label: "Description" },
+      { path: "fingerprint", label: "Fingerprint" },
+      { path: "name", label: "Type" },
+      { path: "public_key", label: "Public Key"},
       {
         content: () => (
           <div className="btn-group">

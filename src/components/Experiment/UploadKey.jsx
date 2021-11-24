@@ -43,6 +43,12 @@ class UploadKey extends Form {
     }
   };
 
+  schema = {
+    publickey: Joi.string().required().label("Public Key"),
+    description: Joi.string().required().label("Description"),
+    keyType: Joi.string().required().label("Key Type"),
+  };
+
   render() {
     const { keyTypes, publickeyTooltip, descriptionTooltip } =  this.state;
     return (
