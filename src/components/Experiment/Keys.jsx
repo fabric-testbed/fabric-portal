@@ -1,15 +1,13 @@
 import React from "react";
 import Joi from "joi-browser";
-import Pagination from "../common/Pagination";
-import SearchBox from "../common/SearchBox";
-import KeysTable from "./KeysTable";
+import KeyCards from "../SshKey/KeyCards";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Form from "../common/Form";
-import GenerateKey from "./GenerateKey";
-import UploadKey from "./UploadKey";
+import GenerateKey from "../SshKey/GenerateKey";
+import UploadKey from "../SshKey/UploadKey";
 import { getKeys } from "../../services/fakeSSHKeys.js";
 import { getActiveKeys } from "../../services/sshKeyService";
 import paginate from "../../utils/paginate";
@@ -32,18 +30,18 @@ class Keys extends React.Component {
     upload_description: Joi.string().required().label("Description"),
   };
 
-  async componentDidMount() {
-    try {
-      const { data: keys } = await getActiveKeys();
-      this.setState({ 
-        keys: keys,
-        allKeys: keys,
-      })
-    } catch (ex) {
-      toast.error("Failed to load keys. Please reload this page.");
-      console.log("Failed to load keys: " + ex.response.data);
-    }
-  }
+  // async componentDidMount() {
+  //   try {
+  //     const { data: keys } = await getActiveKeys();
+  //     this.setState({ 
+  //       keys: keys,
+  //       allKeys: keys,
+  //     })
+  //   } catch (ex) {
+  //     toast.error("Failed to load keys. Please reload this page.");
+  //     console.log("Failed to load keys: " + ex.response.data);
+  //   }
+  // }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -92,27 +90,11 @@ class Keys extends React.Component {
     return (
       <div className="col-9" id="sshKeys">
         <h1>SSH Keys</h1>
-        <div className="toolbar">
-          <SearchBox
-            value={searchQuery}
-            placeholder={"Search SSH Keys by Name..."}
-            onChange={this.handleSearch}
-            className="my-0"
-          />
-        </div>
         <div className="my-2">
           Showing {totalCount} keys.
         </div>
-        <KeysTable
+        <KeyCards
           keys={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-        />
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
         />
         <h3 className="my-4">Generate SSH Key Pair</h3>
         <GenerateKey />
