@@ -1,18 +1,21 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const KeyModal = ({data}) => {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    window.location.reload();
+    setShow(false);
+  }
+
+  useEffect(() => {
+    setShow(Object.keys(data).length !== 0)
+  }, [data]);
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Generated Key Pair</Modal.Title>
