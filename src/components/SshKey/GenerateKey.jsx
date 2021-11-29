@@ -23,13 +23,15 @@ class GenerateKey extends Form {
     descriptionTooltip: {
       id: "descriptionTooltip",
       content: "Length between 5 to 255 characters."
-    }
+    },
+    generatedKey: {},
   }
 
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      await generateKeyPairs(data.keyType, data.name, data.description);
+      const key = await generateKeyPairs(data.keyType, data.name, data.description);
+      this.setState({ generatedKey: key });
     }
     catch (ex) {
       console.log("failed to generate ssh key pairs: " + ex.response.data);
@@ -44,9 +46,10 @@ class GenerateKey extends Form {
   };
 
   render() {
-    const { keyTypes, nameTooltip, descriptionTooltip } =  this.state;
+    const { keyTypes, nameTooltip, descriptionTooltip, generatedKey } =  this.state;
     return (
       <div className="w-100">
+        { generatedKey && <span> {generatedKey.comment} - Key Successfully Generated.</span> }
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true, nameTooltip)}
           {this.renderTextarea("description", "Description", true, descriptionTooltip)}

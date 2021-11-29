@@ -28,7 +28,7 @@ const generateKeyJson = (data) => {
 const handleDelete = async (uuid) => {
   try {
     await deleteKey(uuid);
-    window.location.href = "/experiments#sshKeys";
+    window.location.reload();
     toast.success("Successfully deleted.");
   }
   catch (ex) {
