@@ -51,7 +51,7 @@ const KeyCard = ({ data, ...rest }) => {
           )}`}
           download={`${data.comment}.json`}
         >
-          Download Public Key
+          <i class="fa fa-key"></i> Download Public Key
         </a>
         <button
           className="btn btn-sm btn-outline-danger mt-2"

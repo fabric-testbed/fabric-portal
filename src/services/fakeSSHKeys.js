@@ -29,26 +29,6 @@ const keys = [
     "name": "ssh-rsa",
     "public_key": "AAAAB3NzaC1yc2EAAAADAQABAAABgQC/n/y/YwktZcQrv64K9X0zBk/v6K7T/xOOz6X7JdxrbUqrTVaC1rbOSkVh2ZilXdnwdTQFani0IKwBMeBYUUYMGHEd3v8vuo9r5cKlbJTThT7Bcw/HbAt/nkDFb+UD8u4LchkTsgZmxT6/mz5GkQDQSgv8+QtCHqt4qmH1/wZCOn466JCu5r/ceVwkYd99G/LnxuhI8xiIfXPzkvDlCZ652Chx/SIawrhZxmT0/3Ok/tfCrcpoRkXexYt6NqmUCt4XlP1yvjFDJ7rlvhUc61gHX3C9ILsPIOE/oBhF0qlSUHlvePffHTflAg2c4BJ6hGrt4/0EdOb3O+LweAONgCTfUZIhk+x5wXHYlA2UkIn5Os1dtSbG17U6Xfz4cb/joQ9EGelZgqLpRA8Dd21iAzXG7nM/wfBS+p+Y2Ty1YTBlFeItEFsgqETGMgD5VSEypN3CmlkmxAtpZwChLHH9o8yfK91mPgWKWpwApUHrOBi88uvYOhopo8ua59826Zf87Rs="
   },
-  {
-    "comment": "test-key-4",
-    "created_on": "2021-11-29 03:54:01.908204",
-    "description": "test-key-4",
-    "expires_on": "2021-11-29 03:56:01.908204",
-    "fingerprint": "MD5:ea:fa:73:18:0c:e7:c1:d2:a2:ee:63:72:29:e6:e4:64",
-    "key_uuid": "5a3dd3ab-bc3e-43e9-9ed4-54d6f0a8293d",
-    "name": "ssh-rsa",
-    "public_key": "AAAAB3NzaC1yc2EAAAADAQABAAABgQC9qgD4LgKwqN6AXAkZd6Gu4BldCoSeUhmu34HMUfJoZQwk8snRPL4bVwlFpnTa9/CmEfIhc9dv29lEadvGdOyzpxdif8A/K2a9bVtdviULMq1j1ZgYlQ1yYd5/DaJZTQheFcV+gLB/05lIHvkRxh9KLASwfP0V0KOUauCs5ctQupgGpEbp8WsTuO1jINEQ94157rvzOz7Qm448vpavyWrYemWuIBUaDySrQMzBRZu4pSOTunX8q+RWFeZVARg4w5dBLFXj2r9M4rrUSKlIsHa1detHJTn8jpKrxPzDJEyEN9KHvKj+O6ED6NMQWlTNNl65OGi5dIVO2Qz53aq5pKIWdgN3xtbmzOP9XfeF/G5zgE2pn0cENcnmxO2vTLARXUJcITXy+xLQB9/W2kGkdMX7sEVAqojZ5kdHbLg18znR7ckfIegfc5bdjZJ8FITAuRBzrT9AJmqJCAQjHhTtfbkECF8oZlXd7E/LuGdKkk1qMUXg0aagLjUmuFdbvi08HL0="
-  },
-  {
-    "comment": "test-key-4",
-    "created_on": "2021-11-29 03:54:01.908204",
-    "description": "test-key-4",
-    "expires_on": "2021-11-29 03:56:01.908204",
-    "fingerprint": "MD5:ea:fa:73:18:0c:e7:c1:d2:a2:ee:63:72:29:e6:e4:64",
-    "key_uuid": "5a3dd3ab-bc3e-43e9-9ed4-54d6f0a8293d",
-    "name": "ssh-rsa",
-    "public_key": "AAAAB3NzaC1yc2EAAAADAQABAAABgQC9qgD4LgKwqN6AXAkZd6Gu4BldCoSeUhmu34HMUfJoZQwk8snRPL4bVwlFpnTa9/CmEfIhc9dv29lEadvGdOyzpxdif8A/K2a9bVtdviULMq1j1ZgYlQ1yYd5/DaJZTQheFcV+gLB/05lIHvkRxh9KLASwfP0V0KOUauCs5ctQupgGpEbp8WsTuO1jINEQ94157rvzOz7Qm448vpavyWrYemWuIBUaDySrQMzBRZu4pSOTunX8q+RWFeZVARg4w5dBLFXj2r9M4rrUSKlIsHa1detHJTn8jpKrxPzDJEyEN9KHvKj+O6ED6NMQWlTNNl65OGi5dIVO2Qz53aq5pKIWdgN3xtbmzOP9XfeF/G5zgE2pn0cENcnmxO2vTLARXUJcITXy+xLQB9/W2kGkdMX7sEVAqojZ5kdHbLg18znR7ckfIegfc5bdjZJ8FITAuRBzrT9AJmqJCAQjHhTtfbkECF8oZlXd7E/LuGdKkk1qMUXg0aagLjUmuFdbvi08HL0="
-  }
 ];
 
 export function getKeys() {
