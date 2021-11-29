@@ -36,6 +36,8 @@ class UploadKey extends Form {
     try {
       const { data } = this.state;
       await uploadPublicKey(data.keyType, data.publickey, data.description);
+      window.location.reload();
+      toast.success("Successfully uploaded.");
     }
     catch (ex) {
       console.log("failed to upload public key: " + ex.response.data);
@@ -45,7 +47,7 @@ class UploadKey extends Form {
 
   schema = {
     publickey: Joi.string().required().label("Public Key"),
-    description: Joi.string().required().label("Description"),
+    description: Joi.string().required().min(5).max(255).label("Description"),
     keyType: Joi.string().required().label("Key Type"),
   };
 

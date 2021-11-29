@@ -15,7 +15,6 @@ class GenerateKey extends Form {
       { "_id": 1, "name": "sliver" },
       { "_id": 2, "name": "bastion" }
     ],
-    errors: {},
     nameTooltip: {
       id: "nameTooltip",
       content: "A single word without whitespace; length between 5 to 100 characters."
@@ -30,8 +29,8 @@ class GenerateKey extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const key = await generateKeyPairs(data.keyType, data.name, data.description);
-      this.setState({ generatedKey: key });
+      const { generatedKey } = await generateKeyPairs(data.keyType, data.name, data.description);
+      this.setState({ generatedKey: generatedKey });
     }
     catch (ex) {
       console.log("failed to generate ssh key pairs: " + ex.response.data);

@@ -1,8 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { useState, useEffect } from "react";
 
-const KeyModal = ({data}) => {
+const KeyModal = ({ data }) => {
   const [show, setShow] = useState(false);
   const [private_key, setPrivateKey] = useState("");
   const [public_key, setPublicKey] = useState("");

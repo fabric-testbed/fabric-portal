@@ -11,7 +11,7 @@ const content = [
   { path: "name", label: "Type" },
 ]
 
-const generateKeyJson = (data) => {
+const generatePublicKey = (data) => {
   return JSON.stringify(`${data.name} ${data.public_key} ${data.comment}`, undefined, 4);
 }
 
@@ -27,7 +27,7 @@ const handleDelete = async (uuid) => {
   }
 };
 
-const KeyCard = ({ data, ...rest }) => {
+const KeyCard = ({ data }) => {
   return (
     <div className="card border-primary mr-2 mb-4 key-card">
       <div className="card-body">
@@ -43,7 +43,7 @@ const KeyCard = ({ data, ...rest }) => {
         <a
           className="btn btn-sm btn-outline-primary mt-2 mr-3"
           href={`data:text/json;charset=utf-8,${encodeURIComponent(
-            generateKeyJson(data)
+            generatePublicKey(data)
           )}`}
           download={`${data.comment}.json`}
         >

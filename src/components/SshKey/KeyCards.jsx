@@ -1,7 +1,7 @@
 import React from "react";
 import KeyCard from "./KeyCard";
 
-const KeyCards = ({ keys, ...rest }) => {
+const KeyCards = ({ keys }) => {
   return (
     <div className="row text-sm-size">
       {
