@@ -12,17 +12,11 @@ const content = [
 ]
 
 const generateKeyJson = (data) => {
-  const res_json = {
-    "name": data.comment,
-    "Create Date": data.created_on,
-    "Expiration Date": data.expired_on,
-    "Description": data.description,
-    "Fingerprint": data.fingerprint,
-    "Type": data.type,
-    "Public Key": data.public_key
-  };
+  const openssh = {
+    "public_openssh": `${data.name} ${data.public_key} ${data.comment}`
+  }
   
-  return JSON.stringify(res_json, undefined, 4);
+  return JSON.stringify(openssh, undefined, 4);
 }
 
 const handleDelete = async (uuid) => {
@@ -50,22 +44,6 @@ const KeyCard = ({ data, ...rest }) => {
             )
           })
         }
-        <div className="mb-2">
-          <b>Public Key</b>:
-          <a
-            data-toggle="collapse"
-            href={`#keyCardCollapse${data.key_uuid}`}
-            role="button"
-            aria-expanded="false"
-            aria-controls={`keyCardCollapse${data.key_uuid}`}
-            className="ml-2"
-          >
-            Click to view or hide the public key <i class="fa fa-key"></i>
-          </a>
-          <div className="collapse public-key-collapse" id={`keyCardCollapse${data.key_uuid}`}>
-            {data.public_key}
-          </div>
-        </div>
         <a
           className="btn btn-sm btn-outline-primary mt-2 mr-3"
           href={`data:text/json;charset=utf-8,${encodeURIComponent(
@@ -73,7 +51,7 @@ const KeyCard = ({ data, ...rest }) => {
           )}`}
           download={`${data.comment}.json`}
         >
-          Download
+          Download Public Key
         </a>
         <button
           className="btn btn-sm btn-outline-danger mt-2"
