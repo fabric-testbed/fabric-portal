@@ -43,7 +43,7 @@ const KeyCard = ({ data }) => {
         <a
           className="btn btn-sm btn-outline-primary mt-2 mr-3"
           href={`data:text/json;charset=utf-8,${encodeURIComponent(
-            generatePublicKey(data)
+            generatePublicKey(data).replace(/^"(.*)"$/, '$1')
           )}`}
           download={`${data.comment}.json`}
         >
