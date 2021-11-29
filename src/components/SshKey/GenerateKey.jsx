@@ -49,13 +49,55 @@ class GenerateKey extends Form {
     const { keyTypes, nameTooltip, descriptionTooltip, generatedKey } =  this.state;
     return (
       <div className="w-100">
-        { generatedKey && <span> {generatedKey.comment} - Key Successfully Generated.</span> }
+        { generatedKey!==null && <span> {generatedKey.comment} - Key Successfully Generated.</span> }
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true, nameTooltip)}
           {this.renderTextarea("description", "Description", true, descriptionTooltip)}
           {this.renderSelect("keyType", "Key Type", true, "", keyTypes)}
           {this.renderButton("Generate Key Pair")}
         </form>
+          <div
+            className={`modal ${generatedKey === {} && "fade"}`}
+            id={"generatedKeyModal"}
+            data-backdrop="static"
+            data-keyboard="false"
+            tabIndex="-1"
+            role="dialog"
+            aria-labelledby={"generatedKeyModal-title"}
+            aria-hidden="true"
+          >
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  Generated Key Pair
+                </h5>
+                <button className="btn btn-sm btn-outline-secondary" data-dismiss="modal" aria-label="Close">
+                  <i className="fa fa-times"></i>
+                </button>
+              </div>
+              <div className="modal-body">
+                <li>
+                  Public Key: <a href="#">your_key_name.pub</a>
+                  <button className="btn btn-outline-primary btn-sm ml-2">
+                    <i className="fa fa-download"></i>
+                  </button>
+                </li>
+                <li className="my-4">
+                  Private Key: <a href="#">your_key_name</a>
+                  <button className="btn btn-outline-primary btn-sm ml-2">
+                    <i className="fa fa-download"></i>
+                  </button>
+                </li>
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  The private key will be no longer accessible through the portal once you closed this window.
+                  Please download and keep your private keys safe.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
