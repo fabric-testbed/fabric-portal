@@ -4,14 +4,20 @@ import { useState, useEffect } from "react";
 
 const KeyModal = ({data}) => {
   const [show, setShow] = useState(false);
+  const [private_key, setPrivateKey] = useState("");
+  const [public_key, setPublicKey] = useState("");
 
   const handleClose = () => {
     window.location.reload();
     setShow(false);
+    setPrivateKey("");
+    setPublicKey("");
   }
 
   useEffect(() => {
-    setShow(Object.keys(data).length !== 0)
+    setShow(Object.keys(data).length !== 0);
+    setPrivateKey(data.private_openssh);
+    setPublicKey(data.public_openssh);
   }, [data]);
 
   return (
@@ -22,11 +28,10 @@ const KeyModal = ({data}) => {
         </Modal.Header>
         <Modal.Body>
           <li className="mb-3">
-            Private Key: 
-            {data.private_openssh}
+            Private Key:
             <a
               className="btn btn-sm btn-outline-primary ml-3"
-              href={`data:text/json;charset=utf-8,${encodeURIComponent(data.private_openssh)}`}
+              href={`data:text/json;charset=utf-8,${encodeURIComponent(private_key)}`}
               download={`private_key.json`}
             ><i className="fa fa-download"></i> Download </a>
           </li>
@@ -34,7 +39,7 @@ const KeyModal = ({data}) => {
             Public Key: 
             <a
               className="btn btn-sm btn-outline-primary ml-4"
-              href={`data:text/json;charset=utf-8,${encodeURIComponent(data.public_openssh)}`}
+              href={`data:text/json;charset=utf-8,${encodeURIComponent(public_key)}`}
               download={`public_key.json`}
             ><i className="fa fa-download"></i> Download </a>
           </li>

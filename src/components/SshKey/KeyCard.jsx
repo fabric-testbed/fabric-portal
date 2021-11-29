@@ -12,11 +12,7 @@ const content = [
 ]
 
 const generateKeyJson = (data) => {
-  const openssh = {
-    "public_openssh": `${data.name} ${data.public_key} ${data.comment}`
-  }
-  
-  return JSON.stringify(openssh, undefined, 4);
+  return JSON.stringify(`${data.name} ${data.public_key} ${data.comment}`, undefined, 4);
 }
 
 const handleDelete = async (uuid) => {
