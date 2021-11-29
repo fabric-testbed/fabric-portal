@@ -411,3 +411,7 @@ ul {
 .progressbar li.active:after {
   background-color: $success;
 }
+
+.public-key-collapse {
+  max-width: 25rem;
+}

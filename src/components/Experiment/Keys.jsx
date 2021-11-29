@@ -2,13 +2,9 @@ import React from "react";
 import Joi from "joi-browser";
 import KeyCards from "../SshKey/KeyCards";
 import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import Card from 'react-bootstrap/Card';
-import Dropdown from 'react-bootstrap/Dropdown'
-import Form from "../common/Form";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
-import { getKeys } from "../../services/fakeSSHKeys.js";
+// import { getKeys } from "../../services/fakeSSHKeys.js";
 import { getActiveKeys } from "../../services/sshKeyService";
 import paginate from "../../utils/paginate";
 import _ from "lodash";
@@ -16,8 +12,8 @@ import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
-    keys: getKeys(),
-    allKeys: getKeys(),
+    keys: [],
+    allKeys: [],
     pageSize: 3,
     currentPage: 1,
     searchQuery: "",
@@ -30,18 +26,18 @@ class Keys extends React.Component {
     upload_description: Joi.string().required().label("Description"),
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data: keys } = await getActiveKeys();
-  //     this.setState({ 
-  //       keys: keys,
-  //       allKeys: keys,
-  //     })
-  //   } catch (ex) {
-  //     toast.error("Failed to load keys. Please reload this page.");
-  //     console.log("Failed to load keys: " + ex.response.data);
-  //   }
-  // }
+  async componentDidMount() {
+    try {
+      const { data: keys } = await getActiveKeys();
+      this.setState({ 
+        keys: keys,
+        allKeys: keys,
+      })
+    } catch (ex) {
+      toast.error("Failed to load keys. Please reload this page.");
+      console.log("Failed to load keys: " + ex.response.data);
+    }
+  }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });

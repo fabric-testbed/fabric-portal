@@ -11,6 +11,20 @@ const content = [
   { path: "name", label: "Type" },
 ]
 
+const generateKeyJson = (data) => {
+  const res_json = {
+    "name": data.comment,
+    "Create Date": data.created_on,
+    "Expiration Date": data.expired_on,
+    "Description": data.description,
+    "Fingerprint": data.fingerprint,
+    "Type": data.type,
+    "Public Key": data.public_key
+  };
+  
+  return JSON.stringify(res_json, undefined, 4);
+}
+
 const handleDelete = async (uuid) => {
   try {
     await deleteKey(uuid);
@@ -22,7 +36,6 @@ const handleDelete = async (uuid) => {
     toast.error("Failed to delete the ssh key.");
   }
 };
-
 
 const KeyCard = ({ data, ...rest }) => {
   return (
@@ -47,14 +60,27 @@ const KeyCard = ({ data, ...rest }) => {
             aria-controls={`keyCardCollapse${data.key_uuid}`}
             className="ml-2"
           >
-            Click to view the public key <i class="fa fa-key"></i>
+            Click to view or hide the public key <i class="fa fa-key"></i>
           </a>
-          <div className="collapse" id={`keyCardCollapse${data.key_uuid}`}>
+          <div className="collapse public-key-collapse" id={`keyCardCollapse${data.key_uuid}`}>
             {data.public_key}
           </div>
         </div>
-        <a href="#" className="btn btn-sm btn-outline-primary mt-2 mr-3">Download</a>
-        <button href="#" className="btn btn-sm btn-outline-danger mt-2" onClick={() => handleDelete(data.key_uuid)}>Delete</button>
+        <a
+          className="btn btn-sm btn-outline-primary mt-2 mr-3"
+          href={`data:text/json;charset=utf-8,${encodeURIComponent(
+            generateKeyJson(data)
+          )}`}
+          download={`${data.comment}.json`}
+        >
+          Download
+        </a>
+        <button
+          className="btn btn-sm btn-outline-danger mt-2"
+          onClick={() => handleDelete(data.key_uuid)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
