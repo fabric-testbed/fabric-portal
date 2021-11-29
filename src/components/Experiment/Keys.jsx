@@ -3,13 +3,13 @@ import Joi from "joi-browser";
 import KeyCards from "../SshKey/KeyCards";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
-import { getKeys } from "../../services/fakeSSHKeys.js";
+// import { getKeys } from "../../services/fakeSSHKeys.js";
 import { getActiveKeys } from "../../services/sshKeyService";
 import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
-    keys: getKeys(),
+    keys: [],
   };
 
   schema = {
@@ -18,15 +18,15 @@ class Keys extends React.Component {
     upload_description: Joi.string().required().label("Description"),
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data: keys } = await getActiveKeys();
-  //     this.setState({ keys: keys });
-  //   } catch (ex) {
-  //     toast.error("Failed to load keys. Please reload this page.");
-  //     console.log("Failed to load keys: " + ex.response.data);
-  //   }
-  // }
+  async componentDidMount() {
+    try {
+      const { data: keys } = await getActiveKeys();
+      this.setState({ keys: keys });
+    } catch (ex) {
+      toast.error("Failed to load keys. Please reload this page.");
+      console.log("Failed to load keys: " + ex.response.data);
+    }
+  }
 
   render() {
     const { keys } = this.state;

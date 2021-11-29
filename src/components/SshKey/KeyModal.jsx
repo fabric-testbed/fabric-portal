@@ -23,6 +23,7 @@ const KeyModal = ({data}) => {
         <Modal.Body>
           <li className="mb-3">
             Private Key: 
+            {data.private_openssh}
             <a
               className="btn btn-sm btn-outline-primary ml-3"
               href={`data:text/json;charset=utf-8,${encodeURIComponent(data.private_openssh)}`}
