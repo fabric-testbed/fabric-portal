@@ -39,7 +39,7 @@ const handleDelete = async (uuid) => {
 
 const KeyCard = ({ data, ...rest }) => {
   return (
-    <div className="card border-primary w-45 mr-2">
+    <div className="card border-primary mr-2 mb-4 key-card">
       <div className="card-body">
         {
           content.map((row, index) => {

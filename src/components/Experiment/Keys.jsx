@@ -4,7 +4,7 @@ import KeyCards from "../SshKey/KeyCards";
 import InputGroup from "react-bootstrap/InputGroup";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
-// import { getKeys } from "../../services/fakeSSHKeys.js";
+import { getKeys } from "../../services/fakeSSHKeys.js";
 import { getActiveKeys } from "../../services/sshKeyService";
 import paginate from "../../utils/paginate";
 import _ from "lodash";
@@ -12,12 +12,7 @@ import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
-    keys: [],
-    allKeys: [],
-    pageSize: 3,
-    currentPage: 1,
-    searchQuery: "",
-    sortColumn: { path: "name", order: "asc" },
+    keys: getKeys(),
   };
 
   schema = {
@@ -26,71 +21,30 @@ class Keys extends React.Component {
     upload_description: Joi.string().required().label("Description"),
   };
 
-  async componentDidMount() {
-    try {
-      const { data: keys } = await getActiveKeys();
-      this.setState({ 
-        keys: keys,
-        allKeys: keys,
-      })
-    } catch (ex) {
-      toast.error("Failed to load keys. Please reload this page.");
-      console.log("Failed to load keys: " + ex.response.data);
-    }
-  }
-
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
-
-  handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
-  };
-
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
-  };
-
-  handleKeyGenerate = () => {
-
-  }
-
-  getPageData = () => {
-    const {
-      pageSize,
-      currentPage,
-      sortColumn,
-      searchQuery,
-      keys: allKeys,
-    } = this.state;
-
-    // filter -> sort -> paginate
-    let filtered = allKeys;
-    if (searchQuery) {
-      filtered = allKeys.filter((k) =>
-        k.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const keys = paginate(sorted, currentPage, pageSize);
-
-    return { totalCount: filtered.length, data: keys };
-  };
+  // async componentDidMount() {
+  //   try {
+  //     const { data: keys } = await getActiveKeys();
+  //     this.setState({ 
+  //       keys: keys,
+  //       allKeys: keys,
+  //     })
+  //   } catch (ex) {
+  //     toast.error("Failed to load keys. Please reload this page.");
+  //     console.log("Failed to load keys: " + ex.response.data);
+  //   }
+  // }
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { keys } = this.state;
 
     return (
       <div className="col-9" id="sshKeys">
         <h1>SSH Keys</h1>
         <div className="my-2">
-          Showing {totalCount} keys.
+          Showing {keys.length} keys.
         </div>
         <KeyCards
-          keys={data}
+          keys={keys}
         />
         <h3 className="my-4">Generate SSH Key Pair</h3>
         <GenerateKey />

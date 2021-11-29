@@ -3,14 +3,25 @@ import KeyCard from "./KeyCard";
 
 const KeyCards = ({ keys, ...rest }) => {
   return (
-    <div className="d-flex flex-row text-sm-size">
+    <div className="row text-sm-size">
       {
         keys.map((key, index) => {
           return (
-            <KeyCard
-              data={key}
-              key={`sshkey-card-${index}`}
-            />
+            index % 2 === 0 ? (
+              <div className="col">
+                <KeyCard
+                  data={key}
+                />
+              </div>
+            ): (
+              <div className="col">
+                <KeyCard
+                  data={key}
+                  key={`sshkey-card-${index}`}
+                />
+                <div class="w-100"></div>
+              </div>
+            )
           )
         })
       }
