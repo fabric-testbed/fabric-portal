@@ -175,7 +175,7 @@ export default class Graph extends Component {
               }
             },
             {
-              "selector": ".graphNVMe",
+              "selector": ".graphNVME",
               "style": {
                 "background-image": `${IconNVME}`,
                 "background-fit": "contain",
