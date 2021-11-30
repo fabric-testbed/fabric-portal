@@ -3,7 +3,7 @@ export default function parseSlice(slice) {
   const nodes = abqm.nodes;
   const links = abqm.links;
   // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
-  
+
   // links
   // class 'has' -> parent node
   // class 'connects' -> edge node + edge
@@ -123,6 +123,16 @@ export default function parseSlice(slice) {
         properties: { class: "Network Service", type: "NetworkService" },
       };
       elements.push(data);
+    } else if (node.Class === "NetworkService" && node.Type === "L2PTP") {
+      // Create NetworkService with type "L2P2P", port to port, no parent
+      data = {
+        id: node.id,
+        // label: `${node.id}.L2PTP`,
+        label: "L2PTP",
+        type: "roundrectangle",
+        properties: { class: "Network Service", type: "NetworkService" },
+      };
+      elements.push(data);
     }
   })
 
@@ -166,8 +176,8 @@ export default function parseSlice(slice) {
         generateConnectionPoint(data, link);
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
-        && objNodes[link.target].Type === "ServicePort"
-        && (["L2Bridge", "L2STS"].includes(objNodes[link.source].Type))){
+        && (objNodes[link.target].Type === "ServicePort" || objNodes[link.target].Type === "DedicatedPort" ) 
+        && (["L2Bridge", "L2STS", "L2PTP"].includes(objNodes[link.source].Type))){
           data = {
             parent: link.source,
             id: link.target,
@@ -178,8 +188,8 @@ export default function parseSlice(slice) {
           };
           elements.push(data);
         } else if (objNodes[link.target].Class === "NetworkService"
-        && objNodes[link.source].Type === "ServicePort"
-        && (["L2Bridge", "L2STS"].includes(objNodes[link.target].Type))){
+        && (objNodes[link.source].Type === "ServicePort" || objNodes[link.source].Type === "DedicatedPort")
+        && (["L2Bridge", "L2STS", "L2PTP"].includes(objNodes[link.target].Type))){
           data = {
             parent: link.target,
             id: link.source,
@@ -233,6 +243,5 @@ export default function parseSlice(slice) {
       cyElements.push({ data: el })
     }
   })
-  console.log(cyElements);
   return cyElements;
 }
