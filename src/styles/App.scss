@@ -407,3 +407,7 @@ ul {
 .progressbar li.active:after {
   background-color: $success;
 }
+
+.slice-viewer-container {
+  min-height: 82vh;
+}

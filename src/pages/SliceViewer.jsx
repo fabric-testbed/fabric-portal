@@ -114,7 +114,7 @@ export default class SliceViewer extends Component {
   
   render() {
     return(
-      <div className="mx-5 my-4">
+      <div className="mx-5 my-4 slice-viewer-container">
          <div className="d-flex flex-row justify-content-between">
             <h1>Slice Viewer</h1>
             <Link to="/experiments#slices">
@@ -179,15 +179,21 @@ export default class SliceViewer extends Component {
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
         /> */}
-        <Graph
-          className="align-self-end" elements={this.state.elements}
-          onNodeSelect={this.handleNodeSelect}
-        />
-        <DetailForm
-          data={this.state.selectedData}
-          // onNodeDelete={this.handleNodeDelete}
-          // onNodeUpdate={this.handleNodeUpdate}
-        />
+        {
+          this.state.elements.length > 0 &&
+          <Graph
+            className="align-self-end" elements={this.state.elements}
+            onNodeSelect={this.handleNodeSelect}
+          />
+        }
+        {
+          this.state.elements.length > 0 &&
+          <DetailForm
+            data={this.state.selectedData}
+            // onNodeDelete={this.handleNodeDelete}
+            // onNodeUpdate={this.handleNodeUpdate}
+          />
+        }
       </div>
      </div>
     )
