@@ -5,44 +5,44 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-// import { getSliceById } from "../services/fakeSlices.js";
-import { getSliceById } from "../services/orchestratorService.js";
+import { getSliceById } from "../services/fakeSlices.js";
+// import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
-    elements: [],
-    // elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slice_model"]),
+    // elements: [],
+    elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slice_model"]),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
 
-  async componentDidMount() {
-    // call credential manager to generate tokens 
-    // if nothing found in browser storage
-    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-      autoCreateTokens().then(async () => {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
-      });
-    } else {
-      // the token has been stored in the browser and is ready to be used.
-      try {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
-      } catch(err) {
-        console.log("Error in getting slice: " + err);
-        toast.error("Failed to load the slice. Please try again later.");
-        if (err.response.status === 401) {
-          // 401 Error: Provided token is not valid.
-          // refresh the token by calling credential manager refresh_token.
-          autoRefreshTokens();
-        }
-      }
-    }
-  }
+  // async componentDidMount() {
+  //   // call credential manager to generate tokens 
+  //   // if nothing found in browser storage
+  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //     autoCreateTokens().then(async () => {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slice_model"])})
+  //     });
+  //   } else {
+  //     // the token has been stored in the browser and is ready to be used.
+  //     try {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slice_model"])})
+  //     } catch(err) {
+  //       console.log("Error in getting slice: " + err);
+  //       toast.error("Failed to load the slice. Please try again later.");
+  //       if (err.response.status === 401) {
+  //         // 401 Error: Provided token is not valid.
+  //         // refresh the token by calling credential manager refresh_token.
+  //         autoRefreshTokens();
+  //       }
+  //     }
+  //   }
+  // }
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
