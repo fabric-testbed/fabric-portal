@@ -99,7 +99,7 @@ export default class Graph extends Component {
           elements={this.props.elements}
           layout={layout}
           zoom={0.85}
-          pan={ { x: 300, y: 175 } }
+          pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
           cy={(cy) => {this.cy = setCytoscape(cy)}}
           stylesheet={[
@@ -230,9 +230,9 @@ export default class Graph extends Component {
                 "height": 15,
                 "width": 15,
               }
-            },
-          ]}
-        />
+            },]
+        }
+      />
       </div>
     )
   }
