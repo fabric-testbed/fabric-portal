@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Cytoscape from 'cytoscape';
 // import edgehandles from 'cytoscape-edgehandles';
-import COSEBilkent from 'cytoscape-cose-bilkent';
 import FCose from 'cytoscape-fcose';
 // import compoundDragAndDrop from 'cytoscape-compound-drag-and-drop';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -18,7 +17,6 @@ import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-// Cytoscape.use(COSEBilkent);
 Cytoscape.use(FCose);
 // Cytoscape.use(compoundDragAndDrop);
 // Cytoscape.use(edgehandles);
@@ -62,7 +60,10 @@ export default class Graph extends Component {
   }
 
   savePNG = () => {
-    var png64 = this.cy.png();
+    var png64 = this.cy.png({
+      'bg': 'white',
+      'full': true,
+    });
     saveAs( png64, 'slice_viewer.png' );
   }
 
@@ -71,18 +72,7 @@ export default class Graph extends Component {
   }
 
   render() {
-    const layout = {
-      // name: 'cose-bilkent',
-      name: 'fcose'
-      // Called on `layoutready`
-      // ready: function () {
-      // },
-      // Called on `layoutstop`
-      // stop: function () {
-      // },
-      // animate: true,
-      // randomize: false,
-    };
+    const layout = {name: 'fcose'};
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -108,7 +98,7 @@ export default class Graph extends Component {
         <CytoscapeComponent
           elements={this.props.elements}
           layout={layout}
-          zoom={0.75}
+          zoom={0.85}
           pan={ { x: 300, y: 175 } }
           style={{ width: this.state.w, height: this.state.h }}
           cy={(cy) => {this.cy = setCytoscape(cy)}}
