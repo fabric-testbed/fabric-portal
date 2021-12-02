@@ -50,6 +50,7 @@ class User extends React.Component {
       await sleep(1000);
       const { data: people } = await getCurrentUser();
       this.setState({ people });
+      toast.success("You've successfully refreshed roles.");
     } catch (ex) {
       toast.error("Failed to refresh roles. Please try again.");
       console.log("Failed to refresh roles " + ex.response.data);
