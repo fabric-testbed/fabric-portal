@@ -114,6 +114,23 @@ class MyRoles extends React.Component {
                 )}
               </td>
             </tr>
+            <tr>
+              <td>
+                Active User
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 100, hide: 300 }}
+                  overlay={renderTooltip("fo-tooltip", "Users cannot access the Jupyterhub cluster until they are active members.")}
+                >
+                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                </OverlayTrigger>
+              </td>
+              <td className="text-center">
+                {this.renderRoleTableFields(
+                  people.roles.indexOf("Jupyterhub") > -1
+                )}
+              </td>
+            </tr>
           </tbody>
         </table>
         {
