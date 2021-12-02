@@ -116,7 +116,7 @@ class MyRoles extends React.Component {
             </tr>
             <tr>
               <td>
-                FABRIC Active User
+                Active User
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
@@ -127,7 +127,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("fabric-active-users") > -1
+                  people.roles.indexOf("Jupyterhub") > -1
                 )}
               </td>
             </tr>
