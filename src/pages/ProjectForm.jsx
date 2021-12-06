@@ -388,7 +388,7 @@ class projectForm extends Form {
                         <DeleteModal
                           name={"Delete Project"}
                           text={"Are you sure you want to delete the project? This process cannot be undone."}
-                          onDeleteProject={() => this.handleDeleteProject(that.state.data)}
+                          onDelete={() => this.handleDeleteProject(that.state.data)}
                         />
                       </td>
                     </tr>

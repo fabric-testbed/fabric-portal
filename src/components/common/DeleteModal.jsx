@@ -2,7 +2,7 @@ import React from "react";
 
 class DeleteModal extends React.Component {
   render() {
-    const { name, text, onDeleteProject } = this.props;
+    const { name, text, onDelete } = this.props;
     return (
       <div>
         <button
@@ -28,7 +28,7 @@ class DeleteModal extends React.Component {
               </div>
               <div className="modal-footer">
                 <button
-                  onClick={onDeleteProject}
+                  onClick={onDelete}
                   type="button"
                   className="btn btn-danger"
                   data-dismiss="modal"

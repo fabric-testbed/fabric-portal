@@ -1,4 +1,5 @@
 import React from "react";
+import DeleteModal from "../common/DeleteModal";
 import { deleteKey } from "../../services/sshKeyService";
 import { toast } from "react-toastify";
 
@@ -49,12 +50,11 @@ const KeyCard = ({ data }) => {
         >
           <i class="fa fa-key"></i> Download Public Key
         </a>
-        <button
-          className="btn btn-sm btn-outline-danger mt-2"
-          onClick={() => handleDelete(data.key_uuid)}
-        >
-          Delete
-        </button>
+        <DeleteModal
+          name={"Delete SSH Key"}
+          text={"Are you sure you want to delete the key? This process cannot be undone."}
+          onDelete={() => handleDelete(data.key_uuid)}
+        />
       </div>
     </div>
   );
