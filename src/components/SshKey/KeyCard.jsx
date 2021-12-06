@@ -41,9 +41,9 @@ const KeyCard = ({ data }) => {
             )
           })
         }
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row mt-2">
           <a
-            className="btn btn-sm btn-primary mt-2 mr-3"
+            className="btn btn-sm btn-primary mr-3"
             href={`data:text/json;charset=utf-8,${encodeURIComponent(
               generatePublicKey(data).replace(/^"(.*)"$/, '$1')
             )}`}

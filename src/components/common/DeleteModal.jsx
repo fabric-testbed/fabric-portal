@@ -11,7 +11,7 @@ class DeleteModal extends React.Component {
           data-toggle="modal"
           data-target="#deleteModal"
         >
-          {name}
+          <i class="fa fa-trash"></i> {name}
         </button>
         <div
           className="modal fade"
