@@ -5,7 +5,6 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-// import { getSliceById } from "../services/fakeSlices.js";
 import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 
@@ -14,7 +13,6 @@ import { toast } from "react-toastify";
 export default class SliceViewer extends Component { 
   state = {
     elements: [],
-    // elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slice_model"]),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
@@ -116,7 +114,7 @@ export default class SliceViewer extends Component {
   
   render() {
     return(
-      <div className="mx-5 my-4">
+      <div className="mx-5 my-4 slice-viewer-container">
          <div className="d-flex flex-row justify-content-between">
             <h1>Slice Viewer</h1>
             <Link to="/experiments#slices">
@@ -181,15 +179,21 @@ export default class SliceViewer extends Component {
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
         /> */}
-        <Graph
-          className="align-self-end" elements={this.state.elements}
-          onNodeSelect={this.handleNodeSelect}
-        />
-        <DetailForm
-          data={this.state.selectedData}
-          // onNodeDelete={this.handleNodeDelete}
-          // onNodeUpdate={this.handleNodeUpdate}
-        />
+        {
+          this.state.elements.length > 0 &&
+          <Graph
+            className="align-self-end" elements={this.state.elements}
+            onNodeSelect={this.handleNodeSelect}
+          />
+        }
+        {
+          this.state.elements.length > 0 &&
+          <DetailForm
+            data={this.state.selectedData}
+            // onNodeDelete={this.handleNodeDelete}
+            // onNodeUpdate={this.handleNodeUpdate}
+          />
+        }
       </div>
      </div>
     )
