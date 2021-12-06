@@ -41,20 +41,22 @@ const KeyCard = ({ data }) => {
             )
           })
         }
-        <a
-          className="btn btn-sm btn-outline-primary mt-2 mr-3"
-          href={`data:text/json;charset=utf-8,${encodeURIComponent(
-            generatePublicKey(data).replace(/^"(.*)"$/, '$1')
-          )}`}
-          download={`${data.comment}.json`}
-        >
-          <i class="fa fa-key"></i> Download Public Key
-        </a>
-        <DeleteModal
-          name={"Delete SSH Key"}
-          text={"Are you sure you want to delete the key? This process cannot be undone."}
-          onDelete={() => handleDelete(data.key_uuid)}
-        />
+        <div className="d-flex flex-row">
+          <a
+            className="btn btn-sm btn-primary mt-2 mr-3"
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(
+              generatePublicKey(data).replace(/^"(.*)"$/, '$1')
+            )}`}
+            download={`${data.comment}.json`}
+          >
+            <i class="fa fa-key"></i> Download Public Key
+          </a>
+          <DeleteModal
+            name={"Delete SSH Key"}
+            text={"Are you sure you want to delete the key? This process cannot be undone."}
+            onDelete={() => handleDelete(data.key_uuid)}
+          />
+        </div>
       </div>
     </div>
   );
