@@ -37,7 +37,7 @@ class Slices extends React.Component {
         this.setState({ slices: data["value"]["slices"] });
       } catch(err) {
         console.log("Error in getting slices: " + err);
-        toast.error("Failed to load slices. Please try again later.");
+        toast.error("Failed to load slices. Please re-login and try.");
         if (err.response.status === 401) {
           // 401 Error: Provided token is not valid.
           // refresh the token by calling credential manager refresh_token.

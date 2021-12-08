@@ -7,7 +7,7 @@ class DeleteModal extends React.Component {
       <div>
         <button
           type="button"
-          className="btn btn-sm btn-danger"
+          className="btn btn-sm btn-outline-danger"
           data-toggle="modal"
           data-target="#deleteModal"
         >

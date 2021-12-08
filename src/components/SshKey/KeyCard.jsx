@@ -1,15 +1,16 @@
 import React from "react";
 import DeleteModal from "../common/DeleteModal";
 import { deleteKey } from "../../services/sshKeyService";
+import userTimezone from "../../utils/userTimezone";
 import { toast } from "react-toastify";
 
 const content = [
-  { path: "comment", label: "Name" },
-  { path: "created_on", label: "Create Date" },
-  { path: "expires_on", label: "Expiration Date" },
-  { path: "description", label: "Description" },
-  { path: "fingerprint", label: "Fingerprint" },
-  { path: "name", label: "Type" },
+  { path: "comment", label: "Name", parse: false },
+  { path: "created_on", label: "Create Date", parse: true },
+  { path: "expires_on", label: "Expiration Date", parse: true },
+  { path: "description", label: "Description", parse: false },
+  { path: "fingerprint", label: "Fingerprint", parse: false },
+  { path: "name", label: "Type", parse: false },
 ]
 
 const generatePublicKey = (data) => {
@@ -36,14 +37,14 @@ const KeyCard = ({ data }) => {
           content.map((row, index) => {
             return (
               <div className="mb-2" key={`${row.key_uuid}-key-card-${index}`}>
-                <b>{row.label}</b>: {data[row.path]}
+                <b>{row.label}</b>: {row.parse ? userTimezone(data[row.path]) : data[row.path]}
               </div>
             )
           })
         }
         <div className="d-flex flex-row mt-2">
           <a
-            className="btn btn-sm btn-primary mr-3"
+            className="btn btn-sm btn-outline-primary mr-3"
             href={`data:text/json;charset=utf-8,${encodeURIComponent(
               generatePublicKey(data).replace(/^"(.*)"$/, '$1')
             )}`}
