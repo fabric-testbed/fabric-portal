@@ -73,6 +73,7 @@ class UploadKey extends Form {
 
     return (
       <div className="w-100">
+        <h3 className="my-4">Upload Public Key</h3>
          {
           maxSliver && maxBastion ? 
             <div className="alert alert-warning" role="alert">

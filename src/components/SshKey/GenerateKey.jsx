@@ -66,6 +66,7 @@ class GenerateKey extends Form {
     const { maxSliver, maxBastion } = this.props;
     return (
       <div className="w-100">
+        <h3 className="my-4">Generate SSH Key Pair</h3>
         {
           maxSliver && maxBastion ? 
             <div className="alert alert-warning" role="alert">
