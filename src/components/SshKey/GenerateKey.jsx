@@ -34,9 +34,9 @@ class GenerateKey extends Form {
       toast.error("Failed to generate ssh key pairs.");
     }
   };
-  
+
   schema = {
-    name: Joi.string().required().min(5).max(100).label("Name"),
+    name: Joi.string().regex(/^\S+$/).required().min(5).max(100).label("Name"),
     description: Joi.string().required().min(5).max(255).label("Description"),
     keyType: Joi.string().required().label("Key Type"),
   };

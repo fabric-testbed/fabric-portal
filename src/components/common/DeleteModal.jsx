@@ -11,12 +11,12 @@ class DeleteModal extends React.Component {
           data-toggle="modal"
           data-target="#deleteModal"
         >
-          <i class="fa fa-trash"></i> {name}
+          <i className="fa fa-trash"></i> {name}
         </button>
         <div
           className="modal fade"
           id="deleteModal"
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby="deleteModalTitle"
           aria-hidden="true"

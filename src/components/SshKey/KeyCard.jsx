@@ -51,7 +51,7 @@ const KeyCard = ({ data, disableKeyDelete }) => {
             )}`}
             download={`${data.comment}.json`}
           >
-            <i class="fa fa-key"></i> Download Public Key
+            <i className="fa fa-key"></i> Download Public Key
           </a>
           {
             !disableKeyDelete && 

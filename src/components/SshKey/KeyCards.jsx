@@ -8,21 +8,19 @@ const KeyCards = ({ keys, disableKeyDelete }) => {
         keys.map((key, index) => {
           return (
             index % 2 === 0 ? (
-              <div className="col">
+              <div className="col" key={`sshkey-card-${index}`}>
                 <KeyCard
                   data={key}
                   disableKeyDelete={disableKeyDelete}
-                  key={`sshkey-card-${index}`}
                 />
               </div>
             ): (
-              <div className="col">
+              <div className="col" key={`sshkey-card-${index}`}>
                 <KeyCard
                   data={key}
                   disableKeyDelete={disableKeyDelete}
-                  key={`sshkey-card-${index}`}
                 />
-                <div class="w-100"></div>
+                <div className="w-100"></div>
               </div>
             )
           )
