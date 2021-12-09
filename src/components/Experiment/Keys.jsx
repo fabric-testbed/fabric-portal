@@ -1,4 +1,6 @@
 import React from "react";
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import KeyCards from "../SshKey/KeyCards";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
@@ -25,23 +27,25 @@ class Keys extends React.Component {
  getPageData = () => {
     const { keys } = this.state;
 
-    let bastionKeys = keys.filter(k => k.fabric_key_type === "bastion");
     let sliverKeys = keys.filter(k => k.fabric_key_type === "sliver");
-
+    let bastionKeys = keys.filter(k => k.fabric_key_type === "bastion");
 
     return { bastionKeys, sliverKeys };
   };
   render() {
-    const { keys } = this.state;
     const { bastionKeys, sliverKeys } = this.getPageData();
 
     return (
       <div className="col-9" id="sshKeys">
         <h1>SSH Keys</h1>
-        <div className="my-2">
-          Showing {bastionKeys.length} bastion keys and {sliverKeys.length} sliver keys.
-        </div>
-        <KeyCards keys={keys}/>
+        <Tabs defaultActiveKey="sliver" id="ssh-keys-tab" className="mt-4 mb-3">
+          <Tab eventKey="sliver" title={`Sliver (${sliverKeys.length})`}>
+            <KeyCards keys={sliverKeys}/>
+          </Tab>
+          <Tab eventKey="bastion" title={`Bastion (${bastionKeys.length})`}>
+            <KeyCards keys={bastionKeys}/>
+          </Tab>
+        </Tabs>
         <h3 className="my-4">Generate SSH Key Pair</h3>
         <GenerateKey />
         <h3 className="my-4">Upload Public Key</h3>
