@@ -29,7 +29,8 @@ class User extends React.Component {
     try {
       const { data: user } = await getWhoAmI();
       const { data: people } = await getCurrentUser();
-      this.setState({ user, people });
+      const { data: keys } = await getActiveKeys();
+      this.setState({ user, people, keys });
     } catch (ex) {
       toast.error("Failed to load user information. Please reload this page.");
       console.log("Failed to load user information: " + ex.response.data);
@@ -83,6 +84,7 @@ class User extends React.Component {
             onRoleRefresh={this.handleRoleRefresh}
             sliverKeys={sliverKeys}
             bastionKeys={bastionKeys}
+            disableKeyDelete={true}
           />
         </div>
       </div>

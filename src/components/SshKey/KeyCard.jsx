@@ -30,7 +30,7 @@ const handleDelete = async (uuid) => {
   }
 };
 
-const KeyCard = ({ data }) => {
+const KeyCard = ({ data, disableKeyDelete }) => {
   return (
     <div className="card border-primary mr-2 mb-4 key-card">
       <div className="card-body">
@@ -53,11 +53,14 @@ const KeyCard = ({ data }) => {
           >
             <i class="fa fa-key"></i> Download Public Key
           </a>
-          <DeleteModal
-            name={"Delete SSH Key"}
-            text={"Are you sure you want to delete the key? This process cannot be undone."}
-            onDelete={() => handleDelete(data.key_uuid)}
-          />
+          {
+            !disableKeyDelete && 
+            <DeleteModal
+              name={"Delete SSH Key"}
+              text={"Are you sure you want to delete the key? This process cannot be undone."}
+              onDelete={() => handleDelete(data.key_uuid)}
+            />
+          }
         </div>
       </div>
     </div>

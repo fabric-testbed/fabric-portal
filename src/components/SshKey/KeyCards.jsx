@@ -1,7 +1,7 @@
 import React from "react";
 import KeyCard from "./KeyCard";
 
-const KeyCards = ({ keys }) => {
+const KeyCards = ({ keys, disableKeyDelete }) => {
   return (
     <div className="row text-sm-size">
       {
@@ -11,12 +11,15 @@ const KeyCards = ({ keys }) => {
               <div className="col">
                 <KeyCard
                   data={key}
+                  disableKeyDelete={disableKeyDelete}
+                  key={`sshkey-card-${index}`}
                 />
               </div>
             ): (
               <div className="col">
                 <KeyCard
                   data={key}
+                  disableKeyDelete={disableKeyDelete}
                   key={`sshkey-card-${index}`}
                 />
                 <div class="w-100"></div>
