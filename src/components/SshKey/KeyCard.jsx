@@ -1,7 +1,7 @@
 import React from "react";
 import DeleteModal from "../common/DeleteModal";
 import { deleteKey } from "../../services/sshKeyService";
-import userTimezone from "../../utils/userTimezone";
+import toLocaleTime from "../../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
 const content = [
@@ -10,7 +10,8 @@ const content = [
   { path: "expires_on", label: "Expiration Date", parse: true },
   { path: "description", label: "Description", parse: false },
   { path: "fingerprint", label: "Fingerprint", parse: false },
-  { path: "name", label: "Type", parse: false },
+  { path: "ssh_key_type", label: "SSH Key Type", parse: false },
+  { path: "fabric_key_type", label: "FABRIC Key Type", parse: false },
 ]
 
 const generatePublicKey = (data) => {
@@ -37,7 +38,7 @@ const KeyCard = ({ data }) => {
           content.map((row, index) => {
             return (
               <div className="mb-2" key={`${row.key_uuid}-key-card-${index}`}>
-                <b>{row.label}</b>: {row.parse ? userTimezone(data[row.path]) : data[row.path]}
+                <b>{row.label}</b>: {row.parse ? toLocaleTime(data[row.path]) : data[row.path]}
               </div>
             )
           })
