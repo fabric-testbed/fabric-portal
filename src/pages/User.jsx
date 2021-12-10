@@ -85,6 +85,7 @@ class User extends React.Component {
             sliverKeys={sliverKeys}
             bastionKeys={bastionKeys}
             disableKeyDelete={true}
+            styleProp={"col-9"}
           />
         </div>
       </div>
