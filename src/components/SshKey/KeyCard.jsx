@@ -11,7 +11,6 @@ const content = [
   { path: "description", label: "Description", parse: false },
   { path: "fingerprint", label: "Fingerprint", parse: false },
   { path: "ssh_key_type", label: "SSH Key Type", parse: false },
-  { path: "fabric_key_type", label: "FABRIC Key Type", parse: false },
 ]
 
 const generatePublicKey = (data) => {
@@ -32,7 +31,7 @@ const handleDelete = async (uuid) => {
 
 const KeyCard = ({ data, disableKeyDelete }) => {
   return (
-    <div className="card border-primary mr-2 mb-4 key-card">
+    <div className="card border-primary mr-1 mb-4 key-card">
       <div className="card-body">
         {
           content.map((row, index) => {

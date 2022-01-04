@@ -16,6 +16,9 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
           }
         </Tab>
         <Tab eventKey="bastion" title={`Bastion (${bastionKeys.length})`}>
+          <div class="alert alert-info" role="alert">
+            <b>Bastion login</b>: {localStorage.getItem("bastionLogin")}
+          </div>
           {
             bastionKeys.length > 0 ? 
             <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :

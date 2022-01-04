@@ -81,8 +81,9 @@ class Header extends React.Component {
     // remove id_token and refresh_token stored in browser.
     localStorage.removeItem("idToken");
     localStorage.removeItem("refreshToken");
-    // remove stored user ID got from UIS whoami.
+    // remove stored user ID and bastion login got from UIS whoami.
     localStorage.removeItem("userID");
+    localStorage.removeItem("bastionLogin");
     // remove old user status stored in browser.
     localStorage.removeItem("userStatus");
     // nginx handle logout url.
