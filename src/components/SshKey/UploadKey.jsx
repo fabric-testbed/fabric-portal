@@ -2,6 +2,7 @@ import Joi from "joi-browser";
 import Form from "../common/Form";
 
 import { uploadPublicKey } from "../../services/sshKeyService";
+import { guideToGenerateFabricCompliantKey } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 
 class UploadKey extends Form {
@@ -74,6 +75,17 @@ class UploadKey extends Form {
     return (
       <div className="w-100">
         <h3 className="my-4">Upload Public Key</h3>
+          <div class="alert alert-info" role="alert">
+            Please follow 
+            <a
+              href={guideToGenerateFabricCompliantKey}
+              target="_blank"
+              rel="noreferrer"
+            >
+              this guide
+            </a>
+            to to generate FABRIC-compliant keys. We accept keys in OpenSSH key format
+          </div>
          {
           maxSliver && maxBastion ? 
             <div className="alert alert-warning" role="alert">
