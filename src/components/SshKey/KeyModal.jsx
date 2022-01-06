@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from "react";
 
-const KeyModal = ({ data }) => {
+const KeyModal = ({ data, name }) => {
   const [show, setShow] = useState(false);
   const [private_key, setPrivateKey] = useState("");
   const [public_key, setPublicKey] = useState("");
@@ -31,7 +31,7 @@ const KeyModal = ({ data }) => {
             <a
               className="btn btn-sm btn-outline-primary ml-3"
               href={`data:text/json;charset=utf-8,${encodeURIComponent(private_key)}`}
-              download={`private_key.json`}
+              download={`${name}`}
             ><i className="fa fa-download"></i> Download </a>
           </li>
           <li className="mb-3">
@@ -39,7 +39,7 @@ const KeyModal = ({ data }) => {
             <a
               className="btn btn-sm btn-outline-primary ml-4"
               href={`data:text/json;charset=utf-8,${encodeURIComponent(public_key)}`}
-              download={`public_key.json`}
+              download={`${name}.pub`}
             ><i className="fa fa-download"></i> Download </a>
           </li>
           <div className="alert alert-warning" role="alert">

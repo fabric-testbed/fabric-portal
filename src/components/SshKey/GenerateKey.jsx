@@ -62,7 +62,7 @@ class GenerateKey extends Form {
   }
 
   render() {
-    const { nameTooltip, descriptionTooltip, generatedKey } =  this.state;
+    const { nameTooltip, descriptionTooltip, generatedKey, data } =  this.state;
     const { maxSliver, maxBastion } = this.props;
     return (
       <div className="w-100">
@@ -91,7 +91,7 @@ class GenerateKey extends Form {
                   You can still generate sliver keys.
                 </div>
               }
-              <KeyModal data={generatedKey} />
+              <KeyModal data={generatedKey} name={data.name} />
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name", true, nameTooltip)}
                 {this.renderTextarea("description", "Description", true, descriptionTooltip)}
