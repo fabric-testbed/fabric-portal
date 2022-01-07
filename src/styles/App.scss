@@ -448,8 +448,9 @@ ul {
 
 /* Tabs style */
 .tab-list {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #dee2e6;
   padding-left: 0;
+  margin-bottom: 0;
 }
 
 .tab-list-item {
@@ -457,10 +458,13 @@ ul {
   list-style: none;
   margin-bottom: -1px;
   padding: 0.5rem 0.75rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
 }
 
 .tab-list-active {
+  font-weight: 600;
   background-color: white;
-  border: solid #ccc;
+  border: solid #dee2e6;
   border-width: 1px 1px 0 1px;
 }
