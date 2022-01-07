@@ -76,15 +76,15 @@ class UploadKey extends Form {
       <div className="w-100">
         <h3 className="my-4">Upload Public Key</h3>
           <div class="alert alert-info" role="alert">
-            Please follow 
+            Please follow &nbsp;
             <a
               href={guideToGenerateFabricCompliantKey}
               target="_blank"
               rel="noreferrer"
             >
               this guide
-            </a>
-            to to generate FABRIC-compliant keys. We accept keys in OpenSSH key format
+            </a> &nbsp;
+            to generate FABRIC-compliant keys. We accept keys in OpenSSH key format.
           </div>
          {
           maxSliver && maxBastion ? 

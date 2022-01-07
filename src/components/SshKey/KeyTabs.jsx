@@ -1,30 +1,32 @@
 import React from "react";
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+// import Tabs from 'react-bootstrap/Tabs';
+// import Tab from 'react-bootstrap/Tab';
+import Tabs from "../common/Tabs";
+import Tab from "../common/Tab";
 import KeyCards from "./KeyCards";
 
 const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
   return (
     <div className={styleProp}>
-      <h1>SSH Keys</h1>
-      <Tabs defaultActiveKey="sliver" id="ssh-keys-tab" className="mt-4 mb-3">
-        <Tab eventKey="sliver" title={`Sliver (${sliverKeys.length})`}>
+      <h1 className="mb-3">SSH Keys</h1>
+      <Tabs>
+        <div label="Sliver">
           {
             sliverKeys.length > 0 ? 
             <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} /> :
-            <span>You have no sliver key. Please try to generate or upload.</span>
+            <div className="mb-2">You have no sliver key. Please try to generate or upload.</div>
           }
-        </Tab>
-        <Tab eventKey="bastion" title={`Bastion (${bastionKeys.length})`}>
+        </div>
+        <div label="Bastion">
           <div class="alert alert-info" role="alert">
             <b>Bastion login</b>: {localStorage.getItem("bastionLogin")}
           </div>
           {
             bastionKeys.length > 0 ? 
             <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :
-            <span>You have no bastion key. Please try to generate or upload.</span>
+            <div className="mb-2">You have no bastion key. Please try to generate or upload.</div>
           }
-        </Tab>
+        </div>
       </Tabs>
     </div>
   );
