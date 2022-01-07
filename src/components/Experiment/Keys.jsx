@@ -2,25 +2,25 @@ import React from "react";
 import KeyTabs from "../SshKey/KeyTabs";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
-import { getKeys } from "../../services/fakeSSHKeys.js";
+// import { getKeys } from "../../services/fakeSSHKeys.js";
 import { getActiveKeys } from "../../services/sshKeyService";
 import { sliverKeyLimit, bastionKeyLimit } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
-    keys: getKeys(),
+    keys: [],
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data: keys } = await getActiveKeys();
-  //     this.setState({ keys: keys });
-  //   } catch (ex) {
-  //     toast.error("Failed to load keys. Please reload this page.");
-  //     console.log("Failed to load keys: " + ex.response.data);
-  //   }
-  // }
+  async componentDidMount() {
+    try {
+      const { data: keys } = await getActiveKeys();
+      this.setState({ keys: keys });
+    } catch (ex) {
+      toast.error("Failed to load keys. Please reload this page.");
+      console.log("Failed to load keys: " + ex.response.data);
+    }
+  }
 
  getKeysData = () => {
     const { keys } = this.state;
