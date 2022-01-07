@@ -5,11 +5,12 @@ class Tab extends Component {
   static propTypes = {
     activeTab: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
   };
 
   onClick = () => {
-    const { label, onClick } = this.props;
+    const { label, number, onClick } = this.props;
     onClick(label);
   }
 
@@ -19,6 +20,7 @@ class Tab extends Component {
       props: {
         activeTab,
         label,
+        number
       },
     } = this;
 
@@ -33,7 +35,7 @@ class Tab extends Component {
         className={className}
         onClick={onClick}
       >
-        {label}
+        <span>{label}</span><span className="tab-label-number">{number}</span>
       </li>
     );
   }

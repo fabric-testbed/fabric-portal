@@ -432,8 +432,7 @@ ul {
   padding: 1rem 0.5rem 0 0.5rem;
 }
 
-#ssh-keys-tabs-tab-sliver::after {
-  content: "10";
+.tab-label-number {
   display: inline-block;
   margin-left: 0.5rem;
   min-width: 20px;
