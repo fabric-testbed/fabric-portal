@@ -48,7 +48,7 @@ const KeyCard = ({ data, disableKeyDelete }) => {
             href={`data:text/json;charset=utf-8,${encodeURIComponent(
               generatePublicKey(data).replace(/^"(.*)"$/, '$1')
             )}`}
-            download={`${data.comment}.json`}
+            download={`${data.comment}.pub`}
           >
             <i className="fa fa-key"></i> Download Public Key
           </a>
