@@ -83,8 +83,7 @@ class UploadKey extends Form {
               rel="noreferrer"
             >
               this guide
-            </a> &nbsp;
-            to generate FABRIC-compliant keys. We accept keys in OpenSSH key format.
+            </a> to generate FABRIC-compliant keys. We accept keys in OpenSSH key format.
           </div>
          {
           maxSliver && maxBastion ? 

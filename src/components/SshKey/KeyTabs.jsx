@@ -11,7 +11,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
           {
             sliverKeys.length > 0 ? 
             <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} /> :
-            <div className="mb-2">You have no sliver key. Please try to generate or upload.</div>
+            <div className="alert alert-warning" role="alert">You have no sliver key. Please try to generate or upload.</div>
           }
         </div>
         <div label="Bastion" number={bastionKeys.length}>
@@ -21,7 +21,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
           {
             bastionKeys.length > 0 ? 
             <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :
-            <div className="mb-2">You have no bastion key. Please try to generate or upload.</div>
+            <div className="alert alert-warning" role="alert">You have no bastion key. Please try to generate or upload.</div>
           }
         </div>
       </Tabs>
