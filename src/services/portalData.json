@@ -14,6 +14,7 @@
   "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
   "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
   "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
+  "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
   "projectLeadRequest": {
     "id": "request-project-lead-modal",
     "title": "Request to be Project Lead",

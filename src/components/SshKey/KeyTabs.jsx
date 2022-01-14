@@ -1,11 +1,25 @@
 import React from "react";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
+import CopyButton from "../common/CopyButton";
 
 const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
   return (
     <div className={styleProp}>
       <h1 className="mb-3">SSH Keys</h1>
+      <div class="alert alert-primary" role="alert">
+        Please consult &nbsp;
+        <a
+          href="https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          this guide
+        </a>&nbsp;
+        to login to your VMs via bastion hosts.
+        <span className="ml-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
+        <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
+      </div>
       <Tabs>
         <div label="Sliver" number={sliverKeys.length}>
           {
@@ -15,9 +29,6 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
           }
         </div>
         <div label="Bastion" number={bastionKeys.length}>
-          <div class="alert alert-info" role="alert">
-            <b>Bastion login</b>: {localStorage.getItem("bastionLogin")}
-          </div>
           {
             bastionKeys.length > 0 ? 
             <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :
