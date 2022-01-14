@@ -2,6 +2,7 @@ import React from "react";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
 import CopyButton from "../common/CopyButton";
+import { guideToLoginToFabricVMs } from "../../services/portalData.json";
 
 const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
   return (
@@ -10,7 +11,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
       <div class="alert alert-primary" role="alert">
         Please consult &nbsp;
         <a
-          href="https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/"
+          href={guideToLoginToFabricVMs}
           target="_blank"
           rel="noreferrer"
         >
