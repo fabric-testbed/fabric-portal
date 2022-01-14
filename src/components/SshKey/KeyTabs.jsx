@@ -17,7 +17,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
         >
           this guide
         </a>&nbsp;
-        to login to your VMs via bastion hosts.
+        to login to your VMs via bastion hosts. <br></br>
         <span className="ml-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
         <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
       </div>
