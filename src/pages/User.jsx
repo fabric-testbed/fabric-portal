@@ -2,35 +2,35 @@ import React from "react";
 import SideNav from "../components/common/SideNav";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
-// import MessageCenter from "../components/UserProfile/MessageCenter";
-// import Keys from "../components/UserProfile/Keys";
+import KeyTabs from "../components/SshKey/KeyTabs";
 import { toast } from "react-toastify";
 
 import sleep from "../utils/sleep";
 
 import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser, refreshRoles } from "../services/prPeopleService.js";
+import { getActiveKeys } from "../services/sshKeyService";
 
 class User extends React.Component {
   state = {
     SideNavItems: [
       { name: "ACCOUNT INFORMATION", active: true },
       { name: "MY ROLES & PROJECTS", active: false },
-      // { name: "MESSAGE CENTER", active: false },
-      // { name: "MY SSH KEYS", active: false },
+      { name: "MY SSH KEYS", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    // componentNames: [AccountInfo, MyRoles, Keys],
-    componentNames: [AccountInfo, MyRoles],
+    componentNames: [AccountInfo, MyRoles, KeyTabs],
+    keys: [],
   };
 
   async componentDidMount(){
     try {
       const { data: user } = await getWhoAmI();
       const { data: people } = await getCurrentUser();
-      this.setState({ user, people });
+      const { data: keys } = await getActiveKeys();
+      this.setState({ user, people, keys });
     } catch (ex) {
       toast.error("Failed to load user information. Please reload this page.");
       console.log("Failed to load user information: " + ex.response.data);
@@ -57,8 +57,19 @@ class User extends React.Component {
     }
   }
 
+  getKeysData = () => {
+    const { keys } = this.state;
+
+    let sliverKeys = keys.filter(k => k.fabric_key_type === "sliver");
+    let bastionKeys = keys.filter(k => k.fabric_key_type === "bastion");
+
+    return { sliverKeys, bastionKeys };
+  };
+
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
+    const { user, people } = this.state;
+    const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
       <div className="container">
@@ -68,9 +79,13 @@ class User extends React.Component {
             handleChange={this.handleChange}
           />
           <TagName
-            user={this.state.user}
-            people={this.state.people}
+            user={user}
+            people={people}
             onRoleRefresh={this.handleRoleRefresh}
+            sliverKeys={sliverKeys}
+            bastionKeys={bastionKeys}
+            disableKeyDelete={true}
+            styleProp={"col-9"}
           />
         </div>
       </div>

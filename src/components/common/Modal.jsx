@@ -13,7 +13,7 @@ class Modal extends React.Component {
         <div
           className="modal fade"
           id={id}
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby={`${id}-title`}
           aria-hidden="true"
