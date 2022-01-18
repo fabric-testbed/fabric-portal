@@ -13,7 +13,7 @@
   "jupyterHubLinkAlpha": "https://jupyter-beta.fabric-testbed.net/",
   "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
   "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
-  "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
+  "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
   "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
   "projectLeadRequest": {
     "id": "request-project-lead-modal",
