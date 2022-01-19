@@ -1,13 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
 import CopyButton from "../common/CopyButton";
 import { guideToLoginToFabricVMs } from "../../services/portalData.json";
 
-const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp }) => {
+const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent }) => {
   return (
     <div className={styleProp}>
-      <h1 className="mb-3">SSH Keys</h1>
+      {
+        parent === "Keys" && <h1 className="mb-3">SSH Keys</h1>
+      }
+      {
+        parent === "UserProfile" &&   
+        <div className="d-flex flex-row justify-content-between">
+          <h1 className="mb-3">SSH Keys</h1>
+          <Link to="/experiments#sshKeys">
+            <button
+              className="btn btn-sm btn-outline-primary my-3"
+            >
+              <i className="fa fa-sign-in mr-2"></i>
+              Manage SSH Keys
+            </button>
+          </Link>
+        </div>
+      }
       <div class="alert alert-primary" role="alert">
         Please consult &nbsp;
         <a

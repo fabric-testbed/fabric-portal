@@ -15,7 +15,7 @@ import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
-import toLocaleTime from "../../utils/toLocaleTime";
+import toLocaleTime from "../utils/toLocaleTime";
 
 import {
   getProject,
