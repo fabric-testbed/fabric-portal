@@ -62,7 +62,8 @@ class projectForm extends Form {
     members: [],
     ownerSearchInput: "",
     memberSearchInput: "",
-    inputQuery: "",
+    poQuery: "",
+    pmQuery: "",
   };
 
   schema = {
@@ -182,8 +183,13 @@ class projectForm extends Form {
     }
   };
 
-  handleInputChange = (input) => {
-    this.setState({ inputQuery: input });
+  handleInputChange = (input, type) => {
+    if (type === "po") {
+      this.setState({ poQuery: input });
+    }
+    if (type === "pm") {
+      this.setState({ pmQuery: input });
+    }
   }
 
   handleSearch = async (value) => {
@@ -320,7 +326,8 @@ class projectForm extends Form {
       owners,
       memberSearchInput,
       members,
-      inputQuery,
+      poQuery,
+      pmQuery
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
@@ -422,11 +429,11 @@ class projectForm extends Form {
                       className="form-control search-owner-input mb-4"
                       value={ownerSearchInput}
                       placeholder="Search by name or email (at least 4 letters) to add more project owners..."
-                      onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
                     />
                     <button
-                      className="btn btn-sm btn-primary"
-                      onClick={() => this.handleSearch(inputQuery)}
+                      className="btn btn-primary"
+                      onClick={this.handleSearch(poQuery)}
                     >
                       <i className="fa fa-search"></i>
                     </button>
@@ -474,12 +481,20 @@ class projectForm extends Form {
                 { 
                   canUpdateMember
                   &&
-                  <input
-                    className="form-control search-member-input mb-4"
-                    placeholder="Search by name or email (at least 4 letters) to add more project members..."
-                    value={memberSearchInput}
-                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                  />
+                  <div className="toolbar">
+                    <input
+                      className="form-control search-member-input mb-4"
+                      placeholder="Search by name or email (at least 4 letters) to add more project members..."
+                      value={memberSearchInput}
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
+                    />
+                    <button
+                      className="btn btn-primary"
+                      onClick={this.handleSearch(poQuery)}
+                    >
+                      <i className="fa fa-search"></i>
+                    </button>
+                  </div>
                 }
                 <ProjectUserTable
                   users={data.project_members}
