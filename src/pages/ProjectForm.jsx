@@ -15,6 +15,7 @@ import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
+import toLocaleTime from "../../utils/toLocaleTime";
 
 import {
   getProject,
@@ -373,9 +374,12 @@ class projectForm extends Form {
                       <tr key={`project-basic-info-${index}`}>
                         <td>{row.label}</td>
                         <td>
-                          {row.path !== "tags"
-                            ? _.get(data, row.path)
-                            : this.renderTags(_.get(data, row.path))}
+                          {row.path === "tags" && this.renderTags(_.get(data, row.path))}
+                          {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
+                          {
+                            row.path !== "tags" && row.path !== "created_time" &&
+                            _.get(data, row.path) 
+                          }
                         </td>
                       </tr>
                     );
