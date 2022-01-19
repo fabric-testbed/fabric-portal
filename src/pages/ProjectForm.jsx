@@ -62,6 +62,7 @@ class projectForm extends Form {
     members: [],
     ownerSearchInput: "",
     memberSearchInput: "",
+    inputQuery: "",
   };
 
   schema = {
@@ -180,6 +181,10 @@ class projectForm extends Form {
       }
     }
   };
+
+  handleInputChange = (input) => {
+    this.setState({ inputQuery: input });
+  }
 
   handleSearch = async (value) => {
     // owners/ members are search result.
@@ -315,6 +320,7 @@ class projectForm extends Form {
       owners,
       memberSearchInput,
       members,
+      inputQuery,
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
@@ -411,12 +417,20 @@ class projectForm extends Form {
                 { 
                   canUpdate
                   &&
-                  <input
-                    className="form-control search-owner-input mb-4"
-                    value={ownerSearchInput}
-                    placeholder="Search by name or email (at least 4 letters) to add more project owners..."
-                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                  />
+                  <div className="toolbar">
+                    <input
+                      className="form-control search-owner-input mb-4"
+                      value={ownerSearchInput}
+                      placeholder="Search by name or email (at least 4 letters) to add more project owners..."
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                    />
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => this.handleSearch(inputQuery)}
+                    >
+                      <i className="fa fa-search"></i>
+                    </button>
+                  </div>
                 }
                 <ProjectUserTable
                   users={data.project_owners}
