@@ -433,7 +433,7 @@ class projectForm extends Form {
                     />
                     <button
                       className="btn btn-primary"
-                      onClick={this.handleSearch(poQuery)}
+                      onClick={() => this.handleSearch(poQuery)}
                     >
                       <i className="fa fa-search"></i>
                     </button>
@@ -490,7 +490,7 @@ class projectForm extends Form {
                     />
                     <button
                       className="btn btn-primary"
-                      onClick={this.handleSearch(poQuery)}
+                      onClick={() => this.handleSearch(pmQuery)}
                     >
                       <i className="fa fa-search"></i>
                     </button>
