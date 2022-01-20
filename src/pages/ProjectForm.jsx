@@ -62,8 +62,6 @@ class projectForm extends Form {
     members: [],
     ownerSearchInput: "",
     memberSearchInput: "",
-    poQuery: "",
-    pmQuery: "",
   };
 
   schema = {
@@ -185,10 +183,10 @@ class projectForm extends Form {
 
   handleInputChange = (input, type) => {
     if (type === "po") {
-      this.setState({ poQuery: input });
+      this.setState({ ownerSearchInput: input });
     }
     if (type === "pm") {
-      this.setState({ pmQuery: input });
+      this.setState({ memberSearchInput: input });
     }
   }
 
@@ -326,8 +324,6 @@ class projectForm extends Form {
       owners,
       memberSearchInput,
       members,
-      poQuery,
-      pmQuery
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
@@ -433,7 +429,7 @@ class projectForm extends Form {
                     />
                     <button
                       className="btn btn-primary"
-                      onClick={() => this.handleSearch(poQuery)}
+                      onClick={() => this.handleSearch(ownerSearchInput)}
                     >
                       <i className="fa fa-search"></i>
                     </button>
@@ -490,7 +486,7 @@ class projectForm extends Form {
                     />
                     <button
                       className="btn btn-primary"
-                      onClick={() => this.handleSearch(pmQuery)}
+                      onClick={() => this.handleSearch(memberSearchInput)}
                     >
                       <i className="fa fa-search"></i>
                     </button>
