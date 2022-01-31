@@ -38,7 +38,7 @@ class Keys extends React.Component {
 
     return (
       <div className="col-9" id="sshKeys">
-        <KeyTabs sliverKeys={sliverKeys} bastionKeys={bastionKeys} disableKeyDelete={false} styleProp={"w-100"} />
+        <KeyTabs sliverKeys={sliverKeys} bastionKeys={bastionKeys} disableKeyDelete={false} styleProp={"w-100"} parent={"Keys"}/>
         <GenerateKey maxSliver={maxSliver} maxBastion={maxBastion}/>
         <UploadKey maxSliver={maxSliver} maxBastion={maxBastion}/>
       </div>

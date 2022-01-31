@@ -1,4 +1,5 @@
 import React from "react";
+import Parser from 'html-react-parser';
 
 // interface
 // header: string
@@ -21,7 +22,7 @@ const CardOfItems = ({ header, data, ...rest }) => {
             >
               <h6 className="card-title">{item.date}</h6>
               <h5 className="card-title">{item.title}</h5>
-              <p className="card-text">{item.content}</p>
+              <p className="card-text">{Parser(item.content)}</p>
               {
                 item.link && (
                   <a

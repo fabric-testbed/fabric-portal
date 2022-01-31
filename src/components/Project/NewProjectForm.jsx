@@ -123,6 +123,15 @@ class NewProjectForm extends Form {
     }
   };
 
+  handleInputChange = (input, type) => {
+    if (type === "po") {
+      this.setState({ ownerSearchInput: input });
+    }
+    if (type === "pm") {
+      this.setState({ memberSearchInput: input });
+    }
+  }
+
   handleAddUser = (user) => {
     const added =
       this.state.activeTabIndex === 0
@@ -213,12 +222,20 @@ class NewProjectForm extends Form {
           }`}
         >
           <div className="w-75">
-            <input
-              className="form-control search-owner-input mb-4"
-              value={this.state.ownerSearchInput}
-              placeholder="Search by name or email (at least 4 letters)..."
-              onChange={(e) => this.handleSearch(e.currentTarget.value)}
-            />
+            <div className="toolbar">
+              <input
+                className="form-control search-owner-input mb-4"
+                value={this.stateownerSearchInput}
+                placeholder="Search by name or email (at least 4 letters) to add more project owners..."
+                onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={() => this.handleSearch(this.state.ownerSearchInput)}
+              >
+                <i className="fa fa-search"></i>
+              </button>
+            </div>
             <ProjectUserTable
               users={this.state.addedOwners}
               sortColumn={this.state.ownerSetting.sortColumn}
@@ -253,12 +270,20 @@ class NewProjectForm extends Form {
           }`}
         >
           <div className="w-75">
-            <input
-              className="form-control search-member-input mb-4"
-              placeholder="Search by name or email (at least 4 letters)..."
-              value={this.state.memberSearchInput}
-              onChange={(e) => this.handleSearch(e.currentTarget.value)}
-            />
+            <div className="toolbar">
+              <input
+                className="form-control search-member-input mb-4"
+                placeholder="Search by name or email (at least 4 letters) to add more project members..."
+                value={this.state.memberSearchInput}
+                onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={() => this.handleSearch(this.state.memberSearchInput)}
+              >
+                <i className="fa fa-search"></i>
+              </button>
+            </div>
             <ProjectUserTable
               users={this.state.addedMembers}
               sortColumn={this.state.memberSetting.sortColumn}
