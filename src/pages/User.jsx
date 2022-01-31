@@ -86,6 +86,7 @@ class User extends React.Component {
             bastionKeys={bastionKeys}
             disableKeyDelete={true}
             styleProp={"col-9"}
+            parent={"UserProfile"}
           />
         </div>
       </div>

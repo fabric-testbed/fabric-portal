@@ -15,6 +15,7 @@ import { getPeopleByName } from "../services/userInformationService";
 import { facilityOptions } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
+import toLocaleTime from "../utils/toLocaleTime";
 
 import {
   getProject,
@@ -179,6 +180,15 @@ class projectForm extends Form {
       }
     }
   };
+
+  handleInputChange = (input, type) => {
+    if (type === "po") {
+      this.setState({ ownerSearchInput: input });
+    }
+    if (type === "pm") {
+      this.setState({ memberSearchInput: input });
+    }
+  }
 
   handleSearch = async (value) => {
     // owners/ members are search result.
@@ -373,9 +383,12 @@ class projectForm extends Form {
                       <tr key={`project-basic-info-${index}`}>
                         <td>{row.label}</td>
                         <td>
-                          {row.path !== "tags"
-                            ? _.get(data, row.path)
-                            : this.renderTags(_.get(data, row.path))}
+                          {row.path === "tags" && this.renderTags(_.get(data, row.path))}
+                          {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
+                          {
+                            row.path !== "tags" && row.path !== "created_time" &&
+                            _.get(data, row.path) 
+                          }
                         </td>
                       </tr>
                     );
@@ -407,12 +420,20 @@ class projectForm extends Form {
                 { 
                   canUpdate
                   &&
-                  <input
-                    className="form-control search-owner-input mb-4"
-                    value={ownerSearchInput}
-                    placeholder="Search by name or email (at least 4 letters) to add more project owners..."
-                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                  />
+                  <div className="toolbar">
+                    <input
+                      className="form-control search-owner-input mb-4"
+                      value={ownerSearchInput}
+                      placeholder="Search by name or email (at least 4 letters) to add more project owners..."
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
+                    />
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => this.handleSearch(ownerSearchInput)}
+                    >
+                      <i className="fa fa-search"></i>
+                    </button>
+                  </div>
                 }
                 <ProjectUserTable
                   users={data.project_owners}
@@ -456,12 +477,20 @@ class projectForm extends Form {
                 { 
                   canUpdateMember
                   &&
-                  <input
-                    className="form-control search-member-input mb-4"
-                    placeholder="Search by name or email (at least 4 letters) to add more project members..."
-                    value={memberSearchInput}
-                    onChange={(e) => this.handleSearch(e.currentTarget.value)}
-                  />
+                  <div className="toolbar">
+                    <input
+                      className="form-control search-member-input mb-4"
+                      placeholder="Search by name or email (at least 4 letters) to add more project members..."
+                      value={memberSearchInput}
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
+                    />
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => this.handleSearch(memberSearchInput)}
+                    >
+                      <i className="fa fa-search"></i>
+                    </button>
+                  </div>
                 }
                 <ProjectUserTable
                   users={data.project_members}

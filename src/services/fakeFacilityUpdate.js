@@ -22,6 +22,13 @@ export const updates = [
     link: "https://share.hsforms.com/1VKIcNubyQ-eZYNnnivHSSQ3ry9k",
     button: "Register Form",
   },
+  {
+    id: 4,
+    title: "FABRIC Footprint Growing",
+    content:
+      "<p>Today FABRIC offers its early experimenters access to a number of operational sites linked with a combination of L1 DWDM and L2 circuits. These sites include: MAX (University of Maryland), STAR (StarLight), UTAH (University of Utah), TACC (UT Austin), MICH (University of Michigan) and NCSA (UIUC). In addition 3 development sites: RENC, UKY and LBNL are maintained in a separate topology dedicated to development and testing.</p><p>By the end of Feb 2022 we expect to turn up our first DWDM core links and include into the operational topology several core sites: DALL (Dallas), SALT (Salt Lake City) and WASH (Washington DC).</p><p>This will be the last ‘iteration’ of our topology before the complete Phase I topology is turned on, which will additionally include sites at FIU, Georgia Tech, Clemson, UMKC/GPN and UCSD (estimated April-May 2022).</p>",
+    date: "2022-01-31",
+  },
 ];
 
 export function getUpdates() {
