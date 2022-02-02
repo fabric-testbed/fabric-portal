@@ -21,7 +21,7 @@ export const autoCreateTokens = async () => {
     return data;
   } catch(err) {
     console.log(err);
-    toast.error("Failed to generate necessary tokens to view slice information. Please try again later.");
+    toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");
   }
 }
 

@@ -150,21 +150,14 @@ class projectForm extends Form {
       const originalOwners = this.state.data.project_owners;
       const owners = originalOwners;
       owners.push(user);
-      // add this user as project member in UI automatically if not member yet.
-      // (not re-render by calling api again)
-      const originalMembers = this.state.data.project_members;
-      const members = originalMembers;
-      // is not member yet, add to member from UI.
-      if (_.findIndex(members, (member) => _.isMatch(member, user)) === -1) {
-        members.push(user);
-      }
-      this.setState({ data: { ...this.state.data, project_owners: owners, project_members: members } });
+      this.setState({ data: { ...this.state.data, project_owners: owners } });
       try {
         await addUser("project_owner", this.state.data.uuid, user.uuid);
+        toast.success("Project owner successfully added.");
       } catch (ex) {
         console.log("failed to add project owner: " + ex.response.data);
         toast.error("Failed to add project owner.");
-        this.setState({ data: { ...this.state.data, project_owners: originalOwners, project_members: originalMembers } });
+        this.setState({ data: { ...this.state.data, project_owners: originalOwners } });
       }
     } else if (this.state.activeIndex === 2) {
       const originalMembers = this.state.data.project_members;
@@ -173,6 +166,7 @@ class projectForm extends Form {
       this.setState({ data: { ...this.state.data, project_members: members } });
       try {
         await addUser("project_member", this.state.data.uuid, user.uuid);
+        toast.success("Project member successfully added.");
       } catch (ex) {
         console.log("failed to add project member: " + ex.response.data);
         toast.error("Failed to add project member.");
@@ -256,6 +250,7 @@ class projectForm extends Form {
 
       try {
         await deleteUser("project_owner", this.state.data.uuid, user.uuid);
+        toast.success("Project owner successfully deleted.");
       } catch (ex) {
         toast.error("Failed to delete project owner.");
         console.log("Failed to delete project owner: " + ex.response.data);
@@ -282,6 +277,7 @@ class projectForm extends Form {
 
       try {
         await deleteUser("project_member", this.state.data.uuid, user.uuid);
+        toast.success("Project member successfully deleted.");
       } catch (ex) {
         toast.error("Failed to delete project member.");
         console.log("Failed to delete project member: " + ex.response.data);
