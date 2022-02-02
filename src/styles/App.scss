@@ -23,7 +23,7 @@ body {
 
 .home-upper::after {
   content: "";
-  height: 26rem;
+  height: 28rem;
   background: url("../imgs/home-bg.jpg");
   background-size: 100%;
   background-repeat: repeat;
@@ -38,7 +38,7 @@ body {
 
 /* For small screen */
 .home-upper-text {
-  padding: 2rem 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   width: 85%;
   font-size: 0.5rem;
 }

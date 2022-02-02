@@ -14,6 +14,7 @@ import SliceViewer from "./pages/SliceViewer";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
+import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -53,6 +54,7 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Header userStatus={this.state.userStatus} />
+          <Banner />
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/login" component={Home} />
