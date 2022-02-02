@@ -150,14 +150,14 @@ class projectForm extends Form {
       const originalOwners = this.state.data.project_owners;
       const owners = originalOwners;
       owners.push(user);
-      this.setState({ data: { ...this.state.data, project_owners: owners, project_members: members } });
+      this.setState({ data: { ...this.state.data, project_owners: owners } });
       try {
         await addUser("project_owner", this.state.data.uuid, user.uuid);
         toast.success("Project owner successfully added.");
       } catch (ex) {
         console.log("failed to add project owner: " + ex.response.data);
         toast.error("Failed to add project owner.");
-        this.setState({ data: { ...this.state.data, project_owners: originalOwners, project_members: originalMembers } });
+        this.setState({ data: { ...this.state.data, project_owners: originalOwners } });
       }
     } else if (this.state.activeIndex === 2) {
       const originalMembers = this.state.data.project_members;
