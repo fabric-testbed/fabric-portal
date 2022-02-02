@@ -18,14 +18,14 @@ class MyRoles extends React.Component {
 
   checkProjectRole = (projectID, role) => {
     let role_str = projectID + "-" + role;
-    if (this.props.people) {
+    if (this.props.people.roles !== undefined) {
       return this.props.people.roles.indexOf(role_str) > -1;
     }
   };
 
   getMyProjects = () => {
     const myProjects = [];
-    if (this.props.people) { 
+    if (this.props.people.projects !== undefined) { 
       for (const p of this.props.people.projects) {
         const is_project_member = this.checkProjectRole(p.uuid,"pm");
         const is_project_owner = this.checkProjectRole(p.uuid,"po");
@@ -97,7 +97,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people !== undefined ? people.roles.indexOf("project-leads") > -1 : false
+                  people.roles !== undefined ? people.roles.indexOf("project-leads") > -1 : false
                 )}
               </td>
             </tr>
@@ -114,7 +114,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people !== undefined ? people.roles.indexOf("facility-operators") > -1 : false
+                  people.roles !== undefined ? people.roles.indexOf("facility-operators") > -1 : false
                 )}
               </td>
             </tr>
@@ -131,7 +131,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people !== undefined ? people.roles.indexOf("fabric-active-users") > -1 : -1
+                  people.roles !== undefined ? people.roles.indexOf("fabric-active-users") > -1 : -1
                 )}
               </td>
             </tr>
@@ -148,7 +148,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people !== undefined ? people.roles.indexOf("Jupyterhub") > -1 : false
+                  people.roles !== undefined ? people.roles.indexOf("Jupyterhub") > -1 : false
                 )}
               </td>
             </tr>
