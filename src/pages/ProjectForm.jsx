@@ -250,6 +250,7 @@ class projectForm extends Form {
 
       try {
         await deleteUser("project_owner", this.state.data.uuid, user.uuid);
+        toast.success("Project owner successfully deleted.");
       } catch (ex) {
         toast.error("Failed to delete project owner.");
         console.log("Failed to delete project owner: " + ex.response.data);
@@ -276,6 +277,7 @@ class projectForm extends Form {
 
       try {
         await deleteUser("project_member", this.state.data.uuid, user.uuid);
+        toast.success("Project member successfully deleted.");
       } catch (ex) {
         toast.error("Failed to delete project member.");
         console.log("Failed to delete project member: " + ex.response.data);

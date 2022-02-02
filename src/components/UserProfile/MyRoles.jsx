@@ -97,7 +97,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people? people.roles.indexOf("project-leads") > -1 : false
+                  people !== undefined ? people.roles.indexOf("project-leads") > -1 : false
                 )}
               </td>
             </tr>
@@ -114,7 +114,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people ? people.roles.indexOf("facility-operators") > -1 : false
+                  people !== undefined ? people.roles.indexOf("facility-operators") > -1 : false
                 )}
               </td>
             </tr>
@@ -131,7 +131,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people ? people.roles.indexOf("fabric-active-users") > -1 : -1
+                  people !== undefined ? people.roles.indexOf("fabric-active-users") > -1 : -1
                 )}
               </td>
             </tr>
@@ -148,7 +148,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people ? people.roles.indexOf("Jupyterhub") > -1 : false
+                  people !== undefined ? people.roles.indexOf("Jupyterhub") > -1 : false
                 )}
               </td>
             </tr>
