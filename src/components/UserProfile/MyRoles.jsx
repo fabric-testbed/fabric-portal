@@ -155,7 +155,7 @@ class MyRoles extends React.Component {
           </tbody>
         </table>
         { 
-          people && 
+          people.roles && 
           people.roles.indexOf("project-leads") === -1 &&
           <div>
             <button
