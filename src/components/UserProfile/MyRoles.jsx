@@ -18,16 +18,20 @@ class MyRoles extends React.Component {
 
   checkProjectRole = (projectID, role) => {
     let role_str = projectID + "-" + role;
-    return this.props.people.roles.indexOf(role_str) > -1;
+    if (this.props.people) {
+      return this.props.people.roles.indexOf(role_str) > -1;
+    }
   };
 
   getMyProjects = () => {
     const myProjects = [];
-    for (const p of this.props.people.projects) {
-      const is_project_member = this.checkProjectRole(p.uuid,"pm");
-      const is_project_owner = this.checkProjectRole(p.uuid,"po");
-      const roles = { is_project_member, is_project_owner };
-      myProjects.push({ ...p, ...roles });
+    if (this.props.people) { 
+      for (const p of this.props.people.projects) {
+        const is_project_member = this.checkProjectRole(p.uuid,"pm");
+        const is_project_owner = this.checkProjectRole(p.uuid,"po");
+        const roles = { is_project_member, is_project_owner };
+        myProjects.push({ ...p, ...roles });
+      }
     }
     return myProjects;
   };
@@ -93,7 +97,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("project-leads") > -1
+                  people? people.roles.indexOf("project-leads") > -1 : false
                 )}
               </td>
             </tr>
@@ -110,7 +114,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("facility-operators") > -1
+                  people ? people.roles.indexOf("facility-operators") > -1 : false
                 )}
               </td>
             </tr>
@@ -127,7 +131,7 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("fabric-active-users") > -1
+                  people ? people.roles.indexOf("fabric-active-users") > -1 : -1
                 )}
               </td>
             </tr>
@@ -144,13 +148,14 @@ class MyRoles extends React.Component {
               </td>
               <td className="text-center">
                 {this.renderRoleTableFields(
-                  people.roles.indexOf("Jupyterhub") > -1
+                  people ? people.roles.indexOf("Jupyterhub") > -1 : false
                 )}
               </td>
             </tr>
           </tbody>
         </table>
-        {
+        { 
+          people && 
           people.roles.indexOf("project-leads") === -1 &&
           <div>
             <button
