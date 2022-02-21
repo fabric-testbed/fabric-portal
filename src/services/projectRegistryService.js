@@ -1,8 +1,8 @@
 import http from './httpService';
 import _ from "lodash";
-import { projectRegistryApiUrl } from "../config.json";
+import { default as config } from "../config.json";
 
-const apiEndpoint = projectRegistryApiUrl;
+const apiEndpoint = config.projectRegistryApiUrl;
 
 export function getProjects() {
   return http.get(apiEndpoint);

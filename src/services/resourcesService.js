@@ -1,7 +1,7 @@
 import http from './httpService';
-import { resourcesApiUrl } from "../config.json";
+import { default as config } from "../config.json";
 
-const apiEndpoint = resourcesApiUrl;
+const apiEndpoint = config.resourcesApiUrl;
 
 export function getResources() {
   return http.get(apiEndpoint);

@@ -1,7 +1,7 @@
 import React from "react";
 import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
-import { selfEnrollRequest } from "../services/portalData.json";
+import { default as portalData } from "../services/portalData.json";
 import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -49,10 +49,10 @@ class Home extends React.Component {
           (localStorage.getItem("userStatus") === "inactive") &&
           <div className="self-enroll-container">
             <ReactModal
-              id={selfEnrollRequest.id}
-              title={selfEnrollRequest.title}
-              link={selfEnrollRequest.link}
-              content={selfEnrollRequest.content}
+              id={portalData.selfEnrollRequest.id}
+              title={portalData.selfEnrollRequest.title}
+              link={portalData.selfEnrollRequest.link}
+              content={portalData.selfEnrollRequest.content}
             />
           </div>
         }

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
 import CopyButton from "../common/CopyButton";
-import { guideToLoginToFabricVMs } from "../../services/portalData.json";
+
+import { default as portalData } from "../../services/portalData.json";
 
 const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent }) => {
   return (
@@ -28,7 +29,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
       <div class="alert alert-primary" role="alert">
         Please consult &nbsp;
         <a
-          href={guideToLoginToFabricVMs}
+          href={portalData.deToLoginToFabricVMs}
           target="_blank"
           rel="noreferrer"
         >

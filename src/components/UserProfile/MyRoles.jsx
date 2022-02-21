@@ -1,10 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
-
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
-import { projectLeadRequest, projectLeadDescription, facilityOperatorDescription } from "../../services/portalData.json";
+import { default as portalData } from "../../services/portalData.json";
 
 class MyRoles extends React.Component {
   state = {
@@ -90,7 +88,7 @@ class MyRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("pl-tooltip", projectLeadDescription)}
+                  overlay={renderTooltip("pl-tooltip", portalData.projectLeadDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>
@@ -107,7 +105,7 @@ class MyRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", facilityOperatorDescription)}
+                  overlay={renderTooltip("fo-tooltip", portalData.facilityOperatorDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>
@@ -162,16 +160,16 @@ class MyRoles extends React.Component {
               type="button"
               className="btn btn-sm btn-outline-primary"
               data-toggle="modal"
-              data-target={`#${projectLeadRequest.id}`}
+              data-target={`#${portalData.projectLeadRequest.id}`}
             >
               <i className="fa fa-sign-in mr-2"></i>
               Request to be Project Lead
             </button>
             <Modal
-              id={projectLeadRequest.id}
-              title={projectLeadRequest.title}
-              link={projectLeadRequest.link}
-              content={projectLeadRequest.content}
+              id={portalData.projectLeadRequest.id}
+              title={portalData.projectLeadRequest.title}
+              link={portalData.projectLeadRequest.link}
+              content={portalData.projectLeadRequest.content}
             />
           </div>
          }

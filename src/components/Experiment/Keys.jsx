@@ -3,7 +3,9 @@ import KeyTabs from "../SshKey/KeyTabs";
 import GenerateKey from "../SshKey/GenerateKey";
 import UploadKey from "../SshKey/UploadKey";
 import { getActiveKeys } from "../../services/sshKeyService";
-import { sliverKeyLimit, bastionKeyLimit } from "../../services/portalData.json";
+
+import { default as portalData } from "../../services/portalData.json";
+
 import { toast } from "react-toastify";
 
 class Keys extends React.Component {
@@ -27,8 +29,8 @@ class Keys extends React.Component {
     let sliverKeys = keys.filter(k => k.fabric_key_type === "sliver");
     let bastionKeys = keys.filter(k => k.fabric_key_type === "bastion");
 
-    let maxSliver = sliverKeys.length >= sliverKeyLimit;
-    let maxBastion = bastionKeys.length >= bastionKeyLimit;
+    let maxSliver = sliverKeys.length >= portalData.sliverKeyLimit;
+    let maxBastion = bastionKeys.length >= portalData.bastionKeyLimit;
 
     return { sliverKeys, bastionKeys, maxSliver, maxBastion };
   };

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
 
-import { facilityOptions, defaultFacility } from "../../services/portalData.json";
+import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
   <div className="ml-2">
@@ -29,7 +29,7 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: defaultFacility,
+      facility: portalData.defaultFacility,
       created_by: {},
       created_time: "",
       project_owners: [],
@@ -190,7 +190,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderSelect("facility", "Facility", true, defaultFacility, facilityOptions)}
+          {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
           {isFacilityOperator && this.renderInputTag("tags", "Tags")}
           {this.renderButton("Create")}
         </form>
