@@ -14,7 +14,7 @@ const content = [
 ]
 
 const generatePublicKey = (data) => {
-  return JSON.stringify(`${data.name} ${data.public_key} ${data.comment}`, undefined, 4);
+  return JSON.stringify(`${data.ssh_key_type} ${data.public_key} ${data.comment}`, undefined, 4);
 }
 
 const handleDelete = async (uuid) => {
