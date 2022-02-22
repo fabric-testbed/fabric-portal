@@ -1,7 +1,7 @@
 import axios from "axios";
-import { prPeopleApiUrl } from "../config.json";
+import { default as configData } from "../config.json";
 
-const apiEndpoint = prPeopleApiUrl;
+const apiEndpoint = configData.prPeopleApiUrl;
 const config = { withCredentials: true };
 
 export function getCurrentUser() {

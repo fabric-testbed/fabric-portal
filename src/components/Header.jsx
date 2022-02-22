@@ -4,21 +4,16 @@ import { NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import {
-  knowledgeBaseLink, 
-  jupyterHubLinkAlpha,
-  jupyterHubLinkBeta,
-  jupyterHubLinkProduction
-} from "../services/portalData.json";
+import { default as portalData } from "../services/portalData.json";
 
 import checkPortalType from "../utils/checkPortalType";
 import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
   jupyterLinkMap =  {
-    "alpha": jupyterHubLinkAlpha,
-    "beta": jupyterHubLinkBeta,
-    "production": jupyterHubLinkProduction,
+    "alpha": portalData.jupyterHubLinkAlpha,
+    "beta": portalData.jupyterHubLinkBeta,
+    "production": portalData.jupyterHubLinkProduction,
   }
   
   state = {
@@ -45,7 +40,7 @@ class Header extends React.Component {
         name: "Links",
         path: "/links",
         child: [
-          { name: "Knowledge Base", href: knowledgeBaseLink, path: ""},
+          { name: "Knowledge Base", href: portalData.knowledgeBaseLink, path: ""},
           { name: "JupyterHub", href: this.jupyterLinkMap[checkPortalType(window.location.href)], path: ""}
           ],
           exact: false

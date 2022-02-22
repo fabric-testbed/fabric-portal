@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { selfEnrollRequest } from "../../services/portalData.json";
+import { default as portalData } from "../../services/portalData.json";
 
 const Step1 = () => {
   return (
@@ -21,7 +21,7 @@ const Step1 = () => {
         </p>
       </div>
       <div className="text-center">
-        <a href={selfEnrollRequest.link}>
+        <a href={portalData.selfEnrollRequest.link}>
           <button
             className="btn btn-primary mt-2"
           >
