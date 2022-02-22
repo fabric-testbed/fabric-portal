@@ -1,7 +1,7 @@
 import http from './httpService';
-import { credentialManagerApiUrl } from "../config.json";
+import { default as config } from "../config.json";
 
-const apiEndpoint = credentialManagerApiUrl;
+const apiEndpoint = config.credentialManagerApiUrl;
 
 export function createIdToken(project, scope) {
   return http.post(apiEndpoint + "/create?projectName=" + encodeURI(project) + "&scope=" + scope);

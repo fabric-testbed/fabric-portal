@@ -1,7 +1,7 @@
 import http from './httpService';
-import { orchestratorApiUrl } from "../config.json";
+import { default as config } from "../config.json";
 
-const apiEndpoint = orchestratorApiUrl;
+const apiEndpoint = config.orchestratorApiUrl;
 
 export function getSlices() {
   return http.get(apiEndpoint + "?states=Nascent&states=Configuring&states=StableOK&states=StableError&states=Closing&states=Dead", {

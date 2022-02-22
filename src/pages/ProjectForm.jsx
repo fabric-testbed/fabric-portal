@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getPeopleByName } from "../services/userInformationService";
-import { facilityOptions } from "../services/portalData.json";
+import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
 import toLocaleTime from "../utils/toLocaleTime";
@@ -368,7 +368,7 @@ class projectForm extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
-                {this.renderSelect("facility", "Facility", canUpdate, data.facility, facilityOptions)}
+                {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {isFacilityOperator && this.renderInputTag("tags", "Tags")}
                 {canUpdate && this.renderButton("Save")}
               </form>

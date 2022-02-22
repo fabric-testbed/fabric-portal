@@ -2,7 +2,7 @@ import Joi from "joi-browser";
 import Form from "../common/Form";
 
 import { uploadPublicKey } from "../../services/sshKeyService";
-import { guideToGenerateFabricCompliantKey } from "../../services/portalData.json";
+import { default as portalData } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 
 class UploadKey extends Form {
@@ -78,7 +78,7 @@ class UploadKey extends Form {
           <div class="alert alert-primary" role="alert">
             Please follow &nbsp;
             <a
-              href={guideToGenerateFabricCompliantKey}
+              href={portalData.guideToGenerateFabricCompliantKey}
               target="_blank"
               rel="noreferrer"
             >

@@ -1,7 +1,7 @@
 import http from './httpService';
-import { sshKeyApiUrl } from "../config.json";
+import { default as config } from "../config.json";
 
-const apiEndpoint = sshKeyApiUrl;
+const apiEndpoint = config.sshKeyApiUrl;
 
 export function getActiveKeys() {
   return http.get(`${apiEndpoint}s`);
