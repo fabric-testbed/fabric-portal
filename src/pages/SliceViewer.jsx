@@ -23,13 +23,13 @@ export default class SliceViewer extends Component {
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
       autoCreateTokens().then(async () => {
         const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
       });
     } else {
       // the token has been stored in the browser and is ready to be used.
       try {
         const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slice_model"])})
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
       } catch(err) {
         console.log("Error in getting slice: " + err);
         toast.error("Failed to load the slice. Please try again later.");
