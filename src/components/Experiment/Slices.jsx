@@ -5,7 +5,8 @@ import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown
 import SlicesTable from "../Slice/SlicesTable";
 
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
-import { getSlices } from "../../services/orchestratorService.js";
+// import { getSlices } from "../../services/orchestratorService.js";
+import { getSlices } from "../../services/fakeSlices.js";
 import { toast } from "react-toastify";
 
 import paginate from "../../utils/paginate";
@@ -13,7 +14,8 @@ import _ from "lodash";
 
 class Slices extends React.Component {
   state = {
-    slices: [],
+    // slices: [],
+    slices: getSlices(),
     includeDeadSlices: false,
     pageSize: 10,
     currentPage: 1,
@@ -22,30 +24,30 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
   };
 
-  async componentDidMount() {
-    // call credential manager to generate tokens 
-    // if nothing found in browser storage
-    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens().then(async () => {
-        const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"] });
-      });
-    } else {
-      // the token has been stored in the browser and is ready to be used.
-      try {
-        const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"] });
-      } catch(err) {
-        console.log("Error in getting slices: " + err);
-        toast.error("Failed to load slices. Please re-login and try.");
-        if (err.response.status === 401) {
-          // 401 Error: Provided token is not valid.
-          // refresh the token by calling credential manager refresh_token.
-          autoRefreshTokens();
-        }
-      }
-    }
-  }
+  // async componentDidMount() {
+  //   // call credential manager to generate tokens 
+  //   // if nothing found in browser storage
+  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //       autoCreateTokens().then(async () => {
+  //       const { data } = await getSlices();
+  //       this.setState({ slices: data["value"]["slices"] });
+  //     });
+  //   } else {
+  //     // the token has been stored in the browser and is ready to be used.
+  //     try {
+  //       const { data } = await getSlices();
+  //       this.setState({ slices: data["value"]["slices"] });
+  //     } catch(err) {
+  //       console.log("Error in getting slices: " + err);
+  //       toast.error("Failed to load slices. Please re-login and try.");
+  //       if (err.response.status === 401) {
+  //         // 401 Error: Provided token is not valid.
+  //         // refresh the token by calling credential manager refresh_token.
+  //         autoRefreshTokens();
+  //       }
+  //     }
+  //   }
+  // }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
