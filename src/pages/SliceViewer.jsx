@@ -5,42 +5,46 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getSliceById } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/orchestratorService.js";
+import { getSliceById } from "../services/fakeSlices.js";
 import sliceParser from "../services/parser/sliceParser.js";
+import toLocaleTime from "../utils/toLocaleTime";
 
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
-    elements: [],
+    // elements: [],
+    slice: getSliceById("1")["value"]["slices"][0],
+    elements: sliceParser(getSliceById("1")["value"]["slices"][0]["slice_model"]),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
 
-  async componentDidMount() {
-    // call credential manager to generate tokens 
-    // if nothing found in browser storage
-    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-      autoCreateTokens().then(async () => {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
-      });
-    } else {
-      // the token has been stored in the browser and is ready to be used.
-      try {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
-      } catch(err) {
-        console.log("Error in getting slice: " + err);
-        toast.error("Failed to load the slice. Please try again later.");
-        if (err.response.status === 401) {
-          // 401 Error: Provided token is not valid.
-          // refresh the token by calling credential manager refresh_token.
-          autoRefreshTokens();
-        }
-      }
-    }
-  }
+  // async componentDidMount() {
+  //   // call credential manager to generate tokens 
+  //   // if nothing found in browser storage
+  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //     autoCreateTokens().then(async () => {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
+  //     });
+  //   } else {
+  //     // the token has been stored in the browser and is ready to be used.
+  //     try {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
+  //     } catch(err) {
+  //       console.log("Error in getting slice: " + err);
+  //       toast.error("Failed to load the slice. Please try again later.");
+  //       if (err.response.status === 401) {
+  //         // 401 Error: Provided token is not valid.
+  //         // refresh the token by calling credential manager refresh_token.
+  //         autoRefreshTokens();
+  //       }
+  //     }
+  //   }
+  // }
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
@@ -114,9 +118,13 @@ export default class SliceViewer extends Component {
   
   render() {
     return(
-      <div className="mx-5 my-4 slice-viewer-container">
-         <div className="d-flex flex-row justify-content-between">
-            <h1>Slice Viewer</h1>
+      <div className="mx-5 mb-4 slice-viewer-container">
+         <div className="d-flex flex-row justify-content-between align-items-center">
+            <h2>
+              {this.state.slice.slice_name}
+              <span class="badge badge-secondary ml-2">{this.state.slice.slice_state}</span>
+            </h2>
+            <u>Lease End: {toLocaleTime(this.state.slice.lease_end)}</u>
             <Link to="/experiments#slices">
               <button
                 className="btn btn-sm btn-outline-primary my-3"
@@ -174,7 +182,7 @@ export default class SliceViewer extends Component {
             </div>
           </div>
         </div> */}
-      <div className="d-flex flex-row justify-content-center mt-4">
+      <div className="d-flex flex-row justify-content-center">
         {/* <SideToolbar
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
@@ -182,7 +190,8 @@ export default class SliceViewer extends Component {
         {
           this.state.elements.length > 0 &&
           <Graph
-            className="align-self-end" elements={this.state.elements}
+            className="align-self-end"
+            elements={this.state.elements}
             onNodeSelect={this.handleNodeSelect}
           />
         }
