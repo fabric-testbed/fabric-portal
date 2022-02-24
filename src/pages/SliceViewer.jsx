@@ -117,14 +117,25 @@ export default class SliceViewer extends Component {
   }
   
   render() {
+    const stateColors = {
+      "Nascent": "primary-dark",
+      "StableOK": "success",
+      "StableError": "warning",
+      "Closing": "secondary",
+      "Dead": "secondary",
+      "Configuring": "primary",
+    }
+
+    const { slice, elements, selectedData } = this.state;
+
     return(
       <div className="mx-5 mb-4 slice-viewer-container">
          <div className="d-flex flex-row justify-content-between align-items-center">
             <h2>
-              {this.state.slice.slice_name}
-              <span class="badge badge-secondary ml-2">{this.state.slice.slice_state}</span>
+              <b>{slice.slice_name}</b>
+              <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
             </h2>
-            <u>Lease End: {toLocaleTime(this.state.slice.lease_end)}</u>
+            <u>Lease End: {toLocaleTime(slice.lease_end)}</u>
             <Link to="/experiments#slices">
               <button
                 className="btn btn-sm btn-outline-primary my-3"
@@ -188,17 +199,17 @@ export default class SliceViewer extends Component {
           onNodeAdd={this.handleNodeAdd}
         /> */}
         {
-          this.state.elements.length > 0 &&
+          elements.length > 0 &&
           <Graph
             className="align-self-end"
-            elements={this.state.elements}
+            elements={elements}
             onNodeSelect={this.handleNodeSelect}
           />
         }
         {
-          this.state.elements.length > 0 &&
+          elements.length > 0 &&
           <DetailForm
-            data={this.state.selectedData}
+            data={selectedData}
             // onNodeDelete={this.handleNodeDelete}
             // onNodeUpdate={this.handleNodeUpdate}
           />
