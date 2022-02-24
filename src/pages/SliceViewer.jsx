@@ -203,6 +203,7 @@ export default class SliceViewer extends Component {
           <Graph
             className="align-self-end"
             elements={elements}
+            sliceName={slice.slice_name}
             onNodeSelect={this.handleNodeSelect}
           />
         }

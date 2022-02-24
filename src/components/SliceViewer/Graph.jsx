@@ -56,7 +56,7 @@ export default class Graph extends Component {
 
   saveJSON = () => {
     var jsonBlob = new Blob([ JSON.stringify( this.cy.json() ) ], { type: 'application/javascript;charset=utf-8' });
-    saveAs( jsonBlob, 'slice_viewer.json' );
+    saveAs( jsonBlob, `${this.props.sliceName}.json` );
   }
 
   savePNG = () => {
@@ -64,7 +64,7 @@ export default class Graph extends Component {
       'bg': 'white',
       'full': true,
     });
-    saveAs( png64, 'slice_viewer.png' );
+    saveAs( png64, `${this.props.sliceName}.png` );
   }
 
   saveChanges = () =>{
