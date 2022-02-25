@@ -4,11 +4,10 @@ import Pagination from "../components/common/Pagination";
 import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
-
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
-
-import paginate from "../utils/paginate";
+import { default as portalData } from "../services/portalData.json";
+import paginate from "../utils/paginate"; 
 import toLocaleTime from "../utils/toLocaleTime";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -32,34 +31,34 @@ class Projects extends React.Component {
     projectType: "myProjects",
   };
 
-  async componentDidMount() {
-    try {
-      const { data: people } = await getCurrentUser();
-      let { data: allProjects } = await getProjects();
+  // async componentDidMount() {
+  //   try {
+  //     const { data: people } = await getCurrentUser();
+  //     let { data: allProjects } = await getProjects();
 
-      // parse create time field to user's local time.
-      allProjects = allProjects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
-        return p;
-      });
+  //     // parse create time field to user's local time.
+  //     allProjects = allProjects.map((p) => {
+  //       p.created_time  = toLocaleTime(p.created_time);
+  //       return p;
+  //     });
 
-      const myProjects = people.projects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
-        return p;
-      });
+  //     const myProjects = people.projects.map((p) => {
+  //       p.created_time  = toLocaleTime(p.created_time);
+  //       return p;
+  //     });
 
-      this.setState({ 
-        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
-        myProjects: myProjects,
-        allProjects: allProjects,
-        roles: people.roles,
-        otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
-      })
-    } catch (ex) {
-      toast.error("Failed to load projects. Please reload this page.");
-      console.log("Failed to load projects: " + ex.response.data);
-    }
-  }
+  //     this.setState({ 
+  //       projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
+  //       myProjects: myProjects,
+  //       allProjects: allProjects,
+  //       roles: people.roles,
+  //       otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+  //     })
+  //   } catch (ex) {
+  //     toast.error("Failed to load projects. Please reload this page.");
+  //     console.log("Failed to load projects: " + ex.response.data);
+  //   }
+  // }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -135,7 +134,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, myProjects } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -174,18 +173,44 @@ class Projects extends React.Component {
             <p>Showing {totalCount} projects that you can join to view details.</p>
           }
         </div>
-        <ProjectsTable
-          projects={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-          type={this.state.projectType}
-        />
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
+
+        {
+          myProjects.length === 0 && this.state.radioBtnValues[0].isActive && 
+          <div className="alert alert-warning mt-2" role="alert">
+            <p className="mt-2">We could not find your project:</p>
+            <p>
+              <ul>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or project lead</a>, 
+                  please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
+                </li>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  please ask your project lead to add you to a project.
+                </li>
+              </ul>
+            </p>
+          </div>
+        }
+
+        {
+          myProjects.length > 0 || this.state.radioBtnValues[1].isActive &&
+          <div>
+            <ProjectsTable
+              projects={data}
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+              type={this.state.projectType}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
+        }
+     
       </div>
     );
   }

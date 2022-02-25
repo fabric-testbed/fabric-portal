@@ -108,43 +108,63 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
+    const { slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="col-9">
         <h1>Slices</h1>
-        <div className="toolbar">
-          <SearchBoxWithDropdown
-            activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "ID", "State"]}
-            value={searchQuery}
-            placeholder={`Search Slices by ${filterQuery}...`}
-            onDropdownChange={this.handleFilter}
-            onInputChange={this.handleSearch}
-            className="my-0"
-          />
-        </div>
-        <div className="my-2 d-flex flex-row justify-content-between">
-          <span>Showing {totalCount} slices.</span>
-          <Checkbox
-            label={"Include Dead Slices"}
-            id={"checkbox-include-dead-slices"}
-            isChecked={this.state.includeDeadSlices}
-            onCheck={this.handleIncludeDeadSlices}
-          />
-        </div>
-        <SlicesTable
-          slices={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-        />
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
+        {
+          slices.length === 0 && 
+          <div className="alert alert-warning mt-4" role="alert">
+            <p className="mt-2">
+            We couldn't find your slice. Please create slices from <a href="#">JupyterHub</a> first. Here are some guide articles you may find helpful:
+            </p>
+            <p>
+              <ul>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/slice-editor/" target="_blank" rel="noreferrer">Slice Editor</a></li>
+              </ul>
+            </p>
+          </div>
+        }
+        {
+          slices.length > 0 && <div>
+             <div className="toolbar">
+              <SearchBoxWithDropdown
+                activeDropdownVal={filterQuery}
+                dropdownValues={["Name", "ID", "State"]}
+                value={searchQuery}
+                placeholder={`Search Slices by ${filterQuery}...`}
+                onDropdownChange={this.handleFilter}
+                onInputChange={this.handleSearch}
+                className="my-0"
+              />
+            </div>
+            <div className="my-2 d-flex flex-row justify-content-between">
+              <span>Showing {totalCount} slices.</span>
+              <Checkbox
+                label={"Include Dead Slices"}
+                id={"checkbox-include-dead-slices"}
+                isChecked={this.state.includeDeadSlices}
+                onCheck={this.handleIncludeDeadSlices}
+              />
+            </div>
+            <SlicesTable
+              slices={data}
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
+        }
       </div>
     );
   }
