@@ -194,7 +194,7 @@ class Projects extends React.Component {
         }
 
         {
-          myProjects.length > 0 || this.state.radioBtnValues[1].isActive &&
+          (this.state.radioBtnValues[0].isActive && myProjects.length > 0) || this.state.radioBtnValues[1].isActive &&
           <div>
             <ProjectsTable
               projects={data}

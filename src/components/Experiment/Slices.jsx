@@ -23,7 +23,7 @@ class Slices extends React.Component {
 
   state = {
     slices: [],
-    hasProject: false,
+    hasProject: true,
     includeDeadSlices: false,
     pageSize: 10,
     currentPage: 1,
