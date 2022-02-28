@@ -31,34 +31,34 @@ class Projects extends React.Component {
     projectType: "myProjects",
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data: people } = await getCurrentUser();
-  //     let { data: allProjects } = await getProjects();
+  async componentDidMount() {
+    try {
+      const { data: people } = await getCurrentUser();
+      let { data: allProjects } = await getProjects();
 
-  //     // parse create time field to user's local time.
-  //     allProjects = allProjects.map((p) => {
-  //       p.created_time  = toLocaleTime(p.created_time);
-  //       return p;
-  //     });
+      // parse create time field to user's local time.
+      allProjects = allProjects.map((p) => {
+        p.created_time  = toLocaleTime(p.created_time);
+        return p;
+      });
 
-  //     const myProjects = people.projects.map((p) => {
-  //       p.created_time  = toLocaleTime(p.created_time);
-  //       return p;
-  //     });
+      const myProjects = people.projects.map((p) => {
+        p.created_time  = toLocaleTime(p.created_time);
+        return p;
+      });
 
-  //     this.setState({ 
-  //       projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
-  //       myProjects: myProjects,
-  //       allProjects: allProjects,
-  //       roles: people.roles,
-  //       otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
-  //     })
-  //   } catch (ex) {
-  //     toast.error("Failed to load projects. Please reload this page.");
-  //     console.log("Failed to load projects: " + ex.response.data);
-  //   }
-  // }
+      this.setState({ 
+        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
+        myProjects: myProjects,
+        allProjects: allProjects,
+        roles: people.roles,
+        otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+      })
+    } catch (ex) {
+      toast.error("Failed to load projects. Please reload this page.");
+      console.log("Failed to load projects: " + ex.response.data);
+    }
+  }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });

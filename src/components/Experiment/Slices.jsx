@@ -7,8 +7,7 @@ import SlicesTable from "../Slice/SlicesTable";
 
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
-// import { getSlices } from "../../services/orchestratorService.js";
-import { getSlices } from "../../services/fakeSlices.js";
+import { getSlices } from "../../services/orchestratorService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import checkPortalType from "../../utils/checkPortalType";
@@ -23,8 +22,7 @@ class Slices extends React.Component {
   }
 
   state = {
-    // slices: [],
-    slices: getSlices(),
+    slices: [],
     hasProject: false,
     includeDeadSlices: false,
     pageSize: 10,
@@ -34,41 +32,41 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
   };
 
-  // async componentDidMount() {
-  //   // call PR first to check if the user has project.
-  //   try {
-  //     const { data: people } = await getCurrentUser();
-  //     if (people.projects.length === 0) {
-  //       this.setState({ hasProject: false });
-  //     } else {
-  //     // call credential manager to generate tokens 
-  //     // if nothing found in browser storage
-  //     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-  //       autoCreateTokens().then(async () => {
-  //       const { data } = await getSlices();
-  //       this.setState({ slices: data["value"]["slices"] });
-  //     });
-  //     } else {
-  //       // the token has been stored in the browser and is ready to be used.
-  //         try {
-  //           const { data } = await getSlices();
-  //           this.setState({ slices: data["value"]["slices"] });
-  //         } catch(err) {
-  //           console.log("Error in getting slices: " + err);
-  //           toast.error("Failed to load slices. Please re-login and try.");
-  //           if (err.response.status === 401) {
-  //             // 401 Error: Provided token is not valid.
-  //             // refresh the token by calling credential manager refresh_token.
-  //             autoRefreshTokens();
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (ex) {
-  //     toast.error("Failed to load user information. Please reload this page.");
-  //     console.log("Failed to load user information: " + ex.response.data);
-  //   }
-  // }
+  async componentDidMount() {
+    // call PR first to check if the user has project.
+    try {
+      const { data: people } = await getCurrentUser();
+      if (people.projects.length === 0) {
+        this.setState({ hasProject: false });
+      } else {
+      // call credential manager to generate tokens 
+      // if nothing found in browser storage
+      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+        autoCreateTokens().then(async () => {
+        const { data } = await getSlices();
+        this.setState({ slices: data["value"]["slices"] });
+      });
+      } else {
+        // the token has been stored in the browser and is ready to be used.
+          try {
+            const { data } = await getSlices();
+            this.setState({ slices: data["value"]["slices"] });
+          } catch(err) {
+            console.log("Error in getting slices: " + err);
+            toast.error("Failed to load slices. Please re-login and try.");
+            if (err.response.status === 401) {
+              // 401 Error: Provided token is not valid.
+              // refresh the token by calling credential manager refresh_token.
+              autoRefreshTokens();
+            }
+          }
+        }
+      }
+    } catch (ex) {
+      toast.error("Failed to load user information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
+    }
+  }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
