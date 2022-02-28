@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
- 
+
+import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 // import { getSlices } from "../../services/orchestratorService.js";
 import { getSlices } from "../../services/fakeSlices.js";
@@ -23,6 +25,7 @@ class Slices extends React.Component {
   state = {
     // slices: [],
     slices: getSlices(),
+    hasProject: false,
     includeDeadSlices: false,
     pageSize: 10,
     currentPage: 1,
@@ -32,27 +35,38 @@ class Slices extends React.Component {
   };
 
   // async componentDidMount() {
-  //   // call credential manager to generate tokens 
-  //   // if nothing found in browser storage
-  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //   // call PR first to check if the user has project.
+  //   try {
+  //     const { data: people } = await getCurrentUser();
+  //     if (people.projects.length === 0) {
+  //       this.setState({ hasProject: false });
+  //     } else {
+  //     // call credential manager to generate tokens 
+  //     // if nothing found in browser storage
+  //     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
   //       autoCreateTokens().then(async () => {
   //       const { data } = await getSlices();
   //       this.setState({ slices: data["value"]["slices"] });
   //     });
-  //   } else {
-  //     // the token has been stored in the browser and is ready to be used.
-  //     try {
-  //       const { data } = await getSlices();
-  //       this.setState({ slices: data["value"]["slices"] });
-  //     } catch(err) {
-  //       console.log("Error in getting slices: " + err);
-  //       toast.error("Failed to load slices. Please re-login and try.");
-  //       if (err.response.status === 401) {
-  //         // 401 Error: Provided token is not valid.
-  //         // refresh the token by calling credential manager refresh_token.
-  //         autoRefreshTokens();
+  //     } else {
+  //       // the token has been stored in the browser and is ready to be used.
+  //         try {
+  //           const { data } = await getSlices();
+  //           this.setState({ slices: data["value"]["slices"] });
+  //         } catch(err) {
+  //           console.log("Error in getting slices: " + err);
+  //           toast.error("Failed to load slices. Please re-login and try.");
+  //           if (err.response.status === 401) {
+  //             // 401 Error: Provided token is not valid.
+  //             // refresh the token by calling credential manager refresh_token.
+  //             autoRefreshTokens();
+  //           }
+  //         }
   //       }
   //     }
+  //   } catch (ex) {
+  //     toast.error("Failed to load user information. Please reload this page.");
+  //     console.log("Failed to load user information: " + ex.response.data);
   //   }
   // }
 
@@ -115,14 +129,32 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
+    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="col-9">
         <h1>Slices</h1>
         {
-          slices.length === 0 && 
+          !hasProject &&
+          <div className="alert alert-warning mt-4" role="alert">
+            <p className="mt-2">To generate the necessary tokens for accessing slices, you have to be in a project first:</p>
+            <p>
+              <ul>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or project lead</a>, 
+                  please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
+                </li>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  please ask your project lead to add you to a project.
+                </li>
+              </ul>
+            </p>
+          </div>
+        }
+        {
+          hasProject && slices.length === 0 && 
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">
               We couldn't find your slice. Please create slices from&nbsp;
@@ -143,7 +175,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          slices.length > 0 && <div>
+          hasProject && slices.length > 0 && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}
