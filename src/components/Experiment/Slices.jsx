@@ -3,16 +3,23 @@ import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
-
+ 
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 // import { getSlices } from "../../services/orchestratorService.js";
 import { getSlices } from "../../services/fakeSlices.js";
 import { toast } from "react-toastify";
-
 import paginate from "../../utils/paginate";
+import checkPortalType from "../../utils/checkPortalType";
+import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
 
 class Slices extends React.Component {
+  jupyterLinkMap =  {
+    "alpha": portalData.jupyterHubLinkAlpha,
+    "beta": portalData.jupyterHubLinkBeta,
+    "production": portalData.jupyterHubLinkProduction,
+  }
+
   state = {
     // slices: [],
     slices: getSlices(),
@@ -118,7 +125,12 @@ class Slices extends React.Component {
           slices.length === 0 && 
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">
-            We couldn't find your slice. Please create slices from <a href="#">JupyterHub</a> first. Here are some guide articles you may find helpful:
+              We couldn't find your slice. Please create slices from&nbsp;
+              <a
+               href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+               target="_blank"
+               rel="noreferrer"
+              >JupyterHub</a> first. Here are some guide articles you may find helpful:
             </p>
             <p>
               <ul>
