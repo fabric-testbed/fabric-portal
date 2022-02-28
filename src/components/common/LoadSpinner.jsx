@@ -29,10 +29,8 @@ function LoadSpinner(props){
           <div
             {...props}
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              margin: "-0.4rem 0 0 0",
               width: "100%",
-              height: "100vh",
+              height: "100%",
               overflow: "hidden",
               color: 'white',
               fontSize: "2rem",

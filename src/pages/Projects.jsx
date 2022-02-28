@@ -4,6 +4,7 @@ import Pagination from "../components/common/Pagination";
 import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
+import LoadSpinner from "../components/common/Pagination";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
 import { default as portalData } from "../services/portalData.json";
@@ -29,6 +30,7 @@ class Projects extends React.Component {
       { display: "Other Projects", value: "inactive", isActive: false },
     ],
     projectType: "myProjects",
+    loaded: false,
   };
 
   async componentDidMount() {
@@ -53,6 +55,7 @@ class Projects extends React.Component {
         allProjects: allProjects,
         roles: people.roles,
         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+        loaded: true,
       })
     } catch (ex) {
       toast.error("Failed to load projects. Please reload this page.");
@@ -134,7 +137,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, loaded } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -174,7 +177,11 @@ class Projects extends React.Component {
           }
         </div>
         {
-          totalCount === 0 && this.state.radioBtnValues[0].isActive && 
+          !loaded && <LoadSpinner text="Loading projects..." showSpinner={true}></LoadSpinner>
+        }
+
+        {
+          loaded && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div className="alert alert-warning mt-2" role="alert">
             <p className="mt-2">We could not find your project:</p>
             <p>
@@ -193,7 +200,7 @@ class Projects extends React.Component {
         }
 
         {
-          (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          loaded && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
             <ProjectsTable
