@@ -30,10 +30,13 @@ class Projects extends React.Component {
       { display: "Other Projects", value: "inactive", isActive: false },
     ],
     projectType: "myProjects",
-    loaded: false,
+    showSpinner: false,
   };
 
   async componentDidMount() {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+
     try {
       const { data: people } = await getCurrentUser();
       let { data: allProjects } = await getProjects();
@@ -55,7 +58,7 @@ class Projects extends React.Component {
         allProjects: allProjects,
         roles: people.roles,
         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
-        loaded: true,
+        showSpinner: false,
       })
     } catch (ex) {
       toast.error("Failed to load projects. Please reload this page.");
@@ -137,7 +140,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, loaded } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -177,11 +180,11 @@ class Projects extends React.Component {
           }
         </div>
         {
-          !loaded && <LoadSpinner text="Loading projects..." showSpinner={true}></LoadSpinner>
+          showSpinner && <LoadSpinner text="Loading projects..." showSpinner={showSpinner}></LoadSpinner>
         }
 
         {
-          loaded && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
+          !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div className="alert alert-warning mt-2" role="alert">
             <p className="mt-2">We could not find your project:</p>
             <p>
@@ -200,7 +203,7 @@ class Projects extends React.Component {
         }
 
         {
-          loaded && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          !showSpinner && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
             <ProjectsTable
