@@ -134,7 +134,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, myProjects } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -173,9 +173,8 @@ class Projects extends React.Component {
             <p>Showing {totalCount} projects that you can join to view details.</p>
           }
         </div>
-
         {
-          myProjects.length === 0 && this.state.radioBtnValues[0].isActive && 
+          totalCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div className="alert alert-warning mt-2" role="alert">
             <p className="mt-2">We could not find your project:</p>
             <p>
@@ -194,7 +193,8 @@ class Projects extends React.Component {
         }
 
         {
-          (this.state.radioBtnValues[0].isActive && myProjects.length > 0) || this.state.radioBtnValues[1].isActive &&
+          (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          && 
           <div>
             <ProjectsTable
               projects={data}
@@ -209,8 +209,7 @@ class Projects extends React.Component {
               onPageChange={this.handlePageChange}
             />
           </div>
-        }
-     
+        } 
       </div>
     );
   }
