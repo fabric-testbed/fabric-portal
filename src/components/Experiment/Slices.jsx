@@ -158,7 +158,7 @@ class Slices extends React.Component {
             <p>
               <ul>
                 <li>
-                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or project lead</a>, 
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff memeber at your institution</a>, 
                   please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
                 </li>
                 <li>
