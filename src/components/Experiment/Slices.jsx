@@ -1,49 +1,74 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
-
+import Spinner from 'react-bootstrap/Spinner';
+import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/orchestratorService.js";
 import { toast } from "react-toastify";
-
 import paginate from "../../utils/paginate";
+import checkPortalType from "../../utils/checkPortalType";
+import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
 
 class Slices extends React.Component {
+  jupyterLinkMap =  {
+    "alpha": portalData.jupyterHubLinkAlpha,
+    "beta": portalData.jupyterHubLinkBeta,
+    "production": portalData.jupyterHubLinkProduction,
+  }
+
   state = {
     slices: [],
+    hasProject: true,
     includeDeadSlices: false,
     pageSize: 10,
     currentPage: 1,
     filterQuery: "Name",
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
+    showSpinner: false,
   };
 
   async componentDidMount() {
-    // call credential manager to generate tokens 
-    // if nothing found in browser storage
-    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+
+    // call PR first to check if the user has project.
+    try {
+      const { data: people } = await getCurrentUser();
+      if (people.projects.length === 0) {
+        this.setState({ hasProject: false, showSpinner: false });
+      } else {
+      // call credential manager to generate tokens 
+      // if nothing found in browser storage
+      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
         autoCreateTokens().then(async () => {
         const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"] });
+        this.setState({ slices: data["value"]["slices"], showSpinner: false });
       });
-    } else {
-      // the token has been stored in the browser and is ready to be used.
-      try {
-        const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"] });
-      } catch(err) {
-        console.log("Error in getting slices: " + err);
-        toast.error("Failed to load slices. Please re-login and try.");
-        if (err.response.status === 401) {
-          // 401 Error: Provided token is not valid.
-          // refresh the token by calling credential manager refresh_token.
-          autoRefreshTokens();
+      } else {
+        // the token has been stored in the browser and is ready to be used.
+          try {
+            const { data } = await getSlices();
+            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
+          } catch(err) {
+            console.log("Error in getting slices: " + err);
+            toast.error("Failed to load slices. Please re-login and try.");
+            if (err.response.status === 401) {
+              // 401 Error: Provided token is not valid.
+              // refresh the token by calling credential manager refresh_token.
+              autoRefreshTokens();
+            }
+          }
         }
       }
+    } catch (ex) {
+      toast.error("Failed to load user information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
     }
   }
 
@@ -106,43 +131,100 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
+    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="col-9">
         <h1>Slices</h1>
-        <div className="toolbar">
-          <SearchBoxWithDropdown
-            activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "ID", "State"]}
-            value={searchQuery}
-            placeholder={`Search Slices by ${filterQuery}...`}
-            onDropdownChange={this.handleFilter}
-            onInputChange={this.handleSearch}
-            className="my-0"
-          />
-        </div>
-        <div className="my-2 d-flex flex-row justify-content-between">
-          <span>Showing {totalCount} slices.</span>
-          <Checkbox
-            label={"Include Dead Slices"}
-            id={"checkbox-include-dead-slices"}
-            isChecked={this.state.includeDeadSlices}
-            onCheck={this.handleIncludeDeadSlices}
-          />
-        </div>
-        <SlicesTable
-          slices={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-        />
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
+        {
+          showSpinner &&
+          <div className="d-flex flex-row justify-content-center mt-5">
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              variant="primary"
+            />
+            <span className="text-primary ml-2"><b>Loading slices...</b></span>
+          </div>
+        }
+        {
+          !showSpinner && !hasProject &&
+          <div className="alert alert-warning mt-4" role="alert">
+            <p className="mt-2">To generate the necessary tokens for accessing slices, you have to be in a project first:</p>
+            <p>
+              <ul>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff memeber at your institution</a>, 
+                  please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
+                </li>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  please ask your project lead to add you to a project.
+                </li>
+              </ul>
+            </p>
+          </div>
+        }
+        {
+          !showSpinner && hasProject && slices.length === 0 && 
+          <div className="alert alert-warning mt-4" role="alert">
+            <p className="mt-2">
+              We couldn't find your slice. Please create slices from&nbsp;
+              <a
+               href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+               target="_blank"
+               rel="noreferrer"
+              >JupyterHub</a> first. Here are some guide articles you may find helpful:
+            </p>
+            <p>
+              <ul>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/slice-editor/" target="_blank" rel="noreferrer">Slice Editor</a></li>
+              </ul>
+            </p>
+          </div>
+        }
+        {
+          !showSpinner && hasProject && slices.length > 0 && <div>
+             <div className="toolbar">
+              <SearchBoxWithDropdown
+                activeDropdownVal={filterQuery}
+                dropdownValues={["Name", "ID", "State"]}
+                value={searchQuery}
+                placeholder={`Search Slices by ${filterQuery}...`}
+                onDropdownChange={this.handleFilter}
+                onInputChange={this.handleSearch}
+                className="my-0"
+              />
+            </div>
+            <div className="my-2 d-flex flex-row justify-content-between">
+              <span>Showing {totalCount} slices.</span>
+              <Checkbox
+                label={"Include Dead Slices"}
+                id={"checkbox-include-dead-slices"}
+                isChecked={this.state.includeDeadSlices}
+                onCheck={this.handleIncludeDeadSlices}
+              />
+            </div>
+            <SlicesTable
+              slices={data}
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
+        }
       </div>
     );
   }

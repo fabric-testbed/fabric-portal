@@ -4,11 +4,11 @@ import Pagination from "../components/common/Pagination";
 import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
-
+import Spinner from 'react-bootstrap/Spinner';
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
-
-import paginate from "../utils/paginate";
+import { default as portalData } from "../services/portalData.json";
+import paginate from "../utils/paginate"; 
 import toLocaleTime from "../utils/toLocaleTime";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -30,9 +30,13 @@ class Projects extends React.Component {
       { display: "Other Projects", value: "inactive", isActive: false },
     ],
     projectType: "myProjects",
+    showSpinner: false,
   };
 
   async componentDidMount() {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+
     try {
       const { data: people } = await getCurrentUser();
       let { data: allProjects } = await getProjects();
@@ -54,6 +58,7 @@ class Projects extends React.Component {
         allProjects: allProjects,
         roles: people.roles,
         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+        showSpinner: false,
       })
     } catch (ex) {
       toast.error("Failed to load projects. Please reload this page.");
@@ -135,7 +140,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -164,28 +169,79 @@ class Projects extends React.Component {
             )
           }
         </div>
-        <div className="d-flex flex-row justify-content-between">
-          <RadioBtnGroup
-            values={this.state.radioBtnValues}
-            onChange={this.toggleRadioBtn}
-          />
-          { this.state.radioBtnValues[0].isActive ?
-            <p>Showing {totalCount} projects that you have access to view details.</p> :
-            <p>Showing {totalCount} projects that you can join to view details.</p>
-          }
-        </div>
-        <ProjectsTable
-          projects={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-          type={this.state.projectType}
-        />
-        <Pagination
-          itemsCount={totalCount}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
+        {
+          showSpinner &&
+          <div className="d-flex flex-row justify-content-center mt-5">
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              variant="primary"
+            />
+            <span className="text-primary ml-2"><b>Loading projects...</b></span>
+          </div>
+        }
+        {
+          !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
+          <div>
+            <div className="d-flex flex-row justify-content-between">
+              <RadioBtnGroup
+                values={this.state.radioBtnValues}
+                onChange={this.toggleRadioBtn}
+              />
+              { this.state.radioBtnValues[0].isActive ?
+                <p>Showing {totalCount} projects that you have access to view details.</p> :
+                <p>Showing {totalCount} projects that you can join to view details.</p>
+              }
+            </div>    
+            <div className="alert alert-warning mt-2" role="alert">
+              <p className="mt-2">We could not find your project:</p>
+              <p>
+                <ul>
+                  <li>
+                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff memeber at your institution</a>, 
+                    please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
+                  </li>
+                  <li>
+                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                    please ask your project lead to add you to a project.
+                  </li>
+                </ul>
+              </p>
+            </div>
+          </div>
+        }
+
+        {
+          !showSpinner && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          && 
+          <div>
+            <div className="d-flex flex-row justify-content-between">
+              <RadioBtnGroup
+                values={this.state.radioBtnValues}
+                onChange={this.toggleRadioBtn}
+              />
+              { this.state.radioBtnValues[0].isActive ?
+                <p>Showing {totalCount} projects that you have access to view details.</p> :
+                <p>Showing {totalCount} projects that you can join to view details.</p>
+              }
+            </div>
+            <ProjectsTable
+              projects={data}
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+              type={this.state.projectType}
+            />
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
+        } 
       </div>
     );
   }
