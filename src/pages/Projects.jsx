@@ -169,16 +169,6 @@ class Projects extends React.Component {
             )
           }
         </div>
-        <div className="d-flex flex-row justify-content-between">
-          <RadioBtnGroup
-            values={this.state.radioBtnValues}
-            onChange={this.toggleRadioBtn}
-          />
-          { this.state.radioBtnValues[0].isActive ?
-            <p>Showing {totalCount} projects that you have access to view details.</p> :
-            <p>Showing {totalCount} projects that you can join to view details.</p>
-          }
-        </div>
         {
           showSpinner &&
           <div className="d-flex flex-row justify-content-center mt-5">
@@ -195,20 +185,32 @@ class Projects extends React.Component {
         }
         {
           !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
-          <div className="alert alert-warning mt-2" role="alert">
-            <p className="mt-2">We could not find your project:</p>
-            <p>
-              <ul>
-                <li>
-                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or project lead</a>, 
-                  please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
-                </li>
-                <li>
-                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
-                  please ask your project lead to add you to a project.
-                </li>
-              </ul>
-            </p>
+          <div>
+            <div className="d-flex flex-row justify-content-between">
+              <RadioBtnGroup
+                values={this.state.radioBtnValues}
+                onChange={this.toggleRadioBtn}
+              />
+              { this.state.radioBtnValues[0].isActive ?
+                <p>Showing {totalCount} projects that you have access to view details.</p> :
+                <p>Showing {totalCount} projects that you can join to view details.</p>
+              }
+            </div>    
+            <div className="alert alert-warning mt-2" role="alert">
+              <p className="mt-2">We could not find your project:</p>
+              <p>
+                <ul>
+                  <li>
+                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or project lead</a>, 
+                    please <Link to="/user">request to become a FABIRC Project Lead</Link> then you can create a project.
+                  </li>
+                  <li>
+                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                    please ask your project lead to add you to a project.
+                  </li>
+                </ul>
+              </p>
+            </div>
           </div>
         }
 
@@ -216,6 +218,16 @@ class Projects extends React.Component {
           !showSpinner && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
+            <div className="d-flex flex-row justify-content-between">
+              <RadioBtnGroup
+                values={this.state.radioBtnValues}
+                onChange={this.toggleRadioBtn}
+              />
+              { this.state.radioBtnValues[0].isActive ?
+                <p>Showing {totalCount} projects that you have access to view details.</p> :
+                <p>Showing {totalCount} projects that you can join to view details.</p>
+              }
+            </div>
             <ProjectsTable
               projects={data}
               sortColumn={sortColumn}
