@@ -4,7 +4,7 @@ import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
-
+import Spinner from 'react-bootstrap/Spinner';
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/orchestratorService.js";
@@ -30,27 +30,31 @@ class Slices extends React.Component {
     filterQuery: "Name",
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
+    showSpinner: false,
   };
 
   async componentDidMount() {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+
     // call PR first to check if the user has project.
     try {
       const { data: people } = await getCurrentUser();
       if (people.projects.length === 0) {
-        this.setState({ hasProject: false });
+        this.setState({ hasProject: false, showSpinner: false });
       } else {
       // call credential manager to generate tokens 
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
         autoCreateTokens().then(async () => {
         const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"] });
+        this.setState({ slices: data["value"]["slices"], showSpinner: false });
       });
       } else {
         // the token has been stored in the browser and is ready to be used.
           try {
             const { data } = await getSlices();
-            this.setState({ slices: data["value"]["slices"] });
+            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
           } catch(err) {
             console.log("Error in getting slices: " + err);
             toast.error("Failed to load slices. Please re-login and try.");
@@ -127,14 +131,28 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery } = this.state;
+    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="col-9">
         <h1>Slices</h1>
         {
-          !hasProject &&
+          showSpinner &&
+          <div className="d-flex flex-row justify-content-center mt-5">
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              variant="primary"
+            />
+            <span className="text-primary ml-2"><b>Loading slices...</b></span>
+          </div>
+        }
+        {
+          !showSpinner && !hasProject &&
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">To generate the necessary tokens for accessing slices, you have to be in a project first:</p>
             <p>
@@ -152,7 +170,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          hasProject && slices.length === 0 && 
+          !showSpinner && hasProject && slices.length === 0 && 
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">
               We couldn't find your slice. Please create slices from&nbsp;
@@ -173,7 +191,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          hasProject && slices.length > 0 && <div>
+          !showSpinner && hasProject && slices.length > 0 && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}
