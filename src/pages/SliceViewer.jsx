@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
+import toLocaleTime from "../utils/toLocaleTime";
 
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
     elements: [],
+    slice: {},
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
@@ -23,13 +25,15 @@ export default class SliceViewer extends Component {
     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
       autoCreateTokens().then(async () => {
         const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+        this.setState({ slice: data["value"]["slices"][0] });
       });
     } else {
       // the token has been stored in the browser and is ready to be used.
       try {
         const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])})
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+        this.setState({ slice: data["value"]["slices"][0] });
       } catch(err) {
         console.log("Error in getting slice: " + err);
         toast.error("Failed to load the slice. Please try again later.");
@@ -113,10 +117,25 @@ export default class SliceViewer extends Component {
   }
   
   render() {
+    const stateColors = {
+      "Nascent": "primary-dark",
+      "StableOK": "success",
+      "StableError": "warning",
+      "Closing": "secondary",
+      "Dead": "secondary",
+      "Configuring": "primary",
+    }
+
+    const { slice, elements, selectedData } = this.state;
+
     return(
-      <div className="mx-5 my-4 slice-viewer-container">
-         <div className="d-flex flex-row justify-content-between">
-            <h1>Slice Viewer</h1>
+      <div className="mx-5 mb-4 slice-viewer-container">
+         <div className="d-flex flex-row justify-content-between align-items-center">
+            <h2>
+              <b>{slice.slice_name}</b>
+              <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
+            </h2>
+            <u>Lease End: {toLocaleTime(slice.lease_end)}</u>
             <Link to="/experiments#slices">
               <button
                 className="btn btn-sm btn-outline-primary my-3"
@@ -174,22 +193,24 @@ export default class SliceViewer extends Component {
             </div>
           </div>
         </div> */}
-      <div className="d-flex flex-row justify-content-center mt-4">
+      <div className="d-flex flex-row justify-content-center">
         {/* <SideToolbar
           className="align-self-start"
           onNodeAdd={this.handleNodeAdd}
         /> */}
         {
-          this.state.elements.length > 0 &&
+          elements.length > 0 &&
           <Graph
-            className="align-self-end" elements={this.state.elements}
+            className="align-self-end"
+            elements={elements}
+            sliceName={slice.slice_name}
             onNodeSelect={this.handleNodeSelect}
           />
         }
         {
-          this.state.elements.length > 0 &&
+          elements.length > 0 &&
           <DetailForm
-            data={this.state.selectedData}
+            data={selectedData}
             // onNodeDelete={this.handleNodeDelete}
             // onNodeUpdate={this.handleNodeUpdate}
           />
