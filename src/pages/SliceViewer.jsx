@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react'
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
