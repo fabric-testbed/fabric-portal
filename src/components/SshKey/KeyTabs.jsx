@@ -41,7 +41,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
         <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
         <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
       </div>
-      <Tabs>
+      <Tabs activeTab={localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver"}>
         <div label="Sliver" number={sliverKeys.length}>
           {
             sliverKeys.length > 0 ? 

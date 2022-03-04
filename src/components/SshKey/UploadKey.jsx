@@ -27,6 +27,7 @@ class UploadKey extends Form {
     try {
       const { data } = this.state;
       await uploadPublicKey(data.keyType, data.publickey, data.description);
+      localStorage.setItem("sshKeyType", data.keyType);
       window.location.reload();
       toast.success("Successfully uploaded.");
     }

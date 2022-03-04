@@ -28,6 +28,7 @@ class GenerateKey extends Form {
       const { data } = this.state;
       const response = await generateKeyPairs(data.keyType, data.name, data.description);
       this.setState({ generatedKey: response.data });
+      localStorage.setItem("sshKeyType", data.keyType);
     }
     catch (ex) {
       console.log("failed to generate ssh key pairs: " + ex.response.data);
