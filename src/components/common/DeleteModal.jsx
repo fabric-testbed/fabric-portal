@@ -2,23 +2,23 @@ import React from "react";
 
 class DeleteModal extends React.Component {
   render() {
-    const { name, text, onDelete } = this.props;
+    const { name, text, id, onDelete } = this.props;
     return (
       <div>
         <button
           type="button"
           className="btn btn-sm btn-outline-danger"
           data-toggle="modal"
-          data-target="#deleteModal"
+          data-target={`#delete-modal-${id}`}
         >
           <i className="fa fa-trash"></i> {name}
         </button>
         <div
           className="modal fade"
-          id="deleteModal"
+          id={`delete-modal-${id}`}
           tabIndex="-1"
           role="dialog"
-          aria-labelledby="deleteModalTitle"
+          aria-labelledby={`#delete-ssh-key-modal-${id}`}
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered" role="document">
@@ -30,14 +30,14 @@ class DeleteModal extends React.Component {
                 <button
                   onClick={onDelete}
                   type="button"
-                  className="btn btn-danger"
+                  className="btn btn-sm btn-danger"
                   data-dismiss="modal"
                 >
                   Confirm
                 </button>
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-sm btn-secondary"
                   data-dismiss="modal"
                 >
                   Cancel

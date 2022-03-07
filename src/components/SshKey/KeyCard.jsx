@@ -57,7 +57,8 @@ const KeyCard = ({ data, disableKeyDelete }) => {
             !disableKeyDelete && 
             <DeleteModal
               name={"Delete SSH Key"}
-              text={"Are you sure you want to delete the key? This process cannot be undone."}
+              text={`Are you sure you want to delete the key ${data.comment}? This process cannot be undone.`}
+              id={data.key_uuid}
               onDelete={() => handleDelete(data.key_uuid, data.fabric_key_type)}
             />
           }
