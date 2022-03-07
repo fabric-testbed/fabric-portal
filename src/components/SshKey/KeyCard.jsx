@@ -17,9 +17,10 @@ const generatePublicKey = (data) => {
   return JSON.stringify(`${data.ssh_key_type} ${data.public_key} ${data.comment}`, undefined, 4);
 }
 
-const handleDelete = async (uuid) => {
+const handleDelete = async (uuid, type) => {
   try {
     await deleteKey(uuid);
+    localStorage.setItem("sshKeyType", type);
     window.location.reload();
     toast.success("Successfully deleted.");
   }
@@ -57,7 +58,7 @@ const KeyCard = ({ data, disableKeyDelete }) => {
             <DeleteModal
               name={"Delete SSH Key"}
               text={"Are you sure you want to delete the key? This process cannot be undone."}
-              onDelete={() => handleDelete(data.key_uuid)}
+              onDelete={() => handleDelete(data.key_uuid, data.fabric_key_type)}
             />
           }
         </div>
