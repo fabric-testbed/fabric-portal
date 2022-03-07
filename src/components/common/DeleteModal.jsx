@@ -2,9 +2,9 @@ import React from "react";
 
 class DeleteModal extends React.Component {
   render() {
-    const { name, text, onDelete } = this.props;
+    const { name, text, key, onDelete } = this.props;
     return (
-      <div>
+      <div key={key}>
         <button
           type="button"
           className="btn btn-sm btn-outline-danger"
