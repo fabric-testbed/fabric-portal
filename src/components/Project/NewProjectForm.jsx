@@ -105,6 +105,7 @@ class NewProjectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ owners: [] });
       }
     } else if (this.state.activeTabIndex === 1) {
@@ -118,6 +119,7 @@ class NewProjectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
+        toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ members: [] });
       }
     }

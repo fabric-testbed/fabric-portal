@@ -197,7 +197,7 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
-        toast.error("Cannot find user. Please check your input.");
+        toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ owners: [] });
       }
     } else if (this.state.activeIndex === 2) {
@@ -211,7 +211,7 @@ class projectForm extends Form {
         }
       } catch (err) {
         console.warn(err);
-        toast.error("Cannot find user. Please check your input.");
+        toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ members: [] });
       }
     }
