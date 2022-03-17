@@ -111,85 +111,85 @@ class Header extends React.Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul className="navbar-nav mr-auto">
-            {
-              navItems.map((item, index) => {
-                return (
-                  <li
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav mr-auto">
+          {
+            navItems.map((item, index) => {
+              return (
+                <li
+                  className={
+                    "nav-item" + (item.child.length > 0 ? " dropdown" : "")
+                  }
+                  key={index}
+                >
+                  <NavLink
                     className={
-                      "nav-item" + (item.child.length > 0 ? " dropdown" : "")
+                      "nav-link" +
+                      (item.child.length > 0 ? " dropdown-toggle" : "")
                     }
-                    key={index}
+                    to={item.path}
+                    id={`navbarDropdownMenuLink-${index}`}
+                    data-toggle={item.child.length > 0 ? "dropdown" : ""}
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    exact={item.exact}
                   >
-                    <NavLink
-                      className={
-                        "nav-link" +
-                        (item.child.length > 0 ? " dropdown-toggle" : "")
-                      }
-                      to={item.path}
-                      id={`navbarDropdownMenuLink-${index}`}
-                      data-toggle={item.child.length > 0 ? "dropdown" : ""}
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      exact={item.exact}
+                    {item.name}
+                  </NavLink>
+                  {item.child.length > 0 && (
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby={`navbarDropdownMenuLink-${index}`}
                     >
-                      {item.name}
-                    </NavLink>
-                    {item.child.length > 0 && (
-                      <div
-                        className="dropdown-menu"
-                        aria-labelledby={`navbarDropdownMenuLink-${index}`}
-                      >
-                        {item.child.map((sub_item, sub_index) => {
-                          return (
-                            <a
-                              className="dropdown-item"
-                              key={sub_index}
-                              href={sub_item.href}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {sub_item.name}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-            { this.props.userStatus !== "active" ? 
-              <form className="form-inline my-2 my-lg-0">
-                <NavLink to="/login">
-                  <button
-                    onClick={this.handleLogin}
-                    className="btn btn-outline-success my-2 my-sm-0 mr-2"
-                  >
-                    Log in
-                  </button>
-                </NavLink>
-                <NavLink to="/signup/1">
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                  >
-                    Sign up
-                  </button>
-                </NavLink>
-              </form> :
-              <form className="form-inline my-2 my-lg-0">
-                <NavLink to="/logout">
-                  <button
-                    onClick={this.handleLogout}
-                    className="btn btn-outline-success my-2 my-sm-0"
-                  >
-                    Log out
-                  </button>
-                </NavLink>
-              </form>
-            }
-          </div>
+                      {item.child.map((sub_item, sub_index) => {
+                        return (
+                          <a
+                            className="dropdown-item"
+                            key={sub_index}
+                            href={sub_item.href}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {sub_item.name}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          { this.props.userStatus !== "active" ? 
+            <form className="form-inline my-2 my-lg-0">
+              <NavLink to="/login">
+                <button
+                  onClick={this.handleLogin}
+                  className="btn btn-outline-success my-2 my-sm-0 mr-2"
+                >
+                  Log in
+                </button>
+              </NavLink>
+              <NavLink to="/signup/1">
+                <button
+                  className="btn btn-outline-primary my-2 my-sm-0"
+                >
+                  Sign up
+                </button>
+              </NavLink>
+            </form> :
+            <form className="form-inline my-2 my-lg-0">
+              <NavLink to="/logout">
+                <button
+                  onClick={this.handleLogout}
+                  className="btn btn-outline-success my-2 my-sm-0"
+                >
+                  Log out
+                </button>
+              </NavLink>
+            </form>
+          }
+        </div>
       </nav>
     );
   }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
@@ -55,6 +56,70 @@ export default class SliceViewer extends Component {
     this.setState({ selectedData });
   }
   
+
+  handleSiteAdd = () => {
+    let eleObj = { data: { id: this.state.elements.length + 1, label: 'UKY', type: "roundrectangle", properties: {class: "Composite Node"} }, position: {x: 800, y: 250 }, classes: "graphSite"};
+    let fakeEleObj = { data: { id: this.state.elements.length + 9999, parent:  this.state.elements.length + 1, type: "roundrectangle"}, position: {x: 800, y: 350 }, classes: "fakeNode"};
+    let clonedElements = _.clone(this.state.elements);
+    clonedElements.push(eleObj);
+    clonedElements.push(fakeEleObj);
+
+    // change next node position.
+    // TODO:
+
+    this.setState({elements: clonedElements});
+  }
+
+  handleVMAdd = () => {
+    let eleObj = { data: { id: this.state.elements.length + 1, parent: 12,label: 'VM', type: "roundrectangle", properties: {class: "Composite Node"} }, position: {x: 800, y: 350 }, classes: "graphVM"};
+    let fakeEleObj = { data: { id: this.state.elements.length + 9999, parent:  this.state.elements.length + 1, type: "roundrectangle"}, position: {x: 800, y: 350 }, classes: "fakeNode"};
+    let clonedElements = _.clone(this.state.elements);
+    clonedElements.push(eleObj);
+    clonedElements.push(fakeEleObj);
+
+    // change next node position.
+    // TODO:
+
+    this.setState({elements: clonedElements});
+  }
+
+  handleNodeAdd = (type) => {
+    if (type !== "Site" && type !== "VM") {
+      let eleObj = { data: { id: this.state.elements.length + 1, type: "roundrectangle", properties: {class: "Composite Node"} }, position: this.state.positionAddNode, classes: `graph${type}` };
+      let clonedElements = _.clone(this.state.elements);
+      clonedElements.push(eleObj);
+  
+      // change next node position.
+      // TODO:
+      const x = this.state.positionAddNode.x + 110;
+      const y = this.state.positionAddNode.y;
+      this.setState({positionAddNode: { x , y }});
+  
+      this.setState({elements: clonedElements});
+    }
+  }
+
+  handleNodeDelete = (id) => {
+    const originalElements = this.state.elements;
+    const elementToDelete = originalElements.filter(e => e.data.id === id)[0];
+    let newElements = originalElements;
+    if (elementToDelete.data && elementToDelete.data.properties && elementToDelete.data.properties.interfaces) {
+      // delete all interfaces at the same time.
+      for (const interface_id of elementToDelete.data.properties.interfaces) {
+        newElements = newElements.filter(e => e.data.id !== interface_id);
+      }
+    }
+
+    // delete the node itself.
+    newElements = newElements.filter(e => e.data.id !== id);
+
+    this.setState({elements: newElements});
+  }
+
+  handleNodeUpdate = (id) => {
+    console.log(id);
+  }
+  
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -85,6 +150,10 @@ export default class SliceViewer extends Component {
             </Link>
           </div>
       <div className="d-flex flex-row justify-content-center">
+        <SideToolbar
+          className="align-self-start"
+          onNodeAdd={this.handleNodeAdd}
+        />
         {
           elements.length > 0 &&
           <Graph
