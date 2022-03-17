@@ -26,7 +26,7 @@ export const updates = [
     id: 4,
     title: "FABRIC is now open with more sites and features!",
     content:
-      '<p>We are pleased to announce the end of the maintenance period including Release 1.1 of our software stack. FABRIC is available to you again with a number of improvements:</p><p><ol><li>We have a larger topology with 9 sites available for experiments (we expect MASS site to be available shortly);</li><li>We fully integrated bastion hosts into the experiment workflow;</li><li>Bastion SSH key and account management have been automated and fully integrated with the portal and bastion hosts;</li><li>We added many significant enhancements and bug fixes to the Control Framework.</li></ol></p><p>In May 2022 we expect additional 5 sites at GATech, GPN, FIU, Clemson and UCSD to come on-line.</p>',
+      '<p>We are pleased to announce the end of the maintenance period including Release 1.1 of our software stack. FABRIC is available to you again with a number of improvements:</p><p><ol><li>We have a larger topology with 9 sites available for experiments (we expect MASS site to be available shortly);</li><li>We fully integrated bastion hosts into the experiment workflow;</li><li>Bastion SSH key and account management have been automated and fully integrated with the portal and bastion hosts;</li><li>We added many significant enhancements and bug fixes to the Control Framework.</li></ol></p><p>In May 2022 we expect additional 4 sites at GPN, FIU, Clemson and UCSD to come on-line.</p>',
     date: "2022-03-01",
     link: "https://learn.fabric-testbed.net/forums/topic/fabric-is-now-open-with-even-more-sites-and-features/",
     button: "Learn More",
