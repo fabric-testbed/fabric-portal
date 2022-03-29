@@ -14,3 +14,21 @@ export function getSliceById(id) {
     headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
   });
 }
+
+export function createSlice(name, key, time, graphml) {
+  const query = new URLSearchParams({
+    sliceName: name,
+    sshKey: key,
+    leaseEndTime: time,
+  }).toString();
+  const url = apiEndpoint + "/create?" + query;
+  http.post(
+    url,
+    {data: graphml},
+    {headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}}
+  );
+}
+
+export function deleteSlice(id) {
+  http.delete(`${apiEndpoint}/delete/${id}`);
+}
