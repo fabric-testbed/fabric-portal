@@ -5,7 +5,7 @@ import SideLinks from './SideLinks';
 
 const SideToolbar = (props) => {
   return (
-    <div className="w-100">
+    <div>
     <div className="card">
       <div className="card-header py-1">
         <button className="btn btn-link">
