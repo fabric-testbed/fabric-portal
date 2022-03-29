@@ -5,52 +5,55 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getSliceById } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/orchestratorService.js";
+import { getSliceById } from "../services/fakeSlices.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import toLocaleTime from "../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
-    elements: [],
-    slice: {
-      "graph_id": "",
-      "lease_end": "",
-      "slice_id": "",
-      "slice_model": "",
-      "slice_name": "Slice Viewer",
-      "slice_state": "StableOK"
-    },
+    // elements: [],
+    // slice: {
+    //   "graph_id": "",
+    //   "lease_end": "",
+    //   "slice_id": "",
+    //   "slice_model": "",
+    //   "slice_name": "Slice Viewer",
+    //   "slice_state": "StableOK"
+    // },
+    elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slices"][0]["slice_model"]),
+    slice: getSliceById(this.props.match.params.id)["value"]["slices"][0],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
 
-  async componentDidMount() {
-    // call credential manager to generate tokens 
-    // if nothing found in browser storage
-    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-      autoCreateTokens().then(async () => {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-        this.setState({ slice: data["value"]["slices"][0] });
-      });
-    } else {
-      // the token has been stored in the browser and is ready to be used.
-      try {
-        const { data } = await getSliceById(this.props.match.params.id);
-        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-        this.setState({ slice: data["value"]["slices"][0] });
-      } catch(err) {
-        console.log("Error in getting slice: " + err);
-        toast.error("Failed to load the slice. Please try again later.");
-        if (err.response.status === 401) {
-          // 401 Error: Provided token is not valid.
-          // refresh the token by calling credential manager refresh_token.
-          autoRefreshTokens();
-        }
-      }
-    }
-  }
+  // async componentDidMount() {
+  //   // call credential manager to generate tokens 
+  //   // if nothing found in browser storage
+  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //     autoCreateTokens().then(async () => {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+  //       this.setState({ slice: data["value"]["slices"][0] });
+  //     });
+  //   } else {
+  //     // the token has been stored in the browser and is ready to be used.
+  //     try {
+  //       const { data } = await getSliceById(this.props.match.params.id);
+  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+  //       this.setState({ slice: data["value"]["slices"][0] });
+  //     } catch(err) {
+  //       console.log("Error in getting slice: " + err);
+  //       toast.error("Failed to load the slice. Please try again later.");
+  //       if (err.response.status === 401) {
+  //         // 401 Error: Provided token is not valid.
+  //         // refresh the token by calling credential manager refresh_token.
+  //         autoRefreshTokens();
+  //       }
+  //     }
+  //   }
+  // }
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
@@ -132,22 +135,34 @@ export default class SliceViewer extends Component {
 
     const { slice, elements, selectedData } = this.state;
 
+    console.log(slice)
+
     return(
       <div className="mx-5 mb-4 slice-viewer-container">
          <div className="d-flex flex-row justify-content-between align-items-center mt-2">
-            <h2>
+           <div className="d-flex flex-row justify-content-between align-items-center">
+            <h2 className="mr-3">
               <b>{slice.slice_name}</b>
               <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
             </h2>
             <u>Lease End: {toLocaleTime(slice.lease_end)}</u>
-            <Link to="/experiments#slices">
-              <button
-                className="btn btn-sm btn-outline-primary my-3"
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Back to Slice List
-              </button>
-            </Link>
+           </div>
+           <div className="d-flex flex-row justify-content-between align-items-center">
+             {
+               slice.slice_state !== "Dead" &&
+                <button className="btn btn-sm btn-outline-danger my-3 mr-3">
+                  <i className="fa fa-trash mr-2"></i>Delete
+                </button>
+             }
+              <Link to="/experiments#slices">
+                <button
+                  className="btn btn-sm btn-outline-primary my-3"
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Back to Slice List
+                </button>
+              </Link>
+           </div>
           </div>
       <div className="d-flex flex-row justify-content-center">
         <SideToolbar
