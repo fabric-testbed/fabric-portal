@@ -1,5 +1,6 @@
 import http from './httpService';
 import { default as config } from "../config.json";
+import SideComponents from '../components/SliceViewer/SideComponents';
 
 const apiEndpoint = config.orchestratorApiUrl;
 
@@ -15,16 +16,16 @@ export function getSliceById(id) {
   });
 }
 
-export function createSlice(name, key, time, graphml) {
+export function createSlice(slice) {
   const query = new URLSearchParams({
-    sliceName: name,
-    sshKey: key,
-    leaseEndTime: time,
+    sliceName: slice.name,
+    sshKey: slice.sshKey,
+    leaseEndTime: slice.leaseEndTime,
   }).toString();
   const url = apiEndpoint + "/create?" + query;
   http.post(
     url,
-    {data: graphml},
+    {data: slice.graphml},
     {headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}}
   );
 }
