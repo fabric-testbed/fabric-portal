@@ -19,7 +19,7 @@ class NewSliceForm extends Form {
   schema = {
     name: Joi.string().required().label("Name"),
     sshKey: Joi.string().required().label("SSH Key"),
-    leaseEndTime: Joi.string().required().label("Lease End Time"),
+    leaseEndTime: Joi.date().min("now").label("Lease End Time"),
     graphml: Joi.string().required().label("Graphml"),
   };
 
@@ -36,12 +36,13 @@ class NewSliceForm extends Form {
 
   render() {
     return (
-      <div class="container">
+      <div className="container">
         <h1>New Slice</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("name", "Name", true)}
-          {this.renderTextarea("sshKey", "SSH Key", true)}
-          {this.renderTextarea("graphml", "Graphml", true)}
+          {this.renderInput("name", "Name*", true)}
+          {this.renderTextarea("sshKey", "SSH Key*", true)}
+          {this.renderInput("leaseEndTime", "Lease End Time (Format: %Y-%m-%d %H:%M:%S e.g. 2022-04-01 15:16:12)", true)}
+          {this.renderTextarea("graphml", "Graphml*", true)}
           {this.renderButton("Create")}
         </form>
       </div>

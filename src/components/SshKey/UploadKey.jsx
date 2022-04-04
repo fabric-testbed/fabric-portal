@@ -70,7 +70,7 @@ class UploadKey extends Form {
     return (
       <div className="w-100">
         <h3 className="my-4">Upload Public Key</h3>
-          <div class="alert alert-primary" role="alert">
+          <div className="alert alert-primary" role="alert">
             Please follow &nbsp;
             <a
               href={portalData.guideToGenerateFabricCompliantKey}

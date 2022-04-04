@@ -4,6 +4,7 @@ import Input from "./Input.jsx";
 import Textarea from "./Textarea.jsx";
 import Select from "./Select.jsx";
 import InputTag from "./InputTag.jsx";
+import TimePicker from "./TimePicker.jsx";
 
 class Form extends Component {
   state = {
@@ -127,17 +128,29 @@ class Form extends Component {
 
     return (
         <Select
-            name={name}
-            value={data[name]} 
-            label={label}
-            currentOptionName={currentOptionName}
-            options={options}
-            onChange={this.handleChange}
-            error={errors[name]}
-            disabled={!notDisabled}
+          name={name}
+          value={data[name]} 
+          label={label}
+          currentOptionName={currentOptionName}
+          options={options}
+          onChange={this.handleChange}
+          error={errors[name]}
+          disabled={!notDisabled}
         />
     );
-}
+  }
+
+  renderTimePicker(name, label) {
+    const { data, errors } = this.state;
+
+    return (
+        <TimePicker
+          name={name}
+          label={label}
+          onChange={this.handleChange}
+        />
+    );
+  }
 
 }
 
