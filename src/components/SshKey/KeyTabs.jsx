@@ -26,7 +26,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
           </Link>
         </div>
       }
-      <div class="alert alert-primary" role="alert">
+      <div className="alert alert-primary" role="alert">
         Please consult &nbsp;
         <a
           href={portalData.guideToLoginToFabricVMs}
@@ -37,7 +37,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
         </a>&nbsp;
         to login to your VMs via bastion hosts.
       </div>
-      <div class="alert alert-primary" role="alert">
+      <div className="alert alert-primary" role="alert">
         <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
         <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
       </div>
