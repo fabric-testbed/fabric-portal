@@ -8,24 +8,25 @@ export default class SideNodes extends Component {
     images: [
       {
         id: 1,
-        name: "Switch",
-        component: Switch,
-      },
-      {
-        id: 2,
         name: "Site",
         component: Site,
       },
       {
-        id: 3,
+        id: 2,
         name: "VM",
         component: VM,
+      },
+      {
+        id: 3,
+        name: "Switch",
+        component: Switch,
       },
     ]
   }
 
-  handleAdd = (type) => {
-    this.props.onNodeAdd(type);
+  handleAddSite = (type) => {
+    // this.props.onNodeAdd(type);
+    alert("add site!");
   }
 
   render() {
@@ -47,6 +48,7 @@ export default class SideNodes extends Component {
                       className="btn btn-sm btn-outline-success mb-2"
                       data-toggle="modal"
                       data-target="#siteModal"
+                      onClick={() => this.handleAddSite("site")}
                     >
                       Add
                     </button>
