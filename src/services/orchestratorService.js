@@ -34,5 +34,7 @@ export function createSlice(slice) {
 }
 
 export function deleteSlice(id) {
-  http.delete(`${apiEndpoint}/delete/${id}`);
+  http.delete(`${apiEndpoint}/delete/${id}`, {
+    headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+  });
 }
