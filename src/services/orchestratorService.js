@@ -1,6 +1,5 @@
 import http from './httpService';
 import { default as config } from "../config.json";
-import SideComponents from '../components/SliceViewer/SideComponents';
 
 const apiEndpoint = config.orchestratorApiUrl;
 
@@ -26,8 +25,12 @@ export function createSlice(slice) {
   http.post(
     url,
     {data: slice.graphml},
-    {headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}}
-  );
+    {
+      headers: {
+      'Content-Type': 'text/plain',
+      'Authorization': `Bearer ${localStorage.getItem("idToken")}`
+    }
+  });
 }
 
 export function deleteSlice(id) {

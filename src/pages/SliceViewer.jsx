@@ -6,56 +6,56 @@ import DeleteModal from "../components/common/DeleteModal";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-// import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
-import { getSliceById } from "../services/fakeSlices.js";
-import { deleteSlice } from "../services/orchestratorService.js";
+import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/fakeSlices.js";
+// import { deleteSlice } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import toLocaleTime from "../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
   state = {
-    // elements: [],
-    // slice: {
-    //   "graph_id": "",
-    //   "lease_end": "",
-    //   "slice_id": "",
-    //   "slice_model": "",
-    //   "slice_name": "Slice Viewer",
-    //   "slice_state": "StableOK"
-    // },
-    elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slices"][0]["slice_model"]),
-    slice: getSliceById(this.props.match.params.id)["value"]["slices"][0],
+    elements: [],
+    slice: {
+      "graph_id": "",
+      "lease_end": "",
+      "slice_id": "",
+      "slice_model": "",
+      "slice_name": "Slice Viewer",
+      "slice_state": "StableOK"
+    },
+    // elements: sliceParser(getSliceById(this.props.match.params.id)["value"]["slices"][0]["slice_model"]),
+    // slice: getSliceById(this.props.match.params.id)["value"]["slices"][0],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
   }
 
-  // async componentDidMount() {
-  //   // call credential manager to generate tokens 
-  //   // if nothing found in browser storage
-  //   if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-  //     autoCreateTokens().then(async () => {
-  //       const { data } = await getSliceById(this.props.match.params.id);
-  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-  //       this.setState({ slice: data["value"]["slices"][0] });
-  //     });
-  //   } else {
-  //     // the token has been stored in the browser and is ready to be used.
-  //     try {
-  //       const { data } = await getSliceById(this.props.match.params.id);
-  //       this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-  //       this.setState({ slice: data["value"]["slices"][0] });
-  //     } catch(err) {
-  //       console.log("Error in getting slice: " + err);
-  //       toast.error("Failed to load the slice. Please try again later.");
-  //       if (err.response.status === 401) {
-  //         // 401 Error: Provided token is not valid.
-  //         // refresh the token by calling credential manager refresh_token.
-  //         autoRefreshTokens();
-  //       }
-  //     }
-  //   }
-  // }
+  async componentDidMount() {
+    // call credential manager to generate tokens 
+    // if nothing found in browser storage
+    if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+      autoCreateTokens().then(async () => {
+        const { data } = await getSliceById(this.props.match.params.id);
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+        this.setState({ slice: data["value"]["slices"][0] });
+      });
+    } else {
+      // the token has been stored in the browser and is ready to be used.
+      try {
+        const { data } = await getSliceById(this.props.match.params.id);
+        this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
+        this.setState({ slice: data["value"]["slices"][0] });
+      } catch(err) {
+        console.log("Error in getting slice: " + err);
+        toast.error("Failed to load the slice. Please try again later.");
+        if (err.response.status === 401) {
+          // 401 Error: Provided token is not valid.
+          // refresh the token by calling credential manager refresh_token.
+          autoRefreshTokens();
+        }
+      }
+    }
+  }
 
   handleDeleteSlice = async (id) => {
     try {
@@ -148,7 +148,10 @@ export default class SliceViewer extends Component {
 
     const { slice, elements, selectedData } = this.state;
 
+    console.log("#####Slice#####")
     console.log(slice)
+    console.log("#####Elements#####")
+    console.log(elements)
 
     return(
       <div className="mx-5 mb-4 slice-viewer-container">
