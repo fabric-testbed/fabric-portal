@@ -24,7 +24,7 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
-    activeNotices: getActiveNotics(),
+    activeNotices: getActiveNotices(),
   };
 
   async componentDidMount() {
