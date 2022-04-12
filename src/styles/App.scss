@@ -19,26 +19,16 @@ body {
 .home-upper {
   margin: 0;
   height: 26rem;
-}
-
-.home-upper::after {
-  content: "";
-  height: 28rem;
   background: url("../imgs/home-bg.jpg");
   background-size: 100%;
   background-repeat: repeat;
   opacity: 0.8;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
+  margin-bottom: 2rem;
 }
 
 /* For small screen */
 .home-upper-text {
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 2rem 2rem;
   width: 85%;
   font-size: 0.5rem;
 }
@@ -68,17 +58,17 @@ body {
 
 @media only screen and (min-width: 576px) {
   .home-upper-text {
-    padding: 1rem 1rem;
-    width: 90%;
+    padding: 2rem 2rem;
+    width: 85%;
     font-size: 0.75rem;
   }
 }
 
 @media only screen and (min-width: 768px) {
   .home-upper-text {
-    padding: 1rem 1rem;
-    width: 95%;
-    font-size: 0.9rem;
+    padding: 2rem 2rem;
+    width: 85%;
+    font-size: 1rem;
   }
 
   .app-footer {
@@ -88,16 +78,16 @@ body {
 
 @media only screen and (min-width: 992px) {
   .home-upper-text {
-    padding: 1rem 1rem;
-    width: 85%;
+    padding: 2rem 2rem;
+    width: 80%;
     font-size: 1rem;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .home-upper-text {
-    padding: 2rem 2.5rem;
-    width: 90%;
+    padding: 2.5rem 4rem;
+    width: 75%;
     font-size: 1rem;
   }
 
@@ -467,4 +457,8 @@ ul {
   background-color: white;
   border: solid #dee2e6;
   border-width: 1px 1px 0 1px;
+}
+
+.alert {
+  margin-bottom: 0 !important;
 }

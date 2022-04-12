@@ -15,14 +15,6 @@ export const notices = [
     endTimeUTC: "2022-04-14 02:00:00",
     link: "https://learn.fabric-testbed.net/forums/topic/maintenance-on-network-am-on-wed-4-13-22-8pm-10pm-et/",
   },
-  {
-    id: 3,
-    title: "Emergency Downtime",
-    content:
-      "We have to perform an emergency shutdown of UMASS due to DATACenter cooling issues at location the FABRIC rack is hosted.",
-    endTimeUTC: "2022-04-12 20:00:00",
-    link: "https://learn.fabric-testbed.net/forums/topic/emergency-downtime-umass/",
-  },
 ];
 
 export function getActiveNotices() {
