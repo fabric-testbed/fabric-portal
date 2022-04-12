@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/userInformationService.js";
-import { getActiveNotice } from "./services/fakeMaintenanceNotice.js";
+import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -24,7 +24,7 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
-    activeNotice: getActiveNotice(),
+    activeNotices: getActiveNotics(),
   };
 
   async componentDidMount() {
@@ -56,7 +56,9 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Header userStatus={this.state.userStatus} />
-          { this.state.activeNotice.length > 0 && <Banner notice={this.state.activeNotice[0]} />}
+          { this.state.activeNotices.length > 0 && 
+            this.state.activeNotices.map(notice => <Banner notice={notice}/>)
+          }
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/login" component={Home} />

@@ -1,6 +1,7 @@
 export const notices = [
   {
     id: 1,
+    title: "Disruptive Maintenance Notice",
     content:
       "From 2/14/2022 00:00:00 EST until 2/28/2022 00:00:00 EST, all fabric racks/resources will be undergo a disruptive maintenance.",
     endTimeUTC: "2022-02-29 04:00:00",
@@ -8,14 +9,23 @@ export const notices = [
   },
   {
     id: 2,
+    title: "Maintenance Notice",
     content:
       "Maintenance on Network AM on Wed 4/13/22 from 8PM to 10PM ET. The impacted services are FABnet4, FABnet6 and PortMirror.",
     endTimeUTC: "2022-04-14 02:00:00",
     link: "https://learn.fabric-testbed.net/forums/topic/maintenance-on-network-am-on-wed-4-13-22-8pm-10pm-et/",
   },
+  {
+    id: 3,
+    title: "Emergency Downtime",
+    content:
+      "We have to perform an emergency shutdown of UMASS due to DATACenter cooling issues at location the FABRIC rack is hosted.",
+    endTimeUTC: "2022-04-12 20:00:00",
+    link: "https://learn.fabric-testbed.net/forums/topic/emergency-downtime-umass/",
+  },
 ];
 
-export function getActiveNotice() {
+export function getActiveNotices() {
   const timeElapsed = Date.now();
   const today = new Date(timeElapsed);
   const currentUTC =  today.toISOString().replace("T", " ").substring(0, 19);
