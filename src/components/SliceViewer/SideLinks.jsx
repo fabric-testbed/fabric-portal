@@ -36,7 +36,17 @@ export default class SideLinks extends Component {
                 <option value="L2PTP">L2PTP</option>
               </select>
             </div>
-          </div>
+            <div className="form-group col-md-6">
+                <label htmlFor="inputNodeName">Service Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="inputServiceName"
+                  placeholder=""
+                  onChange={this.handleNameChange}
+                />
+              </div>
+           </div>
         </form>
         <div className="my-2 d-flex flex-row">
         {

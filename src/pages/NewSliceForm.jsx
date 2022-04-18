@@ -61,6 +61,9 @@ class NewSliceForm extends Form {
       "links": this.state.sliceLinks,
     }
 
+    console.log("sliceJSON");
+    console.log(sliceJSON)
+
     let elements = sliceParser(sliceJSON, "new");
     return elements;
   }
@@ -154,18 +157,18 @@ class NewSliceForm extends Form {
     const { slice, elements, selectedData, parsedResources } = this.state;
 
     return (
-      <div className="w-100 d-flex flex-column">
-        <div className="w-50 align-self-center my-4">
-          <h1>New Slice</h1>
+      <div className="d-flex flex-column">
+        <div className="new-slice-form align-self-center mt-4">
           <form onSubmit={this.handleSubmit}>
-            {this.renderInput("name", "Name*", true)}
-            {this.renderTextarea("sshKey", "SSH Key*", true)}
-            {this.renderInput("leaseEndTime", "Lease End Time (Format: %Y-%m-%d %H:%M:%S e.g. 2022-04-01 15:16:12)", true)}
-            {this.renderTextarea("graphml", "Graphml*", true)}
-            {this.renderButton("Create")}
+            <div class="form-row d-flex align-items-center">
+              <div class="col-md-3">{this.renderInput("name", "Name*", true)}</div>
+              <div class="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
+              <div class="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
+              <div class="col-md-2 pt-3">{this.renderButton("Create Slice")}</div>
+            </div>
           </form>
         </div>
-        <div className="d-flex flex-row justify-content-center">
+        <div className="d-flex flex-row justify-content-center mb-4">
           <SideToolbar
             className="align-self-start"
             resources={parsedResources}
