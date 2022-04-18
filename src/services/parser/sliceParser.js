@@ -1,5 +1,17 @@
-export default function parseSlice(slice) {
-  const abqm = JSON.parse(slice);
+export default function parseSlice(slice, sliceType) {
+  // type: "new" or "api"
+  let abqm;
+  if (sliceType === "new") {
+    // portal generates slice model json
+    abqm = slice;
+  } else {
+    abqm = JSON.parse(slice);
+  }
+
+  if (abqm.nodes === undefined && abqm.links === undefined) {
+    return;
+  }
+
   const nodes = abqm.nodes;
   const links = abqm.links;
   // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
@@ -52,7 +64,7 @@ export default function parseSlice(slice) {
     const originalNode = objNodes[id];
     data.id = originalNode.id;
     // data.label = originalNode.id + '.' + originalNode.Type;
-    data.label = originalNode.Type;
+    data.label = originalNode.Name;
     data.type = "roundrectangle";
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
@@ -60,7 +72,11 @@ export default function parseSlice(slice) {
     properties.model = originalNode.Model;
     properties.detail = originalNode.Details;
     data.properties = properties;
-    data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+    if (sliceType === "new") {
+      data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
+    } else {
+      data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+    }
     // add parent site node if it's network node.
     if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
   }
@@ -243,5 +259,6 @@ export default function parseSlice(slice) {
       cyElements.push({ data: el })
     }
   })
+
   return cyElements;
 }

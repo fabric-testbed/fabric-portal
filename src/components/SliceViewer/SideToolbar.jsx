@@ -4,8 +4,6 @@ import SideComponents from './SideComponents';
 import SideLinks from './SideLinks';
 
 const SideToolbar = (props) => {
-  console.log("here is the side toolbar: ");
-  console.log(props.resources);
   return (
     <div>
     <div className="card">
@@ -16,7 +14,7 @@ const SideToolbar = (props) => {
       </div>
       <div className="show" aria-labelledby="headingOne" aria-expanded="true" data-parent="#accordion">
         <div className="card-body">
-          <SideNodes onNodeAdd={ props.onNodeAdd }/>
+          <SideNodes onNodeAdd={ props.onNodeAdd } resources={props.resources} />
         </div>
       </div>
     </div>
