@@ -12,13 +12,33 @@ export default class SideLinks extends Component {
     ]
   }
   
-  handleAdd = (type) => {
+  handleAddLink = (type) => {
+    // type: "l2sts"
     this.props.onNodeAdd(type);
   }
 
   render() {
     return(
-      <div className="my-2 d-flex flex-row">
+      <div>
+        <form>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="inputComponent">Service Type</label>
+              <select
+                className="form-control"
+                id="componentSelect"
+                onChange={this.handleComponentChange}
+                defaultValue=""
+              >
+                <option>Choose...</option>
+                <option value="L2STS">L2STS</option>
+                <option value="L2Bridge">L2Bridge</option>
+                <option value="L2PTP">L2PTP</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        <div className="my-2 d-flex flex-row">
         {
           this.state.images.map((img, index) => {
             return (
@@ -39,6 +59,7 @@ export default class SideLinks extends Component {
             )
           })
         }
+        </div>
       </div>
     )
   }
