@@ -1,5 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
+import _ from "lodash";
 import Form from "../components/common/Form";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -10,7 +11,7 @@ import { createSlice } from "../services/orchestratorService.js";
 import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
-
+import sliceParser from "../services/parser/sliceParser.js";
 
 class NewSliceForm extends Form {
   state = {
@@ -32,6 +33,8 @@ class NewSliceForm extends Form {
       "slice_name": "Slice Viewer",
       "slice_state": "StableOK"
     },
+    sliceNodes: [],
+    sliceLinks: [],
     selectedData: null,
     parsedResources: null,
   }
@@ -40,7 +43,6 @@ class NewSliceForm extends Form {
     const resources = getResources();
     const parsedObj = sitesParser(resources, this.state.ancronymToName);
     this.setState({ parsedResources: parsedObj });
-    console.log(parsedObj);
   }
 
   schema = {
@@ -49,6 +51,68 @@ class NewSliceForm extends Form {
     leaseEndTime: Joi.date().min("now").label("Lease End Time"),
     graphml: Joi.string().required().label("Graphml"),
   };
+
+  generateGraphElements = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    let elements = sliceParser(sliceJSON, "new");
+    return elements;
+  }
+
+  handleNodeAdd = (type, site, name, core, disk, ram, component, componentName) => {
+    if (type === "vm") {
+      // 1. add vm
+      // 2. add component
+      // 3. add 'has' link between vm and component
+      const vm_node = {
+        "labels": ":GraphNode:NetworkNode",
+        "Class": "NetworkNode",
+        "Name": name,
+        "Site": site,
+        "Capacities": {
+          "core": core,
+          "disk": disk,
+          "ram": ram,
+        },
+        "Type": "VM",
+        "id": this.state.sliceNodes.length + 1,
+      }
+
+      const component_node = {
+        "labels": ":Component:GraphNode",
+        "Class": "Component",
+        "Name": componentName,
+        "Capacities": {
+          "unit": 1,
+        },
+        "Type": component,
+        "id": this.state.sliceNodes.length + 2,
+      }
+
+      const link = {
+        "label": "has",
+        "Class": "has",
+        "id": this.state.sliceLinks.length + 1,
+        "source": this.state.sliceNodes.length + 1,
+        "target": this.state.sliceNodes.length + 2,
+      }
+
+      let clonedNodes = _.clone(this.state.sliceNodes);
+      clonedNodes.push(vm_node);
+      clonedNodes.push(component_node);
+      this.setState({ sliceNodes: clonedNodes });
+
+      let clonedLinks = _.clone(this.state.sliceLinks);
+      clonedLinks.push(link);
+      this.setState({ sliceLinks: clonedLinks });
+    }
+  }
 
   doSubmit = async () => {
     try {
@@ -84,8 +148,8 @@ class NewSliceForm extends Form {
           />
           <Graph
             className="align-self-end"
-            elements={elements}
-            sliceName={slice.slice_name}
+            elements={this.generateGraphElements()}
+            sliceName={"new-slice"}
           />
         </div>
       </div>
