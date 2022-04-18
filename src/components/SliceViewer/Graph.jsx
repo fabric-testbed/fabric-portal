@@ -9,7 +9,7 @@ import { saveAs } from "file-saver";
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
-import IconNIC25G from '../../imgs/SliceComponentIcons/NIC25G.png';
+import IconNIC from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
@@ -145,9 +145,19 @@ export default class Graph extends Component {
               }
             },
             {
+              "selector": ".graphNIC",
+              "style": {
+                "background-image": `${IconNIC}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
               "selector": ".graphSmartNIC",
               "style": {
-                "background-image": `${IconNIC25G}`,
+                "background-image": `${IconNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -157,7 +167,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSharedNIC",
               "style": {
-                "background-image": `${IconNIC25G}`,
+                "background-image": `${IconNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,

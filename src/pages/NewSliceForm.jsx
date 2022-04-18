@@ -70,6 +70,7 @@ class NewSliceForm extends Form {
       // 1. add vm
       // 2. add component
       // 3. add 'has' link between vm and component
+      // 4. if componnet is NIC, add connection points and 'has' links automatically.
       const vm_node = {
         "labels": ":GraphNode:NetworkNode",
         "Class": "NetworkNode",
@@ -106,12 +107,36 @@ class NewSliceForm extends Form {
       let clonedNodes = _.clone(this.state.sliceNodes);
       clonedNodes.push(vm_node);
       clonedNodes.push(component_node);
-      this.setState({ sliceNodes: clonedNodes });
-
       let clonedLinks = _.clone(this.state.sliceLinks);
       clonedLinks.push(link);
-      this.setState({ sliceLinks: clonedLinks });
+
+      if (component === "NIC") {
+        const cp =   {
+          "labels": ":ConnectionPoint:GraphNode",
+          "Class": "ConnectionPoint",
+          "Type": "SharedPort",
+          "Name":  `${componentName}-p1`,
+          "Capacities": {
+            "unit": 1,
+          },
+          "id": this.state.sliceNodes.length + 3,
+        }
+        clonedNodes.push(cp);
+
+        const cp_link = {
+          "label": "has",
+          "Class": "has",
+          "id": this.state.sliceLinks.length + 2,
+          "source": this.state.sliceNodes.length + 2,
+          "target": this.state.sliceNodes.length + 3,
+        }
+
+        clonedLinks.push(cp_link);
+      }
+      this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
     }
+
+    console.log(this.generateGraphElements())
   }
 
   doSubmit = async () => {
