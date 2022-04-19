@@ -34,8 +34,8 @@ export default class Graph extends Component {
 
   componentDidMount = () => {
     this.setState({
-      w: window.innerWidth * 0.65,
-      h:window.innerHeight * 0.75,
+      w: window.innerWidth * this.props.defaultSize.width,
+      h:window.innerHeight * this.props.defaultSize.height,
     })
     // this.cy can only be declared after the component has been mounted
     // call functions that set up the interactivity inside componentDidMount
