@@ -189,6 +189,7 @@ export default class SliceViewer extends Component {
             elements={elements}
             sliceName={slice.slice_name}
             onNodeSelect={this.handleNodeSelect}
+            defaultSize={{"width": 0.65, "height": 0.75}}
           />
         }
         {

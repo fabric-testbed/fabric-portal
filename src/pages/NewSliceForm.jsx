@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 import Joi from "joi-browser";
 import _ from "lodash";
 import Form from "../components/common/Form";
@@ -33,6 +34,7 @@ class NewSliceForm extends Form {
       "slice_name": "Slice Viewer",
       "slice_state": "StableOK"
     },
+    graphID: "",
     sliceNodes: [],
     sliceLinks: [],
     selectedData: null,
@@ -43,6 +45,9 @@ class NewSliceForm extends Form {
     const resources = getResources();
     const parsedObj = sitesParser(resources, this.state.ancronymToName);
     this.setState({ parsedResources: parsedObj });
+
+    // generate a graph uuid for the new slice
+    this.setState({ graphID: uuidv4() });
   }
 
   schema = {
@@ -86,6 +91,8 @@ class NewSliceForm extends Form {
         },
         "Type": "VM",
         "id": this.state.sliceNodes.length + 1,
+        "NodeID": uuidv4(),
+        "GraphID": this.state.graphID
       }
 
       const component_node = {
@@ -97,6 +104,8 @@ class NewSliceForm extends Form {
         },
         "Type": component,
         "id": this.state.sliceNodes.length + 2,
+        "NodeID": uuidv4(),
+        "GraphID": this.state.graphID
       }
 
       const link = {
@@ -114,7 +123,7 @@ class NewSliceForm extends Form {
       clonedLinks.push(link);
 
       if (component === "NIC") {
-        const cp =   {
+        const cp_node =   {
           "labels": ":ConnectionPoint:GraphNode",
           "Class": "ConnectionPoint",
           "Type": "SharedPort",
@@ -123,8 +132,10 @@ class NewSliceForm extends Form {
             "unit": 1,
           },
           "id": this.state.sliceNodes.length + 3,
+          "NodeID": uuidv4(),
+          "GraphID": this.state.graphID
         }
-        clonedNodes.push(cp);
+        clonedNodes.push(cp_node);
 
         const cp_link = {
           "label": "has",
@@ -157,14 +168,16 @@ class NewSliceForm extends Form {
     const { slice, elements, selectedData, parsedResources } = this.state;
 
     return (
-      <div className="d-flex flex-column">
+      <div className="d-flex flex-column align-items-center">
         <div className="new-slice-form align-self-center mt-4">
           <form onSubmit={this.handleSubmit}>
             <div class="form-row d-flex align-items-center">
               <div class="col-md-3">{this.renderInput("name", "Name*", true)}</div>
               <div class="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
               <div class="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
-              <div class="col-md-2 pt-3">{this.renderButton("Create Slice")}</div>
+              <div class="col-md-2 pt-3 d-flex flex-row">
+                <span className="ml-auto">{this.renderButton("Create Slice")}</span>
+              </div>
             </div>
           </form>
         </div>
@@ -178,6 +191,7 @@ class NewSliceForm extends Form {
             className="align-self-end"
             elements={this.generateGraphElements()}
             sliceName={"new-slice"}
+            defaultSize={{"width": 0.5, "height": 0.6}}
           />
         </div>
       </div>
