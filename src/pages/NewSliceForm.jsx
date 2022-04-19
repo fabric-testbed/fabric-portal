@@ -66,9 +66,6 @@ class NewSliceForm extends Form {
       "links": this.state.sliceLinks,
     }
 
-    console.log("sliceJSON");
-    console.log(sliceJSON)
-
     let elements = sliceParser(sliceJSON, "new");
     return elements;
   }
@@ -127,7 +124,7 @@ class NewSliceForm extends Form {
           "labels": ":ConnectionPoint:GraphNode",
           "Class": "ConnectionPoint",
           "Type": "SharedPort",
-          "Name":  `${componentName}-p1`,
+          "Name":  `${site}-${name}-${componentName}-p1`,
           "Capacities": {
             "unit": 1,
           },
@@ -149,8 +146,101 @@ class NewSliceForm extends Form {
       }
       this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
     }
+  }
 
-    console.log(this.generateGraphElements())
+  // async, await for adding network service
+  // 1. add a Network Service Node and its Connection Points
+  // 2. add two 'connects' links: nodeID1 - NS.cp1 and NS.cp2 - nodeID2
+
+  addNetworkServiceNode = async (type, name) => {
+    const network_service_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": name,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": this.state.sliceNodes.length + 1,
+      "Type": type,
+      "Layer": "L2",
+      "GraphID": this.state.graphID
+    }
+
+    const ns_cp_node1 = {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name": `${name}-p1`,
+      "NodeID": uuidv4(),
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": this.state.sliceNodes.length + 2,
+      "GraphID": this.state.graphID
+    }
+
+    const ns_cp_node2 = {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name": `${name}-p2`,
+      "NodeID": uuidv4(),
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": this.state.sliceNodes.length + 3,
+      "GraphID": this.state.graphID
+    }
+
+    let clonedNodes = _.clone(this.state.sliceNodes);
+    clonedNodes.push(network_service_node);
+    clonedNodes.push(ns_cp_node1);
+    clonedNodes.push(ns_cp_node2);
+    this.setState({ sliceNodes: clonedNodes});
+
+    let clonedLinks = _.clone(this.state.sliceLinks);
+    const cp_link1 = {
+      "label": "has",
+      "Class": "has",
+      "id": this.state.sliceLinks.length + 1,
+      "source": this.state.sliceNodes.length + 1,
+      "target": this.state.sliceNodes.length + 2,
+    }
+    const cp_link2 = {
+      "label": "has",
+      "Class": "has",
+      "id": this.state.sliceLinks.length + 2,
+      "source": this.state.sliceNodes.length + 1,
+      "target": this.state.sliceNodes.length + 3,
+    }
+
+    clonedLinks.push(cp_link1);
+    clonedLinks.push(cp_link2);
+    this.setState({ sliceLinks: clonedLinks });
+  }
+
+  handleLinkAdd = async (type, name, nodeID1, nodeID2) => {
+    console.log("handleLinkAdd");
+    await this.addNetworkServiceNode(type, name);
+
+    const new_link_1 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": this.state.sliceLinks.length + 1,
+      "source": nodeID1,
+      "target": this.state.sliceNodes.length,
+    }
+
+    const new_link_2 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": this.state.sliceLinks.length + 2,
+      "source": nodeID2,
+      "target": this.state.sliceNodes.length - 1,
+    }
+
+    let clonedLinks = _.clone(this.state.sliceLinks);
+    clonedLinks.push(new_link_1, new_link_2);
+
+    this.setState({ sliceLinks: clonedLinks });
   }
 
   doSubmit = async () => {
@@ -165,17 +255,17 @@ class NewSliceForm extends Form {
   };
 
   render() {
-    const { slice, elements, selectedData, parsedResources } = this.state;
+    const { slice, elements, selectedData, parsedResources, sliceNodes, sliceLinks } = this.state;
 
     return (
       <div className="d-flex flex-column align-items-center">
         <div className="new-slice-form align-self-center mt-4">
           <form onSubmit={this.handleSubmit}>
-            <div class="form-row d-flex align-items-center">
-              <div class="col-md-3">{this.renderInput("name", "Name*", true)}</div>
-              <div class="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
-              <div class="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
-              <div class="col-md-2 pt-3 d-flex flex-row">
+            <div className="form-row d-flex align-items-center">
+              <div className="col-md-3">{this.renderInput("name", "Name*", true)}</div>
+              <div className="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
+              <div className="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
+              <div className="col-md-2 pt-3 d-flex flex-row">
                 <span className="ml-auto">{this.renderButton("Create Slice")}</span>
               </div>
             </div>
@@ -185,13 +275,15 @@ class NewSliceForm extends Form {
           <SideToolbar
             className="align-self-start"
             resources={parsedResources}
+            nodes={sliceNodes}
             onNodeAdd={this.handleNodeAdd}
+            onLinkAdd={this.handleLinkAdd}
           />
           <Graph
             className="align-self-end"
             elements={this.generateGraphElements()}
             sliceName={"new-slice"}
-            defaultSize={{"width": 0.5, "height": 0.6}}
+            defaultSize={{"width": 0.5, "height": 0.95}}
           />
         </div>
       </div>

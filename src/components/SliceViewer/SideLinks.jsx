@@ -9,15 +9,37 @@ export default class SideLinks extends Component {
         name: "Link",
         component: Link,
       }, 
-    ]
+    ],
+    linkType: "",
+    linkName: "",
+    nodeID1: 2,
+    nodeID2: 5,
   }
   
-  handleAddLink = (type) => {
-    // type: "l2sts"
-    this.props.onNodeAdd(type);
+  handleServiceTypeChange = (e) => {
+    this.setState({ linkType: e.target.value })
+  }
+
+  handleAddLink = () => {
+    const { linkType, linkName, nodeID1, nodeID2 } = this.state;
+    // type: "L2STS"/ "L2PTP"/ "L2Bridge"
+    this.props.onLinkAdd(linkType, linkName, nodeID1, nodeID2);
+  }
+
+  getConnectionPoints = () => {
+    const nodes = this.props.nodes;
+    const cp_nodes = [];
+    for (const node of nodes) {
+      if (node.Class === "ConnectionPoint") {
+        cp_nodes.push(node);
+      }
+    }
+    
+    return cp_nodes;
   }
 
   render() {
+    this.getConnectionPoints();
     return(
       <div>
         <form>
@@ -27,7 +49,7 @@ export default class SideLinks extends Component {
               <select
                 className="form-control"
                 id="componentSelect"
-                onChange={this.handleComponentChange}
+                onChange={this.handleServiceTypeChange}
                 defaultValue=""
               >
                 <option>Choose...</option>
@@ -46,6 +68,19 @@ export default class SideLinks extends Component {
                   onChange={this.handleNameChange}
                 />
               </div>
+            </div>
+           <div className="form-row">
+            <div>Select 2 Connection Points</div>
+            <div className="form-group col-md-12">
+              <div className="form-check form-check-inline">
+                {
+                  this.getConnectionPoints().map(cp => <span className="mr-2">
+                    <input className="form-check-input" type="checkbox" id={cp.Name} value={cp.id} />
+                    <label className="form-check-label" for={cp.Name}>{cp.Name}</label>
+                  </span>)
+                }
+              </div>
+            </div>
            </div>
         </form>
         <div className="my-2 d-flex flex-row">
@@ -53,17 +88,17 @@ export default class SideLinks extends Component {
           this.state.images.map((img, index) => {
             return (
               <div className="d-flex flex-column text-center mr-2" key={`graph-components-${index}`}>
-                <img
+                {/* <img
                   src={img.component}
                   width="90"
                   className="mb-2"
                   alt={img.name}
-                />
+                /> */}
                 <button
                   className="btn btn-sm btn-outline-success mb-2"
-                  onClick={ () => this.handleAdd(img.name) }
+                  onClick={()=> this.handleAddLink()}
                 >
-                  Add
+                  Add Link
                 </button>
               </div>
             )

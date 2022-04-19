@@ -9,7 +9,7 @@ const SideToolbar = (props) => {
     <div className="card">
       <div className="card-header py-1">
         <button className="btn btn-link">
-          Nodes
+          Step 1: Add Nodes and Components
         </button>
       </div>
       <div className="show" aria-labelledby="headingOne" aria-expanded="true" data-parent="#accordion">
@@ -18,7 +18,7 @@ const SideToolbar = (props) => {
         </div>
       </div>
     </div>
-    <div className="card">
+    {/* <div className="card">
       <div className="card-header py-1">
         <h5 className="mb-0">
           <button className="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -33,21 +33,21 @@ const SideToolbar = (props) => {
          />
         </div>
       </div>
-    </div>
+    </div> */}
     <div className="card">
       <div className="card-header py-1">
         <button className="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Network Service
+          Step 2: Add Network Service
         </button>
       </div>
       <div id="collapseThree" className="show collapse" aria-labelledby="headingThree" data-parent="#accordion">
         <div className="card-body">
-         <SideLinks onNodeAdd={ props.onNodeAdd } />
+         <SideLinks onLinkAdd={props.onLinkAdd} nodes={props.nodes} />
         </div>
       </div>
     </div>
   </div>
-    );
+  );
 };
 
 export default SideToolbar;
