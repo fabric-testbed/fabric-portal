@@ -10,6 +10,8 @@ import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
 import IconNIC from '../../imgs/SliceComponentIcons/NIC25G.png';
+import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
+import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
@@ -157,7 +159,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSmartNIC",
               "style": {
-                "background-image": `${IconNIC}`,
+                "background-image": `${IconSmartNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -167,7 +169,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSharedNIC",
               "style": {
-                "background-image": `${IconNIC}`,
+                "background-image": `${IconSharedNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
