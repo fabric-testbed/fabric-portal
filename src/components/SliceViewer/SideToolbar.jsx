@@ -46,7 +46,7 @@ const SideToolbar = (props) => {
         </div>
       </div>
     </div>
-  </div>
+    </div>
   );
 };
 
