@@ -92,7 +92,6 @@ class NewSliceForm extends Form {
     }
 
     if (type === "VM") {
-      console.log(component)
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, component, graphID, sliceNodes, sliceLinks);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
@@ -100,18 +99,35 @@ class NewSliceForm extends Form {
 
   // async, await for adding network service
   // 1. add a Network Service Node and its Connection Points
-  // 2. add two 'connects' links: nodeID1 - NS.cp1 and NS.cp2 - nodeID2
+  // 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2
+  addNetworkServiceNode = async (type, name, cp1, cp2) => {
+    // L2STS NS node doesn't have site parent
+    // L2Bridge NS node has site property
+    let network_service_node = {};
 
-  addNetworkServiceNode = async (type, name) => {
-    const network_service_node = {
-      "labels": ":GraphNode:NetworkService",
-      "Name": name,
-      "Class": "NetworkService",
-      "NodeID": uuidv4(),
-      "id": this.state.sliceNodes.length + 1,
-      "Type": type,
-      "Layer": "L2",
-      "GraphID": this.state.graphID
+    if (type === "L2STS") {
+      network_service_node = {
+        "labels": ":GraphNode:NetworkService",
+        "Name": name,
+        "Class": "NetworkService",
+        "NodeID": uuidv4(),
+        "id": this.state.sliceNodes.length + 1,
+        "Type": type,
+        "Layer": "L2",
+        "GraphID": this.state.graphID
+      }
+    } else if (type === "L2Bridge") {
+      network_service_node = {
+        "labels": ":GraphNode:NetworkService",
+        "Name": name,
+        "Site": cp1.Name.substr(0, cp1.Name.indexOf('-')),
+        "Class": "NetworkService",
+        "NodeID": uuidv4(),
+        "id": this.state.sliceNodes.length + 1,
+        "Type": type,
+        "Layer": "L2",
+        "GraphID": this.state.graphID
+      }
     }
 
     const ns_cp_node1 = {
@@ -167,15 +183,14 @@ class NewSliceForm extends Form {
     this.setState({ sliceLinks: clonedLinks });
   }
 
-  handleLinkAdd = async (type, name, nodeID1, nodeID2) => {
-    console.log("handleLinkAdd");
-    await this.addNetworkServiceNode(type, name);
+  handleLinkAdd = async (type, name, cp1, cp2) => {
+    await this.addNetworkServiceNode(type, name, cp1, cp2);
 
     const new_link_1 = {
       "label": "connects",
       "Class": "connects",
       "id": this.state.sliceLinks.length + 1,
-      "source": nodeID1,
+      "source": cp1.id,
       "target": this.state.sliceNodes.length,
     }
 
@@ -183,7 +198,7 @@ class NewSliceForm extends Form {
       "label": "connects",
       "Class": "connects",
       "id": this.state.sliceLinks.length + 2,
-      "source": nodeID2,
+      "source": cp2.id,
       "target": this.state.sliceNodes.length - 1,
     }
 
