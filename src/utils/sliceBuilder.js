@@ -50,12 +50,12 @@ const addVM = (node, component, graphID, nodes, links) => {
   let clonedLinks = _.clone(links);
   clonedLinks.push(link);
 
-  // SmartNIC has 2 connection points
   // SharedNIC has 1 connection points
-  if (component === "SharedNIC") {
+  // SmartNIC has 2 connection points
+  if (component.type === "SharedNIC") {
     // Add OVS Network Service Node
     // Add NIC has OVS link
-    // Add 1 or 2 Connection Points and OVS has CP link
+    // Add 1 Connection Points and OVS has CP link
     const ovs_node = {
       "labels": ":GraphNode:NetworkService",
       "Name": `${node.site}-${node.name}-${component.name}-ovs`,
@@ -101,6 +101,82 @@ const addVM = (node, component, graphID, nodes, links) => {
 
     clonedLinks.push(ovs_link);
     clonedLinks.push(cp_link);
+  }
+
+  if (component.type === "SmartNIC") {
+    // Add OVS Network Service Node
+    // Add NIC has OVS link
+    // Add 2 Connection Points and OVS has CP link
+    const ovs_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": nodes.length + 3,
+      "Type": "OVS",
+      "Layer": "L2",
+      "GraphID": graphID
+    }
+
+    const cp_node_1 =   {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": nodes.length + 4,
+      "NodeID": uuidv4(),
+      "GraphID": graphID
+    }
+
+    const cp_node_2 =   {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name":  `${node.site}-${node.name}-${component.name}-p2`,
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": nodes.length + 5,
+      "NodeID": uuidv4(),
+      "GraphID": graphID
+    }
+
+    clonedNodes.push(cp_node_1);
+    clonedNodes.push(cp_node_2);
+    clonedNodes.push(ovs_node);
+
+    // NIC has OVS
+    const ovs_link = {
+      "label": "has",
+      "Class": "has",
+      "id": links.length + 2,
+      "source": nodes.length + 2,
+      "target": nodes.length + 3,
+    }
+
+    const cp_link_1 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": links.length + 3,
+      "source": nodes.length + 3,
+      "target": nodes.length + 4,
+    }
+
+
+    const cp_link_2 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": links.length + 4,
+      "source": nodes.length + 3,
+      "target": nodes.length + 5,
+    }
+
+    clonedLinks.push(ovs_link);
+    clonedLinks.push(cp_link_1);
+    clonedLinks.push(cp_link_2);
   }
 
   // return sliceNodes and sliceLinks.
