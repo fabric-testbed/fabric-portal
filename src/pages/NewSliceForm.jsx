@@ -4,7 +4,6 @@ import Joi from "joi-browser";
 import _ from "lodash";
 import Form from "../components/common/Form";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import  { getResources } from "../services/fakeResources.js";
@@ -13,6 +12,7 @@ import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import sliceParser from "../services/parser/sliceParser.js";
+import builder from "../utils/sliceBuilder.js";
 
 class NewSliceForm extends Form {
   state = {
@@ -72,108 +72,29 @@ class NewSliceForm extends Form {
     return elements;
   }
 
-  handleNodeAdd = (type, site, name, core, disk, ram, component, componentName) => {
-    if (type === "vm") {
-      // 1. add vm
-      // 2. add component
-      // 3. add 'has' link between vm and component
-      // 4. if componnet is NIC, add NIC (has) OVS (has) Connection Points.
-      // SmartNIC has 2 ports and SharedNIC has 1 port.
-      const vm_node = {
-        "labels": ":GraphNode:NetworkNode",
-        "Class": "NetworkNode",
-        "Name": name,
-        "Site": site,
-        "Capacities": {
-          "core": core,
-          "disk": disk,
-          "ram": ram,
-        },
-        "Type": "VM",
-        "id": this.state.sliceNodes.length + 1,
-        "NodeID": uuidv4(),
-        "GraphID": this.state.graphID
+  handleNodeAdd = (type, site, name, core, disk, ram, componentType, componentName) => {
+    const { graphID, sliceNodes, sliceLinks } =  this.state;
+
+    const node = {
+      "type": type,
+      "site": site,
+      "name": name,
+      "capacities": {
+        "core": core,
+        "disk": disk,
+        "ram": ram,
       }
+    }
 
-      const component_node = {
-        "labels": ":Component:GraphNode",
-        "Class": "Component",
-        "Name": componentName,
-        "Capacities": {
-          "unit": 1,
-        },
-        "Type": component,
-        "id": this.state.sliceNodes.length + 2,
-        "NodeID": uuidv4(),
-        "GraphID": this.state.graphID
-      }
+    const component = {
+      "type": componentType,
+      "name": componentName
+    }
 
-      const link = {
-        "label": "has",
-        "Class": "has",
-        "id": this.state.sliceLinks.length + 1,
-        "source": this.state.sliceNodes.length + 1,
-        "target": this.state.sliceNodes.length + 2,
-      }
-
-      let clonedNodes = _.clone(this.state.sliceNodes);
-      clonedNodes.push(vm_node);
-      clonedNodes.push(component_node);
-      let clonedLinks = _.clone(this.state.sliceLinks);
-      clonedLinks.push(link);
-
-      if (component === "NIC") {
-        // Add OVS Network Service Node
-        // Add NIC has OVS link
-        // Add 1 or 2 Connection Points and OVS has CP link
-        const ovs_node = {
-          "labels": ":GraphNode:NetworkService",
-          "Name": `${site}-${name}-${componentName}-ovs`,
-          "Class": "NetworkService",
-          "NodeID": uuidv4(),
-          "id": this.state.sliceNodes.length + 3,
-          "Type": "OVS",
-          "Layer": "L2",
-          "GraphID": this.state.graphID
-        }
-
-        const cp_node =   {
-          "labels": ":ConnectionPoint:GraphNode",
-          "Class": "ConnectionPoint",
-          "Type": "SharedPort",
-          "Name":  `${site}-${name}-${componentName}-p1`,
-          "Capacities": {
-            "unit": 1,
-          },
-          "id": this.state.sliceNodes.length + 4,
-          "NodeID": uuidv4(),
-          "GraphID": this.state.graphID
-        }
-        clonedNodes.push(cp_node);
-        clonedNodes.push(ovs_node);
-
-        // NIC has OVS
-        const ovs_link = {
-          "label": "has",
-          "Class": "has",
-          "id": this.state.sliceLinks.length + 2,
-          "source": this.state.sliceNodes.length + 2,
-          "target": this.state.sliceNodes.length + 3,
-        }
-
-        const cp_link = {
-          "label": "connects",
-          "Class": "connects",
-          "id": this.state.sliceLinks.length + 3,
-          "source": this.state.sliceNodes.length + 3,
-          "target": this.state.sliceNodes.length + 4,
-        }
-
-        clonedLinks.push(ovs_link);
-        clonedLinks.push(cp_link);
-      }
-
-      this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
+    if (type === "VM") {
+      console.log(component)
+      const { newSliceNodes, newSliceLinks} = builder.addVM(node, component, graphID, sliceNodes, sliceLinks);
+      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }
 
