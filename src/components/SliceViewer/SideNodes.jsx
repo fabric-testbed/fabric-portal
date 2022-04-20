@@ -22,14 +22,14 @@ class SideNodes extends React.Component {
     core: 0,
     ram: 0,
     disk: 0,
-    component: "",
+    componentType: "",
     componentName: "",
   }
   
   handleAddNode = (type) => {
-    // type: "vm" or "switch"
-    const { selectedSite, nodeName, core, ram, disk, component, componentName } = this.state;
-    this.props.onNodeAdd(type, selectedSite, nodeName, core, ram, disk, component, componentName);
+    // type: "VM" or "switch"
+    const { selectedSite, nodeName, core, ram, disk, componentType, componentName } = this.state;
+    this.props.onNodeAdd(type, selectedSite, nodeName, core, ram, disk, componentType, componentName);
   }
 
   handleSiteChange = (e) => {
@@ -52,8 +52,8 @@ class SideNodes extends React.Component {
     this.setState({ disk: e.target.value });
   }
 
-  handleComponentChange = (e) => {
-    this.setState({ component: e.target.value });
+  handleComponentTypeChange = (e) => {
+    this.setState({ componentType: e.target.value });
   }
 
   handleComponentNameChange = (e) => {
@@ -133,7 +133,7 @@ class SideNodes extends React.Component {
                 <select
                   className="form-control"
                   id="componentSelect"
-                  onChange={this.handleComponentChange}
+                  onChange={this.handleComponentTypeChange}
                   defaultValue=""
                 >
                   <option>Choose...</option>
@@ -167,7 +167,7 @@ class SideNodes extends React.Component {
                       img.name === "VM" && (
                         <button
                           className="btn btn-sm btn-outline-success mb-2"
-                          onClick={() => this.handleAddNode("vm")}
+                          onClick={() => this.handleAddNode("VM")}
                         >
                           Add
                         </button>
