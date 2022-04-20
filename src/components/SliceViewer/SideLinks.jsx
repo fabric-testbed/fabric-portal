@@ -39,7 +39,6 @@ export default class SideLinks extends Component {
   }
 
   render() {
-    this.getConnectionPoints();
     return(
       <div>
         <form>
