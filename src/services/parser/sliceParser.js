@@ -94,7 +94,11 @@ export default function parseSlice(slice, sliceType) {
     properties.model = originalNode.Model;
     properties.detail = originalNode.Details;
     data.properties = properties;
-    data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+    if (sliceType === "new") { 
+      data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
+    } else {
+      data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+    }
   }
   
   const findParentNode = (id) => {

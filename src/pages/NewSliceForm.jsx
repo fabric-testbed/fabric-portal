@@ -67,6 +67,8 @@ class NewSliceForm extends Form {
     }
 
     let elements = sliceParser(sliceJSON, "new");
+    console.log("sliceJSON");
+    console.log(sliceJSON);
     return elements;
   }
 
@@ -75,7 +77,8 @@ class NewSliceForm extends Form {
       // 1. add vm
       // 2. add component
       // 3. add 'has' link between vm and component
-      // 4. if componnet is NIC, add connection points and 'has' links automatically.
+      // 4. if componnet is NIC, add NIC (has) OVS (has) Connection Points.
+      // SmartNIC has 2 ports and SharedNIC has 1 port.
       const vm_node = {
         "labels": ":GraphNode:NetworkNode",
         "Class": "NetworkNode",
@@ -120,6 +123,20 @@ class NewSliceForm extends Form {
       clonedLinks.push(link);
 
       if (component === "NIC") {
+        // Add OVS Network Service Node
+        // Add NIC has OVS link
+        // Add 1 or 2 Connection Points and OVS has CP link
+        const ovs_node = {
+          "labels": ":GraphNode:NetworkService",
+          "Name": `${site}-${name}-${componentName}-ovs`,
+          "Class": "NetworkService",
+          "NodeID": uuidv4(),
+          "id": this.state.sliceNodes.length + 3,
+          "Type": "OVS",
+          "Layer": "L2",
+          "GraphID": this.state.graphID
+        }
+
         const cp_node =   {
           "labels": ":ConnectionPoint:GraphNode",
           "Class": "ConnectionPoint",
@@ -128,13 +145,15 @@ class NewSliceForm extends Form {
           "Capacities": {
             "unit": 1,
           },
-          "id": this.state.sliceNodes.length + 3,
+          "id": this.state.sliceNodes.length + 4,
           "NodeID": uuidv4(),
           "GraphID": this.state.graphID
         }
         clonedNodes.push(cp_node);
+        clonedNodes.push(ovs_node);
 
-        const cp_link = {
+        // NIC has OVS
+        const ovs_link = {
           "label": "has",
           "Class": "has",
           "id": this.state.sliceLinks.length + 2,
@@ -142,8 +161,18 @@ class NewSliceForm extends Form {
           "target": this.state.sliceNodes.length + 3,
         }
 
+        const cp_link = {
+          "label": "connects",
+          "Class": "connects",
+          "id": this.state.sliceLinks.length + 3,
+          "source": this.state.sliceNodes.length + 3,
+          "target": this.state.sliceNodes.length + 4,
+        }
+
+        clonedLinks.push(ovs_link);
         clonedLinks.push(cp_link);
       }
+
       this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
     }
   }
