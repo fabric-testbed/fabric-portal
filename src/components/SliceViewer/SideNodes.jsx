@@ -1,18 +1,11 @@
 import React from 'react';
 import Switch from "../../imgs/SliceComponentIcons/Switch.png";
-import Site from "../../imgs/SliceComponentIcons/Site.png";
 import VM from "../../imgs/SliceComponentIcons/VM.png";
 import SiteResourceTable from './SiteResourceTable';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 class SideNodes extends React.Component {
   state = {
     images: [
-      // {
-      //   id: 1,
-      //   name: "Site",
-      //   component: Site,
-      // },
       {
         id: 1,
         name: "VM",
@@ -145,7 +138,8 @@ class SideNodes extends React.Component {
                 >
                   <option>Choose...</option>
                   <option value="GPU">GPU</option>
-                  <option value="NIC">NIC</option>
+                  <option value="SmartNIC">SmartNIC</option>
+                  <option value="SharedNIC">SharedNIC</option>
                   <option value="NVME">NVME</option>
                 </select>
               </div>
@@ -169,16 +163,6 @@ class SideNodes extends React.Component {
                       className="mb-2"
                       alt={img.name}
                     />
-                    {
-                      img.name === "Site" && (
-                        <button
-                          className="btn btn-sm btn-outline-success mb-2"
-                          onClick={() => this.handleAddNode("site")}
-                        >
-                          Add
-                        </button>
-                      )
-                    }
                     {
                       img.name === "VM" && (
                         <button
