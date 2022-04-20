@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/fakeResources.js";
+import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
@@ -312,7 +312,7 @@ class NewSliceForm extends Form {
             className="align-self-end"
             elements={this.generateGraphElements()}
             sliceName={"new-slice"}
-            defaultSize={{"width": 0.5, "height": 0.95}}
+            defaultSize={{"width": 0.4, "height": 0.9}}
           />
         </div>
       </div>
