@@ -248,7 +248,7 @@ class NewSliceForm extends Form {
             className="align-self-end"
             elements={this.generateGraphElements()}
             sliceName={"new-slice"}
-            defaultSize={{"width": 0.4, "height": 0.9}}
+            defaultSize={{"width": 0.5, "height": 0.75}}
           />
         </div>
       </div>
