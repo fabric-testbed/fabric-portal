@@ -10,7 +10,7 @@ import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
-import DetailForm from '../components/SliceViewer/DetailForm';
+import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 
@@ -70,6 +70,10 @@ class NewSliceForm extends Form {
     console.log("sliceJSON");
     console.log(sliceJSON);
     return elements;
+  }
+
+  handleNodeSelect = (selectedData) => {
+    this.setState({ selectedData });
   }
 
   handleNodeAdd = (type, site, name, core, disk, ram, componentType, componentName) => {
@@ -244,12 +248,16 @@ class NewSliceForm extends Form {
             onNodeAdd={this.handleNodeAdd}
             onLinkAdd={this.handleLinkAdd}
           />
-          <Graph
-            className="align-self-end"
-            elements={this.generateGraphElements()}
-            sliceName={"new-slice"}
-            defaultSize={{"width": 0.5, "height": 0.75}}
-          />
+          <div className="d-flex flex-column">
+            <NewSliceDetailForm data={selectedData} />
+            <Graph
+              className="align-self-end"
+              elements={this.generateGraphElements()}
+              sliceName={"new-slice"}
+              defaultSize={{"width": 0.5, "height": 0.75}}
+              onNodeSelect={this.handleNodeSelect}
+            />
+          </div>
         </div>
       </div>
     )
