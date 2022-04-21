@@ -131,7 +131,7 @@ export default class SideLinks extends Component {
                         }
                       }}
                     />
-                    <label className="slice-builder-label" for={cp.Name}>{cp.Name}</label>
+                    <label className="slice-builder-label" htmlFor={cp.Name}>{cp.Name}</label>
                   </span>)
                 }
               </div>
