@@ -20,7 +20,7 @@ export default class SideLinks extends Component {
     this.setState({ linkType: e.target.value })
   }
 
-  handleLinkTypeChange = (e) => {
+  handleLinkNameChange = (e) => {
     this.setState({ linkName: e.target.value })
   }
 
@@ -47,10 +47,10 @@ export default class SideLinks extends Component {
       <div>
         <form>
           <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="inputComponent">Service Type</label>
+            <div className="form-group slice-builder-form-group col-md-6">
+              <label htmlFor="inputComponent" className="slice-builder-label">Service Type</label>
               <select
-                className="form-control"
+                className="form-control form-control-sm"
                 id="componentSelect"
                 onChange={this.handleServiceTypeChange}
                 defaultValue=""
@@ -61,11 +61,11 @@ export default class SideLinks extends Component {
                 <option value="L2PTP">L2PTP</option>
               </select>
             </div>
-            <div className="form-group col-md-6">
-                <label htmlFor="inputNodeName">Service Name</label>
+            <div className="form-group slice-builder-form-group col-md-6">
+                <label htmlFor="inputNodeName" className="slice-builder-label">Service Name</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control form-control-sm"
                   id="inputServiceName"
                   placeholder=""
                   onChange={this.handleLinkNameChange}
@@ -73,8 +73,8 @@ export default class SideLinks extends Component {
               </div>
             </div>
            <div className="form-row">
-            <div>Select 2 Connection Points</div>
-            <div className="form-group col-md-12">
+            <div className="ml-1 mt-2 slice-builder-label">Select 2 Connection Points:</div>
+            <div className="form-group slice-builder-form-group col-md-12">
               <div className="form-check form-check-inline">
                 {
                   this.getConnectionPoints().map(cp => <span className="mr-2">
@@ -91,7 +91,7 @@ export default class SideLinks extends Component {
                         }
                       }}
                     />
-                    <label className="form-check-label" for={cp.Name}>{cp.Name}</label>
+                    <label className="slice-builder-label" for={cp.Name}>{cp.Name}</label>
                   </span>)
                 }
               </div>

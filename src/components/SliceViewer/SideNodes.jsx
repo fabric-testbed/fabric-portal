@@ -1,39 +1,30 @@
 import React from 'react';
-import Switch from "../../imgs/SliceComponentIcons/Switch.png";
-import VM from "../../imgs/SliceComponentIcons/VM.png";
 import SiteResourceTable from './SiteResourceTable';
 
 class SideNodes extends React.Component {
   state = {
-    images: [
-      {
-        id: 1,
-        name: "VM",
-        component: VM,
-      },
-      {
-        id: 2,
-        name: "Switch",
-        component: Switch,
-      },
-    ],
     selectedSite: "",
     nodeName: "",
     core: 0,
     ram: 0,
     disk: 0,
+    nodeType: "",
     componentType: "",
     componentName: "",
   }
   
-  handleAddNode = (type) => {
+  handleAddNode = () => {
     // type: "VM" or "switch"
-    const { selectedSite, nodeName, core, ram, disk, componentType, componentName } = this.state;
-    this.props.onNodeAdd(type, selectedSite, nodeName, core, ram, disk, componentType, componentName);
+    const { selectedSite, nodeName, nodeType, core, ram, disk, componentType, componentName } = this.state;
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, componentType, componentName);
   }
 
   handleSiteChange = (e) => {
     this.setState({ selectedSite: e.target.value });
+  }
+
+  handleNodeTypeChange = (e) => {
+    this.setState({ nodeType: e.target.value });
   }
 
   handleNameChange = (e) => {
@@ -86,10 +77,10 @@ class SideNodes extends React.Component {
             }
           <form>
             <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="inputState">Site</label>
+              <div className="form-group slice-builder-form-group col-md-3">
+                <label htmlFor="inputState" className="slice-builder-label">Site</label>
                 <select
-                  className="form-control"
+                  className="form-control form-control-sm"
                   id="siteNameSelect"
                   onChange={this.handleSiteChange}
                   defaultValue=""
@@ -102,11 +93,24 @@ class SideNodes extends React.Component {
                   }
                 </select>
               </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="inputNodeName">Node Name</label>
+              <div className="form-group slice-builder-form-group col-md-3">
+                <label htmlFor="NodeType" className="slice-builder-label">Node Type</label>
+                <select
+                  className="form-control form-control-sm"
+                  id="nodeTypeSelect"
+                  onChange={this.handleNodeTypeChange}
+                  defaultValue=""
+                >
+                  <option>Choose...</option>
+                  <option value="VM">VM</option>
+                  <option value="Server">Server</option>
+                </select>
+              </div>
+              <div className="form-group slice-builder-form-group col-md-6">
+                <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control form-control-sm"
                   id="inputNodeName"
                   placeholder=""
                   onChange={this.handleNameChange}
@@ -114,24 +118,24 @@ class SideNodes extends React.Component {
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-md-4">
-                <label htmlFor="inputCore">Core</label>
-                <input type="number" className="form-control" id="inputCore" onChange={this.handleCoreChange}/>
+              <div className="form-group slice-builder-form-group col-md-4">
+                <label htmlFor="inputCore" className="slice-builder-label">Core</label>
+                <input type="number" className="form-control form-control-sm" id="inputCore" onChange={this.handleCoreChange}/>
               </div>
-              <div className="form-group col-md-4">
-                <label htmlFor="inputRam">Ram</label>
-                <input type="number" className="form-control" id="inputRam" onChange={this.handleRamChange}/>
+              <div className="form-group slice-builder-form-group col-md-4">
+                <label htmlFor="inputRam" className="slice-builder-label">Ram</label>
+                <input type="number" className="form-control form-control-sm" id="inputRam" onChange={this.handleRamChange}/>
               </div>
-              <div className="form-group col-md-4">
-                <label htmlFor="inputDisk">Disk</label>
-                <input type="number" className="form-control" id="inputDisk" onChange={this.handleDiskChange}/>
+              <div className="form-group slice-builder-form-group col-md-4">
+                <label htmlFor="inputDisk" className="slice-builder-label">Disk</label>
+                <input type="number" className="form-control form-control-sm" id="inputDisk" onChange={this.handleDiskChange}/>
               </div>
             </div>
             <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="inputComponent">Add Component</label>
+              <div className="form-group slice-builder-form-group col-md-6">
+                <label htmlFor="inputComponent" className="slice-builder-label">Add Component</label>
                 <select
-                  className="form-control"
+                  className="form-control form-control-sm"
                   id="componentSelect"
                   onChange={this.handleComponentTypeChange}
                   defaultValue=""
@@ -143,50 +147,22 @@ class SideNodes extends React.Component {
                   <option value="NVME">NVME</option>
                 </select>
               </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="inputComponentName">Component Name</label>
+              <div className="form-group slice-builder-form-group col-md-6">
+                <label htmlFor="inputComponentName" className="slice-builder-label">Component Name</label>
                 <input
-                  type="text" className="form-control" id="inputComponentName"
+                  type="text" className="form-control form-control-sm" id="inputComponentName"
                   onChange={this.handleComponentNameChange}
                 />
               </div>
             </div>
           </form>
           <div className="my-2 d-flex flex-row">
-            {
-              this.state.images.map((img, index) => {
-                return (
-                  <div className="d-flex flex-column text-center mr-2" key={`graph-components-${index}`}>
-                    <img
-                      src={img.component}
-                      width="90"
-                      className="mb-2"
-                      alt={img.name}
-                    />
-                    {
-                      img.name === "VM" && (
-                        <button
-                          className="btn btn-sm btn-outline-success mb-2"
-                          onClick={() => this.handleAddNode("VM")}
-                        >
-                          Add
-                        </button>
-                      )
-                    }
-                    {
-                      img.name === "Switch" && (
-                        <button
-                          className="btn btn-sm btn-outline-success mb-2"
-                          onClick={() => this.handleAddNode("switch")}
-                        >
-                          Add
-                        </button>
-                      )
-                    }
-                  </div>
-                )
-              })
-            }
+            <button
+              className="btn btn-sm btn-outline-success mb-2"
+              onClick={() => this.handleAddNode()}
+            >
+              Add Node with Components
+            </button>
             </div>
         </div>
         }
