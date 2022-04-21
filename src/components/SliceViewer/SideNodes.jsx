@@ -61,7 +61,6 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    console.log(this.props.resources)
     return(
       <div>
         {this.props.resources !== null &&
@@ -158,7 +157,7 @@ class SideNodes extends React.Component {
           </form>
           <div className="my-2 d-flex flex-row">
             <button
-              className="btn btn-sm btn-outline-success mb-2"
+              className="btn btn-sm btn-success mb-2"
               onClick={() => this.handleAddNode()}
             >
               Add Node with Components

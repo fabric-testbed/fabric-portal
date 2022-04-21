@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Link from "../../imgs/SliceComponentIcons/Link.png";
 import _ from "lodash";
+import ServiceTypeTable from './ServiceTypeTable';
 
 export default class SideLinks extends Component { 
   state = {
@@ -11,6 +12,33 @@ export default class SideLinks extends Component {
         component: Link,
       }, 
     ],
+    intro: {
+      "L2Bridge":{
+        "numberOfInterfaces": "Any",
+        "numberOfSites": 1,
+        "description": "Broadcast service in a single site.",
+      },
+      "L2PTP": {
+        "numberOfInterfaces": 2,
+        "numberOfSites": 2,
+        "description": "Port-to-Port service between exactly 2 sites.",
+      },
+      "L2STS": {
+        "numberOfInterfaces": "Any",
+        "numberOfSites": 2,
+        "description": "Site-to-Site service between exactly 2 sites",
+      },
+      "FABNetv4": {
+        "numberOfInterfaces": "Any",
+        "numberOfSites": "Any",
+        "description": "All interfaces in a given site are part of the same broadcast domain and a single /24 per site using the same gateway. Traffic across sites is routed by FABRIC dataplane.",
+      },
+      "FABNetv6": {
+        "numberOfInterfaces": "Any",
+        "numberOfSites": "Any",
+        "description": "All interfaces in a given site are part of the same broadcast domain and a single /64 per site using the same gateway. Traffic across sites is routed by FABRIC dataplane.This service also provides the ability to peer with public IPv6 networks.",
+      }
+    },
     linkType: "",
     linkName: "",
     checkedCPs: [],
@@ -43,8 +71,18 @@ export default class SideLinks extends Component {
   }
 
   render() {
+    const { intro, linkName, linkType } = this.state;
     return(
       <div>
+        {
+          this.state.linkType !== "" &&
+          <div>
+            <div className="mb-1">
+              Guide for <span className="font-weight-bold">{linkType}</span> type Network Service
+            </div>
+            <ServiceTypeTable service={intro[linkType]} />
+          </div>
+        }
         <form>
           <div className="form-row">
             <div className="form-group slice-builder-form-group col-md-6">
@@ -56,9 +94,11 @@ export default class SideLinks extends Component {
                 defaultValue=""
               >
                 <option>Choose...</option>
-                <option value="L2STS">L2STS</option>
                 <option value="L2Bridge">L2Bridge</option>
                 <option value="L2PTP">L2PTP</option>
+                <option value="L2STS">L2STS</option>
+                <option value="FABNetv4">FABNetv4</option>
+                <option value="FABNetv6">FABNetv6</option>
               </select>
             </div>
             <div className="form-group slice-builder-form-group col-md-6">
@@ -73,7 +113,7 @@ export default class SideLinks extends Component {
               </div>
             </div>
            <div className="form-row">
-            <div className="ml-1 mt-2 slice-builder-label">Select 2 Connection Points:</div>
+            <div className="ml-1 mt-2 slice-builder-label">Click on the graph to select connection points.</div>
             <div className="form-group slice-builder-form-group col-md-12">
               <div className="form-check form-check-inline">
                 {
@@ -104,7 +144,7 @@ export default class SideLinks extends Component {
             return (
               <div className="d-flex flex-column text-center mr-2" key={`graph-components-${index}`}>
                 <button
-                  className="btn btn-sm btn-outline-success mb-2"
+                  className="btn btn-sm btn-success mb-2"
                   onClick={()=> this.handleAddLink()}
                 >
                   Add Link
