@@ -1,7 +1,7 @@
 import React from "react";
 import { v4 as uuidv4 } from 'uuid';
 import Joi from "joi-browser";
-import _, { clone } from "lodash";
+import _ from "lodash";
 import Form from "../components/common/Form";
 import { toast } from "react-toastify";
 import { sitesNameMapping }  from "../data/sites";
@@ -58,8 +58,8 @@ class NewSliceForm extends Form {
     }
 
     let elements = sliceParser(sliceJSON, "new");
-    console.log("sliceJSON");
-    console.log(sliceJSON);
+    // console.log("sliceJSON");
+    // console.log(sliceJSON);
     return elements;
   }
 
@@ -71,6 +71,15 @@ class NewSliceForm extends Form {
     const cloned_selectedCPs = _.clone(this.state.selectedCPs);
     cloned_selectedCPs.push(cp);
     this.setState({ selectedCPs: cloned_selectedCPs});
+  }
+
+  handleCPRemove = (cp_id) => {
+    const updatedSelectedCPs = [];
+    for (const cp of this.state.selectedCPs) {
+      if (cp.id !== cp_id)
+      updatedSelectedCPs.push(cp);
+    }
+    this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
   handleNodeAdd = (type, site, name, core, disk, ram, componentType, componentName) => {
@@ -85,12 +94,9 @@ class NewSliceForm extends Form {
         "disk": disk,
         "ram": ram,
       }
-    }
+    };
 
-    const component = {
-      "type": componentType,
-      "name": componentName
-    }
+    const component = { "type": componentType, "name": componentName };
 
     if (type === "VM") {
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, component, graphID, sliceNodes, sliceLinks);
@@ -98,115 +104,10 @@ class NewSliceForm extends Form {
     }
   }
 
-  // async, await for adding network service
-  // 1. add a Network Service Node and its Connection Points
-  // 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2
-  addNetworkServiceNode = async (type, name, cp1, cp2) => {
-    // L2STS NS node doesn't have site parent
-    // L2Bridge NS node has site property
-    let network_service_node = {};
-
-    if (type === "L2STS") {
-      network_service_node = {
-        "labels": ":GraphNode:NetworkService",
-        "Name": name,
-        "Class": "NetworkService",
-        "NodeID": uuidv4(),
-        "id": this.state.sliceNodes.length + 1,
-        "Type": type,
-        "Layer": "L2",
-        "GraphID": this.state.graphID
-      }
-    } else if (type === "L2Bridge") {
-      network_service_node = {
-        "labels": ":GraphNode:NetworkService",
-        "Name": name,
-        "Site": cp1.Name.substr(0, cp1.Name.indexOf('-')),
-        "Class": "NetworkService",
-        "NodeID": uuidv4(),
-        "id": this.state.sliceNodes.length + 1,
-        "Type": type,
-        "Layer": "L2",
-        "GraphID": this.state.graphID
-      }
-    }
-
-    const ns_cp_node1 = {
-      "labels": ":ConnectionPoint:GraphNode",
-      "Class": "ConnectionPoint",
-      "Type": "SharedPort",
-      "Name": `${name}-p1`,
-      "NodeID": uuidv4(),
-      "Capacities": {
-        "unit": 1,
-      },
-      "id": this.state.sliceNodes.length + 2,
-      "GraphID": this.state.graphID
-    }
-
-    const ns_cp_node2 = {
-      "labels": ":ConnectionPoint:GraphNode",
-      "Class": "ConnectionPoint",
-      "Type": "SharedPort",
-      "Name": `${name}-p2`,
-      "NodeID": uuidv4(),
-      "Capacities": {
-        "unit": 1,
-      },
-      "id": this.state.sliceNodes.length + 3,
-      "GraphID": this.state.graphID
-    }
-
-    let clonedNodes = _.clone(this.state.sliceNodes);
-    clonedNodes.push(network_service_node);
-    clonedNodes.push(ns_cp_node1);
-    clonedNodes.push(ns_cp_node2);
-    this.setState({ sliceNodes: clonedNodes});
-
-    let clonedLinks = _.clone(this.state.sliceLinks);
-    const cp_link1 = {
-      "label": "has",
-      "Class": "has",
-      "id": this.state.sliceLinks.length + 1,
-      "source": this.state.sliceNodes.length + 1,
-      "target": this.state.sliceNodes.length + 2,
-    }
-    const cp_link2 = {
-      "label": "has",
-      "Class": "has",
-      "id": this.state.sliceLinks.length + 2,
-      "source": this.state.sliceNodes.length + 1,
-      "target": this.state.sliceNodes.length + 3,
-    }
-
-    clonedLinks.push(cp_link1);
-    clonedLinks.push(cp_link2);
-    this.setState({ sliceLinks: clonedLinks });
-  }
-
-  handleLinkAdd = async (type, name, cp1, cp2) => {
-    await this.addNetworkServiceNode(type, name, cp1, cp2);
-
-    const new_link_1 = {
-      "label": "connects",
-      "Class": "connects",
-      "id": this.state.sliceLinks.length + 1,
-      "source": cp1.id,
-      "target": this.state.sliceNodes.length,
-    }
-
-    const new_link_2 = {
-      "label": "connects",
-      "Class": "connects",
-      "id": this.state.sliceLinks.length + 2,
-      "source": cp2.id,
-      "target": this.state.sliceNodes.length - 1,
-    }
-
-    let clonedLinks = _.clone(this.state.sliceLinks);
-    clonedLinks.push(new_link_1, new_link_2);
-
-    this.setState({ sliceLinks: clonedLinks });
+  handleLinkAdd = (type, name) => {
+    const { selectedCPs, graphID, sliceNodes, sliceLinks } =  this.state;
+    const { newSliceNodes, newSliceLinks} = builder.addLink(type, name, selectedCPs, graphID, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
   doSubmit = async () => {
@@ -245,6 +146,7 @@ class NewSliceForm extends Form {
             selectedCPs={selectedCPs}
             onNodeAdd={this.handleNodeAdd}
             onLinkAdd={this.handleLinkAdd}
+            onCPRemove={this.handleCPRemove}
           />
           <div className="d-flex flex-column">
             <NewSliceDetailForm

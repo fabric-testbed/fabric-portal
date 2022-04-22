@@ -191,10 +191,101 @@ const addSmartNIC = () => {
   alert("addSmartNIC");
 }
 
+// async, await for adding network service
+// 1. add a Network Service Node and its Connection Points
+// 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2
+const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
+  // L2Bridge NS node has site property while other types don't.
+  let network_service_node = {};
+  const new_ns_id = nodes.length + 1;
+  let new_link_id_starts = links.length + 1;
+  let clonedNodes = _.clone(nodes);
+  let clonedLinks = _.clone(links);
+
+  if (type === "L2Bridge") {
+    const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'))
+    network_service_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": name,
+      "Site": siteName,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": new_ns_id,
+      "Type": type,
+      "Layer": "L2",
+      "GraphID": graphID
+    }
+  } else {
+    network_service_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": name,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": new_ns_id,
+      "Type": type,
+      "Layer": "L2",
+      "GraphID": graphID
+    }
+  }
+
+  clonedNodes.push(network_service_node);
+
+  // ######################################################
+  // TODO: Validate if selected CPs aligns with the NS Type
+  // ######################################################
+
+  // add same number of CPs within the Network Service based on selected CPs.
+  // add 2 links for each new CP accordingly 
+  // 1. NS has new CP 
+  // 2. selected CP connects new CP
+  selectedCPs.forEach((cp, i) => {
+    const new_ns_cp = {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name": `${cp.properties.name}-p${i}`,
+      "NodeID": uuidv4(),
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": new_ns_id + i + 1,
+      "GraphID": graphID
+    }
+
+    const ns_has_cp_link = {
+      "label": "has",
+      "Class": "has",
+      "id": new_link_id_starts,
+      "source": new_ns_id,
+      "target": new_ns_id + i + 1,
+    }
+
+    new_link_id_starts += 1;
+
+    const cp_connects_cp_link = {
+      "label": "connects",
+      "Class": "connects",
+      "id": new_link_id_starts,
+      "source": cp.id,
+      "target": new_ns_id + i + 1,
+    }
+
+    new_link_id_starts += 1;
+
+    clonedNodes.push(new_ns_cp);
+    clonedLinks.push(ns_has_cp_link);
+    clonedLinks.push(cp_connects_cp_link);
+  })
+
+  // return sliceNodes and sliceLinks.
+  return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
+}
+
 const builder = {
   addVM,
   addSharedNIC,
   addSmartNIC,
+  addLink,
 }
 
 export default builder;

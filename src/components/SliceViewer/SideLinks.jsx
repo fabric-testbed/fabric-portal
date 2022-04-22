@@ -57,6 +57,10 @@ export default class SideLinks extends Component {
     this.props.onLinkAdd(linkType, linkName);
   }
 
+  raiseRemoveCP = (cp_id) => {
+    this.props.onCPRemove(cp_id);
+  }
+
   render() {
     const { intro, linkType } = this.state;
     return(

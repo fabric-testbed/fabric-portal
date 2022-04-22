@@ -88,6 +88,20 @@ export default class NewSliceDetailForm extends Component {
                   ))})
             }
 
+            {/* {
+              properties.class === "NetworkService" &&
+                <div>
+                  <div className="col mb-2">
+                    <label className="slice-builder-label">Name</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={ data.properties["name"]} />
+                  </div>
+                  <div className="col mb-2">
+                    <label className="slice-builder-label">Type</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={ data.properties["type"]} />
+                  </div>
+                </div> 
+            } */}
+
             {
               capacities.map((capacity) => {
                 return (
