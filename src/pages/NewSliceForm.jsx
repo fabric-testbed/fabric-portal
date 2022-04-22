@@ -1,7 +1,7 @@
 import React from "react";
 import { v4 as uuidv4 } from 'uuid';
 import Joi from "joi-browser";
-import _ from "lodash";
+import _, { clone } from "lodash";
 import Form from "../components/common/Form";
 import { toast } from "react-toastify";
 import { sitesNameMapping }  from "../data/sites";
@@ -23,22 +23,13 @@ class NewSliceForm extends Form {
       graphml: "",
     },
     errors: {},
-    nameToAcronym: sitesNameMapping.nameToAcronym,
     ancronymToName: sitesNameMapping.ancronymToName,
-    elements: [],
-    slice: {
-      "graph_id": "",
-      "lease_end": "",
-      "slice_id": "",
-      "slice_model": "",
-      "slice_name": "Slice Viewer",
-      "slice_state": "StableOK"
-    },
     graphID: "",
     sliceNodes: [],
     sliceLinks: [],
     selectedData: null,
     parsedResources: null,
+    selectedCPs: [],
   }
 
   componentDidMount() {
@@ -74,6 +65,12 @@ class NewSliceForm extends Form {
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
+  }
+
+  handleCPAdd = (cp) => {
+    const cloned_selectedCPs = _.clone(this.state.selectedCPs);
+    cloned_selectedCPs.push(cp);
+    this.setState({ selectedCPs: cloned_selectedCPs});
   }
 
   handleNodeAdd = (type, site, name, core, disk, ram, componentType, componentName) => {
@@ -224,7 +221,7 @@ class NewSliceForm extends Form {
   };
 
   render() {
-    const { slice, elements, selectedData, parsedResources, sliceNodes, sliceLinks } = this.state;
+    const { selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs } = this.state;
 
     return (
       <div className="d-flex flex-column align-items-center">
@@ -245,11 +242,15 @@ class NewSliceForm extends Form {
             className="align-self-start"
             resources={parsedResources}
             nodes={sliceNodes}
+            selectedCPs={selectedCPs}
             onNodeAdd={this.handleNodeAdd}
             onLinkAdd={this.handleLinkAdd}
           />
           <div className="d-flex flex-column">
-            <NewSliceDetailForm data={selectedData} />
+            <NewSliceDetailForm
+              data={selectedData}
+              onConnectionPointSelect={this.handleCPAdd}
+            />
             <Graph
               className="align-self-end"
               elements={this.generateGraphElements()}

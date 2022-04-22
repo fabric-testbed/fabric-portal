@@ -41,7 +41,6 @@ export default class SideLinks extends Component {
     },
     linkType: "",
     linkName: "",
-    checkedCPs: [],
   }
   
   handleServiceTypeChange = (e) => {
@@ -53,25 +52,13 @@ export default class SideLinks extends Component {
   }
 
   handleAddLink = () => {
-    const { linkType, linkName, checkedCPs } = this.state;
+    const { linkType, linkName } = this.state;
     // type: "L2STS"/ "L2PTP"/ "L2Bridge"
-    this.props.onLinkAdd(linkType, linkName, checkedCPs[0], checkedCPs[1]);
-  }
-
-  getConnectionPoints = () => {
-    const nodes = this.props.nodes;
-    const cp_nodes = [];
-    for (const node of nodes) {
-      if (node.Class === "ConnectionPoint") {
-        cp_nodes.push(node);
-      }
-    }
-    
-    return cp_nodes;
+    this.props.onLinkAdd(linkType, linkName);
   }
 
   render() {
-    const { intro, linkName, linkType } = this.state;
+    const { intro, linkType } = this.state;
     return(
       <div>
         {
@@ -114,27 +101,21 @@ export default class SideLinks extends Component {
             </div>
            <div className="form-row">
             <div className="ml-1 mt-2 slice-builder-label">Click on the graph to select connection points.</div>
-            <div className="form-group slice-builder-form-group col-md-12">
-              <div className="form-check form-check-inline">
+            <div className="form-group slice-builder-form-group mt-2 col-md-12">
+              <ul className="input-tag__tags">
                 {
-                  this.getConnectionPoints().map(cp => <span className="mr-2">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id={cp.Name}
-                      value={cp.id}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          const cps = _.clone(this.state.checkedCPs);
-                          cps.push(cp);
-                          this.setState({ checkedCPs: cps });
-                        }
-                      }}
-                    />
-                    <label className="slice-builder-label" htmlFor={cp.Name}>{cp.Name}</label>
-                  </span>)
+                  this.props.selectedCPs.length > 0 ? 
+                  this.props.selectedCPs.map(cp => <li key={`selectedCP${cp.id}`}>
+                    {cp.properties.name}
+                  <i
+                    className="fa fa-times ml-2"
+                    onClick={() => {
+                      this.raiseRemoveCP(cp.id);
+                    }}
+                  ></i>
+                </li>) : ""
                 }
-              </div>
+              </ul>
             </div>
            </div>
         </form>

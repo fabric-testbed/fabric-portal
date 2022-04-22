@@ -11,6 +11,11 @@ export default class NewSliceDetailForm extends Component {
   //   this.props.onNodeUpdate(this.props.data.id);
   // }
 
+  handleSelect = (e) => {
+    e.preventDefault();
+    this.props.onConnectionPointSelect(this.props.data);
+  }
+
   render() {
     const data = this.props.data;
     const properties = [
@@ -56,6 +61,8 @@ export default class NewSliceDetailForm extends Component {
       },
     ]
 
+    console.log(data)
+
     return (
       <div className="new-slice-detail-form">
         <form>
@@ -74,8 +81,8 @@ export default class NewSliceDetailForm extends Component {
                     <div className="col mb-2">
                       <label className="slice-builder-label">{ property.display } </label>
                       {
-                        property.field === "detail" ? <textarea type="text" className="form-control form-control-sm" value={ data.properties[property.field]} /> :
-                        <input type="text" className="form-control form-control-sm" value={ data.properties[property.field]} />
+                        property.field === "detail" ? <textarea type="text" className="form-control form-control-sm" defaultValue={ data.properties[property.field]} /> :
+                        <input type="text" className="form-control form-control-sm" defaultValue={ data.properties[property.field]} />
                       }
                     </div>
                   ))})
@@ -88,9 +95,21 @@ export default class NewSliceDetailForm extends Component {
                   && (
                     <div className="col mb-2">
                       <label className="slice-builder-label">{ capacity.display } </label>
-                      <input type="text" className="form-control form-control-sm" value={ `${data.capacities[capacity.field]}`} />
+                      <input type="text" className="form-control form-control-sm" defaultValue={ `${data.capacities[capacity.field]}`} />
                     </div>
                   ))})
+            }
+            {
+              data && data.properties && data.properties.class==="ConnectionPoint" && (
+                <div className="col pt-4 pb-2 d-flex flex-row">
+                  <button
+                    className="btn btn-sm btn-success ml-auto"
+                    onClick={this.handleSelect}
+                  >
+                    Select
+                  </button>
+              </div>
+              )
             }
             </div>
             {/* {
