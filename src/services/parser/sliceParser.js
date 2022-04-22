@@ -258,7 +258,11 @@ export default function parseSlice(slice, sliceType) {
   const cyElements = [];
   elements.forEach(el => {
     if (el.properties) {
-      cyElements.push({ data: el, classes: `graph${el.properties.type}` })
+      if (el.properties.class === "NetworkService") {
+        cyElements.push({ data: el, classes: `graphNetworkService` })
+      } else  {
+        cyElements.push({ data: el, classes: `graph${el.properties.type}` })
+      }
     } else {
       cyElements.push({ data: el })
     }

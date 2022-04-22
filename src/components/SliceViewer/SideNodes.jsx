@@ -8,13 +8,13 @@ class SideNodes extends React.Component {
     core: 0,
     ram: 0,
     disk: 0,
-    nodeType: "",
+    nodeType: "VM",
     componentType: "",
     componentName: "",
   }
   
   handleAddNode = () => {
-    // type: "VM" or "switch"
+    // type: currently only support 'VM'
     const { selectedSite, nodeName, nodeType, core, ram, disk, componentType, componentName } = this.state;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, componentType, componentName);
   }
@@ -54,7 +54,6 @@ class SideNodes extends React.Component {
   getSiteResource = () => {
     for (const site of this.props.resources.parsedSites) {
       if (site.name === this.state.selectedSite) {
-        console.log(site)
         return site;
       }
     }
@@ -100,9 +99,8 @@ class SideNodes extends React.Component {
                   onChange={this.handleNodeTypeChange}
                   defaultValue=""
                 >
-                  <option>Choose...</option>
                   <option value="VM">VM</option>
-                  <option value="Server">Server</option>
+                  {/* <option value="Server">Server</option> */}
                 </select>
               </div>
               <div className="form-group slice-builder-form-group col-md-6">
@@ -119,15 +117,18 @@ class SideNodes extends React.Component {
             <div className="form-row">
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputCore" className="slice-builder-label">Core</label>
-                <input type="number" className="form-control form-control-sm" id="inputCore" onChange={this.handleCoreChange}/>
+                <input type="number" className="form-control form-control-sm" id="inputCore"
+                  defaultValue="2" onChange={this.handleCoreChange}/>
               </div>
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputRam" className="slice-builder-label">Ram</label>
-                <input type="number" className="form-control form-control-sm" id="inputRam" onChange={this.handleRamChange}/>
+                <input type="number" className="form-control form-control-sm" id="inputRam"
+                  defaultValue="6" onChange={this.handleRamChange}/>
               </div>
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputDisk" className="slice-builder-label">Disk</label>
-                <input type="number" className="form-control form-control-sm" id="inputDisk" onChange={this.handleDiskChange}/>
+                <input type="number" className="form-control form-control-sm" id="inputDisk"
+                  defaultValue="10" onChange={this.handleDiskChange}/>
               </div>
             </div>
             <div className="form-row">
