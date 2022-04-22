@@ -121,7 +121,7 @@ const addVM = (node, component, graphID, nodes, links) => {
     const cp_node_1 =   {
       "labels": ":ConnectionPoint:GraphNode",
       "Class": "ConnectionPoint",
-      "Type": "SharedPort",
+      "Type": "DedicatedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p1`,
       "Capacities": {
         "unit": 1,
@@ -242,7 +242,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     const new_ns_cp = {
       "labels": ":ConnectionPoint:GraphNode",
       "Class": "ConnectionPoint",
-      "Type": "SharedPort",
+      "Type": "ServicePort",
       "Name": `${cp.properties.name}-p${i}`,
       "NodeID": uuidv4(),
       "Capacities": {
