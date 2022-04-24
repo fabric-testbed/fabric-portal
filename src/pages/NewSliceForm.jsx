@@ -58,8 +58,8 @@ class NewSliceForm extends Form {
     }
 
     let elements = sliceParser(sliceJSON, "new");
-    // console.log("sliceJSON");
-    // console.log(sliceJSON);
+    console.log("sliceJSON");
+    console.log(sliceJSON);
     return elements;
   }
 
@@ -82,7 +82,7 @@ class NewSliceForm extends Form {
     this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
-  handleNodeAdd = (type, site, name, core, disk, ram, componentType, componentName) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, componentType, componentName, componentModel) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -91,12 +91,12 @@ class NewSliceForm extends Form {
       "name": name,
       "capacities": {
         "core": core,
-        "disk": disk,
         "ram": ram,
+        "disk": disk,
       }
     };
 
-    const component = { "type": componentType, "name": componentName };
+    const component = { "type": componentType, "name": componentName, "model": componentModel };
 
     if (type === "VM") {
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, component, graphID, sliceNodes, sliceLinks);
@@ -157,7 +157,7 @@ class NewSliceForm extends Form {
               className="align-self-end"
               elements={this.generateGraphElements()}
               sliceName={"new-slice"}
-              defaultSize={{"width": 0.5, "height": 0.75}}
+              defaultSize={{"width": 0.5, "height": 0.75, "zoom": 0.75}}
               onNodeSelect={this.handleNodeSelect}
             />
           </div>
