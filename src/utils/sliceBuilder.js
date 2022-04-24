@@ -1,6 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 
+const modelDetails = {
+  "RTX6000": "NVIDIA Corporation TU102GL [Quadro RTX 6000/8000] (rev a1)",
+  "Tesla T4": "NVIDIA Corporation TU104GL [Tesla T4] (rev a1)",
+  "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
+  "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
+  "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
+}
+
 const addVM = (node, component, graphID, nodes, links) => {
   // 1. add vm
   // 2. add component
@@ -31,6 +39,8 @@ const addVM = (node, component, graphID, nodes, links) => {
       "unit": 1,
     },
     "Type": component.type,
+    "Model": component.model,
+    "Details": modelDetails[component.model],
     "id": nodes.length + 2,
     "NodeID": uuidv4(),
     "GraphID": graphID

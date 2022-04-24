@@ -74,7 +74,7 @@ export default class Graph extends Component {
   }
 
   render() {
-    const layout = {name: 'fcose'};
+    const layout = {name: 'fcose', randomized: true};
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -83,7 +83,7 @@ export default class Graph extends Component {
     );
 
     return(
-      <div className="border">
+      <div className="border" key={`graph-key-${this.props.elements.length}`}>
         <div className="d-flex flex-row-reverse">
             <OverlayTrigger
               placement="top"
@@ -100,7 +100,7 @@ export default class Graph extends Component {
         <CytoscapeComponent
           elements={this.props.elements}
           layout={layout}
-          zoom={0.85}
+          zoom={this.props.defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
           cy={(cy) => {this.cy = setCytoscape(cy)}}

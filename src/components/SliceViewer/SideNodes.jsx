@@ -18,9 +18,9 @@ class SideNodes extends React.Component {
     },
     selectedSite: "",
     nodeName: "",
-    core: 0,
-    ram: 0,
-    disk: 0,
+    core: 2,
+    ram: 6,
+    disk: 10,
     nodeType: "VM",
     componentType: "",
     componentName: "",
@@ -30,7 +30,7 @@ class SideNodes extends React.Component {
   handleAddNode = () => {
     // type: currently only support 'VM'
     const { selectedSite, nodeName, nodeType, core, ram, disk, componentType, componentName, componentModel } = this.state;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, componentType, componentName);
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, componentType, componentName, componentModel);
   }
 
   handleSiteChange = (e) => {
