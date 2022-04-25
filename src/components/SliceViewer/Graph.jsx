@@ -74,7 +74,7 @@ export default class Graph extends Component {
   }
 
   render() {
-    const layout = {name: 'fcose', randomized: true};
+    const layout = {name: 'fcose'};
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -83,7 +83,8 @@ export default class Graph extends Component {
     );
 
     return(
-      <div className="border" key={`graph-key-${this.props.elements.length}`}>
+      // <div className="border" key={`graph-key-${this.props.elements.length}`}>
+      <div className="border">
         <div className="d-flex flex-row-reverse">
             <OverlayTrigger
               placement="top"
@@ -94,7 +95,6 @@ export default class Graph extends Component {
                 Download in JSON
               </button>
             </OverlayTrigger>
-          
           <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
         </div>
         <CytoscapeComponent
