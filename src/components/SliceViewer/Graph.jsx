@@ -83,8 +83,7 @@ export default class Graph extends Component {
     );
 
     return(
-      // <div className="border" key={`graph-key-${this.props.elements.length}`}>
-      <div className="border">
+      <div className="border" key={`graph-key-${this.props.elements.length}`}>
         <div className="d-flex flex-row-reverse">
             <OverlayTrigger
               placement="top"

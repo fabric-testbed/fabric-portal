@@ -21,7 +21,12 @@ const generateID = (data) => {
   }
 }
 
-const addComponent = (component, graphID, vm_node_id, component_node_id, component_link_id) => {
+const addComponent = (node, component, graphID, vm_node_id, component_node_id, component_link_id) => {
+  const nodes_to_add = [];
+  const links_to_add = [];
+
+  // For GPU and NVME, only 1 node and 1 link to add.
+  // For NIC, add 1 node and 1 link first.
   const component_node = {
     "labels": ":Component:GraphNode",
     "Class": "Component",
@@ -45,7 +50,141 @@ const addComponent = (component, graphID, vm_node_id, component_node_id, compone
     "target": component_node_id,
   }
 
-  return [component_node, link];
+  nodes_to_add.push(component_node);
+  links_to_add.push(link);
+
+  // SharedNIC has 1 connection points
+  // SmartNIC has 2 connection points
+  // NIC -> OVS -> CP(s)
+  // 2 or 3 extra nodes to add; 2 or 3 extra links to add.
+  if (component.type === "SharedNIC") {
+    // Add OVS Network Service Node
+    // Add NIC has OVS link
+    // Add 1 Connection Points and OVS has CP link
+    const ovs_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": component_node_id + 1,
+      "Type": "OVS",
+      "Layer": "L2",
+      "GraphID": graphID
+    }
+
+    const cp_node =   {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": component_node_id + 2,
+      "NodeID": uuidv4(),
+      "GraphID": graphID
+    }
+
+    nodes_to_add.push(cp_node);
+    nodes_to_add.push(ovs_node);
+
+    // NIC has OVS
+    const ovs_link = {
+      "label": "has",
+      "Class": "has",
+      "id": component_link_id + 1,
+      "source": component_node_id,
+      "target": component_node_id + 1,
+    }
+
+    const cp_link = {
+      "label": "connects",
+      "Class": "connects",
+      "id": component_link_id + 2,
+      "source": component_node_id + 1,
+      "target": component_node_id + 2,
+    }
+
+    links_to_add.push(ovs_link);
+    links_to_add.push(cp_link);
+  }
+
+  if (component.type === "SmartNIC") {
+    // Add OVS Network Service Node
+    // Add NIC has OVS link
+    // Add 2 Connection Points and OVS has CP link
+    const ovs_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": component_node_id + 1,
+      "Type": "OVS",
+      "Layer": "L2",
+      "GraphID": graphID
+    }
+
+    const cp_node_1 =   {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "DedicatedPort",
+      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": component_node_id + 2,
+      "NodeID": uuidv4(),
+      "GraphID": graphID
+    }
+
+    const cp_node_2 =   {
+      "labels": ":ConnectionPoint:GraphNode",
+      "Class": "ConnectionPoint",
+      "Type": "SharedPort",
+      "Name":  `${node.site}-${node.name}-${component.name}-p2`,
+      "Capacities": {
+        "unit": 1,
+      },
+      "id": component_node_id + 3,
+      "NodeID": uuidv4(),
+      "GraphID": graphID
+    }
+
+    nodes_to_add.push(cp_node_1);
+    nodes_to_add.push(cp_node_2);
+    nodes_to_add.push(ovs_node);
+
+    // NIC has OVS
+    const ovs_link = {
+      "label": "has",
+      "Class": "has",
+      "id": component_link_id + 1,
+      "source": component_node_id,
+      "target": component_node_id + 1,
+    }
+
+    const cp_link_1 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": component_link_id + 2,
+      "source": component_node_id + 1,
+      "target": component_node_id + 2,
+    }
+
+    const cp_link_2 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": component_link_id + 2,
+      "source": component_node_id + 1,
+      "target": component_node_id + 3,
+    }
+
+    links_to_add.push(ovs_link);
+    links_to_add.push(cp_link_1);
+    links_to_add.push(cp_link_2);
+  }
+
+  return [nodes_to_add, links_to_add];
 }
 
 const addVM = (node, components, graphID, nodes, links) => {
@@ -80,141 +219,17 @@ const addVM = (node, components, graphID, nodes, links) => {
   let component_link_id = links.length + 1;
 
   for(const component of components) {
-    const [node, link] = addComponent(component, graphID, vm_node_id, component_node_id, component_link_id);
-    clonedNodes.push(node);
-    clonedLinks.push(link);
-    component_node_id += 1;
-    component_link_id += 1;
+    const [nodes, links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
+    for (const node of nodes) {
+      clonedNodes.push(node);
+    }
+    for (const link of links) {
+      clonedLinks.push(link);
+    }
+
+    component_node_id += nodes.length;
+    component_link_id += links.length;
   }
-
-  // SharedNIC has 1 connection points
-  // SmartNIC has 2 connection points
-  // if (component.type === "SharedNIC") {
-  //   // Add OVS Network Service Node
-  //   // Add NIC has OVS link
-  //   // Add 1 Connection Points and OVS has CP link
-  //   const ovs_node = {
-  //     "labels": ":GraphNode:NetworkService",
-  //     "Name": `${node.site}-${node.name}-${component.name}-ovs`,
-  //     "Class": "NetworkService",
-  //     "NodeID": uuidv4(),
-  //     "id": nodes.length + 3,
-  //     "Type": "OVS",
-  //     "Layer": "L2",
-  //     "GraphID": graphID
-  //   }
-
-  //   const cp_node =   {
-  //     "labels": ":ConnectionPoint:GraphNode",
-  //     "Class": "ConnectionPoint",
-  //     "Type": "SharedPort",
-  //     "Name":  `${node.site}-${node.name}-${component.name}-p1`,
-  //     "Capacities": {
-  //       "unit": 1,
-  //     },
-  //     "id": nodes.length + 4,
-  //     "NodeID": uuidv4(),
-  //     "GraphID": graphID
-  //   }
-  //   clonedNodes.push(cp_node);
-  //   clonedNodes.push(ovs_node);
-
-  //   // NIC has OVS
-  //   const ovs_link = {
-  //     "label": "has",
-  //     "Class": "has",
-  //     "id": links.length + 2,
-  //     "source": nodes.length + 2,
-  //     "target": nodes.length + 3,
-  //   }
-
-  //   const cp_link = {
-  //     "label": "connects",
-  //     "Class": "connects",
-  //     "id": links.length + 3,
-  //     "source": nodes.length + 3,
-  //     "target": nodes.length + 4,
-  //   }
-
-  //   clonedLinks.push(ovs_link);
-  //   clonedLinks.push(cp_link);
-  // }
-
-  // if (component.type === "SmartNIC") {
-  //   // Add OVS Network Service Node
-  //   // Add NIC has OVS link
-  //   // Add 2 Connection Points and OVS has CP link
-  //   const ovs_node = {
-  //     "labels": ":GraphNode:NetworkService",
-  //     "Name": `${node.site}-${node.name}-${component.name}-ovs`,
-  //     "Class": "NetworkService",
-  //     "NodeID": uuidv4(),
-  //     "id": nodes.length + 3,
-  //     "Type": "OVS",
-  //     "Layer": "L2",
-  //     "GraphID": graphID
-  //   }
-
-  //   const cp_node_1 =   {
-  //     "labels": ":ConnectionPoint:GraphNode",
-  //     "Class": "ConnectionPoint",
-  //     "Type": "DedicatedPort",
-  //     "Name":  `${node.site}-${node.name}-${component.name}-p1`,
-  //     "Capacities": {
-  //       "unit": 1,
-  //     },
-  //     "id": nodes.length + 4,
-  //     "NodeID": uuidv4(),
-  //     "GraphID": graphID
-  //   }
-
-  //   const cp_node_2 =   {
-  //     "labels": ":ConnectionPoint:GraphNode",
-  //     "Class": "ConnectionPoint",
-  //     "Type": "SharedPort",
-  //     "Name":  `${node.site}-${node.name}-${component.name}-p2`,
-  //     "Capacities": {
-  //       "unit": 1,
-  //     },
-  //     "id": nodes.length + 5,
-  //     "NodeID": uuidv4(),
-  //     "GraphID": graphID
-  //   }
-
-  //   clonedNodes.push(cp_node_1);
-  //   clonedNodes.push(cp_node_2);
-  //   clonedNodes.push(ovs_node);
-
-  //   // NIC has OVS
-  //   const ovs_link = {
-  //     "label": "has",
-  //     "Class": "has",
-  //     "id": links.length + 2,
-  //     "source": nodes.length + 2,
-  //     "target": nodes.length + 3,
-  //   }
-
-  //   const cp_link_1 = {
-  //     "label": "connects",
-  //     "Class": "connects",
-  //     "id": links.length + 3,
-  //     "source": nodes.length + 3,
-  //     "target": nodes.length + 4,
-  //   }
-
-
-  //   const cp_link_2 = {
-  //     "label": "connects",
-  //     "Class": "connects",
-  //     "id": links.length + 4,
-  //     "source": nodes.length + 3,
-  //     "target": nodes.length + 5,
-  //   }
-
-  //   clonedLinks.push(ovs_link);
-  //   clonedLinks.push(cp_link_1);
-  //   clonedLinks.push(cp_link_2);
-  // }
 
   // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
