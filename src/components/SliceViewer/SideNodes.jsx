@@ -1,36 +1,41 @@
 import React from 'react';
 import SiteResourceTable from './SiteResourceTable';
+import SingleComponent from './SingleComponent';
+import _ from "lodash";
 
 class SideNodes extends React.Component {
   state = {
-    componentTypeModel: {
-      "GPU": ["RTX6000", "Tesla T4"],
-      "SmartNIC": ["ConnectX-6", "ConnectX-5"],
-      "SharedNIC": ["ConnectX-6"],
-      "NVME": ["P4510"]
-    },
-    modelDetails: {
-      "RTX6000": "NVIDIA Corporation TU102GL [Quadro RTX 6000/8000] (rev a1)",
-      "Tesla T4": "NVIDIA Corporation TU104GL [Tesla T4] (rev a1)",
-      "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
-      "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
-      "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
-    },
     selectedSite: "",
     nodeName: "",
     core: 2,
     ram: 6,
     disk: 10,
     nodeType: "VM",
-    componentType: "",
-    componentName: "",
-    componentModel: "",
+    nodeComponents: [],
   }
   
   handleAddNode = () => {
     // type: currently only support 'VM'
-    const { selectedSite, nodeName, nodeType, core, ram, disk, componentType, componentName, componentModel } = this.state;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, componentType, componentName, componentModel);
+    const { selectedSite, nodeName, nodeType, core, ram, disk, nodeComponents } = this.state;
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, nodeComponents);
+  }
+
+  handleSliceComponentAdd = (component) => {
+    const cloned_nodeComponents = _.clone(this.state.nodeComponents);
+    cloned_nodeComponents.push(component);
+    this.setState({ nodeComponents: cloned_nodeComponents});
+  }
+
+  handleSliceComponentDelete = (component) => {
+    const updated_nodeComponents = [];
+    for (const c of this.state.nodeComponents) {
+      // component name should be unique within 1 node.
+      if (c.name !== component.name) {
+           updated_nodeComponents.push(c);
+         }
+    }
+
+    this.setState({ nodeComponents: updated_nodeComponents });
   }
 
   handleSiteChange = (e) => {
@@ -57,18 +62,6 @@ class SideNodes extends React.Component {
     this.setState({ disk: e.target.value });
   }
 
-  handleComponentTypeChange = (e) => {
-    this.setState({ componentType: e.target.value, componentModel: "" });
-  }
-
-  handleComponentNameChange = (e) => {
-    this.setState({ componentName: e.target.value });
-  }
-
-  handleComponentModelChange = (e) => {
-    this.setState({ componentModel: e.target.value });
-  }
-
   getSiteResource = () => {
     for (const site of this.props.resources.parsedSites) {
       if (site.name === this.state.selectedSite) {
@@ -78,8 +71,6 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { componentTypeModel, componentType, componentModel, modelDetails } = this.state;
-
     return(
       <div>
         {this.props.resources !== null &&
@@ -151,59 +142,23 @@ class SideNodes extends React.Component {
                   defaultValue="10" onChange={this.handleDiskChange}/>
               </div>
             </div>
-            <div className="form-row">
-              <div className="form-group slice-builder-form-group col-md-3">
-                <label htmlFor="inputComponent" className="slice-builder-label">Add Component</label>
-                <select
-                  className="form-control form-control-sm"
-                  id="componentSelect"
-                  onChange={this.handleComponentTypeChange}
-                  defaultValue=""
-                >
-                  <option>Choose...</option>
-                  <option value="GPU">GPU</option>
-                  <option value="SmartNIC">SmartNIC</option>
-                  <option value="SharedNIC">SharedNIC</option>
-                  <option value="NVME">NVME</option>
-                </select>
-              </div>
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputComponentName" className="slice-builder-label">Component Name</label>
-                <input
-                  type="text" className="form-control form-control-sm" id="inputComponentName"
-                  onChange={this.handleComponentNameChange}
-                />
-              </div>
-              <div className="form-group slice-builder-form-group col-md-5">
-                <label htmlFor="inputComponent" className="slice-builder-label">Component Model</label>
-                <select
-                  className="form-control form-control-sm"
-                  id="componentSelect"
-                  onChange={this.handleComponentModelChange}
-                  disabled={componentType === ""}
-                >
-                  <option value="">Choose...</option>
-                  {
-                    componentType !== "" && 
-                    componentTypeModel[componentType].map(model => 
-                      <option value={model}>{model}</option>
-                    )
-                  }
-                </select>
-              </div>
-            </div>
+            <SingleComponent
+              onSliceComponentAdd={this.handleSliceComponentAdd}
+            />
             {
-              componentModel !== "" && componentModel !== "" && 
-              <span className="text-sm-size">
-                {
-                  'Model Details: ' + modelDetails[componentModel]
-                }
-              </span>
+              this.state.nodeComponents.map((component) => 
+                <SingleComponent
+                  key={component.name}
+                  component={component}
+                  onSliceComponentDelete={this.handleSliceComponentDelete}
+                />
+              )
             }
           </form>
           <div className="my-2 d-flex flex-row">
             <button
               className="btn btn-sm btn-success mb-2"
+              type="button"
               onClick={() => this.handleAddNode()}
             >
               Add Node with Components

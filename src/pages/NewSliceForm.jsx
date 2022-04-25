@@ -82,7 +82,7 @@ class NewSliceForm extends Form {
     this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, componentType, componentName, componentModel) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, sliceComponents) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -96,10 +96,8 @@ class NewSliceForm extends Form {
       }
     };
 
-    const component = { "type": componentType, "name": componentName, "model": componentModel };
-
     if (type === "VM") {
-      const { newSliceNodes, newSliceLinks} = builder.addVM(node, component, graphID, sliceNodes, sliceLinks);
+      const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents[0], graphID, sliceNodes, sliceLinks);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }
