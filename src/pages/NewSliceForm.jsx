@@ -97,7 +97,7 @@ class NewSliceForm extends Form {
     };
 
     if (type === "VM") {
-      const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents[0], graphID, sliceNodes, sliceLinks);
+      const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }
