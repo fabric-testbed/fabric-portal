@@ -69,7 +69,7 @@ export default class NewSliceDetailForm extends Component {
             <div className="form-row px-3">
             {
               !data && (
-                <div className="my-2"><i className="fa fa-info-circle" /> Click an element on the graph to view details or make changes. </div>
+                <div className="my-3"><i className="fa fa-info-circle mx-2" />Click an element on the graph to view details or make changes. </div>
               )
             }
 
@@ -80,10 +80,11 @@ export default class NewSliceDetailForm extends Component {
                   && (
                     <div className="col mb-2">
                       <label className="slice-builder-label">{ property.display } </label>
-                      {
-                        property.field === "detail" ? <textarea type="text" className="form-control form-control-sm" defaultValue={ data.properties[property.field]} /> :
+                      {/* {
+                        property.field === "detail" ? <textarea type="text" className="form-control form-control-sm node-detail-textarea" defaultValue={ data.properties[property.field]} /> :
                         <input type="text" className="form-control form-control-sm" defaultValue={ data.properties[property.field]} />
-                      }
+                      } */}
+                      <input type="text" className="form-control form-control-sm" defaultValue={ data.properties[property.field]} />
                     </div>
                   ))})
             }

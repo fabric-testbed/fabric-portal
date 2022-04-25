@@ -13,11 +13,12 @@ class SideNodes extends React.Component {
     nodeType: "VM",
     nodeComponents: [],
   }
-  
+
   handleAddNode = () => {
     // type: currently only support 'VM'
     const { selectedSite, nodeName, nodeType, core, ram, disk, nodeComponents } = this.state;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, nodeComponents);
+    this.setState({ nodeName: "", nodeComponents: [] })
   }
 
   handleSliceComponentAdd = (component) => {
@@ -71,6 +72,7 @@ class SideNodes extends React.Component {
   }
 
   render() {
+    const { selectedSite, nodeName } = this.state;
     return(
       <div>
         {this.props.resources !== null &&
@@ -92,7 +94,7 @@ class SideNodes extends React.Component {
                   className="form-control form-control-sm"
                   id="siteNameSelect"
                   onChange={this.handleSiteChange}
-                  defaultValue=""
+                  defaultValue={""}
                 >
                   <option>Choose...</option>
                   {
@@ -120,7 +122,7 @@ class SideNodes extends React.Component {
                   type="text"
                   className="form-control form-control-sm"
                   id="inputNodeName"
-                  placeholder=""
+                  value={nodeName}
                   onChange={this.handleNameChange}
                 />
               </div>

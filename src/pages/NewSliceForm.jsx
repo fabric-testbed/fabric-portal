@@ -42,7 +42,7 @@ class NewSliceForm extends Form {
   }
 
   schema = {
-    name: Joi.string().required().label("Name"),
+    name: Joi.string().required().label("Slice Name"),
     sshKey: Joi.string().required().label("SSH Key"),
     leaseEndTime: Joi.date().min("now").label("Lease End Time"),
     graphml: Joi.string().required().label("Graphml"),
@@ -127,7 +127,7 @@ class NewSliceForm extends Form {
         <div className="new-slice-form align-self-center mt-4">
           <form onSubmit={this.handleSubmit}>
             <div className="form-row d-flex align-items-center">
-              <div className="col-md-3">{this.renderInput("name", "Name*", true)}</div>
+              <div className="col-md-3">{this.renderInput("name", "Slice Name*", true)}</div>
               <div className="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
               <div className="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
               <div className="col-md-2 pt-3 d-flex flex-row">
