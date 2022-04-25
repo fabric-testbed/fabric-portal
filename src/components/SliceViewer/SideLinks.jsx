@@ -55,6 +55,7 @@ export default class SideLinks extends Component {
     const { linkType, linkName } = this.state;
     // type: "L2STS"/ "L2PTP"/ "L2Bridge"
     this.props.onLinkAdd(linkType, linkName);
+    this.setState({ linkName: "" });
   }
 
   raiseRemoveCP = (cp_id) => {
@@ -62,7 +63,7 @@ export default class SideLinks extends Component {
   }
 
   render() {
-    const { intro, linkType } = this.state;
+    const { intro, linkType, linkName } = this.state;
     return(
       <div>
         {
@@ -98,7 +99,7 @@ export default class SideLinks extends Component {
                   type="text"
                   className="form-control form-control-sm"
                   id="inputServiceName"
-                  placeholder=""
+                  value={linkName}
                   onChange={this.handleLinkNameChange}
                 />
               </div>

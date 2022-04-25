@@ -105,7 +105,7 @@ class NewSliceForm extends Form {
   handleLinkAdd = (type, name) => {
     const { selectedCPs, graphID, sliceNodes, sliceLinks } =  this.state;
     const { newSliceNodes, newSliceLinks} = builder.addLink(type, name, selectedCPs, graphID, sliceNodes, sliceLinks);
-    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks, selectedCPs: [] });
   }
 
   doSubmit = async () => {
