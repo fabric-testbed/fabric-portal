@@ -31,9 +31,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     "labels": ":Component:GraphNode",
     "Class": "Component",
     "Name": component.name,
-    "Capacities": {
-      "unit": 1,
-    },
+    "Capacities": JSON.stringify({"unit": 1}),
     "Type": component.type,
     "Model": component.model,
     "Details": modelDetails[component.model],
@@ -77,9 +75,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p1`,
-      "Capacities": {
-        "unit": 1,
-      },
+      "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "GraphID": graphID
@@ -129,9 +125,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p1`,
-      "Capacities": {
-        "unit": 1,
-      },
+      "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "GraphID": graphID
@@ -142,9 +136,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p2`,
-      "Capacities": {
-        "unit": 1,
-      },
+      "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
       "NodeID": uuidv4(),
       "GraphID": graphID
@@ -197,16 +189,18 @@ const addVM = (node, components, graphID, nodes, links) => {
   // SmartNIC has 2 ports and SharedNIC has 1 port.
   const vm_node_id = nodes.length + 1;
 
+  const capacitiesObj = {
+    "core": node.capacities.core,
+    "disk": node.capacities.disk,
+    "ram": node.capacities.ram,
+  }
+
   const vm_node = {
     "labels": ":GraphNode:NetworkNode",
     "Class": "NetworkNode",
     "Name": node.name,
     "Site": node.site,
-    "Capacities": {
-      "core": node.capacities.core,
-      "disk": node.capacities.disk,
-      "ram": node.capacities.ram,
-    },
+    "Capacities": JSON.stringify(capacitiesObj),
     "ImageRef": node.image,
     "Type": "VM",
     "id": vm_node_id,
@@ -260,6 +254,17 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Layer": "L2",
       "GraphID": graphID
     }
+  } else if (type === "FABNetv4" || type === "FABNetv6") {
+    network_service_node = {
+      "labels": ":GraphNode:NetworkService",
+      "Name": name,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": new_ns_id,
+      "Type": type,
+      "Layer": "L3",
+      "GraphID": graphID
+    }
   } else {
     network_service_node = {
       "labels": ":GraphNode:NetworkService",
@@ -290,9 +295,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": "ServicePort",
       "Name": `${cp.properties.name}-p${i}`,
       "NodeID": uuidv4(),
-      "Capacities": {
-        "unit": 1,
-      },
+      "Capacities": JSON.stringify({"unit": 1,}),
       "id": new_ns_id + i + 1,
       "GraphID": graphID
     }
