@@ -82,7 +82,7 @@ class NewSliceForm extends Form {
     this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, sliceComponents) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -93,7 +93,8 @@ class NewSliceForm extends Form {
         "core": core,
         "ram": ram,
         "disk": disk,
-      }
+      },
+      "image": image
     };
 
     if (type === "VM") {
