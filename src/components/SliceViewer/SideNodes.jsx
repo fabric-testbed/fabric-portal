@@ -12,12 +12,30 @@ class SideNodes extends React.Component {
     disk: 10,
     nodeType: "VM",
     nodeComponents: [],
+    imageType: "qcow2",
+    selectedImageRef: "default_rocky_8",
   }
+
+  imageRef = [
+    "default_centos8_stream",
+    "default_centos9_stream",
+    "default_centos_7",
+    "default_centos_8",
+    "default_debian_10",
+    "default_fedora_35",
+    "default_rocky_8",
+    "default_ubuntu_18",
+    "default_ubuntu_20",
+    "default_ubuntu_21",
+    "default_ubuntu_22",
+  ]
 
   handleAddNode = () => {
     // type: currently only support 'VM'
-    const { selectedSite, nodeName, nodeType, core, ram, disk, nodeComponents } = this.state;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, nodeComponents);
+    const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, imageRef, nodeComponents } = this.state;
+    // concatenate image type and ref to be one string
+    const image = `${imageRef},${imageType}`;
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, image, nodeComponents);
     this.setState({ nodeName: "", nodeComponents: [] })
   }
 
@@ -63,6 +81,10 @@ class SideNodes extends React.Component {
     this.setState({ disk: e.target.value });
   }
 
+  handleImageRefChange = (e) => {
+    this.setState({ imageRef: e.target.value })
+  }
+
   getSiteResource = () => {
     for (const site of this.props.resources.parsedSites) {
       if (site.name === this.state.selectedSite) {
@@ -72,13 +94,13 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { selectedSite, nodeName } = this.state;
+    const { selectedSite, nodeName, imageType, selectedImageRef } = this.state;
     return(
       <div>
         {this.props.resources !== null &&
           <div>
             {
-              this.state.selectedSite !== "" &&
+              selectedSite !== "" &&
               <div>
                 <div className="mb-1">
                   Available Site Resources - <span className="font-weight-bold">{this.state.selectedSite}</span>
@@ -144,18 +166,42 @@ class SideNodes extends React.Component {
                   defaultValue="10" onChange={this.handleDiskChange}/>
               </div>
             </div>
-            <SingleComponent
-              onSliceComponentAdd={this.handleSliceComponentAdd}
-            />
-            {
-              this.state.nodeComponents.map((component) => 
-                <SingleComponent
-                  key={component.name}
-                  component={component}
-                  onSliceComponentDelete={this.handleSliceComponentDelete}
-                />
-              )
-            }
+            <div className="form-row">
+              <div className="form-group slice-builder-form-group col-md-4">
+                <label htmlFor="inputState" className="slice-builder-label">Image Type</label>
+                <select className="form-control form-control-sm"disabled>
+                  <option>{imageType}</option>
+                </select>
+              </div> 
+              <div className="form-group slice-builder-form-group col-md-8">
+                <label htmlFor="inputState" className="slice-builder-label">Image Ref</label>
+                <select
+                  className="form-control form-control-sm"
+                  onChange={this.handleImageRefChange}
+                  defaultValue={selectedImageRef}
+                >
+                  {
+                    this.imageRef.map(ref => 
+                      <option value={ref} key={`ref`}>{ref}</option>
+                    )
+                  }
+                </select>
+              </div>
+            </div>
+            <div className="mt-2 bg-light">
+              <SingleComponent
+                onSliceComponentAdd={this.handleSliceComponentAdd}
+              />
+              {
+                this.state.nodeComponents.map((component) => 
+                  <SingleComponent
+                    key={component.name}
+                    component={component}
+                    onSliceComponentDelete={this.handleSliceComponentDelete}
+                  />
+                )
+              }
+            </div>
           </form>
           <div className="my-2 d-flex flex-row">
             <button

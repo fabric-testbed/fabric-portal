@@ -207,6 +207,7 @@ const addVM = (node, components, graphID, nodes, links) => {
       "disk": node.capacities.disk,
       "ram": node.capacities.ram,
     },
+    "ImageRef": node.image,
     "Type": "VM",
     "id": vm_node_id,
     "NodeID": uuidv4(),
