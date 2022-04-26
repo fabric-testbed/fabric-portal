@@ -133,7 +133,7 @@ export default class SideLinks extends Component {
                   className="btn btn-sm btn-success mb-2"
                   onClick={()=> this.handleAddLink()}
                 >
-                  Add Link
+                  Add Service
                 </button>
               </div>
             )
