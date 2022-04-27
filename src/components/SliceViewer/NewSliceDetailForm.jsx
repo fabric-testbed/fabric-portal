@@ -129,13 +129,16 @@ export default class NewSliceDetailForm extends Component {
                   <input type="text" className="form-control form-control-sm" defaultValue={data.properties.type} disabled/>
                 </div>
                 <div className="col-2 pt-4 pb-2 d-flex flex-row">
-                  <button
-                    className="btn btn-sm btn-success ml-auto"
-                    type="button"
-                    onClick={this.handleSelect}
-                  >
-                    Select
-                  </button>
+                  {
+                    data.properties.type !== "ServicePort" && 
+                    <button
+                      className="btn btn-sm btn-success ml-auto"
+                      type="button"
+                      onClick={this.handleSelect}
+                    >
+                      Select
+                    </button>
+                  }
                 </div>
               </div>
             }
@@ -152,13 +155,13 @@ export default class NewSliceDetailForm extends Component {
                   <input type="text" className="form-control form-control-sm" defaultValue={data.properties.type} disabled/>
                 </div>
                 <div className="col-2 pt-4 pb-2 d-flex flex-row">
-                  <button
-                    className="btn btn-sm btn-danger ml-auto"
-                    type="button"
-                    onClick={this.handleNodeDelete}
-                  >
-                    Delete
-                  </button>
+                    <button
+                      className="btn btn-sm btn-danger ml-auto"
+                      type="button"
+                      onClick={this.handleNodeDelete}
+                    >
+                      Delete
+                    </button>
                 </div>
               </div>
             }
