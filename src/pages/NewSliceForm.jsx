@@ -13,6 +13,7 @@ import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
+import editor from "../utils/sliceEditor.js";
 
 class NewSliceForm extends Form {
   state = {
@@ -63,6 +64,23 @@ class NewSliceForm extends Form {
     return elements;
   }
 
+  handleSaveDraft = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON));
+  }
+
+  handleUseDraft = () => {
+    const sliceDraft = JSON.parse(localStorage.getItem("sliceDraft"));
+    this.setState({ sliceNodes: sliceDraft.nodes, sliceLinks: sliceDraft.links });
+  }
+
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
   }
@@ -80,6 +98,11 @@ class NewSliceForm extends Form {
       updatedSelectedCPs.push(cp);
     }
     this.setState({ selectedCPs: updatedSelectedCPs });
+  }
+
+  handleNodeDelete = (data) => {
+    const { sliceNodes, sliceLinks } =  this.state;
+    editor.removeNode(data, sliceNodes, sliceLinks);
   }
 
   handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
@@ -138,19 +161,38 @@ class NewSliceForm extends Form {
           </form>
         </div>
         <div className="d-flex flex-row justify-content-center mb-4">
-          <SideToolbar
-            className="align-self-start"
-            resources={parsedResources}
-            nodes={sliceNodes}
-            selectedCPs={selectedCPs}
-            onNodeAdd={this.handleNodeAdd}
-            onLinkAdd={this.handleLinkAdd}
-            onCPRemove={this.handleCPRemove}
-          />
+          <div className="d-flex flex-column">
+            <SideToolbar
+              className="align-self-start"
+              resources={parsedResources}
+              nodes={sliceNodes}
+              selectedCPs={selectedCPs}
+              onNodeAdd={this.handleNodeAdd}
+              onLinkAdd={this.handleLinkAdd}
+              onCPRemove={this.handleCPRemove}
+            />
+            <div className="mt-2">
+              <button
+                className="btn btn-sm btn-success mb-2"
+                type="button"
+                onClick={() => this.handleSaveDraft()}
+              >
+                Save Draft
+              </button>
+              <button
+                className="btn btn-sm btn-success mb-2 ml-2"
+                type="button"
+                onClick={() => this.handleUseDraft()}
+              >
+                Use Draft
+              </button>
+            </div>
+          </div>
           <div className="d-flex flex-column">
             <NewSliceDetailForm
               data={selectedData}
               onConnectionPointSelect={this.handleCPAdd}
+              onNodeDelete={this.handleNodeDelete}
             />
             <Graph
               className="align-self-end"

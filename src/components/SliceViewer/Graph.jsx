@@ -109,7 +109,7 @@ export default class Graph extends Component {
               "selector": "node",
               "style": {
                 "shape": "data(type)",
-                "label": "data(label)",
+                "label": "data(id)",
               }
             },
             {
