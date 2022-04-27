@@ -15,6 +15,14 @@ export const notices = [
     endTimeUTC: "2022-04-14 02:00:00",
     link: "https://learn.fabric-testbed.net/forums/topic/maintenance-on-network-am-on-wed-4-13-22-8pm-10pm-et/",
   },
+  {
+    id: 3,
+    title: "Notice",
+    content:
+      "FABRIC services will be affected due to planned power outage at RENCI from 12:01 AM to 2:00 AM ET on Friday, April 29th.",
+    endTimeUTC: "2022-04-29 06:00:00",
+    link: "https://learn.fabric-testbed.net/forums/topic/fabric-services-will-be-affected-due-to-power-outage12am-2am-on-april-29th/",
+  },
 ];
 
 export function getActiveNotices() {
