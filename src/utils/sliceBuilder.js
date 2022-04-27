@@ -314,7 +314,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "label": "connects",
       "Class": "connects",
       "id": new_link_id_starts,
-      "source": cp.id,
+      "source": parseInt(cp.id),
       "target": new_ns_id + i + 1,
     }
 
