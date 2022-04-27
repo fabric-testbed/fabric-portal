@@ -182,7 +182,7 @@ class SideNodes extends React.Component {
                 >
                   {
                     this.imageRef.map(ref => 
-                      <option value={ref} key={`ref`}>{ref}</option>
+                      <option value={ref} key={ref}>{ref}</option>
                     )
                   }
                 </select>

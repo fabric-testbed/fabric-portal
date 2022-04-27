@@ -127,28 +127,15 @@ export default function parseSlice(slice, sliceType) {
       data = {
         parent: getSiteIdbyName(node.Site),
         id: node.id,
-        // label: `${node.id}.ns`,
         label: "Network Service",
         type: "roundrectangle",
         properties: { class: "Network Service", type: "NetworkService" }
     }
     elements.push(data);
-    } else if (node.Class === "NetworkService" && node.Type === "L2STS") {
-      // Create NetworkService with type "L2STS", site to site, no parent
+    } else if (node.Class === "NetworkService") {
       data = {
         id: node.id,
-        // label: `${node.id}.L2STS`,
-        label: "L2STS",
-        type: "roundrectangle",
-        properties: { class: "Network Service", type: "NetworkService" },
-      };
-      elements.push(data);
-    } else if (node.Class === "NetworkService" && node.Type === "L2PTP") {
-      // Create NetworkService with type "L2P2P", port to port, no parent
-      data = {
-        id: node.id,
-        // label: `${node.id}.L2PTP`,
-        label: "L2PTP",
+        label: node.Type,
         type: "roundrectangle",
         properties: { class: "Network Service", type: "NetworkService" },
       };

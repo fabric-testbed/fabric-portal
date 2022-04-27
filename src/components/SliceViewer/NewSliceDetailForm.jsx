@@ -11,9 +11,12 @@ export default class NewSliceDetailForm extends Component {
   //   this.props.onNodeUpdate(this.props.data.id);
   // }
 
-  handleSelect = (e) => {
-    e.preventDefault();
+  handleSelect = () => {
     this.props.onConnectionPointSelect(this.props.data);
+  }
+
+  handleNodeDelete = () => {
+    this.props.onNodeDelete(this.props.data);
   }
 
   render() {
@@ -47,15 +50,15 @@ export default class NewSliceDetailForm extends Component {
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Core</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.capacities.core} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} />
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Ram</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.capacities.ram} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} />
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Disk</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.capacities.disk} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} />
                 </div>
                 <div className="col-1 pt-4 pb-2 d-flex flex-row">
                   <button
@@ -101,7 +104,7 @@ export default class NewSliceDetailForm extends Component {
                   <button
                     className="btn btn-sm btn-danger ml-auto"
                     type="button"
-                    onClick={this.handleComponentDelete}
+                    onClick={this.handleNodeDelete}
                   >
                     Delete
                   </button>
@@ -123,6 +126,7 @@ export default class NewSliceDetailForm extends Component {
                 <div className="col-2 pt-4 pb-2 d-flex flex-row">
                   <button
                     className="btn btn-sm btn-success ml-auto"
+                    type="button"
                     onClick={this.handleSelect}
                   >
                     Select
@@ -134,13 +138,22 @@ export default class NewSliceDetailForm extends Component {
             {
               data && data.properties && data.properties.class === "NetworkService" &&
               <div className="form-row px-3">
-                <div className="col-6 mb-2">
+                <div className="col-5 mb-2">
                   <label className="slice-builder-label">Network Service Name</label>
                   <input type="text" className="form-control form-control-sm" defaultValue={ data.properties.name} disabled/>
                 </div>
-                <div className="col-6 mb-2">
+                <div className="col-5 mb-2">
                   <label className="slice-builder-label">Type</label>
                   <input type="text" className="form-control form-control-sm" defaultValue={data.properties.type} disabled/>
+                </div>
+                <div className="col-2 pt-4 pb-2 d-flex flex-row">
+                  <button
+                    className="btn btn-sm btn-danger ml-auto"
+                    type="button"
+                    onClick={this.handleNodeDelete}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             }
