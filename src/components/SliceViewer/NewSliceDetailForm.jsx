@@ -22,8 +22,13 @@ export default class NewSliceDetailForm extends Component {
   render() {
     const data = this.props.data;
     console.log(data)
+    let componentKey = "";
+    if (data && data.properties) {
+      componentKey = `${data.properties.id}-${data.properties.name}`
+    }
+
     return (
-      <div className="new-slice-detail-form">
+      <div className="new-slice-detail-form" key={componentKey}>
         <form>
             {
               (!data || !data.properties) && (
@@ -140,7 +145,7 @@ export default class NewSliceDetailForm extends Component {
               <div className="form-row px-3">
                 <div className="col-5 mb-2">
                   <label className="slice-builder-label">Network Service Name</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={ data.properties.name} disabled/>
+                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} disabled/>
                 </div>
                 <div className="col-5 mb-2">
                   <label className="slice-builder-label">Type</label>

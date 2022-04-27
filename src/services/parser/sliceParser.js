@@ -69,14 +69,22 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
-    properties.model = originalNode.Model;
-    properties.detail = originalNode.Details;
-    data.properties = properties;
-    if (sliceType === "new") {
-      data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
-    } else {
-      data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+
+    if (originalNode.Class === "Component") {
+      properties.model = originalNode.Model;
+      properties.detail = originalNode.Details;
     }
+
+    data.properties = properties;
+
+    if (originalNode.Class !== "NetworkService") {
+      if (sliceType === "new") {
+        data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
+      } else {
+        data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+      }
+    }
+
     // add parent site node if it's network node.
     if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
   }
@@ -127,17 +135,17 @@ export default function parseSlice(slice, sliceType) {
       data = {
         parent: getSiteIdbyName(node.Site),
         id: node.id,
-        label: "Network Service",
+        label: "NetworkService",
         type: "roundrectangle",
-        properties: { class: "Network Service", type: "NetworkService" }
+        properties: { class: "NetworkService", name: node.Name, type: node.Type }
     }
     elements.push(data);
-    } else if (node.Class === "NetworkService") {
+    } else if (node.Class === "NetworkService" && node.Type !== "OVS") {
       data = {
         id: node.id,
         label: node.Type,
         type: "roundrectangle",
-        properties: { class: "Network Service", type: "NetworkService" },
+        properties: { class: "NetworkService", name: node.name, type: node.Type },
       };
       elements.push(data);
     }
@@ -188,7 +196,6 @@ export default function parseSlice(slice, sliceType) {
           data = {
             parent: link.source,
             id: link.target,
-            // label: `${link.target}.sp`,
             label: "",
             type: "roundrectangle",
             properties: { class: "Service Port" },
