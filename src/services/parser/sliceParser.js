@@ -207,7 +207,6 @@ export default function parseSlice(slice, sliceType) {
           data = {
             parent: link.target,
             id: link.source,
-            // label: `${link.target}.sp`,
             label: "",
             type: "roundrectangle",
             properties: { class: "Service Port" },
