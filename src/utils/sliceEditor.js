@@ -1,4 +1,10 @@
 
+const checkIfLastChildNode = (el, updated_nodes, updated_links) => {
+  // if the last VM in site, remove site element
+  // if the last component in VM, remove VM element
+
+}
+
 const removeNode = (el, nodes, links) => {
   const el_id = parseInt(el.id);
   // el: cytoscape element data
@@ -14,7 +20,7 @@ const removeNode = (el, nodes, links) => {
     to_remove_node_ids.push(el_id);
 
     for (const link of links) {
-      if (link.Class === "has" && link.source === el_id) {
+      if (link.Class === "connects" && link.source === el_id) {
         to_remove_node_ids.push(link.target);
         to_remove_link_ids.push(link.id);
         for (const link2 of links) {
@@ -57,12 +63,12 @@ const removeNode = (el, nodes, links) => {
       }
 
       // Potential link to NS CP
-      // Remove the CP - NS CP link, NS CP node, and NS has NS CP link.
+      // Remove the CP - NS CP link, NS CP node, and NS connects NS CP link.
       if (link.Class === "connects" && link.source === el_id + 2) {
         to_remove_link_ids.push(link.id);
         to_remove_node_ids.push(link.target);
         for (const link2 of links) {
-          if (link2.Class === "has" && link2.target === link.target){
+          if (link2.Class === "connects" && link2.target === link.target){
             to_remove_link_ids.push(link2.id);
           }
         }
@@ -102,12 +108,12 @@ const removeNode = (el, nodes, links) => {
       }
 
       // Potential link to NS CP
-      // Remove the CP - NS CP link, NS CP node, and NS has NS CP link.
+      // Remove the CP - NS CP link, NS CP node, and NS connects NS CP link.
       if (link.Class === "connects" && link.source === el_id + 2) {
         to_remove_link_ids.push(link.id);
         to_remove_node_ids.push(link.target);
         for (const link2 of links) {
-          if (link2.Class === "has" && link2.target === link.target){
+          if (link2.Class === "connects" && link2.target === link.target){
             to_remove_link_ids.push(link2.id);
           }
         }
@@ -117,7 +123,7 @@ const removeNode = (el, nodes, links) => {
         to_remove_link_ids.push(link.id);
         to_remove_node_ids.push(link.target);
         for (const link2 of links) {
-          if (link2.Class === "has" && link2.target === link.target){
+          if (link2.Class === "connects" && link2.target === link.target){
             to_remove_link_ids.push(link2.id);
           }
         }

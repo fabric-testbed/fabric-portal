@@ -286,7 +286,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
   // add same number of CPs within the Network Service based on selected CPs.
   // add 2 links for each new CP accordingly 
-  // 1. NS has new CP 
+  // 1. NS connects new CP 
   // 2. selected CP connects new CP
   selectedCPs.forEach((cp, i) => {
     const new_ns_cp = {
@@ -300,9 +300,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "GraphID": graphID
     }
 
-    const ns_has_cp_link = {
-      "label": "has",
-      "Class": "has",
+    const ns_connects_cp_link = {
+      "label": "connects",
+      "Class": "connects",
       "id": new_link_id_starts,
       "source": new_ns_id,
       "target": new_ns_id + i + 1,
@@ -321,7 +321,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     new_link_id_starts += 1;
 
     clonedNodes.push(new_ns_cp);
-    clonedLinks.push(ns_has_cp_link);
+    clonedLinks.push(ns_connects_cp_link);
     clonedLinks.push(cp_connects_cp_link);
   })
 
