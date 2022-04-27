@@ -237,7 +237,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   // L2Bridge NS node has site property while other types don't.
   let network_service_node = {};
   const new_ns_id = nodes.length + 1;
-  let new_link_id_starts = links.length + 1;
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
 
@@ -280,14 +279,15 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
   clonedNodes.push(network_service_node);
 
-  // ######################################################
-  // TODO: Validate if selected CPs aligns with the NS Type
-  // ######################################################
+  // ##############################################################
+  // TODO: Validate if selected CPs aligns with the seleced NS Type
+  // ##############################################################
 
-  // add same number of CPs within the Network Service based on selected CPs.
-  // add 2 links for each new CP accordingly 
-  // 1. NS connects new CP 
-  // 2. selected CP connects new CP
+  // Total: 2 nodes and 3 links to add.
+  // Nodes: new NS CP + new Link node
+  // Links: NS 'connects' new CP + new CP connects new Link node + selected CP 'connects' New Link Node
+  let new_node_id_starts = new_ns_id + 1;
+  let new_link_id_starts = links.length + 1;
   selectedCPs.forEach((cp, i) => {
     const new_ns_cp = {
       "labels": ":ConnectionPoint:GraphNode",
@@ -296,33 +296,49 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Name": `${cp.properties.name}-p${i}`,
       "NodeID": uuidv4(),
       "Capacities": JSON.stringify({"unit": 1,}),
-      "id": new_ns_id + i + 1,
+      "id":  new_node_id_starts,
       "GraphID": graphID
     }
 
-    const ns_connects_cp_link = {
+    const ns_connects_cp = {
       "label": "connects",
       "Class": "connects",
       "id": new_link_id_starts,
       "source": new_ns_id,
-      "target": new_ns_id + i + 1,
+      "target":  new_node_id_starts,
     }
 
-    new_link_id_starts += 1;
+    const new_link_node = {
+      "GraphID": graphID,
+      "Class": "Link",
+      "NodeID": uuidv4(),
+      "Name": `${cp.properties.name}-p${i}-link`,
+      "Type": "Patch",
+      "Layer": "L2",
+      "id":  new_node_id_starts + 1
+    }
 
-    const cp_connects_cp_link = {
+    const ns_cp_connects_new_link = {
       "label": "connects",
       "Class": "connects",
-      "id": new_link_id_starts,
-      "source": parseInt(cp.id),
-      "target": new_ns_id + i + 1,
+      "id": new_link_id_starts + 1,
+      "source":  new_node_id_starts,
+      "target":  new_node_id_starts + 1,
     }
 
-    new_link_id_starts += 1;
+    const cp_connects_cp = {
+      "label": "connects",
+      "Class": "connects",
+      "id": new_link_id_starts + 2,
+      "source": parseInt(cp.id),
+      "target":  new_node_id_starts + 1,
+    }
 
-    clonedNodes.push(new_ns_cp);
-    clonedLinks.push(ns_connects_cp_link);
-    clonedLinks.push(cp_connects_cp_link);
+    new_link_id_starts += 3;
+    new_node_id_starts += 2;
+
+    clonedNodes.push(new_ns_cp, new_link_node);
+    clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, cp_connects_cp);
   })
 
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
