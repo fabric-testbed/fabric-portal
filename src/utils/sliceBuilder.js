@@ -325,7 +325,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     clonedLinks.push(cp_connects_cp_link);
   })
 
-  // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 

@@ -102,7 +102,8 @@ class NewSliceForm extends Form {
 
   handleNodeDelete = (data) => {
     const { sliceNodes, sliceLinks } =  this.state;
-    editor.removeNode(data, sliceNodes, sliceLinks);
+    const { newSliceNodes, newSliceLinks } = editor.removeNode(data, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
   handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
