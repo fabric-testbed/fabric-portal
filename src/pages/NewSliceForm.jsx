@@ -74,6 +74,9 @@ class NewSliceForm extends Form {
     }
 
     localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON));
+
+    // Toast a successly saved message
+    toast.success("The slice draft is successfully saved in your browser.");
   }
 
   handleUseDraft = () => {
