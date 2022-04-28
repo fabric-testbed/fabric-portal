@@ -253,17 +253,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Layer": "L2",
       "GraphID": graphID
     }
-  } else if (type === "FABNetv4" || type === "FABNetv6") {
-    network_service_node = {
-      "labels": ":GraphNode:NetworkService",
-      "Name": name,
-      "Class": "NetworkService",
-      "NodeID": uuidv4(),
-      "id": new_ns_id,
-      "Type": type,
-      "Layer": "L3",
-      "GraphID": graphID
-    }
   } else {
     network_service_node = {
       "labels": ":GraphNode:NetworkService",
@@ -272,7 +261,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "NodeID": uuidv4(),
       "id": new_ns_id,
       "Type": type,
-      "Layer": "L2",
+      "Layer": type === "FABNetv4" || type === "FABNetv6" ? "L3" : "L2",
       "GraphID": graphID
     }
   }
@@ -300,14 +289,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "GraphID": graphID
     }
 
-    const ns_connects_cp = {
-      "label": "connects",
-      "Class": "connects",
-      "id": new_link_id_starts,
-      "source": new_ns_id,
-      "target":  new_node_id_starts,
-    }
-
     const new_link_node = {
       "GraphID": graphID,
       "Class": "Link",
@@ -316,6 +297,14 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": "Patch",
       "Layer": "L2",
       "id":  new_node_id_starts + 1
+    }
+
+    const ns_connects_cp = {
+      "label": "connects",
+      "Class": "connects",
+      "id": new_link_id_starts,
+      "source": new_ns_id,
+      "target":  new_node_id_starts,
     }
 
     const ns_cp_connects_new_link = {
@@ -335,8 +324,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     }
 
     new_link_id_starts += 3;
-    new_node_id_starts += 2;
+    new_node_id_starts += 2;  
 
+    console.log(new_ns_cp, new_link_node, ns_connects_cp, ns_cp_connects_new_link, cp_connects_cp);
     clonedNodes.push(new_ns_cp, new_link_node);
     clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, cp_connects_cp);
   })

@@ -99,8 +99,6 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
-    properties.model = originalNode.Model;
-    properties.detail = originalNode.Details;
     data.properties = properties;
     if (sliceType === "new") { 
       data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
@@ -145,7 +143,7 @@ export default function parseSlice(slice, sliceType) {
         id: node.id,
         label: node.Type,
         type: "roundrectangle",
-        properties: { class: "NetworkService", name: node.name, type: node.Type },
+        properties: { class: "NetworkService", name: node.Name, type: node.Type },
       };
       elements.push(data);
     }
@@ -192,24 +190,24 @@ export default function parseSlice(slice, sliceType) {
         elements.push(data);
       } else if (objNodes[link.source].Class === "NetworkService"
         && (objNodes[link.target].Type === "ServicePort" || objNodes[link.target].Type === "DedicatedPort" ) 
-        && (["L2Bridge", "L2STS", "L2PTP"].includes(objNodes[link.source].Type))){
-          data = {
+        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.source].Type))){
+          const cp_data = {
             parent: link.source,
             id: link.target,
             label: "",
             type: "roundrectangle",
-            properties: { class: "Service Port" },
+            properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
           };
-          elements.push(data);
+          elements.push(cp_data);
         } else if (objNodes[link.target].Class === "NetworkService"
         && (objNodes[link.source].Type === "ServicePort" || objNodes[link.source].Type === "DedicatedPort")
-        && (["L2Bridge", "L2STS", "L2PTP"].includes(objNodes[link.target].Type))){
+        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.target].Type))){
           data = {
             parent: link.target,
             id: link.source,
             label: "",
             type: "roundrectangle",
-            properties: { class: "Service Port" },
+            properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
           };
           elements.push(data);
         } else if (objNodes[link.target].Class === "Link"){
