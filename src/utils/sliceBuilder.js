@@ -9,7 +9,6 @@ const modelDetails = {
   "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
 }
 
-
 const generateID = (data) => {
   // data: "nodes" or "links"
   // find largest id of current nodes/links, then + 1
@@ -37,7 +36,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     "Details": modelDetails[component.model],
     "id": component_node_id,
     "NodeID": uuidv4(),
-    "GraphID": graphID
+    "GraphID": graphID,
   }
 
   const link = {
@@ -48,7 +47,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     "target": component_node_id,
   }
 
-  nodes_to_add.push(component_node);
   links_to_add.push(link);
 
   // SharedNIC has 1 connection points
@@ -67,7 +65,11 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "id": component_node_id + 1,
       "Type": "OVS",
       "Layer": "L2",
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "parentID": component_node_id,
+        "hasLinkIdAsTarget": component_link_id + 1,
+      })
     }
 
     const cp_node =   {
@@ -78,7 +80,11 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "connectFrom": component_node_id + 1,
+        "connectLinkIdAsTarget": component_link_id + 2
+      })
     }
 
     nodes_to_add.push(cp_node);
@@ -103,6 +109,17 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
 
     links_to_add.push(ovs_link);
     links_to_add.push(cp_link);
+
+    const component_relevant_node_ids = [];
+    const component_relevant_link_ids = [];
+    component_relevant_node_ids.push(component_node_id, component_node_id + 1, component_node_id + 2);
+    component_relevant_link_ids.push(component_link_id, component_link_id + 1, component_link_id + 2);
+
+    component_node.layout =  JSON.stringify({
+      "parentID": vm_node_id,
+      "relevantNodeIDs": component_relevant_node_ids,
+      "relevantLinkIDs": component_relevant_link_ids,
+    })
   }
 
   if (component.type === "SmartNIC") {
@@ -117,7 +134,11 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "id": component_node_id + 1,
       "Type": "OVS",
       "Layer": "L2",
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "parentID": component_node_id,
+        "hasLinkIdAsTarget": component_link_id + 1,
+      })
     }
 
     const cp_node_1 =   {
@@ -128,7 +149,11 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "connectFrom": component_node_id + 1,
+        "connectLinkIdAsTarget": component_link_id + 2
+      })
     }
 
     const cp_node_2 =   {
@@ -139,7 +164,11 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
       "NodeID": uuidv4(),
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "connectFrom": component_node_id + 1,
+        "connectLinkIdAsTarget": component_link_id + 3
+      })
     }
 
     nodes_to_add.push(cp_node_1);
@@ -166,7 +195,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     const cp_link_2 = {
       "label": "connects",
       "Class": "connects",
-      "id": component_link_id + 2,
+      "id": component_link_id + 3,
       "source": component_node_id + 1,
       "target": component_node_id + 3,
     }
@@ -174,8 +203,29 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     links_to_add.push(ovs_link);
     links_to_add.push(cp_link_1);
     links_to_add.push(cp_link_2);
+
+    const component_relevant_node_ids = [];
+    const component_relevant_link_ids = [];
+    component_relevant_node_ids.push(component_node_id, component_node_id + 1, component_node_id + 2, component_node_id + 3);
+    component_relevant_link_ids.push(component_link_id, component_link_id + 1, component_link_id + 2, component_link_id + 3);
+
+    component_node.layout =  JSON.stringify({
+      "parentID": vm_node_id,
+      "relevantNodeIDs": component_relevant_node_ids,
+      "relevantLinkIDs": component_relevant_link_ids,
+    })
   }
 
+  if (component.type === "NVME" || component.type === "GPU"){
+    component_node.layout =  JSON.stringify({
+      "parentID": vm_node_id,
+      "relevantNodeIDs": [component_node_id],
+      "relevantLinkIDs": [component_link_id],
+    })
+  }
+
+  nodes_to_add.push(component_node);
+  
   return [nodes_to_add, links_to_add];
 }
 
@@ -195,6 +245,11 @@ const addVM = (node, components, graphID, nodes, links) => {
     "ram": node.capacities.ram,
   }
 
+  const vm_layout = {
+    "childNodeIDs": [],
+    "hasLinkIdAsSource": [],
+  }
+
   const vm_node = {
     "labels": ":GraphNode:NetworkNode",
     "Class": "NetworkNode",
@@ -208,8 +263,6 @@ const addVM = (node, components, graphID, nodes, links) => {
     "GraphID": graphID
   }
 
-  clonedNodes.push(vm_node);
-
   let component_node_id = nodes.length + 2;
   let component_link_id = links.length + 1;
 
@@ -222,9 +275,16 @@ const addVM = (node, components, graphID, nodes, links) => {
       clonedLinks.push(link);
     }
 
+    vm_layout.childNodeIDs.push(component_node_id);
+    vm_layout.hasLinkIdAsSource.push(component_link_id);
+
     component_node_id += nodes.length;
     component_link_id += links.length;
   }
+
+  vm_node.layout = JSON.stringify(vm_layout);
+
+  clonedNodes.push(vm_node);
 
   // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
@@ -240,6 +300,11 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
 
+  const ns_layout = {
+    connectLinkIdAsSource: [],
+    connectTo: [],
+  };
+
   if (type === "L2Bridge") {
     const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'))
     network_service_node = {
@@ -251,7 +316,10 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "id": new_ns_id,
       "Type": type,
       "Layer": "L2",
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "parentID": selectedCPs[0].id,
+      })
     }
   } else {
     network_service_node = {
@@ -261,12 +329,10 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "NodeID": uuidv4(),
       "id": new_ns_id,
       "Type": type,
-      "Layer": type === "FABNetv4" || type === "FABNetv6" ? "L3" : "L2",
+      "Layer": (type === "FABNetv4" || type === "FABNetv6") ? "L3" : "L2",
       "GraphID": graphID
     }
   }
-
-  clonedNodes.push(network_service_node);
 
   // ##############################################################
   // TODO: Validate if selected CPs aligns with the seleced NS Type
@@ -286,8 +352,16 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "NodeID": uuidv4(),
       "Capacities": JSON.stringify({"unit": 1,}),
       "id":  new_node_id_starts,
-      "GraphID": graphID
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "connectFrom": new_ns_id,
+        "connectTo": new_node_id_starts + 1,
+        "connectLinkIdAsTarget": new_link_id_starts,
+        "connectLinkIdAsSource": new_link_id_starts + 1,
+      })
     }
+
+    ns_layout.connectTo.push(new_node_id_starts);
 
     const new_link_node = {
       "GraphID": graphID,
@@ -296,7 +370,11 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Name": `${cp.properties.name}-p${i}-link`,
       "Type": "Patch",
       "Layer": "L2",
-      "id":  new_node_id_starts + 1
+      "id":  new_node_id_starts + 1,
+      "layout": JSON.stringify({
+        "connectFrom": [new_node_id_starts, parseInt(cp.id)],
+        "connectLinkIdAsTarget": [new_link_id_starts + 1, new_link_id_starts + 2],
+      })
     }
 
     const ns_connects_cp = {
@@ -307,6 +385,8 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "target":  new_node_id_starts,
     }
 
+    ns_layout.connectLinkIdAsSource.push(new_link_id_starts);
+
     const ns_cp_connects_new_link = {
       "label": "connects",
       "Class": "connects",
@@ -315,7 +395,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "target":  new_node_id_starts + 1,
     }
 
-    const cp_connects_cp = {
+    const nic_cp_connects_new_link = {
       "label": "connects",
       "Class": "connects",
       "id": new_link_id_starts + 2,
@@ -326,10 +406,13 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     new_link_id_starts += 3;
     new_node_id_starts += 2;  
 
-    console.log(new_ns_cp, new_link_node, ns_connects_cp, ns_cp_connects_new_link, cp_connects_cp);
     clonedNodes.push(new_ns_cp, new_link_node);
-    clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, cp_connects_cp);
+    clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, nic_cp_connects_new_link);
   })
+
+  network_service_node.layout = JSON.stringify(ns_layout);
+
+  clonedNodes.push(network_service_node);
 
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
