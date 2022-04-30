@@ -61,6 +61,7 @@ class NewSliceForm extends Form {
     let elements = sliceParser(sliceJSON, "new");
     console.log("sliceJSON");
     console.log(sliceJSON);
+    console.log(JSON.stringify(sliceJSON));
     return elements;
   }
 

@@ -2,149 +2,88 @@
 const checkIfLastChildNode = (el, updated_nodes, updated_links) => {
   // if the last VM in site, remove site element
   // if the last component in VM, remove VM element
+  for (const node of updated_nodes) {
 
+  }
 }
 
-const removeNode = (el, nodes, links) => {
-  const el_id = parseInt(el.id);
-  // el: cytoscape element data
-  let updated_nodes = [];
-  let updated_links = [];
-
+const removeNetworkService = (el_id, links) => {
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
 
-  if(el.properties.class === "NetworkService") {
-    // remove the NS node + its child CP nodes + the "has" link between
-    // remove the "connect" links between its CP nodes and NIC nodes
-    to_remove_node_ids.push(el_id);
+  // remove 3 nodes and 3 links in total.
+  // remove the NS node + its child CP nodes + the "has" link between
+  // remove the "connect" links among CP - LINK - NIC CP
+  to_remove_node_ids.push(el_id);
 
-    for (const link of links) {
-      if (link.Class === "connects" && link.source === el_id) {
-        to_remove_node_ids.push(link.target);
-        to_remove_link_ids.push(link.id);
-        for (const link2 of links) {
-          if (link2.Class === "connects" && 
-              (link2.source === link.target
-                || link2.target === link.target)
-             ) {
+  // TODO: reduce complexity
+  for (const link of links) {
+    if (link.Class === "connects" && link.source === el_id) {
+      to_remove_node_ids.push(link.target);
+      // NS connects CP
+      to_remove_link_ids.push(link.id);
+      for (const link2 of links) {
+        if (link2.Class === "connects" && link2.source === link.target){
+            to_remove_node_ids.push(link2.target);
+            // NS CP connects Link
             to_remove_link_ids.push(link2.id);
+            for (const link3 of links) {
+              if (link3.Class === "connects" && link3.target === link2.target 
+              && link3.source !== link.target) {
+                // NIC CP connects Link
+                to_remove_link_ids.push(link3.id);
+              }
             }
           }
         }
       }
     }
+    return {nodes: to_remove_node_ids, links: to_remove_link_ids};
+}
 
-  if(el.properties.type === "SharedNIC") {
-    // removes VM has SharedNIC
-    // removes SharedNIC node + its child OVS node + the 'has' link between
-    // remove OVS's 1 child node + the 'connects' link between
-    // remove any NS CP and connect link
+const removeVM = (el_id, nodes) => {
+  let to_remove_node_ids = [];
+  let to_remove_link_ids = [];
 
-    // TODO: Check if this way is compatible with slices not generated in portal slice builder
+  const el_node = nodes.filter(node => node.id === el_id)[0];
 
-    // Remove SharedNIC -> OVS -> CP, 3 nodes
-    // id: SharedNIC
-    // id + 1: CP
-    // id + 2: OVS
-    to_remove_node_ids.push(el_id, el_id + 1, el_id + 2);
+  to_remove_node_ids.push(el_id);
 
-    // Remove NIC has OVS + OVS connects CP, 2 links
-    for (const link of links) {
-      // removes VM has SharedNIC and SharedNIC has OVS
-      if (link.Class === "has" &&
-      (link.target === el_id || link.source === el_id)) {
-        to_remove_link_ids.push(link.id);
-      } 
+  for (const child_id of JSON.parse(el_node.layout).childNodeIDs){
+    const child_node = nodes.filter(node => node.id === child_id)[0];
 
-      // OVS connects CP
-      if (link.Class === "connects" && link.source === el_id + 1) {
-        to_remove_link_ids.push(link.id);
-      }
-
-      // Potential link to NS CP
-      // Remove the CP - NS CP link, NS CP node, and NS connects NS CP link.
-      if (link.Class === "connects" && link.source === el_id + 2) {
-        to_remove_link_ids.push(link.id);
-        to_remove_node_ids.push(link.target);
-        for (const link2 of links) {
-          if (link2.Class === "connects" && link2.target === link.target){
-            to_remove_link_ids.push(link2.id);
-          }
-        }
-      }
+    for (const id of JSON.parse(child_node.layout)["relevantNodeIDs"]) {
+      to_remove_node_ids.push(id);
     }
+
+    for (const id of JSON.parse(child_node.layout)["relevantLinkIDs"]) {
+      to_remove_link_ids.push(id);
+    } 
   }
 
-  if (el.properties.type === "SmartNIC") {
-    // removes VM has SmartNIC
-    // removes SmartNIC node + its child OVS node + the 'has' link between
-    // remove OVS's 2 child nodes + the 'connects' links between
-    
-    // TODO: Check if this way is compatible with slices not generated in portal slice builder
+  return {nodes: to_remove_node_ids, links: to_remove_link_ids};
+}
 
-    // Remove SharedNIC -> OVS -> 2 CPs, 4 nodes
-    // id: sharedNIC
-    // id + 1: OVS
-    // id + 2: CP1
-    // id + 3: CP2
-    to_remove_node_ids.push(el_id, el_id + 1, el_id + 2, el_id + 3);
+const removeNode = (el, nodes, links) => {
+  // el: cytoscape element data
+  const el_node = nodes.filter(node => node.id === parseInt(el.id))[0];
 
-    // Remove NIC has OVS + OVS connects 2 CPs, 3 links
-    for (const link of links) {
-      // removes VM has SharedNIC
-      if (link.Class === "has" &&
-        (link.target === el_id || link.source === el_id)) {
-          to_remove_link_ids.push(link.id);
-      }
+  let to_remove_node_ids = [];
+  let to_remove_link_ids = [];
 
-      // OVS connects CP
-      if (link.Class === "connects" && link.source === el_id + 1) {
-        to_remove_link_ids.push(link.id);
-      }
+  let updated_nodes = [];
+  let updated_links = [];
 
-      if (link.Class === "connects" && link.source === el_id + 2) {
-        to_remove_link_ids.push(link.id);
-      }
-
-      // Potential link to NS CP
-      // Remove the CP - NS CP link, NS CP node, and NS connects NS CP link.
-      if (link.Class === "connects" && link.source === el_id + 2) {
-        to_remove_link_ids.push(link.id);
-        to_remove_node_ids.push(link.target);
-        for (const link2 of links) {
-          if (link2.Class === "connects" && link2.target === link.target){
-            to_remove_link_ids.push(link2.id);
-          }
-        }
-      }
-
-      if (link.Class === "connects" && link.source === el_id + 3) {
-        to_remove_link_ids.push(link.id);
-        to_remove_node_ids.push(link.target);
-        for (const link2 of links) {
-          if (link2.Class === "connects" && link2.target === link.target){
-            to_remove_link_ids.push(link2.id);
-          }
-        }
-      }
-    }
+  if (el.properties.class === "Component") {
+    to_remove_node_ids = JSON.parse(el_node.layout)["relevantNodeIDs"];
+    to_remove_link_ids = JSON.parse(el_node.layout)["relevantLinkIDs"];
+  } else if (el.properties.class === "NetworkService") {
+    alert("remove network service");
+  } else if (el.properties.type === "VM") {
+    const to_remove = removeVM(parseInt(el.id), nodes);
+    to_remove_node_ids = to_remove.nodes;
+    to_remove_link_ids = to_remove.links;
   }
-
-  if (el.properties.type === "GPU" || el.properties.type === "NVME") {
-    // remove the GPU or NVME node
-    // remove VM has GPU/ NVME link
-    to_remove_node_ids.push(el_id);
-
-    for (const link of links) {
-      if (link.Class === "has" && link.target === el_id) {
-        to_remove_link_ids.push(link.id);
-      }
-    }
-  }
-
-  console.log(to_remove_node_ids)
-  console.log(to_remove_link_ids)
 
   for (const node of nodes) {
     if (!to_remove_node_ids.includes(parseInt(node.id))){
