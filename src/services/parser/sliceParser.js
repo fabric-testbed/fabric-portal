@@ -29,7 +29,7 @@ export default function parseSlice(slice, sliceType) {
   nodes.forEach(node => {
     if (node.Class === "NetworkNode" && !sitesName.includes(node.Site)) {
       sitesName.push(node.Site);
-      sites.push({ id: node.id + 999999, name: node.Site });
+      sites.push({ id: node.id + 9999999999999, name: node.Site });
     }
   })
   
