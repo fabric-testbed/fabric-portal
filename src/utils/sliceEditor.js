@@ -153,8 +153,23 @@ const removeNode = (el, nodes, links) => {
   return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
 }
 
+const updateVM = (data, nodes) => {
+  // data: vm_id, new_name and new_capacities
+  const updated_nodes = [];
+  for (const node of nodes) {
+    if (parseInt(data.vm_id) === parseInt(node.id)) {
+      node.Name = data.new_name;
+      node.Capacities = data.new_capacities;
+    } 
+    updated_nodes.push(node);
+  }
+
+  return updated_nodes;
+}
+
 const editor = {
   removeNode,
+  updateVM
 }
 
 export default editor;

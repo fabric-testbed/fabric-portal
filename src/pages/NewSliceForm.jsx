@@ -137,6 +137,13 @@ class NewSliceForm extends Form {
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks, selectedCPs: [] });
   }
 
+  handleVMUpdate = (data) => {
+    // data: vm_id, new_name and new_capacities
+    const updated_nodes = editor.updateVM(data, this.state.sliceNodes);
+    this.setState({ sliceNodes: updated_nodes });
+    toast.success("VM updated successfully.")
+  }
+
   doSubmit = async () => {
     try {
       await createSlice(this.state.data);
@@ -198,6 +205,7 @@ class NewSliceForm extends Form {
               data={selectedData}
               onConnectionPointSelect={this.handleCPAdd}
               onNodeDelete={this.handleNodeDelete}
+              onVMUpdate={this.handleVMUpdate}
             />
             <Graph
               className="align-self-end"

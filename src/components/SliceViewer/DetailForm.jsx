@@ -1,16 +1,6 @@
 import React, { Component } from 'react'
 
-export default class DetailForm extends Component {  
-  // handleDelete = (e) => {
-  //   e.preventDefault();
-  //   this.props.onNodeDelete(this.props.data.id);
-  // }
-
-  // handleSave = (e) => {
-  //   e.preventDefault();
-  //   this.props.onNodeUpdate(this.props.data.id);
-  // }
-
+export default class DetailForm extends Component {
   render() {
     const data = this.props.data;
     const properties = [
