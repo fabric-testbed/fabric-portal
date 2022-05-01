@@ -15,8 +15,9 @@ const generateID = (data) => {
   if (data.length === 0) {
     return 1;
   } else {
-    const ids = data.map(obj => obj.id);
-    return Math.max(...ids);
+    const ids = data.map(obj => parseInt(obj.id));
+    const new_id = Math.max(...ids) + 1;
+    return new_id;
   }
 }
 
@@ -236,7 +237,8 @@ const addVM = (node, components, graphID, nodes, links) => {
   // 3. add 'has' link between vm and component
   // 4. if componnet is NIC, add NIC (has) OVS (has) Connection Points.
   // SmartNIC has 2 ports and SharedNIC has 1 port.
-  const vm_node_id = nodes.length + 1;
+  // const vm_node_id = generateID(nodes);
+  const vm_node_id = generateID(nodes);
 
   const capacitiesObj = {
     "core": node.capacities.core,
@@ -262,8 +264,8 @@ const addVM = (node, components, graphID, nodes, links) => {
     "GraphID": graphID
   }
 
-  let component_node_id = nodes.length + 2;
-  let component_link_id = links.length + 1;
+  let component_node_id = vm_node_id + 1;
+  let component_link_id = generateID(links);
 
   for(const component of components) {
     const [nodes, links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
@@ -277,8 +279,8 @@ const addVM = (node, components, graphID, nodes, links) => {
     vm_layout.childNodeIDs.push(component_node_id);
     vm_layout.hasLinkIdAsSource.push(component_link_id);
 
-    component_node_id += nodes.length;
-    component_link_id += links.length;
+    component_node_id += vm_node_id - 1;
+    component_link_id += component_link_id - 1;
   }
 
   vm_node.layout = JSON.stringify(vm_layout);
@@ -295,7 +297,7 @@ const addVM = (node, components, graphID, nodes, links) => {
 const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   // L2Bridge NS node has site property while other types don't.
   let network_service_node = {};
-  const new_ns_id = nodes.length + 1;
+  const new_ns_id = generateID(nodes);
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
 
@@ -341,7 +343,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   // Nodes: new NS CP + new Link node
   // Links: NS 'connects' new CP + new CP connects new Link node + selected CP 'connects' New Link Node
   let new_node_id_starts = new_ns_id + 1;
-  let new_link_id_starts = links.length + 1;
+  let new_link_id_starts = generateID(links);
   selectedCPs.forEach((cp, i) => {
     // Relevant to each ServicePort: 3 links and 2 nodes 
     const relevantLinkIDs = [];

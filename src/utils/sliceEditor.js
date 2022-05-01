@@ -129,6 +129,9 @@ const removeNode = (el, nodes, links) => {
     const to_remove = removeVM(parseInt(el.id), nodes);
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
+    console.log("----------------");
+    console.log(to_remove_node_ids);
+    console.log(to_remove_link_ids);
   }
 
   for (const node of nodes) {
@@ -142,6 +145,10 @@ const removeNode = (el, nodes, links) => {
       updated_links.push(link);
     }
   }
+
+  console.log("%%%%%%%%%");
+  console.log(updated_nodes);
+  console.log(updated_links);
 
   return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
 }
