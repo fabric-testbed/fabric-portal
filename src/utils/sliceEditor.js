@@ -7,38 +7,28 @@ const checkIfLastChildNode = (el, updated_nodes, updated_links) => {
   }
 }
 
-const removeNetworkService = (el_id, links) => {
+const removeNetworkService = (el_id, nodes, links) => {
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
 
-  // remove 3 nodes and 3 links in total.
-  // remove the NS node + its child CP nodes + the "has" link between
-  // remove the "connect" links among CP - LINK - NIC CP
+  // remove the NS node + its child CP nodes + the "connects" link between 
+  // remove all CPs
   to_remove_node_ids.push(el_id);
 
-  // TODO: reduce complexity
   for (const link of links) {
     if (link.Class === "connects" && link.source === el_id) {
-      to_remove_node_ids.push(link.target);
-      // NS connects CP
-      to_remove_link_ids.push(link.id);
-      for (const link2 of links) {
-        if (link2.Class === "connects" && link2.source === link.target){
-            to_remove_node_ids.push(link2.target);
-            // NS CP connects Link
-            to_remove_link_ids.push(link2.id);
-            for (const link3 of links) {
-              if (link3.Class === "connects" && link3.target === link2.target 
-              && link3.source !== link.target) {
-                // NIC CP connects Link
-                to_remove_link_ids.push(link3.id);
-              }
-            }
-          }
-        }
+      // NIC CP id: link.target
+      const cp_node = nodes.filter(node => node.id === link.target)[0];
+      for (const id of JSON.parse(cp_node.layout)["relevantNodeIDs"]) {
+        to_remove_node_ids.push(id);
+      }
+      for (const id of JSON.parse(cp_node.layout)["relevantLinkIDs"]) {
+        to_remove_link_ids.push(id);
       }
     }
-    return {nodes: to_remove_node_ids, links: to_remove_link_ids};
+  }
+
+  return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
 const removeVM = (el_id, nodes) => {
@@ -74,11 +64,67 @@ const removeNode = (el, nodes, links) => {
   let updated_nodes = [];
   let updated_links = [];
 
-  if (el.properties.class === "Component") {
+  if (el.properties.type === "SharedNIC") {
+    to_remove_node_ids = JSON.parse(el_node.layout)["relevantNodeIDs"];
+    to_remove_link_ids = JSON.parse(el_node.layout)["relevantLinkIDs"];
+    // check if NIC CP is connected with any Link node -> NS CP
+    // find the NS CP node and its relevant nodes/ links
+    const nic_cp_id = to_remove_node_ids[2];
+    for (const link of links) {
+      if (link.Class === "connects" && link.source === nic_cp_id) {
+        // Link node id: link.source
+        // Link node's "connectFrom"[0] is NS CP
+        const ns_cp_id = JSON.parse(nodes.filter(node => node.id === link.target)[0].layout)["connectFrom"][0];
+        const ns_cp_node = nodes.filter(node => node.id === ns_cp_id)[0];
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantNodeIDs"]) {
+          to_remove_node_ids.push(id);
+        }
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantLinkIDs"]) {
+          to_remove_link_ids.push(id);
+        }
+      }
+    }
+  } else if (el.properties.type === "SmartNIC") {
+    to_remove_node_ids = JSON.parse(el_node.layout)["relevantNodeIDs"];
+    to_remove_link_ids = JSON.parse(el_node.layout)["relevantLinkIDs"];
+    // check if NIC CP is connected with any Link node -> NS CP
+    // find the NS CP node and its relevant nodes/ links
+    const nic_cp_id_1 = to_remove_node_ids[2];
+    const nic_cp_id_2 = to_remove_node_ids[3];
+    for (const link of links) {
+      if (link.Class === "connects" && link.source === nic_cp_id_1) {
+        // Link node id: link.source
+        // Link node's "connectFrom"[0] is NS CP
+        const ns_cp_id = JSON.parse(nodes.filter(node => node.id === link.target)[0].layout)["connectFrom"][0];
+        const ns_cp_node = nodes.filter(node => node.id === ns_cp_id)[0];
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantNodeIDs"]) {
+          to_remove_node_ids.push(id);
+        }
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantLinkIDs"]) {
+          to_remove_link_ids.push(id);
+        }
+      }
+
+      if (link.Class === "connects" && link.source === nic_cp_id_2) {
+        // Link node id: link.source
+        // Link node's "connectFrom"[0] is NS CP
+        const ns_cp_id = JSON.parse(nodes.filter(node => node.id === link.target)[0].layout)["connectFrom"][0];
+        const ns_cp_node = nodes.filter(node => node.id === ns_cp_id)[0];
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantNodeIDs"]) {
+          to_remove_node_ids.push(id);
+        }
+        for (const id of JSON.parse(ns_cp_node.layout)["relevantLinkIDs"]) {
+          to_remove_link_ids.push(id);
+        }
+      }
+    }
+  } else if (el.properties.class === "Component" || el.properties.type === "ServicePort") {
     to_remove_node_ids = JSON.parse(el_node.layout)["relevantNodeIDs"];
     to_remove_link_ids = JSON.parse(el_node.layout)["relevantLinkIDs"];
   } else if (el.properties.class === "NetworkService") {
-    alert("remove network service");
+    const to_remove = removeNetworkService(parseInt(el.id), nodes, links);
+    to_remove_node_ids = to_remove.nodes;
+    to_remove_link_ids = to_remove.links;
   } else if (el.properties.type === "VM") {
     const to_remove = removeVM(parseInt(el.id), nodes);
     to_remove_node_ids = to_remove.nodes;
