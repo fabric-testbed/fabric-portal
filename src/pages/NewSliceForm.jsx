@@ -210,6 +210,7 @@ class NewSliceForm extends Form {
             <Graph
               className="align-self-end"
               elements={this.generateGraphElements()}
+              layout={{name: 'fcose'}}
               sliceName={"new-slice"}
               defaultSize={{"width": 0.5, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
