@@ -1,15 +1,35 @@
 import React, { Component } from 'react'
 
-export default class NewSliceDetailForm extends Component {  
-  // handleDelete = (e) => {
-  //   e.preventDefault();
-  //   this.props.onNodeDelete(this.props.data.id);
-  // }
+export default class NewSliceDetailForm extends Component {
+  state = {
+    nodeName: "",
+    core: 0,
+    ram: 0,
+    disk: 0,
+  }
 
-  // handleSave = (e) => {
-  //   e.preventDefault();
-  //   this.props.onNodeUpdate(this.props.data.id);
-  // }
+  handleNameChange = (e) => {
+    this.setState({ nodeName: e.target.value });
+  }
+
+  handleCoreChange = (e) => {
+    this.setState({ core: e.target.value });
+  }
+
+  handleRamChange = (e) => {
+    this.setState({ ram: e.target.value });
+  }
+
+  handleDiskChange = (e) => {
+    this.setState({ disk: e.target.value });
+  }
+
+  handleVMUpdate = (e) => {
+    e.preventDefault();
+    const { nodeName, core, ram, disk } = this.state;
+    const capacities = JSON.stringify({"core": core, "ram": ram, "disk": disk});
+    this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: nodeName, new_capacities: capacities });
+  }
 
   handleSelect = () => {
     this.props.onConnectionPointSelect(this.props.data);
@@ -51,25 +71,25 @@ export default class NewSliceDetailForm extends Component {
               <div className="form-row px-3">
                 <div className="col-4 mb-2">
                   <label className="slice-builder-label">VM Name</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Core</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} onChange={this.handleCoreChange}/>
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Ram</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} onChange={this.handleRamChange}/>
                 </div>
                 <div className="col-2 mb-2">
                   <label className="slice-builder-label">Disk</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} />
+                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} onChange={this.handleDiskChange}/>
                 </div>
                 <div className="col-1 pt-4 pb-2 d-flex flex-row">
                   <button
                     className="btn btn-sm btn-success ml-auto"
                     type="button"
-                    onClick={this.handleNodeUpdate}
+                    onClick={this.handleVMUpdate}
                     >
                       Update
                   </button>

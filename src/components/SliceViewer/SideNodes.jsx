@@ -58,7 +58,15 @@ class SideNodes extends React.Component {
   }
 
   handleSiteChange = (e) => {
-    this.setState({ selectedSite: e.target.value });
+    if (e.target.value === "Choose...") {
+      this.setState({ selectedSite: "" });
+    } else if (e.target.value === "Random") {
+      const sites = this.props.resources.parsedSites;
+      const random_site = sites[Math.floor(Math.random() * sites.length)].name;
+      this.setState({selectedSite: random_site});
+    } else {
+      this.setState({ selectedSite: e.target.value });
+    }
   }
 
   handleNodeTypeChange = (e) => {
@@ -118,7 +126,8 @@ class SideNodes extends React.Component {
                   onChange={this.handleSiteChange}
                   defaultValue={""}
                 >
-                  <option>Choose...</option>
+                  <option value="Choose...">Choose...</option>
+                  <option value="Random">Random</option>
                   {
                     this.props.resources.parsedSites.map(site => 
                       <option value={site.name} key={`site${site.id}`}>{site.name}</option>
