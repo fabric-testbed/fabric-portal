@@ -139,6 +139,16 @@ export default class NewSliceDetailForm extends Component {
                       Select
                     </button>
                   }
+                   {
+                    data.properties.type === "ServicePort" && 
+                    <button
+                      className="btn btn-sm btn-danger ml-auto"
+                      type="button"
+                      onClick={this.handleNodeDelete}
+                    >
+                      Delete
+                    </button>
+                  }
                 </div>
               </div>
             }

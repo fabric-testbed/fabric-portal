@@ -90,7 +90,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     nodes_to_add.push(cp_node);
     nodes_to_add.push(ovs_node);
 
-    // NIC has OVS
     const ovs_link = {
       "label": "has",
       "Class": "has",
@@ -344,6 +343,13 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   let new_node_id_starts = new_ns_id + 1;
   let new_link_id_starts = links.length + 1;
   selectedCPs.forEach((cp, i) => {
+    // Relevant to each ServicePort: 3 links and 2 nodes 
+    const relevantLinkIDs = [];
+    const relevantNodeIDs = [];
+
+    relevantNodeIDs.push(new_node_id_starts, new_node_id_starts + 1);
+    relevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
+
     const new_ns_cp = {
       "labels": ":ConnectionPoint:GraphNode",
       "Class": "ConnectionPoint",
@@ -355,9 +361,8 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "GraphID": graphID,
       "layout": JSON.stringify({
         "connectFrom": new_ns_id,
-        "connectTo": new_node_id_starts + 1,
-        "connectLinkIdAsTarget": new_link_id_starts,
-        "connectLinkIdAsSource": new_link_id_starts + 1,
+        "relevantNodeIDs": relevantNodeIDs,
+        "relevantLinkIDs": relevantLinkIDs,
       })
     }
 
@@ -404,7 +409,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     }
 
     new_link_id_starts += 3;
-    new_node_id_starts += 2;  
+    new_node_id_starts += 2;
 
     clonedNodes.push(new_ns_cp, new_link_node);
     clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, nic_cp_connects_new_link);
