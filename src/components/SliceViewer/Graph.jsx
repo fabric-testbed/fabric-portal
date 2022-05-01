@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Cytoscape from 'cytoscape';
-// import edgehandles from 'cytoscape-edgehandles';
 import FCose from 'cytoscape-fcose';
-// import compoundDragAndDrop from 'cytoscape-compound-drag-and-drop';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
@@ -16,14 +14,24 @@ import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
-
+import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 Cytoscape.use(FCose);
-// Cytoscape.use(compoundDragAndDrop);
-// Cytoscape.use(edgehandles);
 
-function setCytoscape(cy){
+function handleCy(cy) {
+  const SELECT_THRESHOLD = 100;
+
+  // Refresh Layout
+  const refreshLayout = _.debounce(() => {
+    const layout = {name: 'fcose'};
+    cy.layout(layout).run()
+  }, SELECT_THRESHOLD);
+
+  cy.on('add remove', () => {
+    refreshLayout();
+  });
+
   return cy;
 }
 
@@ -69,12 +77,8 @@ export default class Graph extends Component {
     saveAs( png64, `${this.props.sliceName}.png` );
   }
 
-  saveChanges = () =>{
-    alert("Successfully saved!")
-  }
-
   render() {
-    const layout = {name: 'fcose'};
+    const { elements, defaultSize } = this.props;
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -84,7 +88,7 @@ export default class Graph extends Component {
 
     return(
       // <div className="border" key={`graph-key-${this.props.elements.length}`}>
-        <div className="border">
+      <div className="border"> 
         <div className="d-flex flex-row-reverse">
             <OverlayTrigger
               placement="top"
@@ -98,12 +102,12 @@ export default class Graph extends Component {
           <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
         </div>
         <CytoscapeComponent
-          elements={this.props.elements}
-          layout={layout}
-          zoom={this.props.defaultSize.zoom}
+          elements={elements}
+          // layout={layout}
+          zoom={defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
-          cy={(cy) => {this.cy = setCytoscape(cy)}}
+          cy={(cy) => {this.cy = handleCy(cy)}}
           stylesheet={[
             {
               "selector": "node",
