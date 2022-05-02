@@ -145,7 +145,6 @@ class NewSliceForm extends Form {
   }
 
   handleSingleComponentAdd = (data) => {
-    console.log("########")
     const vm_id = parseInt(this.state.selectedData.id);
     const vm_node = this.state.sliceNodes.filter(node => node.id === vm_id)[0];
 
@@ -154,8 +153,6 @@ class NewSliceForm extends Form {
       "site": vm_node.Site,
       "name": vm_node.Name,
     };
-
-    console.log(vm_node)
 
     // data example: {type: 'SmartNIC', name: 'nic1', model: 'ConnectX-6'}
     // Add component data to the selected VM.

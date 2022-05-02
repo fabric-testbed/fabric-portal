@@ -87,7 +87,6 @@ export default class Graph extends Component {
     );
 
     return(
-      // <div className="border" key={`graph-key-${this.props.elements.length}`}>
       <div className="border"> 
         <div className="d-flex flex-row-reverse">
             <OverlayTrigger
@@ -103,7 +102,6 @@ export default class Graph extends Component {
         </div>
         <CytoscapeComponent
           elements={elements}
-          // layout={layout}
           zoom={defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
