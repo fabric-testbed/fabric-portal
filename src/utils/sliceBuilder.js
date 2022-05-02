@@ -159,7 +159,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     const cp_node_2 =   {
       "labels": ":ConnectionPoint:GraphNode",
       "Class": "ConnectionPoint",
-      "Type": "SharedPort",
+      "Type": "DedicatedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p2`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
@@ -307,7 +307,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   };
 
   if (type === "L2Bridge") {
-    const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'))
+    const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'));
     network_service_node = {
       "labels": ":GraphNode:NetworkService",
       "Name": name,

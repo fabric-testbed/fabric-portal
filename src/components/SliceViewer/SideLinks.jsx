@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 import Link from "../../imgs/SliceComponentIcons/Link.png";
 import _ from "lodash";
 import ServiceTypeTable from './ServiceTypeTable';
+import validator from  "../../utils/sliceValidator";
 
 export default class SideLinks extends Component { 
   state = {
-    images: [
-      {
-        id: 1,
-        name: "Link",
-        component: Link,
-      }, 
-    ],
     intro: {
       "L2Bridge":{
         "numberOfInterfaces": "Any",
@@ -64,6 +58,8 @@ export default class SideLinks extends Component {
 
   render() {
     const { intro, linkType, linkName } = this.state;
+    const validResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs);
+
     return(
       <div>
         {
@@ -124,21 +120,23 @@ export default class SideLinks extends Component {
             </div>
            </div>
         </form>
-        <div className="my-2 d-flex flex-row">
-        {
-          this.state.images.map((img, index) => {
-            return (
-              <div className="d-flex flex-column text-center mr-2" key={`graph-components-${index}`}>
-                <button
-                  className="btn btn-sm btn-success mb-2"
-                  onClick={()=> this.handleAddLink()}
-                >
-                  Add Service
-                </button>
-              </div>
-            )
-          })
+        {!validResult.isValid && this.props.selectedCPs.length !== 0 &&
+          <div className="my-2">
+            <div className="alert alert-danger" role="alert">
+              <i className="fa fa-exclamation-triangle" /> {validResult.message}
+            </div>
+          </div>
         }
+        <div className="my-2 d-flex flex-row">
+          <div className="d-flex flex-column text-center mr-2">
+            <button
+              className="btn btn-sm btn-success mb-2"
+              disabled={!validResult.isValid}
+              onClick={()=> this.handleAddLink()}
+            >
+              Add Service
+            </button>
+          </div>
         </div>
       </div>
     )
