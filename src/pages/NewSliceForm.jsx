@@ -144,6 +144,38 @@ class NewSliceForm extends Form {
     toast.success("VM updated successfully.")
   }
 
+  handleSingleComponentAdd = (data) => {
+    console.log("########")
+    const vm_id = parseInt(this.state.selectedData.id);
+    const vm_node = this.state.sliceNodes.filter(node => node.id === vm_id)[0];
+
+    const node = {
+      "type": vm_node.Type,
+      "site": vm_node.Site,
+      "name": vm_node.Name,
+    };
+
+    console.log(vm_node)
+
+    // data example: {type: 'SmartNIC', name: 'nic1', model: 'ConnectX-6'}
+    // Add component data to the selected VM.
+    const component_node_id = builder.generateID(this.state.sliceNodes);
+    const component_link_id = builder.generateID(this.state.sliceLinks)
+    const [nodes, links] = builder.addComponent(node, data, this.state.graphID, parseInt(this.state.selectedData.id), component_node_id, component_link_id);
+
+    const clonedNodes = _.clone(this.state.sliceNodes);
+    const clonedLinks = _.clone(this.state.sliceLinks);
+
+    for (const node of nodes) {
+      clonedNodes.push(node);
+    }
+    for (const link of links) {
+      clonedLinks.push(link);
+    }
+
+    this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
+  }
+
   doSubmit = async () => {
     try {
       await createSlice(this.state.data);
@@ -206,6 +238,7 @@ class NewSliceForm extends Form {
               onConnectionPointSelect={this.handleCPAdd}
               onNodeDelete={this.handleNodeDelete}
               onVMUpdate={this.handleVMUpdate}
+              onSingleComponentAdd={this.handleSingleComponentAdd}
             />
             <Graph
               className="align-self-end"
