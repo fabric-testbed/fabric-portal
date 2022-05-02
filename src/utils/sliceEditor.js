@@ -1,4 +1,16 @@
 
+const generateID = (data) => {
+  // data: "nodes" or "links"
+  // find largest id of current nodes/links, then + 1
+  if (data.length === 0) {
+    return 1;
+  } else {
+    const ids = data.map(obj => parseInt(obj.id));
+    const new_id = Math.max(...ids) + 1;
+    return new_id;
+  }
+}
+
 const removeNetworkService = (el_id, nodes, links) => {
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
@@ -153,7 +165,7 @@ const removeNode = (el, nodes, links) => {
       updated_nodes.push(node);
     }
   }
-  
+
   return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
 }
 
@@ -173,7 +185,7 @@ const updateVM = (data, nodes) => {
 
 const editor = {
   removeNode,
-  updateVM
+  updateVM,
 }
 
 export default editor;

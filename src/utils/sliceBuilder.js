@@ -425,8 +425,10 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 }
 
 const builder = {
+  generateID,
   addVM,
   addLink,
+  addComponent,
 }
 
 export default builder;

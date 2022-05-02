@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import SingleComponent from './SingleComponent';
 
 export default class NewSliceDetailForm extends Component {
   state = {
@@ -6,6 +7,7 @@ export default class NewSliceDetailForm extends Component {
     core: 0,
     ram: 0,
     disk: 0,
+    showVMComponent: false,
   }
 
   handleNameChange = (e) => {
@@ -24,12 +26,21 @@ export default class NewSliceDetailForm extends Component {
     this.setState({ disk: e.target.value });
   }
 
+  handleShowVMComponent = () => {
+    const showOrNot = this.state.showVMComponent;
+    this.setState({ showVMComponent: !showOrNot });
+  }
+
   handleVMUpdate = (e) => {
     e.preventDefault();
     const { nodeName, core, ram, disk } = this.state;
     const capacities = JSON.stringify({"core": core, "ram": ram, "disk": disk});
     this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: nodeName, new_capacities: capacities });
   }
+
+  // handleSingleComponentAdd = () => {
+
+  // }
 
   handleSelect = () => {
     this.props.onConnectionPointSelect(this.props.data);
@@ -67,42 +78,62 @@ export default class NewSliceDetailForm extends Component {
             }
             
             {
-              data && data.properties && data.properties.type === "VM" &&
-              <div className="form-row px-3">
-                <div className="col-4 mb-2">
-                  <label className="slice-builder-label">VM Name</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
-                </div>
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Core</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} onChange={this.handleCoreChange}/>
-                </div>
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Ram</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} onChange={this.handleRamChange}/>
-                </div>
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Disk</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} onChange={this.handleDiskChange}/>
-                </div>
-                <div className="col-1 pt-4 pb-2 d-flex flex-row">
-                  <button
-                    className="btn btn-sm btn-success ml-auto"
-                    type="button"
-                    onClick={this.handleVMUpdate}
+              data && data.properties && data.properties.type === "VM" && <div>
+                <div className="form-row px-3">
+                  <div className="col-3 mb-2">
+                    <label className="slice-builder-label">VM Name</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
+                  </div>
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Core</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} onChange={this.handleCoreChange}/>
+                  </div>
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Ram</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} onChange={this.handleRamChange}/>
+                  </div>
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Disk</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} onChange={this.handleDiskChange}/>
+                  </div>
+                  <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                    <button
+                      className="btn btn-sm btn-success w-100"
+                      type="button"
+                      onClick={this.handleVMUpdate}
+                      >
+                        Update
+                    </button>
+                  </div>
+                  <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                    <button
+                      className="btn btn-sm btn-danger w-100"
+                      type="button"
+                      onClick={this.handleNodeDelete}
                     >
-                      Update
-                  </button>
+                      Delete
+                    </button>
+                  </div>
+                  <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                    <button
+                      className="btn btn-sm btn-primary w-100"
+                      type="button"
+                      onClick={this.handleShowVMComponent}
+                      >
+                        {this.state.showVMComponent ? <i className="fa fa-chevron-up"></i> : <i className="fa fa-chevron-down"></i>}
+                    </button>
+                  </div>
                 </div>
-                <div className="col-1 pt-4 pb-2 d-flex flex-row">
-                  <button
-                    className="btn btn-sm btn-danger ml-auto"
-                    type="button"
-                    onClick={this.handleNodeDelete}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {
+                  this.state.showVMComponent &&
+                  <div className="form-row px-3">
+                     <div className="col-12">
+                      <SingleComponent
+                        onSliceComponentAdd={this.props.onSingleComponentAdd}
+                      />
+                     </div>
+                  </div>
+                }
               </div>
             }
 
