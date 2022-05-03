@@ -110,107 +110,109 @@ class Tokens extends React.Component {
           </div>
         }
         {
-          !this.state.showSpinner && <div>
-   <h1 className="mb-4">Create Token</h1>
-        { this.state.projects.length === 0 &&
-            <div className="alert alert-warning mt-4" role="alert">
-              <p className="mt-2">To create tokens, you have to be in a project first:</p>
-              <p>
-                <ul>
-                  <li>
-                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
-                    please <Link to="/user">request to be FABIRC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
-                  </li>
-                  <li>
-                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
-                    please ask your project lead to add you to a project.
-                  </li>
-                </ul>
-              </p>
-            </div>
-        }
-        {
-          this.state.projects.length > 0 &&
-          <Form>
-            <Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Select Project</Form.Label>
-                  <Form.Control as="select" onChange={this.handleSelectCreateProject}>
-                    {
-                      this.state.projects.map(project => {
-                        return (
-                          <option value={project.uuid}>{project.name}</option>
-                        )
-                      })
-                    }
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Select Scope</Form.Label>
-                  <Form.Control as="select" onChange={this.handleSelectCreateScope}>
-                    { 
-                      this.state.scopeOptions.map(option => {
-                        return (
-                          <option
-                            id={`createTokenScope${option.id}`}
-                            value={option.value}
-                          >
-                            {option.display}
-                          </option>
-                        )
-                      })
-                    }
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-              <Col xs={2} className="d-flex flex-row align-items-center justify-content-end">
-                <Button
-                  className="btn-success mt-3 w-75"
-                  onClick={this.createToken}
-                  disabled={this.state.selectedProjectId === ""}
-                >
-                  Create
-                </Button>
-              </Col>
-            </Row>
-            {
-              this.state.createSuccess && 
-              <div>
-                <Alert variant="success">
-                  <i className="fa fa-check-circle"></i> Tokens are successfully generated! Click the <b>Download</b> button 
-                  to save id token and refresh token. 
-                </Alert>
-                <Alert variant="warning">
-                  <i className="fa fa-exclamation-triangle"></i> The portal will log out automatically. Please log in again after the download.
-                </Alert>
-                <Button
-                  onClick={e => this.downloadToken(e, "create")}
-                  variant="primary"
-                  size="md"
-                >
-                  Download
-                </Button>
-                <Card style={{display: "none"}}>
-                  <Card.Body>
-                    <Form.Group>
-                      <Form.Control
-                        ref={(textarea) => this.textArea = textarea}
-                        as="textarea"
-                        id="createTokenTextArea"
-                        defaultValue={this.state.createToken}
-                        rows={6}
-                      />
-                    </Form.Group>
-                  </Card.Body>
-                </Card>
-              </div>
+          !this.state.showSpinner &&
+          <div>
+            <h1 className="mb-4">Create Token</h1>
+            { this.state.projects.length === 0 &&
+                <div className="alert alert-warning mt-4" role="alert">
+                  <p className="mt-2">To create tokens, you have to be in a project first:</p>
+                  <p>
+                    <ul>
+                      <li>
+                        If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
+                        please <Link to="/user">request to be FABIRC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
+                      </li>
+                      <li>
+                        If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                        please ask your project lead to add you to a project.
+                      </li>
+                    </ul>
+                  </p>
+                </div>
             }
-          </Form>
-        }
-        </div>
+            {
+              this.state.projects.length > 0 &&
+              <Form>
+                <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Select Project</Form.Label>
+                      <Form.Control as="select" onChange={this.handleSelectCreateProject}>
+                        <option value="">Choose...</option>
+                        {
+                          this.state.projects.map(project => {
+                            return (
+                              <option value={project.uuid}>{project.name}</option>
+                            )
+                          })
+                        }
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Select Scope</Form.Label>
+                      <Form.Control as="select" onChange={this.handleSelectCreateScope}>
+                        { 
+                          this.state.scopeOptions.map(option => {
+                            return (
+                              <option
+                                id={`createTokenScope${option.id}`}
+                                value={option.value}
+                              >
+                                {option.display}
+                              </option>
+                            )
+                          })
+                        }
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col xs={2} className="d-flex flex-row align-items-center justify-content-end">
+                    <Button
+                      className="btn-success mt-3 w-75"
+                      onClick={this.createToken}
+                      disabled={this.state.selectedProjectId === ""}
+                    >
+                      Create
+                    </Button>
+                  </Col>
+                </Row>
+                {
+                  this.state.createSuccess && 
+                  <div>
+                    <Alert variant="success">
+                      <i className="fa fa-check-circle"></i> Tokens are successfully generated! Click the <b>Download</b> button 
+                      to save id token and refresh token. 
+                    </Alert>
+                    <Alert variant="warning">
+                      <i className="fa fa-exclamation-triangle"></i> The portal will log out automatically. Please log in again after the download.
+                    </Alert>
+                    <Button
+                      onClick={e => this.downloadToken(e, "create")}
+                      variant="primary"
+                      size="md"
+                    >
+                      Download
+                    </Button>
+                    <Card style={{display: "none"}}>
+                      <Card.Body>
+                        <Form.Group>
+                          <Form.Control
+                            ref={(textarea) => this.textArea = textarea}
+                            as="textarea"
+                            id="createTokenTextArea"
+                            defaultValue={this.state.createToken}
+                            rows={6}
+                          />
+                        </Form.Group>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                }
+              </Form>
+            }
+          </div>
         }
       </div>
     )
