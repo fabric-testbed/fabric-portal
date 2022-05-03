@@ -7,11 +7,11 @@ export function createIdToken(projectId, scope) {
   return http.post(apiEndpoint + "/create?projectId=" + encodeURI(projectId) + "&scope=" + scope);
 }
 
-export function refreshToken(project, scope, refresh_token) {
+export function refreshToken(projectId, scope, refresh_token) {
   const data = {
     "refresh_token": refresh_token
   }
-  return http.post(apiEndpoint + "/refresh?projectName=" + encodeURI(project) + "&scope=" + scope, data);
+  return http.post(apiEndpoint + "/refresh?projectId=" + projectId + "&scope=" + scope, data);
 }
 
 export function revokeToken(refresh_token) {

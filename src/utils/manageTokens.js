@@ -25,10 +25,10 @@ export const autoCreateTokens = async (projectId) => {
   }
 }
 
-export const autoRefreshTokens = async () => {
+export const autoRefreshTokens = async (projectId) => {
   const oldRefreshToken = localStorage.getItem("refreshToken");
   try {
-    const { data } = await refreshToken("all", "all", oldRefreshToken);
+    const { data } = await refreshToken(projectId, "all", oldRefreshToken);
     localStorage.setItem("idToken", data.id_token);
     localStorage.setItem("refreshToken", data.refresh_token);
   } catch (err) {

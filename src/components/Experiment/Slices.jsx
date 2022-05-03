@@ -61,7 +61,7 @@ class Slices extends React.Component {
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens();
+              autoRefreshTokens(people.projects[0].uuid);
             }
           }
         }

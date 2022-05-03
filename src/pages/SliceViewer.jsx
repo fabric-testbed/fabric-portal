@@ -4,7 +4,7 @@ import DetailForm from '../components/SliceViewer/DetailForm';
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getCurrentUser } from "../services/prPeopleService.js";
 import { getSliceById } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import toLocaleTime from "../utils/toLocaleTime";
@@ -53,7 +53,7 @@ export default class SliceViewer extends Component {
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens();
+              autoRefreshTokens(people.projects[0].uuid);
             }
           }
         }
