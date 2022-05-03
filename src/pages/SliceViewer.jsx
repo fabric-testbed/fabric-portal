@@ -64,7 +64,6 @@ export default class SliceViewer extends Component {
     }
   }
 
-
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
   }

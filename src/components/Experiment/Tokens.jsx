@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import { createIdToken } from "../../services/credentialManagerService.js";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { toast } from "react-toastify";
@@ -24,12 +25,16 @@ class Tokens extends React.Component {
     ],
     selectedCreateScope: "all",
     selectedProjectId: "",
+    showSpinner: false,
   }
 
   async componentDidMount(){
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+
     try {
       const { data: user } = await getCurrentUser();
-      this.setState({ projects: user.projects });
+      this.setState({ projects: user.projects, showSpinner: false });
     } catch (ex) {
       toast.error("Failed to load user's project information. Please reload this page.");
       console.log("Failed to load user information: " + ex.response.data);
@@ -90,7 +95,23 @@ class Tokens extends React.Component {
   render() {
     return (
       <div className="col-9">
-        <h1 className="mb-4">Create Token</h1>
+        {
+          this.state.showSpinner &&
+          <div className="d-flex flex-row justify-content-center mt-5">
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              variant="primary"
+            />
+            <span className="text-primary ml-2"><b>Loading projects to create token...</b></span>
+          </div>
+        }
+        {
+          !this.state.showSpinner && <div>
+   <h1 className="mb-4">Create Token</h1>
         { this.state.projects.length === 0 &&
             <div className="alert alert-warning mt-4" role="alert">
               <p className="mt-2">To create tokens, you have to be in a project first:</p>
@@ -155,7 +176,8 @@ class Tokens extends React.Component {
                 </Button>
               </Col>
             </Row>
-            { this.state.createSuccess && (
+            {
+              this.state.createSuccess && 
               <div>
                 <Alert variant="success">
                   <i className="fa fa-check-circle"></i> Tokens are successfully generated! Click the <b>Download</b> button 
@@ -185,8 +207,10 @@ class Tokens extends React.Component {
                   </Card.Body>
                 </Card>
               </div>
-            )}
+            }
           </Form>
+        }
+        </div>
         }
       </div>
     )
