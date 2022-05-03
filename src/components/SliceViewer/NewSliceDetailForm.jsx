@@ -38,9 +38,28 @@ export default class NewSliceDetailForm extends Component {
     this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: nodeName, new_capacities: capacities });
   }
 
-  // handleSingleComponentAdd = () => {
+  isCPAvailable = () => {
+    const cp_id = parseInt(this.props.data.id);
+    // check if there is the CP is a 'connects' source.
+    for (const link of this.props.links) {
+      if (link.source === cp_id) {
+        return false;
+      }
+    }
 
-  // }
+    // check if the CP is already selected.
+    if (this.props.selectedCPs.length === 0) {
+      return true;
+    }
+
+    for (const cp of this.props.selectedCPs) {
+      if (cp_id === parseInt(cp.id)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   handleSelect = () => {
     this.props.onConnectionPointSelect(this.props.data);
@@ -181,7 +200,7 @@ export default class NewSliceDetailForm extends Component {
                 </div>
                 <div className="col-2 pt-4 pb-2 d-flex flex-row">
                   {
-                    data.properties.type !== "ServicePort" && 
+                    data.properties.type !== "ServicePort" && this.isCPAvailable() &&
                     <button
                       className="btn btn-sm btn-success ml-auto"
                       type="button"

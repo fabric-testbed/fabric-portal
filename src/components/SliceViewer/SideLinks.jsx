@@ -58,7 +58,7 @@ export default class SideLinks extends Component {
 
   render() {
     const { intro, linkType, linkName } = this.state;
-    const validResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs);
+    const validResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs, this.state.linkName, this.props.nodes);
 
     return(
       <div>

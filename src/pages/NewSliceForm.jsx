@@ -232,6 +232,8 @@ class NewSliceForm extends Form {
           <div className="d-flex flex-column">
             <NewSliceDetailForm
               data={selectedData}
+              selectedCPs={selectedCPs}
+              links={sliceLinks}
               onConnectionPointSelect={this.handleCPAdd}
               onNodeDelete={this.handleNodeDelete}
               onVMUpdate={this.handleVMUpdate}
