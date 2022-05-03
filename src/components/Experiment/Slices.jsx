@@ -46,7 +46,7 @@ class Slices extends React.Component {
       // call credential manager to generate tokens 
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens().then(async () => {
+        autoCreateTokens(people.projects[0].uuid).then(async () => {
         const { data } = await getSlices();
         this.setState({ slices: data["value"]["slices"], showSpinner: false });
       });

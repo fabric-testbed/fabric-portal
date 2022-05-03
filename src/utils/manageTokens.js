@@ -11,11 +11,11 @@ const autoRevokeTokens = async () => {
   }
 }
 
-export const autoCreateTokens = async () => {
+export const autoCreateTokens = async (projectId) => {
   try {
     // call credential manager to generate tokens.
     // parameters: project and scope, "all" for both by default.
-    const { data } = await createIdToken("all", "all");
+    const { data } = await createIdToken(projectId, "all");
     localStorage.setItem("idToken", data.id_token);
     localStorage.setItem("refreshToken", data.refresh_token);
     return data;
