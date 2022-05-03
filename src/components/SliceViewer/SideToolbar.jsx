@@ -26,9 +26,10 @@ const SideToolbar = (props) => {
       <div>
         <div className="card-body">
          <SideLinks
-           onLinkAdd={props.onLinkAdd}
-           selectedCPs={props.selectedCPs}
-           onCPRemove={props.onCPRemove}
+          selectedCPs={props.selectedCPs}
+          nodes={props.nodes}
+          onLinkAdd={props.onLinkAdd}
+          onCPRemove={props.onCPRemove}
          />
         </div>
       </div>

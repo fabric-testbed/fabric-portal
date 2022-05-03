@@ -2,21 +2,34 @@ const getSite = (cp) => {
   return cp.properties.name.substr(0, cp.properties.name.indexOf('-'));
 }
 
-const validateNetworkService = (serviceType, selectedCPs) => {
+const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) => {
   const validResult = {
     isValid: false,
-    message: null,
+    message: "Please choose a service type.",
   };
 
-  console.log("&&&&&&&&&&&")
-  console.log(serviceType)
-  console.log(selectedCPs)
+  if (serviceName === "") {
+    validResult.isValid = false;
+    validResult.message = "Please enter the service name.";
+    return validResult;
+  } else {
+    // check if service name is unique
+    const ns_nodes = nodes.filter(node => node.Class === "NetworkService" && node.Type !== "OVS");
+    if (ns_nodes.length > 0) {
+      for (const ns of ns_nodes) {
+        if (serviceName === ns.Name) {
+          validResult.isValid = false;
+          validResult.message = "Please enter a unique service name.";
+          return validResult;
+        }
+      }
+    } 
+  }
 
   if (!serviceType || selectedCPs.length === 0) {
     return validResult;
   }
 
-  // TODO: add specific error messages.
   if (serviceType === "L2Bridge") {
     // expect all selected CP's site are the same.
     const site = getSite(selectedCPs[0]);
