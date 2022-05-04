@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Link from "../../imgs/SliceComponentIcons/Link.png";
-import _ from "lodash";
 import ServiceTypeTable from './ServiceTypeTable';
 import validator from  "../../utils/sliceValidator";
 
@@ -122,7 +120,7 @@ export default class SideLinks extends Component {
         </form>
         {!validResult.isValid && this.props.selectedCPs.length !== 0 &&
           <div className="my-2">
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-warning" role="alert">
               <i className="fa fa-exclamation-triangle" /> {validResult.message}
             </div>
           </div>

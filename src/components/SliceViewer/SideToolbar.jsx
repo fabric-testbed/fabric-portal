@@ -13,7 +13,11 @@ const SideToolbar = (props) => {
       </div>
       <div>
         <div className="card-body">
-          <SideNodes onNodeAdd={ props.onNodeAdd } resources={props.resources} />
+          <SideNodes
+            nodes={props.nodes}
+            resources={props.resources}
+            onNodeAdd={ props.onNodeAdd } 
+          />
         </div>
       </div>
     </div>

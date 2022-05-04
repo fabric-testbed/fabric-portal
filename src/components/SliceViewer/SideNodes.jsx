@@ -2,6 +2,7 @@ import React from 'react';
 import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import _ from "lodash";
+import validator from  "../../utils/sliceValidator";
 
 class SideNodes extends React.Component {
   state = {
@@ -58,8 +59,8 @@ class SideNodes extends React.Component {
   }
 
   handleSiteChange = (e) => {
-    if (e.target.value === "Choose...") {
-      this.setState({ selectedSite: "" });
+    if (e.target.value === "") {
+      this.setState({ selectedSite: ""});
     } else if (e.target.value === "Random") {
       const sites = this.props.resources.parsedSites;
       const random_site = sites[Math.floor(Math.random() * sites.length)].name;
@@ -78,15 +79,15 @@ class SideNodes extends React.Component {
   }
 
   handleCoreChange = (e) => {
-    this.setState({ core: e.target.value });
+    this.setState({ core: parseInt(e.target.value) });
   }
 
   handleRamChange = (e) => {
-    this.setState({ ram: e.target.value });
+    this.setState({ ram: parseInt(e.target.value) });
   }
 
   handleDiskChange = (e) => {
-    this.setState({ disk: e.target.value });
+    this.setState({ disk: parseInt(e.target.value) });
   }
 
   handleImageRefChange = (e) => {
@@ -102,7 +103,9 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { selectedSite, nodeName, imageType, selectedImageRef } = this.state;
+    const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
+    const validResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
+
     return(
       <div>
         {this.props.resources !== null &&
@@ -126,7 +129,7 @@ class SideNodes extends React.Component {
                   onChange={this.handleSiteChange}
                   defaultValue={""}
                 >
-                  <option value="Choose...">Choose...</option>
+                  <option value="">Choose...</option>
                   <option value="Random">Random</option>
                   {
                     this.props.resources.parsedSites.map(site => 
@@ -140,6 +143,7 @@ class SideNodes extends React.Component {
                 <select
                   className="form-control form-control-sm"
                   id="nodeTypeSelect"
+                  disabled
                   onChange={this.handleNodeTypeChange}
                   defaultValue=""
                 >
@@ -212,11 +216,19 @@ class SideNodes extends React.Component {
               }
             </div>
           </form>
+          {!validResult.isValid && validResult.message !== "" &&
+            <div className="my-2">
+              <div className="alert alert-warning" role="alert">
+                <i className="fa fa-exclamation-triangle" /> {validResult.message}
+              </div>
+            </div>
+          }
           <div className="my-2 d-flex flex-row">
             <button
               className="btn btn-sm btn-success mb-2"
               type="button"
               onClick={() => this.handleAddNode()}
+              disabled={!validResult.isValid}
             >
               Add Node with Components
             </button>
