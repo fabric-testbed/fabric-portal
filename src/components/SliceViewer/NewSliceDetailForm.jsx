@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ThemeConsumer } from 'styled-components';
 import SingleComponent from './SingleComponent';
 
 export default class NewSliceDetailForm extends Component {
@@ -67,6 +68,37 @@ export default class NewSliceDetailForm extends Component {
 
   handleNodeDelete = () => {
     this.props.onNodeDelete(this.props.data);
+  }
+
+  handleSingleComponentAdd = (data) => {
+    this.props.onSingleComponentAdd(data);
+    this.setState({ showVMComponent: false });
+  }
+
+  getVMComponents = () => {
+    const vm_component_ids = [];
+
+    for (const link of this.props.links) {
+      if (link.Class === "has" && link.source === parseInt(this.props.data.id)) {
+        vm_component_ids.push(link.target);
+      }
+    }
+
+    const vm_components = [];
+
+    if (vm_component_ids && vm_component_ids.length > 0) {
+      for (const compo_id of vm_component_ids) {
+        const node = this.props.nodes.filter(node => node.id === compo_id)[0];
+        const vm_component = {
+          "type": node.Type,
+          "name": node.Name,
+          "model": node.Model
+        };
+        vm_components.push(vm_component);
+      }
+    }
+
+    return vm_components;
   }
 
   render() {
@@ -148,7 +180,8 @@ export default class NewSliceDetailForm extends Component {
                   <div className="form-row px-3">
                      <div className="col-12">
                       <SingleComponent
-                        onSliceComponentAdd={this.props.onSingleComponentAdd}
+                        addedComponents={this.getVMComponents()}
+                        onSliceComponentAdd={this.handleSingleComponentAdd}
                       />
                      </div>
                   </div>

@@ -3,6 +3,7 @@ import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class SideNodes extends React.Component {
   state = {
@@ -104,6 +105,12 @@ class SideNodes extends React.Component {
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
     const validResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
+
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return(
       <div>
@@ -232,7 +239,7 @@ class SideNodes extends React.Component {
             >
               Add Node with Components
             </button>
-            </div>
+          </div>
         </div>
         }
       </div>
