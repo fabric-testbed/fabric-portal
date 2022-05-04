@@ -47,7 +47,7 @@ export default class SideLinks extends Component {
     const { linkType, linkName } = this.state;
     // type: "L2STS"/ "L2PTP"/ "L2Bridge"
     this.props.onLinkAdd(linkType, linkName);
-    this.setState({ linkName: "" });
+    this.setState({ linkType: "", linkName: "" });
   }
 
   raiseRemoveCP = (cp_id) => {
@@ -76,10 +76,10 @@ export default class SideLinks extends Component {
               <select
                 className="form-control form-control-sm"
                 id="componentSelect"
+                value={linkType}
                 onChange={this.handleServiceTypeChange}
-                defaultValue=""
               >
-                <option>Choose...</option>
+                <option value="">Choose...</option>
                 <option value="L2Bridge">L2Bridge</option>
                 <option value="L2PTP">L2PTP</option>
                 <option value="L2STS">L2STS</option>
@@ -119,10 +119,8 @@ export default class SideLinks extends Component {
            </div>
         </form>
         {!validResult.isValid && this.props.selectedCPs.length !== 0 &&
-          <div className="my-2">
-            <div className="alert alert-warning" role="alert">
-              <i className="fa fa-exclamation-triangle" /> {validResult.message}
-            </div>
+          <div className="my-2 sm-alert">
+            <i className="fa fa-exclamation-triangle" /> {validResult.message}
           </div>
         }
         <div className="my-2 d-flex flex-row">

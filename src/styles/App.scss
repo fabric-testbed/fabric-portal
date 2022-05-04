@@ -496,3 +496,15 @@ ul {
 .input-tag__tags {
   font-size: 14px !important;
 }
+
+.sm-alert {
+  font-size: 0.875rem;
+  color: #854522;
+  background-color: #ffe7d9;
+  border-color: #ffddca;
+  position: relative;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}

@@ -31,7 +31,7 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
       for (const vm of vm_nodes) {
         if (nodeName === vm.Name) {
           validResult.isValid = false;
-          validResult.message = "Please enter a unique node name.";
+          validResult.message = "Node name should be unique in the slice.";
           return validResult;
         }
       }
@@ -60,6 +60,48 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   return validResult;
 }
 
+const validateSingleComponent = (type, name, model, addedComponents) => {
+  const validResult = {
+    isValid: false,
+    message: "",
+  };
+
+  if (type === "") {
+    validResult.isValid = false;
+    validResult.message = "Please select a component type.";
+    return validResult;
+  }
+
+  if (name === "") {
+    validResult.isValid = false;
+    validResult.message = "Please enter a component name.";
+    return validResult;
+  } else {
+    // ensure the component name is unique in the scope of its VM node.
+    if (addedComponents.length > 0) {
+      for (const comp of addedComponents) {
+        if (name === comp.name) {
+          validResult.isValid = false;
+          validResult.message = "Component name should be unique in the same node.";
+          return validResult;
+        }
+      }
+     }
+  }
+
+  if (model === "") {
+    validResult.isValid = false;
+    validResult.message = "Please select a component model.";
+    return validResult;
+  }
+
+  // all validation above are passed.
+  validResult.isValid = true;
+  validResult.message = "";
+
+  return validResult;
+}
+
 const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) => {
   const validResult = {
     isValid: false,
@@ -77,7 +119,7 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
       for (const ns of ns_nodes) {
         if (serviceName === ns.Name) {
           validResult.isValid = false;
-          validResult.message = "Please enter a unique service name.";
+          validResult.message = "Service name should be unique in the slice.";
           return validResult;
         }
       }
@@ -155,6 +197,7 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 
 const validator = {
   validateNodeComponents,
+  validateSingleComponent,
   validateNetworkService,
 }
 

@@ -37,7 +37,7 @@ class SideNodes extends React.Component {
     // concatenate image type and ref to be one string
     const image = `${imageRef},${imageType}`;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, image, nodeComponents);
-    this.setState({ nodeName: "", nodeComponents: [] })
+    this.setState({ selectedSite: "", nodeName: "", nodeComponents: [], selectedImageRef: "default_rocky_8" })
   }
 
   handleSliceComponentAdd = (component) => {
@@ -126,8 +126,8 @@ class SideNodes extends React.Component {
                 <select
                   className="form-control form-control-sm"
                   id="siteNameSelect"
+                  value={selectedSite}
                   onChange={this.handleSiteChange}
-                  defaultValue={""}
                 >
                   <option value="">Choose...</option>
                   <option value="Random">Random</option>
@@ -145,7 +145,6 @@ class SideNodes extends React.Component {
                   id="nodeTypeSelect"
                   disabled
                   onChange={this.handleNodeTypeChange}
-                  defaultValue=""
                 >
                   <option value="VM">VM</option>
                   {/* <option value="Server">Server</option> */}
@@ -182,7 +181,7 @@ class SideNodes extends React.Component {
             <div className="form-row">
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputState" className="slice-builder-label">Image Type</label>
-                <select className="form-control form-control-sm"disabled>
+                <select className="form-control form-control-sm" disabled>
                   <option>{imageType}</option>
                 </select>
               </div> 
@@ -190,23 +189,32 @@ class SideNodes extends React.Component {
                 <label htmlFor="inputState" className="slice-builder-label">Image Ref</label>
                 <select
                   className="form-control form-control-sm"
+                  value={selectedImageRef}
                   onChange={this.handleImageRefChange}
-                  defaultValue={selectedImageRef}
                 >
                   {
                     this.imageRef.map(ref => 
-                      <option value={ref} key={ref}>{ref}</option>
+                      <option value={ref} key={`imgRef-${ref}`}>{ref}</option>
                     )
                   }
                 </select>
               </div>
             </div>
+            {!validResult.isValid && validResult.message !== "" &&
+              <div className="my-2 sm-alert">
+                <i className="fa fa-exclamation-triangle" /> {validResult.message}
+              </div>
+            }
             <div className="mt-2 bg-light">
               <SingleComponent
+                addedComponents={nodeComponents}
                 onSliceComponentAdd={this.handleSliceComponentAdd}
               />
               {
-                this.state.nodeComponents.map((component) => 
+                 nodeComponents.length > 0 && <div className="text-sm-size"><b>Added Nodes:</b></div>
+              }
+              {
+                nodeComponents.length > 0 && nodeComponents.map((component) => 
                   <SingleComponent
                     key={component.name}
                     component={component}
@@ -216,13 +224,6 @@ class SideNodes extends React.Component {
               }
             </div>
           </form>
-          {!validResult.isValid && validResult.message !== "" &&
-            <div className="my-2">
-              <div className="alert alert-warning" role="alert">
-                <i className="fa fa-exclamation-triangle" /> {validResult.message}
-              </div>
-            </div>
-          }
           <div className="my-2 d-flex flex-row">
             <button
               className="btn btn-sm btn-success mb-2"

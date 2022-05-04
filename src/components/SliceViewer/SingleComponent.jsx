@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import validator from  "../../utils/sliceValidator";
 
 export default class SingleComponent extends Component { 
   state = {
@@ -24,7 +25,7 @@ export default class SingleComponent extends Component {
     const nodeComponent = {
       "type": this.state.componentType,
       "name": this.state.componentName,
-      "model": this.state.componentModel 
+      "model": this.state.componentModel
     };
 
     this.setState({ componentType: "", componentName: "", componentModel: ""});
@@ -50,6 +51,7 @@ export default class SingleComponent extends Component {
 
   render() {
     const { componentTypeModel, componentType, componentName, componentModel, modelDetails } = this.state;
+    const validResult = validator.validateSingleComponent(componentType, componentName, componentModel, this.props.addedComponents);
 
     return(
       <div>
@@ -62,10 +64,10 @@ export default class SingleComponent extends Component {
                 <select
                   className="form-control form-control-sm"
                   id="componentSelect"
+                  value={componentType}
                   onChange={this.handleComponentTypeChange}
-                  defaultValue={componentType}
                 >
-                  <option>Choose...</option>
+                  <option value="">Choose...</option>
                   <option value="GPU">GPU</option>
                   <option value="SmartNIC">SmartNIC</option>
                   <option value="SharedNIC">SharedNIC</option>
@@ -85,9 +87,9 @@ export default class SingleComponent extends Component {
                 <select
                   className="form-control form-control-sm"
                   id="componentSelect"
-                  onChange={this.handleComponentModelChange}
                   disabled={componentType === ""}
-                  defaultValue={componentModel}
+                  value={componentModel}
+                  onChange={this.handleComponentModelChange}
                 >
                   <option value="">Choose...</option>
                   {
@@ -102,6 +104,7 @@ export default class SingleComponent extends Component {
                 <button
                   className="btn btn-sm btn-outline-success mt-4"
                   type="button"
+                  disabled={!validResult.isValid}
                   onClick={this.handleComponentAdd}
                 >
                   <i className="fa fa-plus"></i>
@@ -115,6 +118,11 @@ export default class SingleComponent extends Component {
                   'Model Details: ' + modelDetails[componentModel]
                 }
               </span>
+            }
+            {!validResult.isValid && validResult.message !== "" &&
+              <div className="my-2 sm-alert">
+                <i className="fa fa-exclamation-triangle" /> {validResult.message}
+              </div>
             }
           </div> 
           : 
