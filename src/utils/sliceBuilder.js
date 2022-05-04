@@ -246,11 +246,6 @@ const addVM = (node, components, graphID, nodes, links) => {
     "ram": node.capacities.ram,
   }
 
-  const vm_layout = {
-    "childNodeIDs": [],
-    "hasLinkIdAsSource": [],
-  }
-
   const vm_node = {
     "labels": ":GraphNode:NetworkNode",
     "Class": "NetworkNode",
@@ -268,22 +263,17 @@ const addVM = (node, components, graphID, nodes, links) => {
   let component_link_id = generateID(links);
 
   for(const component of components) {
-    const [nodes, links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
-    for (const node of nodes) {
+    const [compo_nodes, compo_links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
+    for (const node of compo_nodes) {
       clonedNodes.push(node);
     }
-    for (const link of links) {
+    for (const link of compo_links) {
       clonedLinks.push(link);
     }
 
-    vm_layout.childNodeIDs.push(component_node_id);
-    vm_layout.hasLinkIdAsSource.push(component_link_id);
-
-    component_node_id += vm_node_id - 1;
-    component_link_id += component_link_id - 1;
+    component_node_id += compo_nodes.length;
+    component_link_id += compo_links.length;
   }
-
-  vm_node.layout = JSON.stringify(vm_layout);
 
   clonedNodes.push(vm_node);
 

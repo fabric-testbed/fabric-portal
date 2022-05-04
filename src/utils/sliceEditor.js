@@ -35,15 +35,21 @@ const removeNetworkService = (el_id, nodes, links) => {
   return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
-const removeVM = (el_id, nodes) => {
+const removeVM = (el_id, nodes, links) => {
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
 
-  const el_node = nodes.filter(node => node.id === el_id)[0];
-
   to_remove_node_ids.push(el_id);
 
-  for (const child_id of JSON.parse(el_node.layout).childNodeIDs){
+  const vm_child_ids = [];
+
+  for (const link of links) {
+    if (link.source === el_id && link.Class === "has") {
+      vm_child_ids.push(link.target);
+    }
+  }
+
+  for (const child_id of vm_child_ids){
     const child_node = nodes.filter(node => node.id === child_id)[0];
 
     for (const id of JSON.parse(child_node.layout)["relevantNodeIDs"]) {
@@ -130,7 +136,7 @@ const removeNode = (el, nodes, links) => {
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
   } else if (el.properties.type === "VM") {
-    const to_remove = removeVM(parseInt(el.id), nodes);
+    const to_remove = removeVM(parseInt(el.id), nodes, links);
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
   }
@@ -141,24 +147,25 @@ const removeNode = (el, nodes, links) => {
     }
   }
 
-  // last step: check if the element is last child
-  let parentID = JSON.parse(el_node.layout).parentID;
-  // if the last VM in site, remove site element
-  // if the last component in VM, remove VM element
-  for (const link of updated_links) {
-    if (link.Class === "has" && link.source === parentID) {
-      // parent VM still has other children.
-      for (const node of nodes) {
-        if (!to_remove_node_ids.includes(parseInt(node.id))){
-          updated_nodes.push(node);
+  // last step: if the last component in VM, remove VM element
+  if (el.properties.type !== "VM") {
+    let parentID = JSON.parse(el_node.layout).parentID;
+    for (const link of updated_links) {
+      if (link.Class === "has" && link.source === parentID) {
+        // parent VM still has other children.
+        for (const node of nodes) {
+          if (!to_remove_node_ids.includes(parseInt(node.id))){
+            updated_nodes.push(node);
+          }
         }
+        return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
       }
-      return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
     }
+  
+    // remove the parent VM.
+    to_remove_node_ids.push(parentID);
+  
   }
-
-  // remove the parent VM.
-  to_remove_node_ids.push(parentID);
 
   for (const node of nodes) {
     if (!to_remove_node_ids.includes(parseInt(node.id))){
