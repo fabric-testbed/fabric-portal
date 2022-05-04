@@ -2,6 +2,64 @@ const getSite = (cp) => {
   return cp.properties.name.substr(0, cp.properties.name.indexOf('-'));
 }
 
+const isPositiveInteger = (num) => {
+  return Number.isInteger(num) && num > 0;
+}
+
+const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents) => {
+  const validResult = {
+    isValid: false,
+    message: "",
+  };
+
+  // Site is required.
+  if (selectedSite === "") {
+    validResult.isValid = false;
+    validResult.message = "Please select a site or choose the random option.";
+    return validResult;
+  }
+
+  // Node name must be unique in the graph.
+  if (nodeName === "") {
+    validResult.isValid = false;
+    validResult.message = "Please enter a node name.";
+    return validResult;
+  } else {
+    // check id node name is unique.
+    const vm_nodes = nodes.filter(node => node.Class === "NetworkNode" && node.Type === "VM");
+    if (vm_nodes.length > 0) {
+      for (const vm of vm_nodes) {
+        if (nodeName === vm.Name) {
+          validResult.isValid = false;
+          validResult.message = "Please enter a unique node name.";
+          return validResult;
+        }
+      }
+    } 
+  }
+
+  // core/ ram/ disk must be positive integers
+  // Orchestrator will do the rest check and find the nearest available matching.
+  if (!isPositiveInteger(core) || !isPositiveInteger(ram) || !isPositiveInteger(disk)) {
+    validResult.isValid = false;
+    validResult.message = "Please enter positive integer for core/ ram/ disk.";
+    return validResult;
+  }
+
+  // ensure at least 1 component is added.
+  if (nodeComponents.length === 0) {
+    validResult.isValid = false;
+    validResult.message = "Please add at least 1 component.";
+    return validResult;
+  }
+
+  // all validation above are passed.
+  validResult.isValid = true;
+  validResult.message = "";
+
+  return validResult;
+}
+
 const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) => {
   const validResult = {
     isValid: false,
@@ -10,7 +68,7 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 
   if (serviceName === "") {
     validResult.isValid = false;
-    validResult.message = "Please enter the service name.";
+    validResult.message = "Please enter a service name.";
     return validResult;
   } else {
     // check if service name is unique
@@ -96,6 +154,7 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 }
 
 const validator = {
+  validateNodeComponents,
   validateNetworkService,
 }
 
