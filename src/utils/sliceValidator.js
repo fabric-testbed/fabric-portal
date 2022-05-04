@@ -66,19 +66,26 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
     message: "",
   };
 
-  if (type === "") {
-    validResult.isValid = false;
-    validResult.message = "Please select a component type.";
-    return validResult;
-  }
+  if (addedComponents && addedComponents.length === 0) {
+    if (type === "") {
+      validResult.isValid = false;
+      validResult.message = "Please select a component type.";
+      return validResult;
+    }
+  
+    if (name === "") {
+      validResult.isValid = false;
+      validResult.message = "Please enter a component name.";
+      return validResult;
+    }
 
-  if (name === "") {
-    validResult.isValid = false;
-    validResult.message = "Please enter a component name.";
-    return validResult;
+    if (model === "") {
+      validResult.isValid = false;
+      validResult.message = "Please select a component model.";
+      return validResult;
+    }
   } else {
-    // ensure the component name is unique in the scope of its VM node.
-    if (addedComponents.length > 0) {
+    if (name !== "") {
       for (const comp of addedComponents) {
         if (name === comp.name) {
           validResult.isValid = false;
@@ -86,14 +93,43 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
           return validResult;
         }
       }
-     }
+    } 
+
+    if (type ==="" || name === "" || model === "") {
+      validResult.isValid = false;
+      validResult.message = "";
+      return validResult;
+    }
   }
 
-  if (model === "") {
-    validResult.isValid = false;
-    validResult.message = "Please select a component model.";
-    return validResult;
-  }
+  // if (type === "") {
+  //   validResult.isValid = false;
+  //   validResult.message = "Please select a component type.";
+  //   return validResult;
+  // }
+
+  // if (name === "") {
+  //   validResult.isValid = false;
+  //   validResult.message = "Please enter a component name.";
+  //   return validResult;
+  // } else {
+  //   // ensure the component name is unique in the scope of its VM node.
+  //   if (addedComponents.length > 0) {
+  //     for (const comp of addedComponents) {
+  //       if (name === comp.name) {
+  //         validResult.isValid = false;
+  //         validResult.message = "Component name should be unique in the same node.";
+  //         return validResult;
+  //       }
+  //     }
+  //    }
+  // }
+
+  // if (model === "") {
+  //   validResult.isValid = false;
+  //   validResult.message = "Please select a component model.";
+  //   return validResult;
+  // }
 
   // all validation above are passed.
   validResult.isValid = true;

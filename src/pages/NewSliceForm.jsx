@@ -233,6 +233,7 @@ class NewSliceForm extends Form {
             <NewSliceDetailForm
               data={selectedData}
               selectedCPs={selectedCPs}
+              nodes={sliceNodes}
               links={sliceLinks}
               onConnectionPointSelect={this.handleCPAdd}
               onNodeDelete={this.handleNodeDelete}
