@@ -56,7 +56,7 @@ export default class SideLinks extends Component {
 
   render() {
     const { intro, linkType, linkName } = this.state;
-    const validResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs, this.state.linkName, this.props.nodes);
+    const validationResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs, this.state.linkName, this.props.nodes);
 
     return(
       <div>
@@ -118,16 +118,16 @@ export default class SideLinks extends Component {
             </div>
            </div>
         </form>
-        {!validResult.isValid && this.props.selectedCPs.length !== 0 &&
+        {!validationResult.isValid && this.props.selectedCPs.length !== 0 &&
           <div className="my-2 sm-alert">
-            <i className="fa fa-exclamation-triangle" /> {validResult.message}
+            <i className="fa fa-exclamation-triangle" /> {validationResult.message}
           </div>
         }
         <div className="my-2 d-flex flex-row">
           <div className="d-flex flex-column text-center mr-2">
             <button
               className="btn btn-sm btn-success mb-2"
-              disabled={!validResult.isValid}
+              disabled={!validationResult.isValid}
               onClick={()=> this.handleAddLink()}
             >
               Add Service

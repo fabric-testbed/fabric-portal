@@ -3,7 +3,6 @@ import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class SideNodes extends React.Component {
   state = {
@@ -79,15 +78,15 @@ class SideNodes extends React.Component {
   }
 
   handleCoreChange = (e) => {
-    this.setState({ core: parseInt(e.target.value) });
+    this.setState({ core: Number(e.target.value) });
   }
 
   handleRamChange = (e) => {
-    this.setState({ ram: parseInt(e.target.value) });
+    this.setState({ ram: Number(e.target.value) });
   }
 
   handleDiskChange = (e) => {
-    this.setState({ disk: parseInt(e.target.value) });
+    this.setState({ disk: Number(e.target.value) });
   }
 
   handleImageRefChange = (e) => {
@@ -104,13 +103,7 @@ class SideNodes extends React.Component {
 
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
-    const validResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
-
-    const renderTooltip = (id, content) => (
-      <Tooltip id={id}>
-        {content}
-      </Tooltip>
-    );
+    const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
 
     return(
       <div>
@@ -206,9 +199,9 @@ class SideNodes extends React.Component {
                 </select>
               </div>
             </div>
-            {!validResult.isValid && validResult.message !== "" &&
+            {!validationResult.isValid && validationResult.message !== "" &&
               <div className="my-2 sm-alert">
-                <i className="fa fa-exclamation-triangle" /> {validResult.message}
+                <i className="fa fa-exclamation-triangle" /> {validationResult.message}
               </div>
             }
             <div className="mt-2 bg-light">
@@ -235,7 +228,7 @@ class SideNodes extends React.Component {
               className="btn btn-sm btn-success mb-2"
               type="button"
               onClick={() => this.handleAddNode()}
-              disabled={!validResult.isValid}
+              disabled={!validationResult.isValid}
             >
               Add Node with Components
             </button>
