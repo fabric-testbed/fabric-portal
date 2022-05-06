@@ -210,7 +210,7 @@ class SideNodes extends React.Component {
                 onSliceComponentAdd={this.handleSliceComponentAdd}
               />
               {
-                 nodeComponents.length > 0 && <div className="text-sm-size"><b>Added Nodes:</b></div>
+                 nodeComponents.length > 0 && <div className="text-sm-size"><b>Added Components:</b></div>
               }
               {
                 nodeComponents.length > 0 && nodeComponents.map((component) => 

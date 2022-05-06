@@ -50,7 +50,7 @@ class Header extends React.Component {
   };
 
   handleLogin = () => {
-    if (localStorage.getItem("cookieConsent")) {
+    if (localStorage.getItem("fabricPortalCookieConsent")) {
       // remove old user status stored in browser.
       localStorage.removeItem("userStatus");
       // nginx handle login url.

@@ -59,8 +59,8 @@ export default class SingleComponent extends Component {
           !this.props.component ?
           <div>
             <div className="form-row">
-              <div className="form-group slice-builder-form-group col-md-3">
-                <label htmlFor="inputComponent" className="slice-builder-label">Add Component</label>
+              <div className="form-group slice-builder-form-group col-md-4">
+                <label htmlFor="inputComponent" className="slice-builder-label">Component Type</label>
                 <select
                   className="form-control form-control-sm"
                   id="componentSelect"
@@ -74,8 +74,8 @@ export default class SingleComponent extends Component {
                   <option value="NVME">NVME</option>
                 </select>
               </div>
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputComponentName" className="slice-builder-label">Component Name</label>
+              <div className="form-group slice-builder-form-group col-md-3">
+                <label htmlFor="inputComponentName" className="slice-builder-label">Name</label>
                 <input
                   type="text" className="form-control form-control-sm" id="inputComponentName"
                   value={componentName}
@@ -83,7 +83,7 @@ export default class SingleComponent extends Component {
                 />
               </div>
               <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputComponent" className="slice-builder-label">Component Model</label>
+                <label htmlFor="inputComponent" className="slice-builder-label">Model</label>
                 <select
                   className="form-control form-control-sm"
                   id="componentSelect"
