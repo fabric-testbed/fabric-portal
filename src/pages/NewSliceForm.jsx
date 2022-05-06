@@ -6,12 +6,14 @@ import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
 import { createSlice } from "../services/orchestratorService.js";
-import SideToolbar from '../components/SliceViewer/SideToolbar';
+import SideNodes from '../components/SliceViewer/SideNodes';
+import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
+import Spinner from 'react-bootstrap/Spinner';
 
 class NewSliceForm extends React.Component {
   state = {
@@ -32,14 +34,18 @@ class NewSliceForm extends React.Component {
     selectedData: null,
     parsedResources: null,
     selectedCPs: [],
+    showResourceSpinner: false,
   }
 
   async componentDidMount() {
+    // Show spinner in SideNodes when loading resources
+    this.setState({ showResourceSpinner: true });
+
     try {
       const { resources } = await getResources();
       const parsedObj = sitesParser(resources, this.state.ancronymToName);
       this.setState({ parsedResources: parsedObj });
-
+      this.setState({ showResourceSpinner: false });
       // generate a graph uuid for the new slice
       this.setState({ graphID: uuidv4() });
     } catch (ex) {
@@ -183,7 +189,7 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs } = this.state;
+    const { selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } = this.state;
 
     return (
       <div className="d-flex flex-column align-items-center w-100">
@@ -216,15 +222,56 @@ class NewSliceForm extends React.Component {
         </div>
         <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
           <div className="d-flex flex-column w-40 ml-5">
-            <SideToolbar
-              className="align-self-start"
-              resources={parsedResources}
-              nodes={sliceNodes}
-              selectedCPs={selectedCPs}
-              onNodeAdd={this.handleNodeAdd}
-              onLinkAdd={this.handleLinkAdd}
-              onCPRemove={this.handleCPRemove}
-            />
+            <div className="card">
+              <div className="card-header py-1">
+                <button className="btn btn-link">
+                  Step 1: Add Nodes and Components
+                </button>
+              </div>
+              <div>
+                <div className="card-body">
+                  {
+                    showResourceSpinner && 
+                    <div className="d-flex flex-row justify-content-center my-5">
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        variant="primary"
+                      />
+                      <span className="text-primary ml-2"><b>Loading site information...</b></span>
+                    </div>
+                  }
+                  {
+                    !showResourceSpinner && 
+                    <SideNodes
+                      resources={parsedResources}
+                      nodes={sliceNodes}
+                      onNodeAdd={this.handleNodeAdd}
+                    />
+                  }
+                </div>
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-header py-1">
+                <button className="btn btn-link">
+                  Step 2: Add Network Service
+                </button>
+              </div>
+              <div>
+                <div className="card-body">
+                <SideLinks
+                  nodes={sliceNodes}
+                  selectedCPs={selectedCPs}
+                  onLinkAdd={this.handleLinkAdd}
+                  onCPRemove={this.handleCPRemove}
+                />
+                </div>
+              </div>
+            </div>
             <div className="mt-2">
               <button
                 className="btn btn-sm btn-success mb-2"
