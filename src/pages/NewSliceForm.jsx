@@ -2,10 +2,6 @@ import React from "react";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { sitesNameMapping }  from "../data/sites";
-import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
-import { createSlice } from "../services/orchestratorService.js";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
@@ -14,6 +10,13 @@ import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 import Spinner from 'react-bootstrap/Spinner';
+
+import { sitesNameMapping }  from "../data/sites";
+import sitesParser from "../services/parser/sitesParser";
+import { getResources } from "../services/resourcesService.js";
+import { createSlice } from "../services/orchestratorService.js";
+import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
+import { getCurrentUser } from "../services/prPeopleService.js";
 
 class NewSliceForm extends React.Component {
   state = {
@@ -42,10 +45,9 @@ class NewSliceForm extends React.Component {
     this.setState({ showResourceSpinner: true });
 
     try {
-      const { resources } = await getResources();
-      const parsedObj = sitesParser(resources, this.state.ancronymToName);
-      this.setState({ parsedResources: parsedObj });
-      this.setState({ showResourceSpinner: false });
+      const { data } = await getResources();
+      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      this.setState({ parsedResources: parsedObj, showResourceSpinner: false });
       // generate a graph uuid for the new slice
       this.setState({ graphID: uuidv4() });
     } catch (ex) {
@@ -178,13 +180,39 @@ class NewSliceForm extends React.Component {
   }
 
   handleCreateSlice = async () => {
+    // call PR first to check if the user has project.
     try {
-      await createSlice(this.state.data);
-    }
-    catch (ex) {
-      console.log("failed to create the slice: " + ex.response.data);
-      toast.error("Failed to create the slice");
-      this.props.history.push("/slices");
+      const { data: people } = await getCurrentUser();
+      if (people.projects.length === 0) {
+        this.setState({ hasProject: false, showSpinner: false });
+      } else {
+      // call credential manager to generate tokens 
+      // if nothing found in browser storage
+      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+        autoCreateTokens(people.projects[0].uuid).then(async () => {
+        const { data } = await createSlice(this.state.data);
+        this.setState({ slices: data["value"]["slices"], showSpinner: false });
+      });
+      } else {
+        // the token has been stored in the browser and is ready to be used.
+          try {
+            const { data } = await createSlice(this.state.data);
+            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
+          } catch(err) {
+            console.log("failed to create the slice: " + err.response.data);
+            toast.error("Failed to create the slice");
+            this.props.history.push("/slices");
+            if (err.response.status === 401) {
+              // 401 Error: Provided token is not valid.
+              // refresh the token by calling credential manager refresh_token.
+              autoRefreshTokens(people.projects[0].uuid);
+            }
+          }
+        }
+      }
+    } catch (ex) {
+      toast.error("Failed to load user information. Please reload this page.");
+      console.log("Failed to load user information: " + ex.response.data);
     }
   };
 
