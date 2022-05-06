@@ -4,7 +4,7 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import  { getResources } from "../services/fakeResources.js";
+import { getResources } from "../services/resourcesService.js";
 import { createSlice } from "../services/orchestratorService.js";
 import SideToolbar from '../components/SliceViewer/SideToolbar';
 import Graph from '../components/SliceViewer/Graph';
@@ -34,13 +34,17 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
   }
 
-  componentDidMount() {
-    const resources = getResources();
-    const parsedObj = sitesParser(resources, this.state.ancronymToName);
-    this.setState({ parsedResources: parsedObj });
+  async componentDidMount() {
+    try {
+      const { resources } = await getResources();
+      const parsedObj = sitesParser(resources, this.state.ancronymToName);
+      this.setState({ parsedResources: parsedObj });
 
-    // generate a graph uuid for the new slice
-    this.setState({ graphID: uuidv4() });
+      // generate a graph uuid for the new slice
+      this.setState({ graphID: uuidv4() });
+    } catch (ex) {
+      toast.error("Failed to load resource information. Please reload this page.");
+    }
   }
 
   generateGraphElements = () => {
