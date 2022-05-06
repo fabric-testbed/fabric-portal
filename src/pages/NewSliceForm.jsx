@@ -20,12 +20,6 @@ import { getCurrentUser } from "../services/prPeopleService.js";
 
 class NewSliceForm extends React.Component {
   state = {
-    data: {
-      name: "",
-      sshKey: "",
-      leaseEndTime: "",
-      json: "",
-    },
     sliceName: "",
     sshKey: "",
     leaseEndTime: "",
@@ -53,6 +47,18 @@ class NewSliceForm extends React.Component {
     } catch (ex) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
+  }
+
+  handleSliceNameChange = (e) => {
+    this.setState({ sliceName: e.target.value });
+  }
+
+  handleKeyChange = (e) => {
+    this.setState({ sshKey: e.target.value });
+  }
+
+  handleTimeChange = (e) => {
+    this.setState({ leaseEndTime: e.target.value });
   }
 
   generateGraphElements = () => {
@@ -180,6 +186,12 @@ class NewSliceForm extends React.Component {
   }
 
   handleCreateSlice = async () => {
+    const requestData = {
+      name: this.state.sliceName,
+      sshKey: this.state.sshKey,
+      leaseEndTime: this.state.leaseEndTime,
+      json: this.generateGraphElements()
+    }
     // call PR first to check if the user has project.
     try {
       const { data: people } = await getCurrentUser();
@@ -190,13 +202,13 @@ class NewSliceForm extends React.Component {
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
         autoCreateTokens(people.projects[0].uuid).then(async () => {
-        const { data } = await createSlice(this.state.data);
+        const { data } = await createSlice(requestData);
         this.setState({ slices: data["value"]["slices"], showSpinner: false });
       });
       } else {
         // the token has been stored in the browser and is ready to be used.
           try {
-            const { data } = await createSlice(this.state.data);
+            const { data } = await createSlice(requestData);
             this.setState({ slices: data["value"]["slices"], showSpinner: false, });
           } catch(err) {
             console.log("failed to create the slice: " + err.response.data);
@@ -230,7 +242,7 @@ class NewSliceForm extends React.Component {
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
-                <input className="form-control" onChange={this.handleSShKeyChange}/>
+                <input className="form-control" onChange={this.handleKeyChange}/>
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>

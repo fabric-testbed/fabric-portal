@@ -24,7 +24,7 @@ export function createSlice(slice) {
   const url = apiEndpoint + "/create?" + query;
   http.post(
     url,
-    {data: slice.graphml},
+    {data: slice.json},
     {
       headers: {
       'Content-Type': 'text/plain',
