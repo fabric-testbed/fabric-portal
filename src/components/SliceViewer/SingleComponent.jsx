@@ -51,7 +51,7 @@ export default class SingleComponent extends Component {
 
   render() {
     const { componentTypeModel, componentType, componentName, componentModel, modelDetails } = this.state;
-    const validResult = validator.validateSingleComponent(componentType, componentName, componentModel, this.props.addedComponents);
+    const validationResult = validator.validateSingleComponent(componentType, componentName, componentModel, this.props.addedComponents);
 
     return(
       <div>
@@ -104,7 +104,7 @@ export default class SingleComponent extends Component {
                 <button
                   className="btn btn-sm btn-outline-success mt-4"
                   type="button"
-                  disabled={!validResult.isValid}
+                  disabled={!validationResult.isValid}
                   onClick={this.handleComponentAdd}
                 >
                   <i className="fa fa-plus"></i>
@@ -119,9 +119,9 @@ export default class SingleComponent extends Component {
                 }
               </span>
             }
-            {!validResult.isValid && validResult.message !== "" &&
+            {!validationResult.isValid && validationResult.message !== "" &&
               <div className="my-2 sm-alert">
-                <i className="fa fa-exclamation-triangle" /> {validResult.message}
+                <i className="fa fa-exclamation-triangle" /> {validationResult.message}
               </div>
             }
           </div> 

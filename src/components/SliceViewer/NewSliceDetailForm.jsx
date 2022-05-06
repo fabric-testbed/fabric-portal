@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ThemeConsumer } from 'styled-components';
 import SingleComponent from './SingleComponent';
+import validator from  "../../utils/sliceValidator";
 
 export default class NewSliceDetailForm extends Component {
   state = {
@@ -9,22 +9,43 @@ export default class NewSliceDetailForm extends Component {
     ram: 0,
     disk: 0,
     showVMComponent: false,
+    validationResult: {
+      isValid: true,
+      message: ""
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      validationResult: {
+        isValid: true,
+        message: ""
+      }
+    })
   }
 
   handleNameChange = (e) => {
-    this.setState({ nodeName: e.target.value });
+    const nodeName = e.target.value;
+    const validationResult = validator.validateDetailForm("name", nodeName, this.props.data.id, this.props.nodes);
+    this.setState({ nodeName, validationResult });
   }
 
   handleCoreChange = (e) => {
-    this.setState({ core: e.target.value });
+    const core = Number(e.target.value);
+    const validationResult = validator.validateDetailForm("capacity", core);
+    this.setState({ core, validationResult });
   }
 
   handleRamChange = (e) => {
-    this.setState({ ram: e.target.value });
+    const ram= Number(e.target.value);
+    const validationResult = validator.validateDetailForm("capacity", ram);
+    this.setState({ ram, validationResult });
   }
 
   handleDiskChange = (e) => {
-    this.setState({ disk: e.target.value });
+    const disk = Number(e.target.value);
+    const validationResult = validator.validateDetailForm("capacity", disk);
+    this.setState({ disk, validationResult });
   }
 
   handleShowVMComponent = () => {
@@ -109,6 +130,8 @@ export default class NewSliceDetailForm extends Component {
       componentKey = `${data.properties.id}-${data.properties.name}`
     }
 
+    const { validationResult } = this.state;
+
     return (
       <div className="new-slice-detail-form" key={componentKey}>
         <form>
@@ -129,7 +152,8 @@ export default class NewSliceDetailForm extends Component {
             }
             
             {
-              data && data.properties && data.properties.type === "VM" && <div>
+              data && data.properties && data.properties.type === "VM" &&
+              <div>
                 <div className="form-row px-3">
                   <div className="col-3 mb-2">
                     <label className="slice-builder-label">VM Name</label>
@@ -151,6 +175,7 @@ export default class NewSliceDetailForm extends Component {
                     <button
                       className="btn btn-sm btn-success w-100"
                       type="button"
+                      disabled={!validationResult.isValid}
                       onClick={this.handleVMUpdate}
                       >
                         Update
@@ -175,6 +200,11 @@ export default class NewSliceDetailForm extends Component {
                     </button>
                   </div>
                 </div>
+                {!validationResult.isValid && validationResult.message !== "" &&
+                  <div className="mb-1 sm-alert mx-3">
+                    <i className="fa fa-exclamation-triangle" /> {validationResult.message}
+                  </div>
+                }
                 {
                   this.state.showVMComponent &&
                   <div className="form-row px-3">
@@ -191,33 +221,33 @@ export default class NewSliceDetailForm extends Component {
 
             {
               data && data.properties && data.properties.class === "Component" &&
-              <div className="form-row px-3">
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Component Name</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} disabled/>
+                <div className="form-row px-3">
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Component Name</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} disabled/>
+                  </div>
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Type</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={data.properties.type} disabled/>
+                  </div>
+                  <div className="col-2 mb-2">
+                    <label className="slice-builder-label">Model</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={data.properties.model} disabled/>
+                  </div>
+                  <div className="col-5 mb-2">
+                    <label className="slice-builder-label">Detail</label>
+                    <input type="text" className="form-control form-control-sm" defaultValue={data.properties.detail} disabled/>
+                  </div>
+                  <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                    <button
+                      className="btn btn-sm btn-danger ml-auto"
+                      type="button"
+                      onClick={this.handleNodeDelete}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Type</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.type} disabled/>
-                </div>
-                <div className="col-2 mb-2">
-                  <label className="slice-builder-label">Model</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.model} disabled/>
-                </div>
-                <div className="col-5 mb-2">
-                  <label className="slice-builder-label">Detail</label>
-                  <input type="text" className="form-control form-control-sm" defaultValue={data.properties.detail} disabled/>
-                </div>
-                <div className="col-1 pt-4 pb-2 d-flex flex-row">
-                  <button
-                    className="btn btn-sm btn-danger ml-auto"
-                    type="button"
-                    onClick={this.handleNodeDelete}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
             }
 
             {

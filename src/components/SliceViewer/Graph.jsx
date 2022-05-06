@@ -28,9 +28,9 @@ function handleCy(cy) {
     cy.layout(layout).run()
   }, SELECT_THRESHOLD);
 
-  cy.on('add remove', () => {
-    refreshLayout();
-  });
+  // cy.on('add remove', () => {
+  //   refreshLayout();
+  // });
 
   return cy;
 }
@@ -111,7 +111,7 @@ export default class Graph extends Component {
               "selector": "node",
               "style": {
                 "shape": "data(type)",
-                "label": "data(id)",
+                "label": "data(label)",
               }
             },
             {

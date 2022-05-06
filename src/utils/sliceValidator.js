@@ -7,32 +7,32 @@ const isPositiveInteger = (num) => {
 }
 
 const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents) => {
-  const validResult = {
+  const validationResult = {
     isValid: false,
     message: "",
   };
 
   // Site is required.
   if (selectedSite === "") {
-    validResult.isValid = false;
-    validResult.message = "Please select a site or choose the random option.";
-    return validResult;
+    validationResult.isValid = false;
+    validationResult.message = "Please select a site or choose the random option.";
+    return validationResult;
   }
 
   // Node name must be unique in the graph.
   if (nodeName === "") {
-    validResult.isValid = false;
-    validResult.message = "Please enter a node name.";
-    return validResult;
+    validationResult.isValid = false;
+    validationResult.message = "Please enter a node name.";
+    return validationResult;
   } else {
     // check id node name is unique.
     const vm_nodes = nodes.filter(node => node.Class === "NetworkNode" && node.Type === "VM");
     if (vm_nodes.length > 0) {
       for (const vm of vm_nodes) {
         if (nodeName === vm.Name) {
-          validResult.isValid = false;
-          validResult.message = "Node name should be unique in the slice.";
-          return validResult;
+          validationResult.isValid = false;
+          validationResult.message = "Node name should be unique in the slice.";
+          return validationResult;
         }
       }
     } 
@@ -41,129 +41,147 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   // core/ ram/ disk must be positive integers
   // Orchestrator will do the rest check and find the nearest available matching.
   if (!isPositiveInteger(core) || !isPositiveInteger(ram) || !isPositiveInteger(disk)) {
-    validResult.isValid = false;
-    validResult.message = "Please enter positive integer for core/ ram/ disk.";
-    return validResult;
+    validationResult.isValid = false;
+    validationResult.message = "Please enter positive integer for core/ ram/ disk.";
+    return validationResult;
   }
 
   // ensure at least 1 component is added.
   if (nodeComponents.length === 0) {
-    validResult.isValid = false;
-    validResult.message = "Please add at least 1 component.";
-    return validResult;
+    validationResult.isValid = false;
+    validationResult.message = "Please add at least 1 component.";
+    return validationResult;
   }
 
   // all validation above are passed.
-  validResult.isValid = true;
-  validResult.message = "";
+  validationResult.isValid = true;
+  validationResult.message = "";
 
-  return validResult;
+  return validationResult;
 }
 
 const validateSingleComponent = (type, name, model, addedComponents) => {
-  const validResult = {
+  const validationResult = {
     isValid: false,
     message: "",
   };
 
   if (addedComponents && addedComponents.length === 0) {
     if (type === "") {
-      validResult.isValid = false;
-      validResult.message = "Please select a component type.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select a component type.";
+      return validationResult;
     }
   
     if (name === "") {
-      validResult.isValid = false;
-      validResult.message = "Please enter a component name.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please enter a component name.";
+      return validationResult;
     }
 
     if (model === "") {
-      validResult.isValid = false;
-      validResult.message = "Please select a component model.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select a component model.";
+      return validationResult;
     }
   } else {
     if (name !== "") {
       for (const comp of addedComponents) {
         if (name === comp.name) {
-          validResult.isValid = false;
-          validResult.message = "Component name should be unique in the same node.";
-          return validResult;
+          validationResult.isValid = false;
+          validationResult.message = "Component name should be unique in the same node.";
+          return validationResult;
         }
       }
     } 
 
     if (type ==="" || name === "" || model === "") {
-      validResult.isValid = false;
-      validResult.message = "";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "";
+      return validationResult;
     }
   }
 
-  // if (type === "") {
-  //   validResult.isValid = false;
-  //   validResult.message = "Please select a component type.";
-  //   return validResult;
-  // }
+  // all validation above are passed.
+  validationResult.isValid = true;
+  validationResult.message = "";
 
-  // if (name === "") {
-  //   validResult.isValid = false;
-  //   validResult.message = "Please enter a component name.";
-  //   return validResult;
-  // } else {
-  //   // ensure the component name is unique in the scope of its VM node.
-  //   if (addedComponents.length > 0) {
-  //     for (const comp of addedComponents) {
-  //       if (name === comp.name) {
-  //         validResult.isValid = false;
-  //         validResult.message = "Component name should be unique in the same node.";
-  //         return validResult;
-  //       }
-  //     }
-  //    }
-  // }
+  return validationResult;
+}
 
-  // if (model === "") {
-  //   validResult.isValid = false;
-  //   validResult.message = "Please select a component model.";
-  //   return validResult;
-  // }
+const validateDetailForm = (type, value, vm_id, nodes) => {
+  // type: "name", "capacity"
+  // value: the content of input value
+  // nodes: all existing nodes in graph passed from props.
+
+  const validationResult = {
+    isValid: false,
+    message: "",
+  };
+
+  if (type === "name") {
+    if (value === "") {
+      validationResult.isValid = false;
+      validationResult.message = "Node name should not be empty.";
+      return validationResult;
+    }
+    // check the VM name is unique in the whole slice graph.
+    // check id node name is unique.
+    const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(vm_id));
+    if (vm_nodes.length > 0) {
+      for (const vm of vm_nodes) {
+        if (value === vm.Name) {
+          validationResult.isValid = false;
+          validationResult.message = "Node name should be unique in the slice.";
+          return validationResult;
+        }
+      }
+    } 
+  }
+
+  if (type === "capacity") {
+  // core/ ram/ disk must be positive integers
+  // Orchestrator will do the rest check and find the nearest available matching.
+  if (!isPositiveInteger(value)) {
+    validationResult.isValid = false;
+    validationResult.message = "Please enter positive integer for core/ ram/ disk.";
+    return validationResult;
+  }
+  }
 
   // all validation above are passed.
-  validResult.isValid = true;
-  validResult.message = "";
+  validationResult.isValid = true;
+  validationResult.message = "";
 
-  return validResult;
+  return validationResult;
 }
 
 const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) => {
-  const validResult = {
+  const validationResult = {
     isValid: false,
     message: "Please choose a service type.",
   };
 
   if (serviceName === "") {
-    validResult.isValid = false;
-    validResult.message = "Please enter a service name.";
-    return validResult;
+    validationResult.isValid = false;
+    validationResult.message = "Please enter a service name.";
+    return validationResult;
   } else {
     // check if service name is unique
     const ns_nodes = nodes.filter(node => node.Class === "NetworkService" && node.Type !== "OVS");
     if (ns_nodes.length > 0) {
       for (const ns of ns_nodes) {
         if (serviceName === ns.Name) {
-          validResult.isValid = false;
-          validResult.message = "Service name should be unique in the slice.";
-          return validResult;
+          validationResult.isValid = false;
+          validationResult.message = "Service name should be unique in the slice.";
+          return validationResult;
         }
       }
     } 
   }
 
   if (!serviceType || selectedCPs.length === 0) {
-    return validResult;
+    return validationResult;
   }
 
   if (serviceType === "L2Bridge") {
@@ -171,9 +189,9 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
     const site = getSite(selectedCPs[0]);
     for (const cp of selectedCPs) {
       if (getSite(cp) !== site) {
-        validResult.isValid = false;
-        validResult.message = "Please select ports from the same site for L2Bridge service.";
-        return validResult;
+        validationResult.isValid = false;
+        validationResult.message = "Please select ports from the same site for L2Bridge service.";
+        return validationResult;
       }
     }
   }
@@ -181,24 +199,24 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
   if (serviceType === "L2PTP") {
     // Only allows 2 connection points.
     if (selectedCPs.length !== 2) {
-      validResult.isValid = false;
-      validResult.message = "Please select 2 ports for L2PTP service.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select 2 ports for L2PTP service.";
+      return validationResult;
     }
 
     // ports must be DedicatedPort.
     if(selectedCPs[0].properties.type !== "DedicatedPort" 
     || selectedCPs[1].properties.type !== "DedicatedPort") {
-      validResult.isValid = false;
-      validResult.message = "Please select both DedicatedPort for L2PTP service.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select both DedicatedPort for L2PTP service.";
+      return validationResult;
     }
 
     // 2 connection points must belong to 2 different sites.
      if (getSite(selectedCPs[0]) === getSite(selectedCPs[1])) {
-      validResult.isValid = false;
-      validResult.message = "Please select ports from 2 different sites for L2PTP service.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select ports from 2 different sites for L2PTP service.";
+      return validationResult;
     }
   }
 
@@ -212,29 +230,30 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
       }
 
       if (siteNames.length > 2) {
-        validResult.isValid = false;
-        validResult.message = "Please select ports from 2 sites for L2STS service.";
-        return validResult;
+        validationResult.isValid = false;
+        validationResult.message = "Please select ports from 2 sites for L2STS service.";
+        return validationResult;
       }
     })
     
     if (siteNames.length !== 2) {
-      validResult.isValid = false;
-      validResult.message = "Please select ports from 2 sites for L2STS service.";
-      return validResult;
+      validationResult.isValid = false;
+      validationResult.message = "Please select ports from 2 sites for L2STS service.";
+      return validationResult;
     }
   }
 
-  validResult.isValid = true;
-  validResult.message = "";
+  validationResult.isValid = true;
+  validationResult.message = "";
 
-  return validResult;
+  return validationResult;
 }
 
 const validator = {
   validateNodeComponents,
   validateSingleComponent,
   validateNetworkService,
+  validateDetailForm,
 }
 
 export default validator;
