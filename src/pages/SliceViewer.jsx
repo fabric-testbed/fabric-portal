@@ -118,10 +118,12 @@ export default class SliceViewer extends Component {
           elements.length > 0 &&
           <Graph
             className="align-self-end"
+            layout={{name: 'fcose'}}
+            defaultSize={{"width": 0.65, "height": 0.75, "zoom": 0.85}}
+            isNewSlice={false}
             elements={elements}
             sliceName={slice.slice_name}
             onNodeSelect={this.handleNodeSelect}
-            defaultSize={{"width": 0.65, "height": 0.75, "zoom": 0.85}}
           />
         }
         {

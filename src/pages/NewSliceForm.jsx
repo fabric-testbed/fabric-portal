@@ -1,8 +1,6 @@
 import React from "react";
 import { v4 as uuidv4 } from 'uuid';
-import Joi from "joi-browser";
 import _ from "lodash";
-import Form from "../components/common/Form";
 import { toast } from "react-toastify";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -15,14 +13,17 @@ import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 
-class NewSliceForm extends Form {
+class NewSliceForm extends React.Component {
   state = {
     data: {
       name: "",
       sshKey: "",
       leaseEndTime: "",
-      graphml: "",
+      json: "",
     },
+    sliceName: "",
+    sshKey: "",
+    leaseEndTime: "",
     errors: {},
     ancronymToName: sitesNameMapping.ancronymToName,
     graphID: "",
@@ -41,13 +42,6 @@ class NewSliceForm extends Form {
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }
-
-  schema = {
-    name: Joi.string().required().label("Slice Name"),
-    sshKey: Joi.string().required().label("SSH Key"),
-    leaseEndTime: Joi.date().min("now").label("Lease End Time"),
-    graphml: Joi.string().required().label("Graphml"),
-  };
 
   generateGraphElements = () => {
     const sliceJSON = {
@@ -173,7 +167,7 @@ class NewSliceForm extends Form {
     this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
   }
 
-  doSubmit = async () => {
+  handleCreateSlice = async () => {
     try {
       await createSlice(this.state.data);
     }
@@ -188,21 +182,36 @@ class NewSliceForm extends Form {
     const { selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs } = this.state;
 
     return (
-      <div className="d-flex flex-column align-items-center">
-        <div className="new-slice-form align-self-center mt-4">
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-row d-flex align-items-center">
-              <div className="col-md-3">{this.renderInput("name", "Slice Name*", true)}</div>
-              <div className="col-md-4">{this.renderInput("sshKey", "SSH Key*", true)}</div>
-              <div className="col-md-3">{this.renderInput("leaseEndTime", "Lease End Time", true)}</div>
-              <div className="col-md-2 pt-3 d-flex flex-row">
-                <span className="ml-auto">{this.renderButton("Create Slice")}</span>
+      <div className="d-flex flex-column align-items-center w-100">
+        <div className="d-flex flex-row justify-content-center mt-2 w-100">
+          <form className="w-100 mx-5">
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <label htmlFor="inputSliceName" className="slice-form-label">Slice Name</label>
+                <input className="form-control" onChange={this.handleSliceNameChange}/>
+              </div>
+              <div className="form-group col-md-4">
+                <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
+                <input className="form-control" onChange={this.handleSShKeyChange}/>
+              </div>
+              <div className="form-group col-md-3">
+                <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
+                <input className="form-control" onChange={this.handleTimeChange}/>
+              </div>
+              <div className="form-group col-md-2 d-flex flex-row">
+                <button
+                  className="btn btn-success mt-4 ml-auto"
+                  type="button"
+                  onClick={() => this.handleCreateSlice()}
+                >
+                  Create Slice
+                </button>
               </div>
             </div>
           </form>
         </div>
-        <div className="d-flex flex-row justify-content-center mb-4">
-          <div className="d-flex flex-column">
+        <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
+          <div className="d-flex flex-column w-40 ml-5">
             <SideToolbar
               className="align-self-start"
               resources={parsedResources}
@@ -229,7 +238,7 @@ class NewSliceForm extends Form {
               </button>
             </div>
           </div>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column w-60 mr-5">
             <NewSliceDetailForm
               data={selectedData}
               selectedCPs={selectedCPs}
@@ -242,10 +251,11 @@ class NewSliceForm extends Form {
             />
             <Graph
               className="align-self-end"
+              isNewSlice={true}
               elements={this.generateGraphElements()}
               layout={{name: 'fcose'}}
               sliceName={"new-slice"}
-              defaultSize={{"width": 0.5, "height": 0.75, "zoom": 1}}
+              defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
             />
           </div>
