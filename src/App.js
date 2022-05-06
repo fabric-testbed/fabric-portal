@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/userInformationService.js";
+import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -15,6 +16,7 @@ import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
+import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -23,6 +25,7 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
+    activeNotices: getActiveNotices(),
   };
 
   async componentDidMount() {
@@ -54,6 +57,9 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Header userStatus={this.state.userStatus} />
+          { this.state.activeNotices.length > 0 && 
+            this.state.activeNotices.map(notice => <Banner notice={notice}/>)
+          }
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/login" component={Home} />
