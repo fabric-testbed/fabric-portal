@@ -8,8 +8,7 @@ import SummaryTable from "../components/Resource/SummaryTable";
 
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-// import { getResources } from "../services/resourcesService.js";
-import  { getResources } from "../services/fakeResources.js";
+import { getResources } from "../services/resourcesService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -27,19 +26,14 @@ class Resources extends Component {
     siteNames: [],
   }
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data } = await getResources();
-  //     const parsedObj = sitesParser(data, this.state.ancronymToName);
-  //     this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
-  //   } catch (ex) {
-  //     toast.error("Failed to load resource information. Please reload this page.");
-  //   }
-  // }
-
-  componentDidMount() {
-    const parsedObj = sitesParser(getResources(), this.state.ancronymToName);
-    this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
+  async componentDidMount() {
+    try {
+      const { data } = await getResources();
+      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
+    } catch (ex) {
+      toast.error("Failed to load resource information. Please reload this page.");
+    }
   }
 
   getResourcesSum = (resources) => {
