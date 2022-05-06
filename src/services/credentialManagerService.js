@@ -3,15 +3,15 @@ import { default as config } from "../config.json";
 
 const apiEndpoint = config.credentialManagerApiUrl;
 
-export function createIdToken(project, scope) {
-  return http.post(apiEndpoint + "/create?projectName=" + encodeURI(project) + "&scope=" + scope);
+export function createIdToken(projectId, scope) {
+  return http.post(apiEndpoint + "/create?projectId=" + projectId + "&scope=" + scope);
 }
 
-export function refreshToken(project, scope, refresh_token) {
+export function refreshToken(projectId, scope, refresh_token) {
   const data = {
     "refresh_token": refresh_token
   }
-  return http.post(apiEndpoint + "/refresh?projectName=" + encodeURI(project) + "&scope=" + scope, data);
+  return http.post(apiEndpoint + "/refresh?projectId=" + projectId + "&scope=" + scope, data);
 }
 
 export function revokeToken(refresh_token) {
