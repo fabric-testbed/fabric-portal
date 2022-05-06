@@ -6,13 +6,9 @@ import { saveAs } from "file-saver";
 
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
-import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
-import IconNIC from '../../imgs/SliceComponentIcons/NIC25G.png';
 import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
 import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
-import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
-import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -28,9 +24,9 @@ function handleCy(cy) {
     cy.layout(layout).run()
   }, SELECT_THRESHOLD);
 
-  // cy.on('add remove', () => {
-  //   refreshLayout();
-  // });
+  cy.on('add remove', () => {
+    refreshLayout();
+  });
 
   return cy;
 }
@@ -139,26 +135,6 @@ export default class Graph extends Component {
               }
             },
             {
-              "selector": ".graphSwitchFabric",
-              "style": {
-                "background-image": `${IconSwitch}`,
-                "background-color": "#fff",
-                "background-fit": "contain",
-                "height": 70,
-                "width": 100,
-              }
-            },
-            {
-              "selector": ".graphNIC",
-              "style": {
-                "background-image": `${IconNIC}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 70,
-                "width": 100,
-              }
-            },
-            {
               "selector": ".graphSmartNIC",
               "style": {
                 "background-image": `${IconSmartNIC}`,
@@ -172,16 +148,6 @@ export default class Graph extends Component {
               "selector": ".graphSharedNIC",
               "style": {
                 "background-image": `${IconSharedNIC}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 70,
-                "width": 100,
-              }
-            },
-            {
-              "selector": ".graphFPGA",
-              "style": {
-                "background-image": `${IconFPGA}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -212,26 +178,6 @@ export default class Graph extends Component {
               "selector": ".graphNetworkService",
               "style": {
                 "background-image": `${IconNS}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 20,
-                "width": 40,
-              }
-            },
-            {
-              "selector": ".graphSSD",
-              "style": {
-                "background-image": `${IconSSD}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 20,
-                "width": 40,
-              }
-            },
-            {
-              "selector": ".graphSwitch",
-              "style": {
-                "background-image": `${IconSwitch}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 20,

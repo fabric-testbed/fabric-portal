@@ -10,6 +10,14 @@ body {
   margin-bottom: 2rem;
 }
 
+.w-40 {
+  width: 40%;
+}
+
+.w-60 {
+  width: 60%;;
+}
+
 .home-container {
   min-height: 75vh;
   margin: 0;
@@ -507,4 +515,10 @@ ul {
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
+}
+
+.slice-form-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.15rem !important;
 }
