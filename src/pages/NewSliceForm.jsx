@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-import _, { slice } from "lodash";
+import _ from "lodash";
 import { toast } from "react-toastify";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -10,7 +11,6 @@ import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 import Spinner from 'react-bootstrap/Spinner';
-// import DateTimePicker from 'react-datetime-picker';
 import Calendar from "../components/common/Calendar";
 
 import { sitesNameMapping }  from "../data/sites";
@@ -36,6 +36,8 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
     showResourceSpinner: false,
     sliverKeys: [],
+    projectToGenerateToken: {},
+    user: {},
   }
 
   async componentDidMount() {
@@ -45,17 +47,23 @@ class NewSliceForm extends React.Component {
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
+      const { data: user } = await getCurrentUser();
       const parsedObj = sitesParser(resources, this.state.ancronymToName);
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver")
+        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        user: user,
       });
     } catch (ex) {
-      toast.error("Failed to load resource or sliver key information. Please reload this page.");
+      toast.error("Failed to load resource/ sliver key/ project information. Please reload this page.");
     }
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
+  }
+
+  handleProjectChange = (e) => {
+    this.setState({ projectToGenerateToken: e.target.value });
   }
 
   handleSliceNameChange = (e) => {
@@ -79,11 +87,25 @@ class NewSliceForm extends React.Component {
       "links": this.state.sliceLinks,
     }
 
+    const requestBody = JSON.stringify(sliceJSON);
     console.log("sliceJSON");
     console.log(sliceJSON);
-    console.log(JSON.stringify(sliceJSON));
+    console.log(requestBody);
 
-    return JSON.stringify(sliceJSON);
+    return requestBody;
+  }
+
+  generateGraphElements = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    let elements = sliceParser(sliceJSON, "new");
+    return elements;
   }
 
   handleSaveDraft = () => {
@@ -201,100 +223,133 @@ class NewSliceForm extends React.Component {
       leaseEndTime: this.state.leaseEndTime,
       json: this.generateSliceJSON()
     }
-    // call PR first to check if the user has project.
+
     try {
-      const { data: people } = await getCurrentUser();
-      if (people.projects.length === 0) {
-        this.setState({ hasProject: false, showSpinner: false });
-      } else {
-      // call credential manager to generate tokens 
-      // if nothing found in browser storage
-      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens(people.projects[0].uuid).then(async () => {
-        const { data } = await createSlice(requestData);
-        this.setState({ slices: data["value"]["slices"], showSpinner: false });
-      });
-      } else {
-        // the token has been stored in the browser and is ready to be used.
-          try {
-            const { data } = await createSlice(requestData);
-            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
-          } catch(err) {
-            console.log("failed to create the slice: " + err.response.data);
-            toast.error("Failed to create the slice");
-            this.props.history.push("/slices");
-            if (err.response.status === 401) {
-              // 401 Error: Provided token is not valid.
-              // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(people.projects[0].uuid);
-            }
-          }
-        }
-      }
-    } catch (ex) {
-      toast.error("Failed to load user information. Please reload this page.");
-      console.log("Failed to load user information: " + ex.response.data);
+      // re-create token using user's choice of project
+      autoCreateTokens(this.state.user.projects[0].uuid).then(async () => {
+        const { data: slice } = await createSlice(requestData);
+        console.log("new generated slice: ");
+        console.log(slice);
+      })
+    } catch (err) {
+      console.log("failed to create the slice: " + err.response.data);
+      toast.error("Failed to create the slice");
     }
   };
 
   render() {
-    const { sshKey, sliverKeys, selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } = this.state;
+    const { sshKey, sliverKeys, projectToGenerateToken, user, selectedData,
+      parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } 
+    = this.state;
 
     return (
+    <div>
+      <div className="d-flex flex-row justify-content-between mt-2">
+        <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
+        <Link to="/experiments#slices" className="align-self-end mr-5">
+          <button
+            className="btn btn-sm btn-outline-primary my-3"
+          >
+            <i className="fa fa-sign-in mr-2"></i>
+            Back to Slice List
+          </button>
+        </Link>
+      </div>
       <div className="d-flex flex-column align-items-center w-100">
-        <div className="d-flex flex-row justify-content-center mt-2 w-100">
-          <form className="w-100 mx-5">
-            <div className="form-row">
-              <div className="form-group col-md-3">
-                <label htmlFor="inputSliceName" className="slice-form-label">Slice Name</label>
-                <input className="form-control" onChange={this.handleSliceNameChange}/>
-              </div>
-              <div className="form-group col-md-4">
-                <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
-                {
-                  sliverKeys.length > 0 && 
-                    <select
-                      className="form-control form-control-sm"
-                      value={sshKey}
-                      onChange={this.handleKeyChange}
-                    >
-                      <option value="">Choose...</option>
-                      {
-                        sliverKeys.map(key => 
-                          <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
-                        )
-                      }
-                    </select>
-                }
-                {
-                  sliverKeys.length === 0 && 
-                  <div className="alert alert-warning" role="alert">
-                    Please generate or upload a sliver key from Experiments - Manage SSH Keys page first.
-                  </div>
-                }
-              </div>
-              <div className="form-group col-md-3">
-                <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
-                <Calendar className="date-time-picker-control" onTimeChange={this.handleTimeChange} />
-              </div>
-              <div className="form-group col-md-2 d-flex flex-row">
-                <button
-                  className="btn btn-success mt-4 ml-auto"
-                  type="button"
-                  onClick={() => this.handleCreateSlice()}
-                >
-                  Create Slice
+        <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
+          <div className="d-flex flex-column w-40 ml-5">
+            <div className="card new-slice-card-min-h">
+              <div className="card-header py-1">
+                <button className="btn btn-link">
+                  Step 1: Select Project 
                 </button>
               </div>
+              <div>
+                <div className="card-body">
+                  <div className="form-group col-md-12">
+                    <label htmlFor="projectSelect" className="slice-form-label">Project</label>
+                      <select
+                        className="form-control form-control-sm"
+                        value={projectToGenerateToken}
+                        onChange={this.handleProjectChange}
+                      >
+                        <option value="">Choose...</option>
+                        {
+                          user.projects && user.projects.map(project => 
+                            <option value={project.uuid} key={`project-${project.name}`}>{project.name}</option>
+                          )
+                        }
+                      </select>
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
+          </div>
+          <div className="d-flex flex-column w-60 mr-5">
+            <div className="card">
+              <div className="card-header py-1">
+                <button className="btn btn-link">
+                  Step 2: Input Slice Information
+                </button>
+              </div>
+              <div>
+                <div className="card-body">
+                  <div className="d-flex flex-column">
+                    <form className="w-100">
+                      <div className="form-group col-md-12">
+                        <label htmlFor="inputSliceName" className="slice-form-label">Slice Name</label>
+                        <input  className="form-control form-control-sm" onChange={this.handleSliceNameChange}/>
+                      </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
+                        {
+                          sliverKeys.length > 0 && 
+                            <select
+                              className="form-control form-control-sm"
+                              value={sshKey}
+                              onChange={this.handleKeyChange}
+                            >
+                              <option value="">Choose...</option>
+                              {
+                                sliverKeys.map(key => 
+                                  <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
+                                )
+                              }
+                            </select>
+                        }
+                        {
+                          sliverKeys.length === 0 && 
+                          <div className="sm-alert alert-warning" role="alert">
+                            Please generate or upload a sliver key from Experiments - Manage SSH Keys page first.
+                          </div>
+                        }
+                      </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
+                        <Calendar className="date-time-picker-control" onTimeChange={this.handleTimeChange} />
+                      </div>
+                      <div className="form-group col-md-12 d-flex flex-row">
+                        <button
+                          className="btn btn-sm btn-success ml-auto"
+                          type="button"
+                          onClick={() => this.handleCreateSlice()}
+                        >
+                          Create Slice
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
           <div className="d-flex flex-column w-40 ml-5">
             <div className="card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
-                  Step 1: Add Nodes and Components
+                  Step 3: Add Nodes and Components
                 </button>
               </div>
               <div>
@@ -327,7 +382,7 @@ class NewSliceForm extends React.Component {
             <div className="card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
-                  Step 2: Add Network Service
+                  Step 4: Add Network Service
                 </button>
               </div>
               <div>
@@ -372,7 +427,7 @@ class NewSliceForm extends React.Component {
             <Graph
               className="align-self-end"
               isNewSlice={true}
-              elements={sliceParser(this.generateSliceJSON(), "new")}
+              elements={this.generateGraphElements()}
               layout={{name: 'fcose'}}
               sliceName={"new-slice"}
               defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
@@ -381,6 +436,7 @@ class NewSliceForm extends React.Component {
           </div>
         </div>
       </div>
+    </div>
     )
   }
 }
