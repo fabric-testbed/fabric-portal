@@ -40,14 +40,16 @@ export default class SideLinks extends Component {
   }
 
   handleProjectChange = (e) => {
-    this.setState({ projectIdToGenerateToken: e.target.value }).then(this.getProjectTags);
+    this.setState({ projectIdToGenerateToken: e.target.value }, () => {
+      this.getProjectTags();
+    });
     this.props.onProjectChange(this.state.projectIdToGenerateToken.uuid);
   }
 
   async getProjectTags() {
     this.setState({  showSpinner: true });
     try {
-      const { data: project } = await getProject(this.state.projectIdToGenerateToken.uuid);
+      const { data: project } = await getProject(this.state.projectIdToGenerateToken);
       this.setState({ tags: project.tags, showSpinner: false});
     } catch (ex) {
       toast.error("Failed to load the tags of this project. Please re-select a project.");

@@ -59,8 +59,8 @@ class NewSliceForm extends React.Component {
     this.setState({ graphID: uuidv4() });
   }
 
-  handleProjectChange = (e) => {
-    this.setState({ projectIdToGenerateToken: e.target.value });
+  handleProjectChange = (uuid) => {
+    this.setState({ projectIdToGenerateToken: uuid });
   }
 
   handleSliceNameChange = (e) => {
