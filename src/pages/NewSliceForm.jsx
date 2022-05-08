@@ -19,6 +19,7 @@ import { getResources } from "../services/resourcesService.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getCurrentUser } from "../services/prPeopleService.js";
+import { getActiveKeys } from "../services/sshKeyService";
 
 class NewSliceForm extends React.Component {
   state = {
@@ -34,6 +35,7 @@ class NewSliceForm extends React.Component {
     parsedResources: null,
     selectedCPs: [],
     showResourceSpinner: false,
+    sliverKeys: [],
   }
 
   async componentDidMount() {
@@ -41,14 +43,19 @@ class NewSliceForm extends React.Component {
     this.setState({ showResourceSpinner: true });
 
     try {
-      const { data } = await getResources();
-      const parsedObj = sitesParser(data, this.state.ancronymToName);
-      this.setState({ parsedResources: parsedObj, showResourceSpinner: false });
-      // generate a graph uuid for the new slice
-      this.setState({ graphID: uuidv4() });
+      const { data: resources } = await getResources();
+      const { data: keys } = await getActiveKeys();
+      const parsedObj = sitesParser(resources, this.state.ancronymToName);
+      this.setState({ 
+        parsedResources: parsedObj,
+        showResourceSpinner: false,
+        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver")
+      });
     } catch (ex) {
-      toast.error("Failed to load resource information. Please reload this page.");
+      toast.error("Failed to load resource or sliver key information. Please reload this page.");
     }
+    // generate a graph uuid for the new slice
+    this.setState({ graphID: uuidv4() });
   }
 
   handleSliceNameChange = (e) => {
@@ -231,7 +238,7 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } = this.state;
+    const { sshKey, sliverKeys, selectedData, parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } = this.state;
 
     return (
       <div className="d-flex flex-column align-items-center w-100">
@@ -244,7 +251,27 @@ class NewSliceForm extends React.Component {
               </div>
               <div className="form-group col-md-4">
                 <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
-                <input className="form-control" onChange={this.handleKeyChange}/>
+                {
+                  sliverKeys.length > 0 && 
+                    <select
+                      className="form-control form-control-sm"
+                      value={sshKey}
+                      onChange={this.handleKeyChange}
+                    >
+                      <option value="">Choose...</option>
+                      {
+                        sliverKeys.map(key => 
+                          <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
+                        )
+                      }
+                    </select>
+                }
+                {
+                  sliverKeys.length === 0 && 
+                  <div className="alert alert-warning" role="alert">
+                    Please generate or upload a sliver key from Experiments - Manage SSH Keys page first.
+                  </div>
+                }
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
