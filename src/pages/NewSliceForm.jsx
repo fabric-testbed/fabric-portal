@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 import { toast } from "react-toastify";
+import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
@@ -18,7 +19,6 @@ import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getCurrentUser } from "../services/prPeopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
 
 class NewSliceForm extends React.Component {
@@ -36,8 +36,7 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
     showResourceSpinner: false,
     sliverKeys: [],
-    projectToGenerateToken: {},
-    user: {},
+    projectIdToGenerateToken: {},
   }
 
   async componentDidMount() {
@@ -47,13 +46,11 @@ class NewSliceForm extends React.Component {
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
-      const { data: user } = await getCurrentUser();
       const parsedObj = sitesParser(resources, this.state.ancronymToName);
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
         sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
-        user: user,
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key/ project information. Please reload this page.");
@@ -63,7 +60,7 @@ class NewSliceForm extends React.Component {
   }
 
   handleProjectChange = (e) => {
-    this.setState({ projectToGenerateToken: e.target.value });
+    this.setState({ projectIdToGenerateToken: e.target.value });
   }
 
   handleSliceNameChange = (e) => {
@@ -226,7 +223,7 @@ class NewSliceForm extends React.Component {
 
     try {
       // re-create token using user's choice of project
-      autoCreateTokens(this.state.user.projects[0].uuid).then(async () => {
+      autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
         const { data: slice } = await createSlice(requestData);
         console.log("new generated slice: ");
         console.log(slice);
@@ -238,7 +235,7 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sshKey, sliverKeys, projectToGenerateToken, user, selectedData,
+    const { sshKey, sliverKeys, selectedData,
       parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } 
     = this.state;
 
@@ -266,21 +263,7 @@ class NewSliceForm extends React.Component {
               </div>
               <div>
                 <div className="card-body">
-                  <div className="form-group col-md-12">
-                    <label htmlFor="projectSelect" className="slice-form-label">Project</label>
-                      <select
-                        className="form-control form-control-sm"
-                        value={projectToGenerateToken}
-                        onChange={this.handleProjectChange}
-                      >
-                        <option value="">Choose...</option>
-                        {
-                          user.projects && user.projects.map(project => 
-                            <option value={project.uuid} key={`project-${project.name}`}>{project.name}</option>
-                          )
-                        }
-                      </select>
-                  </div>
+                  <ProjectTags onProjectChange={this.handleProjectChange} />
                 </div>
               </div>
             </div>
