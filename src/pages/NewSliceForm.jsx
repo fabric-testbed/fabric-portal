@@ -1,6 +1,6 @@
 import React from "react";
 import { v4 as uuidv4 } from 'uuid';
-import _ from "lodash";
+import _, { slice } from "lodash";
 import { toast } from "react-toastify";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -10,6 +10,8 @@ import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 import Spinner from 'react-bootstrap/Spinner';
+// import DateTimePicker from 'react-datetime-picker';
+import Calendar from "../components/common/Calendar";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -57,11 +59,11 @@ class NewSliceForm extends React.Component {
     this.setState({ sshKey: e.target.value });
   }
 
-  handleTimeChange = (e) => {
-    this.setState({ leaseEndTime: e.target.value });
+  handleTimeChange = (value) => {
+    this.setState({ leaseEndTime: value });
   }
 
-  generateGraphElements = () => {
+  generateSliceJSON = () => {
     const sliceJSON = {
       "directed": false,
       "multigraph": false,
@@ -70,11 +72,11 @@ class NewSliceForm extends React.Component {
       "links": this.state.sliceLinks,
     }
 
-    let elements = sliceParser(sliceJSON, "new");
     console.log("sliceJSON");
     console.log(sliceJSON);
     console.log(JSON.stringify(sliceJSON));
-    return elements;
+
+    return JSON.stringify(sliceJSON);
   }
 
   handleSaveDraft = () => {
@@ -190,7 +192,7 @@ class NewSliceForm extends React.Component {
       name: this.state.sliceName,
       sshKey: this.state.sshKey,
       leaseEndTime: this.state.leaseEndTime,
-      json: this.generateGraphElements()
+      json: this.generateSliceJSON()
     }
     // call PR first to check if the user has project.
     try {
@@ -246,7 +248,7 @@ class NewSliceForm extends React.Component {
               </div>
               <div className="form-group col-md-3">
                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
-                <input className="form-control" onChange={this.handleTimeChange}/>
+                <Calendar className="date-time-picker-control" onTimeChange={this.handleTimeChange} />
               </div>
               <div className="form-group col-md-2 d-flex flex-row">
                 <button
@@ -343,7 +345,7 @@ class NewSliceForm extends React.Component {
             <Graph
               className="align-self-end"
               isNewSlice={true}
-              elements={this.generateGraphElements()}
+              elements={sliceParser(this.generateSliceJSON(), "new")}
               layout={{name: 'fcose'}}
               sliceName={"new-slice"}
               defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
