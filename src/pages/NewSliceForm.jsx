@@ -273,6 +273,17 @@ class NewSliceForm extends React.Component {
     }
   };
 
+  isReadyToCreateSlice = () => {
+    const { sliceName, sshKey, leaseEndTime, projectIdToGenerateToken,
+      sliceNodes } = this.state;
+    if (sliceName === "" || sshKey === "" || leaseEndTime ==="" 
+    || projectIdToGenerateToken === "" || sliceNodes.length ===0) {
+      return false;
+    }
+
+    return true;
+  }
+
   render() {
     const { sshKey, sliverKeys, selectedData, showKeySpinner, showResourceSpinner,
       parsedResources, sliceNodes, sliceLinks, selectedCPs }
@@ -375,6 +386,7 @@ class NewSliceForm extends React.Component {
                         <button
                           className="btn btn-sm btn-success ml-auto"
                           type="button"
+                          disabled={!this.isReadyToCreateSlice}
                           onClick={() => this.handleCreateSlice()}
                         >
                           Create Slice

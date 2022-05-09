@@ -43,7 +43,7 @@ export default class SideLinks extends Component {
     this.setState({ projectIdToGenerateToken: e.target.value }, () => {
       this.getProjectTags();
     });
-    this.props.onProjectChange(this.state.projectIdToGenerateToken.uuid);
+    this.props.onProjectChange(this.state.projectIdToGenerateToken);
   }
 
   async getProjectTags() {
