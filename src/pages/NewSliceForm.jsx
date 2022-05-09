@@ -263,9 +263,12 @@ class NewSliceForm extends React.Component {
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
-        const { data: slice } = await createSlice(requestData);
+        const { data } = await createSlice(requestData);
         console.log("new generated slice: ");
-        console.log(slice);
+        console.log(data.value.reservations[0]);
+        toast.success("Slice created successfully.");
+        // redirect users directly to the projects page
+        this.props.history.push("/experiments");
       })
     } catch (err) {
       console.log("failed to create the slice: " + err.response.data);

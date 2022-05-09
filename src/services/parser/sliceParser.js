@@ -29,20 +29,20 @@ export default function parseSlice(slice, sliceType) {
   nodes.forEach(node => {
     if (node.Class === "NetworkNode" && !sitesName.includes(node.Site)) {
       sitesName.push(node.Site);
-      sites.push({ id: node.id + 9999999999999, name: node.Site });
+      sites.push({ id: parseInt(node.id) + 9999999999999, name: node.Site });
     }
   })
   
   // create site nodes - the highest level parent node.
   sites.forEach(site => {
-    const siteNode = { id: site.id, label: site.name, type: "roundrectangle", properties: { class: "Composite Node", name: site.name } };
+    const siteNode = { id: parseInt(site.id), label: site.name, type: "roundrectangle", properties: { class: "Composite Node", name: site.name } };
     elements.push(siteNode);
   })
   
   // Parsed nodes array into dictionary with key of id.
   const objNodes = {}
   nodes.forEach(node => {
-    objNodes[node.id] = node
+    objNodes[parseInt(node.id)] = node
   })
   
   const getSiteIdbyName = name => {
@@ -53,7 +53,7 @@ export default function parseSlice(slice, sliceType) {
       }
   
       if (sites[i].name === name && !siteId) {
-        siteId = sites[i].id;
+        siteId = parseInt(sites[i].id);
       }
     }
     return siteId;
@@ -62,7 +62,7 @@ export default function parseSlice(slice, sliceType) {
   const generateDataElement = (data, id) => {
     const properties = {};
     const originalNode = objNodes[id];
-    data.id = originalNode.id;
+    data.id = parseInt(originalNode.id);
     // data.label = originalNode.id + '.' + originalNode.Type;
     data.label = originalNode.Name;
     data.type = "roundrectangle";
@@ -92,7 +92,7 @@ export default function parseSlice(slice, sliceType) {
   const generateConnectionPoint = (data, link) => {
     const properties = {};
     const originalNode = objNodes[link.target];
-    data.id = originalNode.id;
+    data.id = parseInt(originalNode.id);
     data.parent = findParentNode(link.source);
     data.label = "";
     data.type = "roundrectangle";
@@ -113,7 +113,7 @@ export default function parseSlice(slice, sliceType) {
       // EXCEPTION status: OVS has SmartNIC (usually SmartNIC has OVS)
       if (links[i].label === "has" && objNodes[links[i].target].Type === "SmartNIC" && 
       objNodes[links[i].source].Type === "OVS" && links[i].source === id) {
-        parentId = objNodes[links[i].target].id;
+        parentId = parseInt(objNodes[links[i].target].id);
         break;
       }
 
@@ -132,7 +132,7 @@ export default function parseSlice(slice, sliceType) {
       // Create NetworkService with type "L2Bridge", which has parent site
       data = {
         parent: getSiteIdbyName(node.Site),
-        id: node.id,
+        id: parseInt(node.id),
         label: "NetworkService",
         type: "roundrectangle",
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
@@ -140,7 +140,7 @@ export default function parseSlice(slice, sliceType) {
     elements.push(data);
     } else if (node.Class === "NetworkService" && node.Type !== "OVS") {
       data = {
-        id: node.id,
+        id: parseInt(node.id),
         label: node.Type,
         type: "roundrectangle",
         properties: { class: "NetworkService", name: node.Name, type: node.Type },
