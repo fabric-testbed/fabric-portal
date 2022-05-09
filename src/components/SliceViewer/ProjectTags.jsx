@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { getProject } from "../../services/projectRegistryService.js";
 import { toast } from "react-toastify";
@@ -102,18 +102,7 @@ export default class SideLinks extends Component {
         </div>
       }
       {
-        showSpinner && 
-        <div className="d-flex flex-row justify-content-center my-5">
-          <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            aria-hidden="true"
-            variant="primary"
-          />
-          <span className="text-primary ml-2"><b>Loading project tags...</b></span>
-        </div>
+        showSpinner && <SpinnerWithText text={"Loading project tags..."} />
       }
     </div>
     )

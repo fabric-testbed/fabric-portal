@@ -11,7 +11,7 @@ import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import Calendar from "../components/common/Calendar";
 
 import { sitesNameMapping }  from "../data/sites";
@@ -253,9 +253,9 @@ class NewSliceForm extends React.Component {
         </Link>
       </div>
       <div className="d-flex flex-column align-items-center w-100">
-        <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
-          <div className="d-flex flex-column w-40 ml-5">
-            <div className="card new-slice-card-min-h">
+        <div className="d-flex flex-row justify-content-center w-100 mx-5">
+          <div className="d-flex flex-column w-35 ml-5">
+            <div className="card new-slice-upper-card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
                   Step 1: Select Project 
@@ -268,8 +268,8 @@ class NewSliceForm extends React.Component {
               </div>
             </div>
           </div>
-          <div className="d-flex flex-column w-60 mr-5">
-            <div className="card">
+          <div className="d-flex flex-column w-65 mr-5">
+            <div className="card new-slice-upper-card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
                   Step 2: Input Slice Information
@@ -328,7 +328,7 @@ class NewSliceForm extends React.Component {
           </div>
         </div>
         <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
-          <div className="d-flex flex-column w-40 ml-5">
+          <div className="d-flex flex-column w-35 ml-5">
             <div className="card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
@@ -338,18 +338,7 @@ class NewSliceForm extends React.Component {
               <div>
                 <div className="card-body">
                   {
-                    showResourceSpinner && 
-                    <div className="d-flex flex-row justify-content-center my-5">
-                      <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        variant="primary"
-                      />
-                      <span className="text-primary ml-2"><b>Loading site information...</b></span>
-                    </div>
+                    showResourceSpinner && <SpinnerWithText text={"Loading site resources..."}/>
                   }
                   {
                     !showResourceSpinner && 
@@ -396,7 +385,7 @@ class NewSliceForm extends React.Component {
               </button>
             </div>
           </div>
-          <div className="d-flex flex-column w-60 mr-5">
+          <div className="d-flex flex-column w-65 mr-5">
             <NewSliceDetailForm
               data={selectedData}
               selectedCPs={selectedCPs}
@@ -413,7 +402,7 @@ class NewSliceForm extends React.Component {
               elements={this.generateGraphElements()}
               layout={{name: 'fcose'}}
               sliceName={"new-slice"}
-              defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
+              defaultSize={{"width": 0.55, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
             />
           </div>

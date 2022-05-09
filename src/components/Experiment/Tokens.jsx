@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { createIdToken } from "../../services/credentialManagerService.js";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { toast } from "react-toastify";
@@ -96,18 +96,7 @@ class Tokens extends React.Component {
     return (
       <div className="col-9">
         {
-          this.state.showSpinner &&
-          <div className="d-flex flex-row justify-content-center mt-5">
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              variant="primary"
-            />
-            <span className="text-primary ml-2"><b>Loading projects to create token...</b></span>
-          </div>
+          this.state.showSpinner && <SpinnerWithText text={"Loading projects to create token..."} />
         }
         {
           !this.state.showSpinner &&
