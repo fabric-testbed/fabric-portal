@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
+import moment from 'moment';
 import { toast } from "react-toastify";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
@@ -17,6 +18,7 @@ import Calendar from "../components/common/Calendar";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
+// import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
@@ -38,6 +40,15 @@ class NewSliceForm extends React.Component {
     parsedResources: null,
     selectedCPs: [],
   }
+
+  // componentDidMount() {
+  //   const resources = getResources();
+  //   const parsedObj = sitesParser(resources, this.state.ancronymToName);
+  //   this.setState({ parsedResources: parsedObj });
+
+  //   // generate a graph uuid for the new slice
+  //   this.setState({ graphID: uuidv4() });
+  // }
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
@@ -87,7 +98,16 @@ class NewSliceForm extends React.Component {
   }
 
   handleTimeChange = (value) => {
-    this.setState({ leaseEndTime: value });
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ leaseEndTime: outputTime });
   }
 
   generateSliceJSON = () => {
@@ -349,7 +369,7 @@ class NewSliceForm extends React.Component {
                       </div>
                       <div className="form-group col-md-12">
                         <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
-                        <Calendar className="date-time-picker-control" onTimeChange={this.handleTimeChange} />
+                        <Calendar onTimeChange={this.handleTimeChange} />
                       </div>
                       <div className="form-group col-md-12 d-flex flex-row">
                         <button
@@ -426,7 +446,7 @@ class NewSliceForm extends React.Component {
               elements={this.generateGraphElements()}
               layout={{name: 'fcose'}}
               sliceName={"new-slice"}
-              defaultSize={{"width": 0.55, "height": 0.75, "zoom": 1}}
+              defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
               onSaveDraft={this.handleSaveDraft}
               onUseDraft={this.handleUseDraft}

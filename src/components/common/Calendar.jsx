@@ -7,12 +7,12 @@ function Calendar({ onTimeChange }) {
   return (
     <div>
       <DateTimePicker
-        onChange={e => {onChange(e); onTimeChange(value);}}
+        onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
         minDate={new Date()}
         required={true}
-        format="y-MM-dd h:mm:ss"
+        format="yyyy-MM-dd HH:mm:ss"
       />
     </div>
   );

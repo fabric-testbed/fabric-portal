@@ -5,9 +5,13 @@ import validator from  "../../utils/sliceValidator";
 export default class NewSliceDetailForm extends Component {
   state = {
     nodeName: "",
+    isNameChanged: false,
     core: 0,
+    isCoreChanged: false,
     ram: 0,
+    isRamChanged: false,
     disk: 0,
+    isDiskChanged: false,
     showVMComponent: false,
     validationResult: {
       isValid: true,
@@ -15,8 +19,18 @@ export default class NewSliceDetailForm extends Component {
     }
   }
 
+  // TODO: refactor code.
   componentWillReceiveProps(props) {
     this.setState({
+      nodeName: "",
+      isNameChanged: false,
+      core: 0,
+      isCoreChanged: false,
+      ram: 0,
+      isRamChanged: false,
+      disk: 0,
+      isDiskChanged: false,
+      showVMComponent: false,
       validationResult: {
         isValid: true,
         message: ""
@@ -27,25 +41,25 @@ export default class NewSliceDetailForm extends Component {
   handleNameChange = (e) => {
     const nodeName = e.target.value;
     const validationResult = validator.validateDetailForm("name", nodeName, this.props.data.id, this.props.nodes);
-    this.setState({ nodeName, validationResult });
+    this.setState({ nodeName, validationResult, isNameChanged: true });
   }
 
   handleCoreChange = (e) => {
     const core = Number(e.target.value);
     const validationResult = validator.validateDetailForm("capacity", core);
-    this.setState({ core, validationResult });
+    this.setState({ core, validationResult, isCoreChanged: true });
   }
 
   handleRamChange = (e) => {
     const ram= Number(e.target.value);
     const validationResult = validator.validateDetailForm("capacity", ram);
-    this.setState({ ram, validationResult });
+    this.setState({ ram, validationResult, isRamChanged: true });
   }
 
   handleDiskChange = (e) => {
     const disk = Number(e.target.value);
     const validationResult = validator.validateDetailForm("capacity", disk);
-    this.setState({ disk, validationResult });
+    this.setState({ disk, validationResult, isDiskChanged: true });
   }
 
   handleShowVMComponent = () => {
@@ -55,9 +69,14 @@ export default class NewSliceDetailForm extends Component {
 
   handleVMUpdate = (e) => {
     e.preventDefault();
-    const { nodeName, core, ram, disk } = this.state;
-    const capacities = JSON.stringify({"core": core, "ram": ram, "disk": disk});
-    this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: nodeName, new_capacities: capacities });
+    const data = this.props.data;
+    const { nodeName, core, ram, disk, isNameChanged, isCoreChanged, isRamChanged, isDiskChanged } = this.state;
+    const newName = isNameChanged ? nodeName : data.properties.name;
+    const newCore = isCoreChanged ? core : JSON.parse(data.capacities).core;
+    const newRam = isRamChanged ? ram : JSON.parse(data.capacities).ram;
+    const newDisk = isDiskChanged ? disk : JSON.parse(data.capacities).disk;
+    const capacities = JSON.stringify({"core": newCore, "ram": newRam, "disk": newDisk});
+    this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: newName, new_capacities: capacities });
   }
 
   isCPAvailable = () => {
