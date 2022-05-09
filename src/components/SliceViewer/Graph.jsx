@@ -91,10 +91,34 @@ export default class Graph extends Component {
               overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
             >
               <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
-                Download in JSON
+                Download JSON
               </button>
             </OverlayTrigger>
-          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
+          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
+          {
+            this.props.isNewSlice && 
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("slice-save-draft-tooltip", "Use the slice graph draft stored in your browser.")}
+            >
+              <button onClick={this.props.onUseDraft} className="btn btn-sm btn-outline-success ml-2">
+                Use Draft
+              </button>
+          </OverlayTrigger>
+          }
+          {
+            this.props.isNewSlice &&
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("slice-save-draft-tooltip", "Save this slice graph draft in your current browser.")}
+            >
+              <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success">
+                Save Draft
+              </button>
+            </OverlayTrigger>
+          }
         </div>
         <CytoscapeComponent
           elements={elements}
