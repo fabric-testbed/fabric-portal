@@ -368,22 +368,6 @@ class NewSliceForm extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="mt-2">
-              <button
-                className="btn btn-sm btn-success mb-2"
-                type="button"
-                onClick={() => this.handleSaveDraft()}
-              >
-                Save Draft
-              </button>
-              <button
-                className="btn btn-sm btn-success mb-2 ml-2"
-                type="button"
-                onClick={() => this.handleUseDraft()}
-              >
-                Use Draft
-              </button>
-            </div>
           </div>
           <div className="d-flex flex-column w-65 mr-5">
             <NewSliceDetailForm
@@ -404,6 +388,8 @@ class NewSliceForm extends React.Component {
               sliceName={"new-slice"}
               defaultSize={{"width": 0.55, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
+              onSaveDraft={this.handleSaveDraft}
+              onUseDraft={this.handleUseDraft}
             />
           </div>
         </div>
