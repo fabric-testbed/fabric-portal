@@ -85,6 +85,10 @@ export default class Graph extends Component {
     return(
       <div className="border"> 
         <div className="d-flex flex-row-reverse">
+          {
+            this.props.isNewSlice && 
+            <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger ml-2">Clear Graph</button>
+          }
             <OverlayTrigger
               placement="top"
               delay={{ show: 100, hide: 300 }}

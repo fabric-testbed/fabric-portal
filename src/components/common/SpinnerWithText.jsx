@@ -3,7 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const SpinnerWithText = (props) => {
   return (
-    <div className="d-flex flex-row justify-content-center my-5">
+    <div className="d-flex flex-row justify-content-center">
       <Spinner
         as="span"
         animation="border"
