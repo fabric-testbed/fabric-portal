@@ -10,12 +10,20 @@ body {
   margin-bottom: 2rem;
 }
 
+.w-35 { 
+  width: 35%;
+}
+
 .w-40 {
   width: 40%;
 }
 
 .w-60 {
   width: 60%;;
+}
+
+.w-65 {
+  width: 65%;
 }
 
 .home-container {
@@ -536,6 +544,7 @@ ul {
   border-radius: 0.25rem;
 }
 
-.new-slice-card-min-h {
-  min-height: 22rem;
+.new-slice-upper-card {
+  height: 22rem;
+  overflow: scroll;
 }

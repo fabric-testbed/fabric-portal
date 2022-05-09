@@ -4,7 +4,7 @@ import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/orchestratorService.js";
@@ -138,18 +138,7 @@ class Slices extends React.Component {
       <div className="col-9">
         <h1>Slices</h1>
         {
-          showSpinner &&
-          <div className="d-flex flex-row justify-content-center mt-5">
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              variant="primary"
-            />
-            <span className="text-primary ml-2"><b>Loading slices...</b></span>
-          </div>
+          showSpinner && <SpinnerWithText text={"Loading slices..."} />
         }
         {
           !showSpinner && !hasProject &&
