@@ -26,22 +26,22 @@ class NewSliceForm extends React.Component {
     sliceName: "",
     sshKey: "",
     leaseEndTime: "",
-    errors: {},
     ancronymToName: sitesNameMapping.ancronymToName,
+    showResourceSpinner: false,
+    showKeySpinner: false,
+    sliverKeys: [],
+    projectIdToGenerateToken: {},
     graphID: "",
     sliceNodes: [],
     sliceLinks: [],
     selectedData: null,
     parsedResources: null,
     selectedCPs: [],
-    showResourceSpinner: false,
-    sliverKeys: [],
-    projectIdToGenerateToken: {},
   }
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
-    this.setState({ showResourceSpinner: true });
+    this.setState({ showResourceSpinner: true, showKeySpinner: true });
 
     try {
       const { data: resources } = await getResources();
@@ -50,13 +50,28 @@ class NewSliceForm extends React.Component {
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
+        showKeySpinner: false,
         sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
       });
     } catch (ex) {
-      toast.error("Failed to load resource/ sliver key/ project information. Please reload this page.");
+      toast.error("Failed to load resource/ sliver key information. Please reload this page.");
     }
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
+  }
+
+  refreshSSHKey = async () => {
+    this.setState({ showKeySpinner: true });
+
+    try {
+      const { data: keys } = await getActiveKeys();
+      this.setState({ 
+        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        showKeySpinner: false
+      });
+    } catch (ex) {
+      toast.error("Failed to refresh keys. Please try again later.");
+    }
   }
 
   handleProjectChange = (uuid) => {
@@ -123,6 +138,10 @@ class NewSliceForm extends React.Component {
   handleUseDraft = () => {
     const sliceDraft = JSON.parse(localStorage.getItem("sliceDraft"));
     this.setState({ sliceNodes: sliceDraft.nodes, sliceLinks: sliceDraft.links });
+  }
+
+  handleClearGraph = () => {
+    this.setState({ sliceNodes: [], sliceLinks: [] });
   }
 
   handleNodeSelect = (selectedData) => {
@@ -235,8 +254,8 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sshKey, sliverKeys, selectedData,
-      parsedResources, sliceNodes, sliceLinks, selectedCPs, showResourceSpinner } 
+    const { sshKey, sliverKeys, selectedData, showKeySpinner, showResourceSpinner,
+      parsedResources, sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
     return (
@@ -286,7 +305,10 @@ class NewSliceForm extends React.Component {
                       <div className="form-group col-md-12">
                         <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
                         {
-                          sliverKeys.length > 0 && 
+                          showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
+                        }
+                        {
+                          sliverKeys.length > 0 && !showKeySpinner && 
                             <select
                               className="form-control form-control-sm"
                               value={sshKey}
@@ -301,9 +323,27 @@ class NewSliceForm extends React.Component {
                             </select>
                         }
                         {
-                          sliverKeys.length === 0 && 
-                          <div className="sm-alert alert-warning" role="alert">
-                            Please generate or upload a sliver key from Experiments - Manage SSH Keys page first.
+                          sliverKeys.length === 0 && !showKeySpinner && 
+                          <div className="sm-alert alert-warning d-flex flex-row align-items-center" role="alert">
+                            <span>
+                              Please generate or upload sliver key from
+                              <Link
+                                to="/experiments#sshKeys"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mx-1 font-weight-bold"
+                              >
+                                Manage SSH Keys
+                              </Link>first. Then click the right button.
+                            </span>
+                            <button
+                              className="btn btn-sm btn-outline-primary ml-auto"
+                              type="button"
+                              onClick={() => this.refreshSSHKey()}
+                            >
+                              <i className="fa fa-refresh mr-2"></i>
+                              Refresh Keys
+                            </button>
                           </div>
                         }
                       </div>
@@ -390,6 +430,7 @@ class NewSliceForm extends React.Component {
               onNodeSelect={this.handleNodeSelect}
               onSaveDraft={this.handleSaveDraft}
               onUseDraft={this.handleUseDraft}
+              onClearGraph={this.handleClearGraph}
             />
           </div>
         </div>
