@@ -79,6 +79,10 @@ export default class SliceViewer extends Component {
 
     const { slice, elements, selectedData, hasProject } = this.state;
 
+    console.log(slice)
+
+    console.log(elements)
+
     return(
       <div>
         {
