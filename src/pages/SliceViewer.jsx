@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getSliceById } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/fakeSlices";
 import sliceParser from "../services/parser/sliceParser.js";
-import toLocaleTime from "../utils/toLocaleTime";
+import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
 
 export default class SliceViewer extends Component { 
@@ -20,6 +21,8 @@ export default class SliceViewer extends Component {
       "slice_name": "Slice Viewer",
       "slice_state": "StableOK"
     },
+    // elements: sliceParser(getSliceById(1)["value"]["slices"][0]["slice_model"]),
+    // slice: getSliceById(1)["value"]["slices"][0],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
     hasProject: true,
@@ -79,7 +82,7 @@ export default class SliceViewer extends Component {
 
     const { slice, elements, selectedData, hasProject } = this.state;
 
-    console.log(slice)
+    console.log(JSON.parse(slice.slice_model))
 
     console.log(elements)
 
@@ -93,7 +96,7 @@ export default class SliceViewer extends Component {
                 <b>{slice.slice_name}</b>
                 <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
               </h2>
-              <u>Lease End: {toLocaleTime(slice.lease_end)}</u>
+              <u>Lease End: {sliceTimeParser(slice.lease_end)}</u>
               <Link to="/experiments#slices">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
@@ -108,11 +111,10 @@ export default class SliceViewer extends Component {
                 elements.length > 0 &&
                 <Graph
                   className="align-self-end"
-                  layout={{name: 'fcose'}}
-                  defaultSize={{"width": 0.65, "height": 0.75, "zoom": 0.85}}
                   isNewSlice={false}
                   elements={elements}
                   sliceName={slice.slice_name}
+                  defaultSize={{"width": 0.65, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
                 />
               }

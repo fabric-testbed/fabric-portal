@@ -263,9 +263,7 @@ class NewSliceForm extends React.Component {
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
-        const { data } = await createSlice(requestData);
-        console.log("new generated slice: ");
-        console.log(data.value.reservations[0]);
+        await createSlice(requestData);
         toast.success("Slice created successfully.");
         // redirect users directly to the projects page
         this.props.history.push("/experiments");
@@ -459,7 +457,6 @@ class NewSliceForm extends React.Component {
               className="align-self-end"
               isNewSlice={true}
               elements={this.generateGraphElements()}
-              layout={{name: 'fcose'}}
               sliceName={"new-slice"}
               defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}

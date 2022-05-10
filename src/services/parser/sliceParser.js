@@ -89,11 +89,19 @@ export default function parseSlice(slice, sliceType) {
     if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
   }
 
-  const generateConnectionPoint = (data, link) => {
+  const generateConnectionPoint = (data, link, type) => {
+    // type: "normal" - OVS has CP
+    // "reverse" - CP has OVS
     const properties = {};
-    const originalNode = objNodes[link.target];
+    let originalNode = {};
+    if (type === "normal") {
+      originalNode = objNodes[link.target];
+      data.parent = findParentNode(link.source);
+    } else if (type === "reverse") {
+      originalNode = objNodes[link.source];
+      data.parent = findParentNode(link.target);
+    }
     data.id = parseInt(originalNode.id);
-    data.parent = findParentNode(link.source);
     data.label = "";
     data.type = "roundrectangle";
     properties.name = originalNode.Name;
@@ -111,7 +119,7 @@ export default function parseSlice(slice, sliceType) {
     let parentId = -1;
     for (let i = 0; i < links.length; i++) {
       // EXCEPTION status: OVS has SmartNIC (usually SmartNIC has OVS)
-      if (links[i].label === "has" && objNodes[links[i].target].Type === "SmartNIC" && 
+      if (links[i].label === "has" && ["SmartNIC", "SharedNIC"].includes(objNodes[links[i].target].Type) && 
       objNodes[links[i].source].Type === "OVS" && links[i].source === id) {
         parentId = parseInt(objNodes[links[i].target].id);
         break;
@@ -157,43 +165,52 @@ export default function parseSlice(slice, sliceType) {
     let data = {};
     // "has" => parent/ child nodes.
     if (link.label === "has") {
-      // EXCEPTION status: OVS has SmartNIC (usually SmartNIC has OVS)
-      if (objNodes[link.target].Type === "SmartNIC" && 
-        objNodes[link.source].Type === "OVS") {
+      // 2 main categories for "has"
+      // 1. VM node has NIC/ GPU/ NVME... / or vice versa
+      if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.target].Type) && 
+        objNodes[link.source].Type === "VM") {
+        if (!parentNodeIds.includes(link.source)) {
+          // Store VM info, will 
+          parentNodeIds.push(link.source);
+        }
+        data.parent = link.source;
+        generateDataElement(data, link.target);
+        elements.push(data);
+      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.source].Type) && 
+      objNodes[link.target].Type === "VM") {
+        // EXCEPTION: NIC/ GPU/ NVME has VM
         if (!parentNodeIds.includes(link.target)) {
           parentNodeIds.push(link.target);
         }
         data.parent = link.target;
-        if (objNodes[link.target].Class !== "NetworkService") {
-          generateDataElement(data, link.target);
-          elements.push(data)
-        }
-      } else {
-        if (!parentNodeIds.includes(link.source)) {
-          parentNodeIds.push(link.source);
-        }
-        data.parent = link.source;
-        if (objNodes[link.target].Class !== "NetworkService") {
-          generateDataElement(data, link.target);
-          elements.push(data)
-        }
+        generateDataElement(data, link.source);
+        elements.push(data);
       }
+
+      // 2. NIC has OVS... / or vise versa
+      // No need to generate element for OVS. Done.
     }
 
     // 'connects' => edge
     if (link.label === "connects") {
       // if NetworkService to CP, then add CP node inside NS's parent, don't add edge.
-      if (objNodes[link.source].Class === "NetworkService"
+      if ((objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
-        && objNodes[link.source].Type === "OVS") {
-        generateConnectionPoint(data, link);
+        && objNodes[link.source].Type === "OVS")) {
+          generateConnectionPoint(data, link, "normal");
+          elements.push(data);
+      } else if ((objNodes[link.target].Class === "NetworkService"
+      && objNodes[link.source].Class === "ConnectionPoint"
+      && objNodes[link.target].Type === "OVS")) {
+        // EXCEPTION: Connection Point (source) has OVS (target)
+        generateConnectionPoint(data, link, "reverse");
         elements.push(data);
-      } else if (objNodes[link.source].Class === "NetworkService"
+      }else if (objNodes[link.source].Class === "NetworkService"
         && (objNodes[link.target].Type === "ServicePort" || objNodes[link.target].Type === "DedicatedPort" ) 
         && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.source].Type))){
           const cp_data = {
-            parent: link.source,
-            id: link.target,
+            parent: parseInt(link.source),
+            id: parseInt(link.target),
             label: "",
             type: "roundrectangle",
             properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
@@ -203,8 +220,8 @@ export default function parseSlice(slice, sliceType) {
         && (objNodes[link.source].Type === "ServicePort" || objNodes[link.source].Type === "DedicatedPort")
         && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.target].Type))){
           data = {
-            parent: link.target,
-            id: link.source,
+            parent: parseInt(link.target),
+            id: parseInt(link.source),
             label: "",
             type: "roundrectangle",
             properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
