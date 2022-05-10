@@ -24,6 +24,10 @@ function handleCy(cy) {
     cy.layout(layout).run()
   }, SELECT_THRESHOLD);
 
+  // apply layout on graph render.
+  refreshLayout();
+
+  // refresh layout when elements change.
   cy.on('add remove', () => {
     refreshLayout();
   });
