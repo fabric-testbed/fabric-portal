@@ -53,6 +53,10 @@ export function deleteUser(userType, projectId, userId) {
   return http.put(url);
 }
 
+export function getTags() {
+  return http.get(apiEndpoint + "/tags");
+}
+
 export function updateTags(originalTags, project) {
   const newTags = project.tags;
   // compare original tags with new tags to decide

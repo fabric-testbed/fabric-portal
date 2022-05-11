@@ -17,8 +17,8 @@ import Calendar from "../components/common/Calendar";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
-// import  { getResources } from "../services/fakeResources.js";
+// import { getResources } from "../services/resourcesService.js";
+import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
@@ -41,35 +41,35 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
   }
 
-  // componentDidMount() {
-  //   const resources = getResources();
-  //   const parsedObj = sitesParser(resources, this.state.ancronymToName);
-  //   this.setState({ parsedResources: parsedObj });
+  componentDidMount() {
+    const resources = getResources();
+    const parsedObj = sitesParser(resources, this.state.ancronymToName);
+    this.setState({ parsedResources: parsedObj });
 
-  //   // generate a graph uuid for the new slice
-  //   this.setState({ graphID: uuidv4() });
-  // }
-
-  async componentDidMount() {
-    // Show spinner in SideNodes when loading resources
-    this.setState({ showResourceSpinner: true, showKeySpinner: true });
-
-    try {
-      const { data: resources } = await getResources();
-      const { data: keys } = await getActiveKeys();
-      const parsedObj = sitesParser(resources, this.state.ancronymToName);
-      this.setState({ 
-        parsedResources: parsedObj,
-        showResourceSpinner: false,
-        showKeySpinner: false,
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
-      });
-    } catch (ex) {
-      toast.error("Failed to load resource/ sliver key information. Please reload this page.");
-    }
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }
+
+  // async componentDidMount() {
+  //   // Show spinner in SideNodes when loading resources
+  //   this.setState({ showResourceSpinner: true, showKeySpinner: true });
+
+  //   try {
+  //     const { data: resources } = await getResources();
+  //     const { data: keys } = await getActiveKeys();
+  //     const parsedObj = sitesParser(resources, this.state.ancronymToName);
+  //     this.setState({ 
+  //       parsedResources: parsedObj,
+  //       showResourceSpinner: false,
+  //       showKeySpinner: false,
+  //       sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+  //     });
+  //   } catch (ex) {
+  //     toast.error("Failed to load resource/ sliver key information. Please reload this page.");
+  //   }
+  //   // generate a graph uuid for the new slice
+  //   this.setState({ graphID: uuidv4() });
+  // }
 
   refreshSSHKey = async () => {
     this.setState({ showKeySpinner: true });
@@ -309,12 +309,12 @@ class NewSliceForm extends React.Component {
             <div className="card new-slice-upper-card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
-                  Step 1: Select Project 
+                  Step 1: Select Project
                 </button>
               </div>
               <div>
                 <div className="card-body">
-                  <ProjectTags onProjectChange={this.handleProjectChange} />
+                  {/* <ProjectTags onProjectChange={this.handleProjectChange} /> */}
                 </div>
               </div>
             </div>
