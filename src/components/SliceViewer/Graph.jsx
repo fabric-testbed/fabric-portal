@@ -89,19 +89,15 @@ export default class Graph extends Component {
     return(
       <div className="border"> 
         <div className="d-flex flex-row-reverse">
-          {
-            this.props.isNewSlice && 
-            <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger ml-2">Clear Graph</button>
-          }
-            <OverlayTrigger
-              placement="top"
-              delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
-            >
-              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
-                Download JSON
-              </button>
-            </OverlayTrigger>
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 100, hide: 300 }}
+            overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
+          >
+            <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
+              Download JSON
+            </button>
+          </OverlayTrigger>
           <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
           {
             this.props.isNewSlice && 
@@ -122,10 +118,14 @@ export default class Graph extends Component {
               delay={{ show: 100, hide: 300 }}
               overlay={renderTooltip("slice-save-draft-tooltip", "Save this slice graph draft in your current browser.")}
             >
-              <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success">
+              <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
                 Save Draft
               </button>
             </OverlayTrigger>
+          }
+          {
+            this.props.isNewSlice && 
+            <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger">Clear Graph</button>
           }
         </div>
         <CytoscapeComponent

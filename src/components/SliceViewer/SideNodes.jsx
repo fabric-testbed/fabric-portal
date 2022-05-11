@@ -204,7 +204,7 @@ class SideNodes extends React.Component {
                 <i className="fa fa-exclamation-triangle" /> {validationResult.message}
               </div>
             }
-            <div className="mt-2 bg-light">
+            <div className="mt-2 bg-light node-components-panel">
               <SingleComponent
                 addedComponents={nodeComponents}
                 onSliceComponentAdd={this.handleSliceComponentAdd}
