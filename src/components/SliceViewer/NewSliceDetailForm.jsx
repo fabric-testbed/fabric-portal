@@ -112,7 +112,6 @@ export default class NewSliceDetailForm extends Component {
 
   handleSingleComponentAdd = (data) => {
     this.props.onSingleComponentAdd(data);
-    this.setState({ showVMComponent: false });
   }
 
   getVMComponents = () => {
@@ -161,7 +160,7 @@ export default class NewSliceDetailForm extends Component {
             }
 
             {
-              data && data.properties && data.properties.class === "Composite Node" &&
+              data && data.properties && data.properties.class === "CompositeNode" &&
               <div className="form-row px-3">
                 <div className="col mb-2">
                   <label className="slice-builder-label">Site Name</label>

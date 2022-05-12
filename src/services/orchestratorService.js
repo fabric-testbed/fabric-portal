@@ -16,11 +16,22 @@ export function getSliceById(id) {
 }
 
 export function createSlice(slice) {
-  const query = new URLSearchParams({
-    sliceName: slice.name,
-    sshKey: slice.sshKey,
-    leaseEndTime: slice.leaseEndTime,
-  }).toString();
+  let query = "";
+
+  // lease end time is optional.
+  if (slice.leaseEndTime) {
+    query = new URLSearchParams({
+      sliceName: slice.name,
+      sshKey: slice.sshKey,
+      leaseEndTime: slice.leaseEndTime,
+    }).toString();
+  } else {
+    query = new URLSearchParams({
+      sliceName: slice.name,
+      sshKey: slice.sshKey,
+    }).toString();
+  }
+
   const url = apiEndpoint + "/create?" + query;
   http.post(
     url,

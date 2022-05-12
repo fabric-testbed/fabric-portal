@@ -35,7 +35,7 @@ export default function parseSlice(slice, sliceType) {
   
   // create site nodes - the highest level parent node.
   sites.forEach(site => {
-    const siteNode = { id: parseInt(site.id), label: site.name, type: "roundrectangle", properties: { class: "Composite Node", name: site.name } };
+    const siteNode = { id: parseInt(site.id), label: site.name, type: "roundrectangle", properties: { class: "CompositeNode", name: site.name, type: "Site" } };
     elements.push(siteNode);
   })
   
