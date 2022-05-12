@@ -108,6 +108,7 @@ export default class Graph extends Component {
             >
               <button
                 onClick={this.props.onUseDraft}
+                disabled={!localStorage.getItem("sliceDraft")}
                 className="btn btn-sm btn-outline-success ml-2"
               >
                 Use Draft

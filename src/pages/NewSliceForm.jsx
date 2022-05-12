@@ -37,7 +37,7 @@ class NewSliceForm extends React.Component {
     showKeySpinner: false,
     showSliceSpinner: false,
     sliverKeys: [],
-    projectIdToGenerateToken: {},
+    projectIdToGenerateToken: "",
     graphID: "",
     sliceNodes: [],
     sliceLinks: [],
@@ -155,7 +155,11 @@ class NewSliceForm extends React.Component {
 
   handleUseDraft = () => {
     const sliceDraft = JSON.parse(localStorage.getItem("sliceDraft"));
-    this.setState({ sliceNodes: sliceDraft.nodes, sliceLinks: sliceDraft.links });
+    this.setState({ 
+      sliceNodes: sliceDraft.nodes,
+      sliceLinks: sliceDraft.links,
+      graphID: sliceDraft.nodes.length > 0 ? sliceDraft.nodes[0].graphID : ""
+    });
   }
 
   handleClearGraph = () => {
@@ -278,9 +282,9 @@ class NewSliceForm extends React.Component {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
         const { data } = await createSlice(requestData);
-        const slice_id = data.value.reservations[0].slice_id;
         toast.success("Slice created successfully.");
-        console.log("SLICE CREATED SUCCESSFULLY")
+        console.log("SLICE CREATED SUCCESSFULLY");
+        const slice_id = data["value"]["reservations"][0].slice_id;
         console.log(`/slices/${slice_id}`)
         // redirect users directly to the new slice page
         this.props.history.push(`/slices/${slice_id}`);
@@ -347,14 +351,14 @@ class NewSliceForm extends React.Component {
                       <div className="form-group col-md-12">
                         <label htmlFor="inputSliceName" className="slice-form-label">
                           <span>Slice Name</span>
-                          <span className="form-label-badge">*required</span>
+                          <span className="form-label-danger">*required</span>
                         </label>
                         <input  className="form-control form-control-sm" onChange={this.handleSliceNameChange}/>
                       </div>
                       <div className="form-group col-md-12">
                         <label htmlFor="inputSSHKey" className="slice-form-label">
                           <span>SSH Key</span>
-                          <span className="form-label-badge">*required</span>
+                          <span className="form-label-danger">*required</span>
                         </label>
                         {
                           showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
@@ -400,7 +404,10 @@ class NewSliceForm extends React.Component {
                         }
                       </div>
                       <div className="form-group col-md-12">
-                        <label htmlFor="inputLeaseEndTime" className="slice-form-label">Lease End Time</label>
+                        <label htmlFor="inputLeaseEndTime" className="slice-form-label">
+                          <span>Lease End Time</span>
+                          <span className="form-label-success">Optional. Default end time is 24 hours upon creation if not selected.</span>
+                        </label>
                         <Calendar onTimeChange={this.handleTimeChange} />
                       </div>
                       <div className="form-group col-md-12 d-flex flex-row">

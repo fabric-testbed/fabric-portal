@@ -539,8 +539,14 @@ ul {
   overflow: scroll;
 }
 
-.form-label-badge {
+.form-label-danger {
   font-size: 0.85em;
   margin-left: .5rem;
   color: $danger;
+}
+
+.form-label-success {
+  font-size: 0.85em;
+  margin-left: .5rem;
+  color: $success;
 }
