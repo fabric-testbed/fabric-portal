@@ -35,6 +35,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     "Type": component.type,
     "Model": component.model,
     "Details": modelDetails[component.model],
+    "StitchNode": false,
     "id": component_node_id,
     "NodeID": uuidv4(),
     "GraphID": graphID,
@@ -66,6 +67,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "id": component_node_id + 1,
       "Type": "OVS",
       "Layer": "L2",
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "parentID": component_node_id,
@@ -75,12 +77,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
 
     const cp_node =   {
       "labels": ":ConnectionPoint:GraphNode",
+      "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "connectFrom": component_node_id + 1,
@@ -134,6 +138,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "id": component_node_id + 1,
       "Type": "OVS",
       "Layer": "L2",
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "parentID": component_node_id,
@@ -143,12 +148,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
 
     const cp_node_1 =   {
       "labels": ":ConnectionPoint:GraphNode",
+      "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "connectFrom": component_node_id + 1,
@@ -158,12 +165,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
 
     const cp_node_2 =   {
       "labels": ":ConnectionPoint:GraphNode",
+      "Labels": JSON.stringify({"local_name": "p2"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
       "Name":  `${node.site}-${node.name}-${component.name}-p2`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
       "NodeID": uuidv4(),
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "connectFrom": component_node_id + 1,
@@ -256,7 +265,8 @@ const addVM = (node, components, graphID, nodes, links) => {
     "Type": "VM",
     "id": vm_node_id,
     "NodeID": uuidv4(),
-    "GraphID": graphID
+    "GraphID": graphID,
+    "StitchNode": false,
   }
 
   let component_node_id = vm_node_id + 1;
@@ -307,6 +317,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "id": new_ns_id,
       "Type": type,
       "Layer": "L2",
+      "StitchNode": false,
       "GraphID": graphID,
       "layout": JSON.stringify({
         "parentID": selectedCPs[0].id,
@@ -321,7 +332,8 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "id": new_ns_id,
       "Type": type,
       "Layer": (type === "FABNetv4" || type === "FABNetv6") ? "L3" : "L2",
-      "GraphID": graphID
+      "GraphID": graphID,
+      "StitchNode": false,
     }
   }
 
@@ -344,6 +356,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
     const new_ns_cp = {
       "labels": ":ConnectionPoint:GraphNode",
+      "Labels": JSON.stringify({"local_name": `p${i}`}),
       "Class": "ConnectionPoint",
       "Type": "ServicePort",
       "Name": `${cp.properties.name}-p${i}`,
@@ -351,6 +364,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Capacities": JSON.stringify({"unit": 1,}),
       "id":  new_node_id_starts,
       "GraphID": graphID,
+      "StitchNode": false,
       "layout": JSON.stringify({
         "connectFrom": new_ns_id,
         "relevantNodeIDs": relevantNodeIDs,
@@ -362,6 +376,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
     const new_link_node = {
       "GraphID": graphID,
+      "StitchNode": false,
       "Class": "Link",
       "NodeID": uuidv4(),
       "Name": `${cp.properties.name}-p${i}-link`,

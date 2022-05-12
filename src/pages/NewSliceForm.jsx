@@ -281,10 +281,10 @@ class NewSliceForm extends React.Component {
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
-        const { data } = await createSlice(requestData);
+        const { value } = await createSlice(requestData);
         toast.success("Slice created successfully.");
         console.log("SLICE CREATED SUCCESSFULLY");
-        const slice_id = data["value"]["reservations"][0].slice_id;
+        const slice_id = value["reservations"][0].slice_id;
         console.log(`/slices/${slice_id}`)
         // redirect users directly to the new slice page
         this.props.history.push(`/slices/${slice_id}`);
