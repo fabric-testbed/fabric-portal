@@ -27,6 +27,7 @@ class ProjectTags extends React.Component {
         <div className="font-weight-bold mb-2">{label}</div>
         <SelectGroup
           name={"Tags"}
+          tags={tags}
           baseOptions={baseOptions}
           optionsMapping={optionsMapping}
           onTagAdd={this.handleTagAdd}

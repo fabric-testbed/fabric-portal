@@ -14,6 +14,12 @@ class SelectGroup extends React.Component {
     this.setState({ secondOption: e.target.value });
   }
 
+  checkTagExists = () => {
+    const { baseOption, secondOption } = this.state;
+
+    return this.props.tags.include(`${baseOption}.${secondOption}`);
+  }
+
   render() {
     const { name, baseOptions, optionsMapping } = this.props;
     const { baseOption, secondOption } = this.state;
@@ -57,7 +63,7 @@ class SelectGroup extends React.Component {
               <button
                 className="btn btn-sm btn-success"
                 type="button"
-                disabled={secondOption === ""}
+                disabled={secondOption === "" || this.checkTagExists}
                 onClick={() => this.props.onTagAdd(`${baseOption}.${secondOption}`)}
               >
                 <i className="fa fa-plus"></i>
