@@ -16,11 +16,11 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 Cytoscape.use(FCose);
 
 function handleCy(cy) {
-  const SELECT_THRESHOLD = 100;
+  const SELECT_THRESHOLD = 200;
 
   // Refresh Layout
   const refreshLayout = _.debounce(() => {
-    const layout = {name: 'fcose'};
+    const layout = {name: 'fcose', infinite: false};
     cy.layout(layout).run()
   }, SELECT_THRESHOLD);
 
@@ -28,9 +28,9 @@ function handleCy(cy) {
   refreshLayout();
 
   // refresh layout when elements change.
-  cy.on('add remove', () => {
-    refreshLayout();
-  });
+  // cy.on('add remove', () => {
+  //   refreshLayout();
+  // });
 
   return cy;
 }
@@ -106,7 +106,10 @@ export default class Graph extends Component {
               delay={{ show: 100, hide: 300 }}
               overlay={renderTooltip("slice-save-draft-tooltip", "Use the slice graph draft stored in your browser.")}
             >
-              <button onClick={this.props.onUseDraft} className="btn btn-sm btn-outline-success ml-2">
+              <button
+                onClick={this.props.onUseDraft}
+                className="btn btn-sm btn-outline-success ml-2"
+              >
                 Use Draft
               </button>
           </OverlayTrigger>
@@ -116,7 +119,8 @@ export default class Graph extends Component {
             <OverlayTrigger
               placement="top"
               delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-save-draft-tooltip", "Save this slice graph draft in your current browser.")}
+              overlay={renderTooltip("slice-save-draft-tooltip",
+                "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
             >
               <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
                 Save Draft

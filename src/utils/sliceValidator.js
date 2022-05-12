@@ -6,6 +6,43 @@ const isPositiveInteger = (num) => {
   return Number.isInteger(num) && num > 0;
 }
 
+const validateSlice = (sliceName, sshKey, projectIdToGenerateToken, sliceNodes) => {
+  const validationResult = {
+    isValid: false,
+    message: "",
+  };
+
+  if (sliceName === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please input slice name.";
+    return validationResult;
+  }
+
+  if (sshKey === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please select a sliver key.";
+    return validationResult;
+  }
+
+  if (projectIdToGenerateToken === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please select a project.";
+    return validationResult;
+  }
+
+  if (sliceNodes.length === 0) {
+    validationResult.isValid = false;
+    validationResult.message = "Please add nodes, components and network services.";
+    return validationResult;
+  }
+
+    // all validation above are passed.
+    validationResult.isValid = true;
+    validationResult.message = "";
+  
+    return validationResult;
+}
+
 const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents) => {
   const validationResult = {
     isValid: false,
@@ -250,6 +287,7 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 }
 
 const validator = {
+  validateSlice,
   validateNodeComponents,
   validateSingleComponent,
   validateNetworkService,

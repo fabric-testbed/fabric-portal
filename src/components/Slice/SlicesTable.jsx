@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
 import CopyButton from "../common/CopyButton";
-import toLocaleTime from "../../utils/toLocaleTime";
+import sliceTimeParser from "../../utils/sliceTimeParser.js";
 
 class SlicesTable extends Component {
   columns = [
@@ -18,7 +18,7 @@ class SlicesTable extends Component {
         path: "lease_end",
         label: "Lease End",
         content: (slice) => (
-          <span>{toLocaleTime(slice.lease_end)}</span>
+          <span>{sliceTimeParser(slice.lease_end)}</span>
         )
       },
       {

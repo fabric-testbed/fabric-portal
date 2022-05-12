@@ -4,23 +4,27 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 import moment from 'moment';
 import { toast } from "react-toastify";
+
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
+import SpinnerWithText from "../components/common/SpinnerWithText";
+import Calendar from "../components/common/Calendar";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
-import SpinnerWithText from "../components/common/SpinnerWithText";
-import Calendar from "../components/common/Calendar";
+import validator from "../utils/sliceValidator.js";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-// import { getResources } from "../services/resourcesService.js";
-import  { getResources } from "../services/fakeResources.js";
+import { getResources } from "../services/resourcesService.js";
+// import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
-import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
+import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 
 class NewSliceForm extends React.Component {
@@ -31,6 +35,7 @@ class NewSliceForm extends React.Component {
     ancronymToName: sitesNameMapping.ancronymToName,
     showResourceSpinner: false,
     showKeySpinner: false,
+    showSliceSpinner: false,
     sliverKeys: [],
     projectIdToGenerateToken: {},
     graphID: "",
@@ -41,35 +46,26 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
   }
 
-  componentDidMount() {
-    const resources = getResources();
-    const parsedObj = sitesParser(resources, this.state.ancronymToName);
-    this.setState({ parsedResources: parsedObj });
+  async componentDidMount() {
+    // Show spinner in SideNodes when loading resources
+    this.setState({ showResourceSpinner: true, showKeySpinner: true });
 
+    try {
+      const { data: resources } = await getResources();
+      const { data: keys } = await getActiveKeys();
+      const parsedObj = sitesParser(resources, this.state.ancronymToName);
+      this.setState({ 
+        parsedResources: parsedObj,
+        showResourceSpinner: false,
+        showKeySpinner: false,
+        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+      });
+    } catch (ex) {
+      toast.error("Failed to load resource/ sliver key information. Please reload this page.");
+    }
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }
-
-  // async componentDidMount() {
-  //   // Show spinner in SideNodes when loading resources
-  //   this.setState({ showResourceSpinner: true, showKeySpinner: true });
-
-  //   try {
-  //     const { data: resources } = await getResources();
-  //     const { data: keys } = await getActiveKeys();
-  //     const parsedObj = sitesParser(resources, this.state.ancronymToName);
-  //     this.setState({ 
-  //       parsedResources: parsedObj,
-  //       showResourceSpinner: false,
-  //       showKeySpinner: false,
-  //       sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
-  //     });
-  //   } catch (ex) {
-  //     toast.error("Failed to load resource/ sliver key information. Please reload this page.");
-  //   }
-  //   // generate a graph uuid for the new slice
-  //   this.setState({ graphID: uuidv4() });
-  // }
 
   refreshSSHKey = async () => {
     this.setState({ showKeySpinner: true });
@@ -140,7 +136,7 @@ class NewSliceForm extends React.Component {
     return elements;
   }
 
-  handleSaveDraft = () => {
+  handleSaveDraft = (toastMessage) => {
     const sliceJSON = {
       "directed": false,
       "multigraph": false,
@@ -151,8 +147,10 @@ class NewSliceForm extends React.Component {
 
     localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON));
 
-    // Toast a successly saved message
-    toast.success("The slice draft is successfully saved in your browser.");
+    if (toastMessage === "withMessage") {
+      // Toast a successly saved message
+      toast.success("The slice draft is successfully saved in your browser.");
+    }
   }
 
   handleUseDraft = () => {
@@ -186,7 +184,10 @@ class NewSliceForm extends React.Component {
   handleNodeDelete = (data) => {
     const { sliceNodes, sliceLinks } =  this.state;
     const { newSliceNodes, newSliceLinks } = editor.removeNode(data, sliceNodes, sliceLinks);
-    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+    // due to Cytoscape issue, force clean and update the state.
+    this.setState({ sliceNodes: [], sliceLinks: [], selectedData: {} }, () => {
+      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks });
+    });
   }
 
   handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
@@ -253,20 +254,36 @@ class NewSliceForm extends React.Component {
   }
 
   handleCreateSlice = async () => {
-    const requestData = {
-      name: this.state.sliceName,
-      sshKey: this.state.sshKey,
-      leaseEndTime: this.state.leaseEndTime,
-      json: this.generateSliceJSON()
-    }
+    this.handleSaveDraft("noMessage");
+    this.setState({ showSliceSpinner: true });
 
+    const { sliceName, sshKey, leaseEndTime } = this.state;
+    let requestData = {};
+    if (leaseEndTime !== "") {
+      requestData = {
+        name: sliceName,
+        sshKey: sshKey,
+        leaseEndTime: leaseEndTime,
+        json: this.generateSliceJSON()
+      }
+    } else {
+      requestData = {
+        name: sliceName,
+        sshKey: sshKey,
+        json: this.generateSliceJSON()
+      }
+    }
+ 
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
-        await createSlice(requestData);
+        const { data } = await createSlice(requestData);
+        const slice_id = data.value.reservations[0].slice_id;
         toast.success("Slice created successfully.");
-        // redirect users directly to the projects page
-        this.props.history.push("/experiments");
+        console.log("SLICE CREATED SUCCESSFULLY")
+        console.log(`/slices/${slice_id}`)
+        // redirect users directly to the new slice page
+        this.props.history.push(`/slices/${slice_id}`);
       })
     } catch (err) {
       console.log("failed to create the slice: " + err.response.data);
@@ -274,21 +291,18 @@ class NewSliceForm extends React.Component {
     }
   };
 
-  isReadyToCreateSlice = () => {
-    const { sliceName, sshKey, leaseEndTime, projectIdToGenerateToken,
-      sliceNodes } = this.state;
-    if (sliceName === "" || sshKey === "" || leaseEndTime ==="" 
-    || projectIdToGenerateToken === "" || sliceNodes.length ===0) {
-      return false;
-    }
-
-    return true;
-  }
-
   render() {
-    const { sshKey, sliverKeys, selectedData, showKeySpinner, showResourceSpinner,
-      parsedResources, sliceNodes, sliceLinks, selectedCPs }
+    const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
+      showKeySpinner, showResourceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
     = this.state;
+
+    const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
+
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return (
     <div>
@@ -306,36 +320,42 @@ class NewSliceForm extends React.Component {
       <div className="d-flex flex-column align-items-center w-100">
         <div className="d-flex flex-row justify-content-center w-100 mx-5">
           <div className="d-flex flex-column w-35 ml-5">
-            <div className="card new-slice-upper-card">
+            <div className="card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
                   Step 1: Select Project
                 </button>
               </div>
               <div>
-                <div className="card-body">
-                  {/* <ProjectTags onProjectChange={this.handleProjectChange} /> */}
+                <div className="card-body new-slice-upper-card">
+                  <ProjectTags onProjectChange={this.handleProjectChange} />
                 </div>
               </div>
             </div>
           </div>
           <div className="d-flex flex-column w-65 mr-5">
-            <div className="card new-slice-upper-card">
+            <div className="card">
               <div className="card-header py-1">
                 <button className="btn btn-link">
                   Step 2: Input Slice Information
                 </button>
               </div>
               <div>
-                <div className="card-body">
+                <div className="card-body new-slice-upper-card">
                   <div className="d-flex flex-column">
                     <form className="w-100">
                       <div className="form-group col-md-12">
-                        <label htmlFor="inputSliceName" className="slice-form-label">Slice Name</label>
+                        <label htmlFor="inputSliceName" className="slice-form-label">
+                          <span>Slice Name</span>
+                          <span className="form-label-badge">*required</span>
+                        </label>
                         <input  className="form-control form-control-sm" onChange={this.handleSliceNameChange}/>
                       </div>
                       <div className="form-group col-md-12">
-                        <label htmlFor="inputSSHKey" className="slice-form-label">SSH Key</label>
+                        <label htmlFor="inputSSHKey" className="slice-form-label">
+                          <span>SSH Key</span>
+                          <span className="form-label-badge">*required</span>
+                        </label>
                         {
                           showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
                         }
@@ -366,7 +386,7 @@ class NewSliceForm extends React.Component {
                                 className="mx-1 font-weight-bold"
                               >
                                 Manage SSH Keys
-                              </Link>first. Then click the right button.
+                              </Link>first. Then click the refresh button.
                             </span>
                             <button
                               className="btn btn-sm btn-outline-primary ml-auto"
@@ -384,14 +404,21 @@ class NewSliceForm extends React.Component {
                         <Calendar onTimeChange={this.handleTimeChange} />
                       </div>
                       <div className="form-group col-md-12 d-flex flex-row">
-                        <button
-                          className="btn btn-sm btn-success ml-auto"
-                          type="button"
-                          disabled={!this.isReadyToCreateSlice}
-                          onClick={() => this.handleCreateSlice()}
+                        <OverlayTrigger
+                          placement="top"
+                          delay={{ show: 100, hide: 300 }}
+                          overlay={renderTooltip("slice-create-tooltip",
+                            "The slice graph will be automatically saved to Draft when creating slice.")}
                         >
-                          Create Slice
-                        </button>
+                          <button
+                            className="btn btn-sm btn-success ml-auto"
+                            type="button"
+                            disabled={!validationResult.isValid}
+                            onClick={() => this.handleCreateSlice()}
+                          >
+                            Create Slice
+                          </button>
+                      </OverlayTrigger>
                       </div>
                     </form>
                   </div>
@@ -460,7 +487,7 @@ class NewSliceForm extends React.Component {
               sliceName={"new-slice"}
               defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
               onNodeSelect={this.handleNodeSelect}
-              onSaveDraft={this.handleSaveDraft}
+              onSaveDraft={() => this.handleSaveDraft("withMessage")}
               onUseDraft={this.handleUseDraft}
               onClearGraph={this.handleClearGraph}
             />

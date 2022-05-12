@@ -530,11 +530,17 @@ ul {
 }
 
 .new-slice-upper-card {
-  height: 22rem;
+  height: 19rem;
   overflow: scroll;
 }
 
 .node-components-panel {
   max-height: 12em;
   overflow: scroll;
+}
+
+.form-label-badge {
+  font-size: 0.85em;
+  margin-left: .5rem;
+  color: $danger;
 }
