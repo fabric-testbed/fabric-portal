@@ -23,6 +23,7 @@ import {
   deleteUser,
   addUser,
   updateTags,
+  getTags,
 } from "../services/projectRegistryService";
 
 import _ from "lodash";
@@ -62,6 +63,7 @@ class projectForm extends Form {
     members: [],
     ownerSearchInput: "",
     memberSearchInput: "",
+    tagVocabulary: [],
   };
 
   schema = {
@@ -97,6 +99,15 @@ class projectForm extends Form {
 
   async componentDidMount() {
     await this.populateProject();
+
+    try {
+      const { data: tags} = await getTags();
+      this.setState({ tagVocabulary: tags });
+    } catch (ex) {
+      toast.error("Failed to get tags.");
+      console.log(ex.response.data);
+    }
+
     try {
       const { data: people } = await getCurrentUser();
       this.setState({ roles: people.roles })
@@ -128,14 +139,40 @@ class projectForm extends Form {
     try {
       await saveProject(this.state.data);
       await updateTags(this.state.originalTags, this.state.data);
-      this.props.history.push("/projects");
     }
     catch (ex) {
       console.log("failed to save project: " + ex.response.data);
       toast.error("Failed to save project.");
       this.props.history.push("/projects");
     }
+
+    toast.success("Project updated successfully!");
+    this.props.history.push("/projects");
   };
+
+  parseTags = () => {
+    // input: array of tag vocabulary
+    // output: arrary of base options; and object of {base: second option} mapping
+    const originalTags = this.state.tagVocabulary;
+    const baseOptions = [];
+    const optionsMapping =  {};
+
+    for (const tag of originalTags) {
+      const base = tag.substring(0, tag.indexOf('.'));
+      if (!baseOptions.includes(base)) {
+        baseOptions.push(base);
+        optionsMapping[base] = [];
+      }
+    }
+
+    for (const tag of originalTags) {
+      const base = tag.substring(0, tag.indexOf('.'));
+      const second = tag.substring(tag.indexOf('.')+1);
+      optionsMapping[base].push(second);
+    }
+
+    return { baseOptions, optionsMapping };
+  }
 
   handleSideNavChange = (newIndex) => {
     // change active item in side nav.
@@ -319,7 +356,7 @@ class projectForm extends Form {
       ownerSearchInput,
       owners,
       memberSearchInput,
-      members,
+      members
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
@@ -332,6 +369,8 @@ class projectForm extends Form {
     let canUpdateMember = isFacilityOperator || 
       this.checkProjectRole(data.uuid, "po");
     
+    const parsedTags = this.parseTags();
+
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -339,6 +378,8 @@ class projectForm extends Form {
           <NewProjectForm
             history={this.props.history}
             isFacilityOperator={isFacilityOperator}
+            baseOptions={parsedTags.baseOptions}
+            optionsMapping={parsedTags.optionsMapping}
           />
         </div>
       );
@@ -369,7 +410,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {isFacilityOperator && this.renderInputTag("tags", "Tags")}
+                {isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <table className="table table-striped table-bordered mt-4">

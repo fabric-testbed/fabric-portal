@@ -4,7 +4,7 @@ import Checkbox from "../common/Checkbox";
 import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getCurrentUser } from "../../services/prPeopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/orchestratorService.js";
@@ -46,7 +46,7 @@ class Slices extends React.Component {
       // call credential manager to generate tokens 
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens().then(async () => {
+        autoCreateTokens(people.projects[0].uuid).then(async () => {
         const { data } = await getSlices();
         this.setState({ slices: data["value"]["slices"], showSpinner: false });
       });
@@ -61,7 +61,7 @@ class Slices extends React.Component {
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens();
+              autoRefreshTokens(people.projects[0].uuid);
             }
           }
         }
@@ -138,18 +138,7 @@ class Slices extends React.Component {
       <div className="col-9">
         <h1>Slices</h1>
         {
-          showSpinner &&
-          <div className="d-flex flex-row justify-content-center mt-5">
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              variant="primary"
-            />
-            <span className="text-primary ml-2"><b>Loading slices...</b></span>
-          </div>
+          showSpinner && <SpinnerWithText text={"Loading slices..."} />
         }
         {
           !showSpinner && !hasProject &&
@@ -174,6 +163,7 @@ class Slices extends React.Component {
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">
               We couldn't find your slice. Please create slices from&nbsp;
+              <Link to="/new-slice">Portal</Link> or&nbsp;
               <a
                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                target="_blank"
@@ -202,6 +192,9 @@ class Slices extends React.Component {
                 onInputChange={this.handleSearch}
                 className="my-0"
               />
+              <Link to="/new-slice" className="btn btn-primary create-project-btn">
+                Create Slice
+              </Link>
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>

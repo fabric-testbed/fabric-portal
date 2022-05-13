@@ -10,6 +10,22 @@ body {
   margin-bottom: 2rem;
 }
 
+.w-35 { 
+  width: 35%;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-60 {
+  width: 60%;;
+}
+
+.w-65 {
+  width: 65%;
+}
+
 .home-container {
   min-height: 75vh;
   margin: 0;
@@ -54,6 +70,10 @@ body {
 
 .text-sm-size {
   font-size: 0.75em;
+}
+
+.text-md-size {
+  font-size: 0.85em;
 }
 
 @media only screen and (min-width: 576px) {
@@ -290,7 +310,7 @@ ul {
 
 .input-tag__tags li {
   align-items: center;
-  background: $info;
+  background: $primary-color;
   border-radius: 5px;
   color: white;
   display: flex;
@@ -459,6 +479,74 @@ ul {
   border-width: 1px 1px 0 1px;
 }
 
-.alert {
+.new-slice-form {
+  width: 85%;
+}
+
+.slice-builder-label {
+  font-size: 14px !important;
   margin-bottom: 0 !important;
+}
+
+.slice-builder-form-group {
+  margin-bottom: 0.35rem !important;
+}
+
+.service-type-description {
+  max-width: 15rem;
+}
+
+.new-slice-detail-form {
+  width: 100% !important;
+  background-color: #e0e0e0;
+  border: 0.5px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.input-tag__tags {
+  font-size: 14px !important;
+}
+
+.sm-alert {
+  font-size: 0.875rem;
+  color: #854522;
+  background-color: #ffe7d9;
+  border-color: #ffddca;
+  position: relative;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.slice-form-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.15rem !important;
+}
+
+.notice-banner {
+  margin-bottom: 0 !important;
+}
+
+.new-slice-upper-card {
+  height: 19rem;
+  overflow: scroll;
+}
+
+.node-components-panel {
+  max-height: 12em;
+  overflow: scroll;
+}
+
+.form-label-danger {
+  font-size: 0.85em;
+  margin-left: .5rem;
+  color: $danger;
+}
+
+.form-label-success {
+  font-size: 0.85em;
+  margin-left: .5rem;
+  color: $success;
 }

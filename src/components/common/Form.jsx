@@ -4,6 +4,8 @@ import Input from "./Input.jsx";
 import Textarea from "./Textarea.jsx";
 import Select from "./Select.jsx";
 import InputTag from "./InputTag.jsx";
+import TimePicker from "./TimePicker.jsx";
+import ProjectTags from "../Project/ProjectTags";
 
 class Form extends Component {
   state = {
@@ -121,23 +123,48 @@ class Form extends Component {
     );
   }
 
+  renderProjectTags(name, label, baseOptions, optionsMapping) {
+    const { data } = this.state;
+    return (
+      <ProjectTags
+        name={name}
+        label={label}
+        tags={data.tags}
+        baseOptions={baseOptions}
+        optionsMapping={optionsMapping}
+        onTagChange={this.handleTagChange}
+      />
+    );
+  }
 
   renderSelect(name, label, notDisabled, currentOptionName, options) {
     const { data, errors } = this.state;
 
     return (
         <Select
-            name={name}
-            value={data[name]} 
-            label={label}
-            currentOptionName={currentOptionName}
-            options={options}
-            onChange={this.handleChange}
-            error={errors[name]}
-            disabled={!notDisabled}
+          name={name}
+          value={data[name]} 
+          label={label}
+          currentOptionName={currentOptionName}
+          options={options}
+          onChange={this.handleChange}
+          error={errors[name]}
+          disabled={!notDisabled}
         />
     );
-}
+  }
+
+  renderTimePicker(name, label) {
+    const { data, errors } = this.state;
+
+    return (
+        <TimePicker
+          name={name}
+          label={label}
+          onChange={this.handleChange}
+        />
+    );
+  }
 
 }
 

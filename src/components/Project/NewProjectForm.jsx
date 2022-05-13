@@ -141,7 +141,6 @@ class NewProjectForm extends Form {
         : this.state.addedMembers;
     const found = added.filter((a) => a.uuid === user.uuid).length > 0;
     if (!found) {
-      console.log(user);
       added.push(user);
       if (this.state.activeTabIndex === 0) {
         this.setState({ addedOwners: added });
@@ -185,7 +184,8 @@ class NewProjectForm extends Form {
 
   render() {
     const that = this;
-    const { isFacilityOperator } = this.props;
+    const { isFacilityOperator, baseOptions, optionsMapping  } = this.props;
+
     return (
       <div>
         <h1>New Project</h1>
@@ -193,7 +193,7 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {isFacilityOperator && this.renderInputTag("tags", "Tags")}
+          {isFacilityOperator && this.renderProjectTags("tags", "Tags", baseOptions, optionsMapping)}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">
