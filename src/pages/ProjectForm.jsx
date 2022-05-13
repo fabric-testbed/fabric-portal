@@ -139,8 +139,8 @@ class projectForm extends Form {
     try {
       await saveProject(this.state.data);
       await updateTags(this.state.originalTags, this.state.data);
-      window.location.reload();
       toast.success("Project updated successfully!");
+      this.props.history.push("/projects");
     }
     catch (ex) {
       console.log("failed to save project: " + ex.response.data);

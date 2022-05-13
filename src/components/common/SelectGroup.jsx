@@ -4,25 +4,52 @@ class SelectGroup extends React.Component {
   state = {
     baseOption: "",
     secondOption: "",
+    isValid: false,
   }
 
   handleBaseSelectChange = (e) => {
-    this.setState({ baseOption: e.target.value, secondOption: "" });
+    this.setState({ baseOption: e.target.value, secondOption: "" }, () => {
+      this.setState({ isValid: this.validateTag() })
+    });
   }
 
   handleSecondSelectChange = (e) => {
-    this.setState({ secondOption: e.target.value });
+    this.setState({ secondOption: e.target.value }, () => {
+      this.setState({ isValid: this.validateTag() })
+    });
   }
 
-  checkTagExists = () => {
+  validateTag = () => {
     const { baseOption, secondOption } = this.state;
 
-    return this.props.tags.include(`${baseOption}.${secondOption}`);
+    // two options should be selected
+    if (baseOption === "" || secondOption === "") {
+      return false;
+    }
+
+    // the tag should not be duplicated
+    if (this.props.tags.includes(`${baseOption}.${secondOption}`)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  handleClick = () => {
+    const { baseOption, secondOption} = this.state;
+    this.props.onTagAdd(`${baseOption}.${secondOption}`);
+    this.setState({
+      baseOption: "",
+      secondOption: "",
+      isValid: false,
+    });
   }
 
   render() {
     const { name, baseOptions, optionsMapping } = this.props;
-    const { baseOption, secondOption } = this.state;
+    const { baseOption, secondOption, isValid } = this.state;
+
+    console.log(this.validateTag())
 
     return (
       <div>
@@ -63,8 +90,8 @@ class SelectGroup extends React.Component {
               <button
                 className="btn btn-sm btn-success"
                 type="button"
-                disabled={secondOption === "" || this.checkTagExists}
-                onClick={() => this.props.onTagAdd(`${baseOption}.${secondOption}`)}
+                disabled={!isValid}
+                onClick={this.handleClick}
               >
                 <i className="fa fa-plus"></i>
               </button>
