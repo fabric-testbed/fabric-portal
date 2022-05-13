@@ -22,7 +22,6 @@ import validator from "../utils/sliceValidator.js";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
-// import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
@@ -35,7 +34,6 @@ class NewSliceForm extends React.Component {
     ancronymToName: sitesNameMapping.ancronymToName,
     showResourceSpinner: false,
     showKeySpinner: false,
-    showSliceSpinner: false,
     sliverKeys: [],
     projectIdToGenerateToken: "",
     graphID: "",
@@ -116,10 +114,9 @@ class NewSliceForm extends React.Component {
     }
 
     const requestBody = JSON.stringify(sliceJSON);
-    console.log("sliceJSON");
-    console.log(sliceJSON);
-    console.log(requestBody);
 
+    console.log(requestBody);
+    
     return requestBody;
   }
 
@@ -259,7 +256,6 @@ class NewSliceForm extends React.Component {
 
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
-    this.setState({ showSliceSpinner: true });
 
     const { sliceName, sshKey, leaseEndTime } = this.state;
     let requestData = {};
@@ -285,12 +281,9 @@ class NewSliceForm extends React.Component {
           const { data } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
-          const slice_id = data["value"]["reservations"][0].slice_id;
-          console.log("______________")
-          console.log(slice_id);
-          this.props.history.push("/experiments")
+          // const slice_id = data["value"]["reservations"][0].slice_id;
+          this.props.history.push("/experiments#slices")
         } catch (ex) {
-          this.setState({ showSliceSpinner: false });
           console.log("failed to create slice: " + ex.response.data);
           toast.error("Failed to create slice.");
         }
@@ -303,7 +296,7 @@ class NewSliceForm extends React.Component {
 
   render() {
     const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
-      showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
+      showKeySpinner, showResourceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
@@ -316,14 +309,6 @@ class NewSliceForm extends React.Component {
 
     return (
     <div>
-      {
-        showSliceSpinner && <div className="container d-flex flex-row align-items-center">
-          <SpinnerWithText text={"Creating slice..."} />
-        </div>
-      }
-      {
-        !showSliceSpinner &&
-        <div>
           <div className="d-flex flex-row justify-content-between mt-2">
         <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
         <Link to="/experiments#slices" className="align-self-end mr-5">
@@ -367,7 +352,12 @@ class NewSliceForm extends React.Component {
                           <span>Slice Name</span>
                           <span className="form-label-danger">*required</span>
                         </label>
-                        <input  className="form-control form-control-sm" onChange={this.handleSliceNameChange}/>
+                        <input
+                          id="inputSliceName"
+                          name="inputSliceName"
+                          className="form-control form-control-sm"
+                          onChange={this.handleSliceNameChange}
+                        />
                       </div>
                       <div className="form-group col-md-12">
                         <label htmlFor="inputSSHKey" className="slice-form-label">
@@ -380,6 +370,8 @@ class NewSliceForm extends React.Component {
                         {
                           sliverKeys.length > 0 && !showKeySpinner && 
                             <select
+                              id="selectSshKey"
+                              name="selectSshKey"
                               className="form-control form-control-sm"
                               value={sshKey}
                               onChange={this.handleKeyChange}
@@ -422,7 +414,7 @@ class NewSliceForm extends React.Component {
                           <span>Lease End Time</span>
                           <span className="form-label-success">Optional. Default end time is 24 hours upon creation if not selected.</span>
                         </label>
-                        <Calendar onTimeChange={this.handleTimeChange} />
+                        <Calendar id="sliceCalendar" name="sliceCalendar" onTimeChange={this.handleTimeChange} />
                       </div>
                       <div className="form-group col-md-12 d-flex flex-row">
                         <OverlayTrigger
@@ -516,8 +508,6 @@ class NewSliceForm extends React.Component {
         </div>
       </div>
         </div>
-      }
-    </div>
     )
   }
 }
