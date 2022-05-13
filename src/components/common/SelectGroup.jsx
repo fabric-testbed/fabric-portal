@@ -49,8 +49,6 @@ class SelectGroup extends React.Component {
     const { name, baseOptions, optionsMapping } = this.props;
     const { baseOption, secondOption, isValid } = this.state;
 
-    console.log(this.validateTag())
-
     return (
       <div>
         <form>

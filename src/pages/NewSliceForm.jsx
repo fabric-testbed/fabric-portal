@@ -158,7 +158,7 @@ class NewSliceForm extends React.Component {
     this.setState({ 
       sliceNodes: sliceDraft.nodes,
       sliceLinks: sliceDraft.links,
-      graphID: sliceDraft.nodes.length > 0 ? sliceDraft.nodes[0].graphID : ""
+      graphID: sliceDraft.nodes.length > 0 ? sliceDraft.nodes[0].GraphID : ""
     });
   }
 
@@ -281,20 +281,29 @@ class NewSliceForm extends React.Component {
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
-        await createSlice(requestData);
-        toast.success("Slice created successfully.");
-        // redirect users directly to the new slice page
-        this.props.history.push(`/experiments`);
+        try {
+          const { data } = await createSlice(requestData);
+          toast.success("Slice created successfully.");
+          // redirect users directly to the new slice page
+          const slice_id = data["value"]["reservations"][0].slice_id;
+          console.log("______________")
+          console.log(slice_id);
+          this.props.history.push("/experiments")
+        } catch (ex) {
+          this.setState({ showSliceSpinner: false });
+          console.log("failed to create slice: " + ex.response.data);
+          toast.error("Failed to create slice.");
+        }
       })
-    } catch (err) {
-      console.log("failed to create the slice: " + err.response.data);
-      toast.error("Failed to create the slice");
+    } catch (ex) {
+      console.log("failed to generate token: " + ex.response.data);
+      toast.error("Failed to generate token.");
     }
   };
 
   render() {
     const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
-      showKeySpinner, showResourceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
+      showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
@@ -307,7 +316,15 @@ class NewSliceForm extends React.Component {
 
     return (
     <div>
-      <div className="d-flex flex-row justify-content-between mt-2">
+      {
+        showSliceSpinner && <div className="container d-flex flex-row align-items-center">
+          <SpinnerWithText text={"Creating slice..."} />
+        </div>
+      }
+      {
+        !showSliceSpinner &&
+        <div>
+          <div className="d-flex flex-row justify-content-between mt-2">
         <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
         <Link to="/experiments#slices" className="align-self-end mr-5">
           <button
@@ -498,6 +515,8 @@ class NewSliceForm extends React.Component {
           </div>
         </div>
       </div>
+        </div>
+      }
     </div>
     )
   }
