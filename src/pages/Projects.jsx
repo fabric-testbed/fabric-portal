@@ -4,7 +4,7 @@ import Pagination from "../components/common/Pagination";
 import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
-import Spinner from 'react-bootstrap/Spinner';
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
 import { default as portalData } from "../services/portalData.json";
@@ -170,18 +170,7 @@ class Projects extends React.Component {
           }
         </div>
         {
-          showSpinner &&
-          <div className="d-flex flex-row justify-content-center mt-5">
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              variant="primary"
-            />
-            <span className="text-primary ml-2"><b>Loading projects...</b></span>
-          </div>
+          showSpinner && <SpinnerWithText text={"Loading projects..."}/>
         }
         {
           !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 

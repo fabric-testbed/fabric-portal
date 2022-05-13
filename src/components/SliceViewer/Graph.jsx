@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
 import Cytoscape from 'cytoscape';
-// import edgehandles from 'cytoscape-edgehandles';
 import FCose from 'cytoscape-fcose';
-// import compoundDragAndDrop from 'cytoscape-compound-drag-and-drop';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
 
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
-import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
-import IconNIC25G from '../../imgs/SliceComponentIcons/NIC25G.png';
+import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
+import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
-import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
-import IconSSD from '../../imgs/SliceComponentIcons/SSD.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
-
+import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 Cytoscape.use(FCose);
-// Cytoscape.use(compoundDragAndDrop);
-// Cytoscape.use(edgehandles);
 
-function setCytoscape(cy){
+function handleCy(cy) {
+  const SELECT_THRESHOLD = 200;
+
+  // Refresh Layout
+  const refreshLayout = _.debounce(() => {
+    const layout = {name: 'fcose', infinite: false};
+    cy.layout(layout).run()
+  }, SELECT_THRESHOLD);
+
+  // apply layout on graph render.
+  refreshLayout();
+
+  // refresh layout when elements change.
+  // cy.on('add remove', () => {
+  //   refreshLayout();
+  // });
+
   return cy;
 }
 
@@ -34,8 +44,8 @@ export default class Graph extends Component {
 
   componentDidMount = () => {
     this.setState({
-      w: window.innerWidth * 0.75,
-      h:window.innerHeight * 0.75,
+      w: window.innerWidth * this.props.defaultSize.width,
+      h:window.innerHeight * this.props.defaultSize.height,
     })
     // this.cy can only be declared after the component has been mounted
     // call functions that set up the interactivity inside componentDidMount
@@ -67,12 +77,8 @@ export default class Graph extends Component {
     saveAs( png64, `${this.props.sliceName}.png` );
   }
 
-  saveChanges = () =>{
-    alert("Successfully saved!")
-  }
-
   render() {
-    const layout = {name: 'fcose'};
+    const { elements, defaultSize } = this.props;
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -81,27 +87,58 @@ export default class Graph extends Component {
     );
 
     return(
-      <div className="border">
+      <div className="border"> 
         <div className="d-flex flex-row-reverse">
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 100, hide: 300 }}
+            overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
+          >
+            <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
+              Download JSON
+            </button>
+          </OverlayTrigger>
+          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
+          {
+            this.props.isNewSlice && 
             <OverlayTrigger
               placement="top"
               delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
+              overlay={renderTooltip("slice-save-draft-tooltip", "Use the slice graph draft stored in your browser.")}
             >
-              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
-                Download in JSON
+              <button
+                onClick={this.props.onUseDraft}
+                disabled={!localStorage.getItem("sliceDraft")}
+                className="btn btn-sm btn-outline-success ml-2"
+              >
+                Use Draft
+              </button>
+          </OverlayTrigger>
+          }
+          {
+            this.props.isNewSlice &&
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("slice-save-draft-tooltip",
+                "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
+            >
+              <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
+                Save Draft
               </button>
             </OverlayTrigger>
-          
-          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary">Download in PNG</button>
+          }
+          {
+            this.props.isNewSlice && 
+            <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger">Clear Graph</button>
+          }
         </div>
         <CytoscapeComponent
-          elements={this.props.elements}
-          layout={layout}
-          zoom={0.85}
+          elements={elements}
+          zoom={defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
-          cy={(cy) => {this.cy = setCytoscape(cy)}}
+          cy={(cy) => {this.cy = handleCy(cy)}}
           stylesheet={[
             {
               "selector": "node",
@@ -135,19 +172,9 @@ export default class Graph extends Component {
               }
             },
             {
-              "selector": ".graphSwitchFabric",
-              "style": {
-                "background-image": `${IconSwitch}`,
-                "background-color": "#fff",
-                "background-fit": "contain",
-                "height": 70,
-                "width": 100,
-              }
-            },
-            {
               "selector": ".graphSmartNIC",
               "style": {
-                "background-image": `${IconNIC25G}`,
+                "background-image": `${IconSmartNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -157,17 +184,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSharedNIC",
               "style": {
-                "background-image": `${IconNIC25G}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 70,
-                "width": 100,
-              }
-            },
-            {
-              "selector": ".graphFPGA",
-              "style": {
-                "background-image": `${IconFPGA}`,
+                "background-image": `${IconSharedNIC}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -198,26 +215,6 @@ export default class Graph extends Component {
               "selector": ".graphNetworkService",
               "style": {
                 "background-image": `${IconNS}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 20,
-                "width": 40,
-              }
-            },
-            {
-              "selector": ".graphSSD",
-              "style": {
-                "background-image": `${IconSSD}`,
-                "background-fit": "contain",
-                "background-color": "#fff",
-                "height": 20,
-                "width": 40,
-              }
-            },
-            {
-              "selector": ".graphSwitch",
-              "style": {
-                "background-image": `${IconSwitch}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 20,
