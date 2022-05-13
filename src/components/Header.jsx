@@ -36,15 +36,18 @@ class Header extends React.Component {
         child: [],
         exact: false,
       },
-      { 
-        name: "Links",
-        path: "/links",
-        child: [
-          { name: "Knowledge Base", href: portalData.knowledgeBaseLink, path: ""},
-          { name: "JupyterHub", href: this.jupyterLinkMap[checkPortalType(window.location.href)], path: ""}
-          ],
-          exact: false
-        },
+      {
+        name: "Knowledge Base",
+        href: portalData.knowledgeBaseLink,
+        child: [],
+        path: ""
+      },
+      {
+        name: "JupyterHub",
+        href: this.jupyterLinkMap[checkPortalType(window.location.href)],
+        child: [],
+        path: ""
+      },
       { name: "User Profile", path: "/user", child: [], exact: false },
     ],
   };
@@ -114,20 +117,34 @@ class Header extends React.Component {
                   }
                   key={index}
                 >
-                  <NavLink
-                    className={
-                      "nav-link" +
-                      (item.child.length > 0 ? " dropdown-toggle" : "")
-                    }
-                    to={item.path}
-                    id={`navbarDropdownMenuLink-${index}`}
-                    data-toggle={item.child.length > 0 ? "dropdown" : ""}
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    exact={item.exact}
-                  >
-                    {item.name}
-                  </NavLink>
+                  {
+                    item.href && <a
+                      className="nav-link"
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {item.name}
+                    </a>
+                  }
+                  {
+                    !item.href && 
+                    <NavLink
+                      className={
+                        "nav-link" +
+                        (item.child.length > 0 ? " dropdown-toggle" : "")
+                      }
+                      to={item.path}
+                      id={`navbarDropdownMenuLink-${index}`}
+                      data-toggle={item.child.length > 0 ? "dropdown" : ""}
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      exact={item.exact}
+                    >
+                      {item.name}
+                    </NavLink>
+                  }
                   {item.child.length > 0 && (
                     <div
                       className="dropdown-menu"
