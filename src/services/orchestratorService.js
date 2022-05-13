@@ -33,7 +33,7 @@ export function createSlice(slice) {
   }
 
   const url = apiEndpoint + "/create?" + query;
-  http.post(
+  return http.post(
     url,
     slice.json,
     {

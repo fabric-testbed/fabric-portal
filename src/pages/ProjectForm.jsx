@@ -139,14 +139,15 @@ class projectForm extends Form {
     try {
       await saveProject(this.state.data);
       await updateTags(this.state.originalTags, this.state.data);
-      toast.success("Project updated successfully!");
-      this.props.history.push("/projects");
     }
     catch (ex) {
       console.log("failed to save project: " + ex.response.data);
       toast.error("Failed to save project.");
       this.props.history.push("/projects");
     }
+
+    toast.success("Project updated successfully!");
+    this.props.history.push("/projects");
   };
 
   parseTags = () => {

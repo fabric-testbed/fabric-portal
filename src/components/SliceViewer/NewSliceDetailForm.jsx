@@ -142,7 +142,6 @@ export default class NewSliceDetailForm extends Component {
 
   render() {
     const data = this.props.data;
-    console.log(data)
     let componentKey = "";
     if (data && data.properties) {
       componentKey = `${data.properties.id}-${data.properties.name}`
