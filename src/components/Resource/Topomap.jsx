@@ -18,7 +18,6 @@ const Topomap = props => {
   function handleZoomIn() {
     if (position.zoom >= 4) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
-    console.log(props.sites)
   }
 
   function handleZoomOut() {
@@ -73,7 +72,6 @@ const Topomap = props => {
               strokeWidth={1}
               strokeLinecap="round"
               onMouseEnter={() => {
-                // console.log("Hello" + from);
               }}
             />
           ))}

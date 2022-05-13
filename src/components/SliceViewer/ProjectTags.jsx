@@ -63,6 +63,8 @@ export default class SideLinks extends Component {
       <div className="form-group col-md-12">
       <label htmlFor="projectSelect" className="slice-form-label">Project</label>
       <select
+        id="selectSliceProject"
+        name="selectSliceProject"
         className="form-control form-control-sm"
         value={projectIdToGenerateToken}
         onChange={this.handleProjectChange}
