@@ -33,8 +33,8 @@ class SideNodes extends React.Component {
 
   handleAddNode = () => {
     // type: currently only support 'VM'
-    const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, imageRef, nodeComponents } = this.state;
-    const image = `${imageRef},${imageType}`;
+    const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, selectedImageRef, nodeComponents } = this.state;
+    const image = `${selectedImageRef},${imageType}`;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, image, nodeComponents);
     this.setState({ selectedSite: "", nodeName: "", nodeComponents: [], selectedImageRef: "default_rocky_8" })
   }
@@ -90,7 +90,7 @@ class SideNodes extends React.Component {
   }
 
   handleImageRefChange = (e) => {
-    this.setState({ imageRef: e.target.value })
+    this.setState({ selectedImageRef: e.target.value })
   }
 
   getSiteResource = () => {
