@@ -281,8 +281,9 @@ class NewSliceForm extends React.Component {
           const { data } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
-          // const slice_id = data["value"]["reservations"][0].slice_id;
-          this.props.history.push("/experiments#slices")
+          const slice_id = data["value"]["reservations"][0].slice_id;
+          // this.props.history.push("/experiments#slices");
+          this.props.history.push(`/slices/${slice_id}`)
         } catch (ex) {
           console.log("failed to create slice: " + ex.response.data);
           toast.error("Failed to create slice.");
