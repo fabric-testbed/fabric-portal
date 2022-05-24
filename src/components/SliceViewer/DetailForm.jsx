@@ -3,48 +3,6 @@ import React, { Component } from 'react'
 export default class DetailForm extends Component {
   render() {
     const data = this.props.data;
-    const properties = [
-      {
-        display: "Name",
-        field: "name",
-      },
-      {
-        display: "Model",
-        field: "model",
-      },
-      {
-        display: "Detail",
-        field: "detail",
-      },
-    ]
-
-    const capacities = [
-      {
-        display: "Unit",
-        field: "unit",
-        unit: "",
-      },
-      {
-        display: "Core (1~32)",
-        field: "core",
-        unit: "",
-      },
-      {
-        display: "Ram (1~512 GB)",
-        field: "ram",
-        unit: "GB",
-      },
-      {
-        display: "Bandwidth (1~100 Gbps)",
-        field: "bandwidth",
-        unit: "Gbps",
-      },
-      {
-        display: "Disk (1~100 GB)",
-        field: "disk",
-        unit: "GB",
-      },
-    ]
 
     return (
       <div className="w-100 card ml-4">
@@ -61,50 +19,84 @@ export default class DetailForm extends Component {
             }
 
             {
-              properties.map((property) => {
-                return (
-                  data && data.properties && data.properties[property.field]
-                  && (
-                    <div className="row mb-2">
-                      <label>{ property.display } </label>
-                      {
-                        property.field === "detail" ? <textarea disabled type="text" className="form-control" placeholder={ data.properties[property.field]} /> :
-                        <input disabled type="text" className="form-control" placeholder={ data.properties[property.field]} />
-                      }
-                    </div>
-                  ))})
+              data && data.properties && data.properties.class === "CompositeNode" &&
+                <div className="row mb-2">
+                  <label>Site Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
             }
 
             {
-              capacities.map((capacity) => {
-                return (
-                  data && data.capacities && data.capacities[capacity.field]
-                  && (
-                    <div className="row mb-2">
-                      <label>{ capacity.display } </label>
-                      <input disabled type="text" className="form-control" placeholder={ `${data.capacities[capacity.field]} ${capacity.unit}`} />
-                    </div>
-                  ))})
+              data && data.properties && data.properties.type === "VM" &&
+              <div>
+                <div className="row mb-2">
+                  <label>VM Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Core</label>
+                  <input type="number" className="form-control" defaultValue={data.capacities.core} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Ram</label>
+                  <input type="number" className="form-control" defaultValue={data.capacities.ram} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Disk</label>
+                  <input type="number" className="form-control" defaultValue={data.capacities.disk} disabled />
+                </div>
+              </div>
+            }
+
+            {
+              data && data.properties && data.properties.class === "Component" &&
+              <div>
+                <div className="row mb-2">
+                  <label >Component Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label >Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label >Model</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.model} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label >Detail</label>
+                  <textarea disabled type="text" className="form-control" placeholder={data.properties.detail} />
+                </div>
+              </div>
+            }
+
+            {data && data.properties && data.properties.class === "ConnectionPoint" &&
+              <div>
+                <div className="row mb-2">
+                  <label>Connection Point Name</label>
+                  <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+              </div>
+            }
+
+            {
+              data && data.properties && data.properties.class === "NetworkService" &&
+              <div>
+                <div className="row mb-2">
+                  <label>Network Service Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+              </div>
             }
             </div>
-            {/* {
-              data && data.properties && !data.properties.is_interface && (
-                <div className="mt-2">
-                  <button
-                    className="btn btn-outline-success mr-2"
-                    onClick={this.handleSave}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="btn btn-outline-danger mr-2"
-                    onClick={this.handleDelete}
-                  >
-                    Delete
-                  </button>
-                </div>
-              )
-            } */}
             </div>
         </form>
       </div>
