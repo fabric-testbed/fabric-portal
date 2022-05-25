@@ -22,6 +22,7 @@ import validator from "../utils/sliceValidator.js";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourcesService.js";
+// import  { getResources } from "../services/fakeResources.js";
 import { createSlice } from "../services/orchestratorService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
@@ -34,6 +35,7 @@ class NewSliceForm extends React.Component {
     ancronymToName: sitesNameMapping.ancronymToName,
     showResourceSpinner: false,
     showKeySpinner: false,
+    showSliceSpinner: false,
     sliverKeys: [],
     projectIdToGenerateToken: "",
     graphID: "",
@@ -43,6 +45,15 @@ class NewSliceForm extends React.Component {
     parsedResources: null,
     selectedCPs: [],
   }
+
+  // componentDidMount() {
+  //   const resources = getResources();
+  //   const parsedObj = sitesParser(resources, this.state.ancronymToName);
+  //   this.setState({ parsedResources: parsedObj });
+
+  //   // generate a graph uuid for the new slice
+  //   this.setState({ graphID: uuidv4() });
+  // }
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
@@ -258,6 +269,10 @@ class NewSliceForm extends React.Component {
     this.handleSaveDraft("noMessage");
 
     const { sliceName, sshKey, leaseEndTime } = this.state;
+    const that = this;
+
+    that.setState({ showSliceSpinner: true });
+
     let requestData = {};
     if (leaseEndTime !== "") {
       requestData = {
@@ -273,7 +288,7 @@ class NewSliceForm extends React.Component {
         json: this.generateSliceJSON()
       }
     }
- 
+
     try {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
@@ -287,6 +302,7 @@ class NewSliceForm extends React.Component {
         } catch (ex) {
           console.log("failed to create slice: " + ex.response.data);
           toast.error("Failed to create slice.");
+          that.setState({ showSliceSpinner: false });
         }
       })
     } catch (ex) {
@@ -297,7 +313,8 @@ class NewSliceForm extends React.Component {
 
   render() {
     const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
-      showKeySpinner, showResourceSpinner, parsedResources, sliceNodes, sliceLinks, selectedCPs }
+      showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
+      sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
@@ -309,206 +326,207 @@ class NewSliceForm extends React.Component {
     );
 
     return (
-    <div>
-          <div className="d-flex flex-row justify-content-between mt-2">
-        <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
-        <Link to="/experiments#slices" className="align-self-end mr-5">
-          <button
-            className="btn btn-sm btn-outline-primary my-3"
-          >
-            <i className="fa fa-sign-in mr-2"></i>
-            Back to Slice List
-          </button>
-        </Link>
-      </div>
-      <div className="d-flex flex-column align-items-center w-100">
-        <div className="d-flex flex-row justify-content-center w-100 mx-5">
-          <div className="d-flex flex-column w-35 ml-5">
-            <div className="card">
-              <div className="card-header py-1">
-                <button className="btn btn-link">
-                  Step 1: Select Project
-                </button>
-              </div>
-              <div>
-                <div className="card-body new-slice-upper-card">
-                  <ProjectTags onProjectChange={this.handleProjectChange} />
+      <div>
+        {`showSliceSpinner: ${showSliceSpinner}`}
+        <div className="d-flex flex-row justify-content-between mt-2">
+          <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
+          <Link to="/experiments#slices" className="align-self-end mr-5">
+            <button
+              className="btn btn-sm btn-outline-primary my-3"
+            >
+              <i className="fa fa-sign-in mr-2"></i>
+              Back to Slice List
+            </button>
+          </Link>
+        </div>
+        <div className="d-flex flex-column align-items-center w-100">
+          <div className="d-flex flex-row justify-content-center w-100 mx-5">
+            <div className="d-flex flex-column w-35 ml-5">
+              <div className="card">
+                <div className="card-header py-1">
+                  <button className="btn btn-link">
+                    Step 1: Select Project
+                  </button>
+                </div>
+                <div>
+                  <div className="card-body new-slice-upper-card">
+                    <ProjectTags onProjectChange={this.handleProjectChange} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="d-flex flex-column w-65 mr-5">
-            <div className="card">
-              <div className="card-header py-1">
-                <button className="btn btn-link">
-                  Step 2: Input Slice Information
-                </button>
-              </div>
-              <div>
-                <div className="card-body new-slice-upper-card">
-                  <div className="d-flex flex-column">
-                    <form className="w-100">
-                      <div className="form-group col-md-12">
-                        <label htmlFor="inputSliceName" className="slice-form-label">
-                          <span>Slice Name</span>
-                          <span className="form-label-danger">*required</span>
-                        </label>
-                        <input
-                          id="inputSliceName"
-                          name="inputSliceName"
-                          className="form-control form-control-sm"
-                          onChange={this.handleSliceNameChange}
-                        />
-                      </div>
-                      <div className="form-group col-md-12">
-                        <label htmlFor="inputSSHKey" className="slice-form-label">
-                          <span>SSH Key</span>
-                          <span className="form-label-danger">*required</span>
-                        </label>
-                        {
-                          showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
-                        }
-                        {
-                          sliverKeys.length > 0 && !showKeySpinner && 
-                            <select
-                              id="selectSshKey"
-                              name="selectSshKey"
-                              className="form-control form-control-sm"
-                              value={sshKey}
-                              onChange={this.handleKeyChange}
-                            >
-                              <option value="">Choose...</option>
-                              {
-                                sliverKeys.map(key => 
-                                  <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
-                                )
-                              }
-                            </select>
-                        }
-                        {
-                          sliverKeys.length === 0 && !showKeySpinner && 
-                          <div className="sm-alert alert-warning d-flex flex-row align-items-center" role="alert">
-                            <span>
-                              Please generate or upload sliver key from
-                              <Link
-                                to="/experiments#sshKeys"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="mx-1 font-weight-bold"
+            <div className="d-flex flex-column w-65 mr-5">
+              <div className="card">
+                <div className="card-header py-1">
+                  <button className="btn btn-link">
+                    Step 2: Input Slice Information
+                  </button>
+                </div>
+                <div>
+                  <div className="card-body new-slice-upper-card">
+                    <div className="d-flex flex-column">
+                      <form className="w-100">
+                        <div className="form-group col-md-12">
+                          <label htmlFor="inputSliceName" className="slice-form-label">
+                            <span>Slice Name</span>
+                            <span className="form-label-danger">*required</span>
+                          </label>
+                          <input
+                            id="inputSliceName"
+                            name="inputSliceName"
+                            className="form-control form-control-sm"
+                            onChange={this.handleSliceNameChange}
+                          />
+                        </div>
+                        <div className="form-group col-md-12">
+                          <label htmlFor="inputSSHKey" className="slice-form-label">
+                            <span>SSH Key</span>
+                            <span className="form-label-danger">*required</span>
+                          </label>
+                          {
+                            showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
+                          }
+                          {
+                            sliverKeys.length > 0 && !showKeySpinner && 
+                              <select
+                                id="selectSshKey"
+                                name="selectSshKey"
+                                className="form-control form-control-sm"
+                                value={sshKey}
+                                onChange={this.handleKeyChange}
                               >
-                                Manage SSH Keys
-                              </Link>first. Then click the refresh button.
-                            </span>
-                            <button
-                              className="btn btn-sm btn-outline-primary ml-auto"
-                              type="button"
-                              onClick={() => this.refreshSSHKey()}
-                            >
-                              <i className="fa fa-refresh mr-2"></i>
-                              Refresh Keys
-                            </button>
-                          </div>
-                        }
-                      </div>
-                      <div className="form-group col-md-12">
-                        <label htmlFor="inputLeaseEndTime" className="slice-form-label">
-                          <span>Lease End Time</span>
-                          <span className="form-label-success">Optional. Default end time is 24 hours upon creation if not selected.</span>
-                        </label>
-                        <Calendar id="sliceCalendar" name="sliceCalendar" onTimeChange={this.handleTimeChange} />
-                      </div>
-                      <div className="form-group col-md-12 d-flex flex-row">
-                        <OverlayTrigger
-                          placement="top"
-                          delay={{ show: 100, hide: 300 }}
-                          overlay={renderTooltip("slice-create-tooltip",
-                            "The slice graph will be automatically saved to Draft when creating slice.")}
-                        >
-                          <button
-                            className="btn btn-sm btn-success ml-auto"
-                            type="button"
-                            disabled={!validationResult.isValid}
-                            onClick={() => this.handleCreateSlice()}
+                                <option value="">Choose...</option>
+                                {
+                                  sliverKeys.map(key => 
+                                    <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
+                                  )
+                                }
+                              </select>
+                          }
+                          {
+                            sliverKeys.length === 0 && !showKeySpinner && 
+                            <div className="sm-alert alert-warning d-flex flex-row align-items-center" role="alert">
+                              <span>
+                                Please generate or upload sliver key from
+                                <Link
+                                  to="/experiments#sshKeys"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mx-1 font-weight-bold"
+                                >
+                                  Manage SSH Keys
+                                </Link>first. Then click the refresh button.
+                              </span>
+                              <button
+                                className="btn btn-sm btn-outline-primary ml-auto"
+                                type="button"
+                                onClick={() => this.refreshSSHKey()}
+                              >
+                                <i className="fa fa-refresh mr-2"></i>
+                                Refresh Keys
+                              </button>
+                            </div>
+                          }
+                        </div>
+                        <div className="form-group col-md-12">
+                          <label htmlFor="inputLeaseEndTime" className="slice-form-label">
+                            <span>Lease End Time</span>
+                            <span className="form-label-success">Optional. Default end time is 24 hours upon creation if not selected.</span>
+                          </label>
+                          <Calendar id="sliceCalendar" name="sliceCalendar" onTimeChange={this.handleTimeChange} />
+                        </div>
+                        <div className="form-group col-md-12 d-flex flex-row">
+                          <OverlayTrigger
+                            placement="top"
+                            delay={{ show: 100, hide: 300 }}
+                            overlay={renderTooltip("slice-create-tooltip",
+                              "The slice graph will be automatically saved to Draft when creating slice.")}
                           >
-                            Create Slice
-                          </button>
-                      </OverlayTrigger>
-                      </div>
-                    </form>
+                            <button
+                              className="btn btn-sm btn-success ml-auto"
+                              type="button"
+                              disabled={!validationResult.isValid}
+                              onClick={() => this.handleCreateSlice()}
+                            >
+                              Create Slice
+                            </button>
+                        </OverlayTrigger>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
-          <div className="d-flex flex-column w-35 ml-5">
-            <div className="card">
-              <div className="card-header py-1">
-                <button className="btn btn-link">
-                  Step 3: Add Nodes and Components
-                </button>
+          <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
+            <div className="d-flex flex-column w-35 ml-5">
+              <div className="card">
+                <div className="card-header py-1">
+                  <button className="btn btn-link">
+                    Step 3: Add Nodes and Components
+                  </button>
+                </div>
+                <div>
+                  <div className="card-body">
+                    {
+                      showResourceSpinner && <SpinnerWithText text={"Loading site resources..."}/>
+                    }
+                    {
+                      !showResourceSpinner && 
+                      <SideNodes
+                        resources={parsedResources}
+                        nodes={sliceNodes}
+                        onNodeAdd={this.handleNodeAdd}
+                      />
+                    }
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="card-body">
-                  {
-                    showResourceSpinner && <SpinnerWithText text={"Loading site resources..."}/>
-                  }
-                  {
-                    !showResourceSpinner && 
-                    <SideNodes
-                      resources={parsedResources}
-                      nodes={sliceNodes}
-                      onNodeAdd={this.handleNodeAdd}
-                    />
-                  }
+              <div className="card">
+                <div className="card-header py-1">
+                  <button className="btn btn-link">
+                    Step 4: Add Network Service
+                  </button>
+                </div>
+                <div>
+                  <div className="card-body">
+                  <SideLinks
+                    nodes={sliceNodes}
+                    selectedCPs={selectedCPs}
+                    onLinkAdd={this.handleLinkAdd}
+                    onCPRemove={this.handleCPRemove}
+                  />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="card">
-              <div className="card-header py-1">
-                <button className="btn btn-link">
-                  Step 4: Add Network Service
-                </button>
-              </div>
-              <div>
-                <div className="card-body">
-                <SideLinks
-                  nodes={sliceNodes}
-                  selectedCPs={selectedCPs}
-                  onLinkAdd={this.handleLinkAdd}
-                  onCPRemove={this.handleCPRemove}
-                />
-                </div>
-              </div>
+            <div className="d-flex flex-column w-65 mr-5">
+              <NewSliceDetailForm
+                data={selectedData}
+                selectedCPs={selectedCPs}
+                nodes={sliceNodes}
+                links={sliceLinks}
+                onConnectionPointSelect={this.handleCPAdd}
+                onNodeDelete={this.handleNodeDelete}
+                onVMUpdate={this.handleVMUpdate}
+                onSingleComponentAdd={this.handleSingleComponentAdd}
+              />
+              <Graph
+                className="align-self-end"
+                isNewSlice={true}
+                elements={this.generateGraphElements()}
+                sliceName={sliceName === "" ? "new-slice" : sliceName}
+                defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
+                onNodeSelect={this.handleNodeSelect}
+                onSaveDraft={() => this.handleSaveDraft("withMessage")}
+                onUseDraft={this.handleUseDraft}
+                onClearGraph={this.handleClearGraph}
+              />
             </div>
-          </div>
-          <div className="d-flex flex-column w-65 mr-5">
-            <NewSliceDetailForm
-              data={selectedData}
-              selectedCPs={selectedCPs}
-              nodes={sliceNodes}
-              links={sliceLinks}
-              onConnectionPointSelect={this.handleCPAdd}
-              onNodeDelete={this.handleNodeDelete}
-              onVMUpdate={this.handleVMUpdate}
-              onSingleComponentAdd={this.handleSingleComponentAdd}
-            />
-            <Graph
-              className="align-self-end"
-              isNewSlice={true}
-              elements={this.generateGraphElements()}
-              sliceName={"new-slice"}
-              defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
-              onNodeSelect={this.handleNodeSelect}
-              onSaveDraft={() => this.handleSaveDraft("withMessage")}
-              onUseDraft={this.handleUseDraft}
-              onClearGraph={this.handleClearGraph}
-            />
           </div>
         </div>
       </div>
-        </div>
     )
   }
 }

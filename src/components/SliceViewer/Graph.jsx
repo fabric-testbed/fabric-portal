@@ -48,7 +48,11 @@ export default class Graph extends Component {
     refreshLayout();
 
     // refresh layout when elements change.
-    this.cy.on('add remove', () => {
+    this.cy.on('add', 'node',() => {
+      refreshLayout();
+    });
+
+    this.cy.on('remove', 'node', () => {
       refreshLayout();
     });
 

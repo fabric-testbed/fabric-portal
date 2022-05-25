@@ -72,6 +72,7 @@ export default class SliceViewer extends Component {
       await deleteSlice(id);
       // toast message to users when the api call is successfully done.
       toast.success("Slice deleted successfully.");
+      this.props.history.push(`/experiments#slices`);
     } catch(ex) {
       console.log("failed to delete the slice: " + ex.response.data);
       toast.error("Failed to delete the slice.");
@@ -111,7 +112,7 @@ export default class SliceViewer extends Component {
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
-                  slice.slice_state !== "Dead" &&
+                  slice.slice_state.includes("Stable") &&
                   <DeleteModal
                     name={"Delete Slice"}
                     text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
@@ -136,7 +137,7 @@ export default class SliceViewer extends Component {
                   isNewSlice={false}
                   elements={elements}
                   sliceName={slice.slice_name}
-                  defaultSize={{"width": 0.65, "height": 0.75, "zoom": 1}}
+                  defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
                 />
               }
