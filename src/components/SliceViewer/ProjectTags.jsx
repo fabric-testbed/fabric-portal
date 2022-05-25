@@ -84,10 +84,20 @@ export default class SideLinks extends Component {
       }
       {
         projectIdToGenerateToken !== "" && ! showSpinner && <div>
-          <label htmlFor="projectSelect" className="slice-form-label mt-2">Project Tags</label>
+          <label htmlFor="projectSelect" className="slice-form-label mt-2">
+            Project Tags 
+            <a
+              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i className="fa fa-question-circle mx-2"></i>
+              Project Permissions
+            </a>
+          </label>
           {
             tags.length === 0 && <div className="sm-alert mt-2">
-              This project doesn't have tag. Please use only SharedNICs and L2Bridge for the new slice.
+              This project has no permission tags. Please use only SharedNICs and L2Bridge for this slice.
             </div>
           }
           {
