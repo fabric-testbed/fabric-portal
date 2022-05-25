@@ -72,7 +72,7 @@ export default class SliceViewer extends Component {
       await deleteSlice(id);
       // toast message to users when the api call is successfully done.
       toast.success("Slice deleted successfully.");
-      this.props.history.push(`/experiments#slices`);
+      window.location.reload();
     } catch(ex) {
       console.log("failed to delete the slice: " + ex.response.data);
       toast.error("Failed to delete the slice.");

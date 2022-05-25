@@ -1,6 +1,7 @@
 import Joi from "joi-browser";
 import Form from "../common/Form";
 import KeyModal from "./KeyModal";
+import SpinnerWithText from "../common/SpinnerWithText";
 import { generateKeyPairs } from "../../services/sshKeyService";
 import { toast } from "react-toastify";
 
@@ -21,18 +22,21 @@ class GenerateKey extends Form {
       content: "Length between 5 to 255 characters."
     },
     generatedKey: {},
+    showKeySpinner: false
   }
 
   doSubmit = async () => {
+    this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
       const response = await generateKeyPairs(data.keyType, data.name, data.description);
-      this.setState({ generatedKey: response.data });
+      this.setState({ generatedKey: response.data, showKeySpinner: false });
       localStorage.setItem("sshKeyType", data.keyType);
     }
     catch (ex) {
       console.log("failed to generate ssh key pairs: " + ex.response.data);
       toast.error("Failed to generate ssh key pairs.");
+      this.setState({ showKeySpinner: false });
     }
   };
 
@@ -63,11 +67,15 @@ class GenerateKey extends Form {
   }
 
   render() {
-    const { nameTooltip, descriptionTooltip, generatedKey, data } =  this.state;
+    const { nameTooltip, descriptionTooltip, generatedKey, data,
+      showKeySpinner } =  this.state;
     const { maxSliver, maxBastion } = this.props;
     return (
       <div className="w-100">
         <h3 className="my-4">Generate SSH Key Pair</h3>
+        {
+          showKeySpinner && <SpinnerWithText text={"Generating Keys..."} />
+        }
         {
           maxSliver && maxBastion ? 
             <div className="alert alert-warning" role="alert">
@@ -93,12 +101,15 @@ class GenerateKey extends Form {
                 </div>
               }
               <KeyModal data={generatedKey} name={data.name} />
-              <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name", true, nameTooltip)}
-                {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                {this.renderSelect("keyType", "Key Type", true, "", this.getKeyTypeDropdown(maxSliver, maxBastion))}
-                {this.renderButton("Generate Key Pair")}
-              </form>
+              {
+                !showKeySpinner &&
+                <form onSubmit={this.handleSubmit}>
+                  {this.renderInput("name", "Name", true, nameTooltip)}
+                  {this.renderTextarea("description", "Description", true, descriptionTooltip)}
+                  {this.renderSelect("keyType", "Key Type", true, "", this.getKeyTypeDropdown(maxSliver, maxBastion))}
+                  {this.renderButton("Generate Key Pair")}
+                </form>
+              }
             </div>
         }
       </div>
