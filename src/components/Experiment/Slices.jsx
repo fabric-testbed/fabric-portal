@@ -119,7 +119,7 @@ class Slices extends React.Component {
 
     if (!includeDeadSlices) {
       filtered = filtered.filter((s) => 
-        s.slice_state !== "Dead"
+        s.slice_state !== "Dead" && s.slice_state !== "Closing"
       )
     }
 
@@ -163,7 +163,7 @@ class Slices extends React.Component {
           <div className="alert alert-warning mt-4" role="alert">
             <p className="mt-2">
               We couldn't find your slice. Please create slices from&nbsp;
-              <Link to="/new-slice">Portal</Link> or&nbsp;
+              <Link to="/new-slice">Portal</Link> or &nbsp;
               <a
                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                target="_blank"
@@ -172,6 +172,7 @@ class Slices extends React.Component {
             </p>
             <p>
               <ul>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/" target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
@@ -199,7 +200,7 @@ class Slices extends React.Component {
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
               <Checkbox
-                label={"Include Dead Slices"}
+                label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
                 isChecked={this.state.includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
