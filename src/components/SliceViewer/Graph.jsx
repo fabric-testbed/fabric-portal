@@ -15,23 +15,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 Cytoscape.use(FCose);
 
-function handleCy(cy) {
-  const SELECT_THRESHOLD = 200;
-
-  // Refresh Layout
-  const refreshLayout = _.debounce(() => {
-    const layout = {name: 'fcose', infinite: false};
-    cy.layout(layout).run()
-  }, SELECT_THRESHOLD);
-
-  // apply layout on graph render.
-  refreshLayout();
-
-  // refresh layout when elements change.
-  // cy.on('add remove', () => {
-  //   refreshLayout();
-  // });
-
+function setCytoscape(cy){
   return cy;
 }
 
@@ -39,13 +23,12 @@ export default class Graph extends Component {
   state = {
     w: 0,
     h: 0,
-    selectedData: null,
   }
 
   componentDidMount = () => {
     this.setState({
       w: window.innerWidth * this.props.defaultSize.width,
-      h:window.innerHeight * this.props.defaultSize.height,
+      h: window.innerHeight * this.props.defaultSize.height,
     })
     // this.cy can only be declared after the component has been mounted
     // call functions that set up the interactivity inside componentDidMount
@@ -53,15 +36,26 @@ export default class Graph extends Component {
   }
   
   setUpListeners = () => {
-    this.cy.on('click', 'node', (event) => {
-      this.setState({selectedData: event.target["_private"].data})
-      this.handleNodeSelect();
+    const SELECT_THRESHOLD = 200;
+
+    // Refresh Layout
+    const refreshLayout = _.debounce(() => {
+      const layout = {name: 'fcose', infinite: false};
+      this.cy.layout(layout).run()
+    }, SELECT_THRESHOLD);
+
+    // apply layout on graph render.
+    refreshLayout();
+
+    // refresh layout when elements change.
+    this.cy.on('add remove', () => {
+      refreshLayout();
     });
-  }
-  
-  handleNodeSelect = () => {
-    const selectedData = this.state.selectedData;
-    this.props.onNodeSelect(selectedData);
+
+    // pass selected node data to parent component.
+    this.cy.on('click', 'node', (event) => {
+      this.props.onNodeSelect(event.target["_private"].data);
+    });
   }
 
   saveJSON = () => {
@@ -129,7 +123,7 @@ export default class Graph extends Component {
             </OverlayTrigger>
           }
           {
-            this.props.isNewSlice && 
+            this.props.isNewSlice &&
             <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger">Clear Graph</button>
           }
         </div>
@@ -138,7 +132,7 @@ export default class Graph extends Component {
           zoom={defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
           style={{ width: this.state.w, height: this.state.h }}
-          cy={(cy) => {this.cy = handleCy(cy)}}
+          cy={(cy) => {this.cy = setCytoscape(cy)}}
           stylesheet={[
             {
               "selector": "node",
