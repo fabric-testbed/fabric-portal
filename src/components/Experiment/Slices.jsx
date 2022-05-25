@@ -172,6 +172,7 @@ class Slices extends React.Component {
             </p>
             <p>
               <ul>
+                <li><a href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/" target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
                 <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
