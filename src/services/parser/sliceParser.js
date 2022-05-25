@@ -63,7 +63,6 @@ export default function parseSlice(slice, sliceType) {
     const properties = {};
     const originalNode = objNodes[id];
     data.id = parseInt(originalNode.id);
-    // data.label = originalNode.id + '.' + originalNode.Type;
     data.label = originalNode.Name;
     data.type = "roundrectangle";
     properties.name = originalNode.Name;
@@ -141,7 +140,7 @@ export default function parseSlice(slice, sliceType) {
       data = {
         parent: getSiteIdbyName(node.Site),
         id: parseInt(node.id),
-        label: "NetworkService",
+        label: node.Name,
         type: "roundrectangle",
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
     }
@@ -149,7 +148,7 @@ export default function parseSlice(slice, sliceType) {
     } else if (node.Class === "NetworkService" && node.Type !== "OVS") {
       data = {
         id: parseInt(node.id),
-        label: node.Type,
+        label: node.Name,
         type: "roundrectangle",
         properties: { class: "NetworkService", name: node.Name, type: node.Type },
       };

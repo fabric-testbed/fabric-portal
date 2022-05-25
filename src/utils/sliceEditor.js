@@ -148,7 +148,7 @@ const removeNode = (el, nodes, links) => {
         return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
       }
     }
-  
+    
     // remove the parent VM.
     to_remove_node_ids.push(parentID);
   }

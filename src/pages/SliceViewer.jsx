@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
+import DeleteModal from "../components/common/DeleteModal";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getCurrentUser } from "../services/prPeopleService.js";
-import { getSliceById } from "../services/orchestratorService.js";
+import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
 // import { getSliceById } from "../services/fakeSlices";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
@@ -66,6 +67,24 @@ export default class SliceViewer extends Component {
     }
   }
 
+  handleDeleteSlice = async (id) => {
+    try {
+      await deleteSlice(id);
+      // toast message to users when the api call is successfully done.
+      toast.success("Slice deleted successfully.");
+      // change slice state to Dead.
+      this.setState(prevState => ({ 
+        slice: {
+          ...prevState.slice,
+          "slice_state": "Dead"
+        }
+      }))
+    } catch(ex) {
+      console.log("failed to delete the slice: " + ex.response.data);
+      toast.error("Failed to delete the slice.");
+    }
+  }
+
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
   }
@@ -88,19 +107,33 @@ export default class SliceViewer extends Component {
           hasProject &&
           <div className="mx-5 mb-4 slice-viewer-container">
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
-              <h2>
-                <b>{slice.slice_name}</b>
-                <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
-              </h2>
-              <u>Lease End: {sliceTimeParser(slice.lease_end)}</u>
-              <Link to="/experiments#slices">
-                <button
-                  className="btn btn-sm btn-outline-primary my-3"
-                >
-                  <i className="fa fa-sign-in mr-2"></i>
-                  Back to Slice List
-                </button>
-              </Link>
+              <div className="d-flex flex-row justify-content-between align-items-center">
+                <h2 className="mr-4">
+                  <b>{slice.slice_name}</b>
+                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
+                </h2>
+                <h4>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end)}</span>
+                </h4>
+              </div>
+              <div className="d-flex flex-row justify-content-between align-items-center">
+                {
+                  slice.slice_state.includes("Stable") &&
+                  <DeleteModal
+                    name={"Delete Slice"}
+                    text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
+                    onDelete={() => this.handleDeleteSlice(slice.slice_id)}
+                  />
+                }
+                <Link to="/experiments#slices">
+                  <button
+                    className="btn btn-sm btn-outline-primary my-3 ml-3"
+                  >
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Back to Slice List
+                  </button>
+                </Link>
+              </div>
             </div>
             <div className="d-flex flex-row justify-content-center">
               {
@@ -110,7 +143,7 @@ export default class SliceViewer extends Component {
                   isNewSlice={false}
                   elements={elements}
                   sliceName={slice.slice_name}
-                  defaultSize={{"width": 0.65, "height": 0.75, "zoom": 1}}
+                  defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
                 />
               }
