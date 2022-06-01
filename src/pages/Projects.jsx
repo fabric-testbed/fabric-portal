@@ -145,7 +145,18 @@ class Projects extends React.Component {
 
     return (
       <div className="container">
-        <h1>Projects</h1>
+        <div className="d-flex flex-row">
+          <h1>Projects</h1>
+          <a
+            href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3"
+          >
+            <i className="fa fa-question-circle mx-2"></i>
+            User Guide
+          </a>
+        </div>
         <div className="toolbar">
           <SearchBoxWithDropdown
             activeDropdownVal={filterQuery}

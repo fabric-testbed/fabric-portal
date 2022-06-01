@@ -77,6 +77,17 @@ class MyRoles extends React.Component {
             Refresh Roles
           </button>
         </div>
+        <div className="alert alert-primary my-2" role="alert">
+          Please consult &nbsp;
+          <a
+            href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            this guide
+          </a>&nbsp;
+          for FABRIC user roles information.
+        </div>
         <h4 className="mt-4">
           Global Roles
         </h4>

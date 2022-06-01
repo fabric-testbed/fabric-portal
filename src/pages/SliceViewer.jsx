@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import DeleteModal from "../components/common/DeleteModal";
+import SpinnerWithText from "../components/common/SpinnerWithText";
+import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
-// import { getSliceById } from "../services/fakeSlices";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
@@ -22,14 +23,14 @@ export default class SliceViewer extends Component {
       "slice_name": "Slice Viewer",
       "slice_state": "StableOK"
     },
-    // elements: sliceParser(getSliceById(1)["value"]["slices"][0]["slice_model"]),
-    // slice: getSliceById(1)["value"]["slices"][0],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
     hasProject: true,
+    showSliceSpinner: false,
   }
 
   async componentDidMount() {
+    this.setState({ showSliceSpinner: true });
     // call PR first to check if the user has project.
     try {
       const { data: people } = await getCurrentUser();
@@ -43,6 +44,7 @@ export default class SliceViewer extends Component {
             const { data } = await getSliceById(this.props.match.params.id);
             this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
             this.setState({ slice: data["value"]["slices"][0] });
+            this.setState({ showSliceSpinner: false });
           });
         } else {
           // the token has been stored in the browser and is ready to be used.
@@ -50,6 +52,7 @@ export default class SliceViewer extends Component {
             const { data } = await getSliceById(this.props.match.params.id);
             this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
             this.setState({ slice: data["value"]["slices"][0] });
+            this.setState({ showSliceSpinner: false });
           } catch(err) {
             console.log("Error in getting slice: " + err);
             toast.error("Failed to load the slice. Please try again later.");
@@ -99,18 +102,37 @@ export default class SliceViewer extends Component {
       "Configuring": "primary",
     }
 
-    const { slice, elements, selectedData, hasProject } = this.state;
+    const { slice, elements, selectedData, hasProject, 
+      showSliceSpinner } = this.state;
+
+    let showSlice = !showSliceSpinner && hasProject;
 
     return(
       <div>
         {
-          hasProject &&
+          showSliceSpinner && 
+          <div className="container d-flex align-items-center justify-content-center">
+            <SpinnerWithText text={"Loading Slice..."} />
+          </div>
+        }
+        {
+          showSlice &&
           <div className="mx-5 mb-4 slice-viewer-container">
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="mr-4">
                   <b>{slice.slice_name}</b>
-                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
+                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>
+                    {slice.slice_state}
+                  </span>
+                  <a
+                    href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ml-1"
+                  >
+                    <i className="fa fa-question-circle mx-2" />
+                  </a>
                 </h2>
                 <h4>
                   <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end)}</span>
@@ -135,6 +157,14 @@ export default class SliceViewer extends Component {
                 </Link>
               </div>
             </div>
+            {
+              slice.slice_state === "Configuring" && 
+              <CountdownTimer
+                text={"This slice is provisioning now."}
+                interval={30}
+                onDataReload={() => window.location.reload()}
+              />
+            }
             <div className="d-flex flex-row justify-content-center">
               {
                 elements.length > 0 &&

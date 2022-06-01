@@ -102,6 +102,17 @@ class Tokens extends React.Component {
           !this.state.showSpinner &&
           <div>
             <h1 className="mb-4">Create Token</h1>
+            <div className="alert alert-primary mb-2" role="alert">
+              Please consult &nbsp;
+              <a
+                href="https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                this guide
+              </a>&nbsp;
+              for obtaining and using FABRIC API tokens.
+            </div>
             { this.state.projects.length === 0 &&
                 <div className="alert alert-warning mt-4" role="alert">
                   <p className="mt-2">To create tokens, you have to be in a project first:</p>
