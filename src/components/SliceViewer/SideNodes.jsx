@@ -35,7 +35,7 @@ class SideNodes extends React.Component {
     // type: currently only support 'VM'
     const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, selectedImageRef, nodeComponents } = this.state;
     const image = `${selectedImageRef},${imageType}`;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, image, nodeComponents);
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, Number(core), Number(ram), Number(disk), image, nodeComponents);
     this.setState({
       selectedSite: "",
       nodeName: "",
