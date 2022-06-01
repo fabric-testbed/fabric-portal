@@ -122,7 +122,17 @@ export default class SliceViewer extends Component {
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="mr-4">
                   <b>{slice.slice_name}</b>
-                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>{slice.slice_state}</span>
+                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>
+                    {slice.slice_state}
+                    <a
+                      href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ml-1"
+                    >
+                      <i className="fa fa-question-circle mx-2" />
+                    </a>
+                  </span>
                 </h2>
                 <h4>
                   <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end)}</span>
