@@ -2,7 +2,8 @@ const getSite = (cp) => {
   return cp.properties.name.substr(0, cp.properties.name.indexOf('-'));
 }
 
-const isPositiveInteger = (num) => {
+const isPositiveInteger = (input) => {
+  const num = Number(input);
   return Number.isInteger(num) && num > 0;
 }
 

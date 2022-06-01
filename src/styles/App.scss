@@ -550,3 +550,21 @@ ul {
   margin-left: .5rem;
   color: $success;
 }
+
+.countdown-timer {
+  font-weight: 600;
+  margin-left: .5rem;
+  min-width: 2.5rem;
+  max-width: 2.5rem;
+}
+
+.countdown-timer-link {
+  cursor: pointer;
+  color: $primary-color;;
+  font-weight: 600;
+  margin-left: .5rem;
+}
+
+.countdown-timer-link:hover {
+  text-decoration: underline;
+} 
