@@ -36,7 +36,17 @@ class SideNodes extends React.Component {
     const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, selectedImageRef, nodeComponents } = this.state;
     const image = `${selectedImageRef},${imageType}`;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, core, ram, disk, image, nodeComponents);
-    this.setState({ selectedSite: "", nodeName: "", nodeComponents: [], selectedImageRef: "default_rocky_8" })
+    this.setState({
+      selectedSite: "",
+      nodeName: "",
+      core: 2,
+      ram: 6,
+      disk: 10,
+      nodeType: "VM",
+      nodeComponents: [],
+      imageType: "qcow2",
+      selectedImageRef: "default_rocky_8",
+    })
   }
 
   handleSliceComponentAdd = (component) => {
@@ -78,15 +88,15 @@ class SideNodes extends React.Component {
   }
 
   handleCoreChange = (e) => {
-    this.setState({ core: Number(e.target.value) });
+    this.setState({ core: e.target.value });
   }
 
   handleRamChange = (e) => {
-    this.setState({ ram: Number(e.target.value) });
+    this.setState({ ram: e.target.value });
   }
 
   handleDiskChange = (e) => {
-    this.setState({ disk: Number(e.target.value) });
+    this.setState({ disk: e.target.value });
   }
 
   handleImageRefChange = (e) => {
@@ -164,17 +174,17 @@ class SideNodes extends React.Component {
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputCore" className="slice-builder-label">Core</label>
                 <input type="number" className="form-control form-control-sm" id="inputCore"
-                  defaultValue="2" onChange={this.handleCoreChange}/>
+                  value={core} onChange={this.handleCoreChange}/>
               </div>
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputRam" className="slice-builder-label">Ram</label>
                 <input type="number" className="form-control form-control-sm" id="inputRam"
-                  defaultValue="6" onChange={this.handleRamChange}/>
+                  value={ram} onChange={this.handleRamChange}/>
               </div>
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputDisk" className="slice-builder-label">Disk</label>
                 <input type="number" className="form-control form-control-sm" id="inputDisk"
-                  defaultValue="10" onChange={this.handleDiskChange}/>
+                  value={disk} onChange={this.handleDiskChange}/>
               </div>
             </div>
             <div className="form-row">
