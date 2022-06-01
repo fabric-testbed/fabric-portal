@@ -327,7 +327,20 @@ class NewSliceForm extends React.Component {
           !showSliceSpinner && 
           <div>
             <div className="d-flex flex-row justify-content-between mt-2">
-              <h2 className="ml-5 my-2 align-self-start">New Slice</h2>
+              <div className="align-self-start d-flex flex-row">
+                <h2 className="ml-5 my-2">
+                  New Slice
+                </h2>
+                <a
+                  href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3"
+                >
+                  <i className="fa fa-question-circle mx-2"></i>
+                  User Guide
+                </a>
+              </div>
               <Link to="/experiments#slices" className="align-self-end mr-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
