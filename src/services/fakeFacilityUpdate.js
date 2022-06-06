@@ -31,6 +31,15 @@ export const updates = [
     link: "https://learn.fabric-testbed.net/forums/topic/fabric-is-now-open-with-even-more-sites-and-features/",
     button: "Learn More",
   },
+  {
+    id: 5,
+    title: "FABRIC Software Release 1.2 now available!",
+    content:
+     '<p>We are pleased to announce the deployment of Release 1.2 of our software stack on FABRIC production infrastructure. This release adds a few notable new features:</p><p><ul><li>Graphical slice builder in the Portal</li><li>Facility Ports (first facility ports to Chameleon@UC, many others to follow soon)</li><li>Mirror Ports</li><li>New project-based authorization system</li></ul></p><p>Follow our announcements on FABRIC Forums.</p>',
+    date: "2022-06-06",
+    link: "https://learn.fabric-testbed.net/knowledge-base/fabric-testbed-release-1-2/",
+    button: "Learn More",
+  },
 ];
 
 export function getUpdates() {

@@ -96,7 +96,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="col-xl-3 col-lg-12">
-            <CardOfItems header={"Facility Updates"} data={getLatestUpdates(3)} />
+            <CardOfItems header={"Facility Updates"} data={getLatestUpdates(4)} />
           </div>
         </div>
         <CookieConsent
