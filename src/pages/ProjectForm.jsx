@@ -333,13 +333,15 @@ class projectForm extends Form {
   };
 
   renderTags(tags) {
-    return tags.map((tag, index) => {
-      return (
-        <span className="btn-sm btn-info mr-1" key={`tag-${index}`}>
-          {tag}
-        </span>
-      );
-    });
+    return <ul className="input-tag__tags">
+      {
+        tags.length > 0 && tags.map((tag, index) => 
+          <li key={`project-tag-${index}`}>
+            {tag}
+          </li>
+        )
+      }
+    </ul>;
   }
 
   checkProjectRole = (projectID, role) => {
