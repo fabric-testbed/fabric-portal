@@ -417,45 +417,47 @@ class projectForm extends Form {
                 {isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
-              <table className="table table-striped table-bordered mt-4">
-                <tbody>
-                  {projectStaticInfoRows.map((row, index) => {
-                    return (
-                      <tr key={`project-basic-info-${index}`}>
+              <div class="table-responsive">
+                <table className="table table-striped table-bordered mt-4">
+                  <tbody>
+                    {projectStaticInfoRows.map((row, index) => {
+                      return (
+                        <tr key={`project-basic-info-${index}`}>
+                          <td>
+                            {row.label}
+                            {row.link !== "" && 
+                              <a href={row.link} target="_blank" rel="noreferrer" className="ml-1">
+                                <i className="fa fa-question-circle mx-2"></i>
+                              </a>
+                            }
+                          </td>
+                          <td>
+                            {row.path === "tags" && this.renderTags(_.get(data, row.path))}
+                            {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
+                            {
+                              row.path !== "tags" && row.path !== "created_time" &&
+                              _.get(data, row.path) 
+                            }
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {
+                      canUpdate && 
+                      <tr>
+                        <td>Danger Zone</td>
                         <td>
-                          {row.label}
-                          {row.link !== "" && 
-                            <a href={row.link} target="_blank" rel="noreferrer" className="ml-1">
-                              <i className="fa fa-question-circle mx-2"></i>
-                            </a>
-                          }
-                        </td>
-                        <td>
-                          {row.path === "tags" && this.renderTags(_.get(data, row.path))}
-                          {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
-                          {
-                            row.path !== "tags" && row.path !== "created_time" &&
-                            _.get(data, row.path) 
-                          }
+                          <DeleteModal
+                            name={"Delete Project"}
+                            text={"Are you sure you want to delete the project? This process cannot be undone."}
+                            onDelete={() => this.handleDeleteProject(that.state.data)}
+                          />
                         </td>
                       </tr>
-                    );
-                  })}
-                  {
-                    canUpdate && 
-                    <tr>
-                      <td>Danger Zone</td>
-                      <td>
-                        <DeleteModal
-                          name={"Delete Project"}
-                          text={"Are you sure you want to delete the project? This process cannot be undone."}
-                          onDelete={() => this.handleDeleteProject(that.state.data)}
-                        />
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
+                    }
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div
               className={`${
