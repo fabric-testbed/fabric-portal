@@ -431,7 +431,7 @@ class projectForm extends Form {
                               </a>
                             }
                           </td>
-                          <td>
+                          <td className="project-detail-form-td">
                             {row.path === "tags" && this.renderTags(_.get(data, row.path))}
                             {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
                             {
