@@ -99,6 +99,7 @@ class Projects extends React.Component {
       "Name": "name",
       "Description": "description",
       "Facility": "facility",
+      "ID": "uuid",
     }
 
     if (searchQuery) {
