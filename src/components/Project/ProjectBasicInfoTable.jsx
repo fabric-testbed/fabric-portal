@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import DeleteModal from "../components/common/DeleteModal";
+import DeleteModal from "../common/DeleteModal";
 import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
 import _ from "lodash";

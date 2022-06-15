@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
+import _ from "lodash";
 
 class ProjectsTable extends Component {
   // handleClick = (project) => {
@@ -17,7 +18,18 @@ class ProjectsTable extends Component {
           <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
         ),
       },
-      { path: "description", label: "Description" },
+      { 
+        path: "description",
+        label: "Description",
+        content: (project) => {
+          <span>
+            {_.truncate(project.description, {
+              'length': 100,
+              'separator': ' '
+            })}
+          </span>
+        }
+      },
       { path: "facility", label: "Facility" },
       {
         path: "created_time",
