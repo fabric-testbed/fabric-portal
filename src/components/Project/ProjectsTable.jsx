@@ -21,14 +21,14 @@ class ProjectsTable extends Component {
       { 
         path: "description",
         label: "Description",
-        content: (project) => {
+        content: (project) => (
           <span>
             {_.truncate(project.description, {
               'length': 100,
               'separator': ' '
             })}
           </span>
-        }
+        )
       },
       { path: "facility", label: "Facility" },
       {
@@ -50,7 +50,18 @@ class ProjectsTable extends Component {
         path: "name",
         label: "Project Name",
       },
-      { path: "description", label: "Description" },
+      { 
+        path: "description",
+        label: "Description",
+        content: (project) => (
+          <span>
+            {_.truncate(project.description, {
+              'length': 100,
+              'separator': ' '
+            })}
+          </span>
+        )
+      },
       { path: "facility", label: "Facility" },
       {
         path: "created_time",
