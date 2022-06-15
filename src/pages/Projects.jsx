@@ -161,7 +161,7 @@ class Projects extends React.Component {
         <div className="toolbar">
           <SearchBoxWithDropdown
             activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "Description", "Facility"]}
+            dropdownValues={["Name", "Description", "Facility", "ID"]}
             value={searchQuery}
             placeholder={`Search Projects by ${filterQuery}...`}
             onDropdownChange={this.handleFilter}
