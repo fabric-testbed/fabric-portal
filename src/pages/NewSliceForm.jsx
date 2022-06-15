@@ -47,7 +47,10 @@ class NewSliceForm extends React.Component {
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
-    this.setState({ showResourceSpinner: true, showKeySpinner: true });
+    this.setState({
+      showResourceSpinner: true,
+      showKeySpinner: true
+    });
 
     try {
       const { data: resources } = await getResources();

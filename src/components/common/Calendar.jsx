@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 
 function Calendar({ onTimeChange }) {
-  const [value, onChange] = useState(new Date());
+  // Set default time to be 24 hours later.
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const [value, onChange] = useState(tomorrow);
 
   return (
     <div>
@@ -10,7 +15,7 @@ function Calendar({ onTimeChange }) {
         onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
-        minDate={new Date()}
+        minDate={today}
         required={true}
         format="yyyy-MM-dd HH:mm:ss"
       />
