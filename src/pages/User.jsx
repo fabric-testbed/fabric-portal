@@ -32,7 +32,7 @@ class User extends React.Component {
       const { data: keys } = await getActiveKeys();
       this.setState({ user, people, keys });
     } catch (ex) {
-      toast.error("Failed to load user information. Please reload this page.");
+      toast.error("Failed to load user information. Please re-login.");
       console.log("Failed to load user information: " + ex.response.data);
     }
   }

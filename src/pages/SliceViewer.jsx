@@ -65,8 +65,9 @@ export default class SliceViewer extends Component {
         }
       } 
      } catch(ex) {
-      toast.error("Failed to load user information. Please reload this page.");
       console.log("Failed to load user information: " + ex.response.data);
+      window.location.href = "/logout";
+      toast.error("User's credential is expired. Please re-login.");
     }
   }
 
