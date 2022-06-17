@@ -44,7 +44,7 @@ class ProjectBasicInfoTable extends Component {
                 Project ID
               </td>
               <td>
-                <span className="mt-1 mr-2">{ _.get(data, "uuid") }</span>
+                <span className="mr-2">{ _.get(data, "uuid") }</span>
                 <CopyButton id={_.get(data, "uuid")} text=""/>
               </td>
             </tr>

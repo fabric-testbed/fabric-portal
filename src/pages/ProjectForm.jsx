@@ -101,9 +101,8 @@ class projectForm extends Form {
       const { data: people } = await getCurrentUser();
       this.setState({ roles: people.roles })
     } catch (ex) {
-      toast.error("Failed to get user information.");
-      console.log("Cannot get user info from Project Registry by UUID");
-      console.log(ex.response.data);
+      console.log("Failed to load user information: " + ex.response.data);
+      toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
     }
   }

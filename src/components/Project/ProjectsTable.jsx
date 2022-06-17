@@ -24,7 +24,7 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {_.truncate(project.description, {
-              'length': 100,
+              'length': 250,
               'separator': ' '
             })}
           </span>
@@ -56,7 +56,7 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {_.truncate(project.description, {
-              'length': 100,
+              'length': 250,
               'separator': ' '
             })}
           </span>
