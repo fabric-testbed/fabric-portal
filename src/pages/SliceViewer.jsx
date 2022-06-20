@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
+import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordion';
 import DeleteModal from "../components/common/DeleteModal";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
@@ -8,7 +9,10 @@ import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
+// import { getSliceById } from "../services/fakeSlices.js";
+// import { deleteSlice } from "../services/orchestratorService.js";
 import sliceParser from "../services/parser/sliceParser.js";
+import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
 
@@ -23,6 +27,10 @@ export default class SliceViewer extends Component {
       "slice_name": "Slice Viewer",
       "slice_state": "StableOK"
     },
+    errors: [],
+    // elements: sliceParser(getSliceById(2)["value"]["slices"][0]["slice_model"]),
+    // slice: getSliceById(2)["value"]["slices"][0],
+    // errors: sliceErrorParser(getSliceById(2)),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
     hasProject: true,
@@ -42,17 +50,23 @@ export default class SliceViewer extends Component {
         if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
           autoCreateTokens(people.projects[0].uuid).then(async () => {
             const { data } = await getSliceById(this.props.match.params.id);
-            this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-            this.setState({ slice: data["value"]["slices"][0] });
-            this.setState({ showSliceSpinner: false });
+            this.setState({ 
+              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
+              slice: data["value"]["slices"][0],
+              errors: sliceErrorParser(data),
+              showSliceSpinner: false
+            });
           });
         } else {
           // the token has been stored in the browser and is ready to be used.
           try {
             const { data } = await getSliceById(this.props.match.params.id);
-            this.setState({ elements: sliceParser(data["value"]["slices"][0]["slice_model"])});
-            this.setState({ slice: data["value"]["slices"][0] });
-            this.setState({ showSliceSpinner: false });
+            this.setState({ 
+              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
+              slice: data["value"]["slices"][0],
+              errors: sliceErrorParser(data),
+              showSliceSpinner: false
+            });
           } catch(err) {
             console.log("Error in getting slice: " + err);
             toast.error("Failed to load the slice. Please try again later.");
@@ -104,7 +118,7 @@ export default class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSliceSpinner } = this.state;
+      showSliceSpinner, errors } = this.state;
 
     let showSlice = !showSliceSpinner && hasProject;
 
@@ -164,6 +178,14 @@ export default class SliceViewer extends Component {
                 text={"This slice is provisioning now."}
                 interval={30}
                 onDataReload={() => window.location.reload()}
+              />
+            }
+            {
+              (["Closing", "Dead", "StableError"].includes(slice.slice_state) 
+              && errors.length > 0) && 
+              <ErrorMessageAccordion
+                state={slice.slice_state}
+                errors={errors}
               />
             }
             <div className="d-flex flex-row justify-content-center">
