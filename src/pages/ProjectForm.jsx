@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import Form from "../components/common/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectUserTable from "../components/Project/ProjectUserTable";
+import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
-import DeleteModal from "../components/common/DeleteModal";
 import { toast } from "react-toastify";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +15,6 @@ import { getPeopleByName } from "../services/userInformationService";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
-import toLocaleTime from "../utils/toLocaleTime";
 
 import {
   getProject,
@@ -25,8 +24,6 @@ import {
   updateTags,
   getTags,
 } from "../services/projectRegistryService";
-
-import _ from "lodash";
 
 class projectForm extends Form {
   state = {
@@ -42,18 +39,6 @@ class projectForm extends Form {
       tags: [],
     },
     roles: [],
-    projectStaticInfoRows: [
-      { label: "Project ID", path: "uuid", link: "" },
-      {
-        label: "Project Tags",
-        path: "tags",
-        link: "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
-      },
-      { label: "Created Time", path: "created_time", link: "" },
-      { label: "Creator Name", path: "created_by.name", link: "" },
-      { label: "Creator Email", path: "created_by.email", link: "" },
-      { label: "Creator ID", path: "created_by.uuid", link: "" },
-    ],
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -116,9 +101,8 @@ class projectForm extends Form {
       const { data: people } = await getCurrentUser();
       this.setState({ roles: people.roles })
     } catch (ex) {
-      toast.error("Failed to get user information.");
-      console.log("Cannot get user info from Project Registry by UUID");
-      console.log(ex.response.data);
+      console.log("Failed to load user information: " + ex.response.data);
+      toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
     }
   }
@@ -332,18 +316,6 @@ class projectForm extends Form {
     }
   };
 
-  renderTags(tags) {
-    return <ul className="input-tag__tags">
-      {
-        tags.length > 0 && tags.map((tag, index) => 
-          <li key={`project-tag-${index}`}>
-            {tag}
-          </li>
-        )
-      }
-    </ul>;
-  }
-
   checkProjectRole = (projectID, role) => {
     let role_str = projectID + "-" + role;
     return this.state.roles.indexOf(role_str) > -1;
@@ -358,7 +330,6 @@ class projectForm extends Form {
       SideNavItems,
       activeIndex,
       roles,
-      projectStaticInfoRows,
       ownerSearchInput,
       owners,
       memberSearchInput,
@@ -419,47 +390,11 @@ class projectForm extends Form {
                 {isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
-              <div class="table-responsive">
-                <table className="table table-striped table-bordered mt-4">
-                  <tbody>
-                    {projectStaticInfoRows.map((row, index) => {
-                      return (
-                        <tr key={`project-basic-info-${index}`}>
-                          <td>
-                            {row.label}
-                            {row.link !== "" && 
-                              <a href={row.link} target="_blank" rel="noreferrer" className="ml-1">
-                                <i className="fa fa-question-circle mx-2"></i>
-                              </a>
-                            }
-                          </td>
-                          <td className="project-detail-form-td">
-                            {row.path === "tags" && this.renderTags(_.get(data, row.path))}
-                            {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
-                            {
-                              row.path !== "tags" && row.path !== "created_time" &&
-                              _.get(data, row.path) 
-                            }
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    {
-                      canUpdate && 
-                      <tr>
-                        <td>Danger Zone</td>
-                        <td>
-                          <DeleteModal
-                            name={"Delete Project"}
-                            text={"Are you sure you want to delete the project? This process cannot be undone."}
-                            onDelete={() => this.handleDeleteProject(that.state.data)}
-                          />
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
+              <ProjectBasicInfoTable
+                data={data}
+                canUpdate={canUpdate}
+                onDeleteProject={this.handleDeleteProject}
+              />
             </div>
             <div
               className={`${

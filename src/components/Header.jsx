@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { default as portalData } from "../services/portalData.json";
 
+import { getCookieConsentValue } from "react-cookie-consent";
+
 import checkPortalType from "../utils/checkPortalType";
 import logo from "../imgs/fabric-brand.png";
 
@@ -53,7 +55,7 @@ class Header extends React.Component {
   };
 
   handleLogin = () => {
-    if (localStorage.getItem("fabricPortalCookieConsent")) {
+    if (getCookieConsentValue("fabricPortalCookieConsent")) {
       // remove old user status stored in browser.
       localStorage.removeItem("userStatus");
       // nginx handle login url.
