@@ -12,7 +12,7 @@ export default function parseSliceErrors(data) {
   for (const node of nodes) {
     if (node["ReservationInfo"]) {
       const error = JSON.parse(node["ReservationInfo"]).error_message;
-      if (error !== "") {
+      if (error) {
         errors.push({
           "node_name": node.Name,
           "error_message": error
