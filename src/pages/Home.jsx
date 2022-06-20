@@ -103,9 +103,6 @@ class Home extends React.Component {
           location="bottom"
           buttonText="OK"
           cookieName="fabricPortalCookieConsent"
-          onAccept={() => {
-            localStorage.setItem("fabricPortalCookieConsent", true)
-          }}
         >
           <span className="text-lg">This Website Uses Cookies.</span>
           <div className="mt-1 text-sm">

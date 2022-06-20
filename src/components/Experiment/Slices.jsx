@@ -175,7 +175,7 @@ class Slices extends React.Component {
                 Create Slice in JupyterHub
               </a>
             </div>
-            <div className="alert alert-warning mt-4" role="alert">
+            <div className="alert alert-warning mt-3" role="alert">
               <p className="mt-2">
                 We couldn't find your slice. Please create slices in&nbsp;
                 <Link to="/new-slice">Portal</Link> or &nbsp;
