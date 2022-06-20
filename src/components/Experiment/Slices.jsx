@@ -67,8 +67,9 @@ class Slices extends React.Component {
         }
       }
     } catch (ex) {
-      toast.error("Failed to load user information. Please reload this page.");
       console.log("Failed to load user information: " + ex.response.data);
+      window.location.href = "/logout";
+      toast.error("User's credential is expired. Please re-login.");
     }
   }
 
@@ -148,7 +149,7 @@ class Slices extends React.Component {
               <ul>
                 <li>
                   If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
-                  please <Link to="/user">request to be FABIRC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
+                  please <Link to="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
                 </li>
                 <li>
                   If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
@@ -160,25 +161,40 @@ class Slices extends React.Component {
         }
         {
           !showSpinner && hasProject && slices.length === 0 && 
-          <div className="alert alert-warning mt-4" role="alert">
-            <p className="mt-2">
-              We couldn't find your slice. Please create slices from&nbsp;
-              <Link to="/new-slice">Portal</Link> or &nbsp;
+          <div>
+            <div className="d-flex flex-row">
+              <Link to="/new-slice" className="btn btn-primary mr-4">
+                Create Slice in Portal
+              </Link>
               <a
-               href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
-               target="_blank"
-               rel="noreferrer"
-              >JupyterHub</a> first. Here are some guide articles you may find helpful:
-            </p>
-            <p>
-              <ul>
-                <li><a href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/" target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
-                <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
-                <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
-                <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
-                <li><a href="https://learn.fabric-testbed.net/knowledge-base/slice-editor/" target="_blank" rel="noreferrer">Slice Editor</a></li>
-              </ul>
-            </p>
+                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+                className="btn btn-primary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Create Slice in JupyterHub
+              </a>
+            </div>
+            <div className="alert alert-warning mt-3" role="alert">
+              <p className="mt-2">
+                We couldn't find your slice. Please create slices in&nbsp;
+                <Link to="/new-slice">Portal</Link> or &nbsp;
+                <a
+                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+                target="_blank"
+                rel="noreferrer"
+                >JupyterHub</a> first. Here are some guide articles you may find helpful:
+              </p>
+              <p>
+                <ul>
+                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/" target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
+                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
+                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
+                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
+                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/slice-editor/" target="_blank" rel="noreferrer">Slice Editor</a></li>
+                </ul>
+              </p>
+            </div>
           </div>
         }
         {

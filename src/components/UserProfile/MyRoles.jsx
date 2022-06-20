@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
+import _ from "lodash";
 
 class MyRoles extends React.Component {
   state = {
@@ -47,9 +48,10 @@ class MyRoles extends React.Component {
           <i className="fa fa-ban text-danger"></i>
         );
       case "string":
-        return param.length > 100
-          ? param.split(" ").slice(0, 20).join(" ").concat(" ...")
-          : param;
+        return _.truncate(param, {
+          'length': 100,
+          'separator': ' '
+        });
       default:
         return param;
     }
