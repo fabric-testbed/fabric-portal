@@ -36,7 +36,7 @@ class ProjectBasicInfoTable extends Component {
     const { data, canUpdate, onDeleteProject } = this.props;
 
     return (
-      <div class="table-responsive">
+      <div className="table-responsive">
         <table className="table table-striped table-bordered mt-4">
           <tbody>
             <tr>
