@@ -34,7 +34,7 @@ class App extends React.Component {
       try {
         const { data: user } = await getWhoAmI();
         localStorage.setItem("userID", user.uuid);
-        localStorage.setItem("bastionLogin", user.bastion_login);
+        // localStorage.setItem("bastionLogin", user.bastion_login);
         localStorage.setItem("userStatus", "active");
       } catch (err) {
         console.log("/whoami " + err);

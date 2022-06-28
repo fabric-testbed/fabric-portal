@@ -38,8 +38,8 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
         to login to your VMs via bastion hosts.
       </div>
       <div className="alert alert-primary" role="alert">
-        <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
-        <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
+        {/* <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
+        <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton> */}
       </div>
       <Tabs activeTab={localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver"}>
         <div label="Sliver" number={sliverKeys.length}>
