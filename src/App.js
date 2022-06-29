@@ -32,7 +32,8 @@ class App extends React.Component {
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
       try {
-        const { data: user } = await getWhoAmI();
+        const { data } = await getWhoAmI();
+        const user = data.results[0];
         localStorage.setItem("userID", user.uuid);
         // localStorage.setItem("bastionLogin", user.bastion_login);
         localStorage.setItem("userStatus", "active");

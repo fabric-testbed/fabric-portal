@@ -73,7 +73,7 @@ class Header extends React.Component {
     localStorage.removeItem("idToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userID");
-    localStorage.removeItem("bastionLogin");
+    // localStorage.removeItem("bastionLogin");
     localStorage.removeItem("userStatus");
     localStorage.removeItem("sshKeyType");
     localStorage.removeItem("sliceDraft");

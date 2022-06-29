@@ -27,7 +27,8 @@ class User extends React.Component {
 
   async componentDidMount(){
     try {
-      const { data: user } = await getWhoAmI();
+      const { data } = await getWhoAmI();
+      const user = data.results[0];
       const { data: people } = await getCurrentUser();
       const { data: keys } = await getActiveKeys();
       this.setState({ user, people, keys });

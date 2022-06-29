@@ -1,8 +1,9 @@
 import http from './httpService';
 import _ from "lodash";
-import { default as config } from "../config.json";
+import { default as configData } from "../config.json";
 
-const apiEndpoint = config.projectRegistryApiUrl;
+// const apiEndpoint = config.projectRegistryApiUrl;
+const apiEndpoint = configData.fabricCoreApiUrl;
 
 export function getProjects() {
   return http.get(apiEndpoint);
@@ -94,30 +95,17 @@ export function saveProject(project) {
     const url = apiEndpoint + "/update?" + query;
     http.put(url);
   } else {
-    // combine array of project owners into string, separated by comma
-    // required fields: name, description, facility
-    let query = {
-      name: project.name,
-      description: project.description,
-      facility: project.facility,
-      tags: project.tags.join(),
-      project_owners: project.project_owners.join(","),
-      project_members: project.project_members.join(","),
-    };
-
-    // remove empty useless params from query
-    for (let param in query) {
-      if (
-        query[param] === undefined ||
-        query[param] === null ||
-        query[param] === ""
-      )
-        delete query[param];
-    }
-    // transform clean query object to query string
-    query = new URLSearchParams(query).toString();
-    const url = apiEndpoint + "/create?" + query;
-    return http.post(url);
+    return http.post({
+      url: `${apiEndpoint}/projects`,
+      data: {
+        name: project.name,
+        description: project.description,
+        facility: project.facility,
+        tags: project.tags.join(),
+        project_owners: project.project_owners.join(","),
+        project_members: project.project_members.join(","),
+      }
+    });
   }
 }
 
