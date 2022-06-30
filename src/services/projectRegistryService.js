@@ -3,14 +3,14 @@ import _ from "lodash";
 import { default as configData } from "../config.json";
 
 // const apiEndpoint = config.projectRegistryApiUrl;
-const apiEndpoint = configData.fabricCoreApiUrl;
+const apiEndpoint = `${configData.fabricCoreApiUrl}/projects`;
 
 export function getProjects() {
-  return http.get(apiEndpoint);
+  return http.get(`${apiEndpoint}?offset=0&limit=20`);
 }
 
 export function getProject(id) {
-  return http.get(apiEndpoint + "/" + id);
+  return http.get(`${apiEndpoint}/${id}`);
 }
 
 export function addUser(type, projectId, userId) {

@@ -32,7 +32,8 @@ export default class SideLinks extends Component {
   
   async componentDidMount() {
     try {
-      const { data: user } = await getCurrentUser();
+      const { data } = await getCurrentUser();
+      const user = data.results[0];
       this.setState({ user: user });
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);

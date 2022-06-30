@@ -9,13 +9,14 @@ class Experiments extends React.Component {
     SideNavItems: [
       // { name: "MY SLICES", active: true },
       // { name: "MANAGE TOKENS", active: false },
-      { name: "MANAGE SSH KEYS", active: false },
+      // { name: "MANAGE SSH KEYS", active: false },
+      { name: "MANAGE SSH KEYS", active: true },
     ],
     user: {},
     people: {},
     activeIndex: 0,
     // componentNames: [Slices, Tokens, Keys],
-    componentNames: [Tokens]
+    componentNames: [Keys]
   };
 
   async componentDidMount() {

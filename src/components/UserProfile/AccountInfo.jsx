@@ -5,11 +5,14 @@ class AccountInfo extends React.Component {
     visibleRows: [
       { display: "Name", field: "name" },
       { display: "Email", field: "email" },
+      { display: "Affiliation", field: "affiliation" },
     ],
     toggledRows: [
+      { display: "FABRIC ID", field: "fabric_id" },
+      { display: "Bastion Login", field: "bastion_login" },
       { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" },
-      { display: "CILogon ID", field: "oidc_claim_sub"},
+      { display: "CILogon ID", field: "cilogon_id"},
     ],
   };
 

@@ -38,8 +38,10 @@ class Projects extends React.Component {
     this.setState({ showSpinner: true });
 
     try {
-      const { data: people } = await getCurrentUser();
-      let { data: allProjects } = await getProjects();
+      const { data1 } = await getCurrentUser();
+      const people = data1.results[0];
+      const { data2 } = await getProjects();
+      let allProjects = data2.results[0];
 
       // parse create time field to user's local time.
       allProjects = allProjects.map((p) => {

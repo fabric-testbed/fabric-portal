@@ -72,7 +72,8 @@ class projectForm extends Form {
       const projectId = this.props.match.params.id;
       if (projectId === "new") return;
 
-      const { data: project } = await getProject(projectId);
+      const { data } = await getProject(projectId);
+      const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
       // keep a copy of original tags for comparing on submit.
@@ -98,8 +99,9 @@ class projectForm extends Form {
     }
 
     try {
-      const { data: people } = await getCurrentUser();
-      this.setState({ roles: people.roles })
+      const { data } = await getCurrentUser();
+      const user = data.results[0];
+      this.setState({ roles: user.roles })
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");

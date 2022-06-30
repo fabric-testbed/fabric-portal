@@ -27,12 +27,13 @@ class User extends React.Component {
 
   async componentDidMount(){
     try {
-      const { data } = await getWhoAmI();
-      const user = data.results[0];
-      const { data: people } = await getCurrentUser();
+      const { data1 } = await getWhoAmI();
+      const user = data1.results[0];
+      const { data2 } = await getCurrentUser();
+      const people = data2.results[0];
       const { data: keys } = await getActiveKeys();
       this.setState({ user, people, keys });
-    } catch (ex) {
+    } catch (ex) { 
       toast.error("Failed to load user information. Please re-login.");
       console.log("Failed to load user information: " + ex.response.data);
     }
