@@ -34,6 +34,7 @@
     "react-cytoscapejs": "^1.2.1",
     "react-datetime-picker": "^3.5.0",
     "react-dom": "^16.14.0",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",
     "react-simple-maps": "^2.3.0",

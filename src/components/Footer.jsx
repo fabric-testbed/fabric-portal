@@ -33,7 +33,9 @@ class Footer extends React.Component {
             <li><b>Help &amp; Support</b></li>
             <li><a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
             <li><a href={portalData.knowledgeBaseFAQLink} target="_blank" rel="noopener noreferrer">FAQ</a></li>
-            <li><a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Contact Us</a></li>
+            <li>
+              <Link to="/help">Contact Us</Link>
+            </li>
           </ul>
         </div>
         <div className="col-sm-12 col-md-4">
