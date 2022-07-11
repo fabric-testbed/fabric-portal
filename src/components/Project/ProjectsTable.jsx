@@ -67,17 +67,17 @@ class ProjectsTable extends Component {
         path: "created_time",
         label: "Created Time",
       },
-      {
-        content: (project) => (
-          <button
-            // onClick={() => this.handleClick(project)}
-            className="btn btn-sm btn-primary"
-            disabled={true}
-          >
-            Request to Join
-          </button>
-        ),
-      },
+      // {
+      //   content: (project) => (
+      //     <button
+      //       // onClick={() => this.handleClick(project)}
+      //       className="btn btn-sm btn-primary"
+      //       disabled={true}
+      //     >
+      //       Request to Join
+      //     </button>
+      //   ),
+      // },
     ],
   };
 
