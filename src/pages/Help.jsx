@@ -14,9 +14,9 @@ export default class Help extends React.Component{
             <div className="card-body">
               <h5 className="card-title">Experiment Issues</h5>
               <p>
-                  For technical assistance with your experiments, please search our <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a> or
+                  For technical assistance with your experiments, please search in our <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a> or
                   the <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>. If you are unable to fix the problem on your
-                  own please post a question in the appropriate section of our <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>.
+                  own, please post a question in the appropriate section of our <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>.
                   </p>
                   <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
                     <i className="fa fa-sign-in mr-2"></i>
@@ -36,8 +36,7 @@ export default class Help extends React.Component{
               <h5 className="card-title">Account Issues</h5>
               <p>
                   If you are having problems with enrolling or logging into your FABRIC account 
-                  or logging into your experiment's resources via bastion hosts, please use the form on 
-                  this page or email us at <b>account-help@fabric-testbed.net</b>.
+                  or logging into your experiment's resources via bastion hosts, please use our <a href="https://fabric-testbed.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener noreferrer">FABRIC Account Help Portal</a> or email us at <b>account-help@fabric-testbed.net</b>.
                   </p>
               <a href="https://fabric-testbed.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 <i className="fa fa-sign-in mr-2"></i>
