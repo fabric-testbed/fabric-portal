@@ -3,6 +3,7 @@
   "facilityOptions": [
     { "_id": 1, "name": "FABRIC"}
   ],
+  "atlassianHelpPortal": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2",
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseFAQLink": "https://learn.fabric-testbed.net/faq/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
