@@ -10,7 +10,7 @@ import {
 
 import { topomap } from "../../data/topomap.js"
 
-const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
+const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });

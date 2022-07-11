@@ -15,6 +15,7 @@ import SliceViewer from "./pages/SliceViewer";
 import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
+import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
@@ -69,6 +70,7 @@ class App extends React.Component {
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/signup/:id" component={Signup} />
             <Route path="/resources" component={Resources} />
+            <Route path="/help" component={Help} />
             <ProtectedRoute path="/slices/:id" component={SliceViewer} />
             <ProtectedRoute path="/new-slice" component={NewSliceForm} />
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
