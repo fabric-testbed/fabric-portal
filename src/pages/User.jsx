@@ -15,13 +15,14 @@ class User extends React.Component {
   state = {
     SideNavItems: [
       { name: "ACCOUNT INFORMATION", active: true },
-      { name: "MY ROLES & PROJECTS", active: false },
+      // { name: "MY ROLES & PROJECTS", active: false },
       { name: "MY SSH KEYS", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    componentNames: [AccountInfo, MyRoles, KeyTabs],
+    // componentNames: [AccountInfo, MyRoles, KeyTabs],
+    componentNames: [AccountInfo, KeyTabs],
     keys: [],
   };
 
