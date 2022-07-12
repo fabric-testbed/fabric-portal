@@ -22,6 +22,7 @@ class Header extends React.Component {
     nonAuthNavItems: [
       { name: "Home", path: "/", child: [], exact: true },
       { name: "Resources", path: "/resources", child: [], exact: false },
+      { name: "Contact Us", path: "/help", child: [], exact: false },
     ],
     authNavItems: [
       { name: "Home", path: "/", child: [], exact: true },
@@ -51,6 +52,7 @@ class Header extends React.Component {
         path: ""
       },
       { name: "User Profile", path: "/user", child: [], exact: false },
+      { name: "Contact Us", path: "/help", child: [], exact: false },
     ],
   };
 
