@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { getMyProjects } from "../../services/projectServices.js";
+import { getMyProjects } from "../../services/projectService.js";
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -23,18 +23,32 @@ class MyRoles extends React.Component {
     }
   }
 
-  checkProjectRole = (projectID, role) => {
-    let role_str = projectID + "-" + role;
-    if (this.props.people.roles !== undefined) {
-      return this.props.people.roles.indexOf(role_str) > -1;
+  checkGlobalRoles(){
+    const globalRoles = {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    };
+    for (const role of this.props.user){
+      if(role.name === "project-leads") {
+        globalRoles.isProjectLead = true;
+      }
+      
+      if(role.name === "facility-operators") {
+        globalRoles.isFacilityOperator = true;
+      }
+
+      if(role.name === "fabric-active-users") {
+        globalRoles.isActiveUser = true;
+      }
     }
-  };
+
+    return globalRoles;
+  }
+
 
   renderRoleTableFields(param) {
-    // boolean: show check icon for true and times icon for false;
-    // string: only show the first 20 words to keep UI succinct if it's too long;
-    // array (object): show elements separated by space;
-    // for tags: add style to each tag;
     switch (typeof param) {
       case "boolean":
         return param === true ? (
@@ -54,7 +68,7 @@ class MyRoles extends React.Component {
 
   render() {
     const { myProjects } = this.state;
-    const { people } = this.props;
+    const globalRoles = this.checkGlobalRoles();
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -85,7 +99,7 @@ class MyRoles extends React.Component {
           </a>&nbsp;
           for FABRIC user roles information.
         </div>
-        {/* <h4 className="mt-4">
+        <h4 className="mt-4">
           Global Roles
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
@@ -102,9 +116,7 @@ class MyRoles extends React.Component {
                 </OverlayTrigger>
               </td>
               <td className="text-center">
-                {this.renderRoleTableFields(
-                  people.roles !== undefined ? people.roles.indexOf("project-leads") > -1 : false
-                )}
+                {this.renderRoleTableFields(globalRoles.isProjectLead)}
               </td>
             </tr>
             <tr>
@@ -119,9 +131,7 @@ class MyRoles extends React.Component {
                 </OverlayTrigger>
               </td>
               <td className="text-center">
-                {this.renderRoleTableFields(
-                  people.roles !== undefined ? people.roles.indexOf("facility-operators") > -1 : false
-                )}
+                {this.renderRoleTableFields(globalRoles.isFacilityOperator)}
               </td>
             </tr>
             <tr>
@@ -136,9 +146,7 @@ class MyRoles extends React.Component {
                 </OverlayTrigger>
               </td>
               <td className="text-center">
-                {this.renderRoleTableFields(
-                  people.roles !== undefined ? people.roles.indexOf("fabric-active-users") > -1 : -1
-                )}
+                {this.renderRoleTableFields(globalRoles.isActiveUser)}
               </td>
             </tr>
             <tr>
@@ -153,16 +161,13 @@ class MyRoles extends React.Component {
                 </OverlayTrigger>
               </td>
               <td className="text-center">
-                {this.renderRoleTableFields(
-                  people.roles !== undefined ? people.roles.indexOf("Jupyterhub") > -1 : false
-                )}
+                {this.renderRoleTableFields(globalRoles.isJupterhubUser)}
               </td>
             </tr>
           </tbody>
-        </table> */}
-        {/* { 
-          people.roles && 
-          people.roles.indexOf("project-leads") === -1 &&
+        </table>
+        { 
+          !globalRoles.isProjectLead &&
           <div>
             <button
               type="button"
@@ -180,7 +185,7 @@ class MyRoles extends React.Component {
               content={portalData.projectLeadRequest.content}
             />
           </div>
-         } */}
+         }
         <h4 className="mt-4">Project Roles</h4>
         <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
