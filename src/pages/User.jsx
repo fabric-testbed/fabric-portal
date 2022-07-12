@@ -14,21 +14,21 @@ class User extends React.Component {
   state = {
     SideNavItems: [
       { name: "ACCOUNT INFORMATION", active: true },
-      // { name: "MY ROLES & PROJECTS", active: false },
+      { name: "MY ROLES & PROJECTS", active: false },
       { name: "MY SSH KEYS", active: false },
     ],
     user: {},
     activeIndex: 0,
-    // componentNames: [AccountInfo, MyRoles, KeyTabs],
-    componentNames: [AccountInfo, KeyTabs],
+    componentNames: [AccountInfo, MyRoles, KeyTabs],
     keys: [],
   };
 
   async componentDidMount(){
     try {
-      const { data } = await getCurrentUser();
-      const user = data.results[0];
-      const { data: keys } = await getActiveKeys();
+      const { data: res1 } = await getCurrentUser();
+      const user = res1.results[0];
+      const { data: res2 } = await getActiveKeys();
+      const keys = res2.results[0];
       this.setState({ user, keys });
     } catch (ex) { 
       toast.error("Failed to load user information. Please re-login.");

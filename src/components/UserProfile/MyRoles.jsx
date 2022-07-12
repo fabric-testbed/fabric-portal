@@ -2,37 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { getMyProjects } from "../../services/projectServices.js";
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class MyRoles extends React.Component {
   state = {
-    projectRoleCols: [
-      { display: "Description", field: "description" },
-      { display: "Facility", field: "facility" },
-      { display: "Project Member", field: "is_project_member" },
-      { display: "Project Owner", field: "is_project_owner" },
-    ],
+    myProjects: [],
   };
+
+  async componentDidMount(){
+    try {
+      const { data: res } = await getMyProjects();
+      const myProjects = res.results;
+      this.setState({ myProjects });
+    } catch (ex) { 
+      toast.error("Failed to load user's projects'. Please re-login.");
+      console.log("Failed to load user's projects: " + ex.response.data);
+    }
+  }
 
   checkProjectRole = (projectID, role) => {
     let role_str = projectID + "-" + role;
     if (this.props.people.roles !== undefined) {
       return this.props.people.roles.indexOf(role_str) > -1;
     }
-  };
-
-  getMyProjects = () => {
-    const myProjects = [];
-    if (this.props.people.projects !== undefined) { 
-      for (const p of this.props.people.projects) {
-        const is_project_member = this.checkProjectRole(p.uuid,"pm");
-        const is_project_owner = this.checkProjectRole(p.uuid,"po");
-        const roles = { is_project_member, is_project_owner };
-        myProjects.push({ ...p, ...roles });
-      }
-    }
-    return myProjects;
   };
 
   renderRoleTableFields(param) {
@@ -58,7 +53,7 @@ class MyRoles extends React.Component {
   }
 
   render() {
-    const { projectRoleCols } = this.state;
+    const { myProjects } = this.state;
     const { people } = this.props;
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -90,7 +85,7 @@ class MyRoles extends React.Component {
           </a>&nbsp;
           for FABRIC user roles information.
         </div>
-        <h4 className="mt-4">
+        {/* <h4 className="mt-4">
           Global Roles
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
@@ -164,8 +159,8 @@ class MyRoles extends React.Component {
               </td>
             </tr>
           </tbody>
-        </table>
-        { 
+        </table> */}
+        {/* { 
           people.roles && 
           people.roles.indexOf("project-leads") === -1 &&
           <div>
@@ -185,34 +180,32 @@ class MyRoles extends React.Component {
               content={portalData.projectLeadRequest.content}
             />
           </div>
-         }
+         } */}
         <h4 className="mt-4">Project Roles</h4>
         <table className="table table-striped table-bordered my-4 text-center">
           <tbody>
             <tr>
               <th>Project Name</th>
-              {projectRoleCols.map((col, index) => {
-                return (
-                  <th key={`project-role-header-${index}`}>{col.display}</th>
-                );
-              })}
+              <th>Description</th>
+              <th>Facility</th>
+              <th>Project Member</th>
+              <th>Project Owner</th>
             </tr>
-            {this.getMyProjects().map((project, index) => {
-              return (
-                <tr key={`project-role-row-${index}`}>
-                  <td>
-                    <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
-                  </td>
-                  {projectRoleCols.map((col, index) => {
-                    return (
-                      <td key={`project-role-col-${index}`}>
-                        {this.renderRoleTableFields(project[col.field])}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            {
+              myProjects.map((project, index) => {
+                return (
+                  <tr>
+                    <td>
+                      <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+                    </td>
+                    <td>{this.renderRoleTableFields(project.description)}</td>
+                    <td>{project.facility}</td>
+                    <td>{this.renderRoleTableFields(project.memberships.is_member)}</td>
+                    <td>{this.renderRoleTableFields(project.memberships.is_owner)}</td>
+                  </tr>
+                );
+              })
+            }
           </tbody>
         </table>
       </div>
