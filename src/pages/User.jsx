@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 import sleep from "../utils/sleep";
 
-import { getWhoAmI } from "../services/userInformationService.js";
 import { getCurrentUser, refreshRoles } from "../services/prPeopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
 
@@ -19,7 +18,6 @@ class User extends React.Component {
       { name: "MY SSH KEYS", active: false },
     ],
     user: {},
-    people: {},
     activeIndex: 0,
     // componentNames: [AccountInfo, MyRoles, KeyTabs],
     componentNames: [AccountInfo, KeyTabs],
@@ -28,12 +26,10 @@ class User extends React.Component {
 
   async componentDidMount(){
     try {
-      const { data1 } = await getWhoAmI();
-      const user = data1.results[0];
-      const { data2 } = await getCurrentUser();
-      const people = data2.results[0];
+      const { data } = await getCurrentUser();
+      const user = data.results[0];
       const { data: keys } = await getActiveKeys();
-      this.setState({ user, people, keys });
+      this.setState({ user, keys });
     } catch (ex) { 
       toast.error("Failed to load user information. Please re-login.");
       console.log("Failed to load user information: " + ex.response.data);
@@ -51,8 +47,8 @@ class User extends React.Component {
       await refreshRoles();
       // wait 1 second for PR updates.
       await sleep(1000);
-      const { data: people } = await getCurrentUser();
-      this.setState({ people });
+      const { data: user } = await getCurrentUser();
+      this.setState({ user });
       toast.success("You've successfully refreshed roles.");
     } catch (ex) {
       toast.error("Failed to refresh roles. Please try again.");
@@ -71,7 +67,7 @@ class User extends React.Component {
 
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-    const { user, people } = this.state;
+    const { user } = this.state;
     const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
@@ -83,7 +79,6 @@ class User extends React.Component {
           />
           <TagName
             user={user}
-            people={people}
             onRoleRefresh={this.handleRoleRefresh}
             sliverKeys={sliverKeys}
             bastionKeys={bastionKeys}

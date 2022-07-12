@@ -3,11 +3,11 @@ import React from "react";
 class AccountInfo extends React.Component {
   state = {
     visibleRows: [
-      { display: "Name", field: "name" },
+      { display: "Name", field: "cilogon_name" },
       { display: "Email", field: "email" },
-      { display: "Affiliation", field: "affiliation" },
     ],
     toggledRows: [
+      { display: "Affiliation", field: "affiliation" },
       { display: "FABRIC ID", field: "fabric_id" },
       { display: "Bastion Login", field: "bastion_login" },
       { display: "EPPN", field: "eppn" },
