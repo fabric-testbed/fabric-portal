@@ -7,7 +7,9 @@ import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { getProjects } from "../services/projectRegistryService.js";
+import { getAllProjects, getMyProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
+import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import paginate from "../utils/paginate"; 
 import toLocaleTime from "../utils/toLocaleTime";
 import _ from "lodash";
@@ -23,7 +25,6 @@ class Projects extends React.Component {
     currentPage: 1,
     filterQuery: "Name",
     searchQuery: "",
-    roles: [],
     sortColumn: { path: "created_time", order: "desc" },
     radioBtnValues: [
       { display: "My Projects", value: "active", isActive: true },
@@ -31,6 +32,12 @@ class Projects extends React.Component {
     ],
     projectType: "myProjects",
     showSpinner: false,
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    },
   };
 
   async componentDidMount() {
@@ -38,10 +45,13 @@ class Projects extends React.Component {
     this.setState({ showSpinner: true });
 
     try {
-      const { data1 } = await getCurrentUser();
-      const people = data1.results[0];
-      const { data2 } = await getProjects();
-      let allProjects = data2.results[0];
+      const { data: res1 } = await getCurrentUser();
+      const user = res1.results[0];
+      this.setState({ globalRoles: checkGlobalRoles(user)});
+      const { data: res2 } = await getAllProjects();
+      let allProjects = res2.results;
+      const {data: res3 } = await getMyProjects();
+      let myProjects = res3.results;
 
       // parse create time field to user's local time.
       allProjects = allProjects.map((p) => {
@@ -49,16 +59,16 @@ class Projects extends React.Component {
         return p;
       });
 
-      const myProjects = people.projects.map((p) => {
+      myProjects = myProjects.map((p) => {
         p.created_time  = toLocaleTime(p.created_time);
         return p;
       });
 
       this.setState({ 
-        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
+        projects: this.state.globalRoles.isFacilityOperator > -1 ? allProjects : myProjects,
         myProjects: myProjects,
         allProjects: allProjects,
-        roles: people.roles,
+        roles: user.roles,
         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
         showSpinner: false,
       })
@@ -126,13 +136,13 @@ class Projects extends React.Component {
     }));
 
     if (value === "active") {
-      if (this.state.roles.indexOf("facility-operators") > -1) {
+      if (this.state.globalRoles.isFacilityOperator) {
         this.setState({ projects: this.state.allProjects, projectType: "myProjects" });
       } else {
         this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
       }
     } else if (value === "inactive") {
-      if (this.state.roles.indexOf("facility-operators") > -1) { 
+      if (this.state.globalRoles.isFacilityOperator) { 
         this.setState({ projects: [], projectType: "otherProjects" });
       } else {
         this.setState({ projects: this.state.otherProjects, projectType: "otherProjects" });
@@ -143,7 +153,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, showSpinner } = this.state;
+    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, globalRoles, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -172,8 +182,8 @@ class Projects extends React.Component {
           />
           {
             (
-              roles.indexOf("project-leads") > -1 || 
-              roles.indexOf("facility-operators") > -1
+              globalRoles.isProjectLead > -1 || 
+              globalRoles.isFacilityOperator > -1
             )
             &&
             (

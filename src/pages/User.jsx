@@ -28,7 +28,7 @@ class User extends React.Component {
       const { data: res1 } = await getCurrentUser();
       const user = res1.results[0];
       const { data: res2 } = await getActiveKeys();
-      const keys = res2.results[0];
+      const keys = res2.results;
       this.setState({ user, keys });
     } catch (ex) { 
       toast.error("Failed to load user information. Please re-login.");

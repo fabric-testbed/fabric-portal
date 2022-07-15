@@ -4,6 +4,7 @@ import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { getMyProjects } from "../../services/projectService.js";
 import { default as portalData } from "../../services/portalData.json";
+import checkGlobalRoles from "../../utils/checkGlobalRoles"; 
 import _ from "lodash";
 import { toast } from "react-toastify";
 
@@ -22,31 +23,6 @@ class MyRoles extends React.Component {
       console.log("Failed to load user's projects: " + ex.response.data);
     }
   }
-
-  checkGlobalRoles(){
-    const globalRoles = {
-      isProjectLead: false,
-      isFacilityOperator: false,
-      isActiveUser: false,
-      isJupterhubUser: false,
-    };
-    for (const role of this.props.user){
-      if(role.name === "project-leads") {
-        globalRoles.isProjectLead = true;
-      }
-      
-      if(role.name === "facility-operators") {
-        globalRoles.isFacilityOperator = true;
-      }
-
-      if(role.name === "fabric-active-users") {
-        globalRoles.isActiveUser = true;
-      }
-    }
-
-    return globalRoles;
-  }
-
 
   renderRoleTableFields(param) {
     switch (typeof param) {
@@ -68,7 +44,7 @@ class MyRoles extends React.Component {
 
   render() {
     const { myProjects } = this.state;
-    const globalRoles = this.checkGlobalRoles();
+    const globalRoles = checkGlobalRoles(this.props.user);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}

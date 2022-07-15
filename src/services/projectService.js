@@ -7,3 +7,7 @@ export function getMyProjects() {
   const userID = localStorage.getItem("userID");
   return http.get(`${apiEndpoint}?offset=0&limit=20&person_uuid=${userID}`);
 }
+
+export function getAllProjects() {
+  return http.get(`${apiEndpoint}?offset=0&limit=20`);
+}
