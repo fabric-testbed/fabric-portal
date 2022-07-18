@@ -15,3 +15,20 @@ export function getAllProjects() {
 export function getProjectById(id) {
   return http.get(`${apiEndpoint}/${id}`);
 }
+
+export function getProjectTags() {
+  return http.get(`${apiEndpoint}/tags`);
+}
+
+export function createProject(project) {
+  return http.post(`${apiEndpoint}/projects`,
+  {
+    "name": project.name,
+    "description": project.description,
+    "facility": project.facility,
+    // tags: project.tags.join(),
+    // project_owners: project.project_owners.join(","),
+    // project_members: project.project_members.join(","),
+  }
+);
+}

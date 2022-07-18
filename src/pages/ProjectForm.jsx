@@ -16,15 +16,13 @@ import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
 
-import { getProjectById } from "../services/projectService";
+import { getProjectById, getProjectTags } from "../services/projectService";
 
 import {
-  getProject,
   saveProject,
   deleteUser,
   addUser,
   updateTags,
-  getTags,
 } from "../services/projectRegistryService";
 
 class projectForm extends Form {
@@ -93,7 +91,8 @@ class projectForm extends Form {
     await this.populateProject();
 
     try {
-      const { data: tags} = await getTags();
+      const { data } = await getProjectTags();
+      const tags = data.results;
       this.setState({ tagVocabulary: tags });
     } catch (ex) {
       toast.error("Failed to get tags.");

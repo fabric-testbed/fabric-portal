@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { getPeopleByName } from "../../services/userInformationService";
 import { saveProject } from "../../services/projectRegistryService";
 
+import { createProject } from "../../services/projectService";
+
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
@@ -82,7 +84,7 @@ class NewProjectForm extends Form {
       this.props.history.push("/projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const  { data: newProject } = await saveProject(this.state.data);
+      const  { data: newProject } = await createProject(this.state.data);
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
     }
