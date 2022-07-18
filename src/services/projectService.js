@@ -11,3 +11,7 @@ export function getMyProjects() {
 export function getAllProjects() {
   return http.get(`${apiEndpoint}?offset=0&limit=20`);
 }
+
+export function getProjectById(id) {
+  return http.get(`${apiEndpoint}/${id}`);
+}

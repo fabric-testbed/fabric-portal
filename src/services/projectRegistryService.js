@@ -95,9 +95,8 @@ export function saveProject(project) {
     const url = apiEndpoint + "/update?" + query;
     http.put(url);
   } else {
-    return http.post({
-      url: `${apiEndpoint}/projects`,
-      data: {
+    return http.post(`${apiEndpoint}/projects`,
+      {
         name: project.name,
         description: project.description,
         facility: project.facility,
@@ -105,7 +104,7 @@ export function saveProject(project) {
         project_owners: project.project_owners.join(","),
         project_members: project.project_members.join(","),
       }
-    });
+    );
   }
 }
 

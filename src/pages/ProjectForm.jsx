@@ -16,6 +16,8 @@ import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
 import { deleteProject } from "../services/projectRegistryService";
 
+import { getProjectById } from "../services/projectService";
+
 import {
   getProject,
   saveProject,
@@ -72,7 +74,7 @@ class projectForm extends Form {
       const projectId = this.props.match.params.id;
       if (projectId === "new") return;
 
-      const { data } = await getProject(projectId);
+      const { data } = await getProjectById(projectId);
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
@@ -117,8 +119,8 @@ class projectForm extends Form {
       name: project.name,
       description: project.description,
       facility: project.facility,
-      created_by: project.created_by,
-      created_time: project.created_time,
+      created_by: project.project_creators[0],
+      created_time: project.created,
       project_owners: project.project_owners,
       project_members: project.project_members,
       tags: project.tags,
