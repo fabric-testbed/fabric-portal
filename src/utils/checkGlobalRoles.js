@@ -7,7 +7,7 @@ export default function checkGlobalRoles(user) {
     isJupterhubUser: false,
   };
   
-  for (const role of user){
+  for (const role of user.roles){
     if(role.name === "project-leads") {
       globalRoles.isProjectLead = true;
     }

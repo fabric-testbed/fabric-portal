@@ -1,56 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Modal from "../common/Modal";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { getMyProjects } from "../../services/projectService.js";
-import { default as portalData } from "../../services/portalData.json";
-import checkGlobalRoles from "../../utils/checkGlobalRoles"; 
-import _ from "lodash";
-import { toast } from "react-toastify";
+import GlobalRoles from "./GlobalRoles";
+import ProjectRoles from "./ProjectRoles";
 
 class MyRoles extends React.Component {
-  state = {
-    myProjects: [],
-  };
-
-  async componentDidMount(){
-    try {
-      const { data: res } = await getMyProjects();
-      const myProjects = res.results;
-      this.setState({ myProjects });
-    } catch (ex) { 
-      toast.error("Failed to load user's projects'. Please re-login.");
-      console.log("Failed to load user's projects: " + ex.response.data);
-    }
-  }
-
-  renderRoleTableFields(param) {
-    switch (typeof param) {
-      case "boolean":
-        return param === true ? (
-          <i className="fa fa-check text-success"></i>
-        ) : (
-          <i className="fa fa-ban text-danger"></i>
-        );
-      case "string":
-        return _.truncate(param, {
-          'length': 100,
-          'separator': ' '
-        });
-      default:
-        return param;
-    }
-  }
-
   render() {
-    const { myProjects } = this.state;
-    const globalRoles = checkGlobalRoles(this.props.user);
-    const renderTooltip = (id, content) => (
-      <Tooltip id={id}>
-        {content}
-      </Tooltip>
-    );
-
     return (
       <div className="col-9">
         <div className="d-flex flex-row justify-content-start align-items-center">
@@ -75,120 +28,8 @@ class MyRoles extends React.Component {
           </a>&nbsp;
           for FABRIC user roles information.
         </div>
-        <h4 className="mt-4">
-          Global Roles
-        </h4>
-        <table className="table table-striped table-bordered my-4 w-50">
-          <tbody>
-            <tr>
-              <td>
-                Project Lead
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("pl-tooltip", portalData.projectLeadDescription)}
-                >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
-                </OverlayTrigger>
-              </td>
-              <td className="text-center">
-                {this.renderRoleTableFields(globalRoles.isProjectLead)}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Facility Operator
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", portalData.facilityOperatorDescription)}
-                >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
-                </OverlayTrigger>
-              </td>
-              <td className="text-center">
-                {this.renderRoleTableFields(globalRoles.isFacilityOperator)}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Active User
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", "A fully enrolled FABRIC Testbed User with all the rights and privileges therein.")}
-                >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
-                </OverlayTrigger>
-              </td>
-              <td className="text-center">
-                {this.renderRoleTableFields(globalRoles.isActiveUser)}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Jupyterhub
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", "Provides access to the Jupyterhub cluster. User must be a member of at least one project to maintain this access.")}
-                >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
-                </OverlayTrigger>
-              </td>
-              <td className="text-center">
-                {this.renderRoleTableFields(globalRoles.isJupterhubUser)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        { 
-          !globalRoles.isProjectLead &&
-          <div>
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-primary"
-              data-toggle="modal"
-              data-target={`#${portalData.projectLeadRequest.id}`}
-            >
-              <i className="fa fa-sign-in mr-2"></i>
-              Request to be Project Lead
-            </button>
-            <Modal
-              id={portalData.projectLeadRequest.id}
-              title={portalData.projectLeadRequest.title}
-              link={portalData.projectLeadRequest.link}
-              content={portalData.projectLeadRequest.content}
-            />
-          </div>
-         }
-        <h4 className="mt-4">Project Roles</h4>
-        <table className="table table-striped table-bordered my-4 text-center">
-          <tbody>
-            <tr>
-              <th>Project Name</th>
-              <th>Description</th>
-              <th>Facility</th>
-              <th>Project Member</th>
-              <th>Project Owner</th>
-            </tr>
-            {
-              myProjects.map((project, index) => {
-                return (
-                  <tr>
-                    <td>
-                      <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
-                    </td>
-                    <td>{this.renderRoleTableFields(project.description)}</td>
-                    <td>{project.facility}</td>
-                    <td>{this.renderRoleTableFields(project.memberships.is_member)}</td>
-                    <td>{this.renderRoleTableFields(project.memberships.is_owner)}</td>
-                  </tr>
-                );
-              })
-            }
-          </tbody>
-        </table>
+        <GlobalRoles user={this.props.user} />
+        <ProjectRoles />
       </div>
     );
   }
