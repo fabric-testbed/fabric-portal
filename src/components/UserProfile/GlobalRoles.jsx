@@ -3,8 +3,27 @@ import checkGlobalRoles from "../../utils/checkGlobalRoles";
 import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
+import _ from "lodash";
 
 class GlobalRoles extends React.Component {
+  renderRoleTableFields(param) {
+    switch (typeof param) {
+      case "boolean":
+        return param === true ? (
+          <i className="fa fa-check text-success"></i>
+        ) : (
+          <i className="fa fa-ban text-danger"></i>
+        );
+      case "string":
+        return _.truncate(param, {
+          'length': 100,
+          'separator': ' '
+        });
+      default:
+        return param;
+    }
+  }
+
   render() {
     const globalRoles = checkGlobalRoles(this.props.user);
     const renderTooltip = (id, content) => (

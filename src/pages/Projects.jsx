@@ -50,17 +50,17 @@ class Projects extends React.Component {
       this.setState({ globalRoles: checkGlobalRoles(user)});
       const { data: res2 } = await getAllProjects();
       let allProjects = res2.results;
-      const {data: res3 } = await getMyProjects();
+      const { data: res3 } = await getMyProjects();
       let myProjects = res3.results;
 
       // parse create time field to user's local time.
       allProjects = allProjects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
+        p.created_time  = toLocaleTime(p.created);
         return p;
       });
 
       myProjects = myProjects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
+        p.created_time  = toLocaleTime(p.created);
         return p;
       });
 
@@ -74,7 +74,9 @@ class Projects extends React.Component {
       })
     } catch (ex) {
       toast.error("Failed to load projects. Please reload this page.");
-      console.log("Failed to load projects: " + ex.response.data);
+      for (const err of ex.response.data.errors) {
+        console.log("Failed to load projects: " + err);
+      }
     }
   }
 
