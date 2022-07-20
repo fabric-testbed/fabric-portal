@@ -65,7 +65,7 @@ class Projects extends React.Component {
       });
 
       this.setState({ 
-        projects: this.state.globalRoles.isFacilityOperator > -1 ? allProjects : myProjects,
+        projects: this.state.globalRoles.isFacilityOperator ? allProjects : myProjects,
         myProjects: myProjects,
         allProjects: allProjects,
         roles: user.roles,
@@ -184,8 +184,8 @@ class Projects extends React.Component {
           />
           {
             (
-              globalRoles.isProjectLead > -1 || 
-              globalRoles.isFacilityOperator > -1
+              globalRoles.isProjectLead || 
+              globalRoles.isFacilityOperator 
             )
             &&
             (

@@ -21,14 +21,36 @@ export function getProjectTags() {
 }
 
 export function createProject(project) {
-  return http.post(`${apiEndpoint}/projects`,
-  {
-    "name": project.name,
-    "description": project.description,
-    "facility": project.facility,
-    // tags: project.tags.join(),
-    // project_owners: project.project_owners.join(","),
-    // project_members: project.project_members.join(","),
-  }
-);
+  return http.post(`${apiEndpoint}`,
+    {
+      "name": project.name,
+      "description": project.description,
+      "facility": project.facility,
+      // tags: project.tags.join(),
+      // project_owners: project.project_owners.join(","),
+      // project_members: project.project_members.join(","),
+    }
+  );
 }
+
+export function deleteProject(id) {
+  return http.delete(`${apiEndpoint}/${id}`);
+}
+
+export function updateProject(project) {
+  return http.patch(`${apiEndpoint}/${project.id}`, {
+    "description": project.description,
+    "is_public": true,
+    "facility": "FABRIC",
+    "name": project.name,
+    "preferences": {
+    }
+  });
+}
+
+export function updateTags(id, tags) {
+  return http.patch(`${apiEndpoint}/${id}`, {
+    "tags": tags
+  });
+}
+

@@ -35,21 +35,19 @@ class App extends React.Component {
       try {
         const { data } = await getWhoAmI();
         const user = data.results[0];
-        localStorage.setItem("userID", user.uuid);
         // localStorage.setItem("bastionLogin", user.bastion_login);
-        localStorage.setItem("userStatus", "active");
-      } catch (err) {
-        console.log("/whoami " + err);
-        // situation 1: err.response.status === 401
-        // not logged in or auth cookie expired
-        // http service has set userStatus to unauthorized.
-
-        // situation 2: logged in, but not self signup, unauthenticated
-        if (err.response.status === 403) {
+        if (user.enrolled) {
+          localStorage.setItem("userID", user.uuid);
+          localStorage.setItem("userStatus", "active");
+        } else {
+          // situation 2: logged in, but not self signup, unauthenticated
           localStorage.setItem("userStatus", "inactive");
         }
+      } catch (err) {
+        console.log("/whoami " + err);
       }
     }
+
 
     this.setState({ userStatus: localStorage.getItem("userStatus") });
   }

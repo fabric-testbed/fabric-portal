@@ -14,12 +14,17 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getPeopleByName } from "../services/userInformationService";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/prPeopleService.js";
-import { deleteProject } from "../services/projectRegistryService";
 
-import { getProjectById, getProjectTags } from "../services/projectService";
+import checkGlobalRoles from "../utils/checkGlobalRoles"; 
+
+import { 
+  getProjectById,
+  getProjectTags,
+  deleteProject,
+  updateProject,
+} from "../services/projectService";
 
 import {
-  saveProject,
   deleteUser,
   addUser,
   updateTags,
@@ -38,7 +43,7 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
-    roles: [],
+    user: [],
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -102,7 +107,7 @@ class projectForm extends Form {
     try {
       const { data } = await getCurrentUser();
       const user = data.results[0];
-      this.setState({ roles: user.roles })
+      this.setState({ user: user })
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");
@@ -128,7 +133,7 @@ class projectForm extends Form {
 
   doSubmit = async () => {
     try {
-      await saveProject(this.state.data);
+      await updateProject(this.state.data);
       await updateTags(this.state.originalTags, this.state.data);
     }
     catch (ex) {
@@ -138,7 +143,7 @@ class projectForm extends Form {
     }
 
     toast.success("Project updated successfully!");
-    this.props.history.push("/projects");
+    this.props.history.push(`/slices/${this.state.data.uuid}`);
   };
 
   parseTags = () => {
@@ -319,10 +324,6 @@ class projectForm extends Form {
     }
   };
 
-  checkProjectRole = (projectID, role) => {
-    let role_str = projectID + "-" + role;
-    return this.state.roles.indexOf(role_str) > -1;
-  };
 
   render() {
     const projectId = this.props.match.params.id;
@@ -332,22 +333,20 @@ class projectForm extends Form {
       originalProjectName,
       SideNavItems,
       activeIndex,
-      roles,
+      user,
       ownerSearchInput,
       owners,
       memberSearchInput,
       members
     } = this.state;
-    let isFacilityOperator = roles.indexOf("facility-operators") > -1;
+    let isFacilityOperator = checkGlobalRoles(user).isFacilityOperator;
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
-    let canUpdate = isFacilityOperator || 
-      data.created_by.uuid === localStorage.getItem("userID");
+    let canUpdate = isFacilityOperator || data.memberships.is_creator;
     // only facility operator or project owner can update member;
-    let canUpdateMember = isFacilityOperator || 
-      this.checkProjectRole(data.uuid, "po");
+    let canUpdateMember = isFacilityOperator || data.memberships.is_owner;
     
     const parsedTags = this.parseTags();
 
