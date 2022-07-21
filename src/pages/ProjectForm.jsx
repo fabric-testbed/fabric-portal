@@ -43,7 +43,7 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
-    user: [],
+    user: {},
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -96,8 +96,8 @@ class projectForm extends Form {
     await this.populateProject();
 
     try {
-      const { data } = await getProjectTags();
-      const tags = data.results;
+      const { data: res1 } = await getProjectTags();
+      const tags = res1.results;
       this.setState({ tagVocabulary: tags });
     } catch (ex) {
       toast.error("Failed to get tags.");
@@ -105,9 +105,9 @@ class projectForm extends Form {
     }
 
     try {
-      const { data } = await getCurrentUser();
-      const user = data.results[0];
-      this.setState({ user: user })
+      const { data: res2 } = await getCurrentUser();
+      const user = res2.results[0];
+      this.setState({ user })
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");
