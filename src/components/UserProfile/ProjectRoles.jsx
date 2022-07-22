@@ -11,7 +11,7 @@ class ProjectRoles extends React.Component {
 
   async componentDidMount(){
     try {
-      const { data: res } = await getMyProjects();
+      const { data: res } = await getMyProjects(0, 20);
       const myProjects = res.results;
       this.setState({ myProjects });
     } catch (ex) { 

@@ -43,7 +43,7 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
-    user: {},
+    self: {},
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -106,8 +106,8 @@ class projectForm extends Form {
 
     try {
       const { data: res2 } = await getCurrentUser();
-      const user = res2.results[0];
-      this.setState({ user })
+      const self = res2.results[0];
+      this.setState({ self })
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");
@@ -333,13 +333,13 @@ class projectForm extends Form {
       originalProjectName,
       SideNavItems,
       activeIndex,
-      user,
+      self,
       ownerSearchInput,
       owners,
       memberSearchInput,
       members
     } = this.state;
-    let isFacilityOperator = checkGlobalRoles(user).isFacilityOperator;
+    let isFacilityOperator = self? checkGlobalRoles(self).isFacilityOperator : false;
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator

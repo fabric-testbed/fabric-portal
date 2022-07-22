@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
-import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
+import SearchBoxWithBtn from "../components/common/SearchBoxWithBtn";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
@@ -21,11 +21,9 @@ class Projects extends React.Component {
     allProjects: [],
     myProjects: [],
     otherProjects: [],
-    pageSize: 5,
+    pageSize: 8,
     currentPage: 1,
-    filterQuery: "Name",
     searchQuery: "",
-    sortColumn: { path: "created_time", order: "desc" },
     radioBtnValues: [
       { display: "My Projects", value: "active", isActive: true },
       { display: "Other Projects", value: "inactive", isActive: false },
@@ -48,9 +46,9 @@ class Projects extends React.Component {
       const { data: res1 } = await getCurrentUser();
       const user = res1.results[0];
       this.setState({ globalRoles: checkGlobalRoles(user)});
-      const { data: res2 } = await getAllProjects();
+      const { data: res2 } = await getAllProjects(0, 20);
       let allProjects = res2.results;
-      const { data: res3 } = await getMyProjects();
+      const { data: res3 } = await getMyProjects(0, 20);
       let myProjects = res3.results;
 
       // parse create time field to user's local time.
@@ -84,47 +82,58 @@ class Projects extends React.Component {
     this.setState({ currentPage: page });
   };
 
-  handleFilter = (query) => {
-    this.setState({ filterQuery: query, currentPage: 1 });
+  handleInputChange = (query) => {
+    this.setState({ searchQuery: query });
   };
 
-  handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
-  };
+  handleSearch = async () => {
+     // Show loading spinner and when waiting API response
+     this.setState({ showSpinner: true });
 
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
-  };
+     const searchQuery = this.state.searchQuery;
+
+     try {
+       const { data: res1 } = await getAllProjects(0, 20, searchQuery);
+       let allProjects = res1.results;
+       const { data: res2 } = await getMyProjects(0, 20, searchQuery);
+       let myProjects = res2.results;
+ 
+       // parse create time field to user's local time.
+       allProjects = allProjects.map((p) => {
+         p.created_time  = toLocaleTime(p.created);
+         return p;
+       });
+ 
+       myProjects = myProjects.map((p) => {
+         p.created_time  = toLocaleTime(p.created);
+         return p;
+       });
+ 
+       this.setState({ 
+         projects: this.state.globalRoles.isFacilityOperator ? allProjects : myProjects,
+         myProjects: myProjects,
+         allProjects: allProjects,
+         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+         showSpinner: false,
+       })
+     } catch (ex) {
+       toast.error("Failed to search projects. Please re-try.");
+       for (const err of ex.response.data.errors) {
+         console.log("Failed to load projects: " + err);
+       }
+     }
+  }
 
   getPageData = () => {
     const {
       pageSize,
       currentPage,
-      sortColumn,
-      filterQuery,
-      searchQuery,
       projects: allProjects,
     } = this.state;
 
-    // filter -> sort -> paginate
-    let filtered = allProjects;
-    
-    const filterMap = {
-      "Name": "name",
-      "Description": "description",
-      "Facility": "facility",
-      "ID": "uuid",
-    }
+    const projects = paginate(allProjects, currentPage, pageSize);
 
-    if (searchQuery) {
-      filtered = allProjects.filter(p => p[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase()));
-    }
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const projects = paginate(sorted, currentPage, pageSize);
-
-    return { totalCount: filtered.length, data: projects };
+    return { totalCount: allProjects.length, data: projects };
   };
 
   toggleRadioBtn = (value) => {
@@ -155,7 +164,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, globalRoles, showSpinner } = this.state;
+    const { pageSize, currentPage, searchQuery, globalRoles, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -173,13 +182,11 @@ class Projects extends React.Component {
           </a>
         </div>
         <div className="toolbar">
-          <SearchBoxWithDropdown
-            activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "Description", "Facility", "ID"]}
+          <SearchBoxWithBtn
             value={searchQuery}
-            placeholder={`Search Projects by ${filterQuery}...`}
-            onDropdownChange={this.handleFilter}
-            onInputChange={this.handleSearch}
+            placeholder={`Search Projects...`}
+            onInputChange={this.handleInputChange}
+            onSearch={this.handleSearch}
             className="my-0"
           />
           {
@@ -206,10 +213,7 @@ class Projects extends React.Component {
                 values={this.state.radioBtnValues}
                 onChange={this.toggleRadioBtn}
               />
-              { this.state.radioBtnValues[0].isActive ?
-                <p>Showing {totalCount} projects that you have access to view details.</p> :
-                <p>Showing {totalCount} projects that you can join to view details.</p>
-              }
+              {totalCount} results.
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
               <p className="mt-2">We could not find your project:</p>
@@ -245,8 +249,6 @@ class Projects extends React.Component {
             </div>
             <ProjectsTable
               projects={data}
-              sortColumn={sortColumn}
-              onSort={this.handleSort}
               type={this.state.projectType}
             />
             <Pagination

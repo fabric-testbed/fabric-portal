@@ -3,13 +3,21 @@ import { default as configData } from "../config.json";
 
 const apiEndpoint = `${configData.fabricCoreApiUrl}/projects`;
 
-export function getMyProjects() {
+export function getMyProjects(offset, limit, searchQuery) {
   const userID = localStorage.getItem("userID");
-  return http.get(`${apiEndpoint}?offset=0&limit=20&person_uuid=${userID}`);
+  if (!searchQuery) {
+    return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+  } else {
+    return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+  }
 }
 
-export function getAllProjects() {
-  return http.get(`${apiEndpoint}?offset=0&limit=20`);
+export function getAllProjects(offset, limit, searchQuery) {
+  if (!searchQuery) {
+    return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}`);
+  } else {
+    return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}`);
+  }
 }
 
 export function getProjectById(id) {
@@ -25,6 +33,7 @@ export function createProject(project) {
     {
       "name": project.name,
       "description": project.description,
+      "is_public": true,
       "facility": project.facility,
       // tags: project.tags.join(),
       // project_owners: project.project_owners.join(","),
@@ -48,9 +57,17 @@ export function updateProject(project) {
   });
 }
 
-export function updateTags(id, tags) {
-  return http.patch(`${apiEndpoint}/${id}`, {
+export function updateTags(projectId, tags) {
+  return http.patch(`${apiEndpoint}/${projectId}`, {
     "tags": tags
   });
 }
+
+export function updatePersonnel(projectId, owners, members) {
+  return http.patch(`${apiEndpoint}/${projectId}`, {
+    "project_members": members,
+    "project_owners": owners
+  })
+}
+
 
