@@ -10,12 +10,13 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { default as portalData } from "../services/portalData.json";
 
 import nsfLogo from "../imgs/nsf.png";
+import trustedciBadge from "../imgs/trustedci.png";
 
 class Footer extends React.Component {
   render() {
     return (<div className="app-footer bg-light">
       <div className="row py-4">
-        <div className="col-sm-12 col-md-4">
+        <div className="col-sm-12 col-md-3">
           <ul>
             <li><b>Useful Links</b></li>
             <li>
@@ -28,7 +29,7 @@ class Footer extends React.Component {
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
           </ul>
         </div>
-        <div className="col-sm-12 col-md-4">
+        <div className="col-sm-12 col-md-3">
           <ul>
             <li><b>Help &amp; Support</b></li>
             <li><a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
@@ -60,6 +61,15 @@ class Footer extends React.Component {
               </li>
             </ul>
           </div>
+        </div>
+        <div className="col-sm-12 col-md-2">
+          <img
+            src={trustedciBadge}
+            width="175"
+            height="175"
+            className="d-inline-block align-top mr-2"
+            alt=""
+          />
         </div>
       </div>
       <div className="row">
