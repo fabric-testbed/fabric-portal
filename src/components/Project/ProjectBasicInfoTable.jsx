@@ -7,15 +7,10 @@ import _ from "lodash";
 class ProjectBasicInfoTable extends Component {
   state = {
     projectStaticInfoRows: [
-      {
-        label: "Project Tags",
-        path: "tags",
-        link: "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
-      },
-      { label: "Created Time", path: "created_time", link: "" },
-      { label: "Creator Name", path: "created_by.name", link: "" },
-      { label: "Creator Email", path: "created_by.email", link: "" },
-      { label: "Creator ID", path: "created_by.uuid", link: "" },
+      { label: "Created Time", path: "created_time" },
+      { label: "Creator Name", path: "created_by.name" },
+      { label: "Creator Email", path: "created_by.email" },
+      { label: "Creator ID", path: "created_by.uuid" },
     ],
   }
 
@@ -48,24 +43,29 @@ class ProjectBasicInfoTable extends Component {
                 <CopyButton id={_.get(data, "uuid")} text=""/>
               </td>
             </tr>
+            <tr>
+              <td>
+                Project Permissions
+                <a href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions" target="_blank" rel="noreferrer" className="ml-1">
+                  <i className="fa fa-question-circle mx-2"></i>
+                </a>
+              </td>
+              <td>
+                {this.renderTags(_.get(data, "tags"))}
+              </td>
+            </tr>
             {projectStaticInfoRows.map((row, index) => {
               return (
                 <tr key={`project-basic-info-${index}`}>
                   <td>
                     {row.label}
-                    {row.link !== "" && 
-                      <a href={row.link} target="_blank" rel="noreferrer" className="ml-1">
-                        <i className="fa fa-question-circle mx-2"></i>
-                      </a>
-                    }
                   </td>
                   <td className="project-detail-form-td">
-                    {}
-                    {row.path === "tags" && this.renderTags(_.get(data, row.path))}
-                    {row.path === "created_time" && toLocaleTime(_.get(data, row.path))}
                     {
-                      row.path !== "tags" && row.path !== "created_time" &&
-                      _.get(data, row.path) 
+                      row.path === "created_time" && toLocaleTime(_.get(data, row.path))
+                    }
+                    {
+                      row.path !== "created_time" && _.get(data, row.path) 
                     }
                   </td>
                 </tr>

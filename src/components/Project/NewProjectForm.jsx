@@ -193,7 +193,7 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {isFacilityOperator && this.renderProjectTags("tags", "Tags", baseOptions, optionsMapping)}
+          {isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", baseOptions, optionsMapping)}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">
