@@ -53,6 +53,7 @@ class projectForm extends Form {
     ownerSearchInput: "",
     memberSearchInput: "",
     tagVocabulary: [],
+    people: {},
   };
 
   schema = {
@@ -99,7 +100,7 @@ class projectForm extends Form {
 
     try {
       const { data: people } = await getCurrentUser();
-      this.setState({ roles: people.roles })
+      this.setState({ roles: people.roles, people })
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");
@@ -333,7 +334,8 @@ class projectForm extends Form {
       ownerSearchInput,
       owners,
       memberSearchInput,
-      members
+      members,
+      people
     } = this.state;
     let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
@@ -348,6 +350,8 @@ class projectForm extends Form {
     
     const parsedTags = this.parseTags();
 
+    const urlSuffix = `email=${people.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
+ 
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -365,15 +369,51 @@ class projectForm extends Form {
       return (
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
-            <h1>Project - {originalProjectName}</h1>
-            <Link to="/projects">
-              <button
-                className="btn btn-sm btn-outline-primary my-3"
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Back to Project List
-              </button>
-            </Link>
+            <h1>{originalProjectName}</h1>
+            {
+              (canUpdate || canUpdateMember) ?
+              <div className="d-flex flex-row justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Permissions
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Storage
+                </button>
+                <Link to="/projects">
+                  <button
+                    className="btn btn-sm btn-outline-primary my-3"
+                  >
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Back to Project List
+                  </button>
+                </Link>
+              </div>
+              :
+              <Link to="/projects">
+                <button
+                  className="btn btn-sm btn-outline-primary my-3"
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Back to Project List
+                </button>
+              </Link>
+            }
           </div>
           <div className="row mt-4">
             <SideNav
@@ -387,7 +427,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
+                {isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

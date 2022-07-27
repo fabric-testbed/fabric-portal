@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
@@ -168,23 +167,17 @@ class MyRoles extends React.Component {
         { 
           people.roles && 
           people.roles.indexOf("project-leads") === -1 &&
-          <div>
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-primary"
-              data-toggle="modal"
-              data-target={`#${portalData.projectLeadRequest.id}`}
-            >
-              <i className="fa fa-sign-in mr-2"></i>
-              Request to be Project Lead
-            </button>
-            <Modal
-              id={portalData.projectLeadRequest.id}
-              title={portalData.projectLeadRequest.title}
-              link={portalData.projectLeadRequest.link}
-              content={portalData.projectLeadRequest.content}
-            />
-          </div>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary"
+            onClick={() => window.open(
+              `${portalData.jiraProjectLeadLink}?email=${people.email}`,
+              "_blank")
+            }
+          >
+            <i className="fa fa-sign-in mr-2"></i>
+            Request to be Project Lead
+          </button>
          }
         <h4 className="mt-4">Project Roles</h4>
         <table className="table table-striped table-bordered my-4 text-center">
