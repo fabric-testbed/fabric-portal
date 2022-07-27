@@ -87,7 +87,7 @@ export default class SideLinks extends Component {
       {
         projectIdToGenerateToken !== "" && ! showSpinner && <div>
           <label htmlFor="projectSelect" className="slice-form-label mt-2">
-            Project Tags 
+            Project Permissions 
             <a
               href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
               target="_blank"
@@ -116,7 +116,7 @@ export default class SideLinks extends Component {
         </div>
       }
       {
-        showSpinner && <SpinnerWithText text={"Loading project tags..."} />
+        showSpinner && <SpinnerWithText text={"Loading project permissions..."} />
       }
     </div>
     )
