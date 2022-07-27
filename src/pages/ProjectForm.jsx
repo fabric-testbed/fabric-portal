@@ -350,13 +350,8 @@ class projectForm extends Form {
     
     const parsedTags = this.parseTags();
 
-    const urlSuffix = () => {
-      const email = `email=${people.email}`;
-      const projectId = `customfield_10058=${data.uuid}`;
-      const projectName = `customfield_10059=${encodeURIComponent(data.name)}`;
-      return `${email}&${projectId}&${projectName}`;
-    }
-
+    const urlSuffix = `email=${people.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
+ 
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -375,29 +370,41 @@ class projectForm extends Form {
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
-            <div className="d-flex flex-row justify-content-end">
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-success mr-2"
-                onClick={() => window.open(
-                  `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
-                  "_blank")
-                }
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Request Permissions
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-success mr-2"
-                onClick={() => window.open(
-                  `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
-                  "_blank")
-                }
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Request Storage
-              </button>
+            {
+              (canUpdate || canUpdateMember) ?
+              <div className="d-flex flex-row justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Permissions
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Storage
+                </button>
+                <Link to="/projects">
+                  <button
+                    className="btn btn-sm btn-outline-primary my-3"
+                  >
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Back to Project List
+                  </button>
+                </Link>
+              </div>
+              :
               <Link to="/projects">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
@@ -406,7 +413,7 @@ class projectForm extends Form {
                   Back to Project List
                 </button>
               </Link>
-            </div>
+            }
           </div>
           <div className="row mt-4">
             <SideNav
