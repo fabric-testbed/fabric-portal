@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
-import SearchBoxWithBtn from "../components/common/SearchBoxWithBtn";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
@@ -82,11 +81,11 @@ class Projects extends React.Component {
     this.setState({ currentPage: page });
   };
 
-  handleInputChange = (query) => {
-    this.setState({ searchQuery: query });
+  handleInputChange = function(e) {
+    this.setState({ searchQuery: e.target.value});
   };
 
-  handleSearch = async () => {
+  handleProjectSearch = async () => {
      // Show loading spinner and when waiting API response
      this.setState({ showSpinner: true });
 
@@ -164,7 +163,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, searchQuery, globalRoles, showSpinner } = this.state;
+    const { pageSize, currentPage, globalRoles, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -189,20 +188,29 @@ class Projects extends React.Component {
             )
             &&
             (
-              <Link to="/projects/new" className="btn btn-primary create-project-btn">
+              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
                 Create Project
               </Link>
             )
           }
         </div>
-        <div className="w-100">
-          <SearchBoxWithBtn
-            value={searchQuery}
-            placeholder={`Search Projects...`}
-            onInputChange={this.handleInputChange}
-            onSearch={this.handleSearch}
-            className="my-0"
+        <div className="w-100 input-group my-3">
+          <input
+            type="text"
+            name="query"
+            className="form-control"
+            placeholder={"Search Projects..."}
+            onChange={ this.handleInputChange }
           />
+          <div className="input-group-append">
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={this.handleProjectSearch}
+            >
+              Search
+            </button>
+          </div>
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."}/>

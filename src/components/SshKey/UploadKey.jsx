@@ -31,9 +31,11 @@ class UploadKey extends Form {
       window.location.reload();
       toast.success("Successfully uploaded.");
     }
-    catch (ex) {
-      console.log("failed to upload public key: " + ex.response.data);
+    catch (errorObj) {
+      const errorMessage = errorObj.errors[0].details;
+      console.log("failed to upload public key: " + errorMessage);
       toast.error("Failed to upload public key.");
+      toast.error(errorMessage)
     }
   };
 

@@ -14,9 +14,9 @@ const KeyModal = ({ data, name }) => {
   }
 
   useEffect(() => {
-    setShow(Object.keys(data).length !== 0);
-    setPrivateKey(data.private_openssh);
-    setPublicKey(data.public_openssh);
+    setShow(Object.keys(data.results[0]).length !== 0);
+    setPrivateKey(data.results[0].private_openssh);
+    setPublicKey(data.results[0].public_openssh);
   }, [data]);
 
   return (

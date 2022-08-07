@@ -30,13 +30,13 @@ class GenerateKey extends Form {
     try {
       const { data } = this.state;
       const { resData } = await generateKeyPairs(data.keyType, data.name, data.description);
-      this.setState({ generatedKey: resData.results[0], showKeySpinner: false });
+      this.setState({ generatedKey: resData, showKeySpinner: false });
       localStorage.setItem("sshKeyType", data.keyType);
-    }
-    catch (ex) {
-      console.log("failed to generate ssh key pairs: " + ex.response.data);
+    } catch (errorObj) {
+      const errorMessage = errorObj.errors[0].details;
+      console.log("failed to generate ssh key pairs: " + errorMessage);
       toast.error("Failed to generate ssh key pairs.");
-      this.setState({ showKeySpinner: false });
+      toast.error(errorMessage)
     }
   };
 
