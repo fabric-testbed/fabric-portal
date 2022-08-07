@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/userInformationService.js";
+import { getCurrentUser } from "./services/prPeopleService.js";
 import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
@@ -35,10 +36,15 @@ class App extends React.Component {
       try {
         const { data } = await getWhoAmI();
         const user = data.results[0];
-        // localStorage.setItem("bastionLogin", user.bastion_login);
         if (user.enrolled) {
           localStorage.setItem("userID", user.uuid);
           localStorage.setItem("userStatus", "active");
+          try {
+            const { data: res } = await getCurrentUser();
+            localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+          } catch (err) {
+            console.log("Failed to get current user's information: " + err);
+          }
         } else {
           // situation 2: logged in, but not self signup, unauthenticated
           localStorage.setItem("userStatus", "inactive");
@@ -47,7 +53,6 @@ class App extends React.Component {
         console.log("/whoami " + err);
       }
     }
-
 
     this.setState({ userStatus: localStorage.getItem("userStatus") });
   }

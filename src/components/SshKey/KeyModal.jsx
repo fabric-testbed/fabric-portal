@@ -20,36 +20,34 @@ const KeyModal = ({ data, name }) => {
   }, [data]);
 
   return (
-    <>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Generated Key Pair</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <li className="mb-3">
-            Private Key:
-            <a
-              className="btn btn-sm btn-outline-primary ml-3"
-              href={`data:text/json;charset=utf-8,${encodeURIComponent(private_key)}`}
-              download={`${name}`}
-            ><i className="fa fa-download"></i> Download </a>
-          </li>
-          <li className="mb-3">
-            Public Key: 
-            <a
-              className="btn btn-sm btn-outline-primary ml-4"
-              href={`data:text/json;charset=utf-8,${encodeURIComponent(public_key)}`}
-              download={`${name}.pub`}
-            ><i className="fa fa-download"></i> Download </a>
-          </li>
-          <div className="alert alert-warning" role="alert">
-            <i className="fa fa-exclamation-triangle mr-2"></i>
-            The private key will be no longer accessible through the portal once you closed this window.
-            Please download and keep your private keys safe.
-          </div>  
-        </Modal.Body>
-      </Modal>
-    </>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Generated Key Pair</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <li className="mb-3">
+          Private Key:
+          <a
+            className="btn btn-sm btn-outline-primary ml-3"
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(private_key)}`}
+            download={`${name}`}
+          ><i className="fa fa-download"></i> Download </a>
+        </li>
+        <li className="mb-3">
+          Public Key: 
+          <a
+            className="btn btn-sm btn-outline-primary ml-4"
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(public_key)}`}
+            download={`${name}.pub`}
+          ><i className="fa fa-download"></i> Download </a>
+        </li>
+        <div className="alert alert-warning" role="alert">
+          <i className="fa fa-exclamation-triangle mr-2"></i>
+          The private key will be no longer accessible through the portal once you closed this window.
+          Please download and keep your private keys safe.
+        </div>  
+      </Modal.Body>
+    </Modal>
   );
 }
 

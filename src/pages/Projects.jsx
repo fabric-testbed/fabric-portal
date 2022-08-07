@@ -169,26 +169,19 @@ class Projects extends React.Component {
 
     return (
       <div className="container">
-        <div className="d-flex flex-row">
-          <h1>Projects</h1>
-          <a
-            href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-3"
-          >
-            <i className="fa fa-question-circle mx-2"></i>
-            User Guide
-          </a>
-        </div>
-        <div className="toolbar">
-          <SearchBoxWithBtn
-            value={searchQuery}
-            placeholder={`Search Projects...`}
-            onInputChange={this.handleInputChange}
-            onSearch={this.handleSearch}
-            className="my-0"
-          />
+        <div className="d-flex flex-row justify-content-between">
+          <div className="d-flex flex-row">
+            <h1>Projects</h1>
+            <a
+              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3"
+            >
+              <i className="fa fa-question-circle mx-2"></i>
+              User Guide
+            </a>
+          </div>
           {
             (
               globalRoles.isProjectLead || 
@@ -201,6 +194,15 @@ class Projects extends React.Component {
               </Link>
             )
           }
+        </div>
+        <div className="w-100">
+          <SearchBoxWithBtn
+            value={searchQuery}
+            placeholder={`Search Projects...`}
+            onInputChange={this.handleInputChange}
+            onSearch={this.handleSearch}
+            className="my-0"
+          />
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."}/>

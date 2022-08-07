@@ -9,7 +9,6 @@ export function getActiveKeys() {
 }
 
 export function uploadPublicKey(keytype, openssh, description) {
-  // return http.post(`${apiEndpoint}/${keytype}?public_openssh=${encodeURIComponent(openssh)}&description=${description}`);
   return http.put(apiEndpoint,
     {
       "description": description,
@@ -20,7 +19,6 @@ export function uploadPublicKey(keytype, openssh, description) {
 }
 
 export function generateKeyPairs(keytype, comment, description) {
-  // return http.put(`${apiEndpoint}/${keytype}?comment=${comment}&description=${description}`);
   return http.post(apiEndpoint,
     {
       "comment": comment,
