@@ -339,7 +339,8 @@ class projectForm extends Form {
       memberSearchInput,
       members
     } = this.state;
-    let isFacilityOperator = self? checkGlobalRoles(self).isFacilityOperator : false;
+    
+    let isFacilityOperator = checkGlobalRoles(self).isFacilityOperator;
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator

@@ -6,6 +6,10 @@ export default function checkGlobalRoles(user) {
     isActiveUser: false,
     isJupterhubUser: false,
   };
+
+  if(!user) {
+    return globalRoles;
+  }
   
   for (const role of user.roles){
     if(role.name === "project-leads") {

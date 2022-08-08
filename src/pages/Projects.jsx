@@ -5,11 +5,9 @@ import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCurrentUser } from "../services/prPeopleService.js";
-import { getProjects } from "../services/projectRegistryService.js";
 import { getAllProjects, getMyProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
-import paginate from "../utils/paginate"; 
 import toLocaleTime from "../utils/toLocaleTime";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -17,15 +15,17 @@ import { toast } from "react-toastify";
 class Projects extends React.Component {
   state = {
     projects: [],
+    projectsCount: 0,
     allProjects: [],
     myProjects: [],
-    otherProjects: [],
+    myProjectsCount: 0,
+    allProjectsCount: 0,
     pageSize: 8,
     currentPage: 1,
     searchQuery: "",
     radioBtnValues: [
       { display: "My Projects", value: "active", isActive: true },
-      { display: "Other Projects", value: "inactive", isActive: false },
+      { display: "All Projects", value: "inactive", isActive: false },
     ],
     projectType: "myProjects",
     showSpinner: false,
@@ -40,33 +40,26 @@ class Projects extends React.Component {
   async componentDidMount() {
     // Show loading spinner and when waiting API response
     this.setState({ showSpinner: true });
+    const { pageSize: limit } = this.state;
 
     try {
       const { data: res1 } = await getCurrentUser();
       const user = res1.results[0];
       this.setState({ globalRoles: checkGlobalRoles(user)});
-      const { data: res2 } = await getAllProjects(0, 20);
-      let allProjects = res2.results;
-      const { data: res3 } = await getMyProjects(0, 20);
-      let myProjects = res3.results;
+      const { data: res2 } = await getMyProjects(0, limit);
+      const projectsCount = res2.total;
+      let projects = res2.results;
 
       // parse create time field to user's local time.
-      allProjects = allProjects.map((p) => {
-        p.created_time  = toLocaleTime(p.created);
-        return p;
-      });
-
-      myProjects = myProjects.map((p) => {
+      projects = projects.map((p) => {
         p.created_time  = toLocaleTime(p.created);
         return p;
       });
 
       this.setState({ 
-        projects: this.state.globalRoles.isFacilityOperator ? allProjects : myProjects,
-        myProjects: myProjects,
-        allProjects: allProjects,
+        projects: projects,
+        projectsCount,
         roles: user.roles,
-        otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
         showSpinner: false,
       })
     } catch (ex) {
@@ -77,65 +70,49 @@ class Projects extends React.Component {
     }
   }
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
-
-  handleInputChange = function(e) {
+  handleInputChange = (e) => {
     this.setState({ searchQuery: e.target.value});
   };
 
-  handleProjectSearch = async () => {
-     // Show loading spinner and when waiting API response
-     this.setState({ showSpinner: true });
-
-     const searchQuery = this.state.searchQuery;
-
-     try {
-       const { data: res1 } = await getAllProjects(0, 20, searchQuery);
-       let allProjects = res1.results;
-       const { data: res2 } = await getMyProjects(0, 20, searchQuery);
-       let myProjects = res2.results;
- 
-       // parse create time field to user's local time.
-       allProjects = allProjects.map((p) => {
-         p.created_time  = toLocaleTime(p.created);
-         return p;
-       });
- 
-       myProjects = myProjects.map((p) => {
-         p.created_time  = toLocaleTime(p.created);
-         return p;
-       });
- 
-       this.setState({ 
-         projects: this.state.globalRoles.isFacilityOperator ? allProjects : myProjects,
-         myProjects: myProjects,
-         allProjects: allProjects,
-         otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
-         showSpinner: false,
-       })
-     } catch (ex) {
-       toast.error("Failed to search projects. Please re-try.");
-       for (const err of ex.response.data.errors) {
-         console.log("Failed to load projects: " + err);
-       }
-     }
-  }
-
-  getPageData = () => {
-    const {
-      pageSize,
-      currentPage,
-      projects: allProjects,
-    } = this.state;
-
-    const projects = paginate(allProjects, currentPage, pageSize);
-
-    return { totalCount: allProjects.length, data: projects };
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+    this.handleProjectsLoading();
   };
 
-  toggleRadioBtn = (value) => {
+  handleProjectsLoading = async () => {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+    const { pageSize: limit, currentPage, searchQuery, projectType} = this.state;
+    const offset = (currentPage - 1) * limit;
+    let projects = [];
+    let projectsCount = 0;
+    try {
+      if (projectType === "myProjects") {
+        const { data } = await getMyProjects(offset, limit, searchQuery);
+        projects = data.results;
+        projectsCount = data.total;
+      } else if (projectType === "allProjects") {
+        const { data } = await getAllProjects(offset, limit, searchQuery);
+        projects = data.results;
+        projectsCount = data.total;
+      }
+    
+      // parse create time field to user's local time.
+      projects = projects.map((p) => {
+        p.created_time  = toLocaleTime(p.created);
+        return p;
+      });
+
+      this.setState({ projects, projectsCount, showSpinner: false})
+    } catch (ex) {
+      toast.error("Failed to load projects. Please re-try.");
+      for (const err of ex.response.data.errors) {
+        console.log("Failed to load projects: " + err);
+      }
+    }
+  }
+
+  handleProjectTypeChange = async (value) => {
     // set isActive field for radio button input style change
     this.setState((prevState) => ({
       radioBtnValues: prevState.radioBtnValues.map((el) =>
@@ -146,25 +123,16 @@ class Projects extends React.Component {
     }));
 
     if (value === "active") {
-      if (this.state.globalRoles.isFacilityOperator) {
-        this.setState({ projects: this.state.allProjects, projectType: "myProjects" });
-      } else {
-        this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
-      }
+      this.setState({projectType: "myProjects"});
+      this.handleProjectsLoading();
     } else if (value === "inactive") {
-      if (this.state.globalRoles.isFacilityOperator) { 
-        this.setState({ projects: [], projectType: "otherProjects" });
-      } else {
-        this.setState({ projects: this.state.otherProjects, projectType: "otherProjects" });
-      }
+      this.setState({projectType: "allProjects"});
+      this.handleProjectsLoading();
     }
-
-    this.setState({ currentPage: 1 });
   };
 
   render() {
-    const { pageSize, currentPage, globalRoles, showSpinner } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { pageSize, currentPage, globalRoles, showSpinner, projects, projectsCount } = this.state;
 
     return (
       <div className="container">
@@ -206,7 +174,7 @@ class Projects extends React.Component {
             <button
               className="btn btn-outline-secondary"
               type="button"
-              onClick={this.handleProjectSearch}
+              onClick={this.handleProjectsLoading}
             >
               Search
             </button>
@@ -216,14 +184,14 @@ class Projects extends React.Component {
           showSpinner && <SpinnerWithText text={"Loading projects..."}/>
         }
         {
-          !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
+          !showSpinner && projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div>
             <div className="d-flex flex-row justify-content-between">
               <RadioBtnGroup
                 values={this.state.radioBtnValues}
-                onChange={this.toggleRadioBtn}
+                onChange={this.handleProjectTypeChange}
               />
-              {totalCount} results.
+              {projectsCount} results.
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
               <p className="mt-2">We could not find your project:</p>
@@ -244,25 +212,22 @@ class Projects extends React.Component {
         }
 
         {
-          !showSpinner && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          !showSpinner && (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
             <div className="d-flex flex-row justify-content-between">
               <RadioBtnGroup
                 values={this.state.radioBtnValues}
-                onChange={this.toggleRadioBtn}
+                onChange={this.handleProjectTypeChange}
               />
-              { this.state.radioBtnValues[0].isActive ?
-                <p>Showing {totalCount} projects that you have access to view details.</p> :
-                <p>Showing {totalCount} projects that you can join to view details.</p>
-              }
+              {projectsCount} results.
             </div>
             <ProjectsTable
-              projects={data}
+              projects={projects}
               type={this.state.projectType}
             />
             <Pagination
-              itemsCount={totalCount}
+              itemsCount={projectsCount}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={this.handlePageChange}
