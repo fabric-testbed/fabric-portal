@@ -15,7 +15,7 @@ class Projects extends React.Component {
   state = {
     projects: [],
     projectsCount: 0,
-    pageSize: 8,
+    pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     radioBtnValues: [
@@ -71,10 +71,15 @@ class Projects extends React.Component {
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
-    this.handleProjectsLoading();
+    this.loadProjectsData();
   };
 
-  handleProjectsLoading = async () => {
+  handleProjectsSearch = () =>{
+    this.setState({ currentPage: 1});
+    this.loadProjectsData();
+  }
+
+  loadProjectsData = async () => {
     // Show loading spinner and when waiting API response
     this.setState({ showSpinner: true });
     const { pageSize: limit, currentPage, searchQuery, projectType} = this.state;
@@ -102,7 +107,7 @@ class Projects extends React.Component {
     } catch (ex) {
       toast.error("Failed to load projects. Please re-try.");
       for (const err of ex.response.data.errors) {
-        console.log("Failed to load projects: " + err);
+        console.log("Failed to load projects: " + err.details);
       }
     }
   }
@@ -117,12 +122,12 @@ class Projects extends React.Component {
       ),
     }));
 
-    if (value === "active") {
+    if (this.state.radioBtnValues[0].isActive === "active") {
       this.setState({projectType: "myProjects"});
-      this.handleProjectsLoading();
-    } else if (value === "inactive") {
+      this.loadProjectsData();
+    } else if (this.state.radioBtnValues[1].isActive === "active") {
       this.setState({projectType: "allProjects"});
-      this.handleProjectsLoading();
+      this.loadProjectsData();
     }
   };
 
@@ -163,13 +168,13 @@ class Projects extends React.Component {
             name="query"
             className="form-control"
             placeholder={"Search Projects..."}
-            onChange={ this.handleInputChange }
+            onChange={this.handleInputChange}
           />
           <div className="input-group-append">
             <button
               className="btn btn-outline-secondary"
               type="button"
-              onClick={this.handleProjectsLoading}
+              onClick={this.handleProjectsSearch}
             >
               Search
             </button>
@@ -210,7 +215,7 @@ class Projects extends React.Component {
           !showSpinner && (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
-            <div className="d-flex flex-row justify-content-between">
+            <div className="d-flex flex-row justify-content-between mb-3">
               <RadioBtnGroup
                 values={this.state.radioBtnValues}
                 onChange={this.handleProjectTypeChange}

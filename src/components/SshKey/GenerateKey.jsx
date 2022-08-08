@@ -29,15 +29,15 @@ class GenerateKey extends Form {
     this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
-      const { resData } = await generateKeyPairs(data.keyType, data.name, data.description);
-      this.setState({ generatedKey: resData.results[0], showKeySpinner: false });
+      const { data: res } = await generateKeyPairs(data.keyType, data.name, data.description);
+      this.setState({ generatedKey: res.results[0], showKeySpinner: false });
       localStorage.setItem("sshKeyType", data.keyType);
-    } catch (errorObj) {
-      const errorMessage = errorObj.errors[0].details;
-      console.log("failed to generate ssh key pairs: " + errorMessage);
-      toast.error("Failed to generate ssh key pairs.");
-      toast.error(errorMessage)
-    }
+    } catch (ex) {
+      for (const err of ex.response.data.errors) {
+        console.log("Failed to generate ssh key pairs. " + err.details);
+        toast.error("Failed to generate ssh key pairs. " + err.details);
+      }
+    } 
   };
 
   schema = {

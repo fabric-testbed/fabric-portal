@@ -4,10 +4,6 @@ import Table from "../common/Table";
 import _ from "lodash";
 
 class ProjectsTable extends Component {
-  // handleClick = (project) => {
-  //   alert(`Request to join project: ${project.uuid}`)
-  // }
-
   columns = 
     {
     "myProjects":[
@@ -45,7 +41,7 @@ class ProjectsTable extends Component {
         ),
       },
     ],
-    "otherProjects":[
+    "allProjects":[
       {
         path: "name",
         label: "Project Name",
@@ -67,17 +63,6 @@ class ProjectsTable extends Component {
         path: "created_time",
         label: "Created Time",
       },
-      // {
-      //   content: (project) => (
-      //     <button
-      //       // onClick={() => this.handleClick(project)}
-      //       className="btn btn-sm btn-primary"
-      //       disabled={true}
-      //     >
-      //       Request to Join
-      //     </button>
-      //   ),
-      // },
     ],
   };
 
