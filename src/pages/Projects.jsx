@@ -9,17 +9,12 @@ import { getAllProjects, getMyProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import toLocaleTime from "../utils/toLocaleTime";
-import _ from "lodash";
 import { toast } from "react-toastify";
 
 class Projects extends React.Component {
   state = {
     projects: [],
     projectsCount: 0,
-    allProjects: [],
-    myProjects: [],
-    myProjectsCount: 0,
-    allProjectsCount: 0,
     pageSize: 8,
     currentPage: 1,
     searchQuery: "",
