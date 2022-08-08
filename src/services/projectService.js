@@ -3,20 +3,20 @@ import { default as configData } from "../config.json";
 
 const apiEndpoint = `${configData.fabricCoreApiUrl}/projects`;
 
-export function getMyProjects(offset, limit, searchQuery) {
+export function getProjects(type, offset, limit, searchQuery) {
   const userID = localStorage.getItem("userID");
-  if (!searchQuery) {
-    return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&person_uuid=${userID}`);
-  } else {
-    return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&person_uuid=${userID}`);
-  }
-}
-
-export function getAllProjects(offset, limit, searchQuery) {
-  if (!searchQuery) {
-    return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}`);
-  } else {
-    return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}`);
+  if (type === "myProjects") {
+    if (!searchQuery) {
+      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+    } else {
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+    }
+  } else if (type === "allProjects") {
+    if (!searchQuery) {
+      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}`);
+    } else {
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}`);
+    }
   }
 }
 
@@ -69,5 +69,3 @@ export function updatePersonnel(projectId, owners, members) {
     "project_owners": owners
   })
 }
-
-

@@ -39,9 +39,15 @@ class projectForm extends Form {
       facility: "",
       created_by: {},
       created_time: "",
+      project_creators: [],
       project_owners: [],
       project_members: [],
       tags: [],
+      memberships: {
+        "is_creator": false,
+        "is_member": false,
+        "is_owner": false
+      },
     },
     errors: {},
     activeIndex: 0,
@@ -66,12 +72,9 @@ class projectForm extends Form {
   };
 
   schema = {
-    uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    created_by: Joi.object(),
-    created_time: Joi.string().allow(""),
     project_members: Joi.array(),
     project_owners: Joi.array(),
     tags: Joi.array(),

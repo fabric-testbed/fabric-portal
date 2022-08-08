@@ -1,8 +1,7 @@
 import React from "react";
-import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
+import FacilityUpdates from "../components/Home/FacilityUpdates";
 import { default as portalData } from "../services/portalData.json";
-import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { NavLink } from "react-router-dom";
@@ -96,7 +95,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="col-xl-3 col-lg-12">
-            <CardOfItems header={"Facility Updates"} data={getLatestUpdates(4)} />
+            <FacilityUpdates />
           </div>
         </div>
         <CookieConsent

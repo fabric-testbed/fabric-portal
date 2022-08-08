@@ -1,15 +1,11 @@
 import React from "react";
 import Parser from 'html-react-parser';
 
-// interface
-// header: string
-// data: array of objects with date, title, content and id.
-
-const CardOfItems = ({ header, data, ...rest }) => {
+const FacilityUpdateCard = ({ data }) => {
   return (
     <div className="homepage-card card">
       <div className="card-header text-center">
-        <b>{header}</b>
+        <b>Facility Updates</b>
       </div>
       <div className="card-body py-2">
         {data.map((item, index) => {
@@ -31,7 +27,7 @@ const CardOfItems = ({ header, data, ...rest }) => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                  { item.button ? item.button : "Read More"}
+                  { item.button }
                 </a>
                 )
               }
@@ -43,4 +39,4 @@ const CardOfItems = ({ header, data, ...rest }) => {
   );
 };
 
-export default CardOfItems;
+export default FacilityUpdateCard;

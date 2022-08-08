@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { getMyProjects } from "../../services/projectService.js";
+import { getProjects } from "../../services/projectService.js";
 import { Link } from "react-router-dom";
 
 class ProjectRoles extends React.Component {
@@ -11,7 +11,7 @@ class ProjectRoles extends React.Component {
 
   async componentDidMount(){
     try {
-      const { data: res } = await getMyProjects(0, 20);
+      const { data: res } = await getProjects("myProjects", 0, 20);
       const myProjects = res.results;
       this.setState({ myProjects });
     } catch (ex) { 

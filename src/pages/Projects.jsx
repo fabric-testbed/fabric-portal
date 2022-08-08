@@ -5,7 +5,7 @@ import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCurrentUser } from "../services/prPeopleService.js";
-import { getAllProjects, getMyProjects } from "../services/projectService.js";
+import { getProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import toLocaleTime from "../utils/toLocaleTime";
@@ -41,7 +41,7 @@ class Projects extends React.Component {
       const { data: res1 } = await getCurrentUser();
       const user = res1.results[0];
       this.setState({ globalRoles: checkGlobalRoles(user)});
-      const { data: res2 } = await getMyProjects(0, limit);
+      const { data: res2 } = await getProjects("myProjects", 0, limit);
       const projectsCount = res2.total;
       let projects = res2.results;
 
@@ -73,15 +73,9 @@ class Projects extends React.Component {
     let projects = [];
     let projectsCount = 0;
     try {
-      if (projectType === "myProjects") {
-        const { data } = await getMyProjects(offset, limit, searchQuery);
-        projects = data.results;
-        projectsCount = data.total;
-      } else if (projectType === "allProjects") {
-        const { data } = await getAllProjects(offset, limit, searchQuery);
-        projects = data.results;
-        projectsCount = data.total;
-      }
+      const { data } = await getProjects(projectType, offset, limit, searchQuery);
+      projects = data.results;
+      projectsCount = data.total;
     
       // parse create time field to user's local time.
       projects = projects.map((p) => {
@@ -106,8 +100,31 @@ class Projects extends React.Component {
     this.setState({ currentPage: page });
   }
 
-  handlePaginationClick = (page) => {
-    this.pageChange(page).then(() => this.loadProjectsData());
+  handlePaginationClick = async (page) => {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true, currentPage: page });
+    const { pageSize: limit, currentPage, searchQuery, projectType} = this.state;
+    const offset = (currentPage - 1) * limit;
+    let projects = [];
+    let projectsCount = 0;
+    try {
+      const { data } = await getProjects(projectType, offset, limit, searchQuery);
+      projects = data.results;
+      projectsCount = data.total;
+
+      // parse create time field to user's local time.
+      projects = projects.map((p) => {
+        p.created_time  = toLocaleTime(p.created);
+        return p;
+      });
+
+      this.setState({ projects, projectsCount, showSpinner: false})
+    } catch (ex) {
+      toast.error("Failed to load projects. Please re-try.");
+      for (const err of ex.response.data.errors) {
+        console.log("Failed to load projects: " + err.details);
+      }
+    }
   };
 
   handleProjectsSearch = () =>{
