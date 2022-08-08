@@ -15,7 +15,7 @@ class Projects extends React.Component {
   state = {
     projects: [],
     projectsCount: 0,
-    pageSize: 5,
+    pageSize: 2,
     currentPage: 1,
     searchQuery: "",
     radioBtnValues: [
@@ -65,20 +65,6 @@ class Projects extends React.Component {
     }
   }
 
-  handleInputChange = (e) => {
-    this.setState({ searchQuery: e.target.value});
-  };
-
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-    this.loadProjectsData();
-  };
-
-  handleProjectsSearch = () =>{
-    this.setState({ currentPage: 1});
-    this.loadProjectsData();
-  }
-
   loadProjectsData = async () => {
     // Show loading spinner and when waiting API response
     this.setState({ showSpinner: true });
@@ -112,7 +98,23 @@ class Projects extends React.Component {
     }
   }
 
-  handleProjectTypeChange = async (value) => {
+  handleInputChange = (e) => {
+    this.setState({ searchQuery: e.target.value});
+  };
+
+  pageChange = (page) => {
+    this.setState({ currentPage: page });
+  }
+
+  handlePaginationClick = (page) => {
+    this.pageChange(page).then(() => this.loadProjectsData());
+  };
+
+  handleProjectsSearch = () =>{
+    this.pageChange(1).then(() => this.loadProjectsData());
+  }
+
+  handleProjectTypeChange = (value) => {
     // set isActive field for radio button input style change
     this.setState((prevState) => ({
       radioBtnValues: prevState.radioBtnValues.map((el) =>
@@ -124,10 +126,10 @@ class Projects extends React.Component {
 
     if (this.state.radioBtnValues[0].isActive === "active") {
       this.setState({projectType: "myProjects"});
-      this.loadProjectsData();
+      this.pageChange(1).then(() => this.loadProjectsData());
     } else if (this.state.radioBtnValues[1].isActive === "active") {
       this.setState({projectType: "allProjects"});
-      this.loadProjectsData();
+      this.pageChange(1).then(() => this.loadProjectsData());
     }
   };
 
@@ -230,7 +232,7 @@ class Projects extends React.Component {
               itemsCount={projectsCount}
               pageSize={pageSize}
               currentPage={currentPage}
-              onPageChange={this.handlePageChange}
+              onPageChange={this.handlePaginationClick}
             />
           </div>
         } 

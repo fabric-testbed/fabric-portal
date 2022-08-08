@@ -43,7 +43,6 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
     },
-    self: {},
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -58,6 +57,12 @@ class projectForm extends Form {
     ownerSearchInput: "",
     memberSearchInput: "",
     tagVocabulary: [],
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    },
   };
 
   schema = {
@@ -106,8 +111,7 @@ class projectForm extends Form {
 
     try {
       const { data: res2 } = await getCurrentUser();
-      const self = res2.results[0];
-      this.setState({ self })
+      this.setState({ globalRoles: checkGlobalRoles(res2.results[0])});
     } catch (ex) {
       console.log("Failed to load user information: " + ex.response.data);
       toast.error("User's credential is expired. Please re-login.");
@@ -333,21 +337,19 @@ class projectForm extends Form {
       originalProjectName,
       SideNavItems,
       activeIndex,
-      self,
       ownerSearchInput,
       owners,
       memberSearchInput,
-      members
+      members,
+      globalRoles
     } = this.state;
-    
-    let isFacilityOperator = checkGlobalRoles(self).isFacilityOperator;
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
-    let canUpdate = isFacilityOperator || data.memberships.is_creator;
+    let canUpdate = globalRoles.isFacilityOperator || data.memberships.is_creator;
     // only facility operator or project owner can update member;
-    let canUpdateMember = isFacilityOperator || data.memberships.is_owner;
+    let canUpdateMember = globalRoles.isFacilityOperator || data.memberships.is_owner;
     
     const parsedTags = this.parseTags();
 
@@ -357,7 +359,7 @@ class projectForm extends Form {
         <div className="container">
           <NewProjectForm
             history={this.props.history}
-            isFacilityOperator={isFacilityOperator}
+            isFacilityOperator={globalRoles.isFacilityOperator}
             baseOptions={parsedTags.baseOptions}
             optionsMapping={parsedTags.optionsMapping}
           />
@@ -390,7 +392,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
+                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

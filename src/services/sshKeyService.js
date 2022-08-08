@@ -13,7 +13,7 @@ export function uploadPublicKey(keytype, openssh, description) {
     {
       "description": description,
       "keytype": keytype,
-      "public_openssh": encodeURIComponent(openssh)
+      "public_openssh": openssh
     }
   )
 }

@@ -8,6 +8,7 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   // don't need the pagination if only 1 page.
   if (pagesCount === 1) return null;
 
+  // range(start, end, step), start included, end excluded, step is 1 by default
   const pages = _.range(1, pagesCount + 1);
 
   return (
