@@ -1,7 +1,7 @@
 import React from "react";
 import { getActiveFacilityUpdates } from "../../services/announcementService";
 import FacilityUpdateCard from "./FacilityUpdateCard";
-import SpinnerWithText from "../../common/SpinnerWithText";
+import SpinnerWithText from "../common/SpinnerWithText";
 import { toast } from "react-toastify";
 
 class FacilityUpdates extends React.Component {
@@ -13,7 +13,12 @@ class FacilityUpdates extends React.Component {
   async componentDidMount() {
     try {
       const { data } = await getActiveFacilityUpdates();
-      const updates = data.results;
+      let updates = data.results;
+      updates = updates.map(update => {
+        const long_date = update.display_date
+        update.display_date = long_date.substring(0, 10);
+        return update;
+      })
       this.setState({ updates });
       this.setState({ showKeySpinner: false });
     } catch (ex) {
