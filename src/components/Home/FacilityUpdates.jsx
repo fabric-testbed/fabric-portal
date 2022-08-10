@@ -19,6 +19,7 @@ class FacilityUpdates extends React.Component {
         update.display_date = long_date.substring(0, 10);
         return update;
       })
+
       this.setState({ updates });
       this.setState({ showKeySpinner: false });
     } catch (ex) {
@@ -34,7 +35,7 @@ class FacilityUpdates extends React.Component {
       <div>
         {
           showSpinner ? <SpinnerWithText text={"Loading updates..."} /> : 
-          <FacilityUpdateCard header={"Facility Updates"} data={updates} />
+          <FacilityUpdateCard data={updates} />
         }
       </div>
     );

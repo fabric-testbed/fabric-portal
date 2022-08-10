@@ -15,14 +15,13 @@ class Projects extends React.Component {
   state = {
     projects: [],
     projectsCount: 0,
-    pageSize: 2,
+    pageSize: 10,
     currentPage: 1,
     searchQuery: "",
     radioBtnValues: [
-      { display: "My Projects", value: "active", isActive: true },
-      { display: "All Projects", value: "inactive", isActive: false },
+      { display: "My Projects", value: "myProjects", isActive: true },
+      { display: "All Projects", value: "allProjects", isActive: false },
     ],
-    projectType: "myProjects",
     showSpinner: false,
     globalRoles: {
       isProjectLead: false,
@@ -59,21 +58,25 @@ class Projects extends React.Component {
       })
     } catch (ex) {
       toast.error("Failed to load projects. Please reload this page.");
-      for (const err of ex.response.data.errors) {
+      for (const err of ex.errors) {
         console.log("Failed to load projects: " + err);
       }
     }
   }
 
-  loadProjectsData = async () => {
+  getProjectType = () => {
+    return this.state.radioBtnValues.filter(btn => btn.isActive)[0].value;
+  }
+
+  reloadProjectsData = async () => {
     // Show loading spinner and when waiting API response
     this.setState({ showSpinner: true });
-    const { pageSize: limit, currentPage, searchQuery, projectType} = this.state;
+    const { pageSize: limit, currentPage, searchQuery } = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
     let projectsCount = 0;
     try {
-      const { data } = await getProjects(projectType, offset, limit, searchQuery);
+      const { data } = await getProjects(this.getProjectType(), offset, limit, searchQuery);
       projects = data.results;
       projectsCount = data.total;
     
@@ -96,39 +99,16 @@ class Projects extends React.Component {
     this.setState({ searchQuery: e.target.value});
   };
 
-  pageChange = (page) => {
-    this.setState({ currentPage: page });
-  }
-
-  handlePaginationClick = async (page) => {
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true, currentPage: page });
-    const { pageSize: limit, currentPage, searchQuery, projectType} = this.state;
-    const offset = (currentPage - 1) * limit;
-    let projects = [];
-    let projectsCount = 0;
-    try {
-      const { data } = await getProjects(projectType, offset, limit, searchQuery);
-      projects = data.results;
-      projectsCount = data.total;
-
-      // parse create time field to user's local time.
-      projects = projects.map((p) => {
-        p.created_time  = toLocaleTime(p.created);
-        return p;
-      });
-
-      this.setState({ projects, projectsCount, showSpinner: false})
-    } catch (ex) {
-      toast.error("Failed to load projects. Please re-try.");
-      for (const err of ex.response.data.errors) {
-        console.log("Failed to load projects: " + err.details);
-      }
-    }
+  handlePaginationClick = (page) => {
+    this.setState({ currentPage: page }, () => {
+      this.reloadProjectsData();
+    });
   };
 
   handleProjectsSearch = () =>{
-    this.pageChange(1).then(() => this.loadProjectsData());
+    this.setState({ currentPage: 1 }, () => {
+      this.reloadProjectsData();
+    });
   }
 
   handleProjectTypeChange = (value) => {
@@ -139,15 +119,10 @@ class Projects extends React.Component {
           ? { ...el, isActive: true }
           : { ...el, isActive: false }
       ),
-    }));
-
-    if (this.state.radioBtnValues[0].isActive === "active") {
-      this.setState({projectType: "myProjects"});
-      this.pageChange(1).then(() => this.loadProjectsData());
-    } else if (this.state.radioBtnValues[1].isActive === "active") {
-      this.setState({projectType: "allProjects"});
-      this.pageChange(1).then(() => this.loadProjectsData());
-    }
+      currentPage: 1
+    }), () => {
+      this.reloadProjectsData();
+    });
   };
 
   render() {
@@ -243,7 +218,7 @@ class Projects extends React.Component {
             </div>
             <ProjectsTable
               projects={projects}
-              type={this.state.projectType}
+              type={this.getProjectType()}
             />
             <Pagination
               itemsCount={projectsCount}

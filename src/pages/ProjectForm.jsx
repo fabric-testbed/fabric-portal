@@ -44,9 +44,9 @@ class projectForm extends Form {
       project_members: [],
       tags: [],
       memberships: {
-        "is_creator": false,
-        "is_member": false,
-        "is_owner": false
+        is_creator: false,
+        is_member: false,
+        is_owner: false
       },
     },
     errors: {},
@@ -135,6 +135,7 @@ class projectForm extends Form {
       project_owners: project.project_owners,
       project_members: project.project_members,
       tags: project.tags,
+      memberships: project.memberships
     };
   }
 
