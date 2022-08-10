@@ -3,17 +3,30 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { getProjects } from "../../services/projectService.js";
 import { Link } from "react-router-dom";
+import SpinnerWithText from "../common/SpinnerWithText";
+import Pagination from "../common/Pagination";
+import { default as portalData } from "../../services/portalData.json";
 
 class ProjectRoles extends React.Component {
   state = {
-    myProjects: [],
+    projects: [],
+    projectsCount: 0,
+    pageSize: 5,
+    currentPage: 1,
+    searchQuery: "",
+    showSpinner: false,
   };
 
   async componentDidMount(){
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+    const { pageSize: limit } = this.state;
+
     try {
-      const { data: res } = await getProjects("myProjects", 0, 20);
-      const myProjects = res.results;
-      this.setState({ myProjects });
+      const { data: res } = await getProjects("myProjects", 0, limit);
+      const projects = res.results;
+      const projectsCount = res.total;
+      this.setState({ showSpinner: false, projects, projectsCount });
     } catch (ex) { 
       toast.error("Failed to load user's projects'. Please re-login.");
       console.log("Failed to load user's projects: " + ex.response.data);
@@ -38,37 +51,127 @@ class ProjectRoles extends React.Component {
     }
   }
 
+  reloadProjectsData = async () => {
+    // Show loading spinner and when waiting API response
+    this.setState({ showSpinner: true });
+    const { pageSize: limit, currentPage, searchQuery } = this.state;
+    const offset = (currentPage - 1) * limit;
+    let projects = [];
+    let projectsCount = 0;
+    try {
+      const { data } = await getProjects("myProjects", offset, limit, searchQuery);
+      projects = data.results;
+      projectsCount = data.total;
+      this.setState({ projects, projectsCount, showSpinner: false})
+    } catch (ex) {
+      toast.error("Failed to load projects. Please re-try.");
+      for (const err of ex.response.data.errors) {
+        console.log("Failed to load projects: " + err.details);
+      }
+    }
+  }
+
+  handleInputChange = (e) => {
+    this.setState({ searchQuery: e.target.value});
+  };
+
+  handlePaginationClick = (page) => {
+    this.setState({ currentPage: page }, () => {
+      this.reloadProjectsData();
+    });
+  };
+
+  handleProjectsSearch = () =>{
+    this.setState({ currentPage: 1 }, () => {
+      this.reloadProjectsData();
+    });
+  }
+
   render() {
-    const { myProjects } = this.state;
+    const { projects, showSpinner, projectsCount, pageSize, currentPage, searchQuery } = this.state;
     return (
       <div>
         <h4 className="mt-4">Project Roles</h4>
-        <table className="table table-striped table-bordered my-4 text-center">
-          <tbody>
-            <tr>
-              <th>Project Name</th>
-              <th>Description</th>
-              <th>Facility</th>
-              <th>Project Member</th>
-              <th>Project Owner</th>
-            </tr>
-            {
-              myProjects.map((project, index) => {
-                return (
-                  <tr>
-                    <td>
-                      <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
-                    </td>
-                    <td>{this.renderRoleTableFields(project.description)}</td>
-                    <td>{project.facility}</td>
-                    <td>{this.renderRoleTableFields(project.memberships.is_member)}</td>
-                    <td>{this.renderRoleTableFields(project.memberships.is_owner)}</td>
-                  </tr>
-                );
-              })
-            }
-          </tbody>
-        </table>
+        {
+          showSpinner && <SpinnerWithText text={"Loading projects..."}/>
+        }
+        {
+          !showSpinner && projectsCount === 0 &&
+          <div className="alert alert-warning mt-2" role="alert">
+            <p className="mt-2">We could not find your project:</p>
+            <p>
+              <ul>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
+                  please <Link to="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
+                </li>
+                <li>
+                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  please ask your project lead to add you to a project.
+                </li>
+              </ul>
+            </p>
+          </div>
+        }
+        {
+          !showSpinner && projectsCount > 0 &&
+          <div>
+            <div className="w-100 input-group mt-3 mb-1">
+              <input
+                type="text"
+                name="query"
+                className="form-control"
+                placeholder={"Search by Project Name..."}
+                value={searchQuery}
+                onChange={this.handleInputChange}
+              />
+              <div className="input-group-append">
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={this.handleProjectsSearch}
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+            <div className="d-flex flex-row-reverse">
+              {projectsCount} results.
+            </div>    
+            <table className="table table-striped table-bordered mt-1 mb-4 text-center">
+              <tbody>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Description</th>
+                  <th>Facility</th>
+                  <th>Project Member</th>
+                  <th>Project Owner</th>
+                </tr>
+                {
+                  projects.map((project, index) => {
+                    return (
+                      <tr>
+                        <td>
+                          <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+                        </td>
+                        <td>{this.renderRoleTableFields(project.description)}</td>
+                        <td>{project.facility}</td>
+                        <td>{this.renderRoleTableFields(project.memberships.is_member)}</td>
+                        <td>{this.renderRoleTableFields(project.memberships.is_owner)}</td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+            <Pagination
+              itemsCount={projectsCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePaginationClick}
+            />
+          </div>
+        }
       </div>
     )
   }

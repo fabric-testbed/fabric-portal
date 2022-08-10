@@ -30,12 +30,12 @@ class FacilityUpdates extends React.Component {
 
  
   render() {
-    const { updates, showSpinner } = this.state.updates;
+    const { updates, showSpinner } = this.state;
     return (
       <div>
         {
           showSpinner ? <SpinnerWithText text={"Loading updates..."} /> : 
-          <FacilityUpdateCard data={updates} />
+          <FacilityUpdateCard updates={updates} />
         }
       </div>
     );

@@ -126,7 +126,8 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, globalRoles, showSpinner, projects, projectsCount } = this.state;
+    const { pageSize, currentPage, globalRoles, showSpinner, 
+      projects, projectsCount, searchQuery } = this.state;
 
     return (
       <div className="container">
@@ -161,7 +162,8 @@ class Projects extends React.Component {
             type="text"
             name="query"
             className="form-control"
-            placeholder={"Search Projects..."}
+            placeholder={"Search by Project Name..."}
+            value={searchQuery}
             onChange={this.handleInputChange}
           />
           <div className="input-group-append">

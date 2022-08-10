@@ -1,18 +1,18 @@
 import React from "react";
 import Parser from 'html-react-parser';
 
-const FacilityUpdateCard = ({ data }) => {
+const FacilityUpdateCard = ({ updates }) => {
   return (
     <div className="homepage-card card">
       <div className="card-header text-center">
         <b>Facility Updates</b>
       </div>
       <div className="card-body py-2">
-        {data && data.map((update, index) => {
+        {updates.length > 0 && updates.map((update, index) => {
           return (
             <div
               className={`py-4 mx-4 ${
-                index < data.length - 1 ? "border-bottom" : ""
+                index < updates.length - 1 ? "border-bottom" : ""
               }`}
               key={`card-update-${index}`}
             >
