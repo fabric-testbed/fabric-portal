@@ -31,10 +31,6 @@ class NewProjectForm extends Form {
       uuid: "",
       description: "",
       facility: portalData.defaultFacility,
-      created_by: {},
-      created_time: "",
-      project_owners: [],
-      project_members: [],
       tags: [],
     },
     errors: {},
@@ -64,10 +60,6 @@ class NewProjectForm extends Form {
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    created_by: Joi.object(),
-    created_time: Joi.string().allow(""),
-    project_members: Joi.array(),
-    project_owners: Joi.array(),
     tags: Joi.array(),
   };
 
@@ -75,15 +67,11 @@ class NewProjectForm extends Form {
     try {
       let ownerIDs = this.state.addedOwners.map((user) => user.uuid);
       let memberIDs = this.state.addedMembers.map((user) => user.uuid);
-      let data = { ...this.state.data };
-      data.project_owners.push(ownerIDs);
-      data.project_members.push(memberIDs);
-      this.setState({ data });
       // redirect users directly to the projects page
       this.props.history.push("/projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const  { data: res } = await createProject(this.state.data);
+      const  { data: res } = await createProject(this.state.data, ownerIDs, memberIDs);
       const newProject = res.results[0];
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
@@ -100,7 +88,8 @@ class NewProjectForm extends Form {
       this.setState({ ownerSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: owners } = await getPeopleByName(value);
+          const { data: res } = await getPeopleByName(value);
+          const owners = res.results;
           this.setState({ owners });
         } else {
           this.setState({ owners: [] });
@@ -114,7 +103,8 @@ class NewProjectForm extends Form {
       this.setState({ memberSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: members } = await getPeopleByName(value);
+          const { data: res } = await getPeopleByName(value);
+          const members = res.results;
           this.setState({ members });
         } else {
           this.setState({ members: [] });
@@ -155,27 +145,15 @@ class NewProjectForm extends Form {
     }
   };
 
-  handleSort = (sortColumn) => {
-    if (this.state.activeTabIndex === 0) {
-      this.setState({
-        ownerSetting: { ...this.state.ownerSetting, sortColumn: sortColumn },
-      });
-    } else if (this.state.TableactiveIndex === 1) {
-      this.setState({
-        memberSetting: { ...this.state.memberSetting, sortColumn: sortColumn },
-      });
-    }
-  };
-
   handleDelete = (user) => {
     // only delete a added user from state, no interaction with api.
     if (this.state.activeTabIndex === 0) {
       let added = this.state.addedOwners;
-      added = added.filter((u) => u.eppn !== user.eppn);
+      added = added.filter((u) => u.uuid !== user.uuid);
       this.setState({ addedOwners: added });
     } else if (this.state.activeTabIndex === 1) {
       let added = this.state.addedMembers;
-      added = added.filter((u) => u.eppn !== user.eppn);
+      added = added.filter((u) => u.uuid !== user.uuid);
       this.setState({ addedMembers: added });
     }
   };
@@ -289,9 +267,8 @@ class NewProjectForm extends Form {
             </div>
             <ProjectUserTable
               users={this.state.addedMembers}
-              sortColumn={this.state.memberSetting.sortColumn}
-              onSort={this.handleSort}
               onDelete={this.handleDelete}
+              canUpdate={true}
             />
           </div>
           <div className="search-result w-25 border ml-2 p-2">
