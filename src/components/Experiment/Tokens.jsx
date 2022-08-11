@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { createIdToken } from "../../services/credentialManagerService.js";
-import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getCurrentUser } from "../../services/peopleService.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 

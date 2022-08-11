@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { getWhoAmI } from "./services/userInformationService.js";
-import { getCurrentUser } from "./services/prPeopleService.js";
+import { getWhoAmI } from "./services/peopleService.js";
+import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";

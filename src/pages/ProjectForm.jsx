@@ -11,9 +11,9 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { getPeopleByName } from "../services/userInformationService";
+import { getPeopleByName } from "../services/peopleService";
 import { default as portalData } from "../services/portalData.json";
-import { getCurrentUser } from "../services/prPeopleService.js";
+import { getCurrentUser } from "../services/peopleService.js";
 
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 

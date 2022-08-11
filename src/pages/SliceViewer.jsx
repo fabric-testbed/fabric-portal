@@ -7,7 +7,7 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getCurrentUser } from "../services/prPeopleService.js";
+import { getCurrentUser } from "../services/peopleService.js";
 import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
 // import { getSliceById } from "../services/fakeSlices.js";
 // import { deleteSlice } from "../services/orchestratorService.js";

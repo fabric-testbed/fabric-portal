@@ -4,7 +4,7 @@ import Pagination from "../components/common/Pagination";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
 import SpinnerWithText from "../components/common/SpinnerWithText";
-import { getCurrentUser } from "../services/prPeopleService.js";
+import { getCurrentUser } from "../services/peopleService.js";
 import { getProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 

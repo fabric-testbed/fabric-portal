@@ -5,7 +5,7 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getCurrentUser } from "../../services/peopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/orchestratorService.js";
 import { toast } from "react-toastify";

@@ -1,14 +1,18 @@
 import React from "react";
 import Parser from 'html-react-parser';
+import SpinnerWithText from "../common/SpinnerWithText";
 
-const FacilityUpdateCard = ({ updates }) => {
+const FacilityUpdateCard = ({ showSpinner, updates }) => {
   return (
     <div className="homepage-card card">
       <div className="card-header text-center">
         <b>Facility Updates</b>
       </div>
       <div className="card-body py-2">
-        {updates.length > 0 && updates.map((update, index) => {
+        {
+          showSpinner && <SpinnerWithText text={"Loading updates..."} />
+        }
+        { !showSpinner && updates.length > 0 && updates.map((update, index) => {
           return (
             <div
               className={`py-4 mx-4 ${

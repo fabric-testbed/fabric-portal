@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getCurrentUser } from "../../services/peopleService.js";
 import { getProject } from "../../services/projectRegistryService.js";
 import { toast } from "react-toastify";
 

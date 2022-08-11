@@ -7,7 +7,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-import { getPeopleByName } from "../../services/userInformationService";
+import { getPeopleByName } from "../../services/peopleService";
 
 import { createProject } from "../../services/projectService";
 

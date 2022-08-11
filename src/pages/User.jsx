@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 import sleep from "../utils/sleep";
 
-import { getCurrentUser, refreshRoles } from "../services/prPeopleService.js";
+import { getCurrentUser, refreshRoles } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
 
 class User extends React.Component {
