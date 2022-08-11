@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 import { getPeopleByName } from "../../services/userInformationService";
-import { saveProject } from "../../services/projectRegistryService";
 
 import { createProject } from "../../services/projectService";
 
@@ -84,7 +83,8 @@ class NewProjectForm extends Form {
       this.props.history.push("/projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const  { data: newProject } = await createProject(this.state.data);
+      const  { data: res } = await createProject(this.state.data);
+      const newProject = res.results[0];
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
     }
@@ -242,9 +242,8 @@ class NewProjectForm extends Form {
             </div>
             <ProjectUserTable
               users={this.state.addedOwners}
-              sortColumn={this.state.ownerSetting.sortColumn}
-              onSort={this.handleSort}
               onDelete={this.handleDelete}
+              canUpdate={true}
             />
           </div>
           <div className="search-result w-25 border ml-2 p-2">

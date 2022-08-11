@@ -6,11 +6,13 @@ import { toast } from "react-toastify";
 
 class FacilityUpdates extends React.Component {
   state = {
-    showSpinner: true,
+    showSpinner: false,
     updates: [],
   };
 
   async componentDidMount() {
+    this.setState({ showSpinner: true });
+
     try {
       const { data } = await getActiveFacilityUpdates();
       let updates = data.results;
@@ -19,16 +21,13 @@ class FacilityUpdates extends React.Component {
         update.display_date = long_date.substring(0, 10);
         return update;
       })
-
-      this.setState({ updates });
-      this.setState({ showKeySpinner: false });
+      this.setState({ updates, showKeySpinner: false });
     } catch (ex) {
       toast.error("Failed to load facility updates. Please reload this page.");
       console.log("Failed to load facility updates: " + ex.response.data);
     }
   }
 
- 
   render() {
     const { updates, showSpinner } = this.state;
     return (

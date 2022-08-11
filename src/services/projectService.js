@@ -35,9 +35,9 @@ export function createProject(project) {
       "description": project.description,
       "is_public": true,
       "facility": project.facility,
-      // tags: project.tags.join(),
-      // project_owners: project.project_owners.join(","),
-      // project_members: project.project_members.join(","),
+      "tags": project.tags.join(),
+      "project_owners": project.project_owners.join(","),
+      "project_members": project.project_members.join(","),
     }
   );
 }
