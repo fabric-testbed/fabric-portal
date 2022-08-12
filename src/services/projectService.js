@@ -63,9 +63,9 @@ export function updateTags(projectId, tags) {
   });
 }
 
-export function updatePersonnel(projectId, owners, members) {
+export function updateProjectPersonnel(projectId, ownerIDs, memberIDs) {
   return http.patch(`${apiEndpoint}/${projectId}`, {
-    "project_members": members,
-    "project_owners": owners
+    "project_owners": ownerIDs,
+    "project_members": memberIDs
   })
 }
