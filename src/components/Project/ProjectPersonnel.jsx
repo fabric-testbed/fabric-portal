@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import ProjectUserTable from "./ProjectUserTable";
 import { toast } from "react-toastify";
 import { getPeopleByName } from "../../services/peopleService";
-import { updateProjectPersonnel } from "../../services/projectService";
 
 class ProjectPersonnel extends Component {
   state = {
     showSpinner: false,
     searchInput: "",
     searchResults: [],
-    users: this.props.personnelType === "Project Owners" ? 
-      this.props.project.project_owners : this.props.project.project_members
   };
 
   handleInputChange = (input) => {
@@ -33,49 +30,19 @@ class ProjectPersonnel extends Component {
   };
 
   handleDeleteUser = (user) => {
-    this.setState({ users: this.state.users.filter(u => u.uuid !== user.uuid) });
+    const { personnelType } = this.props;
+    this.props.onSinglePersonnelUpdate(personnelType, user, "remove");
   };
 
   handleAddUser = (user) => {
-    this.setState({ users: [...this.state.users, user], searchResults: [] });
+    const { personnelType } = this.props;
+    this.props.onSinglePersonnelUpdate(personnelType, user, "add");
+    this.setState({ searchInput: "", searchResults: [] });
   };
 
-  getIDs = (users) => {
-    return users.map(user => user.uuid);
-  }
-
-  handlePersonnelUpdate = async () =>{
-    this.setState({ showSpinner: true });
-
-    const { personnelType, project } = this.props;
-    const projectId = project.uuid;
-    let ownerIDs, memberIDs;
-
-    if (personnelType === "Project Owner") {
-      ownerIDs = this.getIDs(this.state.users);
-      // members remain the same
-      memberIDs = this.getIDs(project.project_members);
-    } else {
-      // owners remain the same
-      ownerIDs = this.getIDs(project.project_owners);
-      memberIDs = this.getIDs(this.state.users);
-    }
-
-    try{
-      // pass the arr of updated po/pm and the original pm/po
-      updateProjectPersonnel(projectId, ownerIDs, memberIDs).then(() => {
-        toast.success(`${personnelType} updated successfully.`)
-        // TODO
-      });
-    } catch(err) {
-      console.log(err);
-      toast("Failed to update project personnel")
-    }
-  }
-
   render() {
-    const { searchInput, searchResults, users } = this.state;
-    const { canUpdate, personnelType } = this.props;
+    const { searchInput, searchResults } = this.state;
+    const { canUpdate, personnelType, users } = this.props;
 
     return (
       <div>
@@ -83,7 +50,7 @@ class ProjectPersonnel extends Component {
             canUpdate
             &&
             <div className="d-flex flex-column">
-              <button className="btn btn-primary mb-4" onClick={this.handlePersonnelUpdate}>
+              <button className="btn btn-primary mb-4" onClick={this.props.onPersonnelUpdate}>
                 {`Update ${personnelType}`}
               </button>
               <div className="d-flex flex-row">
@@ -125,7 +92,10 @@ class ProjectPersonnel extends Component {
               }
             </div>
           }
-        <h4 className="mt-3 mb-2">{personnelType}</h4>
+        <div className="d-flex flex-row">
+          <h4 className="mt-3 mb-2">{personnelType}</h4>
+          <span className="ml-2 mt-4 mb-3 badge badge-sm badge-light">* Click the Update button on top to submit changes.</span>
+        </div>
         <ProjectUserTable
           users={users}
           onDelete={this.handleDeleteUser}

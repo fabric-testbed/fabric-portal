@@ -47,7 +47,7 @@ export function deleteProject(id) {
 }
 
 export function updateProject(project) {
-  return http.patch(`${apiEndpoint}/${project.id}`, {
+  return http.patch(`${apiEndpoint}/${project.uuid}`, {
     "description": project.description,
     "is_public": true,
     "facility": "FABRIC",

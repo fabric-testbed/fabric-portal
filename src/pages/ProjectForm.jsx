@@ -9,6 +9,7 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
+import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerWithText from "../components/common/SpinnerWithText";
 
@@ -23,21 +24,23 @@ import {
 class projectForm extends Form {
   state = {
     data: {
-      name: "",
       uuid: "",
+      name: "",
       description: "",
       facility: "",
-      created_by: {},
-      created_time: "",
-      project_creators: [],
-      project_owners: [],
-      project_members: [],
       tags: [],
-      memberships: {
-        is_creator: false,
-        is_member: false,
-        is_owner: false
-      },
+    },
+    project: {
+      uuid: "",
+      tags: [],
+      created: "",
+      project_creators: [
+        {
+          name: "",
+          email: "",
+          uuid: "",
+        }
+      ]
     },
     errors: {},
     activeIndex: 0,
@@ -61,12 +64,13 @@ class projectForm extends Form {
   };
 
   schema = {
+    uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
     tags: Joi.array(),
   };
-
+  
   async populateProject() {
     try {
       const projectId = this.props.match.params.id;
@@ -81,7 +85,11 @@ class projectForm extends Form {
       this.state.originalProjectName = project.name;
       // keep a copy of original tags for comparing on submit.
       this.state.originalTags = project.tags;
-      this.setState({ data: this.mapToViewModel(project) });
+      this.setState({ 
+        data: this.mapToViewModel(project), 
+        owners: project.project_owners, 
+        members: project.project_members 
+      });
     } catch (ex) {
       toast.error("Failed to load project.");
       if (ex.response && ex.response.status === 404) {
@@ -120,28 +128,23 @@ class projectForm extends Form {
       name: project.name,
       description: project.description,
       facility: project.facility,
-      created_by: project.project_creators[0],
-      created_time: project.created,
-      project_owners: project.project_owners,
-      project_members: project.project_members,
       tags: project.tags,
-      memberships: project.memberships
     };
   }
 
   doSubmit = async () => {
+    const { data: project } = this.state;
     try {
-      await updateProject(this.state.data);
-      await updateTags(this.state.originalTags, this.state.data);
+      await updateProject(project);
+      await updateTags(project.uuid, project.tags);
+      toast.success("Project updated successfully!");
+      this.props.history.push(`/projects/${project.uuid}`);
     }
     catch (ex) {
       console.log("failed to save project: " + ex.response.data);
       toast.error("Failed to save project.");
       this.props.history.push("/projects");
     }
-
-    toast.success("Project updated successfully!");
-    this.props.history.push(`/slices/${this.state.data.uuid}`);
   };
 
   parseTags = () => {
@@ -193,33 +196,51 @@ class projectForm extends Form {
     }
   };
 
-  handleDelete = (user) => {
-    if (this.state.activeIndex === 1) {
-      const originalUsers = this.state.data.project_owners;
-      // update the state of the component.
-      // create a new users array without current selected user.
-      const users = originalUsers.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
+  handleSinglePersonnelUpdate = (personnelType, user, operation) => {
+    // personnelType: "Project Owner" / "Project Member"
+    // operation: "add" / "remove"
+    if (personnelType === "Project Owners") {
+      if (operation === "add") {
+        this.setState({ owners: [...this.state.owners, user] });
+      }
 
-      // new projects obj will overwrite old one in state
-      this.setState({ data: { ...this.state.data, project_owners: users } });
-    } else if (this.state.activeIndex === 2) {
-      // when delete from member, delete from owner automatically.
-      // delete owner accordingly in UI (not reload from API)
-      const originalMembers = this.state.data.project_members;
-      const members = originalMembers.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
-      const originalOwners = this.state.data.project_owners;
-      const owners = originalOwners.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
+      if (operation === "remove") {
+        this.setState({ owners: this.state.owners.filter(u => u.uuid !== user.uuid) });
+      }
+    } else if (personnelType === "Project Members") {
+      if (operation === "add") {
+        this.setState({ member: [...this.state.members, user] });
+      }
 
-      this.setState({ data: { ...this.state.data, project_members: members, project_owners: owners } });
+      if (operation === "remove") {
+        this.setState({ members: this.state.members.filter(u => u.uuid !== user.uuid) });
+      }
     }
-  };
+  }
 
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
+  handlePersonnelUpdate = () => {
+    const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
+
+    const { data, owners, members } = this.state;
+
+    const ownerIDs = this.getIDs(owners);
+    const memberIDs = this.getIDs(members);
+
+    try{
+      // pass the arr of updated po/pm and the original pm/po
+      updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
+        toast.success(`${personnelType} updated successfully.`)
+        // TODO
+      });
+    } catch(err) {
+      console.log(err);
+      toast(`Failed to update ${personnelType}.`)
+    }
+  }
 
   render() {
     const projectId = this.props.match.params.id;
@@ -231,18 +252,21 @@ class projectForm extends Form {
     } else {
       const {
         data,
+        project,
         originalProjectName,
         SideNavItems,
         activeIndex,
-        globalRoles
+        globalRoles,
+        owners,
+        members
       } = this.state;
   
       // ***** Conditional Rendering Project Form *****
       // only facility operator or project creator
       // can update project/ delete project/ update owner;
-      let canUpdate = globalRoles.isFacilityOperator || data.memberships.is_creator;
+      let canUpdate = globalRoles.isFacilityOperator || (project.memberships && project.memberships.is_creator);
       // only facility operator or project owner can update member;
-      let canUpdateMember = globalRoles.isFacilityOperator || data.memberships.is_owner;
+      let canUpdateMember = globalRoles.isFacilityOperator || (project.memberships && project.memberships.is_owner);
       
       const parsedTags = this.parseTags();
   
@@ -288,11 +312,13 @@ class projectForm extends Form {
                   {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
                   {canUpdate && this.renderButton("Save")}
                 </form>
-                <ProjectBasicInfoTable
-                  data={data}
-                  canUpdate={canUpdate}
-                  onDeleteProject={this.handleDeleteProject}
-                />
+                {
+                  <ProjectBasicInfoTable
+                    project={project}
+                    canUpdate={canUpdate}
+                    onDeleteProject={this.handleDeleteProject}
+                  />
+                }
               </div>
               <div
                 className={`${
@@ -301,13 +327,13 @@ class projectForm extends Form {
                     : "col-9 d-flex flex-row"
                 }`}
               >
-                <div className="w-75">
-                  <ProjectPersonnel
-                    personnelType={"Project Owners"}
-                    canUpdate={canUpdate}
-                    project={data}
-                  />
-                </div>
+                <ProjectPersonnel
+                  personnelType={"Project Owners"}
+                  canUpdate={canUpdate}
+                  users={owners}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                />
               </div>
               <div
                 className={`${
@@ -316,13 +342,13 @@ class projectForm extends Form {
                     : "col-9 d-flex flex-row"
                 }`}
               >
-                <div className="w-75">
-                  <ProjectPersonnel
-                    personnelType={"Project Members"}
-                    canUpdate={canUpdateMember}
-                    project={data}
-                  />
-                </div>
+                <ProjectPersonnel
+                  personnelType={"Project Members"}
+                  canUpdate={canUpdateMember}
+                  users={members}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                />
               </div>
             </div>
           </div>
