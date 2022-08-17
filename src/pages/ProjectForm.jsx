@@ -91,8 +91,6 @@ class projectForm extends Form {
   }
 
   async componentDidMount() {
-    this.setState({ showSpinner: true });
-    
     await this.populateProject();
 
     try {
@@ -228,7 +226,7 @@ class projectForm extends Form {
 
     if (this.state.showSpinner) {
       return <div className="h-75">
-        <SpinnerWithText text={"Loading updates..."} />
+        <SpinnerWithText text={"Loading project information..."} />
       </div>
     } else {
       const {
@@ -308,7 +306,6 @@ class projectForm extends Form {
                     personnelType={"Project Owners"}
                     canUpdate={canUpdate}
                     project={data}
-                    users={data.project_owners}
                   />
                 </div>
               </div>
@@ -324,7 +321,6 @@ class projectForm extends Form {
                     personnelType={"Project Members"}
                     canUpdate={canUpdateMember}
                     project={data}
-                    users={data.project_members}
                   />
                 </div>
               </div>

@@ -61,9 +61,9 @@ class Tokens extends React.Component {
     try {
       const projectId = this.state.selectedProjectId;
       const scope = this.state.selectedCreateScope;
-      const { data } = await createIdToken(projectId, scope);
+      const { data: res } = await createIdToken(projectId, scope);
       this.setState({ createCopySuccess: false, createSuccess: true });
-      this.setState({ createToken: this.generateTokenJson(data.id_token, data.refresh_token) });
+      this.setState({ createToken: JSON.stringify(res["data"][0], undefined, 4) });
     } catch (ex) {
       toast.error("Failed to create token.");
     }

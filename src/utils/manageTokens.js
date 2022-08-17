@@ -15,10 +15,10 @@ export const autoCreateTokens = async (projectId) => {
   try {
     // call credential manager to generate tokens.
     // parameters: project and scope, "all" for both by default.
-    const { data } = await createIdToken(projectId, "all");
-    localStorage.setItem("idToken", data.id_token);
-    localStorage.setItem("refreshToken", data.refresh_token);
-    return data;
+    const { data: res } = await createIdToken(projectId, "all");
+    localStorage.setItem("idToken", res["data"][0].id_token);
+    localStorage.setItem("refreshToken", res["data"][0].refresh_token);
+    return res["data"][0];
   } catch(err) {
     console.log(err);
     toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");
@@ -28,9 +28,9 @@ export const autoCreateTokens = async (projectId) => {
 export const autoRefreshTokens = async (projectId) => {
   const oldRefreshToken = localStorage.getItem("refreshToken");
   try {
-    const { data } = await refreshToken(projectId, "all", oldRefreshToken);
-    localStorage.setItem("idToken", data.id_token);
-    localStorage.setItem("refreshToken", data.refresh_token);
+    const { data: res } = await refreshToken(projectId, "all", oldRefreshToken);
+    localStorage.setItem("idToken", res["data"][0].id_token);
+    localStorage.setItem("refreshToken", res["data"][0].refresh_token);
   } catch (err) {
     console.log(err);
     toast.error("Failed to refresh necessary tokens to view slice information. Please try again later.");

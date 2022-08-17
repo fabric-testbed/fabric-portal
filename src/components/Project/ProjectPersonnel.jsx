@@ -9,8 +9,9 @@ class ProjectPersonnel extends Component {
     showSpinner: false,
     searchInput: "",
     searchResults: [],
-    updatedUsers: [],
-  }
+    users: this.props.personnelType === "Project Owners" ? 
+      this.props.project.project_owners : this.props.project.project_members
+  };
 
   handleInputChange = (input) => {
     this.setState({ searchInput: input });
@@ -32,19 +33,11 @@ class ProjectPersonnel extends Component {
   };
 
   handleDeleteUser = (user) => {
-    if (this.state.updatedUsers.length > 0) {
-      this.setState({ updatedUsers: this.state.updatedUsers.filter(u => u.uuid !== user.uuid) });
-    } else {
-      this.setState({ updatedUsers: this.props.users.filter(u => u.uuid !== user.uuid) });
-    }
+    this.setState({ users: this.state.users.filter(u => u.uuid !== user.uuid) });
   };
 
   handleAddUser = (user) => {
-    if (this.state.updatedUsers.length > 0) {
-      this.setState({ updatedUsers: [...this.state.updatedUsers, user], searchResults: [] });
-    } else {
-      this.setState({ updatedUsers: [...this.props.users, user], searchResults: [] });
-    }
+    this.setState({ users: [...this.state.users, user], searchResults: [] });
   };
 
   getIDs = (users) => {
@@ -59,13 +52,13 @@ class ProjectPersonnel extends Component {
     let ownerIDs, memberIDs;
 
     if (personnelType === "Project Owner") {
-      ownerIDs = this.getIDs(this.state.updatedUsers);
+      ownerIDs = this.getIDs(this.state.users);
       // members remain the same
       memberIDs = this.getIDs(project.project_members);
     } else {
       // owners remain the same
       ownerIDs = this.getIDs(project.project_owners);
-      memberIDs = this.getIDs(this.state.updatedUsers);
+      memberIDs = this.getIDs(this.state.users);
     }
 
     try{
@@ -81,10 +74,8 @@ class ProjectPersonnel extends Component {
   }
 
   render() {
-    const { searchInput, searchResults, updatedUsers } = this.state;
-    const { canUpdate, personnelType, users } = this.props;
-
-    let persons = updatedUsers.length > 0 ? updatedUsers : users;
+    const { searchInput, searchResults, users } = this.state;
+    const { canUpdate, personnelType } = this.props;
 
     return (
       <div>
@@ -136,7 +127,7 @@ class ProjectPersonnel extends Component {
           }
         <h4 className="mt-3 mb-2">{personnelType}</h4>
         <ProjectUserTable
-          users={persons}
+          users={users}
           onDelete={this.handleDeleteUser}
           canUpdate={canUpdate}
         />
