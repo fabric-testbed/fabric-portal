@@ -115,6 +115,9 @@ export default class SliceViewer extends Component {
       "Closing": "secondary",
       "Dead": "secondary",
       "Configuring": "primary",
+      "Modifying": "primary",
+      "ModifyError": "warning",
+      "ModifyOK": "success"
     }
 
     const { slice, elements, selectedData, hasProject, 
@@ -155,7 +158,7 @@ export default class SliceViewer extends Component {
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
-                  slice.state.includes("Stable") &&
+                  ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
                   <DeleteModal
                     name={"Delete Slice"}
                     text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
@@ -173,7 +176,7 @@ export default class SliceViewer extends Component {
               </div>
             </div>
             {
-              slice.state === "Configuring" && 
+              ["Configuring", "Modifying"].includes(slice.state)  && 
               <CountdownTimer
                 text={"This slice is provisioning now."}
                 interval={30}
@@ -181,7 +184,7 @@ export default class SliceViewer extends Component {
               />
             }
             {
-              (["Closing", "Dead", "StableError"].includes(slice.state) 
+              (["Closing", "Dead", "StableError", "ModifyError"].includes(slice.state) 
               && errors.length > 0) && 
               <ErrorMessageAccordion
                 state={slice.state}
