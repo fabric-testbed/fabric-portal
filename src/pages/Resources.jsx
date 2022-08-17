@@ -28,8 +28,8 @@ class Resources extends Component {
 
   async componentDidMount() {
     try {
-      const { data } = await getResources();
-      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      const { data: res } = await getResources();
+      const parsedObj = sitesParser(res.data[0], this.state.ancronymToName);
       this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
     } catch (ex) {
       toast.error("Failed to load resource information. Please reload this page.");

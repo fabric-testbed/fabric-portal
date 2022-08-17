@@ -21,14 +21,14 @@ export default class SliceViewer extends Component {
     elements: [],
     slice: {
       "graph_id": "",
-      "lease_end": "",
+      "lease_end_time": "",
       "slice_id": "",
-      "slice_model": "",
-      "slice_name": "Slice Viewer",
-      "slice_state": "StableOK"
+      "model": "",
+      "name": "Slice Viewer",
+      "state": "StableOK"
     },
     errors: [],
-    // elements: sliceParser(getSliceById(2)["value"]["slices"][0]["slice_model"]),
+    // elements: sliceParser(getSliceById(2)["value"]["slices"][0]["model"]),
     // slice: getSliceById(2)["value"]["slices"][0],
     // errors: sliceErrorParser(getSliceById(2)),
     selectedData: null,
@@ -49,22 +49,22 @@ export default class SliceViewer extends Component {
         // if nothing found in browser storage
         if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
           autoCreateTokens(people.projects[0].uuid).then(async () => {
-            const { data } = await getSliceById(this.props.match.params.id);
+            const { data: res } = await getSliceById(this.props.match.params.id);
             this.setState({ 
-              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
-              slice: data["value"]["slices"][0],
-              errors: sliceErrorParser(data),
+              elements: sliceParser(res.data[0]["model"]),
+              slice: res.data[0],
+              errors: sliceErrorParser(res.data[0]["model"]),
               showSliceSpinner: false
             });
           });
         } else {
           // the token has been stored in the browser and is ready to be used.
           try {
-            const { data } = await getSliceById(this.props.match.params.id);
+            const { data: res } = await getSliceById(this.props.match.params.id);
             this.setState({ 
-              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
-              slice: data["value"]["slices"][0],
-              errors: sliceErrorParser(data),
+              elements: sliceParser(res.data[0]["model"]),
+              slice: res.data[0],
+              errors: sliceErrorParser(res.data[0]["model"]),
               showSliceSpinner: false
             });
           } catch(err) {
@@ -94,7 +94,7 @@ export default class SliceViewer extends Component {
       this.setState(prevState => ({ 
         slice: {
           ...prevState.slice,
-          "slice_state": "Dead"
+          "state": "Dead"
         }
       }))
     } catch(ex) {
@@ -136,9 +136,9 @@ export default class SliceViewer extends Component {
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="mr-4">
-                  <b>{slice.slice_name}</b>
-                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>
-                    {slice.slice_state}
+                  <b>{slice.name}</b>
+                  <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
+                    {slice.state}
                   </span>
                   <a
                     href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
@@ -150,12 +150,12 @@ export default class SliceViewer extends Component {
                   </a>
                 </h2>
                 <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end)}</span>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end_time)}</span>
                 </h4>
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
-                  slice.slice_state.includes("Stable") &&
+                  slice.state.includes("Stable") &&
                   <DeleteModal
                     name={"Delete Slice"}
                     text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
@@ -173,7 +173,7 @@ export default class SliceViewer extends Component {
               </div>
             </div>
             {
-              slice.slice_state === "Configuring" && 
+              slice.state === "Configuring" && 
               <CountdownTimer
                 text={"This slice is provisioning now."}
                 interval={30}
@@ -181,10 +181,10 @@ export default class SliceViewer extends Component {
               />
             }
             {
-              (["Closing", "Dead", "StableError"].includes(slice.slice_state) 
+              (["Closing", "Dead", "StableError"].includes(slice.state) 
               && errors.length > 0) && 
               <ErrorMessageAccordion
-                state={slice.slice_state}
+                state={slice.state}
                 errors={errors}
               />
             }
@@ -195,7 +195,7 @@ export default class SliceViewer extends Component {
                   className="align-self-end"
                   isNewSlice={false}
                   elements={elements}
-                  sliceName={slice.slice_name}
+                  sliceName={slice.name}
                   defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
                 />

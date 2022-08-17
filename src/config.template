@@ -3,11 +3,12 @@
 # replace ****** with API domain names
 # delete the 4 lines of comments and save
 {
+  "fabricCoreApiUrl": "https://******",
   "projectRegistryApiUrl": "https://******/projects",
   "userInformationApiUrl": "https://******/people",
   "prPeopleApiUrl":"https://******/people",
   "credentialManagerApiUrl": "https://******/tokens",
-  "resourcesApiUrl": "https://******/portalresources?graphFormat=JSON_NODELINK",
+  "resourcesApiUrl": "https://******/portalresources?graph_format=JSON_NODELINK",
   "orchestratorApiUrl": "https://******/slices",
   "sshKeyApiUrl": "https://******/sshkey"
 }

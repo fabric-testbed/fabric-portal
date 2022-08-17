@@ -55,7 +55,7 @@ class NewSliceForm extends React.Component {
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
-      const parsedObj = sitesParser(resources, this.state.ancronymToName);
+      const parsedObj = sitesParser(resources.data[0], this.state.ancronymToName);
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
@@ -286,10 +286,10 @@ class NewSliceForm extends React.Component {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
         try {
-          const { data } = await createSlice(requestData);
+          const { data: res } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
-          const slice_id = data["value"]["reservations"][0].slice_id;
+          const slice_id = res.data[0].slice_id;
           // this.props.history.push("/experiments#slices");
           this.props.history.push(`/slices/${slice_id}`)
         } catch (ex) {

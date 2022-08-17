@@ -47,14 +47,14 @@ class Slices extends React.Component {
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
         autoCreateTokens(people.projects[0].uuid).then(async () => {
-        const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"], showSpinner: false });
+        const { data: res } = await getSlices();
+        this.setState({ slices: res.data, showSpinner: false });
       });
       } else {
         // the token has been stored in the browser and is ready to be used.
           try {
-            const { data } = await getSlices();
-            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
+            const { data: res } = await getSlices();
+            this.setState({ slices: res.data, showSpinner: false, });
           } catch(err) {
             console.log("Error in getting slices: " + err);
             toast.error("Failed to load slices. Please re-login and try.");
@@ -109,9 +109,9 @@ class Slices extends React.Component {
     let filtered = allSlices;
 
     const filterMap = {
-      "Name": "slice_name",
+      "Name": "name",
       "ID": "slice_id",
-      "State": "slice_state",
+      "State": "state",
     }
 
     if (searchQuery) {
@@ -120,7 +120,7 @@ class Slices extends React.Component {
 
     if (!includeDeadSlices) {
       filtered = filtered.filter((s) => 
-        s.slice_state !== "Dead" && s.slice_state !== "Closing"
+        s.state !== "Dead" && s.state !== "Closing"
       )
     }
 
