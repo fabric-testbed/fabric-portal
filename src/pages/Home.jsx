@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import CookieConsent from "react-cookie-consent";
 import Topomap from "../components/Resource/Topomap";
 import DetailTable from "../components/Resource/DetailTable";
-import { getResources } from "../services/resourcesService.js";
+import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 
 class Home extends React.Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getCurrentUser } from "../../services/peopleService.js";
-import { getProject } from "../../services/projectRegistryService.js";
+import { getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 
 export default class SideLinks extends Component { 
@@ -52,7 +52,8 @@ export default class SideLinks extends Component {
   async getProjectTags() {
     this.setState({  showSpinner: true });
     try {
-      const { data: project } = await getProject(this.state.projectIdToGenerateToken);
+      const { data: res } = await getProjectById(this.state.projectIdToGenerateToken);
+      const project = res.results[0];
       this.setState({ tags: project.tags, showSpinner: false});
     } catch (ex) {
       toast.error("Failed to load the tags of this project. Please re-select a project.");

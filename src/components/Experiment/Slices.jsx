@@ -7,7 +7,7 @@ import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getCurrentUser } from "../../services/peopleService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
-import { getSlices } from "../../services/orchestratorService.js";
+import { getSlices } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import checkPortalType from "../../utils/checkPortalType";

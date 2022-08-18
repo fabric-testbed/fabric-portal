@@ -21,8 +21,8 @@ import validator from "../utils/sliceValidator.js";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
-import { createSlice } from "../services/orchestratorService.js";
+import { getResources } from "../services/resourceService.js";
+import { createSlice } from "../services/sliceService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 

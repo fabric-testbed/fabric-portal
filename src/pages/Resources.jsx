@@ -8,7 +8,7 @@ import SummaryTable from "../components/Resource/SummaryTable";
 
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
+import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
