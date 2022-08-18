@@ -31,7 +31,6 @@ class NewProjectForm extends Form {
       uuid: "",
       description: "",
       facility: portalData.defaultFacility,
-      tags: [],
     },
     errors: {},
     owners: [],
@@ -60,7 +59,6 @@ class NewProjectForm extends Form {
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    tags: Joi.array(),
   };
 
   doSubmit = async () => {
@@ -135,12 +133,10 @@ class NewProjectForm extends Form {
     if (!found) {
       added.push(user);
       if (this.state.activeTabIndex === 0) {
-        this.setState({ addedOwners: added });
-        // clear search input field.
-        this.setState({ ownerSearchInput: "" });
+        // clear search input field/ search results
+        this.setState({ addedOwners: added, ownerSearchInput: "", owners: [] });
       } else {
-        this.setState({ addedMembers: added });
-        this.setState({ memberSearchInput: "" });
+        this.setState({ addedMembers: added, memberSearchInput: "", members: [] });
       }
     }
   };
@@ -164,7 +160,6 @@ class NewProjectForm extends Form {
 
   render() {
     const that = this;
-    const { isFacilityOperator, baseOptions, optionsMapping  } = this.props;
 
     return (
       <div>
@@ -173,7 +168,6 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {isFacilityOperator && this.renderProjectTags("tags", "Tags", baseOptions, optionsMapping)}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">

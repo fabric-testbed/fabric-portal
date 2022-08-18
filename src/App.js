@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
-import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
+import { getActiveMaintenanceNotice } from "./services/announcementService.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -20,17 +20,25 @@ import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import "./styles/App.scss";
 
 class App extends React.Component {
   state = {
     userStatus: "",
-    activeNotices: getActiveNotices(),
+    activeNotices: [],
   };
 
   async componentDidMount() {
+    // Check actice maitenance notice(s)
+    try {
+      const { data: res } = await getActiveMaintenanceNotice();
+      this.setState({ activeNotices: res.results });
+    } catch (ex) {
+      toast.error("Failed to load maintenance notice.")
+    }
+
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
       try {
