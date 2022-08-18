@@ -7,16 +7,14 @@ import Keys from "../components/Experiment/Keys";
 class Experiments extends React.Component {
   state = {
     SideNavItems: [
-      // { name: "MY SLICES", active: true },
-      // { name: "MANAGE TOKENS", active: false },
-      // { name: "MANAGE SSH KEYS", active: false },
-      { name: "MANAGE SSH KEYS", active: true },
+      { name: "MY SLICES", active: true },
+      { name: "MANAGE TOKENS", active: false },
+      { name: "MANAGE SSH KEYS", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    // componentNames: [Slices, Tokens, Keys],
-    componentNames: [Keys]
+    componentNames: [Slices, Tokens, Keys],
   };
 
   async componentDidMount() {

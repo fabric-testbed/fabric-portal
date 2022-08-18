@@ -218,7 +218,7 @@ class projectForm extends Form {
       }
     } else if (personnelType === "Project Members") {
       if (operation === "add") {
-        this.setState({ member: [...this.state.members, user] });
+        this.setState({ members: [...this.state.members, user] });
       }
 
       if (operation === "remove") {
