@@ -29,18 +29,13 @@ class projectForm extends Form {
       description: "",
       facility: "",
       tags: [],
-    },
-    project: {
-      uuid: "",
-      tags: [],
       created: "",
-      project_creators: [
-        {
-          name: "",
-          email: "",
-          uuid: "",
-        }
-      ]
+      creator_name: "",
+      creator_id: "",
+      creator_email: "",
+      is_creator: false,
+      is_member: false,
+      is_owner: false,
     },
     errors: {},
     activeIndex: 0,
@@ -69,8 +64,15 @@ class projectForm extends Form {
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
     tags: Joi.array(),
+    created: Joi.string().allow(""),
+    creator_name: Joi.string().allow(""),
+    creator_id: Joi.string().allow(""),
+    creator_email: Joi.string().allow(""),
+    is_creator: Joi.boolean(),
+    is_member: Joi.boolean(),
+    is_owner: Joi.boolean(),
   };
-  
+
   async populateProject() {
     try {
       const projectId = this.props.match.params.id;
@@ -129,6 +131,13 @@ class projectForm extends Form {
       description: project.description,
       facility: project.facility,
       tags: project.tags,
+      created: project.created,
+      creator_name: project.project_creators[0].name,
+      creator_id: project.project_creators[0].uuid,
+      creator_email: project.project_creators[0].email,
+      is_creator: project.memberships.is_creator,
+      is_member: project.memberships.is_member,
+      is_owner: project.memberships.is_owner,
     };
   }
 
@@ -234,7 +243,7 @@ class projectForm extends Form {
       // pass the arr of updated po/pm and the original pm/po
       updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
         toast.success(`${personnelType} updated successfully.`)
-        // TODO
+        this.props.history.push(`/projects/${data.uuid}`);
       });
     } catch(err) {
       console.log(err);
@@ -252,7 +261,6 @@ class projectForm extends Form {
     } else {
       const {
         data,
-        project,
         originalProjectName,
         SideNavItems,
         activeIndex,
@@ -264,9 +272,9 @@ class projectForm extends Form {
       // ***** Conditional Rendering Project Form *****
       // only facility operator or project creator
       // can update project/ delete project/ update owner;
-      let canUpdate = globalRoles.isFacilityOperator || (project.memberships && project.memberships.is_creator);
+      let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
       // only facility operator or project owner can update member;
-      let canUpdateMember = globalRoles.isFacilityOperator || (project.memberships && project.memberships.is_owner);
+      let canUpdateMember = globalRoles.isFacilityOperator || data.is_owner;
       
       const parsedTags = this.parseTags();
   
@@ -314,7 +322,7 @@ class projectForm extends Form {
                 </form>
                 {
                   <ProjectBasicInfoTable
-                    project={project}
+                    project={data}
                     canUpdate={canUpdate}
                     onDeleteProject={this.handleDeleteProject}
                   />
@@ -327,13 +335,15 @@ class projectForm extends Form {
                     : "col-9 d-flex flex-row"
                 }`}
               >
-                <ProjectPersonnel
-                  personnelType={"Project Owners"}
-                  canUpdate={canUpdate}
-                  users={owners}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
-                />
+                <div className="w-100">
+                  <ProjectPersonnel
+                    personnelType={"Project Owners"}
+                    canUpdate={canUpdate}
+                    users={owners}
+                    onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                    onPersonnelUpdate={this.handlePersonnelUpdate}
+                  />
+                </div>
               </div>
               <div
                 className={`${
@@ -342,13 +352,15 @@ class projectForm extends Form {
                     : "col-9 d-flex flex-row"
                 }`}
               >
-                <ProjectPersonnel
-                  personnelType={"Project Members"}
-                  canUpdate={canUpdateMember}
-                  users={members}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
-                />
+                <div className="w-100">
+                  <ProjectPersonnel
+                    personnelType={"Project Members"}
+                    canUpdate={canUpdateMember}
+                    users={members}
+                    onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                    onPersonnelUpdate={this.handlePersonnelUpdate}
+                  />
+                </div>
               </div>
             </div>
           </div>

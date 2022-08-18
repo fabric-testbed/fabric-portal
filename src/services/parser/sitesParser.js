@@ -1,5 +1,5 @@
 export default function parseSites(data, ancronymToName) {
-  let abqm_elements = JSON.parse(data.value.bqm);
+  let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const links = abqm_elements.links;
   const parsedSites = [];

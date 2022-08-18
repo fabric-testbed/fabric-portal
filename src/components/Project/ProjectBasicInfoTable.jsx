@@ -45,15 +45,15 @@ class ProjectBasicInfoTable extends Component {
             </tr>
             <tr>
               <td>Creator Name</td>
-              <td>{ project.project_creators[0].name }</td>
+              <td>{ project.creator_name }</td>
             </tr>
             <tr>
               <td>Creator Email</td>
-              <td>{ project.project_creators[0].email }</td>
+              <td>{ project.creator_email }</td>
             </tr>
             <tr>
               <td>Creator ID</td>
-              <td>{ project.project_creators[0].uuid }</td>
+              <td>{ project.creator_id }</td>
             </tr>    
             {
               canUpdate && 

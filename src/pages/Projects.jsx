@@ -221,6 +221,7 @@ class Projects extends React.Component {
             <ProjectsTable
               projects={projects}
               type={this.getProjectType()}
+              isFacilityOperator={globalRoles.isFacilityOperator}
             />
             <Pagination
               itemsCount={projectsCount}

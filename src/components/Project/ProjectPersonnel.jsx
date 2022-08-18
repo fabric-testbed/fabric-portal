@@ -94,7 +94,7 @@ class ProjectPersonnel extends Component {
           }
         <div className="d-flex flex-row">
           <h4 className="mt-3 mb-2">{personnelType}</h4>
-          <span className="ml-2 mt-4 mb-3 badge badge-sm badge-light">* Click the Update button on top to submit changes.</span>
+          {canUpdate && <span className="ml-2 mt-4 mb-3 badge badge-sm badge-light">* Click the Update button on top to submit changes.</span>}
         </div>
         <ProjectUserTable
           users={users}

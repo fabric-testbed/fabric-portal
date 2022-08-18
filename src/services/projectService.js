@@ -58,7 +58,7 @@ export function updateProject(project) {
 }
 
 export function updateTags(projectId, tags) {
-  return http.patch(`${apiEndpoint}/${projectId}`, {
+  return http.patch(`${apiEndpoint}/${projectId}/tags`, {
     "tags": tags
   });
 }
