@@ -1,6 +1,6 @@
 import React from "react";
 import SideNav from "../components/common/SideNav";
-import SideNav from "../components/common/SpinnerFullPage";
+import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import KeyTabs from "../components/SshKey/KeyTabs";

@@ -3,7 +3,6 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { getProjects } from "../../services/projectService.js";
 import { Link } from "react-router-dom";
-import SpinnerWithText from "../common/SpinnerWithText";
 import Pagination from "../common/Pagination";
 import { default as portalData } from "../../services/portalData.json";
 
@@ -14,19 +13,16 @@ class ProjectRoles extends React.Component {
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
-    showSpinner: false,
   };
 
   async componentDidMount(){
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
     const { pageSize: limit } = this.state;
 
     try {
       const { data: res } = await getProjects("myProjects", 0, limit);
       const projects = res.results;
       const projectsCount = res.total;
-      this.setState({ showSpinner: false, projects, projectsCount });
+      this.setState({ projects, projectsCount });
     } catch (err) { 
       toast.error("Failed to load user's projects'. Please re-login.");
     }
@@ -51,8 +47,6 @@ class ProjectRoles extends React.Component {
   }
 
   reloadProjectsData = async () => {
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
     const { pageSize: limit, currentPage, searchQuery } = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
@@ -61,7 +55,7 @@ class ProjectRoles extends React.Component {
       const { data } = await getProjects("myProjects", offset, limit, searchQuery);
       projects = data.results;
       projectsCount = data.total;
-      this.setState({ projects, projectsCount, showSpinner: false})
+      this.setState({ projects, projectsCount })
     } catch (err) {
       toast.error("Failed to load projects. Please re-try.");
     }
@@ -84,15 +78,12 @@ class ProjectRoles extends React.Component {
   }
 
   render() {
-    const { projects, showSpinner, projectsCount, pageSize, currentPage, searchQuery } = this.state;
+    const { projects, projectsCount, pageSize, currentPage, searchQuery } = this.state;
     return (
-      <div className="min-vh-50">
+      <div>
         <h4 className="mt-4">Project Roles</h4>
         {
-          showSpinner && <SpinnerWithText text={"Loading projects..."}/>
-        }
-        {
-          !showSpinner && projectsCount === 0 &&
+          projectsCount === 0 &&
           <div className="alert alert-warning mt-2" role="alert">
             <p className="mt-2">We could not find your project:</p>
             <p>
@@ -110,7 +101,7 @@ class ProjectRoles extends React.Component {
           </div>
         }
         {
-          !showSpinner && projectsCount > 0 &&
+          projectsCount > 0 &&
           <div>
             <div className="w-100 input-group mt-3 mb-1">
               <input

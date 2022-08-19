@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/common/Pagination";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
-import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCurrentUser } from "../services/peopleService.js";
 import { getProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
@@ -22,7 +21,6 @@ class Projects extends React.Component {
       { display: "My Projects", value: "myProjects", isActive: true },
       { display: "All Projects", value: "allProjects", isActive: false },
     ],
-    showSpinner: false,
     globalRoles: {
       isProjectLead: false,
       isFacilityOperator: false,
@@ -32,8 +30,6 @@ class Projects extends React.Component {
   };
 
   async componentDidMount() {
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
     const { pageSize: limit } = this.state;
 
     try {
@@ -54,7 +50,6 @@ class Projects extends React.Component {
         projects: projects,
         projectsCount,
         roles: user.roles,
-        showSpinner: false,
       })
     } catch (err) {
       toast.error("Failed to load projects. Please reload this page.");
@@ -66,8 +61,6 @@ class Projects extends React.Component {
   }
 
   reloadProjectsData = async () => {
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
     const { pageSize: limit, currentPage, searchQuery } = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
@@ -83,7 +76,7 @@ class Projects extends React.Component {
         return p;
       });
 
-      this.setState({ projects, projectsCount, showSpinner: false})
+      this.setState({ projects, projectsCount })
     } catch (err) {
       toast.error("Failed to load projects. Please re-try.");
     }
@@ -120,8 +113,8 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, globalRoles, showSpinner, 
-      projects, projectsCount, searchQuery } = this.state;
+    const { pageSize, currentPage, globalRoles, projects, 
+      projectsCount, searchQuery } = this.state;
 
     return (
       <div className="container">
@@ -171,10 +164,7 @@ class Projects extends React.Component {
           </div>
         </div>
         {
-          showSpinner && <SpinnerWithText text={"Loading projects..."}/>
-        }
-        {
-          !showSpinner && projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
+          projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div>
             <div className="d-flex flex-row justify-content-between">
               <RadioBtnGroup
@@ -202,7 +192,7 @@ class Projects extends React.Component {
         }
 
         {
-          !showSpinner && (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
+          (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
             <div className="d-flex flex-row justify-content-between mb-3">

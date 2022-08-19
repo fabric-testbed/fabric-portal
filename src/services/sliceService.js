@@ -4,7 +4,7 @@ import { default as config } from "../config.json";
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
 
 export function getSlices() {
-  return http.get(apiEndpoint + "?states=all&limit=200&offset=0", {
+  return http.get(apiEndpoint + "?states=All&offset=0&limit=200", {
     headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
   });
 }
