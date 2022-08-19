@@ -9,6 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { createIdToken } from "../../services/credentialManagerService.js";
 import { getCurrentUser } from "../../services/peopleService.js";
+import { getProjects } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 
@@ -33,28 +34,14 @@ class Tokens extends React.Component {
     this.setState({ showSpinner: true });
 
     try {
-      const { data: user } = await getCurrentUser();
-      this.setState({ projects: user.projects, showSpinner: false });
+      // const { data: res } = await getCurrentUser();
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      this.setState({ projects: res.results, showSpinner: false });
     } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+      console.log("Failed to load projects: " + ex.response.data);
       window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
-  }
-
-  generateTokenJson = (id_token, refresh_token) => {
-    const today = new Date();
-    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    const time = today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
-    const time_stamp = date + ' '+ time;
-
-    const res_json = {
-      "created_at" : time_stamp,
-      "id_token": id_token,
-      "refresh_token": refresh_token,
-    };
-    
-    return JSON.stringify(res_json, undefined, 4);
   }
 
   createToken = async () => {

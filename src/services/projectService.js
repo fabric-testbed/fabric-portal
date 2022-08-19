@@ -64,7 +64,7 @@ export function updateTags(projectId, tags) {
 }
 
 export function updateProjectPersonnel(projectId, ownerIDs, memberIDs) {
-  return http.patch(`${apiEndpoint}/${projectId}`, {
+  return http.patch(`${apiEndpoint}/${projectId}/personnel`, {
     "project_owners": ownerIDs,
     "project_members": memberIDs
   })

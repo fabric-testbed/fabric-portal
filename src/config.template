@@ -4,7 +4,6 @@
 # delete the 4 lines of comments and save
 {
   "fabricCoreApiUrl": "https://******",
-  "credentialManagerApiUrl": "https://******/tokens",
-  "resourcesApiUrl": "https://******/portalresources?graph_format=JSON_NODELINK",
-  "orchestratorApiUrl": "https://******/slices",
+  "credentialManagerApiUrl": "https://******/credmgr/tokens",
+  "orchestratorApiUrl": "https://******",
 }
