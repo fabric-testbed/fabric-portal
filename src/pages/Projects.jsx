@@ -56,11 +56,8 @@ class Projects extends React.Component {
         roles: user.roles,
         showSpinner: false,
       })
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load projects. Please reload this page.");
-      for (const err of ex.errors) {
-        console.log("Failed to load projects: " + err);
-      }
     }
   }
 
@@ -87,11 +84,8 @@ class Projects extends React.Component {
       });
 
       this.setState({ projects, projectsCount, showSpinner: false})
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load projects. Please re-try.");
-      for (const err of ex.response.data.errors) {
-        console.log("Failed to load projects: " + err.details);
-      }
     }
   }
 

@@ -55,8 +55,7 @@ class Slices extends React.Component {
           try {
             const { data: res } = await getSlices();
             this.setState({ slices: res.data, showSpinner: false, });
-          } catch(err) {
-            console.log("Error in getting slices: " + err);
+          } catch (err) {
             toast.error("Failed to load slices. Please re-login and try.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
@@ -66,8 +65,7 @@ class Slices extends React.Component {
           }
         }
       }
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+    } catch (err) {
       window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }

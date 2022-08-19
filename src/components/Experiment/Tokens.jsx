@@ -37,8 +37,7 @@ class Tokens extends React.Component {
       // const { data: res } = await getCurrentUser();
       const { data: res } = await getProjects("myProjects", 0, 200);
       this.setState({ projects: res.results, showSpinner: false });
-    } catch (ex) {
-      console.log("Failed to load projects: " + ex.response.data);
+    } catch (err) {
       window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
@@ -51,7 +50,7 @@ class Tokens extends React.Component {
       const { data: res } = await createIdToken(projectId, scope);
       this.setState({ createCopySuccess: false, createSuccess: true });
       this.setState({ createToken: JSON.stringify(res["data"][0], undefined, 4) });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to create token.");
     }
   }

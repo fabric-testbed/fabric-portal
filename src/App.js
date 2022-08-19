@@ -35,30 +35,26 @@ class App extends React.Component {
     try {
       const { data: res } = await getActiveMaintenanceNotice();
       this.setState({ activeNotices: res.results });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load maintenance notice.")
     }
 
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
-      try {
-        const { data } = await getWhoAmI();
-        const user = data.results[0];
-        if (user.enrolled) {
-          localStorage.setItem("userID", user.uuid);
-          localStorage.setItem("userStatus", "active");
-          try {
-            const { data: res } = await getCurrentUser();
-            localStorage.setItem("bastionLogin", res.results[0].bastion_login);
-          } catch (err) {
-            console.log("Failed to get current user's information: " + err);
-          }
-        } else {
-          // situation 2: logged in, but not self signup, unauthenticated
-          localStorage.setItem("userStatus", "inactive");
+      const { data } = await getWhoAmI();
+      const user = data.results[0];
+      if (user.enrolled) {
+        localStorage.setItem("userID", user.uuid);
+        localStorage.setItem("userStatus", "active");
+        try {
+          const { data: res } = await getCurrentUser();
+          localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+        } catch (err) {
+          console.log("Failed to get current user's information.");
         }
-      } catch (err) {
-        console.log("/whoami " + err);
+      } else {
+        // situation 2: logged in, but not self signup, unauthenticated
+        localStorage.setItem("userStatus", "inactive");
       }
     }
 

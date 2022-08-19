@@ -4,8 +4,7 @@ import { toast } from "react-toastify";
 const autoRevokeTokens = async () => {
   try {
     await revokeToken(localStorage.getItem("refreshToken"));
-  } catch(err) {
-    console.log(err);
+  } catch (err) {
     console.log("Failed to revoke token.");
     // TO DO: what if revoke token fails?
   }
@@ -19,8 +18,7 @@ export const autoCreateTokens = async (projectId) => {
     localStorage.setItem("idToken", res["data"][0].id_token);
     localStorage.setItem("refreshToken", res["data"][0].refresh_token);
     return res["data"][0];
-  } catch(err) {
-    console.log(err);
+  } catch (err) {
     toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");
   }
 }
@@ -32,7 +30,6 @@ export const autoRefreshTokens = async (projectId) => {
     localStorage.setItem("idToken", res["data"][0].id_token);
     localStorage.setItem("refreshToken", res["data"][0].refresh_token);
   } catch (err) {
-    console.log(err);
     toast.error("Failed to refresh necessary tokens to view slice information. Please try again later.");
     // if refresh_token isn't working either
     // start over by calling create_token when user reloads the page

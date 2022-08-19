@@ -67,8 +67,7 @@ export default class SliceViewer extends Component {
               errors: sliceErrorParser(res.data[0]["model"]),
               showSliceSpinner: false
             });
-          } catch(err) {
-            console.log("Error in getting slice: " + err);
+          } catch (err) {
             toast.error("Failed to load the slice. Please try again later.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
@@ -78,8 +77,7 @@ export default class SliceViewer extends Component {
           }
         }
       } 
-     } catch(ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+     } catch (err) {
       window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
@@ -97,8 +95,7 @@ export default class SliceViewer extends Component {
           "state": "Dead"
         }
       }))
-    } catch(ex) {
-      console.log("failed to delete the slice: " + ex.response.data);
+    } catch (err) {
       toast.error("Failed to delete the slice.");
     }
   }

@@ -21,9 +21,8 @@ class FacilityUpdates extends React.Component {
         return update;
       })
       this.setState({ updates, showSpinner: false });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load facility updates. Please reload this page.");
-      console.log("Failed to load facility updates: " + ex.response.data);
     }
   }
 

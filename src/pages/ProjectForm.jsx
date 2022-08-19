@@ -92,9 +92,9 @@ class projectForm extends Form {
         owners: project.project_owners, 
         members: project.project_members 
       });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load project.");
-      if (ex.response && ex.response.status === 404) {
+      if (err.response && err.response.status === 404) {
         this.props.history.replace("/not-found");
       }
     }
@@ -107,16 +107,14 @@ class projectForm extends Form {
       const { data: res1 } = await getProjectTags();
       const tags = res1.results;
       this.setState({ tagVocabulary: tags });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to get tags.");
-      console.log(ex.response.data);
     }
 
     try {
       const { data: res2 } = await getCurrentUser();
       this.setState({ globalRoles: checkGlobalRoles(res2.results[0])});
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+    } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
     }
@@ -149,8 +147,7 @@ class projectForm extends Form {
       toast.success("Project updated successfully!");
       this.props.history.push(`/projects/${project.uuid}`);
     }
-    catch (ex) {
-      console.log("failed to save project: " + ex.response.data);
+    catch (err) {
       toast.error("Failed to save project.");
       this.props.history.push("/projects");
     }
@@ -195,11 +192,10 @@ class projectForm extends Form {
       await deleteProject(project.uuid);
       // toast message to users when the api call is successfully done.
       toast.success("Project deleted successfully.");
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404) {
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
         console.log("This project has been deleted.");
       }
-      console.log("failed to delete project: " + ex.response.data);
       toast.error("Failed to delete project.");
       this.props.history.push("/projects");
     }
@@ -245,8 +241,7 @@ class projectForm extends Form {
         toast.success(`${personnelType} updated successfully.`)
         this.props.history.push(`/projects/${data.uuid}`);
       });
-    } catch(err) {
-      console.log(err);
+    } catch (err) {
       toast(`Failed to update ${personnelType}.`)
     }
   }

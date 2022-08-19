@@ -74,8 +74,7 @@ class NewProjectForm extends Form {
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
     }
-    catch (ex) {
-      console.log("failed to create project: " + ex.response.data);
+    catch (err) {
       toast.error("Failed to create project.");
       this.props.history.push("/projects");
     }
@@ -93,7 +92,6 @@ class NewProjectForm extends Form {
           this.setState({ owners: [] });
         }
       } catch (err) {
-        console.warn(err);
         toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ owners: [] });
       }
@@ -108,7 +106,6 @@ class NewProjectForm extends Form {
           this.setState({ members: [] });
         }
       } catch (err) {
-        console.warn(err);
         toast.error("Cannot find the user. Please check your input to search by name or email address.");
         this.setState({ members: [] });
       }

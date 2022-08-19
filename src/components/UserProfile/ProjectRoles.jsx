@@ -27,9 +27,8 @@ class ProjectRoles extends React.Component {
       const projects = res.results;
       const projectsCount = res.total;
       this.setState({ showSpinner: false, projects, projectsCount });
-    } catch (ex) { 
+    } catch (err) { 
       toast.error("Failed to load user's projects'. Please re-login.");
-      console.log("Failed to load user's projects: " + ex.response.data);
     }
   }
 
@@ -63,11 +62,8 @@ class ProjectRoles extends React.Component {
       projects = data.results;
       projectsCount = data.total;
       this.setState({ projects, projectsCount, showSpinner: false})
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load projects. Please re-try.");
-      for (const err of ex.response.data.errors) {
-        console.log("Failed to load projects: " + err.details);
-      }
     }
   }
 

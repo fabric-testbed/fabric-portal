@@ -35,8 +35,7 @@ export default class SideLinks extends Component {
       const { data } = await getCurrentUser();
       const user = data.results[0];
       this.setState({ user: user });
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+    } catch (err) {
       window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
@@ -55,7 +54,7 @@ export default class SideLinks extends Component {
       const { data: res } = await getProjectById(this.state.projectIdToGenerateToken);
       const project = res.results[0];
       this.setState({ tags: project.tags, showSpinner: false});
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load the tags of this project. Please re-select a project.");
     }
   }

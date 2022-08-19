@@ -30,11 +30,8 @@ class UploadKey extends Form {
       localStorage.setItem("sshKeyType", data.keyType);
       window.location.reload();
       toast.success("Successfully uploaded.");
-    } catch (ex) {
-      for (const err of ex.response.data.errors) {
-        console.log("Failed to upload public key." + err.details);
-        toast.error("Failed to upload public key: " + err.details);
-      }
+    } catch (err) {
+      toast.error("Failed to upload public key"); 
     }
   };
 

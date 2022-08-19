@@ -18,9 +18,8 @@ class Keys extends React.Component {
       const { data } = await getActiveKeys();
       const keys = data.results;
       this.setState({ keys });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load keys. Please reload this page.");
-      console.log("Failed to load keys: " + ex.response.data);
     }
   }
 

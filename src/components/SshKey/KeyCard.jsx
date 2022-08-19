@@ -24,8 +24,7 @@ const handleDelete = async (uuid, type) => {
     window.location.reload();
     toast.success("Successfully deleted.");
   }
-  catch (ex) {
-    console.log("Failed to delete the ssh key: " + ex.response.data);
+  catch (err) {
     toast.error("Failed to delete the ssh key.");
   }
 };

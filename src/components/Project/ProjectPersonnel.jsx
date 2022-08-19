@@ -23,7 +23,6 @@ class ProjectPersonnel extends Component {
         this.setState({ searchResults: [] });
       }
     } catch (err) {
-      console.warn(err);
       toast.error("Cannot find the user. Please check your input to search by name or email address.");
       this.setState({ searchResults: [] });
     }

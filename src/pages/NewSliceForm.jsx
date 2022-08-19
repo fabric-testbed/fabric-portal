@@ -62,7 +62,7 @@ class NewSliceForm extends React.Component {
         showKeySpinner: false,
         sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
       });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
     }
     // generate a graph uuid for the new slice
@@ -78,7 +78,7 @@ class NewSliceForm extends React.Component {
         sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
         showKeySpinner: false
       });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to refresh keys. Please try again later.");
     }
   }
@@ -292,14 +292,12 @@ class NewSliceForm extends React.Component {
           const slice_id = res.data[0].slice_id;
           // this.props.history.push("/experiments#slices");
           this.props.history.push(`/slices/${slice_id}`)
-        } catch (ex) {
-          console.log("failed to create slice: " + ex.response.data);
+        } catch (err) {
           toast.error("Failed to create slice.");
           that.setState({ showSliceSpinner: false });
         }
       })
-    } catch (ex) {
-      console.log("failed to generate token: " + ex.response.data);
+    } catch (err) {
       toast.error("Failed to generate token.");
     }
   };
