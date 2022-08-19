@@ -5,7 +5,7 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/peopleService.js";
+import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
@@ -39,14 +39,14 @@ class Slices extends React.Component {
 
     // call PR first to check if the user has project.
     try {
-      const { data: people } = await getCurrentUser();
-      if (people.projects.length === 0) {
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      if (res.results.length === 0) {
         this.setState({ hasProject: false, showSpinner: false });
       } else {
-      // call credential manager to generate tokens 
+      // call credential manager to generate tokens
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens(people.projects[0].uuid).then(async () => {
+        autoCreateTokens(res.results[0].uuid).then(async () => {
         const { data: res } = await getSlices();
         this.setState({ slices: res.data, showSpinner: false });
       });
@@ -60,13 +60,13 @@ class Slices extends React.Component {
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(people.projects[0].uuid);
+              autoRefreshTokens(res.results[0].uuid);
             }
           }
         }
       }
     } catch (err) {
-      window.location.href = "/logout";
+      // window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
   }

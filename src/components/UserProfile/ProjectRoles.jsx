@@ -86,7 +86,7 @@ class ProjectRoles extends React.Component {
   render() {
     const { projects, showSpinner, projectsCount, pageSize, currentPage, searchQuery } = this.state;
     return (
-      <div>
+      <div className="min-vh-50">
         <h4 className="mt-4">Project Roles</h4>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."}/>

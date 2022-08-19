@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/peopleService.js";
-import { getProjectById } from "../../services/projectService.js";
+import { getProjects, getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 
 export default class SideLinks extends Component { 
   state = {
     showSpinner: false,
-    user: {},
+    projects: [],
     projectIdToGenerateToken: "",
     tags: [],
     tagKeyValuePairs: {
@@ -32,12 +31,10 @@ export default class SideLinks extends Component {
   
   async componentDidMount() {
     try {
-      const { data } = await getCurrentUser();
-      const user = data.results[0];
-      this.setState({ user: user });
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      this.setState({ projects: res.results });
     } catch (err) {
-      window.location.href = "/logout";
-      toast.error("User's credential is expired. Please re-login.");
+      toast.error("Failed to load user's projects. Please try again later.");
     }
   }
 
@@ -60,7 +57,7 @@ export default class SideLinks extends Component {
   }
 
   render() {
-    const { user, projectIdToGenerateToken, tags, tagKeyValuePairs, showSpinner } = this.state;
+    const { projects, projectIdToGenerateToken, tags, tagKeyValuePairs, showSpinner } = this.state;
 
     return(
       <div className="form-group col-md-12">
@@ -74,7 +71,7 @@ export default class SideLinks extends Component {
       >
         <option value="">Choose...</option>
         {
-          user.projects && user.projects.map(project => 
+          projects.length > 0 && projects.map(project => 
             <option value={project.uuid} key={`project-${project.name}`}>{project.name}</option>
           )
         }

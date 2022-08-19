@@ -11,7 +11,7 @@ import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
 import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
-import SpinnerWithText from "../components/common/SpinnerWithText";
+import SpinnerFullPage from "../components/common/SpinnerFullPage";
 
 import { 
   getProjectById,
@@ -55,7 +55,7 @@ class projectForm extends Form {
       isActiveUser: false,
       isJupterhubUser: false,
     },
-    showSpinner: false
+    showSpinner: false,
   };
 
   schema = {
@@ -74,13 +74,16 @@ class projectForm extends Form {
   };
 
   async populateProject() {
+    this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
+
     try {
       const projectId = this.props.match.params.id;
-      if (projectId === "new") return;
+      if (projectId === "new") {
+        this.setState({ showSpinner: false, spinnerText: ""  });
+        return;
+      }
 
       const { data } = await getProjectById(projectId);
-
-      this.setState({ showSpinner: false });
 
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
@@ -90,7 +93,9 @@ class projectForm extends Form {
       this.setState({ 
         data: this.mapToViewModel(project), 
         owners: project.project_owners, 
-        members: project.project_members 
+        members: project.project_members,
+        showSpinner: false,
+        spinnerText: ""
       });
     } catch (err) {
       toast.error("Failed to load project.");
@@ -140,17 +145,21 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
+    this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
+
     const { data: project } = this.state;
     try {
       await updateProject(project);
       await updateTags(project.uuid, project.tags);
+
+      this.setState({ showSpinner: false, spinnerText: ""  });
       toast.success("Project updated successfully!");
-      this.props.history.push(`/projects/${project.uuid}`);
     }
     catch (err) {
       toast.error("Failed to save project.");
-      this.props.history.push("/projects");
     }
+
+    this.props.history.push(`/projects/${project.uuid}`);
   };
 
   parseTags = () => {
@@ -229,138 +238,138 @@ class projectForm extends Form {
 
   handlePersonnelUpdate = () => {
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
+    
+    this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
 
     const { data, owners, members } = this.state;
-
     const ownerIDs = this.getIDs(owners);
     const memberIDs = this.getIDs(members);
 
     try{
       // pass the arr of updated po/pm and the original pm/po
       updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
-        toast.success(`${personnelType} updated successfully.`)
-        this.props.history.push(`/projects/${data.uuid}`);
+        this.setState({ showSpinner: false, spinnerText: ""  });
+        toast.success(`${personnelType} updated successfully.`);
       });
     } catch (err) {
       toast(`Failed to update ${personnelType}.`)
     }
+
+    this.props.history.push(`/projects/${data.uuid}`);
   }
 
   render() {
     const projectId = this.props.match.params.id;
 
-    if (this.state.showSpinner) {
-      return <div className="h-75">
-        <SpinnerWithText text={"Loading project information..."} />
-      </div>
-    } else {
-      const {
-        data,
-        originalProjectName,
-        SideNavItems,
-        activeIndex,
-        globalRoles,
-        owners,
-        members
-      } = this.state;
-  
-      // ***** Conditional Rendering Project Form *****
-      // only facility operator or project creator
-      // can update project/ delete project/ update owner;
-      let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
-      // only facility operator or project owner can update member;
-      let canUpdateMember = globalRoles.isFacilityOperator || data.is_owner;
+    const {
+      data,
+      originalProjectName,
+      SideNavItems,
+      activeIndex,
+      globalRoles,
+      owners,
+      members,
+      showSpinner,
+      spinnerText
+    } = this.state;
+
+    // ***** Conditional Rendering Project Form *****
+    // only facility operator or project creator
+    // can update project/ delete project/ update owner;
+    let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
+    // only facility operator or project owner can update member;
+    let canUpdateMember = globalRoles.isFacilityOperator || data.is_owner;
       
-      const parsedTags = this.parseTags();
-  
-      // 1. New project.
-      if (projectId === "new") {
-        return (
-          <div className="container">
-            <NewProjectForm
-              history={this.props.history}
-              isFacilityOperator={globalRoles.isFacilityOperator}
-              baseOptions={parsedTags.baseOptions}
-              optionsMapping={parsedTags.optionsMapping}
+    const parsedTags = this.parseTags();
+
+    // 1. New project.
+    if (projectId === "new") {
+      return (
+        <div className="container">
+          <NewProjectForm
+            history={this.props.history}
+            isFacilityOperator={globalRoles.isFacilityOperator}
+            baseOptions={parsedTags.baseOptions}
+            optionsMapping={parsedTags.optionsMapping}
+          />
+        </div>
+      );
+    } else {
+      // 2. Show detailed project form.
+      return (
+        <div className="container">
+          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
+          <div className="d-flex flex-row justify-content-between">
+            <h1>Project - {originalProjectName}</h1>
+            <Link to="/projects">
+              <button
+                className="btn btn-sm btn-outline-primary my-3"
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Back to Project List
+              </button>
+            </Link>
+          </div>
+          <div className="row mt-4">
+            <SideNav
+              items={SideNavItems}
+              handleChange={this.handleSideNavChange}
             />
-          </div>
-        );
-      } else {
-        // 2. Show detailed project form.
-        return (
-          <div className="container">
-            <div className="d-flex flex-row justify-content-between">
-              <h1>Project - {originalProjectName}</h1>
-              <Link to="/projects">
-                <button
-                  className="btn btn-sm btn-outline-primary my-3"
-                >
-                  <i className="fa fa-sign-in mr-2"></i>
-                  Back to Project List
-                </button>
-              </Link>
+            <div
+              className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
+            >
+              <form onSubmit={this.handleSubmit}>
+                {this.renderInput("name", "Name", canUpdate)}
+                {this.renderTextarea("description", "Description", canUpdate)}
+                {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
+                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
+                {canUpdate && this.renderButton("Save")}
+              </form>
+              {
+                <ProjectBasicInfoTable
+                  project={data}
+                  canUpdate={canUpdate}
+                  onDeleteProject={this.handleDeleteProject}
+                />
+              }
             </div>
-            <div className="row mt-4">
-              <SideNav
-                items={SideNavItems}
-                handleChange={this.handleSideNavChange}
-              />
-              <div
-                className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
-              >
-                <form onSubmit={this.handleSubmit}>
-                  {this.renderInput("name", "Name", canUpdate)}
-                  {this.renderTextarea("description", "Description", canUpdate)}
-                  {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                  {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
-                  {canUpdate && this.renderButton("Save")}
-                </form>
-                {
-                  <ProjectBasicInfoTable
-                    project={data}
-                    canUpdate={canUpdate}
-                    onDeleteProject={this.handleDeleteProject}
-                  />
-                }
+            <div
+              className={`${
+                activeIndex !== 1
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-100">
+                <ProjectPersonnel
+                  personnelType={"Project Owners"}
+                  canUpdate={canUpdate}
+                  users={owners}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                />
               </div>
-              <div
-                className={`${
-                  activeIndex !== 1
-                    ? "d-none"
-                    : "col-9 d-flex flex-row"
-                }`}
-              >
-                <div className="w-100">
-                  <ProjectPersonnel
-                    personnelType={"Project Owners"}
-                    canUpdate={canUpdate}
-                    users={owners}
-                    onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                    onPersonnelUpdate={this.handlePersonnelUpdate}
-                  />
-                </div>
-              </div>
-              <div
-                className={`${
-                  activeIndex !== 2
-                    ? "d-none"
-                    : "col-9 d-flex flex-row"
-                }`}
-              >
-                <div className="w-100">
-                  <ProjectPersonnel
-                    personnelType={"Project Members"}
-                    canUpdate={canUpdateMember}
-                    users={members}
-                    onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                    onPersonnelUpdate={this.handlePersonnelUpdate}
-                  />
-                </div>
+            </div>
+            <div
+              className={`${
+                activeIndex !== 2
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-100">
+                <ProjectPersonnel
+                  personnelType={"Project Members"}
+                  canUpdate={canUpdateMember}
+                  users={members}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                />
               </div>
             </div>
           </div>
-        );
-      }
+        </div>
+      );
     }
   }
 }

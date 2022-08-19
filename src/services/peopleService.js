@@ -15,8 +15,3 @@ export function getCurrentUser() {
   const uuid = localStorage.getItem("userID");
   return http.get(`${apiEndpoint}/${uuid}?as_self=true`);
 }
-
-// API TODO
-export function refreshRoles() {
-  return http.get(apiEndpoint + "/role_attribute_sync");
-}

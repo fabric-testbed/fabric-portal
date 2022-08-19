@@ -5,15 +5,21 @@ class AccountInfo extends React.Component {
     visibleRows: [
       { display: "Name", field: "cilogon_name" },
       { display: "Email", field: "email" },
-    ],
-    toggledRows: [
       { display: "Affiliation", field: "affiliation" },
       { display: "FABRIC ID", field: "fabric_id" },
       { display: "Bastion Login", field: "bastion_login" },
       { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" },
       { display: "CILogon ID", field: "cilogon_id"},
-    ],
+    ]
+    // toggledRows: [
+    //   { display: "Affiliation", field: "affiliation" },
+    //   { display: "FABRIC ID", field: "fabric_id" },
+    //   { display: "Bastion Login", field: "bastion_login" },
+    //   { display: "EPPN", field: "eppn" },
+    //   { display: "UUID", field: "uuid" },
+    //   { display: "CILogon ID", field: "cilogon_id"},
+    // ],
   };
 
   render() {
@@ -32,7 +38,7 @@ class AccountInfo extends React.Component {
             })}
           </tbody>
         </table>
-        <h6
+        {/* <h6
           id="accountInfoToggle"
           className="card-header my-4"
           data-toggle="collapse"
@@ -45,8 +51,8 @@ class AccountInfo extends React.Component {
             <i className="fa fa-plus"></i>
             <i className="fa fa-minus"></i>
           </span>
-        </h6>
-        <div
+        </h6> */}
+        {/* <div
           id="moreAccountInfo"
           className="collapse"
           aria-labelledby="moreAccountInfo"
@@ -63,7 +69,7 @@ class AccountInfo extends React.Component {
               })}
             </tbody>
           </table>
-        </div>
+        </div> */}
       </div>
     );
   }

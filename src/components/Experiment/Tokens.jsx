@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { createIdToken } from "../../services/credentialManagerService.js";
-import { getCurrentUser } from "../../services/peopleService.js";
 import { getProjects } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
@@ -38,7 +37,7 @@ class Tokens extends React.Component {
       const { data: res } = await getProjects("myProjects", 0, 200);
       this.setState({ projects: res.results, showSpinner: false });
     } catch (err) {
-      window.location.href = "/logout";
+      // window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
   }

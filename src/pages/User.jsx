@@ -1,13 +1,11 @@
 import React from "react";
 import SideNav from "../components/common/SideNav";
+import SideNav from "../components/common/SpinnerFullPage";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import KeyTabs from "../components/SshKey/KeyTabs";
 import { toast } from "react-toastify";
-
-import sleep from "../utils/sleep";
-
-import { getCurrentUser, refreshRoles } from "../services/peopleService.js";
+import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
 
 class User extends React.Component {
@@ -21,6 +19,7 @@ class User extends React.Component {
     activeIndex: 0,
     componentNames: [AccountInfo, MyRoles, KeyTabs],
     keys: [],
+    showSpinner: false
   };
 
   async componentDidMount(){
@@ -30,9 +29,8 @@ class User extends React.Component {
       const { data: res2 } = await getActiveKeys();
       const keys = res2.results;
       this.setState({ user, keys });
-    } catch (ex) { 
+    } catch (err) { 
       toast.error("Failed to load user information. Please re-login.");
-      console.log("Failed to load user information: " + ex.response.data);
     }
   }
 
@@ -41,18 +39,14 @@ class User extends React.Component {
   };
 
   handleRoleRefresh = async () => {
+    this.setState({ showSpinner: true });
     try {
-      // Refresh role first, then get updated people info.
-      // two async/ await calls in series.
-      await refreshRoles();
-      // wait 1 second for PR updates.
-      await sleep(1000);
-      const { data: user } = await getCurrentUser();
-      this.setState({ user });
+      await getWhoAmI();
+      const { data: res } = await getCurrentUser();
+      this.setState({ user: res.results[0], showSpinner: false });
       toast.success("You've successfully refreshed roles.");
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to refresh roles. Please try again.");
-      console.log("Failed to refresh roles " + ex.response.data);
     }
   }
 
@@ -67,7 +61,7 @@ class User extends React.Component {
 
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-    const { user } = this.state;
+    const { user, showSpinner } = this.state;
     const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
@@ -77,6 +71,7 @@ class User extends React.Component {
             items={this.state.SideNavItems}
             handleChange={this.handleChange}
           />
+          <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showSpinner}/>
           <TagName
             user={user}
             onRoleRefresh={this.handleRoleRefresh}

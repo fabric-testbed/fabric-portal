@@ -7,7 +7,7 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getCurrentUser } from "../services/peopleService.js";
+import { getProjects } from "../services/projectService.js";
 import { getSliceById, deleteSlice } from "../services/sliceService.js";
 // import { getSliceById } from "../services/mockData/fakeSlices.js";
 // import { deleteSlice } from "../services/sliceService.js";
@@ -41,14 +41,14 @@ export default class SliceViewer extends Component {
     this.setState({ showSliceSpinner: true });
     // call PR first to check if the user has project.
     try {
-      const { data: people } = await getCurrentUser();
-      if (people.projects.length === 0) {
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      if (res.results.length === 0) {
         this.setState({ hasProject: false });
       } else {
         // call credential manager to generate tokens 
         // if nothing found in browser storage
         if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-          autoCreateTokens(people.projects[0].uuid).then(async () => {
+          autoCreateTokens(res.results[0].uuid).then(async () => {
             const { data: res } = await getSliceById(this.props.match.params.id);
             this.setState({ 
               elements: sliceParser(res.data[0]["model"]),
@@ -72,13 +72,13 @@ export default class SliceViewer extends Component {
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(people.projects[0].uuid);
+              autoRefreshTokens(res.results[0].uuid);
             }
           }
         }
       } 
      } catch (err) {
-      window.location.href = "/logout";
+      // window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
   }
