@@ -7,15 +7,15 @@ export function getProjects(type, offset, limit, searchQuery) {
   const userID = localStorage.getItem("userID");
   if (type === "myProjects") {
     if (!searchQuery) {
-      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&person_uuid=${userID}`);
     } else {
-      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&person_uuid=${userID}`);
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&person_uuid=${userID}`);
     }
   } else if (type === "allProjects") {
     if (!searchQuery) {
-      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}`);
+      return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc`);
     } else {
-      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}`);
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc`);
     }
   }
 }

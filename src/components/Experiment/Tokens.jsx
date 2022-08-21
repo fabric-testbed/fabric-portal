@@ -37,7 +37,6 @@ class Tokens extends React.Component {
       const { data: res } = await getProjects("myProjects", 0, 200);
       this.setState({ projects: res.results, showSpinner: false });
     } catch (err) {
-      // window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
   }

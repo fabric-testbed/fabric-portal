@@ -76,9 +76,8 @@ export default class SliceViewer extends Component {
             }
           }
         }
-      } 
+      }
      } catch (err) {
-      // window.location.href = "/logout";
       toast.error("User's credential is expired. Please re-login.");
     }
   }

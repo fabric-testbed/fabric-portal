@@ -60,7 +60,7 @@ class NewSliceForm extends React.Component {
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
       });
     } catch (err) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");

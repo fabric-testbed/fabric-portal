@@ -4,7 +4,7 @@ import { default as config } from "../config.json";
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
 
 export function getSlices() {
-  return http.get(apiEndpoint + "?states=All&offset=0&limit=200", {
+  return http.get(apiEndpoint + "?states=All&limit=200&offset=0", {
     headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
   });
 }
@@ -21,14 +21,14 @@ export function createSlice(slice) {
   // lease end time is optional.
   if (slice.leaseEndTime) {
     query = new URLSearchParams({
-      sliceName: slice.name,
-      sshKey: slice.sshKey,
-      leaseEndTime: slice.leaseEndTime,
+      name: slice.name,
+      ssh_key: slice.sshKey,
+      lease_end_time: slice.leaseEndTime,
     }).toString();
   } else {
     query = new URLSearchParams({
-      sliceName: slice.name,
-      sshKey: slice.sshKey,
+      name: slice.name,
+      ssh_key: slice.sshKey,
     }).toString();
   }
 

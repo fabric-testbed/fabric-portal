@@ -108,7 +108,7 @@ class ProjectRoles extends React.Component {
                 type="text"
                 name="query"
                 className="form-control"
-                placeholder={"Search by Project Name..."}
+                placeholder={"Search by Project Name (at least 3 letters)..."}
                 value={searchQuery}
                 onChange={this.handleInputChange}
               />
