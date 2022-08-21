@@ -49,6 +49,7 @@ class projectForm extends Form {
     owners: [],
     members: [],
     tagVocabulary: [],
+<<<<<<< HEAD
     globalRoles: {
       isProjectLead: false,
       isFacilityOperator: false,
@@ -56,6 +57,9 @@ class projectForm extends Form {
       isJupterhubUser: false,
     },
     showSpinner: false,
+=======
+    people: {},
+>>>>>>> master
   };
 
   schema = {
@@ -268,9 +272,15 @@ class projectForm extends Form {
       activeIndex,
       globalRoles,
       owners,
+<<<<<<< HEAD
       members,
       showSpinner,
       spinnerText
+=======
+      memberSearchInput,
+      members,
+      people
+>>>>>>> master
     } = this.state;
 
     // ***** Conditional Rendering Project Form *****
@@ -282,6 +292,8 @@ class projectForm extends Form {
       
     const parsedTags = this.parseTags();
 
+    const urlSuffix = `email=${people.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
+ 
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -300,15 +312,51 @@ class projectForm extends Form {
         <div className="container">
           <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
           <div className="d-flex flex-row justify-content-between">
-            <h1>Project - {originalProjectName}</h1>
-            <Link to="/projects">
-              <button
-                className="btn btn-sm btn-outline-primary my-3"
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Back to Project List
-              </button>
-            </Link>
+            <h1>{originalProjectName}</h1>
+            {
+              (canUpdate || canUpdateMember) ?
+              <div className="d-flex flex-row justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Permissions
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  onClick={() => window.open(
+                    `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
+                    "_blank")
+                  }
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Request Storage
+                </button>
+                <Link to="/projects">
+                  <button
+                    className="btn btn-sm btn-outline-primary my-3"
+                  >
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Back to Project List
+                  </button>
+                </Link>
+              </div>
+              :
+              <Link to="/projects">
+                <button
+                  className="btn btn-sm btn-outline-primary my-3"
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Back to Project List
+                </button>
+              </Link>
+            }
           </div>
           <div className="row mt-4">
             <SideNav
@@ -322,7 +370,11 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
+<<<<<<< HEAD
                 {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
+=======
+                {isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
+>>>>>>> master
                 {canUpdate && this.renderButton("Save")}
               </form>
               {

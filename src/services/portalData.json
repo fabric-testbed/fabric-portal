@@ -3,7 +3,10 @@
   "facilityOptions": [
     { "_id": 1, "name": "FABRIC"}
   ],
-  "atlassianHelpPortal": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2",
+  "jiraProjectLeadLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
+  "jiraAccountIssueLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
+  "jiraProjectPermissionLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
+  "jiraStorageRequestLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseFAQLink": "https://learn.fabric-testbed.net/faq/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
@@ -17,12 +20,6 @@
   "starterFAQLink": "https://learn.fabric-testbed.net/knowledge-base/frequently-asked-starter-questions/",
   "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
   "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
-  "projectLeadRequest": {
-    "id": "request-project-lead-modal",
-    "title": "Request to be Project Lead",
-    "link": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:570",
-    "content": "<p>Dear Experimenter,</p><p> You are about to request to become a FABRIC Project Lead (PL). A PL can create new projects and invite other experimenters into those projects, thus this role comes with substantial new rights and responsibilities. Becoming a PL is not automatic and involves a human-in-the-loop review by FABRIC staff, so it may take up to 72 hours to get processed.</p><p>In general the PL role is reserved for academic faculty or senior staff at US academic institutions, but not for students or temporary staff. Applications from international partners are handled similarly, but may require additional checks and verifications with FABRIC staff. Some exceptions to these rules are possible on a case-by-case basis and will require that another person with administrative standing (e.g. a department head) at your institution vouches for you in writing.</p><p>Press 'Next' to be directed to a CILogon-hosted enrollment workflow. Once you complete your portion of the workflow, FABRIC staff will be notified and will make a decision. The decision will be communicated to you in the form of an email.</p>"
-  },
   "selfEnrollRequest": {
     "id": "self-enroll-modal",
     "title": "FABRIC Self Signup",
