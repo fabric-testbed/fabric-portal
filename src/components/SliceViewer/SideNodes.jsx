@@ -223,12 +223,6 @@ class SideNodes extends React.Component {
                   <input type="number" className="form-control form-control-sm" id="inputDisk"
                     value={disk} onChange={this.handleDiskChange}/>
                 </div>
-                <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputState" className="slice-builder-label">Image Format</label>
-                  <select className="form-control form-control-sm" disabled>
-                    <option>{imageType}</option>
-                  </select>
-                </div> 
                 <div className="form-group slice-builder-form-group col-md-4">
                   <label htmlFor="inputState" className="slice-builder-label">OS Image</label>
                   <select
@@ -248,6 +242,12 @@ class SideNodes extends React.Component {
                     }
                   </select>
                 </div>
+                <div className="form-group slice-builder-form-group col-md-2">
+                  <label htmlFor="inputState" className="slice-builder-label">Format</label>
+                  <select className="form-control form-control-sm" disabled>
+                    <option>{imageType}</option>
+                  </select>
+                </div> 
               </div>
               {!validationResult.isValid && validationResult.message !== "" &&
                 <div className="my-2 sm-alert">
@@ -264,7 +264,7 @@ class SideNodes extends React.Component {
               {
                 nodeComponents.length === 0 &&
                 <div className="my-2 sm-alert">
-                  No component added. Please click the + button to add a component.
+                  No component added. Please click the <b>+ button</b> to add a component.
                 </div>
               }
               {

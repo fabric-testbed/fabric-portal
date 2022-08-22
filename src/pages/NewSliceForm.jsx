@@ -353,7 +353,7 @@ class NewSliceForm extends React.Component {
             </div>
             <div className="d-flex flex-column align-items-center w-100">
               <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
-                <div className="d-flex flex-column w-40 ml-5">
+                <div className="slice-builder-left">
                 <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
                       <button className="btn btn-link">
@@ -408,7 +408,7 @@ class NewSliceForm extends React.Component {
                   <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
                       <button className="btn btn-link">
-                        Step 4: Input Slice Information
+                        Step 4: Create Slice
                       </button>
                     </div>
                     <div>
@@ -506,7 +506,7 @@ class NewSliceForm extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="d-flex flex-column w-60 mr-5">
+                <div className="slice-builder-right">
                   <NewSliceDetailForm
                     data={selectedData}
                     selectedCPs={selectedCPs}

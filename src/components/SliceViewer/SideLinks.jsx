@@ -99,7 +99,7 @@ export default class SideLinks extends Component {
               </div>
             </div>
             <div className="my-2 sm-alert">
-              Click grey squares on topology canvas, then click Select button to choose connection points.
+              Click connection points (shown as grey squares) on the topology canvas, then click <b>Select</b> button from the canvas top to add service ports.
             </div>
             <div className="form-row">
             <div className="form-group slice-builder-form-group mt-2 col-md-12">
