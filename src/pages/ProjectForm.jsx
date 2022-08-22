@@ -38,6 +38,12 @@ class projectForm extends Form {
       is_owner: false,
     },
     user: {},
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    },
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -113,7 +119,7 @@ class projectForm extends Form {
 
     try {
       const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0] });
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
@@ -259,16 +265,15 @@ class projectForm extends Form {
     const {
       data,
       user,
+      globalRoles,
       originalProjectName,
       SideNavItems,
       activeIndex,
       owners,
       members,
       showSpinner,
-      spinnerText
+      spinnerText,
     } = this.state;
-
-    let globalRoles = checkGlobalRoles(user);
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator

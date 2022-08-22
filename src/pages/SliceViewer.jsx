@@ -9,8 +9,6 @@ import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
 import { getProjects } from "../services/projectService.js";
 import { getSliceById, deleteSlice } from "../services/sliceService.js";
-// import { getSliceById } from "../services/mockData/fakeSlices.js";
-// import { deleteSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
@@ -28,9 +26,6 @@ export default class SliceViewer extends Component {
       "state": "StableOK"
     },
     errors: [],
-    // elements: sliceParser(getSliceById(2)["value"]["slices"][0]["model"]),
-    // slice: getSliceById(2)["value"]["slices"][0],
-    // errors: sliceErrorParser(getSliceById(2)),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
     hasProject: true,

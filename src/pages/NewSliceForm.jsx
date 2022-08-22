@@ -21,8 +21,8 @@ import validator from "../utils/sliceValidator.js";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
-import { createSlice } from "../services/orchestratorService.js";
+import { getResources } from "../services/resourceService.js";
+import { createSlice } from "../services/sliceService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 
@@ -54,12 +54,12 @@ class NewSliceForm extends React.Component {
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
-      const parsedObj = sitesParser(resources, sitesNameMapping.acronymToShortName);
+      const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -74,7 +74,7 @@ class NewSliceForm extends React.Component {
     try {
       const { data: keys } = await getActiveKeys();
       this.setState({ 
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
         showKeySpinner: false
       });
     } catch (ex) {
@@ -161,7 +161,7 @@ class NewSliceForm extends React.Component {
   }
 
   handleClearGraph = () => {
-    this.setState({ sliceNodes: [], sliceLinks: [] });
+    this.setState({ sliceNodes: [], sliceLinks: [], selectedData: null, selectedCPs: [] });
   }
 
   handleNodeSelect = (selectedData) => {
@@ -284,10 +284,10 @@ class NewSliceForm extends React.Component {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
         try {
-          const { data } = await createSlice(requestData);
+          const { data: res } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
-          const slice_id = data["value"]["reservations"][0].slice_id;
+          const slice_id = res.data[0].slice_id;
           // this.props.history.push("/experiments#slices");
           this.props.history.push(`/slices/${slice_id}`)
         } catch (ex) {
@@ -416,7 +416,7 @@ class NewSliceForm extends React.Component {
                         <div className="d-flex flex-column">
                           <form>
                             <div className="form-row">
-                              <div className="form-group col-md-4">
+                              <div className="form-group col-md-6">
                                 <label htmlFor="inputSliceName" className="slice-form-label">
                                   <span>Slice Name</span>
                                 </label>
@@ -427,7 +427,7 @@ class NewSliceForm extends React.Component {
                                   onChange={this.handleSliceNameChange}
                                 />
                               </div>
-                              <div className="form-group col-md-8">
+                              <div className="form-group col-md-6">
                                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">
                                   <span>Lease End Time</span>
                                 </label>

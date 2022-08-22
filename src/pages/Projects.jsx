@@ -86,7 +86,14 @@ class Projects extends React.Component {
   }
 
   handleInputChange = (e) => {
-    this.setState({ searchQuery: e.target.value});
+    // if input gets cleared, trigger data reload and reset the search query
+    if (this.state.searchQuery !== "" && e.target.value === "") {
+      this.setState({ currentPage: 1, searchQuery: "" }, () => {
+        this.reloadProjectsData();
+      });
+    } else {
+      this.setState({ searchQuery: e.target.value});
+    }
   };
 
   handlePaginationClick = (page) => {
