@@ -17,6 +17,7 @@ class AccountInfo extends React.Component {
   };
 
   render() {
+    const { user } = this.props;
     return (
       <div className="col-9">
         <h1>Account Information</h1>
@@ -26,7 +27,7 @@ class AccountInfo extends React.Component {
               return (
                 <tr key={`account-info-${index}`}>
                   <th scope="row">{row.display}</th>
-                  <td>{this.props.user[row.field]}</td>
+                  <td>{user[row.field]}</td>
                 </tr>
               );
             })}
@@ -57,7 +58,7 @@ class AccountInfo extends React.Component {
                 return (
                   <tr key={`account-info-${index}`}>
                     <th scope="row">{row.display}</th>
-                    <td>{this.props.user[row.field]}</td>
+                    <td>{user[row.field] ? user[row.field] : "N/A"}</td>
                   </tr>
                 );
               })}

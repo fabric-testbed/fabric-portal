@@ -1,6 +1,5 @@
 import React from "react";
 import checkGlobalRoles from "../../utils/checkGlobalRoles"; 
-import Modal from "../common/Modal";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
@@ -25,7 +24,8 @@ class GlobalRoles extends React.Component {
   }
 
   render() {
-    const globalRoles = checkGlobalRoles(this.props.user);
+    const { user } = this.props;
+    const globalRoles = checkGlobalRoles(user);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -103,23 +103,17 @@ class GlobalRoles extends React.Component {
         </table>
         { 
           !globalRoles.isProjectLead &&
-          <div>
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-primary"
-              data-toggle="modal"
-              data-target={`#${portalData.projectLeadRequest.id}`}
-            >
-              <i className="fa fa-sign-in mr-2"></i>
-              Request to be Project Lead
-            </button>
-            <Modal
-              id={portalData.projectLeadRequest.id}
-              title={portalData.projectLeadRequest.title}
-              link={portalData.projectLeadRequest.link}
-              content={portalData.projectLeadRequest.content}
-            />
-          </div>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary"
+            onClick={() => window.open(
+              `${portalData.jiraProjectLeadLink}?email=${user.email}`,
+              "_blank")
+            }
+          >
+            <i className="fa fa-sign-in mr-2"></i>
+            Request to be Project Lead
+          </button>
          }
       </div>
     )

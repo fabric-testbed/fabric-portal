@@ -18,7 +18,6 @@ export const sitesNameMapping = {
     "FIU": "FIU",
     "Clemson": "CLEM",
     "GaTech": "GATECH",
-    "LEARN": "LEARN",
   },
   ancronymToName: {
     "RENC": "RENCI",
@@ -39,6 +38,5 @@ export const sitesNameMapping = {
     "FIU": "FIU",
     "CLEM": "Clemson",
     "GATECH": "GaTech",
-    "LEARN": "LEARN",
   },
 }

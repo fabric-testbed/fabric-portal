@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { getProjects } from "../../services/projectService.js";
 import { Link } from "react-router-dom";
 import Pagination from "../common/Pagination";
+import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
 
 class ProjectRoles extends React.Component {
@@ -13,16 +14,18 @@ class ProjectRoles extends React.Component {
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
+    showSpinner: false,
   };
 
   async componentDidMount(){
     const { pageSize: limit } = this.state;
+    this.setState({ showSpinner: true });
 
     try {
       const { data: res } = await getProjects("myProjects", 0, limit);
       const projects = res.results;
       const projectsCount = res.total;
-      this.setState({ projects, projectsCount });
+      this.setState({ projects, projectsCount, showSpinner: false });
     } catch (err) { 
       toast.error("Failed to load user's projects'. Please re-login.");
     }
@@ -78,12 +81,16 @@ class ProjectRoles extends React.Component {
   }
 
   render() {
-    const { projects, projectsCount, pageSize, currentPage, searchQuery } = this.state;
+    const { projects, projectsCount, pageSize, showSpinner,
+      currentPage, searchQuery } = this.state;
     return (
       <div>
         <h4 className="mt-4">Project Roles</h4>
         {
-          projectsCount === 0 &&
+          showSpinner && <SpinnerWithText text={"Loading project roles..."} />
+        }
+        {
+          !showSpinner && projectsCount === 0 &&
           <div className="alert alert-warning mt-2" role="alert">
             <p className="mt-2">We could not find your project:</p>
             <p>
@@ -101,7 +108,7 @@ class ProjectRoles extends React.Component {
           </div>
         }
         {
-          projectsCount > 0 &&
+          !showSpinner &&  projectsCount > 0 &&
           <div>
             <div className="w-100 input-group mt-3 mb-1">
               <input

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import Pagination from "../components/common/Pagination";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
@@ -27,15 +28,16 @@ class Projects extends React.Component {
       isActiveUser: false,
       isJupterhubUser: false,
     },
+    showSpinner: false,
   };
 
   async componentDidMount() {
     const { pageSize: limit } = this.state;
+    this.setState({ showSpinner: true });
 
     try {
       const { data: res1 } = await getCurrentUser();
       const user = res1.results[0];
-      this.setState({ globalRoles: checkGlobalRoles(user)});
       const { data: res2 } = await getProjects("myProjects", 0, limit);
       const projectsCount = res2.total;
       let projects = res2.results;
@@ -46,10 +48,11 @@ class Projects extends React.Component {
         return p;
       });
 
-      this.setState({ 
-        projects: projects,
+      this.setState({
+        globalRoles: checkGlobalRoles(user),
+        projects,
         projectsCount,
-        roles: user.roles,
+        showSpinner: false,
       })
     } catch (err) {
       toast.error("Failed to load projects. Please reload this page.");
@@ -113,7 +116,7 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, globalRoles, projects, 
+    const { pageSize, currentPage, globalRoles, projects, showSpinner,
       projectsCount, searchQuery } = this.state;
 
     return (
@@ -164,7 +167,10 @@ class Projects extends React.Component {
           </div>
         </div>
         {
-          projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
+          showSpinner && <SpinnerWithText text={"Loading projects..."} />
+        }
+        {
+          !showSpinner && projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div>
             <div className="d-flex flex-row justify-content-between">
               <RadioBtnGroup
@@ -192,7 +198,7 @@ class Projects extends React.Component {
         }
 
         {
-          (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
+          !showSpinner && (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
             <div className="d-flex flex-row justify-content-between mb-3">

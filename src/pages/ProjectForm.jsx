@@ -37,6 +37,7 @@ class projectForm extends Form {
       is_member: false,
       is_owner: false,
     },
+    user: {},
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -49,17 +50,7 @@ class projectForm extends Form {
     owners: [],
     members: [],
     tagVocabulary: [],
-<<<<<<< HEAD
-    globalRoles: {
-      isProjectLead: false,
-      isFacilityOperator: false,
-      isActiveUser: false,
-      isJupterhubUser: false,
-    },
     showSpinner: false,
-=======
-    people: {},
->>>>>>> master
   };
 
   schema = {
@@ -122,7 +113,7 @@ class projectForm extends Form {
 
     try {
       const { data: res2 } = await getCurrentUser();
-      this.setState({ globalRoles: checkGlobalRoles(res2.results[0])});
+      this.setState({ user: res2.results[0] });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
@@ -267,33 +258,28 @@ class projectForm extends Form {
 
     const {
       data,
+      user,
       originalProjectName,
       SideNavItems,
       activeIndex,
-      globalRoles,
       owners,
-<<<<<<< HEAD
       members,
       showSpinner,
       spinnerText
-=======
-      memberSearchInput,
-      members,
-      people
->>>>>>> master
     } = this.state;
+
+    let globalRoles = checkGlobalRoles(user);
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
     let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
     // only facility operator or project owner can update member;
-    let canUpdateMember = globalRoles.isFacilityOperator || data.is_owner;
-      
-    const parsedTags = this.parseTags();
+    let canUpdateMember = canUpdate || data.is_owner;
 
-    const urlSuffix = `email=${people.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
- 
+    const parsedTags = this.parseTags();
+    const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
+
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -312,9 +298,9 @@ class projectForm extends Form {
         <div className="container">
           <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
           <div className="d-flex flex-row justify-content-between">
-            <h1>{originalProjectName}</h1>
+            <h1>Project - {originalProjectName}</h1>
             {
-              (canUpdate || canUpdateMember) ?
+              canUpdateMember ?
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
@@ -370,11 +356,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-<<<<<<< HEAD
-                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Tags", parsedTags.baseOptions, parsedTags.optionsMapping)}
-=======
-                {isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
->>>>>>> master
+                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               {
