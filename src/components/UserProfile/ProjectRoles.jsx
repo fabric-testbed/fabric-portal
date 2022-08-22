@@ -121,7 +121,7 @@ class ProjectRoles extends React.Component {
               />
               <div className="input-group-append">
                 <button
-                  className="btn btn-outline-secondary"
+                  className="btn btn-outline-primary"
                   type="button"
                   onClick={this.handleProjectsSearch}
                 >

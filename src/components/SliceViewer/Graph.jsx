@@ -34,7 +34,7 @@ export default class Graph extends Component {
     // call functions that set up the interactivity inside componentDidMount
     this.setUpListeners();
   }
-  
+
   setUpListeners = () => {
     const SELECT_THRESHOLD = 200;
 
@@ -62,6 +62,20 @@ export default class Graph extends Component {
     });
   }
 
+  resetGraph = () => {
+    const SELECT_THRESHOLD = 200;
+
+    // Refresh Layout
+    const refreshLayout = _.debounce(() => {
+      const layout = {name: 'fcose', infinite: false};
+      this.cy.layout(layout).run()
+    }, SELECT_THRESHOLD);
+
+    // apply layout on graph render.
+    refreshLayout();
+
+  }
+
   saveJSON = () => {
     var jsonBlob = new Blob([ JSON.stringify( this.cy.json() ) ], { type: 'application/javascript;charset=utf-8' });
     saveAs( jsonBlob, `${this.props.sliceName}.json` );
@@ -85,56 +99,62 @@ export default class Graph extends Component {
     );
 
     return(
-      <div className="border"> 
-        <div className="d-flex flex-row-reverse">
-          <OverlayTrigger
-            placement="top"
-            delay={{ show: 100, hide: 300 }}
-            overlay={renderTooltip("slice-download-tooltip", "Export the graph in the Cytoscape JSON format used at initialisation.")}
-          >
-            <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
-              Download JSON
-            </button>
-          </OverlayTrigger>
-          <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
-          {
-            this.props.isNewSlice && 
+      <div className="border">
+        <div className="d-flex flex-row justify-content-between">
+          <button onClick={this.resetGraph} className="btn btn-sm btn-outline-primary">
+            Reset Layout
+          </button>
+          <div className="d-flex flex-row-reverse">
             <OverlayTrigger
               placement="top"
               delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-save-draft-tooltip", "Use the slice graph draft stored in your browser.")}
+              overlay={renderTooltip("slice-download-tooltip", "Export the topology in the Cytoscape JSON format used at initialisation.")}
             >
-              <button
-                onClick={this.props.onUseDraft}
-                disabled={!localStorage.getItem("sliceDraft")}
-                className="btn btn-sm btn-outline-success ml-2"
-              >
-                Use Draft
-              </button>
-          </OverlayTrigger>
-          }
-          {
-            this.props.isNewSlice &&
-            <OverlayTrigger
-              placement="top"
-              delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-save-draft-tooltip",
-                "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
-            >
-              <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
-                Save Draft
+              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
+                Download JSON
               </button>
             </OverlayTrigger>
-          }
-          {
-            this.props.isNewSlice &&
-            <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger">Clear Graph</button>
-          }
+            <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
+            {
+              this.props.isNewSlice && 
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 100, hide: 300 }}
+                overlay={renderTooltip("slice-save-draft-tooltip", "Use the slice topology draft stored in your browser.")}
+              >
+                <button
+                  onClick={this.props.onUseDraft}
+                  disabled={!localStorage.getItem("sliceDraft")}
+                  className="btn btn-sm btn-outline-success ml-2"
+                >
+                  Use Draft
+                </button>
+            </OverlayTrigger>
+            }
+            {
+              this.props.isNewSlice &&
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 100, hide: 300 }}
+                overlay={renderTooltip("slice-save-draft-tooltip",
+                  "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
+              >
+                <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
+                  Save Draft
+                </button>
+              </OverlayTrigger>
+            }
+            {
+              this.props.isNewSlice &&
+              <button onClick={this.props.onClearGraph} className="btn btn-sm btn-outline-danger">Clear Topology</button>
+            }
+          </div>
         </div>
         <CytoscapeComponent
           elements={elements}
           zoom={defaultSize.zoom}
           pan={ { x: 350, y: 275 } }
+          wheelSensitivity={0.1}
           style={{ width: this.state.w, height: this.state.h }}
           cy={(cy) => {this.cy = setCytoscape(cy)}}
           stylesheet={[

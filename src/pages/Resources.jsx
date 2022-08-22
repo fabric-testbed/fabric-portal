@@ -21,15 +21,13 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
-    nameToAcronym: sitesNameMapping.nameToAcronym,
-    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
   async componentDidMount() {
     try {
       const { data: res } = await getResources();
-      const parsedObj = sitesParser(res.data[0], this.state.ancronymToName);
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
@@ -136,7 +134,7 @@ class Resources extends Component {
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[activeDetailName])}
+              resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-export default function parseSites(data, ancronymToName) {
+export default function parseSites(data, acronymToShortName) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const links = abqm_elements.links;
@@ -62,7 +62,7 @@ export default function parseSites(data, ancronymToName) {
       }
 
       parsedSites.push(site);
-      siteNames.push(ancronymToName[site.name]);
+      siteNames.push(acronymToShortName[site.name]);
     }
   })
 

@@ -17,15 +17,13 @@ class Home extends React.Component {
     isActiveUser: true,
     resources: [],
     activeDetailName: "StarLight",
-    nameToAcronym: sitesNameMapping.nameToAcronym,
-    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
   async componentDidMount() {
     try {
       const { data: res } = await getResources();
-      const parsedObj = sitesParser(res.data[0], this.state.ancronymToName);
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
@@ -87,7 +85,7 @@ class Home extends React.Component {
                   <div className="col-xl-3 col-lg-4 col-sm-12">
                     <DetailTable
                       name={this.state.activeDetailName}
-                      resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[this.state.activeDetailName])}
+                      resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
                     />
                   </div>
                 </div>

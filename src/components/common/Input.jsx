@@ -24,7 +24,7 @@ const Input = ({ name, label, error, disabled, tooltip, ...rest }) => {
         }
       </label>
       <input {...rest} id={name} name={name} className="form-control" disabled={disabled}/>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="alert alert-warning">{error}</div>}
     </div>
   );
 };
