@@ -15,3 +15,13 @@ export function getCurrentUser() {
   const uuid = localStorage.getItem("userID");
   return http.get(`${apiEndpoint}/${uuid}?as_self=true`);
 }
+
+export function updatePeopleProfile(userId, data) {
+  console.log(userId)
+  console.log(data)
+  return http.patch(`${apiEndpoint}/${userId}/profile`, {
+    "bio": data.bio,
+    "job": data.job,
+    "pronouns": data.pronouns
+  })
+}

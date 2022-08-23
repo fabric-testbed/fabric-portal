@@ -158,11 +158,11 @@ class Form extends Component {
     const { data, errors } = this.state;
 
     return (
-        <TimePicker
-          name={name}
-          label={label}
-          onChange={this.handleChange}
-        />
+      <TimePicker
+        name={name}
+        label={label}
+        onChange={this.handleChange}
+      />
     );
   }
 

@@ -264,7 +264,7 @@ class SideNodes extends React.Component {
               {
                 nodeComponents.length === 0 &&
                 <div className="my-2 sm-alert">
-                  No component added. Please click the <b>+ button</b> to add a component.
+                  No component added. Please click the <b>+</b> button to add a component.
                 </div>
               }
               {

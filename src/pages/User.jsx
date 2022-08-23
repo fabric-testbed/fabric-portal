@@ -3,21 +3,26 @@ import SideNav from "../components/common/SideNav";
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
+import MyProfile from "../components/UserProfile/MyProfile";
 import KeyTabs from "../components/SshKey/KeyTabs";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
+import { updatePeopleProfile } from "../services/peopleService";
 
 class User extends React.Component {
   state = {
     SideNavItems: [
-      { name: "ACCOUNT INFORMATION", active: true },
-      { name: "MY ROLES & PROJECTS", active: false },
-      { name: "MY SSH KEYS", active: false },
+      // { name: "ACCOUNT INFORMATION", active: true },
+      // { name: "MY ROLES & PROJECTS", active: false },
+      // { name: "MY SSH KEYS", active: false },
+      // { name: "MY PROFILE", active: false },
+      { name: "MY PROFILE", active: true },
     ],
     user: {},
     activeIndex: 0,
-    componentNames: [AccountInfo, MyRoles, KeyTabs],
+    // componentNames: [AccountInfo, MyRoles, KeyTabs, MyProfile],
+    componentNames: [MyProfile],
     keys: [],
     showSpinner: false
   };
@@ -50,6 +55,18 @@ class User extends React.Component {
     }
   }
 
+  handleProfileUpdate = async (data) => {
+    this.setState({ showSpinner: true });
+    try {
+      await updatePeopleProfile(this.state.user.uuid, data);
+      const { data: res } = await getCurrentUser();
+      this.setState({ user: res.results[0], showSpinner: false });
+      toast.success("You've successfully refreshed roles.");
+    } catch (err) {
+      toast.error("Failed to update user profile. Please try again.");
+    }
+  }
+
   getKeysData = () => {
     const { keys } = this.state;
 
@@ -62,7 +79,7 @@ class User extends React.Component {
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
     const { user, showSpinner } = this.state;
-    const { sliverKeys, bastionKeys } = this.getKeysData();
+    // const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
       <div className="container">
@@ -71,15 +88,16 @@ class User extends React.Component {
             items={this.state.SideNavItems}
             handleChange={this.handleChange}
           />
-          <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showSpinner}/>
+          {/* <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showSpinner}/> */}
           <TagName
             user={user}
             onRoleRefresh={this.handleRoleRefresh}
-            sliverKeys={sliverKeys}
-            bastionKeys={bastionKeys}
+            // sliverKeys={sliverKeys}
+            // bastionKeys={bastionKeys}
             disableKeyDelete={true}
             styleProp={"col-9"}
             parent={"UserProfile"}
+            onProfileUpdate={this.handleProfileUpdate}
           />
         </div>
       </div>
