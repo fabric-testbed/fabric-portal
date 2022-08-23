@@ -8,23 +8,20 @@ import KeyTabs from "../components/SshKey/KeyTabs";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
-import { updatePeopleProfile } from "../services/peopleService";
 
 class User extends React.Component {
   state = {
     SideNavItems: [
-      // { name: "ACCOUNT INFORMATION", active: true },
-      // { name: "MY ROLES & PROJECTS", active: false },
-      // { name: "MY SSH KEYS", active: false },
-      // { name: "MY PROFILE", active: false },
-      { name: "MY PROFILE", active: true },
+      { name: "ACCOUNT INFORMATION", active: true },
+      { name: "MY ROLES & PROJECTS", active: false },
+      { name: "MY SSH KEYS", active: false },
+      { name: "MY PROFILE", active: false },
     ],
     user: {},
     activeIndex: 0,
-    // componentNames: [AccountInfo, MyRoles, KeyTabs, MyProfile],
-    componentNames: [MyProfile],
+    componentNames: [AccountInfo, MyRoles, KeyTabs, MyProfile],
     keys: [],
-    showSpinner: false
+    showFullPageSpinner: false,
   };
 
   async componentDidMount(){
@@ -44,26 +41,14 @@ class User extends React.Component {
   };
 
   handleRoleRefresh = async () => {
-    this.setState({ showSpinner: true });
+    this.setState({ showFullPageSpinner: true });
     try {
       await getWhoAmI();
       const { data: res } = await getCurrentUser();
-      this.setState({ user: res.results[0], showSpinner: false });
+      this.setState({ user: res.results[0], showFullPageSpinner: false });
       toast.success("You've successfully refreshed roles.");
     } catch (err) {
       toast.error("Failed to refresh roles. Please try again.");
-    }
-  }
-
-  handleProfileUpdate = async (data) => {
-    this.setState({ showSpinner: true });
-    try {
-      await updatePeopleProfile(this.state.user.uuid, data);
-      const { data: res } = await getCurrentUser();
-      this.setState({ user: res.results[0], showSpinner: false });
-      toast.success("You've successfully refreshed roles.");
-    } catch (err) {
-      toast.error("Failed to update user profile. Please try again.");
     }
   }
 
@@ -78,8 +63,8 @@ class User extends React.Component {
 
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-    const { user, showSpinner } = this.state;
-    // const { sliverKeys, bastionKeys } = this.getKeysData();
+    const { user, showFullPageSpinner } = this.state;
+    const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
       <div className="container">
@@ -88,16 +73,15 @@ class User extends React.Component {
             items={this.state.SideNavItems}
             handleChange={this.handleChange}
           />
-          {/* <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showSpinner}/> */}
+          <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showFullPageSpinner}/>
           <TagName
             user={user}
             onRoleRefresh={this.handleRoleRefresh}
-            // sliverKeys={sliverKeys}
-            // bastionKeys={bastionKeys}
+            sliverKeys={sliverKeys}
+            bastionKeys={bastionKeys}
             disableKeyDelete={true}
             styleProp={"col-9"}
             parent={"UserProfile"}
-            onProfileUpdate={this.handleProfileUpdate}
           />
         </div>
       </div>

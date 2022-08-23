@@ -22,6 +22,7 @@ export function updatePeopleProfile(userId, data) {
   return http.patch(`${apiEndpoint}/${userId}/profile`, {
     "bio": data.bio,
     "job": data.job,
-    "pronouns": data.pronouns
+    "pronouns": data.pronouns,
+    "website": data.website
   })
 }

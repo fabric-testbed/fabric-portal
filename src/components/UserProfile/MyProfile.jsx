@@ -1,6 +1,9 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../common/Form";
+import SpinnerWithText from "../common/SpinnerWithText";
+import { getCurrentUser, updatePeopleProfile } from "../../services/peopleService.js";
+import { toast } from "react-toastify";
 
 class MyProfile extends Form {
   state = {
@@ -8,48 +11,77 @@ class MyProfile extends Form {
       bio: "",
       pronouns: "",
       job: "",
+      website: ""
     },
+    user: {},
     pronounsOptions: [
       { "_id": 1, "name": "She/her"},
       { "_id": 2, "name": "He/him"},
       { "_id": 3, "name": "They/them"},
     ],
     errors: {},
+    showSpinner: false,
+  }
+
+  async componentDidMount () {
+    try {
+      const { data: res } = await getCurrentUser();
+      const user = res.results[0];
+      const profile = {
+        bio: user.profile.bio,
+        pronouns: user.profile.pronouns,
+        job: user.profile.job,
+        website: user.profile.website,
+      }
+      this.setState({ data: profile, user });
+    } catch (err) { 
+      toast.error("Failed to load user information. Please re-login.");
+    }
   }
 
   schema = {
     bio: Joi.string().allow("").label("Bio"),
     pronouns: Joi.string().allow("").label("Pronouns"),
     job: Joi.string().allow("").label("Job Title"),
+    website: Joi.string().allow("").label("Website"),
   };
 
-  mapToViewModel() {
-    let profile = this.props.user.profile;
-    
-    return {
-      bio: profile.bio,
-      pronouns: profile.pronouns,
-      job: profile.job,
-    };
-  }
-
-  doSubmit = () => {
-    const { data } = this.state;
-    this.props.onProfileUpdate(data);
+  doSubmit = async () => {
+    this.setState({ showSpinner: true });
+    const { data, user } = this.state;
+    try {
+      await updatePeopleProfile(user.uuid, data);
+      const { data: res } = await getCurrentUser();
+      const updatedUser = res.results[0];
+      const profile = {
+        bio: updatedUser.profile.bio,
+        pronouns: updatedUser.profile.pronouns,
+        job: updatedUser.profile.job,
+        website: updatedUser.profile.website,
+      }
+      this.setState({ data: profile, user: updatedUser, showSpinner: false });
+      toast.success("You've successfully updated profile.");
+    } catch (err) {
+      toast.error("Failed to update user profile. Please try again.");
+    }
   };
 
   render() {
-    const { pronounsOptions } = this.state;
+    const { pronounsOptions, showSpinner } = this.state;
     
     return (
       <div className="col-9">
         <h1>My Profile</h1>
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput("bio", "Bio", true)}
-          {this.renderSelect("pronouns", "Pronouns", true, "", pronounsOptions)}
-          {this.renderInput("job", "Job Title", true)}
-          {this.renderButton("Save")}
-        </form>
+        {
+          showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
+          <form onSubmit={this.handleSubmit}>
+            {this.renderInput("bio", "Bio", true)}
+            {this.renderSelect("pronouns", "Pronouns", true, "", pronounsOptions)}
+            {this.renderInput("job", "Job Title", true)}
+            {this.renderInput("website", "Website", true)}
+            {this.renderButton("Save")}
+          </form>
+        }
       </div>
     );
   }

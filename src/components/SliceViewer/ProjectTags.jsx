@@ -45,10 +45,14 @@ export default class SideLinks extends Component {
   }
 
   handleProjectChange = (e) => {
-    this.setState({ projectIdToGenerateToken: e.target.value }, () => {
-      this.props.onProjectChange(this.state.projectIdToGenerateToken);
-      this.getProjectTags();
-    });
+    if (e.target.value !== "") {
+      this.setState({ projectIdToGenerateToken: e.target.value }, () => {
+        this.props.onProjectChange(this.state.projectIdToGenerateToken);
+        this.getProjectTags();
+      });
+    } else {
+      this.setState({ projectIdToGenerateToken: "", tags: [] });
+    }
   }
 
   async getProjectTags() {
