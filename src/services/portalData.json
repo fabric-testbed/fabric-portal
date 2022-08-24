@@ -17,9 +17,6 @@
   "jupyterHubLinkAlpha": "https://jupyter-beta.fabric-testbed.net/",
   "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
   "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
-  "starterFAQLink": "https://learn.fabric-testbed.net/knowledge-base/frequently-asked-starter-questions/",
-  "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
-  "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
   "selfEnrollRequest": {
     "id": "self-enroll-modal",
     "title": "FABRIC Self Signup",
@@ -31,6 +28,9 @@
   "sliverKeyLimit": 10,
   "bastionKeyLimit": 10,
   "learnArticles": {
-    "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/"
+    "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/",
+    "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
+    "guideToProjectRoles": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#managing-projects-in-the-real-world",
+    "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/"
   }
 }

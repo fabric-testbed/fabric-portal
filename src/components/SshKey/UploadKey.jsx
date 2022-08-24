@@ -71,7 +71,7 @@ class UploadKey extends Form {
           <div className="alert alert-primary" role="alert">
             Please follow &nbsp;
             <a
-              href={portalData.guideToGenerateFabricCompliantKey}
+              href={portalData.learnArticles.guideToGenerateFabricCompliantKey}
               target="_blank"
               rel="noreferrer"
             >

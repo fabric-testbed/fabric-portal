@@ -80,7 +80,7 @@ class projectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
-    is_public: Joi.boolean().label("Public")
+    is_public: Joi.string().required().label("Public")
   };
 
   async populateProject() {

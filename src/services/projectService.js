@@ -52,8 +52,8 @@ export function updateProject(project) {
     "is_public": project.is_public === "Yes",
     "facility": "FABRIC",
     "name": project.name,
-    "preferences": {
-    }
+    // "preferences": {
+    // }
   });
 }
 
