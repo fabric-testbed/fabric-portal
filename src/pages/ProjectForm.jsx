@@ -291,6 +291,14 @@ class projectForm extends Form {
     const parsedTags = this.parseTags();
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
+    if (showSpinner) {
+      return (
+        <div className="container">
+          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
+        </div>
+      )
+    }
+
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -316,7 +324,6 @@ class projectForm extends Form {
       // 3. Show detailed project form for PO/ PM or FO.
       return (
         <div className="container">
-          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
             {

@@ -44,7 +44,7 @@ class ProjectsTable extends Component {
     const { projects } = this.props;
     return (
       <Table
-        columns={this.state.columns}
+        columns={this.columns}
         data={projects}
       />
     );

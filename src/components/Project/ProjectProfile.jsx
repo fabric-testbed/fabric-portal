@@ -30,7 +30,7 @@ class ProjectProfile extends Component {
   }
 
   render() {
-    const { projectStaticInfoRows } = this.state;
+    const { basicInfoRows } = this.state;
     const { project } = this.props;
     return (
       <div>
@@ -40,7 +40,7 @@ class ProjectProfile extends Component {
         <h3>Basic Information</h3>
         <table className="table table-striped table-bordered mt-4">
           <tbody>
-          {projectStaticInfoRows.map((row, index) => {
+          {basicInfoRows.map((row, index) => {
               return (
                 <tr key={`project-basic-info-${index}`}>
                   <td>
