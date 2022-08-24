@@ -36,8 +36,12 @@ class ProjectBasicInfoTable extends Component {
                 </a>
               </td>
               <td>
-                { this.renderTags(project.tags) }
+                { project.tags.length > 0 ? this.renderTags(project.tags) : "No tag" }
               </td>
+            </tr>
+            <tr>
+              <td>Modified Time</td>
+              <td>{ toLocaleTime(project.modified) }</td>
             </tr>
             <tr>
               <td>Created Time</td>
