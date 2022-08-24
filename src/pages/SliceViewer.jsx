@@ -7,10 +7,8 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens, autoRefreshTokens } from "../utils/manageTokens";
-import { getCurrentUser } from "../services/prPeopleService.js";
-import { getSliceById, deleteSlice } from "../services/orchestratorService.js";
-// import { getSliceById } from "../services/fakeSlices.js";
-// import { deleteSlice } from "../services/orchestratorService.js";
+import { getProjects } from "../services/projectService.js";
+import { getSliceById, deleteSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
@@ -21,16 +19,13 @@ export default class SliceViewer extends Component {
     elements: [],
     slice: {
       "graph_id": "",
-      "lease_end": "",
+      "lease_end_time": "",
       "slice_id": "",
-      "slice_model": "",
-      "slice_name": "Slice Viewer",
-      "slice_state": "StableOK"
+      "model": "",
+      "name": "Slice Viewer",
+      "state": "StableOK"
     },
     errors: [],
-    // elements: sliceParser(getSliceById(2)["value"]["slices"][0]["slice_model"]),
-    // slice: getSliceById(2)["value"]["slices"][0],
-    // errors: sliceErrorParser(getSliceById(2)),
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
     hasProject: true,
@@ -41,46 +36,43 @@ export default class SliceViewer extends Component {
     this.setState({ showSliceSpinner: true });
     // call PR first to check if the user has project.
     try {
-      const { data: people } = await getCurrentUser();
-      if (people.projects.length === 0) {
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      if (res.results.length === 0) {
         this.setState({ hasProject: false });
       } else {
         // call credential manager to generate tokens 
         // if nothing found in browser storage
         if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-          autoCreateTokens(people.projects[0].uuid).then(async () => {
-            const { data } = await getSliceById(this.props.match.params.id);
+          autoCreateTokens(res.results[0].uuid).then(async () => {
+            const { data: res } = await getSliceById(this.props.match.params.id);
             this.setState({ 
-              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
-              slice: data["value"]["slices"][0],
-              errors: sliceErrorParser(data),
+              elements: sliceParser(res.data[0]["model"]),
+              slice: res.data[0],
+              errors: sliceErrorParser(res.data[0]["model"]),
               showSliceSpinner: false
             });
           });
         } else {
           // the token has been stored in the browser and is ready to be used.
           try {
-            const { data } = await getSliceById(this.props.match.params.id);
+            const { data: res } = await getSliceById(this.props.match.params.id);
             this.setState({ 
-              elements: sliceParser(data["value"]["slices"][0]["slice_model"]),
-              slice: data["value"]["slices"][0],
-              errors: sliceErrorParser(data),
+              elements: sliceParser(res.data[0]["model"]),
+              slice: res.data[0],
+              errors: sliceErrorParser(res.data[0]["model"]),
               showSliceSpinner: false
             });
-          } catch(err) {
-            console.log("Error in getting slice: " + err);
+          } catch (err) {
             toast.error("Failed to load the slice. Please try again later.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(people.projects[0].uuid);
+              autoRefreshTokens(res.results[0].uuid);
             }
           }
         }
-      } 
-     } catch(ex) {
-      console.log("Failed to load user information: " + ex.response.data);
-      window.location.href = "/logout";
+      }
+     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
     }
   }
@@ -94,11 +86,10 @@ export default class SliceViewer extends Component {
       this.setState(prevState => ({ 
         slice: {
           ...prevState.slice,
-          "slice_state": "Dead"
+          "state": "Dead"
         }
       }))
-    } catch(ex) {
-      console.log("failed to delete the slice: " + ex.response.data);
+    } catch (err) {
       toast.error("Failed to delete the slice.");
     }
   }
@@ -115,6 +106,9 @@ export default class SliceViewer extends Component {
       "Closing": "secondary",
       "Dead": "secondary",
       "Configuring": "primary",
+      "Modifying": "primary",
+      "ModifyError": "warning",
+      "ModifyOK": "success"
     }
 
     const { slice, elements, selectedData, hasProject, 
@@ -136,9 +130,9 @@ export default class SliceViewer extends Component {
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="mr-4">
-                  <b>{slice.slice_name}</b>
-                  <span className={`badge badge-${stateColors[slice.slice_state]} ml-2`}>
-                    {slice.slice_state}
+                  <b>{slice.name}</b>
+                  <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
+                    {slice.state}
                   </span>
                   <a
                     href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
@@ -150,12 +144,12 @@ export default class SliceViewer extends Component {
                   </a>
                 </h2>
                 <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end)}</span>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end_time)}</span>
                 </h4>
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
-                  slice.slice_state.includes("Stable") &&
+                  ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
                   <DeleteModal
                     name={"Delete Slice"}
                     text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
@@ -173,7 +167,7 @@ export default class SliceViewer extends Component {
               </div>
             </div>
             {
-              slice.slice_state === "Configuring" && 
+              ["Configuring", "Modifying"].includes(slice.state)  && 
               <CountdownTimer
                 text={"This slice is provisioning now."}
                 interval={30}
@@ -181,10 +175,10 @@ export default class SliceViewer extends Component {
               />
             }
             {
-              (["Closing", "Dead", "StableError"].includes(slice.slice_state) 
+              (["Closing", "Dead", "StableError", "ModifyError"].includes(slice.state) 
               && errors.length > 0) && 
               <ErrorMessageAccordion
-                state={slice.slice_state}
+                state={slice.state}
                 errors={errors}
               />
             }
@@ -195,7 +189,7 @@ export default class SliceViewer extends Component {
                   className="align-self-end"
                   isNewSlice={false}
                   elements={elements}
-                  sliceName={slice.slice_name}
+                  sliceName={slice.name}
                   defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
                 />

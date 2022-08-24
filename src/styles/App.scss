@@ -479,8 +479,43 @@ ul {
   border-width: 1px 1px 0 1px;
 }
 
-.new-slice-form {
-  width: 85%;
+.slice-builder-left, .slice-builder-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.slice-builder-left {
+  margin-left: 3rem!important;
+  width: 45%;
+}
+
+.slice-builder-right {
+  margin-right: 3rem!important;
+  width: 55%;
+}
+
+@media only screen and (min-width: 1665px) {
+  .slice-builder-left {
+    margin-left: 3rem!important;
+    width: 40%;
+  }
+  
+  .slice-builder-right {
+    margin-right: 3rem!important;
+    width: 60%;
+  }
+}
+
+@media only screen and (min-width: 1950px) {
+  .slice-builder-left {
+    margin-left: 3rem!important;
+    width: 35%;
+  }
+  
+  .slice-builder-right {
+    margin-right: 3rem!important;
+    width: 65%;
+  }
 }
 
 .slice-builder-label {
@@ -525,13 +560,20 @@ ul {
   margin-bottom: 0.15rem !important;
 }
 
-.notice-banner {
-  margin-bottom: 0 !important;
+.slice-builder-card-header {
+  padding: 0 0.5rem !important;
 }
 
-.new-slice-upper-card {
-  height: 19rem;
-  overflow: scroll;
+.slice-builder-card-body {
+  padding: 0.5rem 1.25rem !important;
+}
+
+.project-tag {
+  cursor: pointer;
+}
+
+.notice-banner {
+  margin-bottom: 0 !important;
 }
 
 .node-components-panel {

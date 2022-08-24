@@ -34,10 +34,10 @@ export default class Help extends React.Component{
             </div>
             <div className="card-body">
               <h5 className="card-title">Account Issues</h5>
-              <p>
+                <p>
                   If you are having problems with enrolling or logging into your FABRIC account 
                   or logging into your experiment's resources via bastion hosts, please use our <a href={portalData.jiraAccountIssueLink} target="_blank" rel="noopener noreferrer">FABRIC Account Help Portal</a> or email us at <b>account-help@fabric-testbed.net</b>.
-                  </p>
+                </p>
               <a href={portalData.jiraAccountIssueLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                 <i className="fa fa-sign-in mr-2"></i>
                 FABRIC Account Help Portal

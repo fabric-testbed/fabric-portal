@@ -5,9 +5,9 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/prPeopleService.js";
+import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
-import { getSlices } from "../../services/orchestratorService.js";
+import { getSlices } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import checkPortalType from "../../utils/checkPortalType";
@@ -39,36 +39,33 @@ class Slices extends React.Component {
 
     // call PR first to check if the user has project.
     try {
-      const { data: people } = await getCurrentUser();
-      if (people.projects.length === 0) {
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      if (res.results.length === 0) {
         this.setState({ hasProject: false, showSpinner: false });
       } else {
-      // call credential manager to generate tokens 
+      // call credential manager to generate tokens
       // if nothing found in browser storage
       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens(people.projects[0].uuid).then(async () => {
-        const { data } = await getSlices();
-        this.setState({ slices: data["value"]["slices"], showSpinner: false });
+        autoCreateTokens(res.results[0].uuid).then(async () => {
+        const { data: res } = await getSlices();
+        this.setState({ slices: res.data, showSpinner: false });
       });
       } else {
         // the token has been stored in the browser and is ready to be used.
           try {
-            const { data } = await getSlices();
-            this.setState({ slices: data["value"]["slices"], showSpinner: false, });
-          } catch(err) {
-            console.log("Error in getting slices: " + err);
+            const { data: res } = await getSlices();
+            this.setState({ slices: res.data, showSpinner: false, });
+          } catch (err) {
             toast.error("Failed to load slices. Please re-login and try.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
               // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(people.projects[0].uuid);
+              autoRefreshTokens(res.results[0].uuid);
             }
           }
         }
       }
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
-      window.location.href = "/logout";
+    } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
     }
   }
@@ -109,9 +106,9 @@ class Slices extends React.Component {
     let filtered = allSlices;
 
     const filterMap = {
-      "Name": "slice_name",
+      "Name": "name",
       "ID": "slice_id",
-      "State": "slice_state",
+      "State": "state",
     }
 
     if (searchQuery) {
@@ -120,7 +117,7 @@ class Slices extends React.Component {
 
     if (!includeDeadSlices) {
       filtered = filtered.filter((s) => 
-        s.slice_state !== "Dead" && s.slice_state !== "Closing"
+        s.state !== "Dead" && s.state !== "Closing"
       )
     }
 
@@ -148,11 +145,11 @@ class Slices extends React.Component {
             <p>
               <ul>
                 <li>
-                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
+                  If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
                   please <Link to="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
                 </li>
                 <li>
-                  If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">student or other contributor</a>, 
                   please ask your project lead to add you to a project.
                 </li>
               </ul>

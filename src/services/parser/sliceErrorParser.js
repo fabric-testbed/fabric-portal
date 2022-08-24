@@ -1,5 +1,5 @@
 export default function parseSliceErrors(data) { 
-  let abqm = JSON.parse(data["value"]["slices"][0]["slice_model"]);
+  let abqm = JSON.parse(data);
 
   if (abqm.nodes === undefined) {
     return;

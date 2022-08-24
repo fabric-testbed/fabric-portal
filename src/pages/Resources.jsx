@@ -8,7 +8,7 @@ import SummaryTable from "../components/Resource/SummaryTable";
 
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
+import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -21,17 +21,15 @@ class Resources extends Component {
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
-    nameToAcronym: sitesNameMapping.nameToAcronym,
-    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
   async componentDidMount() {
     try {
-      const { data } = await getResources();
-      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      const { data: res } = await getResources();
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
   }
@@ -136,7 +134,7 @@ class Resources extends Component {
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[activeDetailName])}
+              resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
             />
           </div>
         </div>

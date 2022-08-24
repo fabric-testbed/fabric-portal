@@ -29,7 +29,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
       <div className="alert alert-primary" role="alert">
         Please consult &nbsp;
         <a
-          href={portalData.guideToLoginToFabricVMs}
+          href={portalData.learnArticles.guideToLoginToFabricVMs}
           target="_blank"
           rel="noreferrer"
         >

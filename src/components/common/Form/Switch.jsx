@@ -7,10 +7,16 @@ const renderTooltip = (id, content) => (
   </Tooltip>
 );
 
-const Input = ({ name, label, error, disabled, tooltip, ...rest }) => {
+const Switch = ({ name, label, error, disabled, tooltip, ...rest }) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>
+    <div className="custom-control custom-switch">
+      <input
+        type="checkbox"
+        className="custom-control-input"
+        id={`switch-${name}`}
+        disabled={disabled}
+      />
+      <label className="custom-control-label" for="customSwitch1">
         {label}
         {
           tooltip && 
@@ -23,10 +29,8 @@ const Input = ({ name, label, error, disabled, tooltip, ...rest }) => {
           </OverlayTrigger>
         }
       </label>
-      <input {...rest} id={name} name={name} className="form-control" disabled={disabled}/>
-      {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );
 };
 
-export default Input;
+export default Switch;

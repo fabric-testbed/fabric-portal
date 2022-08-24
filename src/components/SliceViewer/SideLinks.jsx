@@ -98,8 +98,13 @@ export default class SideLinks extends Component {
                 />
               </div>
             </div>
-           <div className="form-row">
-            <div className="ml-1 mt-2 slice-builder-label">Click on the graph to select connection points.</div>
+            {
+              this.props.selectedCPs.length === 0 &&
+              <div className="my-2 sm-alert">
+                Click connection points (shown as grey squares) on the topology canvas, then click <b>Select</b> button from the canvas top to add service ports.
+              </div>
+            }
+            <div className="form-row">
             <div className="form-group slice-builder-form-group mt-2 col-md-12">
               <ul className="input-tag__tags">
                 {
@@ -116,11 +121,11 @@ export default class SideLinks extends Component {
                 }
               </ul>
             </div>
-           </div>
+            </div>
         </form>
         {!validationResult.isValid && this.props.selectedCPs.length !== 0 &&
           <div className="my-2 sm-alert">
-            <i className="fa fa-exclamation-triangle" /> {validationResult.message}
+            {validationResult.message}
           </div>
         }
         <div className="my-2 d-flex flex-row">

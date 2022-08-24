@@ -15,7 +15,7 @@ class ProjectUserTable extends Component {
   ];
 
   state = {
-    pageSize: 8,
+    pageSize: 10,
     currentPage: 1,
     sortColumn: { path: "name", order: "asc" },
   }

@@ -3,6 +3,7 @@ import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
+import { sitesNameMapping }  from "../../data/sites";
 
 class SideNodes extends React.Component {
   state = {
@@ -17,19 +18,19 @@ class SideNodes extends React.Component {
     selectedImageRef: "default_rocky_8",
   }
 
-  imageRef = [
-    "default_centos8_stream",
-    "default_centos9_stream",
-    "default_centos_7",
-    "default_centos_8",
-    "default_debian_10",
-    "default_fedora_35",
-    "default_rocky_8",
-    "default_ubuntu_18",
-    "default_ubuntu_20",
-    "default_ubuntu_21",
-    "default_ubuntu_22",
-  ]
+  osImageToAbbr = {
+    "CentOS Stream 8": "default_centos8_stream",
+    "CentOS Stream 9": "default_centos9_stream",
+    "CentOS 7": "default_centos_7",
+    "CentOS 8": "default_centos_8",
+    "Debian 10": "default_debian_10",
+    "Fedora 35": "default_fedora_35",
+    "Rocky Linux 8": "default_rocky_8",
+    "Ubuntu 18": "default_ubuntu_18",
+    "Ubuntu 20": "default_ubuntu_20",
+    "Ubuntu 21": "default_ubuntu_21",
+    "Ubuntu 22": "default_ubuntu_22",
+  }
 
   handleAddNode = () => {
     // type: currently only support 'VM'
@@ -111,6 +112,29 @@ class SideNodes extends React.Component {
     }
   }
 
+  getResourcesSum = () => {
+    const selectedLabels = [
+      "freeCore",
+      "freeDisk",
+      "freeRAM",
+      "freeGPU",
+      "freeNVME",
+      "freeSmartNIC",
+      "freeSharedNIC",
+   ]
+ 
+   const sum = {
+     id: 999,
+     name: "FABRIC Testbed",
+   };
+ 
+   _.each(this.props.resources.parsedSites, (site) => {
+     _.each(selectedLabels, (label) => sum[label] = (sum[label] || 0) + site[label]);
+   });
+
+   return sum;
+  }
+
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
@@ -123,104 +147,125 @@ class SideNodes extends React.Component {
               selectedSite !== "" &&
               <div>
                 <div className="mb-1">
-                  Available Site Resources - <span className="font-weight-bold">{this.state.selectedSite}</span>
+                  Available Site Resources -
+                  <span className="ml-1 font-weight-bold">
+                    {this.state.selectedSite} ({sitesNameMapping.acronymToLongName[this.state.selectedSite]})
+                  </span>
                 </div>
                 <SiteResourceTable site={this.getSiteResource()} />
               </div>
             }
-          <form>
-            <div className="form-row">
-              <div className="form-group slice-builder-form-group col-md-3">
-                <label htmlFor="inputState" className="slice-builder-label">Site</label>
-                <select
-                  className="form-control form-control-sm"
-                  id="siteNameSelect"
-                  value={selectedSite}
-                  onChange={this.handleSiteChange}
-                >
-                  <option value="">Choose...</option>
-                  <option value="Random">Random</option>
-                  {
-                    this.props.resources.parsedSites.map(site => 
-                      <option value={site.name} key={`site${site.id}`}>{site.name}</option>
-                    )
-                  }
-                </select>
-              </div>
-              <div className="form-group slice-builder-form-group col-md-3">
-                <label htmlFor="NodeType" className="slice-builder-label">Node Type</label>
-                <select
-                  className="form-control form-control-sm"
-                  id="nodeTypeSelect"
-                  disabled
-                  onChange={this.handleNodeTypeChange}
-                >
-                  <option value="VM">VM</option>
-                  {/* <option value="Server">Server</option> */}
-                </select>
-              </div>
-              <div className="form-group slice-builder-form-group col-md-6">
-                <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  id="inputNodeName"
-                  value={nodeName}
-                  onChange={this.handleNameChange}
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputCore" className="slice-builder-label">Core</label>
-                <input type="number" className="form-control form-control-sm" id="inputCore"
-                  value={core} onChange={this.handleCoreChange}/>
-              </div>
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputRam" className="slice-builder-label">Ram</label>
-                <input type="number" className="form-control form-control-sm" id="inputRam"
-                  value={ram} onChange={this.handleRamChange}/>
-              </div>
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputDisk" className="slice-builder-label">Disk</label>
-                <input type="number" className="form-control form-control-sm" id="inputDisk"
-                  value={disk} onChange={this.handleDiskChange}/>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputState" className="slice-builder-label">Image Type</label>
-                <select className="form-control form-control-sm" disabled>
-                  <option>{imageType}</option>
-                </select>
-              </div> 
-              <div className="form-group slice-builder-form-group col-md-8">
-                <label htmlFor="inputState" className="slice-builder-label">Image Ref</label>
-                <select
-                  className="form-control form-control-sm"
-                  value={selectedImageRef}
-                  onChange={this.handleImageRefChange}
-                >
-                  {
-                    this.imageRef.map(ref => 
-                      <option value={ref} key={`imgRef-${ref}`}>{ref}</option>
-                    )
-                  }
-                </select>
-              </div>
-            </div>
-            {!validationResult.isValid && validationResult.message !== "" &&
-              <div className="my-2 sm-alert">
-                <i className="fa fa-exclamation-triangle" /> {validationResult.message}
+            {
+              selectedSite === "" &&
+              <div>
+                <div className="mb-1">
+                  Available FABRIC Testbed Resources 
+                </div>
+                <SiteResourceTable site={this.getResourcesSum()} />
               </div>
             }
+          <form>
+            <div className="bg-light">
+              <div className="form-row">
+                <div className="form-group slice-builder-form-group col-md-3">
+                  <label htmlFor="inputState" className="slice-builder-label">Site</label>
+                  <select
+                    className="form-control form-control-sm"
+                    id="siteNameSelect"
+                    value={selectedSite}
+                    onChange={this.handleSiteChange}
+                  >
+                    <option value="">Choose...</option>
+                    <option value="Random">Random</option>
+                    {
+                      this.props.resources.parsedSites.map(site => 
+                        <option value={site.name} key={`site${site.id}`}>{site.name}</option>
+                      )
+                    }
+                  </select>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-3">
+                  <label htmlFor="NodeType" className="slice-builder-label">Node Type</label>
+                  <select
+                    className="form-control form-control-sm"
+                    id="nodeTypeSelect"
+                    disabled
+                    onChange={this.handleNodeTypeChange}
+                  >
+                    <option value="VM">VM</option>
+                    {/* <option value="Server">Server</option> */}
+                  </select>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-6">
+                  <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    id="inputNodeName"
+                    value={nodeName}
+                    onChange={this.handleNameChange}
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group slice-builder-form-group col-md-2">
+                  <label htmlFor="inputCore" className="slice-builder-label">Cores</label>
+                  <input type="number" className="form-control form-control-sm" id="inputCore"
+                    value={core} onChange={this.handleCoreChange}/>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-2">
+                  <label htmlFor="inputRam" className="slice-builder-label">Ram(GB)</label>
+                  <input type="number" className="form-control form-control-sm" id="inputRam"
+                    value={ram} onChange={this.handleRamChange}/>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-2">
+                  <label htmlFor="inputDisk" className="slice-builder-label">Disk(GB)</label>
+                  <input type="number" className="form-control form-control-sm" id="inputDisk"
+                    value={disk} onChange={this.handleDiskChange}/>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-4">
+                  <label htmlFor="inputState" className="slice-builder-label">OS Image</label>
+                  <select
+                    className="form-control form-control-sm"
+                    value={selectedImageRef}
+                    onChange={this.handleImageRefChange}
+                  >
+                    {
+                      Object.entries(this.osImageToAbbr).map((keyValuePairArr) => 
+                        <option
+                          value={keyValuePairArr[1]}
+                          key={`osImage-${keyValuePairArr[1]}`}
+                        >
+                          {keyValuePairArr[0]}
+                        </option>
+                      )
+                    }
+                  </select>
+                </div>
+                <div className="form-group slice-builder-form-group col-md-2">
+                  <label htmlFor="inputState" className="slice-builder-label">Format</label>
+                  <select className="form-control form-control-sm" disabled>
+                    <option>{imageType}</option>
+                  </select>
+                </div> 
+              </div>
+              {!validationResult.isValid && validationResult.message !== "" &&
+                <div className="my-2 sm-alert">
+                  {validationResult.message}
+                </div>
+              }
+            </div>
             <div className="mt-2 bg-light node-components-panel">
               <SingleComponent
                 addedComponents={nodeComponents}
                 onSliceComponentAdd={this.handleSliceComponentAdd}
               />
+              <div className="text-sm-size"><b>Added Components:</b></div>
               {
-                 nodeComponents.length > 0 && <div className="text-sm-size"><b>Added Components:</b></div>
+                nodeComponents.length === 0 &&
+                <div className="my-2 sm-alert">
+                  No component added. Please click the <b>+</b> button to add a component.
+                </div>
               }
               {
                 nodeComponents.length > 0 && nodeComponents.map((component) => 
@@ -240,7 +285,7 @@ class SideNodes extends React.Component {
               onClick={() => this.handleAddNode()}
               disabled={!validationResult.isValid}
             >
-              Add Node with Components
+              Add Node
             </button>
           </div>
         </div>
