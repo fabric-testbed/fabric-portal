@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Form from "../components/common/Form/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
+import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
@@ -112,25 +113,25 @@ class projectForm extends Form {
     }
   }
 
-  // async componentDidMount() {
-  //   await this.populateProject();
+  async componentDidMount() {
+    await this.populateProject();
 
-  //   try {
-  //     const { data: res1 } = await getProjectTags();
-  //     const tags = res1.results;
-  //     this.setState({ tagVocabulary: tags });
-  //   } catch (err) {
-  //     toast.error("Failed to get tags.");
-  //   }
+    try {
+      const { data: res1 } = await getProjectTags();
+      const tags = res1.results;
+      this.setState({ tagVocabulary: tags });
+    } catch (err) {
+      toast.error("Failed to get tags.");
+    }
 
-  //   try {
-  //     const { data: res2 } = await getCurrentUser();
-  //     this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-  //   } catch (err) {
-  //     toast.error("User's credential is expired. Please re-login.");
-  //     this.props.history.push("/projects");
-  //   }
-  // }
+    try {
+      const { data: res2 } = await getCurrentUser();
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+    } catch (err) {
+      toast.error("User's credential is expired. Please re-login.");
+      this.props.history.push("/projects");
+    }
+  }
 
   mapToViewModel(project) {
     // obj from server -> different kind of obj we can use in this form.
@@ -302,8 +303,17 @@ class projectForm extends Form {
           />
         </div>
       );
+    } else if (!data.is_owner && !data.is_member && !data.is_creator && !globalRoles.isFacilityOperator) {
+      // 2. view public project.
+      return (
+        <div className="container">
+          <ProjectProfile
+            project={data}
+          />
+        </div>
+      )
     } else {
-      // 2. Show detailed project form.
+      // 3. Show detailed project form for PO/ PM or FO.
       return (
         <div className="container">
           <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
