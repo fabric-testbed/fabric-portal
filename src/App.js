@@ -67,7 +67,12 @@ class App extends React.Component {
         <Router>
           <Header userStatus={this.state.userStatus} />
           { this.state.activeNotices.length > 0 && 
-            this.state.activeNotices.map(notice => <Banner notice={notice}/>)
+            this.state.activeNotices.map((notice, index) => 
+              <Banner
+                notice={notice}
+                key={`notice-banner-${index}`}
+              />
+            )
           }
           <Switch>
             <Route path="/" component={Home} exact />

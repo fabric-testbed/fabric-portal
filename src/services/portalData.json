@@ -29,5 +29,8 @@
   "projectLeadDescription": "Project Lead can create new projects, designate Project Owner(s)  and invite regular members into a project. Faculty or senior staff at universities can request this role.",
   "facilityOperatorDescription": "Facility Operator is a ‘superuser’ allowed to manipulate any project. This role is reserved for FABRIC staff.",
   "sliverKeyLimit": 10,
-  "bastionKeyLimit": 10
+  "bastionKeyLimit": 10,
+  "learnArticles": {
+    "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/"
+  }
 }
