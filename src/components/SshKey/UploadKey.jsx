@@ -1,5 +1,5 @@
 import Joi from "joi-browser";
-import Form from "../common/Form";
+import Form from "../common/Form/Form";
 
 import { uploadPublicKey } from "../../services/sshKeyService";
 import { default as portalData } from "../../services/portalData.json";

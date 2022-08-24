@@ -33,7 +33,7 @@ export function createProject(project, project_owners, project_members) {
     {
       "name": project.name,
       "description": project.description,
-      "is_public": true,
+      "is_public": project.is_public === "Yes",
       "facility": project.facility,
       "tags": project.tags,
       "project_owners": project_owners,
@@ -49,7 +49,7 @@ export function deleteProject(id) {
 export function updateProject(project) {
   return http.patch(`${apiEndpoint}/${project.uuid}`, {
     "description": project.description,
-    "is_public": true,
+    "is_public": project.is_public === "Yes",
     "facility": "FABRIC",
     "name": project.name,
     "preferences": {

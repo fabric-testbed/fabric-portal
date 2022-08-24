@@ -5,7 +5,8 @@ import Textarea from "./Textarea.jsx";
 import Select from "./Select.jsx";
 import InputTag from "./InputTag.jsx";
 import TimePicker from "./TimePicker.jsx";
-import ProjectTags from "../Project/ProjectTags";
+import Switch from "./Switch.jsx";
+import ProjectTags from "../../Project/ProjectTags";
 
 class Form extends Component {
   state = {
@@ -166,6 +167,21 @@ class Form extends Component {
     );
   }
 
+  renderSwitch(name, label, notDisabled, tooltip) {
+    const { data, errors } = this.state;
+
+    return (
+      <Switch
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+        disabled={!notDisabled}
+        tooltip={tooltip}
+      />
+    );
+  }
 }
 
 export default Form;

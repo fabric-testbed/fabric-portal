@@ -17,8 +17,6 @@ export function getCurrentUser() {
 }
 
 export function updatePeopleProfile(userId, data) {
-  console.log(userId)
-  console.log(data)
   return http.patch(`${apiEndpoint}/${userId}/profile`, {
     "bio": data.bio,
     "job": data.job,

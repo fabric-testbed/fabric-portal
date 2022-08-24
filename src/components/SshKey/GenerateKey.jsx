@@ -1,5 +1,5 @@
 import Joi from "joi-browser";
-import Form from "../common/Form";
+import Form from "../common/Form/Form";
 import KeyModal from "./KeyModal";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { generateKeyPairs } from "../../services/sshKeyService";

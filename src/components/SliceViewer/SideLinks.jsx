@@ -98,9 +98,12 @@ export default class SideLinks extends Component {
                 />
               </div>
             </div>
-            <div className="my-2 sm-alert">
-              Click connection points (shown as grey squares) on the topology canvas, then click <b>Select</b> button from the canvas top to add service ports.
-            </div>
+            {
+              this.props.selectedCPs.length === 0 &&
+              <div className="my-2 sm-alert">
+                Click connection points (shown as grey squares) on the topology canvas, then click <b>Select</b> button from the canvas top to add service ports.
+              </div>
+            }
             <div className="form-row">
             <div className="form-group slice-builder-form-group mt-2 col-md-12">
               <ul className="input-tag__tags">

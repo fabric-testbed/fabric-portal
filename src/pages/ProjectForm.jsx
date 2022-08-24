@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
-import Form from "../components/common/Form";
+import Form from "../components/common/Form/Form";
 import SideNav from "../components/common/SideNav";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
@@ -36,7 +36,12 @@ class projectForm extends Form {
       is_creator: false,
       is_member: false,
       is_owner: false,
+      is_public: false,
     },
+    publicOptions: [
+      { "_id": 1, "name": "Yes" },
+      { "_id": 2, "name": "No" }
+    ],
     user: {},
     globalRoles: {
       isProjectLead: false,
@@ -72,6 +77,7 @@ class projectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
+    is_public: Joi.boolean().label("Public")
   };
 
   async populateProject() {
@@ -106,25 +112,25 @@ class projectForm extends Form {
     }
   }
 
-  async componentDidMount() {
-    await this.populateProject();
+  // async componentDidMount() {
+  //   await this.populateProject();
 
-    try {
-      const { data: res1 } = await getProjectTags();
-      const tags = res1.results;
-      this.setState({ tagVocabulary: tags });
-    } catch (err) {
-      toast.error("Failed to get tags.");
-    }
+  //   try {
+  //     const { data: res1 } = await getProjectTags();
+  //     const tags = res1.results;
+  //     this.setState({ tagVocabulary: tags });
+  //   } catch (err) {
+  //     toast.error("Failed to get tags.");
+  //   }
 
-    try {
-      const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/projects");
-    }
-  }
+  //   try {
+  //     const { data: res2 } = await getCurrentUser();
+  //     this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+  //   } catch (err) {
+  //     toast.error("User's credential is expired. Please re-login.");
+  //     this.props.history.push("/projects");
+  //   }
+  // }
 
   mapToViewModel(project) {
     // obj from server -> different kind of obj we can use in this form.
@@ -142,6 +148,7 @@ class projectForm extends Form {
       is_creator: project.memberships.is_creator,
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
+      is_public: project.is_public ? "Yes" : "No"
     };
   }
 
@@ -203,9 +210,6 @@ class projectForm extends Form {
       // toast message to users when the api call is successfully done.
       toast.success("Project deleted successfully.");
     } catch (err) {
-      if (err.response && err.response.status === 404) {
-        console.log("This project has been deleted.");
-      }
       toast.error("Failed to delete project.");
       this.props.history.push("/projects");
     }
@@ -264,6 +268,7 @@ class projectForm extends Form {
 
     const {
       data,
+      publicOptions,
       user,
       globalRoles,
       originalProjectName,
@@ -303,7 +308,7 @@ class projectForm extends Form {
         <div className="container">
           <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
           <div className="d-flex flex-row justify-content-between">
-            <h1>Project - {originalProjectName}</h1>
+            <h1>{originalProjectName}</h1>
             {
               canUpdateMember ?
               <div className="d-flex flex-row justify-content-end">
@@ -361,6 +366,7 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
+                {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions)}
                 {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>

@@ -1,6 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../common/Form";
+import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { getCurrentUser, updatePeopleProfile } from "../../services/peopleService.js";
 import { toast } from "react-toastify";
@@ -75,7 +75,7 @@ class MyProfile extends Form {
         {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
-            {this.renderInput("bio", "Bio", true)}
+            {this.renderTextarea("bio", "Bio", true)}
             {this.renderSelect("pronouns", "Pronouns", true, "", pronounsOptions)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}

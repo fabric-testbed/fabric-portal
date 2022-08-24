@@ -209,8 +209,6 @@ class NewSliceForm extends React.Component {
 
     if (type === "VM") {
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
-      console.log(newSliceNodes)
-      console.log(newSliceLinks)
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }
@@ -291,13 +289,11 @@ class NewSliceForm extends React.Component {
           // this.props.history.push("/experiments#slices");
           this.props.history.push(`/slices/${slice_id}`)
         } catch (ex) {
-          console.log("failed to create slice: " + ex.response.data);
           toast.error("Failed to create slice.");
           that.setState({ showSliceSpinner: false });
         }
       })
     } catch (ex) {
-      console.log("failed to generate token: " + ex.response.data);
       toast.error("Failed to generate token.");
     }
   };
