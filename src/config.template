@@ -6,4 +6,5 @@
   "fabricCoreApiUrl": "https://******",
   "credentialManagerApiUrl": "https://******/credmgr/tokens",
   "orchestratorApiUrl": "https://******",
+  "credentialManagerAppUrl": "https://******/"
 }

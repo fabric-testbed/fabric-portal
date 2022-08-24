@@ -30,7 +30,10 @@ class FacilityUpdates extends React.Component {
     const { updates, showSpinner } = this.state;
     return (
       <div>
-        <FacilityUpdateCard showSpinner={showSpinner} updates={updates} />
+        {
+          updates.length === 0 ? <span>No Facility Update available.</span> : 
+          <FacilityUpdateCard showSpinner={showSpinner} updates={updates} />
+        }
       </div>
     );
   }
