@@ -121,7 +121,7 @@ export default class SingleComponent extends Component {
             }
             {!validationResult.isValid && validationResult.message !== "" &&
               <div className="my-2 sm-alert">
-                <i className="fa fa-exclamation-triangle" /> {validationResult.message}
+                {validationResult.message}
               </div>
             }
           </div> 

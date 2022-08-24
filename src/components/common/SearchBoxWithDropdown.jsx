@@ -5,7 +5,7 @@ const SearchBoxWithDropdown = ({ activeDropdownVal, dropdownValues, value, place
     <div className="input-group my-3">
       <div className="input-group-prepend">
         <button
-          className="btn btn-outline-secondary project-search-dropdown dropdown-toggle"
+          className="btn btn-outline-primary project-search-dropdown dropdown-toggle"
           type="button"
           data-toggle="dropdown"
           aria-haspopup="true"

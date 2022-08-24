@@ -1,4 +1,5 @@
 import ProgressBar from '../common/ProgressBar';
+import { sitesNameMapping }  from "../../data/sites";
 
 const generateProgressBar = (total, free) => {
   return (
@@ -26,7 +27,9 @@ const DetailTable = props => {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col" colSpan="2" className="text-center">{name}</th>
+            <th scope="col" colSpan="2" className="text-center">
+              {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}
+            </th>
           </tr>
         </thead>
         <tbody>

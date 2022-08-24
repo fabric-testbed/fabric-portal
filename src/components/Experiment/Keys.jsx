@@ -15,11 +15,11 @@ class Keys extends React.Component {
 
   async componentDidMount() {
     try {
-      const { data: keys } = await getActiveKeys();
-      this.setState({ keys: keys });
-    } catch (ex) {
+      const { data } = await getActiveKeys();
+      const keys = data.results;
+      this.setState({ keys });
+    } catch (err) {
       toast.error("Failed to load keys. Please reload this page.");
-      console.log("Failed to load keys: " + ex.response.data);
     }
   }
 

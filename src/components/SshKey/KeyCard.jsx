@@ -24,8 +24,7 @@ const handleDelete = async (uuid, type) => {
     window.location.reload();
     toast.success("Successfully deleted.");
   }
-  catch (ex) {
-    console.log("Failed to delete the ssh key: " + ex.response.data);
+  catch (err) {
     toast.error("Failed to delete the ssh key.");
   }
 };
@@ -58,8 +57,8 @@ const KeyCard = ({ data, disableKeyDelete }) => {
             <DeleteModal
               name={"Delete SSH Key"}
               text={`Are you sure you want to delete the key ${data.comment}? This process cannot be undone.`}
-              id={data.key_uuid}
-              onDelete={() => handleDelete(data.key_uuid, data.fabric_key_type)}
+              id={data.uuid}
+              onDelete={() => handleDelete(data.uuid, data.fabric_key_type)}
             />
           }
         </div>

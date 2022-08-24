@@ -269,20 +269,22 @@ const addVM = (node, components, graphID, nodes, links) => {
     "StitchNode": "false",
   }
 
-  let component_node_id = vm_node_id + 1;
-  let component_link_id = generateID(links);
-
-  for(const component of components) {
-    const [compo_nodes, compo_links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
-    for (const node of compo_nodes) {
-      clonedNodes.push(node);
+  if (components.length > 0) {
+    let component_node_id = vm_node_id + 1;
+    let component_link_id = generateID(links);
+  
+    for(const component of components) {
+      const [compo_nodes, compo_links] = addComponent(node, component, graphID, vm_node_id, component_node_id, component_link_id);
+      for (const node of compo_nodes) {
+        clonedNodes.push(node);
+      }
+      for (const link of compo_links) {
+        clonedLinks.push(link);
+      }
+  
+      component_node_id += compo_nodes.length;
+      component_link_id += compo_links.length;
     }
-    for (const link of compo_links) {
-      clonedLinks.push(link);
-    }
-
-    component_node_id += compo_nodes.length;
-    component_link_id += compo_links.length;
   }
 
   clonedNodes.push(vm_node);

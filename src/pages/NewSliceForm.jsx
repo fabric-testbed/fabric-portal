@@ -21,8 +21,8 @@ import validator from "../utils/sliceValidator.js";
 
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { getResources } from "../services/resourcesService.js";
-import { createSlice } from "../services/orchestratorService.js";
+import { getResources } from "../services/resourceService.js";
+import { createSlice } from "../services/sliceService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 
@@ -31,7 +31,6 @@ class NewSliceForm extends React.Component {
     sliceName: "",
     sshKey: "",
     leaseEndTime: "",
-    ancronymToName: sitesNameMapping.ancronymToName,
     showResourceSpinner: false,
     showKeySpinner: false,
     showSliceSpinner: false,
@@ -55,12 +54,12 @@ class NewSliceForm extends React.Component {
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
-      const parsedObj = sitesParser(resources, this.state.ancronymToName);
+      const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ 
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -75,7 +74,7 @@ class NewSliceForm extends React.Component {
     try {
       const { data: keys } = await getActiveKeys();
       this.setState({ 
-        sliverKeys: keys.filter(k => k.fabric_key_type === "sliver"),
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
         showKeySpinner: false
       });
     } catch (ex) {
@@ -119,8 +118,6 @@ class NewSliceForm extends React.Component {
 
     const requestBody = JSON.stringify(sliceJSON);
 
-    console.log(requestBody);
-    
     return requestBody;
   }
 
@@ -164,7 +161,7 @@ class NewSliceForm extends React.Component {
   }
 
   handleClearGraph = () => {
-    this.setState({ sliceNodes: [], sliceLinks: [] });
+    this.setState({ sliceNodes: [], sliceLinks: [], selectedData: null, selectedCPs: [] });
   }
 
   handleNodeSelect = (selectedData) => {
@@ -239,7 +236,6 @@ class NewSliceForm extends React.Component {
       "name": vm_node.Name,
     };
 
-    // data example: {type: 'SmartNIC', name: 'nic1', model: 'ConnectX-6'}
     // Add component data to the selected VM.
     const component_node_id = builder.generateID(this.state.sliceNodes);
     const component_link_id = builder.generateID(this.state.sliceLinks)
@@ -286,20 +282,18 @@ class NewSliceForm extends React.Component {
       // re-create token using user's choice of project
       autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
         try {
-          const { data } = await createSlice(requestData);
+          const { data: res } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
-          const slice_id = data["value"]["reservations"][0].slice_id;
+          const slice_id = res.data[0].slice_id;
           // this.props.history.push("/experiments#slices");
           this.props.history.push(`/slices/${slice_id}`)
         } catch (ex) {
-          console.log("failed to create slice: " + ex.response.data);
           toast.error("Failed to create slice.");
           that.setState({ showSliceSpinner: false });
         }
       })
     } catch (ex) {
-      console.log("failed to generate token: " + ex.response.data);
       toast.error("Failed to generate token.");
     }
   };
@@ -332,7 +326,7 @@ class NewSliceForm extends React.Component {
             <div className="d-flex flex-row justify-content-between mt-2">
               <div className="align-self-start d-flex flex-row">
                 <h2 className="ml-5 my-2">
-                  New Slice
+                  Slice Builder
                 </h2>
                 <a
                   href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/"
@@ -354,48 +348,91 @@ class NewSliceForm extends React.Component {
               </Link>
             </div>
             <div className="d-flex flex-column align-items-center w-100">
-              <div className="d-flex flex-row justify-content-center w-100 mx-5">
-                <div className="d-flex flex-column w-35 ml-5">
-                  <div className="card">
-                    <div className="card-header py-1">
+              <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
+                <div className="slice-builder-left">
+                <div className="card">
+                    <div className="card-header slice-builder-card-header py-1">
                       <button className="btn btn-link">
                         Step 1: Select Project
                       </button>
                     </div>
                     <div>
-                      <div className="card-body new-slice-upper-card">
+                      <div className="card-body slice-builder-card-body">
                         <ProjectTags onProjectChange={this.handleProjectChange} />
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="d-flex flex-column w-65 mr-5">
                   <div className="card">
-                    <div className="card-header py-1">
+                    <div className="card-header slice-builder-card-header py-1">
                       <button className="btn btn-link">
-                        Step 2: Input Slice Information
+                        Step 2: Add Nodes and Components
                       </button>
                     </div>
                     <div>
-                      <div className="card-body new-slice-upper-card">
+                      <div className="card-body slice-builder-card-body">
+                        {
+                          showResourceSpinner && <SpinnerWithText text={"Loading site resources..."}/>
+                        }
+                        {
+                          !showResourceSpinner && 
+                          <SideNodes
+                            resources={parsedResources}
+                            nodes={sliceNodes}
+                            onNodeAdd={this.handleNodeAdd}
+                          />
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card">
+                    <div className="card-header slice-builder-card-header py-1">
+                      <button className="btn btn-link">
+                        Step 3: Add Network Service
+                      </button>
+                    </div>
+                    <div>
+                      <div className="card-body slice-builder-card-body">
+                      <SideLinks
+                        nodes={sliceNodes}
+                        selectedCPs={selectedCPs}
+                        onLinkAdd={this.handleLinkAdd}
+                        onCPRemove={this.handleCPRemove}
+                      />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card">
+                    <div className="card-header slice-builder-card-header py-1">
+                      <button className="btn btn-link">
+                        Step 4: Create Slice
+                      </button>
+                    </div>
+                    <div>
+                      <div className="card-body slice-builder-card-body">
                         <div className="d-flex flex-column">
-                          <form className="w-100">
-                            <div className="form-group col-md-12">
-                              <label htmlFor="inputSliceName" className="slice-form-label">
-                                <span>Slice Name</span>
-                                <span className="form-label-danger">*required</span>
-                              </label>
-                              <input
-                                id="inputSliceName"
-                                name="inputSliceName"
-                                className="form-control form-control-sm"
-                                onChange={this.handleSliceNameChange}
-                              />
+                          <form>
+                            <div className="form-row">
+                              <div className="form-group col-md-6">
+                                <label htmlFor="inputSliceName" className="slice-form-label">
+                                  <span>Slice Name</span>
+                                </label>
+                                <input
+                                  id="inputSliceName"
+                                  name="inputSliceName"
+                                  className="form-control form-control-sm"
+                                  onChange={this.handleSliceNameChange}
+                                />
+                              </div>
+                              <div className="form-group col-md-6">
+                                <label htmlFor="inputLeaseEndTime" className="slice-form-label">
+                                  <span>Lease End Time</span>
+                                </label>
+                                <Calendar id="sliceCalendar" name="sliceCalendar" onTimeChange={this.handleTimeChange} />
+                              </div>
                             </div>
-                            <div className="form-group col-md-12">
+                            <div className="form-group">
                               <label htmlFor="inputSSHKey" className="slice-form-label">
                                 <span>SSH Key</span>
-                                <span className="form-label-danger">*required</span>
                               </label>
                               {
                                 showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
@@ -442,13 +479,6 @@ class NewSliceForm extends React.Component {
                                 </div>
                               }
                             </div>
-                            <div className="form-group col-md-12">
-                              <label htmlFor="inputLeaseEndTime" className="slice-form-label">
-                                <span>Lease End Time</span>
-                                <span className="form-label-success">Optional. Default end time is 24 hours upon creation if not selected.</span>
-                              </label>
-                              <Calendar id="sliceCalendar" name="sliceCalendar" onTimeChange={this.handleTimeChange} />
-                            </div>
                             <div className="form-group col-md-12 d-flex flex-row">
                               <OverlayTrigger
                                 placement="top"
@@ -472,50 +502,7 @@ class NewSliceForm extends React.Component {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="d-flex flex-row justify-content-center mb-4 w-100 mx-5">
-                <div className="d-flex flex-column w-35 ml-5">
-                  <div className="card">
-                    <div className="card-header py-1">
-                      <button className="btn btn-link">
-                        Step 3: Add Nodes and Components
-                      </button>
-                    </div>
-                    <div>
-                      <div className="card-body">
-                        {
-                          showResourceSpinner && <SpinnerWithText text={"Loading site resources..."}/>
-                        }
-                        {
-                          !showResourceSpinner && 
-                          <SideNodes
-                            resources={parsedResources}
-                            nodes={sliceNodes}
-                            onNodeAdd={this.handleNodeAdd}
-                          />
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-header py-1">
-                      <button className="btn btn-link">
-                        Step 4: Add Network Service
-                      </button>
-                    </div>
-                    <div>
-                      <div className="card-body">
-                      <SideLinks
-                        nodes={sliceNodes}
-                        selectedCPs={selectedCPs}
-                        onLinkAdd={this.handleLinkAdd}
-                        onCPRemove={this.handleCPRemove}
-                      />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-column w-65 mr-5">
+                <div className="slice-builder-right">
                   <NewSliceDetailForm
                     data={selectedData}
                     selectedCPs={selectedCPs}
@@ -531,7 +518,7 @@ class NewSliceForm extends React.Component {
                     isNewSlice={true}
                     elements={this.generateGraphElements()}
                     sliceName={sliceName === "" ? "new-slice" : sliceName}
-                    defaultSize={{"width": 0.6, "height": 0.75, "zoom": 1}}
+                    defaultSize={{"width": 0.6, "height": 0.9, "zoom": 1}}
                     onNodeSelect={this.handleNodeSelect}
                     onSaveDraft={() => this.handleSaveDraft("withMessage")}
                     onUseDraft={this.handleUseDraft}

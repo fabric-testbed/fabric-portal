@@ -4,13 +4,18 @@ import Table from "../common/Table";
 import _ from "lodash";
 
 class ProjectsTable extends Component {
-  // handleClick = (project) => {
-  //   alert(`Request to join project: ${project.uuid}`)
-  // }
+  hasAccessToProject = (project) => {
+    const membership = project.membership;
+    if (membership) {
+      return project.is_public || membership.is_creator 
+      || membership.is_owner || membership.is_member;
+    } else {
+      return project.is_public;
+    }
+  }
 
-  columns = 
-    {
-    "myProjects":[
+  columns = { 
+    "alwaysShowLinks": [
       {
         path: "name",
         label: "Project Name",
@@ -45,10 +50,13 @@ class ProjectsTable extends Component {
         ),
       },
     ],
-    "otherProjects":[
+    "onlyShowPublicLinks": [
       {
         path: "name",
         label: "Project Name",
+        content: (project) => (
+          this.hasAccessToProject(project) ? <Link to={`/projects/${project.uuid}`}>{project.name}</Link> : <span>{project.name}</span>
+        )
       },
       { 
         path: "description",
@@ -67,28 +75,28 @@ class ProjectsTable extends Component {
         path: "created_time",
         label: "Created Time",
       },
-      // {
-      //   content: (project) => (
-      //     <button
-      //       // onClick={() => this.handleClick(project)}
-      //       className="btn btn-sm btn-primary"
-      //       disabled={true}
-      //     >
-      //       Request to Join
-      //     </button>
-      //   ),
-      // },
-    ],
-  };
+      {
+        content: (project) => (
+          <Link to={`/projects/${project.uuid}`}>
+            <button
+              className="btn btn-sm btn-primary"
+              disabled={!this.hasAccessToProject(project)}
+            >
+              View
+            </button>
+          </Link>
+        ),
+      }
+    ]
+  }
 
   render() {
-    const { projects, onSort, sortColumn, type } = this.props;
+    const { projects, type, isFacilityOperator } = this.props;
+    const cols = (isFacilityOperator || type === "myProjects") ? this.columns["alwaysShowLinks"] : this.columns["onlyShowPublicLinks"] ;
     return (
       <Table
-        columns={this.columns[type]}
+        columns={cols}
         data={projects}
-        sortColumn={sortColumn}
-        onSort={onSort}
       />
     );
   }

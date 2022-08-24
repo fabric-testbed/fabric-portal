@@ -1,119 +1,114 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import Pagination from "../components/common/Pagination";
-import SearchBoxWithDropdown from "../components/common/SearchBoxWithDropdown";
 import ProjectsTable from "../components/Project/ProjectsTable";
 import RadioBtnGroup from "../components/common/RadioBtnGroup";
-import SpinnerWithText from "../components/common/SpinnerWithText";
-import { getCurrentUser } from "../services/prPeopleService.js";
-import { getProjects } from "../services/projectRegistryService.js";
+import { getCurrentUser } from "../services/peopleService.js";
+import { getProjects } from "../services/projectService.js";
 import { default as portalData } from "../services/portalData.json";
-import paginate from "../utils/paginate"; 
+import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import toLocaleTime from "../utils/toLocaleTime";
-import _ from "lodash";
 import { toast } from "react-toastify";
 
 class Projects extends React.Component {
   state = {
     projects: [],
-    allProjects: [],
-    myProjects: [],
-    otherProjects: [],
-    pageSize: 5,
+    projectsCount: 0,
+    pageSize: 10,
     currentPage: 1,
-    filterQuery: "Name",
     searchQuery: "",
-    roles: [],
-    sortColumn: { path: "created_time", order: "desc" },
     radioBtnValues: [
-      { display: "My Projects", value: "active", isActive: true },
-      { display: "Other Projects", value: "inactive", isActive: false },
+      { display: "My Projects", value: "myProjects", isActive: true },
+      { display: "All Projects", value: "allProjects", isActive: false },
     ],
-    projectType: "myProjects",
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    },
     showSpinner: false,
   };
 
   async componentDidMount() {
-    // Show loading spinner and when waiting API response
+    const { pageSize: limit } = this.state;
     this.setState({ showSpinner: true });
 
     try {
-      const { data: people } = await getCurrentUser();
-      let { data: allProjects } = await getProjects();
+      const { data: res1 } = await getCurrentUser();
+      const user = res1.results[0];
+      const { data: res2 } = await getProjects("myProjects", 0, limit);
+      const projectsCount = res2.total;
+      let projects = res2.results;
 
       // parse create time field to user's local time.
-      allProjects = allProjects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
+      projects = projects.map((p) => {
+        p.created_time  = toLocaleTime(p.created);
         return p;
       });
 
-      const myProjects = people.projects.map((p) => {
-        p.created_time  = toLocaleTime(p.created_time);
-        return p;
-      });
-
-      this.setState({ 
-        projects: people.roles.indexOf("facility-operators") > -1 ? allProjects : myProjects,
-        myProjects: myProjects,
-        allProjects: allProjects,
-        roles: people.roles,
-        otherProjects: _.differenceWith(allProjects, myProjects, (x, y) => x.uuid === y.uuid),
+      this.setState({
+        globalRoles: checkGlobalRoles(user),
+        projects,
+        projectsCount,
         showSpinner: false,
       })
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load projects. Please reload this page.");
-      console.log("Failed to load projects: " + ex.response.data);
     }
   }
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
+  getProjectType = () => {
+    return this.state.radioBtnValues.filter(btn => btn.isActive)[0].value;
+  }
 
-  handleFilter = (query) => {
-    this.setState({ filterQuery: query, currentPage: 1 });
-  };
-
-  handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
-  };
-
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
-  };
-
-  getPageData = () => {
-    const {
-      pageSize,
-      currentPage,
-      sortColumn,
-      filterQuery,
-      searchQuery,
-      projects: allProjects,
-    } = this.state;
-
-    // filter -> sort -> paginate
-    let filtered = allProjects;
+  reloadProjectsData = async () => {
+    const { pageSize: limit, currentPage, searchQuery } = this.state;
+    const offset = (currentPage - 1) * limit;
+    let projects = [];
+    let projectsCount = 0;
+    try {
+      const { data } = await getProjects(this.getProjectType(), offset, limit, searchQuery);
+      projects = data.results;
+      projectsCount = data.total;
     
-    const filterMap = {
-      "Name": "name",
-      "Description": "description",
-      "Facility": "facility",
-      "ID": "uuid",
+      // parse create time field to user's local time.
+      projects = projects.map((p) => {
+        p.created_time  = toLocaleTime(p.created);
+        return p;
+      });
+
+      this.setState({ projects, projectsCount })
+    } catch (err) {
+      toast.error("Failed to load projects. Please re-try.");
     }
+  }
 
-    if (searchQuery) {
-      filtered = allProjects.filter(p => p[filterMap[filterQuery]].toLowerCase().includes(searchQuery.toLowerCase()));
+  handleInputChange = (e) => {
+    // if input gets cleared, trigger data reload and reset the search query
+    if (this.state.searchQuery !== "" && e.target.value === "") {
+      this.setState({ currentPage: 1, searchQuery: "" }, () => {
+        this.reloadProjectsData();
+      });
+    } else {
+      this.setState({ searchQuery: e.target.value});
     }
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const projects = paginate(sorted, currentPage, pageSize);
-
-    return { totalCount: filtered.length, data: projects };
   };
 
-  toggleRadioBtn = (value) => {
+  handlePaginationClick = (page) => {
+    this.setState({ currentPage: page }, () => {
+      this.reloadProjectsData();
+    });
+  };
+
+  handleProjectsSearch = () =>{
+    this.setState({ currentPage: 1 }, () => {
+      this.reloadProjectsData();
+    });
+  }
+
+  handleProjectTypeChange = (value) => {
     // set isActive field for radio button input style change
     this.setState((prevState) => ({
       radioBtnValues: prevState.radioBtnValues.map((el) =>
@@ -121,92 +116,86 @@ class Projects extends React.Component {
           ? { ...el, isActive: true }
           : { ...el, isActive: false }
       ),
-    }));
-
-    if (value === "active") {
-      if (this.state.roles.indexOf("facility-operators") > -1) {
-        this.setState({ projects: this.state.allProjects, projectType: "myProjects" });
-      } else {
-        this.setState({ projects: this.state.myProjects, projectType: "myProjects" });
-      }
-    } else if (value === "inactive") {
-      if (this.state.roles.indexOf("facility-operators") > -1) { 
-        this.setState({ projects: [], projectType: "otherProjects" });
-      } else {
-        this.setState({ projects: this.state.otherProjects, projectType: "otherProjects" });
-      }
-    }
-
-    this.setState({ currentPage: 1 });
+      currentPage: 1
+    }), () => {
+      this.reloadProjectsData();
+    });
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, filterQuery, searchQuery, roles, showSpinner } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { pageSize, currentPage, globalRoles, projects, showSpinner,
+      projectsCount, searchQuery } = this.state;
 
     return (
       <div className="container">
-        <div className="d-flex flex-row">
-          <h1>Projects</h1>
-          <a
-            href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-3"
-          >
-            <i className="fa fa-question-circle mx-2"></i>
-            User Guide
-          </a>
-        </div>
-        <div className="toolbar">
-          <SearchBoxWithDropdown
-            activeDropdownVal={filterQuery}
-            dropdownValues={["Name", "Description", "Facility", "ID"]}
-            value={searchQuery}
-            placeholder={`Search Projects by ${filterQuery}...`}
-            onDropdownChange={this.handleFilter}
-            onInputChange={this.handleSearch}
-            className="my-0"
-          />
+        <div className="d-flex flex-row justify-content-between">
+          <div className="d-flex flex-row">
+            <h1>Projects</h1>
+            <a
+              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3"
+            >
+              <i className="fa fa-question-circle mx-2"></i>
+              User Guide
+            </a>
+          </div>
           {
             (
-              roles.indexOf("project-leads") > -1 || 
-              roles.indexOf("facility-operators") > -1
+              globalRoles.isProjectLead || 
+              globalRoles.isFacilityOperator 
             )
             &&
             (
-              <Link to="/projects/new" className="btn btn-primary create-project-btn">
+              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
                 Create Project
               </Link>
             )
           }
         </div>
+        <div className="w-100 input-group my-3">
+          <input
+            type="text"
+            name="query"
+            className="form-control"
+            placeholder={"Search by Project Name (at least 3 letters)..."}
+            value={searchQuery}
+            onChange={this.handleInputChange}
+          />
+          <div className="input-group-append">
+            <button
+              className="btn btn-outline-primary"
+              type="button"
+              onClick={this.handleProjectsSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
         {
-          showSpinner && <SpinnerWithText text={"Loading projects..."}/>
+          showSpinner && <SpinnerWithText text={"Loading projects..."} />
         }
         {
-          !showSpinner && totalCount === 0 && this.state.radioBtnValues[0].isActive && 
+          !showSpinner && projectsCount === 0 && this.state.radioBtnValues[0].isActive && 
           <div>
             <div className="d-flex flex-row justify-content-between">
               <RadioBtnGroup
                 values={this.state.radioBtnValues}
-                onChange={this.toggleRadioBtn}
+                onChange={this.handleProjectTypeChange}
               />
-              { this.state.radioBtnValues[0].isActive ?
-                <p>Showing {totalCount} projects that you have access to view details.</p> :
-                <p>Showing {totalCount} projects that you can join to view details.</p>
-              }
+              {projectsCount} results.
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
               <p className="mt-2">We could not find your project:</p>
               <p>
                 <ul>
                   <li>
-                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
+                    If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
                     please <Link to="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
                   </li>
                   <li>
-                    If you are a <a href={portalData.starterFAQLink} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                    If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">student or other contributor</a>, 
                     please ask your project lead to add you to a project.
                   </li>
                 </ul>
@@ -216,30 +205,26 @@ class Projects extends React.Component {
         }
 
         {
-          !showSpinner && (totalCount > 0 || this.state.radioBtnValues[1].isActive)
+          !showSpinner && (projectsCount > 0 || this.state.radioBtnValues[1].isActive)
           && 
           <div>
-            <div className="d-flex flex-row justify-content-between">
+            <div className="d-flex flex-row justify-content-between mb-3">
               <RadioBtnGroup
                 values={this.state.radioBtnValues}
-                onChange={this.toggleRadioBtn}
+                onChange={this.handleProjectTypeChange}
               />
-              { this.state.radioBtnValues[0].isActive ?
-                <p>Showing {totalCount} projects that you have access to view details.</p> :
-                <p>Showing {totalCount} projects that you can join to view details.</p>
-              }
+              {projectsCount} results.
             </div>
             <ProjectsTable
-              projects={data}
-              sortColumn={sortColumn}
-              onSort={this.handleSort}
-              type={this.state.projectType}
+              projects={projects}
+              type={this.getProjectType()}
+              isFacilityOperator={globalRoles.isFacilityOperator}
             />
             <Pagination
-              itemsCount={totalCount}
+              itemsCount={projectsCount}
               pageSize={pageSize}
               currentPage={currentPage}
-              onPageChange={this.handlePageChange}
+              onPageChange={this.handlePaginationClick}
             />
           </div>
         } 

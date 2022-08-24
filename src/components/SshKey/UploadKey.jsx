@@ -1,5 +1,5 @@
 import Joi from "joi-browser";
-import Form from "../common/Form";
+import Form from "../common/Form/Form";
 
 import { uploadPublicKey } from "../../services/sshKeyService";
 import { default as portalData } from "../../services/portalData.json";
@@ -30,10 +30,8 @@ class UploadKey extends Form {
       localStorage.setItem("sshKeyType", data.keyType);
       window.location.reload();
       toast.success("Successfully uploaded.");
-    }
-    catch (ex) {
-      console.log("failed to upload public key: " + ex.response.data);
-      toast.error("Failed to upload public key.");
+    } catch (err) {
+      toast.error("Failed to upload public key"); 
     }
   };
 
@@ -73,7 +71,7 @@ class UploadKey extends Form {
           <div className="alert alert-primary" role="alert">
             Please follow &nbsp;
             <a
-              href={portalData.guideToGenerateFabricCompliantKey}
+              href={portalData.learnArticles.guideToGenerateFabricCompliantKey}
               target="_blank"
               rel="noreferrer"
             >

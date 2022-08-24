@@ -133,6 +133,20 @@ export default function parseSlice(slice, sliceType) {
     return parentId;
   }
 
+  const isEmptyVM = (id) => {
+    const has_links = links.filter(link => link.label === "has");
+
+    if (has_links.length > 0) {
+      for (let i = 0; i < has_links.length; i++) {
+        if (has_links[i].source === id || has_links[i].target === id) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   nodes.forEach(node => {
     let data = {};
     if (node.Class === "NetworkService" && node.Type === "L2Bridge") {
@@ -153,9 +167,13 @@ export default function parseSlice(slice, sliceType) {
         properties: { class: "NetworkService", name: node.Name, type: node.Type },
       };
       elements.push(data);
+    } else if (node.Type === "VM" && isEmptyVM(node.id)) {
+      // For VM nodes without child components
+      const data = {};
+      generateDataElement(data, node.id);
+      elements.push(data);
     }
   })
-
 
   /************ retrieve node relationship data from all links. ************/
   const toConnectWithSameTarget = {};
@@ -185,7 +203,6 @@ export default function parseSlice(slice, sliceType) {
         generateDataElement(data, link.source);
         elements.push(data);
       }
-
       // 2. NIC has OVS... / or vise versa
       // No need to generate element for OVS. Done.
     }
@@ -257,7 +274,6 @@ export default function parseSlice(slice, sliceType) {
   parentNodeIds.forEach(parentId => {
     const data = {};
     generateDataElement(data, parentId);
-
     elements.push(data);
   })
     

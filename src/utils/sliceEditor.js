@@ -134,25 +134,6 @@ const removeNode = (el, nodes, links) => {
     }
   }
 
-  // last step: if the last component in VM, remove VM element
-  if (el.properties.type !== "VM") {
-    let parentID = JSON.parse(el_node.layout).parentID;
-    for (const link of updated_links) {
-      if (link.Class === "has" && link.source === parentID) {
-        // parent VM still has other children.
-        for (const node of nodes) {
-          if (!to_remove_node_ids.includes(parseInt(node.id))){
-            updated_nodes.push(node);
-          }
-        }
-        return { newSliceNodes: updated_nodes, newSliceLinks: updated_links }
-      }
-    }
-    
-    // remove the parent VM.
-    to_remove_node_ids.push(parentID);
-  }
-
   for (const node of nodes) {
     if (!to_remove_node_ids.includes(parseInt(node.id))){
       updated_nodes.push(node);

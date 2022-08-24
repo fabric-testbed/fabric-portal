@@ -7,7 +7,7 @@ const renderTooltip = (id, content) => (
   </Tooltip>
 );
 
-const Textarea = ({ name, label, error, disabled, tooltip, ...rest }) => {
+const Input = ({ name, label, error, disabled, tooltip, ...rest }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>
@@ -23,10 +23,10 @@ const Textarea = ({ name, label, error, disabled, tooltip, ...rest }) => {
           </OverlayTrigger>
         }
       </label>
-      <textarea {...rest} id={name} name={name} className="form-control" disabled={disabled}/>
-      {error && <div className="alert alert-danger">{error}</div>}
+      <input {...rest} id={name} name={name} className="form-control" disabled={disabled}/>
+      {error && <div className="alert alert-warning">{error}</div>}
     </div>
   );
 };
 
-export default Textarea;
+export default Input;

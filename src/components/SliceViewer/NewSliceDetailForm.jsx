@@ -154,7 +154,7 @@ export default class NewSliceDetailForm extends Component {
         <form>
             {
               (!data || !data.properties) && (
-                <div className="my-3"><i className="fa fa-info-circle mx-2" />Click an element on the graph to view details or make changes. </div>
+                <div className="my-3"><i className="fa fa-info-circle mx-2" />Click an element on the topology to view details or make changes. </div>
               )
             }
 
@@ -219,7 +219,7 @@ export default class NewSliceDetailForm extends Component {
                 </div>
                 {!validationResult.isValid && validationResult.message !== "" &&
                   <div className="mb-1 sm-alert mx-3">
-                    <i className="fa fa-exclamation-triangle" /> {validationResult.message}
+                    {validationResult.message}
                   </div>
                 }
                 {

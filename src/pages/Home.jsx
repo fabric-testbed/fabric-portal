@@ -1,15 +1,14 @@
 import React from "react";
-import CardOfItems from "../components/common/CardOfItems";
 import ReactModal from "../components/common/ReactModal";
+import FacilityUpdates from "../components/Home/FacilityUpdates";
 import { default as portalData } from "../services/portalData.json";
-import { getLatestUpdates } from "../services/fakeFacilityUpdate";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { NavLink } from "react-router-dom";
 import CookieConsent from "react-cookie-consent";
 import Topomap from "../components/Resource/Topomap";
 import DetailTable from "../components/Resource/DetailTable";
-import { getResources } from "../services/resourcesService.js";
+import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 
 class Home extends React.Component {
@@ -18,17 +17,15 @@ class Home extends React.Component {
     isActiveUser: true,
     resources: [],
     activeDetailName: "StarLight",
-    nameToAcronym: sitesNameMapping.nameToAcronym,
-    ancronymToName: sitesNameMapping.ancronymToName,
     siteNames: [],
   }
 
   async componentDidMount() {
     try {
-      const { data } = await getResources();
-      const parsedObj = sitesParser(data, this.state.ancronymToName);
+      const { data: res } = await getResources();
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
   }
@@ -88,7 +85,7 @@ class Home extends React.Component {
                   <div className="col-xl-3 col-lg-4 col-sm-12">
                     <DetailTable
                       name={this.state.activeDetailName}
-                      resource={this.getResourceByName(this.state.resources, this.state.nameToAcronym[this.state.activeDetailName])}
+                      resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
                     />
                   </div>
                 </div>
@@ -96,7 +93,7 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="col-xl-3 col-lg-12">
-            <CardOfItems header={"Facility Updates"} data={getLatestUpdates(4)} />
+            <FacilityUpdates />
           </div>
         </div>
         <CookieConsent

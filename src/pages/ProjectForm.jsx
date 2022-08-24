@@ -1,44 +1,56 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
-import Form from "../components/common/Form";
+import Form from "../components/common/Form/Form";
 import SideNav from "../components/common/SideNav";
-import ProjectUserTable from "../components/Project/ProjectUserTable";
+import ProjectPersonnel from "../components/Project/ProjectPersonnel";
+import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
-import { getPeopleByName } from "../services/userInformationService";
 import { default as portalData } from "../services/portalData.json";
-import { getCurrentUser } from "../services/prPeopleService.js";
-import { deleteProject } from "../services/projectRegistryService";
+import { getCurrentUser } from "../services/peopleService.js";
+import { updateProjectPersonnel } from "../services/projectService";
+import checkGlobalRoles from "../utils/checkGlobalRoles"; 
+import SpinnerFullPage from "../components/common/SpinnerFullPage";
 
-import {
-  getProject,
-  saveProject,
-  deleteUser,
-  addUser,
+import { 
+  getProjectById,
+  getProjectTags,
+  deleteProject,
+  updateProject,
   updateTags,
-  getTags,
-} from "../services/projectRegistryService";
+} from "../services/projectService";
 
 class projectForm extends Form {
   state = {
     data: {
-      name: "",
       uuid: "",
+      name: "",
       description: "",
       facility: "",
-      created_by: {},
-      created_time: "",
-      project_owners: [],
-      project_members: [],
       tags: [],
+      modified: "",
+      created: "",
+      creator_name: "",
+      creator_id: "",
+      creator_email: "",
+      is_creator: false,
+      is_member: false,
+      is_owner: false,
+      is_public: false,
     },
-    roles: [],
+    publicOptions: [
+      { "_id": 1, "name": "Yes" },
+      { "_id": 2, "name": "No" }
+    ],
+    user: {},
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: false,
+    },
     errors: {},
     activeIndex: 0,
     SideNavItems: [
@@ -50,10 +62,8 @@ class projectForm extends Form {
     originalTags: [],
     owners: [],
     members: [],
-    ownerSearchInput: "",
-    memberSearchInput: "",
     tagVocabulary: [],
-    people: {},
+    showSpinner: false,
   };
 
   schema = {
@@ -61,27 +71,45 @@ class projectForm extends Form {
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    created_by: Joi.object(),
-    created_time: Joi.string().allow(""),
-    project_members: Joi.array(),
-    project_owners: Joi.array(),
     tags: Joi.array(),
+    modified: Joi.string().allow(""),
+    created: Joi.string().allow(""),
+    creator_name: Joi.string().allow(""),
+    creator_id: Joi.string().allow(""),
+    creator_email: Joi.string().allow(""),
+    is_creator: Joi.boolean(),
+    is_member: Joi.boolean(),
+    is_owner: Joi.boolean(),
+    is_public: Joi.string().required().label("Public")
   };
 
   async populateProject() {
+    this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
+
     try {
       const projectId = this.props.match.params.id;
-      if (projectId === "new") return;
+      if (projectId === "new") {
+        this.setState({ showSpinner: false, spinnerText: ""  });
+        return;
+      }
 
-      const { data: project } = await getProject(projectId);
+      const { data } = await getProjectById(projectId);
+
+      const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
       // keep a copy of original tags for comparing on submit.
       this.state.originalTags = project.tags;
-      this.setState({ data: this.mapToViewModel(project) });
-    } catch (ex) {
+      this.setState({ 
+        data: this.mapToViewModel(project), 
+        owners: project.project_owners, 
+        members: project.project_members,
+        showSpinner: false,
+        spinnerText: ""
+      });
+    } catch (err) {
       toast.error("Failed to load project.");
-      if (ex.response && ex.response.status === 404) {
+      if (err.response && err.response.status === 404) {
         this.props.history.replace("/not-found");
       }
     }
@@ -91,18 +119,17 @@ class projectForm extends Form {
     await this.populateProject();
 
     try {
-      const { data: tags} = await getTags();
+      const { data: res1 } = await getProjectTags();
+      const tags = res1.results;
       this.setState({ tagVocabulary: tags });
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to get tags.");
-      console.log(ex.response.data);
     }
 
     try {
-      const { data: people } = await getCurrentUser();
-      this.setState({ roles: people.roles, people })
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
+      const { data: res2 } = await getCurrentUser();
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+    } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
       this.props.history.push("/projects");
     }
@@ -116,27 +143,35 @@ class projectForm extends Form {
       name: project.name,
       description: project.description,
       facility: project.facility,
-      created_by: project.created_by,
-      created_time: project.created_time,
-      project_owners: project.project_owners,
-      project_members: project.project_members,
       tags: project.tags,
+      modified: project.modified,
+      created: project.created,
+      creator_name: project.project_creators[0].name,
+      creator_id: project.project_creators[0].uuid,
+      creator_email: project.project_creators[0].email,
+      is_creator: project.memberships.is_creator,
+      is_member: project.memberships.is_member,
+      is_owner: project.memberships.is_owner,
+      is_public: project.is_public ? "Yes" : "No"
     };
   }
 
   doSubmit = async () => {
+    this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
+
+    const { data: project } = this.state;
     try {
-      await saveProject(this.state.data);
-      await updateTags(this.state.originalTags, this.state.data);
+      await updateProject(project);
+      await updateTags(project.uuid, project.tags);
+
+      this.setState({ showSpinner: false, spinnerText: ""  });
+      toast.success("Project updated successfully!");
     }
-    catch (ex) {
-      console.log("failed to save project: " + ex.response.data);
+    catch (err) {
       toast.error("Failed to save project.");
-      this.props.history.push("/projects");
     }
 
-    toast.success("Project updated successfully!");
-    this.props.history.push("/projects");
+    this.props.history.push(`/projects/${project.uuid}`);
   };
 
   parseTags = () => {
@@ -169,80 +204,6 @@ class projectForm extends Form {
     this.setState({ activeIndex: newIndex });
   };
 
-  handleAddUser = async (user) => {
-    // call api to update the project by a user.
-    if (this.state.activeIndex === 1) {
-      // add user to project owners
-      const originalOwners = this.state.data.project_owners;
-      const owners = originalOwners;
-      owners.push(user);
-      this.setState({ data: { ...this.state.data, project_owners: owners } });
-      try {
-        await addUser("project_owner", this.state.data.uuid, user.uuid);
-        toast.success("Project owner successfully added.");
-      } catch (ex) {
-        console.log("failed to add project owner: " + ex.response.data);
-        toast.error("Failed to add project owner.");
-        this.setState({ data: { ...this.state.data, project_owners: originalOwners } });
-      }
-    } else if (this.state.activeIndex === 2) {
-      const originalMembers = this.state.data.project_members;
-      const members = originalMembers;
-      members.push(user);
-      this.setState({ data: { ...this.state.data, project_members: members } });
-      try {
-        await addUser("project_member", this.state.data.uuid, user.uuid);
-        toast.success("Project member successfully added.");
-      } catch (ex) {
-        console.log("failed to add project member: " + ex.response.data);
-        toast.error("Failed to add project member.");
-        this.setState({ data: { ...this.state.data, project_members: originalMembers } });
-      }
-    }
-  };
-
-  handleInputChange = (input, type) => {
-    if (type === "po") {
-      this.setState({ ownerSearchInput: input });
-    }
-    if (type === "pm") {
-      this.setState({ memberSearchInput: input });
-    }
-  }
-
-  handleSearch = async (value) => {
-    // owners/ members are search result.
-    if (this.state.activeIndex === 1) {
-      this.setState({ ownerSearchInput: value });
-      try {
-        if (value.length > 3) {
-          const { data: owners } = await getPeopleByName(value);
-          this.setState({ owners });
-        } else {
-          this.setState({ owners: [] });
-        }
-      } catch (err) {
-        console.warn(err);
-        toast.error("Cannot find the user. Please check your input to search by name or email address.");
-        this.setState({ owners: [] });
-      }
-    } else if (this.state.activeIndex === 2) {
-      this.setState({ memberSearchInput: value });
-      try {
-        if (value.length > 3) {
-          const { data: members } = await getPeopleByName(value);
-          this.setState({ members });
-        } else {
-          this.setState({ members: [] });
-        }
-      } catch (err) {
-        console.warn(err);
-        toast.error("Cannot find the user. Please check your input to search by name or email address.");
-        this.setState({ members: [] });
-      }
-    }
-  };
-
   handleDeleteProject = async (project) => {
     try {
       // redirect users directly to the projects page
@@ -252,126 +213,124 @@ class projectForm extends Form {
       await deleteProject(project.uuid);
       // toast message to users when the api call is successfully done.
       toast.success("Project deleted successfully.");
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404) {
-        console.log("This project has been deleted.");
-      }
-      console.log("failed to delete project: " + ex.response.data);
+    } catch (err) {
       toast.error("Failed to delete project.");
       this.props.history.push("/projects");
     }
   };
 
-  handleDelete = async (user) => {
-    if (this.state.activeIndex === 1) {
-      const originalUsers = this.state.data.project_owners;
-      // update the state of the component.
-      // create a new users array without current selected user.
-      const users = originalUsers.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
-
-      // new projects obj will overwrite old one in state
-      this.setState({ data: { ...this.state.data, project_owners: users } });
-
-      try {
-        await deleteUser("project_owner", this.state.data.uuid, user.uuid);
-        toast.success("Project owner successfully deleted.");
-      } catch (ex) {
-        toast.error("Failed to delete project owner.");
-        console.log("Failed to delete project owner: " + ex.response.data);
-        if (ex.response && ex.response.status === 404) {
-          console.log("This user has already been deleted");
-        }
-        this.setState({
-          data: { ...this.state.data, project_owners: originalUsers },
-        });
+  handleSinglePersonnelUpdate = (personnelType, user, operation) => {
+    // personnelType: "Project Owner" / "Project Member"
+    // operation: "add" / "remove"
+    if (personnelType === "Project Owners") {
+      if (operation === "add") {
+        this.setState({ owners: [...this.state.owners, user] });
       }
-    } else if (this.state.activeIndex === 2) {
-      // when delete from member, delete from owner automatically.
-      // delete owner accordingly in UI (not reload from API)
-      const originalMembers = this.state.data.project_members;
-      const members = originalMembers.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
-      const originalOwners = this.state.data.project_owners;
-      const owners = originalOwners.filter((u) => {
-        return u.uuid !== user.uuid;
-      });
 
-      this.setState({ data: { ...this.state.data, project_members: members, project_owners: owners } });
+      if (operation === "remove") {
+        this.setState({ owners: this.state.owners.filter(u => u.uuid !== user.uuid) });
+      }
+    } else if (personnelType === "Project Members") {
+      if (operation === "add") {
+        this.setState({ members: [...this.state.members, user] });
+      }
 
-      try {
-        await deleteUser("project_member", this.state.data.uuid, user.uuid);
-        toast.success("Project member successfully deleted.");
-      } catch (ex) {
-        toast.error("Failed to delete project member.");
-        console.log("Failed to delete project member: " + ex.response.data);
-        if (ex.response && ex.response.status === 404) {
-          console.log("This user has already been deleted");
-        }
-        this.setState({
-          data: { ...this.state.data, project_members: originalMembers, project_owners: originalOwners },
-        });
+      if (operation === "remove") {
+        this.setState({ members: this.state.members.filter(u => u.uuid !== user.uuid) });
       }
     }
-  };
+  }
 
-  checkProjectRole = (projectID, role) => {
-    let role_str = projectID + "-" + role;
-    return this.state.roles.indexOf(role_str) > -1;
-  };
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
+  handlePersonnelUpdate = () => {
+    const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
+    
+    this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
+
+    const { data, owners, members } = this.state;
+    const ownerIDs = this.getIDs(owners);
+    const memberIDs = this.getIDs(members);
+
+    try{
+      // pass the arr of updated po/pm and the original pm/po
+      updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
+        this.setState({ showSpinner: false, spinnerText: ""  });
+        toast.success(`${personnelType} updated successfully.`);
+      });
+    } catch (err) {
+      toast(`Failed to update ${personnelType}.`)
+    }
+
+    this.props.history.push(`/projects/${data.uuid}`);
+  }
 
   render() {
     const projectId = this.props.match.params.id;
-    const that = this;
+
     const {
       data,
+      publicOptions,
+      user,
+      globalRoles,
       originalProjectName,
       SideNavItems,
       activeIndex,
-      roles,
-      ownerSearchInput,
       owners,
-      memberSearchInput,
       members,
-      people
+      showSpinner,
+      spinnerText,
     } = this.state;
-    let isFacilityOperator = roles.indexOf("facility-operators") > -1;
 
     // ***** Conditional Rendering Project Form *****
     // only facility operator or project creator
     // can update project/ delete project/ update owner;
-    let canUpdate = isFacilityOperator || 
-      data.created_by.uuid === localStorage.getItem("userID");
+    let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
     // only facility operator or project owner can update member;
-    let canUpdateMember = isFacilityOperator || 
-      this.checkProjectRole(data.uuid, "po");
-    
-    const parsedTags = this.parseTags();
+    let canUpdateMember = canUpdate || data.is_owner;
 
-    const urlSuffix = `email=${people.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
- 
+    const parsedTags = this.parseTags();
+    const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
+
+    if (showSpinner) {
+      return (
+        <div className="container">
+          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
+        </div>
+      )
+    }
+
     // 1. New project.
     if (projectId === "new") {
       return (
         <div className="container">
           <NewProjectForm
             history={this.props.history}
-            isFacilityOperator={isFacilityOperator}
+            isFacilityOperator={globalRoles.isFacilityOperator}
             baseOptions={parsedTags.baseOptions}
             optionsMapping={parsedTags.optionsMapping}
           />
         </div>
       );
+    } else if (!data.is_owner && !data.is_member && !data.is_creator && !globalRoles.isFacilityOperator) {
+      // 2. view public project.
+      return (
+        <div className="container">
+          <ProjectProfile
+            project={data}
+          />
+        </div>
+      )
     } else {
-      // 2. Show detailed project form.
+      // 3. Show detailed project form for PO/ PM or FO.
       return (
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
             {
-              (canUpdate || canUpdateMember) ?
+              canUpdateMember ?
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
@@ -427,14 +386,17 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
+                {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
+                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
-              <ProjectBasicInfoTable
-                data={data}
-                canUpdate={canUpdate}
-                onDeleteProject={this.handleDeleteProject}
-              />
+              {
+                <ProjectBasicInfoTable
+                  project={data}
+                  canUpdate={canUpdate}
+                  onDeleteProject={this.handleDeleteProject}
+                />
+              }
             </div>
             <div
               className={`${
@@ -443,55 +405,15 @@ class projectForm extends Form {
                   : "col-9 d-flex flex-row"
               }`}
             >
-              <div className="w-75">
-                { 
-                  canUpdate
-                  &&
-                  <div className="toolbar">
-                    <input
-                      className="form-control search-owner-input mb-4"
-                      value={ownerSearchInput}
-                      placeholder="Search by name or email (at least 4 letters) to add more project owners..."
-                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
-                    />
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => this.handleSearch(ownerSearchInput)}
-                    >
-                      <i className="fa fa-search"></i>
-                    </button>
-                  </div>
-                }
-                <ProjectUserTable
-                  users={data.project_owners}
-                  onDelete={this.handleDelete}
+              <div className="w-100">
+                <ProjectPersonnel
+                  personnelType={"Project Owners"}
                   canUpdate={canUpdate}
+                  users={owners}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
                 />
               </div>
-              { 
-                canUpdate
-                &&
-                <div className="search-result w-25 border ml-2 p-2">
-                  <ul className="list-group text-center m-2">
-                    <li className="list-group-item">Search Result:</li>
-                    {owners.map((user, index) => {
-                      return (
-                        <li key={index} className="list-group-item overflow-auto">
-                          <span>{user.name}</span>
-                          <button
-                            className="btn btn-sm btn-primary ml-2"
-                            onClick={() => that.handleAddUser(user)}
-                          >
-                            <FontAwesomeIcon icon={faPlus} size="xs"/>
-                          </button>
-                          <br></br>
-                          <span>{user.email}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              }
             </div>
             <div
               className={`${
@@ -500,55 +422,15 @@ class projectForm extends Form {
                   : "col-9 d-flex flex-row"
               }`}
             >
-              <div className="w-75">
-                { 
-                  canUpdateMember
-                  &&
-                  <div className="toolbar">
-                    <input
-                      className="form-control search-member-input mb-4"
-                      placeholder="Search by name or email (at least 4 letters) to add more project members..."
-                      value={memberSearchInput}
-                      onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
-                    />
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => this.handleSearch(memberSearchInput)}
-                    >
-                      <i className="fa fa-search"></i>
-                    </button>
-                  </div>
-                }
-                <ProjectUserTable
-                  users={data.project_members}
-                  onDelete={this.handleDelete}
+              <div className="w-100">
+                <ProjectPersonnel
+                  personnelType={"Project Members"}
                   canUpdate={canUpdateMember}
+                  users={members}
+                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
                 />
               </div>
-              {
-                canUpdateMember
-                &&
-                <div className="search-result w-25 border ml-2 p-2">
-                  <ul className="list-group text-center m-2">
-                    <li className="list-group-item">Search Result:</li>
-                    {members.map((user, index) => {
-                      return (
-                        <li key={index} className="list-group-item overflow-auto">
-                        <span>{user.name}</span>
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => that.handleAddUser(user)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} size="xs"/>
-                        </button>
-                        <br></br>
-                        <span>{user.email}</span>
-                      </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              }
             </div>
           </div>
         </div>

@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { getWhoAmI } from "./services/userInformationService.js";
-import { getActiveNotices } from "./services/fakeMaintenanceNotice.js";
+import { getWhoAmI } from "./services/peopleService.js";
+import { getCurrentUser } from "./services/peopleService.js";
+import { getActiveMaintenanceNotice } from "./services/announcementService.js";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -19,34 +20,41 @@ import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import "./styles/App.scss";
 
 class App extends React.Component {
   state = {
     userStatus: "",
-    activeNotices: getActiveNotices(),
+    activeNotices: [],
   };
 
   async componentDidMount() {
+    // Check actice maitenance notice(s)
+    try {
+      const { data: res } = await getActiveMaintenanceNotice();
+      this.setState({ activeNotices: res.results });
+    } catch (err) {
+      toast.error("Failed to load maintenance notice.")
+    }
+
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
-      try {
-        const { data: user } = await getWhoAmI();
+      const { data } = await getWhoAmI();
+      const user = data.results[0];
+      if (user.enrolled) {
         localStorage.setItem("userID", user.uuid);
-        localStorage.setItem("bastionLogin", user.bastion_login);
         localStorage.setItem("userStatus", "active");
-      } catch (err) {
-        console.log("/whoami " + err);
-        // situation 1: err.response.status === 401
-        // not logged in or auth cookie expired
-        // http service has set userStatus to unauthorized.
-
-        // situation 2: logged in, but not self signup, unauthenticated
-        if (err.response.status === 403) {
-          localStorage.setItem("userStatus", "inactive");
+        try {
+          const { data: res } = await getCurrentUser();
+          localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+        } catch (err) {
+          console.log("Failed to get current user's information.");
         }
+      } else {
+        // situation 2: logged in, but not self signup, unauthenticated
+        localStorage.setItem("userStatus", "inactive");
       }
     }
 
@@ -59,7 +67,12 @@ class App extends React.Component {
         <Router>
           <Header userStatus={this.state.userStatus} />
           { this.state.activeNotices.length > 0 && 
-            this.state.activeNotices.map(notice => <Banner notice={notice}/>)
+            this.state.activeNotices.map((notice, index) => 
+              <Banner
+                notice={notice}
+                key={`notice-banner-${index}`}
+              />
+            )
           }
           <Switch>
             <Route path="/" component={Home} exact />

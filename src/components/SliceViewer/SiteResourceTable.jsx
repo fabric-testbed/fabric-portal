@@ -3,9 +3,9 @@ const SiteResourceTable = props => {
     <table className="table table-sm">
       <thead>
         <tr>
-          <th scope="col">Core</th>
-          <th scope="col">Ram</th>
-          <th scope="col">Disk</th>
+          <th scope="col">Cores</th>
+          <th scope="col">Ram(GB)</th>
+          <th scope="col">Disk(GB)</th>
           <th scope="col">GPU</th>
           <th scope="col">SmartNIC</th>
           <th scope="col">SharedNIC</th>

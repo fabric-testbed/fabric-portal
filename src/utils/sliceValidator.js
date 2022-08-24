@@ -84,13 +84,6 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
     return validationResult;
   }
 
-  // ensure at least 1 component is added.
-  if (nodeComponents.length === 0) {
-    validationResult.isValid = false;
-    validationResult.message = "Please add at least 1 component.";
-    return validationResult;
-  }
-
   // all validation above are passed.
   validationResult.isValid = true;
   validationResult.message = "";
@@ -107,19 +100,22 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
   if (addedComponents && addedComponents.length === 0) {
     if (type === "") {
       validationResult.isValid = false;
-      validationResult.message = "Please select a component type.";
+      // validationResult.message = "Please select a component type.";
+      validationResult.message = "";
       return validationResult;
     }
   
     if (name === "") {
       validationResult.isValid = false;
-      validationResult.message = "Please enter a component name.";
+      // validationResult.message = "Please enter a component name.";
+      validationResult.message = "";
       return validationResult;
     }
 
     if (model === "") {
       validationResult.isValid = false;
-      validationResult.message = "Please select a component model.";
+      // validationResult.message = "Please select a component model.";
+      validationResult.message = "";
       return validationResult;
     }
   } else {

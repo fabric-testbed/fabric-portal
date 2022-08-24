@@ -7,18 +7,18 @@ import sliceTimeParser from "../../utils/sliceTimeParser.js";
 class SlicesTable extends Component {
   columns = [
       {
-        path: "slice_name",
+        path: "name",
         label: "Slice Name",
         content: (slice) => (
-          <Link to={`/slices/${slice.slice_id}`}>{slice.slice_name}</Link>
+          <Link to={`/slices/${slice.slice_id}`}>{slice.name}</Link>
         ),
       },
-      { path: "slice_state", label: "Slice State" },
+      { path: "state", label: "Slice State" },
       {
-        path: "lease_end",
+        path: "lease_end_time",
         label: "Lease End",
         content: (slice) => (
-          <span>{sliceTimeParser(slice.lease_end)}</span>
+          <span>{sliceTimeParser(slice.lease_end_time)}</span>
         )
       },
       {

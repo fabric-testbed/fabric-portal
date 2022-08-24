@@ -1,5 +1,5 @@
 import Joi from "joi-browser";
-import Form from "../common/Form";
+import Form from "../common/Form/Form";
 import KeyModal from "./KeyModal";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { generateKeyPairs } from "../../services/sshKeyService";
@@ -29,15 +29,12 @@ class GenerateKey extends Form {
     this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
-      const response = await generateKeyPairs(data.keyType, data.name, data.description);
-      this.setState({ generatedKey: response.data, showKeySpinner: false });
+      const { data: res } = await generateKeyPairs(data.keyType, data.name, data.description);
+      this.setState({ generatedKey: res.results[0], showKeySpinner: false });
       localStorage.setItem("sshKeyType", data.keyType);
-    }
-    catch (ex) {
-      console.log("failed to generate ssh key pairs: " + ex.response.data);
+    } catch (err) {
       toast.error("Failed to generate ssh key pairs.");
-      this.setState({ showKeySpinner: false });
-    }
+    } 
   };
 
   schema = {

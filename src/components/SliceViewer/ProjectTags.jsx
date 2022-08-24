@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getCurrentUser } from "../../services/prPeopleService.js";
-import { getProject } from "../../services/projectRegistryService.js";
+import { getProjects, getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class SideLinks extends Component { 
   state = {
     showSpinner: false,
-    user: {},
+    projects: [],
     projectIdToGenerateToken: "",
     tags: [],
     tagKeyValuePairs: {
@@ -26,44 +26,66 @@ export default class SideLinks extends Component {
       "Net.AllFacilityPorts": "allows to create slices with any stitchport",
       "Slice.Multisite": "allows to create slices spanning multiple sites",
       "Slice.Measurements": "allows to provision measurement VMs",
-      "Slice.NoLimitLifetime": "allows to create slices with a lifetime beyond default limit X time units without the need to renew"
+      "Slice.NoLimitLifetime": "allows to create slices with a lifetime beyond default limit X time units without the need to renew",
+      "Net.FacilityPort.RENCI-GSU": "RENCI Development",
+      "Net.FacilityPort.RENCI-Chameleon": "RENCI Development",
+      "Net.FacilityPort.Chameleon-StarLight": "Chameleon-StarLight Production",
+      "Net.FacilityPort.ESnet-StarLight": "ESnet-StarLight Production",
+      "Net.FacilityPort.Internet2-StarLight": "Internet2-StarLight Production"
     }
   }
   
   async componentDidMount() {
     try {
-      const { data: user } = await getCurrentUser();
-      this.setState({ user: user });
-    } catch (ex) {
-      console.log("Failed to load user information: " + ex.response.data);
-      window.location.href = "/logout";
-      toast.error("User's credential is expired. Please re-login.");
+      const { data: res } = await getProjects("myProjects", 0, 200);
+      this.setState({ projects: res.results });
+    } catch (err) {
+      toast.error("Failed to load user's projects. Please try again later.");
     }
   }
 
   handleProjectChange = (e) => {
-    this.setState({ projectIdToGenerateToken: e.target.value }, () => {
-      this.props.onProjectChange(this.state.projectIdToGenerateToken);
-      this.getProjectTags();
-    });
+    if (e.target.value !== "") {
+      this.setState({ projectIdToGenerateToken: e.target.value }, () => {
+        this.props.onProjectChange(this.state.projectIdToGenerateToken);
+        this.getProjectTags();
+      });
+    } else {
+      this.setState({ projectIdToGenerateToken: "", tags: [] });
+    }
   }
 
   async getProjectTags() {
     this.setState({  showSpinner: true });
     try {
-      const { data: project } = await getProject(this.state.projectIdToGenerateToken);
+      const { data: res } = await getProjectById(this.state.projectIdToGenerateToken);
+      const project = res.results[0];
       this.setState({ tags: project.tags, showSpinner: false});
-    } catch (ex) {
+    } catch (err) {
       toast.error("Failed to load the tags of this project. Please re-select a project.");
     }
   }
 
   render() {
-    const { user, projectIdToGenerateToken, tags, tagKeyValuePairs, showSpinner } = this.state;
-
+    const { projects, projectIdToGenerateToken, tags, tagKeyValuePairs, showSpinner } = this.state;
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    ); 
     return(
-      <div className="form-group col-md-12">
-      <label htmlFor="projectSelect" className="slice-form-label">Project</label>
+      <div className="form-group">
+      <label htmlFor="projectSelect" className="slice-form-label">
+        Project
+        <a
+          href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <i className="fa fa-question-circle mx-2"></i>
+          Project Permissions
+        </a>
+      </label>
       <select
         id="selectSliceProject"
         name="selectSliceProject"
@@ -73,7 +95,7 @@ export default class SideLinks extends Component {
       >
         <option value="">Choose...</option>
         {
-          user.projects && user.projects.map(project => 
+          projects.length > 0 && projects.map(project => 
             <option value={project.uuid} key={`project-${project.name}`}>{project.name}</option>
           )
         }
@@ -86,30 +108,23 @@ export default class SideLinks extends Component {
       }
       {
         projectIdToGenerateToken !== "" && ! showSpinner && <div>
-          <label htmlFor="projectSelect" className="slice-form-label mt-2">
-            Project Permissions 
-            <a
-              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <i className="fa fa-question-circle mx-2"></i>
-              Project Permissions
-            </a>
-          </label>
           {
             tags.length === 0 && <div className="sm-alert mt-2">
               This project has no permission tags. Please use only SharedNICs and L2Bridge for this slice.
             </div>
           }
           {
-            tags.length > 0 && <div>
+            tags.length > 0 && <div className="mt-2">
               { 
                 tags.map(tag =>
-                <div key={`project-tag-${tag}`}>
-                  <span className="badge badge-primary mr-2">{tag}</span>
-                  <span className="text-md-size">{ tagKeyValuePairs[tag] }</span>
-                </div>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 100, hide: 300 }}
+                    overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
+                    key={`project-tag-${tag}`}
+                  >
+                    <span className="badge badge-primary mr-2 project-tag">{tag}</span>
+                  </OverlayTrigger>
               )}
             </div>
           }
