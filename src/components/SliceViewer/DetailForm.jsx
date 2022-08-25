@@ -34,15 +34,15 @@ export default class DetailForm extends Component {
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
                 <div className="row mb-2">
-                  <label>Core</label>
+                  <label>Cores</label>
                   <input type="number" className="form-control" defaultValue={data.capacities.core} disabled/>
                 </div>
                 <div className="row mb-2">
-                  <label>Ram</label>
+                  <label>Ram(GB)</label>
                   <input type="number" className="form-control" defaultValue={data.capacities.ram} disabled/>
                 </div>
                 <div className="row mb-2">
-                  <label>Disk</label>
+                  <label>Disk(GB)</label>
                   <input type="number" className="form-control" defaultValue={data.capacities.disk} disabled />
                 </div>
               </div>
