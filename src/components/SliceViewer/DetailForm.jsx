@@ -38,7 +38,7 @@ export default class DetailForm extends Component {
                   <input type="number" className="form-control" defaultValue={data.capacities.core} disabled/>
                 </div>
                 <div className="row mb-2">
-                  <label>Ram(GB)</label>
+                  <label>RAM(GB)</label>
                   <input type="number" className="form-control" defaultValue={data.capacities.ram} disabled/>
                 </div>
                 <div className="row mb-2">
