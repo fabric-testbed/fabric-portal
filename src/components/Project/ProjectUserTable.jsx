@@ -68,6 +68,7 @@ class ProjectUserTable extends Component {
   render() {
     const { pageSize, currentPage, sortColumn } = this.state;
     const { totalCount, data } = this.getPageData();
+    const { canUpdate } = this.props;
 
     return (
       <div>
@@ -76,7 +77,7 @@ class ProjectUserTable extends Component {
           data={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
-          size={"sm"}
+          size={canUpdate ? "sm" : "md"}
         />
         <Pagination
           itemsCount={totalCount}

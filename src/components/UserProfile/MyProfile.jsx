@@ -71,7 +71,7 @@ class MyProfile extends Form {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
             {this.renderTextarea("bio", "Bio", true)}
-            {this.renderSelect("pronouns", "Pronouns", true)}
+            {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}
             {this.renderButton("Save")}
