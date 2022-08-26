@@ -107,12 +107,15 @@ class ProjectPersonnel extends Component {
           </div>
         }
         {
-          users.length > 0 ?
+          users.length > 0 &&
           <ProjectUserTable
             users={users}
             onDelete={this.handleDeleteUser}
             canUpdate={canUpdate}
-          /> : 
+          />
+        }
+        {
+          users.length === 0 && !canUpdate && 
           <div className="alert alert-primary" role="alert">
             {`This project has no ${personnelType}.`}
           </div>
