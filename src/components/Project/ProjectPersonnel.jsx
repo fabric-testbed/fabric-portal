@@ -19,7 +19,7 @@ class ProjectPersonnel extends Component {
     try {
       if (value.length > 3) {
         const { data: res } = await getPeopleByName(value);
-        if (res.length === 0) {
+        if (res.results.length === 0) {
           this.setState({
             searchResults: [],
             warningMessage: "No users found. Please update your search term and try again." 
@@ -56,16 +56,16 @@ class ProjectPersonnel extends Component {
 
     return (
       <div>
-        <h4 className="mt-3 mb-2">{personnelType}</h4>
+        <h4>{personnelType}</h4>
         { 
           canUpdate
           &&
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column my-4">
             <div className="d-flex flex-row">
               <input
                 className="form-control search-owner-input"
                 value={searchInput}
-                placeholder={`Search by name or email (at least 4 letters) to add more ${personnelType}...`}
+                placeholder={`Search by name or email (at least 4 letters) to add ${personnelType}...`}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value)}
               />
               <button
@@ -106,15 +106,21 @@ class ProjectPersonnel extends Component {
             }
           </div>
         }
-        <ProjectUserTable
-          users={users}
-          onDelete={this.handleDeleteUser}
-          canUpdate={canUpdate}
-        />
+        {
+          users.length > 0 ?
+          <ProjectUserTable
+            users={users}
+            onDelete={this.handleDeleteUser}
+            canUpdate={canUpdate}
+          /> : 
+          <div className="alert alert-primary" role="alert">
+            {`This project has no ${personnelType}.`}
+          </div>
+        }
         {
           canUpdate &&
-          <button className="btn btn-primary mt-4" onClick={this.props.onPersonnelUpdate}>
-            {`Update ${personnelType}`}
+          <button className="btn btn-primary mt-3" onClick={this.props.onPersonnelUpdate}>
+            Save
           </button>
         }
       </div>
