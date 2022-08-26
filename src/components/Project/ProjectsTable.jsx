@@ -97,6 +97,7 @@ class ProjectsTable extends Component {
       <Table
         columns={cols}
         data={projects}
+        size={"md"}
       />
     );
   }

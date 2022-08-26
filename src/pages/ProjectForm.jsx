@@ -283,13 +283,8 @@ class projectForm extends Form {
       showSpinner,
       spinnerText,
     } = this.state;
-
-    // ***** Conditional Rendering Project Form *****
-    // only facility operator or project creator
-    // can update project/ delete project/ update owner;
-    let canUpdate = globalRoles.isFacilityOperator || data.is_creator;
-    // only facility operator or project owner can update member;
-    let canUpdateMember = canUpdate || data.is_owner;
+    
+    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
 
     const parsedTags = this.parseTags();
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
@@ -330,7 +325,7 @@ class projectForm extends Form {
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
             {
-              canUpdateMember ?
+              canUpdate ?
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
@@ -425,7 +420,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <ProjectPersonnel
                   personnelType={"Project Members"}
-                  canUpdate={canUpdateMember}
+                  canUpdate={canUpdate}
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}

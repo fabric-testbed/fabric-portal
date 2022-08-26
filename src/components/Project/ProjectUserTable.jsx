@@ -76,6 +76,7 @@ class ProjectUserTable extends Component {
           data={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
+          size={"sm"}
         />
         <Pagination
           itemsCount={totalCount}

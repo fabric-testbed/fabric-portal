@@ -25,6 +25,7 @@ class SummaryTable extends Component {
         data={resources}
         sortColumn={sortColumn}
         onSort={onSort}
+        size={"md"}
       />
     );
   }

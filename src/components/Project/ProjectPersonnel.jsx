@@ -49,9 +49,6 @@ class ProjectPersonnel extends Component {
             canUpdate
             &&
             <div className="d-flex flex-column">
-              <button className="btn btn-primary mb-4" onClick={this.props.onPersonnelUpdate}>
-                {`Update ${personnelType}`}
-              </button>
               <div className="d-flex flex-row">
                 <input
                   className="form-control search-owner-input"
@@ -66,6 +63,12 @@ class ProjectPersonnel extends Component {
                   <i className="fa fa-search"></i>
                 </button>
               </div>
+              {
+                searchResults.length === 0 && 
+                <div className="alert alert-warning" role="alert">
+                  No users found. Please update your search term and try again.
+                </div>
+              }
               {
                 searchResults.length > 0 &&
                   <ul className="list-group">
@@ -93,13 +96,19 @@ class ProjectPersonnel extends Component {
           }
         <div className="d-flex flex-row">
           <h4 className="mt-3 mb-2">{personnelType}</h4>
-          {canUpdate && <span className="ml-2 mt-4 mb-3 badge badge-sm badge-light">* Click the Update button on top to submit changes.</span>}
+          {canUpdate && <span className="ml-2 mt-4 mb-3 badge badge-sm badge-light">* Click the Update button at bottom to save changes.</span>}
         </div>
         <ProjectUserTable
           users={users}
           onDelete={this.handleDeleteUser}
           canUpdate={canUpdate}
         />
+        {
+          canUpdate &&
+          <button className="btn btn-primary mt-4 w-100" onClick={this.props.onPersonnelUpdate}>
+            {`Update ${personnelType}`}
+          </button>
+        }
       </div>
     );
   }

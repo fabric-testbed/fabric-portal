@@ -56,12 +56,12 @@ class ProjectProfile extends Component {
             </tr>
             <tr>
               <td>
-                Project Tags <a href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions" target="_blank" rel="noreferrer" className="ml-1">
+              Project Permissions <a href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions" target="_blank" rel="noreferrer" className="ml-1">
                   <i className="fa fa-question-circle mx-2"></i>
                 </a>
               </td>
               <td>
-                { project.tags.length > 0 ? this.renderTags(project.tags) : "No tag" }
+                { project.tags.length > 0 ? this.renderTags(project.tags) : "No permissions assigned" }
               </td>
             </tr>
             {basicInfoRows.map((row, index) => {
