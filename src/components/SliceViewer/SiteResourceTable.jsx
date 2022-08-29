@@ -4,7 +4,7 @@ const SiteResourceTable = props => {
       <thead>
         <tr>
           <th scope="col">Cores</th>
-          <th scope="col">Ram(GB)</th>
+          <th scope="col">RAM(GB)</th>
           <th scope="col">Disk(GB)</th>
           <th scope="col">GPU</th>
           <th scope="col">SmartNIC</th>

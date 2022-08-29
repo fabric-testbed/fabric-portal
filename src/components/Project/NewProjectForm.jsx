@@ -211,7 +211,7 @@ class NewProjectForm extends Form {
               <input
                 className="form-control search-owner-input mb-4"
                 value={this.stateownerSearchInput}
-                placeholder="Search by name or email (at least 4 letters) to add more project owners..."
+                placeholder="Search by name or email (at least 4 letters) to add project owners..."
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
               />
               <button
@@ -257,7 +257,7 @@ class NewProjectForm extends Form {
             <div className="toolbar">
               <input
                 className="form-control search-member-input mb-4"
-                placeholder="Search by name or email (at least 4 letters) to add more project members..."
+                placeholder="Search by name or email (at least 4 letters) to add project members..."
                 value={memberSearchInput}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
               />

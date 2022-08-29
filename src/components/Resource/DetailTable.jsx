@@ -13,7 +13,7 @@ const generateProgressBar = (total, free) => {
 const DetailTable = props => {
   const {name, resource} = props;
   const rows = [
-    ["Core", "totalCore", "freeCore"],
+    ["Cores", "totalCore", "freeCore"],
     ["Disk (GB)", "totalDisk", "freeDisk"],
     ["RAM (GB)", "totalRAM", "freeRAM"],
     ["GPU", "totalGPU", "freeGPU"],

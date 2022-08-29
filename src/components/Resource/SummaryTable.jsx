@@ -7,9 +7,9 @@ class SummaryTable extends Component {
       path: "name",
       label: "Site",
     },
-    { path: ["freeCore", "totalCore"], label: "Core" },
-    { path: ["freeDisk", "totalDisk"], label: "Disk" },
-    { path: ["freeRAM", "totalRAM"], label: "RAM" },
+    { path: ["freeCore", "totalCore"], label: "Cores" },
+    { path: ["freeDisk", "totalDisk"], label: "Disk(GB)" },
+    { path: ["freeRAM", "totalRAM"], label: "RAM(GB)" },
     { path: ["freeGPU", "totalGPU"], label: "GPU" },
     { path: ["freeNVME", "totalNVME"], label: "NVME" },
     { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },
@@ -25,6 +25,7 @@ class SummaryTable extends Component {
         data={resources}
         sortColumn={sortColumn}
         onSort={onSort}
+        size={"md"}
       />
     );
   }

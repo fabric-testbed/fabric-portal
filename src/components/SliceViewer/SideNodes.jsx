@@ -214,7 +214,7 @@ class SideNodes extends React.Component {
                     value={core} onChange={this.handleCoreChange}/>
                 </div>
                 <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputRam" className="slice-builder-label">Ram(GB)</label>
+                  <label htmlFor="inputRam" className="slice-builder-label">RAM(GB)</label>
                   <input type="number" className="form-control form-control-sm" id="inputRam"
                     value={ram} onChange={this.handleRamChange}/>
                 </div>
