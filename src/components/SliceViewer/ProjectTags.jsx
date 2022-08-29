@@ -62,7 +62,7 @@ export default class SideLinks extends Component {
       const project = res.results[0];
       this.setState({ tags: project.tags, showSpinner: false});
     } catch (err) {
-      toast.error("Failed to load the tags of this project. Please re-select a project.");
+      toast.error("Failed to load the permissions of this project. Please re-select a project.");
     }
   }
 

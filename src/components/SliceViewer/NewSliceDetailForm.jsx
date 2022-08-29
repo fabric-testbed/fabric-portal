@@ -177,15 +177,15 @@ export default class NewSliceDetailForm extends Component {
                     <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
                   </div>
                   <div className="col-2 mb-2">
-                    <label className="slice-builder-label">Core</label>
+                    <label className="slice-builder-label">Cores</label>
                     <input type="number" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).core} onChange={this.handleCoreChange}/>
                   </div>
                   <div className="col-2 mb-2">
-                    <label className="slice-builder-label">Ram</label>
+                    <label className="slice-builder-label">RAM(GB)</label>
                     <input type="number" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).ram} onChange={this.handleRamChange}/>
                   </div>
                   <div className="col-2 mb-2">
-                    <label className="slice-builder-label">Disk</label>
+                    <label className="slice-builder-label">Disk(GB)</label>
                     <input type="number" className="form-control form-control-sm" defaultValue={JSON.parse(data.capacities).disk} onChange={this.handleDiskChange}/>
                   </div>
                   <div className="col-1 pt-4 pb-2 d-flex flex-row">

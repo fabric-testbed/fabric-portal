@@ -14,11 +14,6 @@ class MyProfile extends Form {
       website: ""
     },
     user: {},
-    pronounsOptions: [
-      { "_id": 1, "name": "She/her"},
-      { "_id": 2, "name": "He/him"},
-      { "_id": 3, "name": "They/them"},
-    ],
     errors: {},
     showSpinner: false,
   }
@@ -67,7 +62,7 @@ class MyProfile extends Form {
   };
 
   render() {
-    const { pronounsOptions, showSpinner } = this.state;
+    const { showSpinner } = this.state;
     
     return (
       <div className="col-9">
@@ -76,7 +71,7 @@ class MyProfile extends Form {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
             {this.renderTextarea("bio", "Bio", true)}
-            {this.renderSelect("pronouns", "Pronouns", true, "", pronounsOptions)}
+            {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}
             {this.renderButton("Save")}

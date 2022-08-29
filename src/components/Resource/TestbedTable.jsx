@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 class TestbedTable extends Component {
   columns = [
-    { path: ["freeCore", "totalCore"], label: "Core" },
-    { path: ["freeDisk", "totalDisk"], label: "Disk" },
-    { path: ["freeRAM", "totalRAM"], label: "RAM" },
+    { path: ["freeCore", "totalCore"], label: "Cores" },
+    { path: ["freeDisk", "totalDisk"], label: "Disk(GB)" },
+    { path: ["freeRAM", "totalRAM"], label: "RAM(GB)" },
     { path: ["freeGPU", "totalGPU"], label: "GPU" },
     { path: ["freeNVME", "totalNVME"], label: "NVME" },
     { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },

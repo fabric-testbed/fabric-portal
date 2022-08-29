@@ -39,6 +39,7 @@ class SlicesTable extends Component {
         data={slices}
         sortColumn={sortColumn}
         onSort={onSort}
+        size={"md"}
       />
     );
   }
