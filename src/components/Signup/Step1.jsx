@@ -14,9 +14,6 @@ const Step1 = () => {
         </p>
         <ul>
           <li>Click the <b>Proceed</b> button below and you will be redirected to a <a href="https://www.cilogon.org/" target="_blank" rel="noreferrer"><b>CI Logon</b></a> page, where you can select your institution and login using your <i>institutional username and password</i>. </li>
-          <ul className="my-2">
-            <li>Please note that ORCID listed as the first available provider does not work well, please choose your institution from the list instead.</li>
-          </ul>
           <li>After logging in you will be redirected to an enrollment page in FABRIC’s <a href="https://www.incommon.org/software/comanage/" target="_blank" rel="noreferrer"><b>COmanage</b></a> which will display your name, email and institution. Please verify those and <b>you will be redirected back to this site for more instructions.</b></li>
         </ul>
         <p>
@@ -24,6 +21,9 @@ const Step1 = () => {
         </p>
       </div>
       <div className="text-center">
+      <div className="alert alert-warning" role="alert">
+        <i className="fa fa-exclamation-triangle mr-2"></i> Please note that <b>ORCID</b> listed as the first available provider does not work well, please <b>choose your institution</b> from the list instead. <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
+      </div>
         <a href={portalData.selfEnrollRequest.link}>
           <button
             className="btn btn-primary mt-2"
