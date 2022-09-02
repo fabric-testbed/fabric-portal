@@ -3,20 +3,8 @@
   "facilityOptions": [
     { "_id": 1, "name": "FABRIC"}
   ],
-  "jiraProjectLeadLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
-  "jiraAccountIssueLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
-  "jiraProjectPermissionLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
-  "jiraStorageRequestLink": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
-  "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
-  "knowledgeBaseFAQLink": "https://learn.fabric-testbed.net/faq/",
-  "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
-  "fabricWebsiteLink": "https://fabric-testbed.net/",
-  "fabricTwitterLink": "https://twitter.com/FABRICtestbed",
-  "fabricGithubLink": "https://github.com/fabric-testbed",
-  "fabricYoutubeLink": "http://bit.ly/FABRICYouTube",
-  "jupyterHubLinkAlpha": "https://jupyter-beta.fabric-testbed.net/",
-  "jupyterHubLinkBeta": "https://jupyter-beta.fabric-testbed.net/",
-  "jupyterHubLinkProduction": "https://jupyter.fabric-testbed.net/",
+  "sliverKeyLimit": 10,
+  "bastionKeyLimit": 10,
   "selfEnrollRequest": {
     "id": "self-enroll-modal",
     "title": "FABRIC Self Signup",
@@ -24,13 +12,44 @@
     "content": "<p>Dear Experimenter,</p><p>Welcome to FABRIC. We noticed you are not yet registered with FABRIC. In order for you to begin using FABRIC you must go through a 3-step guided enrollment workflow. <b>Clicking the Signup button below will take you to the first step of this process</b>.</p><p><b>If you have already started the enrollment process and are waiting for the approval, please continue to check your email for an approval message.</b> We aim to process enrollment requests within one business day. You will be able to login after receiving this approval.</p><p>Please note: you will <b>always</b> use your institutional credentials to login to FABRIC portal via your institution's Identity Provider - we <b>do not and will never store your password or login information</b>. Any password changes that you go through with your institutional account will also affect how you login to the FABRIC portal.</p>"
   },
   "projectLeadDescription": "Project Lead can create new projects, designate Project Owner(s)  and invite regular members into a project. Faculty or senior staff at universities can request this role.",
-  "facilityOperatorDescription": "Facility Operator is a ‘superuser’ allowed to manipulate any project. This role is reserved for FABRIC staff.",
-  "sliverKeyLimit": 10,
-  "bastionKeyLimit": 10,
+  "facilityOperatorDescription": "Facility Operator is a 'superuser' allowed to manipulate any project. This role is reserved for FABRIC staff.",
+  "jiraLinks": {
+    "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
+    "accountIssue": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
+    "projectPermissionRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
+    "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40"
+  },
+  "fabricSocialLinks": {
+    "website": "https://fabric-testbed.net/",
+    "twitter": "https://twitter.com/FABRICtestbed",
+    "youtube": "http://bit.ly/FABRICYouTube",
+    "github": "https://github.com/fabric-testbed"
+  },
+  "jupyterHubLinks": {
+    "alpha": "https://jupyter-beta.fabric-testbed.net/",
+    "beta": "https://jupyter-beta.fabric-testbed.net/",
+    "production": "https://jupyter.fabric-testbed.net/"
+  },
+  "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
+  "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "learnArticles": {
+    "faq": "https://learn.fabric-testbed.net/faq/",
     "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/",
     "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
     "guideToProjectRoles": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#managing-projects-in-the-real-world",
-    "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/"
+    "guideToProjectPermissions": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/",
+    "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
+    "guideToSliceBuilder": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/",
+    "guideToSliceBuilderSections": {
+      "step1": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-1-select-project",
+      "step2": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-2-add-nodes-and-components",
+      "step3": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-3-add-network-service",
+      "step4": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-4-create-slice",
+      "states": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
+    },
+    "guideToStartExperiment": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-your-first-experiment",
+    "guideToInstallPythonAPI": "https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/",
+    "guideToSliceManager": "https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/",
+    "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/"
   }
 }

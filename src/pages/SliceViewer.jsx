@@ -13,6 +13,7 @@ import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
+import { default as portalData } from "../services/portalData.json";
 
 export default class SliceViewer extends Component { 
   state = {
@@ -135,7 +136,7 @@ export default class SliceViewer extends Component {
                     {slice.state}
                   </span>
                   <a
-                    href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
+                    href={portalData.learnArticles.guideToSliceBuilderSections["states"]}
                     target="_blank"
                     rel="noreferrer"
                     className="ml-1"

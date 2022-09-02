@@ -331,7 +331,7 @@ class projectForm extends Form {
                   type="button"
                   className="btn btn-sm btn-outline-success mr-2 my-3"
                   onClick={() => window.open(
-                    `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
+                    `${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
@@ -342,7 +342,7 @@ class projectForm extends Form {
                   type="button"
                   className="btn btn-sm btn-outline-success mr-2 my-3"
                   onClick={() => window.open(
-                    `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
+                    `${portalData.jiraLinks.storageRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >

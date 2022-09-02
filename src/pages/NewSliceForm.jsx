@@ -25,6 +25,7 @@ import { getResources } from "../services/resourceService.js";
 import { createSlice } from "../services/sliceService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
+import { default as portalData } from "../services/portalData.json";
 
 class NewSliceForm extends React.Component {
   state = {
@@ -329,7 +330,7 @@ class NewSliceForm extends React.Component {
                   Slice Builder
                 </h2>
                 <a
-                  href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/"
+                  href={portalData.learnArticles.guideToSliceBuilder}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3"
@@ -352,9 +353,15 @@ class NewSliceForm extends React.Component {
                 <div className="slice-builder-left">
                 <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
+                    <a
+                      href={portalData.learnArticles.guideToSliceBuilderSections["step1"]}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <button className="btn btn-link">
                         Step 1: Select Project
                       </button>
+                    </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
@@ -364,9 +371,15 @@ class NewSliceForm extends React.Component {
                   </div>
                   <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
-                      <button className="btn btn-link">
-                        Step 2: Add Nodes and Components
-                      </button>
+                      <a
+                        href={portalData.learnArticles.guideToSliceBuilderSections["step2"]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <button className="btn btn-link">
+                          Step 2: Add Nodes and Components
+                        </button>
+                      </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
@@ -386,9 +399,15 @@ class NewSliceForm extends React.Component {
                   </div>
                   <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
-                      <button className="btn btn-link">
-                        Step 3: Add Network Service
-                      </button>
+                      <a
+                        href={portalData.learnArticles.guideToSliceBuilderSections["step3"]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <button className="btn btn-link">
+                          Step 3: Add Network Service
+                        </button>
+                      </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
@@ -403,9 +422,15 @@ class NewSliceForm extends React.Component {
                   </div>
                   <div className="card">
                     <div className="card-header slice-builder-card-header py-1">
-                      <button className="btn btn-link">
-                        Step 4: Create Slice
-                      </button>
+                      <a
+                        href={portalData.learnArticles.guideToSliceBuilderSections["step4"]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <button className="btn btn-link">
+                          Step 4: Create Slice
+                        </button>
+                      </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">

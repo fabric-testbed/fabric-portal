@@ -20,7 +20,7 @@ class Footer extends React.Component {
           <ul>
             <li><b>Useful Links</b></li>
             <li>
-              <a href={portalData.fabricWebsiteLink} target="_blank" rel="noopener noreferrer">FABRIC Website</a>
+              <a href={portalData.fabricSocialLinks.website} target="_blank" rel="noopener noreferrer">FABRIC Website</a>
             </li>
             <li>
               <Link to="/aup">Acceptable Use Policy</Link>
@@ -33,7 +33,7 @@ class Footer extends React.Component {
           <ul>
             <li><b>Help &amp; Support</b></li>
             <li><a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
-            <li><a href={portalData.knowledgeBaseFAQLink} target="_blank" rel="noopener noreferrer">FAQ</a></li>
+            <li><a href={portalData.learnArticles.faq} target="_blank" rel="noopener noreferrer">FAQ</a></li>
             <li>
               <Link to="/help">Contact Us</Link>
             </li>
@@ -45,13 +45,13 @@ class Footer extends React.Component {
               <li><b>Social</b></li>
               <li>
                 <div className="d-flex flex-row justify-content-between w-75 footer-social-icons">
-                  <a href={portalData.fabricTwitterLink} target="_blank" rel="noopener noreferrer">
+                  <a href={portalData.fabricSocialLinks.twitter} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faTwitter} />
                   </a>
-                  <a href={portalData.fabricGithubLink} target="_blank" rel="noopener noreferrer">
+                  <a href={portalData.fabricSocialLinks.github} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faGithub} />
                   </a>
-                  <a href={portalData.fabricYoutubeLink} target="_blank" rel="noopener noreferrer">
+                  <a href={portalData.fabricSocialLinks.youtube} target="_blank" rel="noopener noreferrer">
                     <FontAwesomeIcon icon={faYoutube} />
                   </a>
                   <a href="mailto:info@fabric-testbed.net">

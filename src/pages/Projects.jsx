@@ -132,7 +132,7 @@ class Projects extends React.Component {
           <div className="d-flex flex-row">
             <h1>Projects</h1>
             <a
-              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
+              href={portalData.learnArticles.guideToProjectPermissions}
               target="_blank"
               rel="noreferrer"
               className="mt-3"

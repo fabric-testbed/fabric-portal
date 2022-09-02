@@ -107,7 +107,7 @@ class GlobalRoles extends React.Component {
             type="button"
             className="btn btn-sm btn-outline-primary"
             onClick={() => window.open(
-              `${portalData.jiraProjectLeadLink}?email=${user.email}`,
+              `${portalData.jiraLinks.projectLeadRequest}?email=${user.email}`,
               "_blank")
             }
           >
