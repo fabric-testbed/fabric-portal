@@ -22,7 +22,8 @@ const Step1 = () => {
       </div>
       <div className="text-center">
       <div className="alert alert-warning" role="alert">
-        <i className="fa fa-exclamation-triangle mr-2"></i> Please note that <b>ORCID</b> listed as the first available provider does not work well, please <b>choose your institution</b> from the list instead. <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
+        <i className="fa fa-exclamation-triangle mr-2"></i> Please <b>choose your institution</b> instead of using the default <b>ORCID</b> option from the CILogon page.
+        <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
       </div>
         <a href={portalData.selfEnrollRequest.link}>
           <button
