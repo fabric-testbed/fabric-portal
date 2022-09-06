@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import validator from  "../../utils/sliceValidator";
+import { default as portalData } from "../../services/portalData.json";
 
 export default class SingleComponent extends Component { 
   state = {
@@ -52,6 +54,11 @@ export default class SingleComponent extends Component {
   render() {
     const { componentTypeModel, componentType, componentName, componentModel, modelDetails } = this.state;
     const validationResult = validator.validateSingleComponent(componentType, componentName, componentModel, this.props.addedComponents);
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return(
       <div>
@@ -60,7 +67,16 @@ export default class SingleComponent extends Component {
           <div>
             <div className="form-row">
               <div className="form-group slice-builder-form-group col-md-4">
-                <label htmlFor="inputComponent" className="slice-builder-label">Component Type</label>
+                <label htmlFor="inputComponent" className="slice-builder-label">
+                  Component Type
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 100, hide: 300 }}
+                    overlay={renderTooltip("component-tooltip", portalData.helperText.componentDescription)}
+                  >
+                    <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  </OverlayTrigger>
+                </label>
                 <select
                   className="form-control form-control-sm"
                   id="componentSelect"
