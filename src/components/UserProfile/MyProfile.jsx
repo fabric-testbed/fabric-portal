@@ -57,6 +57,7 @@ class MyProfile extends Form {
       this.setState({ data: profile, user: updatedUser, showSpinner: false });
       toast.success("You've successfully updated profile.");
     } catch (err) {
+      this.setState({ showSpinner: false });
       toast.error("Failed to update user profile. Please try again.");
     }
   };

@@ -54,8 +54,9 @@ class Slices extends React.Component {
         // the token has been stored in the browser and is ready to be used.
           try {
             const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false, });
+            this.setState({ slices: res.data, showSpinner: false });
           } catch (err) {
+            this.setState({ showSpinner: false });
             toast.error("Failed to load slices. Please re-login and try.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.

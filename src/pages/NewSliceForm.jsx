@@ -79,6 +79,7 @@ class NewSliceForm extends React.Component {
         showKeySpinner: false
       });
     } catch (ex) {
+      this.setState({ showKeySpinner: false });
       toast.error("Failed to refresh keys. Please try again later.");
     }
   }

@@ -52,9 +52,10 @@ class Projects extends React.Component {
         globalRoles: checkGlobalRoles(user),
         projects,
         projectsCount,
-        showSpinner: false,
-      })
+        showSpinner: false
+      });
     } catch (err) {
+      this.setState({ showSpinner: false });
       toast.error("Failed to load projects. Please reload this page.");
     }
   }

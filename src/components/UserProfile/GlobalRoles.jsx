@@ -45,7 +45,7 @@ class GlobalRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("pl-tooltip", portalData.projectLeadDescription)}
+                  overlay={renderTooltip("pl-tooltip", portalData.helperText.projectLeadDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>
@@ -60,7 +60,7 @@ class GlobalRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", portalData.facilityOperatorDescription)}
+                  overlay={renderTooltip("fo-tooltip", portalData.helperText.facilityOperatorDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>
