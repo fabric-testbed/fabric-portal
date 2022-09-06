@@ -64,6 +64,7 @@ export default class SliceViewer extends Component {
               showSliceSpinner: false
             });
           } catch (err) {
+            this.setState({ showSliceSpinner: false });
             toast.error("Failed to load the slice. Please try again later.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.

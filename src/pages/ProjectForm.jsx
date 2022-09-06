@@ -171,6 +171,7 @@ class projectForm extends Form {
       toast.success("Project updated successfully!");
     }
     catch (err) {
+      this.setState({ showSpinner: false, spinnerText: ""  });
       toast.error("Failed to save project.");
     }
 
@@ -264,6 +265,7 @@ class projectForm extends Form {
         toast.success(`${personnelType} updated successfully.`);
       });
     } catch (err) {
+      this.setState({ showSpinner: false, spinnerText: ""  });
       toast(`Failed to update ${personnelType}.`)
     }
 

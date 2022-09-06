@@ -14,10 +14,10 @@
   "helperText": {
     "projectLeadDescription": "Project Lead can create new projects, designate Project Owner(s)  and invite regular members into a project. Faculty or senior staff at universities can request this role.",
     "facilityOperatorDescription": "Facility Operator is a 'superuser' allowed to manipulate any project. This role is reserved for FABRIC staff.",
-    "componentDescription": "Hardware that may be added to a virtual machine to expand its capabilities",
-    "networkServiceDescription": "Virtualized hardware that links nodes in a topology so that information (e.g., packets) can be passed through the network.",
-    "sitesDescription": "Approximately 30 physical locations where FABRIC hardware exists.",
-    "nodeDescription": "An individual element (e.g., virtual machine) in a topology that is connected to other nodes to represent the physical and logical structure of a network."
+    "componentDescription": "Component: Hardware that may be added to a virtual machine to expand its capabilities",
+    "networkServiceDescription": "Network Service: Virtualized hardware that links nodes in a topology so that information (e.g., packets) can be passed through the network.",
+    "sitesDescription": "Sites: Approximately 30 physical locations where FABRIC hardware exists.",
+    "nodeDescription": "Node: An individual element (e.g., virtual machine) in a topology that is connected to other nodes to represent the physical and logical structure of a network."
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",

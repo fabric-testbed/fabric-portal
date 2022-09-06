@@ -48,6 +48,7 @@ class User extends React.Component {
       this.setState({ user: res.results[0], showFullPageSpinner: false });
       toast.success("You've successfully refreshed roles.");
     } catch (err) {
+      this.setState({ showFullPageSpinner: false });
       toast.error("Failed to refresh roles. Please try again.");
     }
   }
