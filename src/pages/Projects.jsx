@@ -143,7 +143,7 @@ class Projects extends React.Component {
             </a>
           </div>
           {
-            globalRoles.isProjectLead &&
+            (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
             <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
               Create Project
             </Link>
