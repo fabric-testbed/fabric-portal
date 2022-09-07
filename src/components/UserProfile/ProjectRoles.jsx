@@ -27,6 +27,7 @@ class ProjectRoles extends React.Component {
       const projectsCount = res.total;
       this.setState({ projects, projectsCount, showSpinner: false });
     } catch (err) { 
+      this.setState({ showSpinner: false });
       toast.error("Failed to load user's projects'. Please re-login.");
     }
   }

@@ -3,6 +3,7 @@ import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getProjects, getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { default as portalData } from "../../services/portalData.json";
 
 export default class SideLinks extends Component { 
   state = {
@@ -62,6 +63,7 @@ export default class SideLinks extends Component {
       const project = res.results[0];
       this.setState({ tags: project.tags, showSpinner: false});
     } catch (err) {
+      this.setState({ showSpinner: false });
       toast.error("Failed to load the permissions of this project. Please re-select a project.");
     }
   }
@@ -78,7 +80,7 @@ export default class SideLinks extends Component {
       <label htmlFor="projectSelect" className="slice-form-label">
         Project
         <a
-          href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions"
+          href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
           target="_blank"
           rel="noreferrer"
         >

@@ -1,6 +1,7 @@
 import React from "react";
 import GlobalRoles from "./GlobalRoles";
 import ProjectRoles from "./ProjectRoles";
+import { default as portalData } from "../../services/portalData.json";
 
 class MyRoles extends React.Component {
   render() {
@@ -20,7 +21,7 @@ class MyRoles extends React.Component {
         <div className="alert alert-primary my-2" role="alert">
           Please consult &nbsp;
           <a
-            href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/"
+            href={portalData.learnArticles.guideToProjectPermissions}
             target="_blank"
             rel="noreferrer"
           >

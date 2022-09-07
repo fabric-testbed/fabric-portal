@@ -159,15 +159,19 @@ class projectForm extends Form {
   doSubmit = async () => {
     this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
 
-    const { data: project } = this.state;
+    const { data: project, globalRoles } = this.state;
     try {
-      await updateProject(project);
-      await updateTags(project.uuid, project.tags);
+      if (globalRoles.isFacilityOperator) {
+        await updateTags(project.uuid, project.tags);
+      } else {
+        await updateProject(project);
+      }
 
       this.setState({ showSpinner: false, spinnerText: ""  });
       toast.success("Project updated successfully!");
     }
     catch (err) {
+      this.setState({ showSpinner: false, spinnerText: ""  });
       toast.error("Failed to save project.");
     }
 
@@ -261,6 +265,7 @@ class projectForm extends Form {
         toast.success(`${personnelType} updated successfully.`);
       });
     } catch (err) {
+      this.setState({ showSpinner: false, spinnerText: ""  });
       toast(`Failed to update ${personnelType}.`)
     }
 
@@ -285,6 +290,7 @@ class projectForm extends Form {
     } = this.state;
     
     let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
+    let canUpdateAttr = data.is_creator || data.is_owner;
 
     const parsedTags = this.parseTags();
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
@@ -303,7 +309,6 @@ class projectForm extends Form {
         <div className="container">
           <NewProjectForm
             history={this.props.history}
-            isFacilityOperator={globalRoles.isFacilityOperator}
             baseOptions={parsedTags.baseOptions}
             optionsMapping={parsedTags.optionsMapping}
           />
@@ -319,7 +324,7 @@ class projectForm extends Form {
         </div>
       )
     } else {
-      // 3. Show detailed project form for PO/ PM or FO.
+      // 3. Show detailed project form for PC/ PO/ PM or FO.
       return (
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
@@ -331,7 +336,7 @@ class projectForm extends Form {
                   type="button"
                   className="btn btn-sm btn-outline-success mr-2 my-3"
                   onClick={() => window.open(
-                    `${portalData.jiraProjectPermissionLink}?${urlSuffix}`,
+                    `${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
@@ -342,7 +347,7 @@ class projectForm extends Form {
                   type="button"
                   className="btn btn-sm btn-outline-success mr-2 my-3"
                   onClick={() => window.open(
-                    `${portalData.jiraStorageRequestLink}?${urlSuffix}`,
+                    `${portalData.jiraLinks.storageRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
@@ -378,17 +383,17 @@ class projectForm extends Form {
               className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
             >
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name", canUpdate)}
-                {this.renderTextarea("description", "Description", canUpdate)}
-                {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
+                {this.renderInput("name", "Name", canUpdateAttr)}
+                {this.renderTextarea("description", "Description", canUpdateAttr)}
+                {this.renderSelect("facility", "Facility", canUpdateAttr, data.facility, portalData.facilityOptions)}
+                {this.renderSelect("is_public", "Public", canUpdateAttr, "", publicOptions)}
                 {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               {
                 <ProjectBasicInfoTable
                   project={data}
-                  canUpdate={canUpdate}
+                  canUpdate={canUpdateAttr}
                   onDeleteProject={this.handleDeleteProject}
                 />
               }
@@ -403,7 +408,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <ProjectPersonnel
                   personnelType={"Project Owners"}
-                  canUpdate={canUpdate}
+                  canUpdate={canUpdateAttr}
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
@@ -420,7 +425,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <ProjectPersonnel
                   personnelType={"Project Members"}
-                  canUpdate={canUpdate}
+                  canUpdate={canUpdateAttr}
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}

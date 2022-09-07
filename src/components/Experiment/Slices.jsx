@@ -16,9 +16,9 @@ import _ from "lodash";
 
 class Slices extends React.Component {
   jupyterLinkMap =  {
-    "alpha": portalData.jupyterHubLinkAlpha,
-    "beta": portalData.jupyterHubLinkBeta,
-    "production": portalData.jupyterHubLinkProduction,
+    "alpha": portalData.jupyterHubLinks.alpha,
+    "beta": portalData.jupyterHubLinks.beta,
+    "production": portalData.jupyterHubLinks.production
   }
 
   state = {
@@ -54,8 +54,9 @@ class Slices extends React.Component {
         // the token has been stored in the browser and is ready to be used.
           try {
             const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false, });
+            this.setState({ slices: res.data, showSpinner: false });
           } catch (err) {
+            this.setState({ showSpinner: false });
             toast.error("Failed to load slices. Please re-login and try.");
             if (err.response.status === 401) {
               // 401 Error: Provided token is not valid.
@@ -184,11 +185,11 @@ class Slices extends React.Component {
               </p>
               <p>
                 <ul>
-                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/" target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
-                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-an-your-first-experiment" target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
-                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/" target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
-                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/" target="_blank" rel="noreferrer">Slice Manager</a></li>
-                  <li><a href="https://learn.fabric-testbed.net/knowledge-base/slice-editor/" target="_blank" rel="noreferrer">Slice Editor</a></li>
+                  <li><a href={portalData.learnArticles.guideToSliceBuilder} target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
+                  <li><a href={portalData.learnArticles.guideToStartExperiment} target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
+                  <li><a href={portalData.learnArticles.guideToInstallPythonAPI} target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
+                  <li><a href={portalData.learnArticles.guideToSliceManager} target="_blank" rel="noreferrer">Slice Manager</a></li>
+                  <li><a href={portalData.learnArticles.guideToSliceEditor} target="_blank" rel="noreferrer">Slice Editor</a></li>
                 </ul>
               </p>
             </div>
