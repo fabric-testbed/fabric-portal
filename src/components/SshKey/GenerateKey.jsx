@@ -33,6 +33,7 @@ class GenerateKey extends Form {
       this.setState({ generatedKey: res.results[0], showKeySpinner: false });
       localStorage.setItem("sshKeyType", data.keyType);
     } catch (err) {
+      this.setState({ showKeySpinner: false });
       toast.error("Failed to generate ssh key pairs.");
     } 
   };

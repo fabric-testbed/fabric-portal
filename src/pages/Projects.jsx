@@ -52,9 +52,10 @@ class Projects extends React.Component {
         globalRoles: checkGlobalRoles(user),
         projects,
         projectsCount,
-        showSpinner: false,
-      })
+        showSpinner: false
+      });
     } catch (err) {
+      this.setState({ showSpinner: false });
       toast.error("Failed to load projects. Please reload this page.");
     }
   }
@@ -132,7 +133,7 @@ class Projects extends React.Component {
           <div className="d-flex flex-row">
             <h1>Projects</h1>
             <a
-              href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions"
+              href={portalData.learnArticles.guideToProjectPermissions}
               target="_blank"
               rel="noreferrer"
               className="mt-3"
@@ -142,16 +143,11 @@ class Projects extends React.Component {
             </a>
           </div>
           {
-            (
-              globalRoles.isProjectLead || 
-              globalRoles.isFacilityOperator 
-            )
-            &&
-            (
-              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
-                Create Project
-              </Link>
-            )
+            // (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
+            globalRoles.isProjectLead &&
+            <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
+              Create Project
+            </Link>
           }
         </div>
         <div className="w-100 input-group my-3">

@@ -13,9 +13,9 @@ import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
   jupyterLinkMap =  {
-    "alpha": portalData.jupyterHubLinkAlpha,
-    "beta": portalData.jupyterHubLinkBeta,
-    "production": portalData.jupyterHubLinkProduction,
+    "alpha": portalData.jupyterHubLinks.alpha,
+    "beta": portalData.jupyterHubLinks.beta,
+    "production": portalData.jupyterHubLinks.production
   }
   
   state = {

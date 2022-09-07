@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DeleteModal from "../common/DeleteModal";
 import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
+import { default as portalData } from "../../services/portalData.json";
 
 class ProjectBasicInfoTable extends Component {
   renderTags(tags) {
@@ -31,7 +32,9 @@ class ProjectBasicInfoTable extends Component {
             </tr>
             <tr>
               <td>
-                Project Permissions <a href="https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#project-permissions" target="_blank" rel="noreferrer" className="ml-1">
+                Project Permissions <a
+                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                target="_blank" rel="noreferrer" className="ml-1">
                   <i className="fa fa-question-circle mx-2"></i>
                 </a>
               </td>

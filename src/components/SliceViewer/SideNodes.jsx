@@ -1,9 +1,11 @@
 import React from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
 import { sitesNameMapping }  from "../../data/sites";
+import { default as portalData } from "../../services/portalData.json";
 
 class SideNodes extends React.Component {
   state = {
@@ -138,6 +140,11 @@ class SideNodes extends React.Component {
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return(
       <div>
@@ -168,7 +175,16 @@ class SideNodes extends React.Component {
             <div className="bg-light">
               <div className="form-row">
                 <div className="form-group slice-builder-form-group col-md-3">
-                  <label htmlFor="inputState" className="slice-builder-label">Site</label>
+                  <label htmlFor="inputState" className="slice-builder-label">
+                    Site
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("site-tooltip", portalData.helperText.sitesDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
                   <select
                     className="form-control form-control-sm"
                     id="siteNameSelect"
@@ -185,7 +201,16 @@ class SideNodes extends React.Component {
                   </select>
                 </div>
                 <div className="form-group slice-builder-form-group col-md-3">
-                  <label htmlFor="NodeType" className="slice-builder-label">Node Type</label>
+                  <label htmlFor="NodeType" className="slice-builder-label">
+                    Node Type
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("node-tooltip", portalData.helperText.nodeDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
                   <select
                     className="form-control form-control-sm"
                     id="nodeTypeSelect"

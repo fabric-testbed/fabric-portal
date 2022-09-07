@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ServiceTypeTable from './ServiceTypeTable';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import validator from  "../../utils/sliceValidator";
+import { default as portalData } from "../../services/portalData.json";
 
 export default class SideLinks extends Component { 
   state = {
@@ -57,6 +59,11 @@ export default class SideLinks extends Component {
   render() {
     const { intro, linkType, linkName } = this.state;
     const validationResult = validator.validateNetworkService(this.state.linkType, this.props.selectedCPs, this.state.linkName, this.props.nodes);
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return(
       <div>
@@ -72,7 +79,16 @@ export default class SideLinks extends Component {
         <form>
           <div className="form-row">
             <div className="form-group slice-builder-form-group col-md-6">
-              <label htmlFor="inputComponent" className="slice-builder-label">Service Type</label>
+              <label htmlFor="inputComponent" className="slice-builder-label">
+                Service Type
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 100, hide: 300 }}
+                  overlay={renderTooltip("network-service-tooltip", portalData.helperText.networkServiceDescription)}
+                >
+                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                </OverlayTrigger>
+              </label>
               <select
                 className="form-control form-control-sm"
                 id="componentSelect"
