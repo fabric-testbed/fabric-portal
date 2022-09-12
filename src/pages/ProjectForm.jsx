@@ -161,10 +161,9 @@ class projectForm extends Form {
 
     const { data: project, globalRoles } = this.state;
     try {
+      await updateProject(project);
       if (globalRoles.isFacilityOperator) {
         await updateTags(project.uuid, project.tags);
-      } else {
-        await updateProject(project);
       }
 
       this.setState({ showSpinner: false, spinnerText: ""  });
@@ -290,7 +289,6 @@ class projectForm extends Form {
     } = this.state;
     
     let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
-    let canUpdateAttr = data.is_creator || data.is_owner;
 
     const parsedTags = this.parseTags();
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
@@ -383,17 +381,17 @@ class projectForm extends Form {
               className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
             >
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name", canUpdateAttr)}
-                {this.renderTextarea("description", "Description", canUpdateAttr)}
-                {this.renderSelect("facility", "Facility", canUpdateAttr, data.facility, portalData.facilityOptions)}
-                {this.renderSelect("is_public", "Public", canUpdateAttr, "", publicOptions)}
+                {this.renderInput("name", "Name", canUpdate)}
+                {this.renderTextarea("description", "Description", canUpdate)}
+                {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
+                {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
                 {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               {
                 <ProjectBasicInfoTable
                   project={data}
-                  canUpdate={canUpdateAttr}
+                  canUpdate={canUpdate}
                   onDeleteProject={this.handleDeleteProject}
                 />
               }
@@ -408,7 +406,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <ProjectPersonnel
                   personnelType={"Project Owners"}
-                  canUpdate={canUpdateAttr}
+                  canUpdate={canUpdate}
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
@@ -425,7 +423,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <ProjectPersonnel
                   personnelType={"Project Members"}
-                  canUpdate={canUpdateAttr}
+                  canUpdate={canUpdate}
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
