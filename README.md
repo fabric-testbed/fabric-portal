@@ -4,7 +4,7 @@ The portal is a web based reflection of the user's rights and project associatio
 
 ## Overview
 
-![FABRIC Portal Site Map - Version 2](https://user-images.githubusercontent.com/37635744/134710001-610fa508-acc4-4732-a559-a8c24a584e09.png)
+![FABRIC Portal Site Map - v3](https://user-images.githubusercontent.com/37635744/189714906-18677104-0070-4f93-97a9-746975193a96.png)
 
 The portal provides a graphical user interface to many testbed functions. Those include:
 
