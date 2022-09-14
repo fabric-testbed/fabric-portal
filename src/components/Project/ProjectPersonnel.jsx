@@ -108,11 +108,16 @@ class ProjectPersonnel extends Component {
         }
         {
           users.length > 0 &&
-          <ProjectUserTable
-            users={users}
-            onDelete={this.handleDeleteUser}
-            canUpdate={canUpdate}
-          />
+          <div>
+            <div className="d-flex flex-row-reverse mb-2">
+              {`${users.length} ${personnelType}`}.
+            </div>
+            <ProjectUserTable
+              users={users}
+              onDelete={this.handleDeleteUser}
+              canUpdate={canUpdate}
+            />
+          </div>
         }
         {
           users.length === 0 && !canUpdate && 
