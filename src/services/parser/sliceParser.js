@@ -84,8 +84,11 @@ export default function parseSlice(slice, sliceType) {
       }
     }
 
-    // add parent site node if it's network node.
-    if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
+    // add parent site node/ management IP address if it's network node.
+    if (originalNode.Site) { 
+      data.parent = getSiteIdbyName(originalNode.Site);
+      data.properties.MgmtIp = originalNode.MgmtIp || "";
+    }
   }
 
   const generateConnectionPoint = (data, link, type) => {

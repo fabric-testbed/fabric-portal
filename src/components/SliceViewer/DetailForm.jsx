@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class DetailForm extends Component {
   render() {
     const data = this.props.data;
-
+    console.log(data)
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -32,6 +32,10 @@ export default class DetailForm extends Component {
                 <div className="row mb-2">
                   <label>VM Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Management IP Address</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.MgmtIp} disabled/>
                 </div>
                 <div className="row mb-2">
                   <label>Cores</label>
