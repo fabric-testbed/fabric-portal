@@ -84,6 +84,10 @@ export default class DetailForm extends Component {
                   <label>Type</label>
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
+                <div className="row mb-2">
+                <label>Mac Address</label>
+                <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
+                </div>
               </div>
             }
 

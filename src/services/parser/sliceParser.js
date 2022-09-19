@@ -109,6 +109,7 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
+    properties.mac = JSON.parse(originalNode.LabelAllocations)["mac"] || "";
     data.properties = properties;
     if (sliceType === "new") { 
       data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
