@@ -15,17 +15,21 @@ import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 
+import { default as res } from "../services/mockData/slices/slice1.json";
+
 export default class SliceViewer extends Component { 
   state = {
-    elements: [],
-    slice: {
-      "graph_id": "",
-      "lease_end_time": "",
-      "slice_id": "",
-      "model": "",
-      "name": "Slice Viewer",
-      "state": "StableOK"
-    },
+    // elements: [],
+    // slice: {
+    //   "graph_id": "",
+    //   "lease_end_time": "",
+    //   "slice_id": "",
+    //   "model": "",
+    //   "name": "Slice Viewer",
+    //   "state": "StableOK"
+    // },
+    elements: sliceParser(res.data[0]["model"]),
+    slice: res.data[0],
     errors: [],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
@@ -33,51 +37,51 @@ export default class SliceViewer extends Component {
     showSliceSpinner: false,
   }
 
-  async componentDidMount() {
-    this.setState({ showSliceSpinner: true });
-    // call PR first to check if the user has project.
-    try {
-      const { data: res } = await getProjects("myProjects", 0, 200);
-      if (res.results.length === 0) {
-        this.setState({ hasProject: false });
-      } else {
-        // call credential manager to generate tokens 
-        // if nothing found in browser storage
-        if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-          autoCreateTokens(res.results[0].uuid).then(async () => {
-            const { data: res } = await getSliceById(this.props.match.params.id);
-            this.setState({ 
-              elements: sliceParser(res.data[0]["model"]),
-              slice: res.data[0],
-              errors: sliceErrorParser(res.data[0]["model"]),
-              showSliceSpinner: false
-            });
-          });
-        } else {
-          // the token has been stored in the browser and is ready to be used.
-          try {
-            const { data: res } = await getSliceById(this.props.match.params.id);
-            this.setState({ 
-              elements: sliceParser(res.data[0]["model"]),
-              slice: res.data[0],
-              errors: sliceErrorParser(res.data[0]["model"]),
-              showSliceSpinner: false
-            });
-          } catch (err) {
-            this.setState({ showSliceSpinner: false });
-            toast.error("Failed to load the slice. Please try again later.");
-            if (err.response.status === 401) {
-              // 401 Error: Provided token is not valid.
-              // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(res.results[0].uuid);
-            }
-          }
-        }
-      }
-     } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-    }
-  }
+  // async componentDidMount() {
+  //   this.setState({ showSliceSpinner: true });
+  //   // call PR first to check if the user has project.
+  //   try {
+  //     const { data: res } = await getProjects("myProjects", 0, 200);
+  //     if (res.results.length === 0) {
+  //       this.setState({ hasProject: false });
+  //     } else {
+  //       // call credential manager to generate tokens 
+  //       // if nothing found in browser storage
+  //       if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //         autoCreateTokens(res.results[0].uuid).then(async () => {
+  //           const { data: res } = await getSliceById(this.props.match.params.id);
+  //           this.setState({ 
+  //             elements: sliceParser(res.data[0]["model"]),
+  //             slice: res.data[0],
+  //             errors: sliceErrorParser(res.data[0]["model"]),
+  //             showSliceSpinner: false
+  //           });
+  //         });
+  //       } else {
+  //         // the token has been stored in the browser and is ready to be used.
+  //         try {
+  //           const { data: res } = await getSliceById(this.props.match.params.id);
+  //           this.setState({ 
+  //             elements: sliceParser(res.data[0]["model"]),
+  //             slice: res.data[0],
+  //             errors: sliceErrorParser(res.data[0]["model"]),
+  //             showSliceSpinner: false
+  //           });
+  //         } catch (err) {
+  //           this.setState({ showSliceSpinner: false });
+  //           toast.error("Failed to load the slice. Please try again later.");
+  //           if (err.response.status === 401) {
+  //             // 401 Error: Provided token is not valid.
+  //             // refresh the token by calling credential manager refresh_token.
+  //             autoRefreshTokens(res.results[0].uuid);
+  //           }
+  //         }
+  //       }
+  //     }
+  //    } catch (err) {
+  //     toast.error("User's credential is expired. Please re-login.");
+  //   }
+  // }
 
   handleDeleteSlice = async (id) => {
     try {
