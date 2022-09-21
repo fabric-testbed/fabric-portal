@@ -202,7 +202,10 @@ export default class SliceViewer extends Component {
               }
               {
                 elements.length > 0 &&
-                <DetailForm data={selectedData} />
+                <DetailForm
+                  data={selectedData}
+                  key={selectedData && selectedData.properties && selectedData.properties.name}
+                />
               }
             </div>
           </div>

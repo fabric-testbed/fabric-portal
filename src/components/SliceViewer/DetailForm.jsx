@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 export default class DetailForm extends Component {
   render() {
     const data = this.props.data;
-    console.log(data)
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -85,7 +84,7 @@ export default class DetailForm extends Component {
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
                 <div className="row mb-2">
-                <label>Mac Address</label>
+                <label>MAC Address</label>
                 <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
                 </div>
               </div>
