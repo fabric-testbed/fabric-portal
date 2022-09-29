@@ -4,7 +4,7 @@ const InputCheckboxes = props => {
   const { allOptions, selectedOptions, onCheck } = props;
 
   return ( 
-    <div className="form-check">
+    <div className="form-check form-check-inline">
       {
         allOptions.map(option =>
         <div className="form-check">

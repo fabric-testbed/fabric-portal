@@ -384,12 +384,12 @@ class projectForm extends Form {
               </form>
               <ProjectBasicInfoTable
                 project={data}
-                tags={selectedTags}
+                selectedTags={selectedTags}
                 canUpdate={canUpdate}
                 onDeleteProject={this.handleDeleteProject}
               />
               {
-                globalRoles.isFacilityOperator && <div>
+                globalRoles.isFacilityOperator && <div className="mt-2">
                   <h4>Project Permissions</h4>
                   <InputCheckboxes 
                     allOptions={tagVocabulary}
