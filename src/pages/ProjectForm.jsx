@@ -104,7 +104,8 @@ class projectForm extends Form {
         owners: project.project_owners, 
         members: project.project_members,
         showSpinner: false,
-        spinnerText: ""
+        spinnerText: "",
+        selectedTags: project.tags
       });
     } catch (err) {
       toast.error("Failed to load project.");
@@ -120,7 +121,7 @@ class projectForm extends Form {
     try {
       const { data: res1 } = await getProjectTags();
       const tags = res1.results;
-      this.setState({ tagVocabulary: tags });
+      this.setState({ tagVocabulary: tags  });
     } catch (err) {
       toast.error("Failed to get tags.");
     }
@@ -161,7 +162,11 @@ class projectForm extends Form {
     const { data: project } = this.state;
     try {
       await updateProject(project);
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinnerText: "",
+        originalProjectName: project.name
+      });
       toast.success("Project updated successfully!");
     }
     catch (err) {
@@ -379,6 +384,7 @@ class projectForm extends Form {
               </form>
               <ProjectBasicInfoTable
                 project={data}
+                tags={selectedTags}
                 canUpdate={canUpdate}
                 onDeleteProject={this.handleDeleteProject}
               />
