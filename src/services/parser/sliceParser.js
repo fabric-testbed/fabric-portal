@@ -88,6 +88,7 @@ export default function parseSlice(slice, sliceType) {
     if (originalNode.Site) { 
       data.parent = getSiteIdbyName(originalNode.Site);
       data.properties.MgmtIp = originalNode.MgmtIp || "";
+      data.properties.ImageRef = originalNode.ImageRef || "";
     }
   }
 

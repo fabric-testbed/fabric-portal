@@ -27,7 +27,12 @@ class ProjectBasicInfoTable extends Component {
               <td>Project ID</td>
               <td>
                 <span className="mr-2">{ project.uuid }</span>
-                <CopyButton id={project.uuid} text=""/>
+                <CopyButton
+                  id={project.uuid}
+                  text=""
+                  showCopiedValue={true}
+                  btnStyle={"btn btn-sm btn-primary"}
+                />
               </td>
             </tr>
             <tr>

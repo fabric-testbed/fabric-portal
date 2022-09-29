@@ -39,7 +39,12 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
       </div>
       <div className="alert alert-primary" role="alert">
         <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
-        <CopyButton id={localStorage.getItem("bastionLogin")} text=""></CopyButton>
+        <CopyButton
+          id={localStorage.getItem("bastionLogin")}
+          text=""
+          btnStyle={"btn btn-sm btn-primary"}
+          showCopiedValue={true}
+        />
       </div>
       <Tabs activeTab={localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver"}>
         <div label="Sliver" number={sliverKeys.length}>

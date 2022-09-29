@@ -387,7 +387,7 @@ class projectForm extends Form {
                   <h4>Project Permissions</h4>
                   <InputCheckboxes 
                     allOptions={tagVocabulary}
-                    selectedTags={selectedTags}
+                    selectedOptions={selectedTags}
                     onCheck={this.handleTagCheck}
                   />
                   <button

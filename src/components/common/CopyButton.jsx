@@ -14,7 +14,8 @@ class CopyButton extends Component {
   );
 
   render() {
-    const { id, text } = this.props;
+    const { id, text, btnStyle, showCopiedValue } = this.props;
+    const overlayText = showCopiedValue ? `Copied: ${id}` : `Copied!`
     return (
       <OverlayTrigger
         show={this.state.copied}
@@ -22,7 +23,7 @@ class CopyButton extends Component {
         delay={{ show: 100, hide: 300 }}
         overlay={this.renderTooltip(
           `copy-success-${id}`,
-          `Copied: ${id}`
+          overlayText
         )}
       >
         <CopyToClipboard
@@ -30,8 +31,9 @@ class CopyButton extends Component {
           onCopy={() => this.setState({ copied: true })}
         >
           <button
-            className="btn btn-sm btn-primary"
+            className={`btn btn-sm btn-${btnStyle}`}
             onMouseLeave={() => this.setState({ copied: false })}
+            onClick={e => e.preventDefault()}
           >
             <i className="fa fa-copy"></i> { text }
           </button>
