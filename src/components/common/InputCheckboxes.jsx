@@ -20,7 +20,7 @@ const InputCheckboxes = props => {
       </div>
       {
         allOptions.map(option =>
-        <div className="form-check mb-2">
+        <div className="form-check mb-2" key={option}>
           <input
             className="form-check-input"
             type="checkbox"

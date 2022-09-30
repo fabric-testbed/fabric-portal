@@ -182,7 +182,7 @@ class projectForm extends Form {
   handleTagCheck = (option) => {
     const { selectedTags, tagVocabulary } = this.state;
 
-    if (option ==="all") {
+    if (option === "all") {
       if (selectedTags.length === tagVocabulary.length) {
         this.setState({ selectedTags: [] });
       } else {
@@ -407,6 +407,7 @@ class projectForm extends Form {
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
                     onCheck={this.handleTagCheck}
+                    key={`project-permissions-${selectedTags.length}`}
                   />
                   <button
                     className="btn btn-primary mt-2"
