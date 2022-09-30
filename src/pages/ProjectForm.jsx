@@ -391,7 +391,7 @@ class projectForm extends Form {
               {
                 globalRoles.isFacilityOperator && <div className="mt-2">
                   <h4>Project Permissions</h4>
-                  <InputCheckboxes 
+                  <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
                     onCheck={this.handleTagCheck}

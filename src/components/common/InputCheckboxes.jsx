@@ -4,10 +4,10 @@ const InputCheckboxes = props => {
   const { allOptions, selectedOptions, onCheck } = props;
 
   return ( 
-    <div className="form-check form-check-inline">
+    <div className="w-100 mt-2">
       {
         allOptions.map(option =>
-        <div className="form-check">
+        <div className="form-check mb-2">
           <input
             className="form-check-input"
             type="checkbox"
