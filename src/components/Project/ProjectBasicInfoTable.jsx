@@ -18,7 +18,7 @@ class ProjectBasicInfoTable extends Component {
   }
 
   render() {
-    const { project, selectedTags, canUpdate, onDeleteProject } = this.props;
+    const { project, projectTags, canUpdate, onDeleteProject } = this.props;
     return (
       <div className="table-responsive">
         <table className="table table-striped table-bordered mt-4">
@@ -44,7 +44,7 @@ class ProjectBasicInfoTable extends Component {
                 </a>
               </td>
               <td>
-                { selectedTags.length > 0 ? this.renderTags(selectedTags) : "No permissions assigned" }
+                { projectTags.length > 0 ? this.renderTags(projectTags) : "No permissions assigned" }
               </td>
             </tr>
             <tr>

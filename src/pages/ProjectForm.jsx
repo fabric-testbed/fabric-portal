@@ -64,7 +64,8 @@ class projectForm extends Form {
     members: [],
     tagVocabulary: [],
     showSpinner: false,
-    selectedTags: []
+    selectedTags: [],
+    originalTags: []
   };
 
   schema = {
@@ -105,7 +106,8 @@ class projectForm extends Form {
         members: project.project_members,
         showSpinner: false,
         spinnerText: "",
-        selectedTags: project.tags
+        selectedTags: project.tags,
+        originalTags: project.tags
       });
     } catch (err) {
       toast.error("Failed to load project.");
@@ -178,12 +180,20 @@ class projectForm extends Form {
   };
 
   handleTagCheck = (option) => {
-    const { selectedTags } = this.state;
+    const { selectedTags, tagVocabulary } = this.state;
 
-    if (selectedTags.includes(option)) {
-      this.setState({ selectedTags: selectedTags.filter(o => o !== option) });
+    if (option ==="all") {
+      if (selectedTags.length === tagVocabulary.length) {
+        this.setState({ selectedTags: [] });
+      } else {
+        this.setState({ selectedTags: tagVocabulary });
+      }
     } else {
-      this.setState({ selectedTags: [...selectedTags, option] });
+      if (selectedTags.includes(option)) {
+        this.setState({ selectedTags: selectedTags.filter(o => o !== option) });
+      } else {
+        this.setState({ selectedTags: [...selectedTags, option] });
+      }
     }
   }
 
@@ -192,6 +202,7 @@ class projectForm extends Form {
     this.setState({ showSpinner: true, spinnerText: `Updating project permissions...`  });
     try {
       await updateTags( project.uuid, selectedTags);
+      this.setState({ originalTags: selectedTags });
       toast.success(`Permissions updated successfully.`);
     } catch (err) {
       toast.error("Failed to save project permissions.");
@@ -285,7 +296,8 @@ class projectForm extends Form {
       showSpinner,
       spinnerText,
       tagVocabulary,
-      selectedTags
+      selectedTags,
+      originalTags
     } = this.state;
     
     let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
@@ -384,7 +396,7 @@ class projectForm extends Form {
               </form>
               <ProjectBasicInfoTable
                 project={data}
-                selectedTags={selectedTags}
+                projectTags={originalTags}
                 canUpdate={canUpdate}
                 onDeleteProject={this.handleDeleteProject}
               />

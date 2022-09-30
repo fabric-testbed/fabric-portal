@@ -5,6 +5,19 @@ const InputCheckboxes = props => {
 
   return ( 
     <div className="w-100 mt-2">
+      <div className="form-check mb-2">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id={"selectAll"}
+          defaultChecked={selectedOptions.length === allOptions.length}
+          onClick={() => onCheck("all")}
+        />
+        <label className="form-check-label">
+          Select All
+        </label>
+      </div>
       {
         allOptions.map(option =>
         <div className="form-check mb-2">
