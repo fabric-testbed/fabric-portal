@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CopyButton from "../common/CopyButton";
+import { default as portalData } from "../../services/portalData.json";
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
@@ -62,7 +63,12 @@ export default class DetailForm extends Component {
                 {
                   data.properties.MgmtIp && data.properties.ImageRef &&
                   <div className="row mb-2">
-                  <label>SSH Command</label>
+                  <label>SSH Command <a
+                    href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
+                    target="_blank" rel="noreferrer" className="ml-1">
+                      <i className="fa fa-question-circle mx-2"></i>
+                    </a>
+                  </label>
                   <div className="ssh-command">
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
                     <CopyButton
