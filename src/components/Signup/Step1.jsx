@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import checkPortalType from "../../utils/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
 
 const Step1 = () => {
@@ -25,7 +25,7 @@ const Step1 = () => {
         <i className="fa fa-exclamation-triangle mr-2"></i> Please <b>choose your institution</b> and <b> NOT use the ORCID</b> option from the CILogon page.
         <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
       </div>
-        <a href={portalData.selfEnrollRequest.link}>
+        <a href={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}>
           <button
             className="btn btn-primary mt-2"
           >

@@ -2,6 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
 import Form from "../components/common/Form/Form";
+import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
@@ -59,11 +60,12 @@ class projectForm extends Form {
       { name: "PROJECT MEMBERS", active: false },
     ],
     originalProjectName: "",
-    originalTags: [],
     owners: [],
     members: [],
     tagVocabulary: [],
     showSpinner: false,
+    selectedTags: [],
+    originalTags: []
   };
 
   schema = {
@@ -98,14 +100,14 @@ class projectForm extends Form {
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
-      // keep a copy of original tags for comparing on submit.
-      this.state.originalTags = project.tags;
       this.setState({ 
         data: this.mapToViewModel(project), 
         owners: project.project_owners, 
         members: project.project_members,
         showSpinner: false,
-        spinnerText: ""
+        spinnerText: "",
+        selectedTags: project.tags,
+        originalTags: project.tags
       });
     } catch (err) {
       toast.error("Failed to load project.");
@@ -121,7 +123,7 @@ class projectForm extends Form {
     try {
       const { data: res1 } = await getProjectTags();
       const tags = res1.results;
-      this.setState({ tagVocabulary: tags });
+      this.setState({ tagVocabulary: tags  });
     } catch (err) {
       toast.error("Failed to get tags.");
     }
@@ -159,14 +161,14 @@ class projectForm extends Form {
   doSubmit = async () => {
     this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
 
-    const { data: project, globalRoles } = this.state;
+    const { data: project } = this.state;
     try {
       await updateProject(project);
-      if (globalRoles.isFacilityOperator) {
-        await updateTags(project.uuid, project.tags);
-      }
-
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinnerText: "",
+        originalProjectName: project.name
+      });
       toast.success("Project updated successfully!");
     }
     catch (err) {
@@ -177,28 +179,35 @@ class projectForm extends Form {
     this.props.history.push(`/projects/${project.uuid}`);
   };
 
-  parseTags = () => {
-    // input: array of tag vocabulary
-    // output: arrary of base options; and object of {base: second option} mapping
-    const originalTags = this.state.tagVocabulary;
-    const baseOptions = [];
-    const optionsMapping =  {};
+  handleTagCheck = (option) => {
+    const { selectedTags, tagVocabulary } = this.state;
 
-    for (const tag of originalTags) {
-      const base = tag.substring(0, tag.indexOf('.'));
-      if (!baseOptions.includes(base)) {
-        baseOptions.push(base);
-        optionsMapping[base] = [];
+    if (option === "all") {
+      if (selectedTags.length === tagVocabulary.length) {
+        this.setState({ selectedTags: [] });
+      } else {
+        this.setState({ selectedTags: tagVocabulary });
+      }
+    } else {
+      if (selectedTags.includes(option)) {
+        this.setState({ selectedTags: selectedTags.filter(o => o !== option) });
+      } else {
+        this.setState({ selectedTags: [...selectedTags, option] });
       }
     }
+  }
 
-    for (const tag of originalTags) {
-      const base = tag.substring(0, tag.indexOf('.'));
-      const second = tag.substring(tag.indexOf('.')+1);
-      optionsMapping[base].push(second);
+  handlePermissionUpdate = async () => {
+    const {  data: project , selectedTags } = this.state;
+    this.setState({ showSpinner: true, spinnerText: `Updating project permissions...`  });
+    try {
+      await updateTags( project.uuid, selectedTags);
+      this.setState({ originalTags: selectedTags });
+      toast.success(`Permissions updated successfully.`);
+    } catch (err) {
+      toast.error("Failed to save project permissions.");
     }
-
-    return { baseOptions, optionsMapping };
+    this.setState({ showSpinner: false, spinnerText: ""  });
   }
 
   handleSideNavChange = (newIndex) => {
@@ -286,11 +295,13 @@ class projectForm extends Form {
       members,
       showSpinner,
       spinnerText,
+      tagVocabulary,
+      selectedTags,
+      originalTags
     } = this.state;
     
     let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
 
-    const parsedTags = this.parseTags();
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
     if (showSpinner) {
@@ -305,11 +316,7 @@ class projectForm extends Form {
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm
-            history={this.props.history}
-            baseOptions={parsedTags.baseOptions}
-            optionsMapping={parsedTags.optionsMapping}
-          />
+          <NewProjectForm history={this.props.history} />
         </div>
       );
     } else if (!data.is_owner && !data.is_member && !data.is_creator && !globalRoles.isFacilityOperator) {
@@ -385,15 +392,30 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
-                {globalRoles.isFacilityOperator && this.renderProjectTags("tags", "Project Permissions", parsedTags.baseOptions, parsedTags.optionsMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
+              <ProjectBasicInfoTable
+                project={data}
+                projectTags={originalTags}
+                canUpdate={canUpdate}
+                onDeleteProject={this.handleDeleteProject}
+              />
               {
-                <ProjectBasicInfoTable
-                  project={data}
-                  canUpdate={canUpdate}
-                  onDeleteProject={this.handleDeleteProject}
-                />
+                globalRoles.isFacilityOperator && <div className="mt-2">
+                  <h4>Project Permissions</h4>
+                  <InputCheckboxes
+                    allOptions={tagVocabulary}
+                    selectedOptions={selectedTags}
+                    onCheck={this.handleTagCheck}
+                    key={`project-permissions-${selectedTags.length}`}
+                  />
+                  <button
+                    className="btn btn-primary mt-2"
+                    onClick={this.handlePermissionUpdate}
+                  >
+                    Update Permissions
+                  </button>
+                </div>
               }
             </div>
             <div

@@ -314,6 +314,10 @@ class NewSliceForm extends React.Component {
       </Tooltip>
     );
 
+    const generatePublicKey = (data) => {
+      return `${data.ssh_key_type} ${data.public_key} ${data.comment}`;
+    }
+
     return (
       <div>
         {
@@ -474,8 +478,8 @@ class NewSliceForm extends React.Component {
                                   >
                                     <option value="">Choose...</option>
                                     {
-                                      sliverKeys.map(key => 
-                                        <option value={key.public_key} key={`sliverkey-${key.comment}`}>{key.comment}</option>
+                                      sliverKeys.map(key =>
+                                        <option value={generatePublicKey(key)} key={`sliverkey-${key.comment}`}>{key.comment}</option>
                                       )
                                     }
                                   </select>

@@ -52,7 +52,12 @@ class ProjectProfile extends Component {
               <td>Project ID</td>
               <td>
                 <span className="mr-2">{ project.uuid }</span>
-                <CopyButton id={project.uuid} text=""/>
+                <CopyButton
+                  id={project.uuid}
+                  text=""
+                  btnStyle={"btn btn-sm btn-primary"}
+                  showCopiedValue={true}
+                />
               </td>
             </tr>
             <tr>
