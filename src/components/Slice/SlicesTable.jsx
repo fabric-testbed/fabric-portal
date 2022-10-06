@@ -26,6 +26,8 @@ class SlicesTable extends Component {
           <CopyButton
             id={slice.slice_id}
             text={"Slice ID"}
+            btnStyle={"btn btn-sm btn-primary"}
+            showCopiedValue={true}
           />
         ),
       },

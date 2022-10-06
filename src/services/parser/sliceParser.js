@@ -84,8 +84,12 @@ export default function parseSlice(slice, sliceType) {
       }
     }
 
-    // add parent site node if it's network node.
-    if (originalNode.Site) { data.parent = getSiteIdbyName(originalNode.Site); }
+    // add parent site node/ management IP address if it's network node.
+    if (originalNode.Site) { 
+      data.parent = getSiteIdbyName(originalNode.Site);
+      data.properties.MgmtIp = originalNode.MgmtIp || "";
+      data.properties.ImageRef = originalNode.ImageRef || "";
+    }
   }
 
   const generateConnectionPoint = (data, link, type) => {
@@ -106,6 +110,11 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
+    if (originalNode.LabelAllocations && JSON.parse(originalNode.LabelAllocations)["mac"]) {
+      properties.mac = JSON.parse(originalNode.LabelAllocations)["mac"];
+    } else {
+      properties.mac = "";
+    }
     data.properties = properties;
     if (sliceType === "new") { 
       data.capacities = originalNode.Capacities ? originalNode.Capacities : null;

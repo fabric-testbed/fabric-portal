@@ -10,6 +10,7 @@ import Topomap from "../components/Resource/Topomap";
 import DetailTable from "../components/Resource/DetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
+import checkPortalType from "../utils/checkPortalType";
 
 class Home extends React.Component {
   state = {
@@ -48,7 +49,7 @@ class Home extends React.Component {
             <ReactModal
               id={portalData.selfEnrollRequest.id}
               title={portalData.selfEnrollRequest.title}
-              link={portalData.selfEnrollRequest.link}
+              link={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}
               content={portalData.selfEnrollRequest.content}
             />
           </div>
@@ -104,7 +105,7 @@ class Home extends React.Component {
           <span className="text-lg">This Website Uses Cookies.</span>
           <div className="mt-1 text-sm">
             We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
-            Please accept our Cookie Policy by clicking ‘OK’. For more details, visit the <NavLink className="text-primary-light" to="/cookie-policy"><b>Cookie Policy Page</b></NavLink>.
+            Please accept our Cookie Policy by clicking "OK". For more details, visit the <NavLink className="text-primary-light" to="/cookie-policy"><b>Cookie Policy Page</b></NavLink>.
           </div>
         </CookieConsent>
         <ToastContainer />

@@ -12,12 +12,6 @@ import checkPortalType from "../utils/checkPortalType";
 import logo from "../imgs/fabric-brand.png";
 
 class Header extends React.Component {
-  jupyterLinkMap =  {
-    "alpha": portalData.jupyterHubLinks.alpha,
-    "beta": portalData.jupyterHubLinks.beta,
-    "production": portalData.jupyterHubLinks.production
-  }
-  
   state = {
     nonAuthNavItems: [
       { name: "Home", path: "/", child: [], exact: true },
@@ -47,7 +41,7 @@ class Header extends React.Component {
       },
       {
         name: "JupyterHub",
-        href: this.jupyterLinkMap[checkPortalType(window.location.href)],
+        href: portalData.jupyterHubLinks[checkPortalType(window.location.href)],
         child: [],
         path: ""
       },

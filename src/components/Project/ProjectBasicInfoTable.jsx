@@ -18,7 +18,7 @@ class ProjectBasicInfoTable extends Component {
   }
 
   render() {
-    const { project, canUpdate, onDeleteProject } = this.props;
+    const { project, projectTags, canUpdate, onDeleteProject } = this.props;
     return (
       <div className="table-responsive">
         <table className="table table-striped table-bordered mt-4">
@@ -27,7 +27,12 @@ class ProjectBasicInfoTable extends Component {
               <td>Project ID</td>
               <td>
                 <span className="mr-2">{ project.uuid }</span>
-                <CopyButton id={project.uuid} text=""/>
+                <CopyButton
+                  id={project.uuid}
+                  text=""
+                  showCopiedValue={true}
+                  btnStyle={"btn btn-sm btn-primary"}
+                />
               </td>
             </tr>
             <tr>
@@ -39,7 +44,7 @@ class ProjectBasicInfoTable extends Component {
                 </a>
               </td>
               <td>
-                { project.tags.length > 0 ? this.renderTags(project.tags) : "No permissions assigned" }
+                { projectTags.length > 0 ? this.renderTags(projectTags) : "No permissions assigned" }
               </td>
             </tr>
             <tr>

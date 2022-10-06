@@ -14,6 +14,7 @@ import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
+// import { default as res } from "../services/mockData/slices/slice1.json";
 
 export default class SliceViewer extends Component { 
   state = {
@@ -26,6 +27,8 @@ export default class SliceViewer extends Component {
       "name": "Slice Viewer",
       "state": "StableOK"
     },
+    // elements: sliceParser(res.data[0]["model"]),
+    // slice: res.data[0],
     errors: [],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
@@ -198,7 +201,10 @@ export default class SliceViewer extends Component {
               }
               {
                 elements.length > 0 &&
-                <DetailForm data={selectedData} />
+                <DetailForm
+                  data={selectedData}
+                  key={selectedData && selectedData.properties && selectedData.properties.name}
+                />
               }
             </div>
           </div>
