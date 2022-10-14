@@ -31,7 +31,8 @@ class MyProfile extends Form {
         job: user.profile.job,
         website: user.profile.website,
         allOptions: ["show_bio", "show_pronouns", "show_job", "show_website"],
-        selectedOptions: user.profile.preferences
+        selectedOptions: Object.keys(user.profile.preferences).filter(key => 
+          user.profile.preferences[key] && this.state.allOptions.includes(key))
       }
       this.setState({ data: profile, user });
     } catch (err) { 
@@ -53,7 +54,7 @@ class MyProfile extends Form {
     // to object { "show_bio": true, "show_website": true } 
     // true for the existing items in array, others false. 
     const preferences = {};
-    for (const option of this.state.data.allOptions) {
+    for (const option of this.state.allOptions) {
       preferences[option] = this.state.data.selectedOptions.includes(option);
     }
     return preferences;

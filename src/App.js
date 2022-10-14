@@ -90,8 +90,8 @@ class App extends React.Component {
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
             <ProtectedRoute path="/projects" component={Projects} />
             <ProtectedRoute path="/experiments" component={Experiments} />
+            <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
             <ProtectedRoute path="/user" component={User} />
-            <ProtectedRoute path="/projects/:id" component={PublicUserProfile} />
             <Route component={NotFound} />
           </Switch>
           <Footer />
