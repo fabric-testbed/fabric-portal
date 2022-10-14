@@ -15,6 +15,7 @@ class MyProfile extends Form {
       allOptions: ["show_bio", "show_pronouns", "show_job", "show_website"],
       selectedOptions: []
     },
+    allOptions: ["show_bio", "show_pronouns", "show_job", "show_website"],
     user: {},
     errors: {},
     showSpinner: false,
