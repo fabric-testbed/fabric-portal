@@ -406,6 +406,8 @@ class projectForm extends Form {
                   <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
+                    showSelectAll={true}
+                    optionDirection={"column"}
                     onCheck={this.handleTagCheck}
                     key={`project-permissions-${selectedTags.length}`}
                   />
