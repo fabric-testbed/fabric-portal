@@ -11,14 +11,29 @@ class PublicUserProfile extends React.Component {
       "email": "",
       "eppn": "",
       "name": "",
+      "uuid": "",
+      "profile": {
+        "bio": "",
+        "job": "",
+        "pronouns": "",
+        "website": ""
+      },
+      "roles": [],
+      "sshkeys": []
     },
     basicRows: [
       { display: "Name", field: "name" },
       { display: "Email", field: "email" },
       { display: "Affiliation", field: "affiliation" },
       { display: "EPPN", field: "eppn" },
-      { display: "UUID", field: "uuid" },
+      { display: "UUID", field: "uuid" }
     ],
+    profileRows: [
+      { display: "Bio", field: "bio" },
+      { display: "Pronouns", field: "pronouns" },
+      { display: "Job Title", field: "job" },
+      { display: "Website", field: "website" }
+    ]
   };
 
   async componentDidMount() {
@@ -64,13 +79,21 @@ class PublicUserProfile extends React.Component {
         <h1>Public User Profile - {user.name}</h1>
         <div className="mt-4">
           <h2>Basic Information</h2>
-          <table className="table table-striped table-bordered my-4">
+          <table className="table table-sm table-striped table-bordered my-4">
             <tbody>
               {this.state.basicRows.map((row, index) => {
                 return (
                   <tr key={`account-info-${index}`}>
                     <th scope="row">{row.display}</th>
                     <td>{user[row.field]}</td>
+                  </tr>
+                );
+              })}
+               {this.state.profileRows.map((row, index) => {
+                return (
+                  <tr key={`account-info-${index}`}>
+                    <th scope="row">{row.display}</th>
+                    <td>{user.profile[row.field]}</td>
                   </tr>
                 );
               })}
