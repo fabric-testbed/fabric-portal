@@ -2,6 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
+import AccountInfo from "./AccountInfo";
 import { getCurrentUser, updatePeopleProfile } from "../../services/peopleService.js";
 import { toast } from "react-toastify";
 
@@ -19,6 +20,16 @@ class MyProfile extends Form {
     user: {},
     errors: {},
     showSpinner: false,
+    staticInfoRows: [
+      { display: "Name", field: "cilogon_name" },
+      { display: "Email", field: "email" },
+      { display: "Affiliation", field: "affiliation" },
+      { display: "FABRIC ID", field: "fabric_id" },
+      { display: "Bastion Login", field: "bastion_login" },
+      { display: "EPPN", field: "eppn" },
+      { display: "UUID", field: "uuid" },
+      { display: "CILogon ID", field: "cilogon_id"},
+    ],
   }
 
   async componentDidMount () {
@@ -72,7 +83,9 @@ class MyProfile extends Form {
         pronouns: updatedUser.profile.pronouns,
         job: updatedUser.profile.job,
         website: updatedUser.profile.website,
-        preferences: updatedUser.profile.preferences
+        allOptions: ["show_bio", "show_pronouns", "show_job", "show_website"],
+        selectedOptions: Object.keys(updatedUser.profile.preferences).filter(key => 
+          updatedUser.profile.preferences[key] && this.state.allOptions.includes(key))
       }
       this.setState({ data: profile, user: updatedUser, showSpinner: false });
       toast.success("You've successfully updated profile.");
@@ -83,7 +96,7 @@ class MyProfile extends Form {
   };
 
   render() {
-    const { showSpinner } = this.state;
+    const { showSpinner, user } = this.state;
     
     return (
       <div className="col-9">
@@ -99,6 +112,7 @@ class MyProfile extends Form {
             {this.renderButton("Save")}
           </form>
         }
+        <AccountInfo user={user} />
       </div>
     );
   }
