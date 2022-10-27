@@ -17,20 +17,18 @@ class AccountInfo extends React.Component {
   render() {
     const { user } = this.props;
     return (
-      <div className="col-9">
-        <table className="table table-striped table-bordered my-4">
-          <tbody>
-            {this.state.visibleRows.map((row, index) => {
-              return (
-                <tr key={`account-info-${index}`}>
-                  <th scope="row">{row.display}</th>
-                  <td>{user[row.field]}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <table className="table table-striped table-bordered my-4">
+        <tbody>
+          {this.state.visibleRows.map((row, index) => {
+            return (
+              <tr key={`account-info-${index}`}>
+                <th scope="row">{row.display}</th>
+                <td>{user[row.field]}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     );
   }
 }

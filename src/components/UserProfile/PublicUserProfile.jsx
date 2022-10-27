@@ -42,18 +42,16 @@ class PublicUserProfile extends React.Component {
     try {
       const { data: res } = await getPeopleById(userId);
       const user = res.results[0];
-      this.setState({ user  });
+      this.setState({ user });
     } catch (err) {
       toast.error("Failed to load user information.");
     }
   }
 
-  parseRoleName = (name) => {
-    const projectRolesMapping = {
-      "-pc": "Project Creator",
-      "-po": "Project Owner",
-      "-pm": "Project Member"
-    }
+  parseRoles = (roles) => {
+    // merge multiple roles for the same project as one.
+    const projectRoles = {};
+    const globalRoles = [];
 
     const globalRolesMapping = {
       "fabric-active-users": "FABRIC Active User",
@@ -61,69 +59,151 @@ class PublicUserProfile extends React.Component {
       "project-leads": "Project Lead",
       "Jupyterhub": "Jupyterhub",
       "portal-admins": "Portal Admin",
-    }  
-
-    const role = name.slice(-3);
-
-    if(Object.keys(projectRolesMapping).includes(role)) {
-      return [projectRolesMapping[role], name.slice(0, -3)];
-    } else {
-      return [globalRolesMapping[name], 0];
     }
+    const projectRolesMapping = {
+      "-pc": "Project Creator",
+      "-po": "Project Owner",
+      "-pm": "Project Member"
+    }
+
+    for (const role of roles) {
+      if (Object.keys(globalRolesMapping).includes(role.name)) {
+        globalRoles.push({
+          "name": globalRolesMapping[role.name],
+          "description": role.description
+        })
+      } else {
+        // project role.
+        const projectID = role.name.substring(0, role.name.length - 3);
+        const projectRole = projectRolesMapping[role.name.slice(-3)];
+        if (!Object.keys(projectRoles).includes(projectID)) {
+          projectRoles[projectID] = {
+            projectName: role.description,
+            projectRoles: projectRole
+          };
+        } else {
+          const r = projectRoles[projectID].projectRoles;
+          projectRoles[projectID].projectRoles = `${r} / ${projectRole}`;
+        }
+      }
+    }
+
+    return { projectRoles, globalRoles }
   }
 
   render() {
     const { user } = this.state;
+    const roles = user.roles ? this.parseRoles(user.roles) : [];
+
     return (
       <div className="container">
         <h1>Public User Profile - {user.name}</h1>
         <div className="mt-4">
           <h2>Basic Information</h2>
-          <table className="table table-sm table-striped table-bordered my-4">
+          <table className="table table-sm table-striped table-bordered mb-4">
             <tbody>
               {this.state.basicRows.map((row, index) => {
                 return (
+                  user[row.field] && 
                   <tr key={`account-info-${index}`}>
                     <th scope="row">{row.display}</th>
                     <td>{user[row.field]}</td>
                   </tr>
                 );
               })}
-               {this.state.profileRows.map((row, index) => {
-                return (
-                  <tr key={`account-info-${index}`}>
-                    <th scope="row">{row.display}</th>
-                    <td>{user.profile[row.field]}</td>
-                  </tr>
-                );
-              })}
+              {
+                user.profile && this.state.profileRows.map((row, index) => {
+                  return (
+                      user.profile[row.field] && 
+                      <tr key={`account-info-${index}`}>
+                        <th scope="row">{row.display}</th>
+                        <td>{user.profile[row.field]}</td>
+                      </tr>
+                  );
+                })
+              }
             </tbody>
           </table>
         </div>
         <div className="mt-4">
           <h2>Roles</h2>
-          <table className="table table-sm table-striped table-bordered my-4">
-            <tbody>
-              {user.roles.map((role, index) => {
-                return (
-                  <tr key={`account-info-${index}`}>
-                    <td>{this.parseRoleName(role.name)[0]}</td>
-                    <td>
-                      {
-                        this.parseRoleName(role.name)[1] === 0 ? 
-                          role.description : 
-                          <Link to={`/projects/${this.parseRoleName(role.name)[1]}`}>{role.description}</Link>
-                      }
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          {
+            roles.globalRoles &&
+             <table className="table table-sm table-striped table-bordered mb-4">
+              <tbody>
+                <tr>
+                  <th>Global Roles</th>
+                  <th>Description</th>
+                </tr>
+                {
+                  roles.globalRoles.map((role, index) => {
+                    return (
+                      <tr key={`global-role-${index}`}>
+                        <td>{role.name}</td>
+                        <td>{role.description}</td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+          }
+          {
+            roles.projectRoles && roles.projectRoles !== null &&  
+             <table className="table table-sm table-striped table-bordered my-4">
+              <tbody>
+                <tr>
+                  <th>Project</th>
+                  <th>Roles</th>
+                </tr>
+                {
+                  Object.keys(roles.projectRoles).map((projectID, index) => {
+                    return (
+                      <tr key={`project-role-${index}`}>
+                        <td>
+                          <Link to={`/projects/${projectID}`}>
+                            {roles.projectRoles[projectID].projectName}
+                          </Link>
+                        </td>
+                        <td>{roles.projectRoles[projectID].projectRoles}</td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+          }
+          {
+            !user.roles &&
+            <div className="alert alert-primary mb-2" role="alert">
+              The user sets <b>Roles</b> as private information.
+            </div>
+          }
+          {
+            user.roles && user.roles.length === 0 &&
+            <div className="alert alert-primary mb-2" role="alert">
+              The user doesn't have any role.
+            </div>
+          }
         </div>
         <div className="mt-4">
-          <h2 className="mb-4">SSH Keys</h2>
-          <KeyCards keys={user.sshkeys} disableKeyDelete={true} />
+          <h2>SSH Keys</h2>
+          {
+            !user.sshkeys &&
+            <div className="alert alert-primary mb-2" role="alert">
+              The user sets <b>SSH Keys</b> as private information.
+            </div>
+          }
+          {
+            user.sshkeys && user.sshkeys.length === 0 &&
+            <div className="alert alert-primary mb-2" role="alert">
+              The user doesn't have any sliver key.
+            </div>
+          }
+          {
+            user.sshkeys && user.sshkeys.length > 0 &&
+            <KeyCards keys={user.sshkeys} disableKeyDelete={true} />
+          }
         </div>
       </div>
     );
