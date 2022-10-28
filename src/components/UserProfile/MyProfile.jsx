@@ -137,8 +137,8 @@ class MyProfile extends Form {
         ],
         selectedOptions: Object.keys(updatedUser.profile.preferences).filter(key => 
           updatedUser.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
-            Object.keys(user.preferences).filter(key =>
-              user.preferences[key] && this.state.allOptions.includes(key))
+            Object.keys(updatedUser.preferences).filter(key =>
+              updatedUser.preferences[key] && this.state.allOptions.includes(key))
           )
       }
       this.setState({ data: profile, user: updatedUser, showSpinner: false });

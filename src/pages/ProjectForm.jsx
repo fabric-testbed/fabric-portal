@@ -40,7 +40,16 @@ class projectForm extends Form {
       is_member: false,
       is_owner: false,
       is_public: false,
+      allOptions: [
+        "show_project_owners",
+        "show_project_members",
+      ],
+      selectedOptions: []
     },
+    allOptions: [
+      "show_project_owners",
+      "show_project_members",
+    ],
     publicOptions: [
       { "_id": 1, "name": "Yes" },
       { "_id": 2, "name": "No" }
@@ -82,7 +91,9 @@ class projectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
-    is_public: Joi.string().required().label("Public")
+    is_public: Joi.string().required().label("Public"),
+    allOptions: Joi.array(),
+    selectedOptions: Joi.array()
   };
 
   async populateProject() {
@@ -154,7 +165,13 @@ class projectForm extends Form {
       is_creator: project.memberships.is_creator,
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
-      is_public: project.is_public ? "Yes" : "No"
+      is_public: project.is_public ? "Yes" : "No",
+      allOptions: [
+        "show_project_owners",
+        "show_project_members",
+      ],
+      selectedOptions: Object.keys(project.preferences).filter(key => 
+        project.preferences[key] && this.state.allOptions.includes(key))
     };
   }
 
@@ -392,6 +409,7 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
+                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", true)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

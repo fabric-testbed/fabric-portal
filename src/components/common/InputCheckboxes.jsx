@@ -4,7 +4,7 @@ const InputCheckboxes = props => {
   const { allOptions, selectedOptions, onCheck, showSelectAll, optionDirection } = props;
 
   return ( 
-    <div className={`w-100 mt-2 d-flex flex-${optionDirection}`}>
+    <div className={`w-100 mt-2 d-flex flex-${optionDirection} flex-wrap`}>
       {
         showSelectAll &&  <div className="form-check mb-2 mr-2">
           <input

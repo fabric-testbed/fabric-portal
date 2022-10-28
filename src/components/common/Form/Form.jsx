@@ -161,11 +161,13 @@ class Form extends Component {
   renderInputCheckBoxes(name, label) {
     const { data } = this.state;
     return (
-      <div className="form-group">
+      <div className="form-group w-100">
         <label htmlFor={name}>{label}</label>
         <InputCheckboxes
           allOptions={data.allOptions}
           selectedOptions={data.selectedOptions}
+          showSelectAll={false}
+          optionDirection={"row"}
           onCheck={this.handleInputBoxCheck}
           key={`input-check-boxes-${data.selectedOptions.length}`}
         />
