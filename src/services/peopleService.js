@@ -30,6 +30,12 @@ export function updatePeopleProfile(userId, data, preferences) {
   })
 }
 
+export function updatePeoplePreference(userId, preferences) {
+  return http.patch(`${apiEndpoint}/${userId}`, {
+    "preferences": preferences
+  })
+}
+
 export function getUserPreferences() {
   return http.get(`${apiEndpoint}/preferences`);
 }
