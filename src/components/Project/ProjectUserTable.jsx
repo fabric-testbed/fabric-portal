@@ -14,10 +14,6 @@ class ProjectUserTable extends Component {
         <Link to={`/users/${user.uuid}`}>{user.name}</Link>
       )
     },
-    {
-      path: "name",
-      label: "Name",
-    },
     { path: "email", label: "Email" },
     { path: "uuid", label: "ID" },
   ];

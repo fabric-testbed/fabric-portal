@@ -175,12 +175,22 @@ class projectForm extends Form {
     };
   }
 
+  parsePreferences = () => {
+    const preferences = {};
+
+    for (const option of this.state.allOptions) {
+      preferences[option] = this.state.data.selectedOptions.includes(option);
+    }
+
+    return preferences;
+  }
+
   doSubmit = async () => {
     this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
 
     const { data: project } = this.state;
     try {
-      await updateProject(project);
+      await updateProject(project, this.parsePreferences());
       this.setState({
         showSpinner: false,
         spinnerText: "",

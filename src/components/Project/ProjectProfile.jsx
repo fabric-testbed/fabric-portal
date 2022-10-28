@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CopyButton from "../common/CopyButton";
+import Table from "../common/Table";
 import toLocaleTime from "../../utils/toLocaleTime";
 import _ from "lodash";
 import { Link } from "react-router-dom";
@@ -15,6 +16,17 @@ class ProjectProfile extends Component {
       { label: "Creator Name", path: "creator_name" },
       { label: "Creator Email", path: "creator_email" },
       { label: "Creator ID", path: "creator_id" }
+    ],
+    projectPersonnelColumns: [
+      {
+        path: "name",
+        label: "Name",
+        content: (user) => (
+          <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+        )
+      },
+      { path: "email", label: "Email" },
+      { path: "uuid", label: "ID" },
     ]
   }
 
@@ -31,7 +43,7 @@ class ProjectProfile extends Component {
   }
 
   render() {
-    const { basicInfoRows } = this.state;
+    const { basicInfoRows, projectPersonnelColumns } = this.state;
     const { project } = this.props;
     return (
       <div>
@@ -46,7 +58,7 @@ class ProjectProfile extends Component {
             </button>
           </Link>
         </div>
-        <table className="table table-striped table-bordered mt-4">
+        <table className="table table-sm table-striped table-bordered mt-4">
           <tbody>
             <tr>
               <td>Project ID</td>
@@ -91,6 +103,48 @@ class ProjectProfile extends Component {
               })}
           </tbody>
         </table>
+        <div className="mt-4">
+          <h2>Project Owners</h2>
+          {
+            !project.project_owners &&  <div className="alert alert-primary mb-2" role="alert">
+              The <b>Project Owners</b> information is set as private.
+            </div>
+          }
+          {
+            project.project_owners && project.project_owners.length === 0 && <div className="alert alert-primary mb-2" role="alert">
+              This project doesn't have Project Owner.
+            </div>
+          }
+          {
+             project.project_owners && project.project_owners.length > 0 && 
+             <Table
+                columns={projectPersonnelColumns}
+                data={project.project_owners}
+                size={"sm"}
+              />
+          }
+        </div>
+        <div className="mt-4">
+          <h2>Project Members</h2>
+          {
+            !project.project_members &&  <div className="alert alert-primary mb-2" role="alert">
+              The <b>Project Members</b> information is set as private.
+            </div>
+          }
+          {
+            project.project_members && project.project_members.length === 0 && <div className="alert alert-primary mb-2" role="alert">
+              This project doesn't have Project Member.
+            </div>
+          }
+           {
+             project.project_members && project.project_members.length > 0 && 
+             <Table
+                columns={projectPersonnelColumns}
+                data={project.project_members}
+                size={"sm"}
+              />
+          }
+        </div>
       </div>
     );
   }
