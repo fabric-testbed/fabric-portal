@@ -1,7 +1,8 @@
 import React from "react";
 
 const InputCheckboxes = props => {
-  const { allOptions, selectedOptions, onCheck, showSelectAll, optionDirection } = props;
+  const { allOptions, selectedOptions, onCheck,
+    showSelectAll, optionDirection, disabled } = props;
 
   return ( 
     <div className={`w-100 mt-2 d-flex flex-${optionDirection} flex-wrap`}>
@@ -14,6 +15,7 @@ const InputCheckboxes = props => {
             id={"selectAll"}
             defaultChecked={selectedOptions.length === allOptions.length}
             onClick={() => onCheck("all")}
+            disabled={disabled}
           />
           <label className="form-check-label">
             Select All
@@ -30,6 +32,7 @@ const InputCheckboxes = props => {
             id={option}
             defaultChecked={selectedOptions.includes(option)}
             onClick={() => onCheck(option)}
+            disabled={disabled}
           />
           <label className="form-check-label">
             { option }

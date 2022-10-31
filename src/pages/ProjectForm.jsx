@@ -111,15 +111,28 @@ class projectForm extends Form {
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
-      this.setState({ 
-        data: this.mapToViewModel(project), 
-        owners: project.project_owners, 
-        members: project.project_members,
-        showSpinner: false,
-        spinnerText: "",
-        selectedTags: project.tags,
-        originalTags: project.tags
-      });
+
+      // check if view as public profile (user is not PC/PO/PM/FO)
+      if(project.memberships && !project.memberships.is_creator && 
+        !project.memberships.is_member && !project.memberships.is_owner &&
+        !this.state.globalRoles.isFacilityOperator) {
+          this.setState({ 
+            data: project, 
+            showSpinner: false,
+            spinnerText: ""
+          });
+      } else {
+        // user is po/pm/pc or Facility Operator.
+        this.setState({ 
+          data: this.mapToViewModel(project), 
+          owners: project.project_owners, 
+          members: project.project_members,
+          showSpinner: false,
+          spinnerText: "",
+          selectedTags: project.tags,
+          originalTags: project.tags
+        });
+      }
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
@@ -129,7 +142,13 @@ class projectForm extends Form {
   }
 
   async componentDidMount() {
-    await this.populateProject();
+    try {
+      const { data: res2 } = await getCurrentUser();
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+    } catch (err) {
+      toast.error("User's credential is expired. Please re-login.");
+      this.props.history.push("/projects");
+    }
 
     try {
       const { data: res1 } = await getProjectTags();
@@ -139,13 +158,7 @@ class projectForm extends Form {
       toast.error("Failed to get tags.");
     }
 
-    try {
-      const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/projects");
-    }
+    await this.populateProject();
   }
 
   mapToViewModel(project) {
@@ -419,7 +432,7 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
-                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", true)}
+                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

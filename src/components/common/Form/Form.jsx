@@ -158,7 +158,7 @@ class Form extends Component {
     );
   }
 
-  renderInputCheckBoxes(name, label) {
+  renderInputCheckBoxes(name, label, notDisabled) {
     const { data } = this.state;
     return (
       <div className="form-group w-100">
@@ -170,6 +170,7 @@ class Form extends Component {
           optionDirection={"row"}
           onCheck={this.handleInputBoxCheck}
           key={`input-check-boxes-${data.selectedOptions.length}`}
+          disabled={!notDisabled}
         />
       </div>
     )

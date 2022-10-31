@@ -86,6 +86,7 @@ class ProjectProfile extends Component {
             </tr>
             {basicInfoRows.map((row, index) => {
                 return (
+                  project[row.path] &&
                   <tr key={`project-basic-info-${index}`}>
                     <td>
                       {row.label}

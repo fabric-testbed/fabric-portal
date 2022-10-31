@@ -60,6 +60,7 @@ class PublicUserProfile extends React.Component {
       "Jupyterhub": "Jupyterhub",
       "portal-admins": "Portal Admin",
     }
+    
     const projectRolesMapping = {
       "-pc": "Project Creator",
       "-po": "Project Owner",
