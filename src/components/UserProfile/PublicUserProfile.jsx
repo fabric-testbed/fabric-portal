@@ -9,7 +9,6 @@ class PublicUserProfile extends React.Component {
     user: {
       "affiliation": "",
       "email": "",
-      "eppn": "",
       "name": "",
       "uuid": "",
       "profile": {
@@ -25,7 +24,6 @@ class PublicUserProfile extends React.Component {
       { display: "Name", field: "name" },
       { display: "Email", field: "email" },
       { display: "Affiliation", field: "affiliation" },
-      { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" }
     ],
     profileRows: [
@@ -60,7 +58,7 @@ class PublicUserProfile extends React.Component {
       "Jupyterhub": "Jupyterhub",
       "portal-admins": "Portal Admin",
     }
-    
+
     const projectRolesMapping = {
       "-pc": "Project Creator",
       "-po": "Project Owner",
@@ -68,23 +66,25 @@ class PublicUserProfile extends React.Component {
     }
 
     for (const role of roles) {
-      if (Object.keys(globalRolesMapping).includes(role.name)) {
-        globalRoles.push({
-          "name": globalRolesMapping[role.name],
-          "description": role.description
-        })
-      } else {
-        // project role.
-        const projectID = role.name.substring(0, role.name.length - 3);
-        const projectRole = projectRolesMapping[role.name.slice(-3)];
-        if (!Object.keys(projectRoles).includes(projectID)) {
-          projectRoles[projectID] = {
-            projectName: role.description,
-            projectRoles: projectRole
-          };
+      if (!role.name.includes("approval-committee")){
+        if (Object.keys(globalRolesMapping).includes(role.name)) {
+          globalRoles.push({
+            "name": globalRolesMapping[role.name],
+            "description": role.description
+          })
         } else {
-          const r = projectRoles[projectID].projectRoles;
-          projectRoles[projectID].projectRoles = `${r} / ${projectRole}`;
+          // project role.
+          const projectID = role.name.substring(0, role.name.length - 3);
+          const projectRole = projectRolesMapping[role.name.slice(-3)];
+          if (!Object.keys(projectRoles).includes(projectID)) {
+            projectRoles[projectID] = {
+              projectName: role.description,
+              projectRoles: projectRole
+            };
+          } else {
+            const r = projectRoles[projectID].projectRoles;
+            projectRoles[projectID].projectRoles = `${r} / ${projectRole}`;
+          }
         }
       }
     }

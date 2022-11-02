@@ -54,6 +54,10 @@ class projectForm extends Form {
       { "_id": 1, "name": "Yes" },
       { "_id": 2, "name": "No" }
     ],
+    optionsDisplayMapping: {
+      "show_project_owners": "Project Owners",
+      "show_project_members": "Project Members"
+    },
     user: {},
     globalRoles: {
       isProjectLead: false,
@@ -326,6 +330,7 @@ class projectForm extends Form {
     const {
       data,
       publicOptions,
+      optionsDisplayMapping,
       user,
       globalRoles,
       originalProjectName,
@@ -432,7 +437,7 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
-                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate)}
+                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate, optionsDisplayMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 class MyProfile extends Form {
   state = {
     data: {
+      name: "",
       bio: "",
       pronouns: "",
       job: "",
       website: "",
       allOptions: [
         "show_email",
-        "show_eppn",
         "show_roles",
         "show_sshkeys",
         "show_bio",
@@ -27,7 +27,6 @@ class MyProfile extends Form {
     },
     allOptions: [
       "show_email",
-      "show_eppn",
       "show_roles",
       "show_sshkeys",
       "show_bio",
@@ -35,6 +34,15 @@ class MyProfile extends Form {
       "show_job",
       "show_website"
     ],
+    optionsDisplayMapping: {
+      "show_email": "Email",
+      "show_roles": "Roles",
+      "show_sshkeys": "SSH Keys",
+      "show_bio": "Bio",
+      "show_pronouns": "Pronouns",
+      "show_job": "Job Title",
+      "show_website": "Website"
+    },
     user: {},
     errors: {},
     showSpinner: false,
@@ -55,13 +63,13 @@ class MyProfile extends Form {
       const { data: res } = await getCurrentUser();
       const user = res.results[0];
       const profile = {
+        name: user.name,
         bio: user.profile.bio,
         pronouns: user.profile.pronouns,
         job: user.profile.job,
         website: user.profile.website,
         allOptions: [
           "show_email",
-          "show_eppn",
           "show_roles",
           "show_sshkeys",
           "show_bio",
@@ -82,6 +90,7 @@ class MyProfile extends Form {
   }
 
   schema = {
+    name: Joi.string().required().label("Name"),
     bio: Joi.string().allow("").label("Bio"),
     pronouns: Joi.string().allow("").label("Pronouns"),
     job: Joi.string().allow("").label("Job Title"),
@@ -116,7 +125,7 @@ class MyProfile extends Form {
     const { data, user } = this.state;
     try {
       const parsedPreferences = this.parsePreferences();
-      await updatePeoplePreference(user.uuid, parsedPreferences[0]);
+      await updatePeoplePreference(user.uuid, data, parsedPreferences[0]);
       await updatePeopleProfile(user.uuid, data, parsedPreferences[1]);
       const { data: res } = await getCurrentUser();
       const updatedUser = res.results[0];
@@ -127,7 +136,6 @@ class MyProfile extends Form {
         website: updatedUser.profile.website,
         allOptions: [
           "show_email",
-          "show_eppn",
           "show_roles",
           "show_sshkeys",
           "show_bio",
@@ -150,7 +158,7 @@ class MyProfile extends Form {
   };
 
   render() {
-    const { showSpinner, user } = this.state;
+    const { showSpinner, user, optionsDisplayMapping } = this.state;
     
     return (
       <div className="col-9">
@@ -162,7 +170,7 @@ class MyProfile extends Form {
             {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}
-            {this.renderInputCheckBoxes("preferences", "Privacy Preferences", true)}
+            {this.renderInputCheckBoxes("preferences", "Privacy Preferences", true, optionsDisplayMapping)}
             {this.renderButton("Save")}
           </form>
         }

@@ -2,7 +2,7 @@ import React from "react";
 
 const InputCheckboxes = props => {
   const { allOptions, selectedOptions, onCheck,
-    showSelectAll, optionDirection, disabled } = props;
+    showSelectAll, optionDirection, disabled, optionsDisplayMapping } = props;
 
   return ( 
     <div className={`w-100 mt-2 d-flex flex-${optionDirection} flex-wrap`}>
@@ -35,7 +35,7 @@ const InputCheckboxes = props => {
             disabled={disabled}
           />
           <label className="form-check-label">
-            { option }
+            { optionsDisplayMapping ? optionsDisplayMapping[option] : option }
           </label>
         </div>
         )
