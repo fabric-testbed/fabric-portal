@@ -4,7 +4,6 @@ import Table from "../common/Table";
 import toLocaleTime from "../../utils/toLocaleTime";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { default as portalData } from "../../services/portalData.json";
 
 class ProjectProfile extends Component {
   state = {
@@ -28,18 +27,6 @@ class ProjectProfile extends Component {
       { path: "email", label: "Email" },
       { path: "uuid", label: "ID" },
     ]
-  }
-
-  renderTags(tags) {
-    return <ul className="input-tag__tags">
-      {
-        tags && tags.length > 0 && tags.map((tag, index) => 
-          <li key={`project-tag-${index}`}>
-            {tag}
-          </li>
-        )
-      }
-    </ul>;
   }
 
   render() {
@@ -72,18 +59,6 @@ class ProjectProfile extends Component {
                 />
               </td>
             </tr>
-            <tr>
-              <td>
-                Project Permissions <a
-                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`} 
-                target="_blank" rel="noreferrer" className="ml-1">
-                  <i className="fa fa-question-circle mx-2"></i>
-                </a>
-              </td>
-              <td>
-                { project.tags.length > 0 ? this.renderTags(project.tags) : "No permissions assigned" }
-              </td>
-            </tr>
             {basicInfoRows.map((row, index) => {
                 return (
                   project[row.path] &&
@@ -93,10 +68,9 @@ class ProjectProfile extends Component {
                     </td>
                     <td className="project-detail-form-td">
                       {
-                        row.path === "created" && toLocaleTime(_.get(project, row.path))
-                      }
-                      {
-                        row.path !== "created" && _.get(project, row.path) 
+                        row.label.includes("Time") ? 
+                          toLocaleTime(_.get(project, row.path)) :
+                          _.get(project, row.path) 
                       }
                     </td>
                   </tr>
