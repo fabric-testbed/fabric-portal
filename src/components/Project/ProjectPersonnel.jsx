@@ -65,7 +65,7 @@ class ProjectPersonnel extends Component {
               <input
                 className="form-control search-owner-input"
                 value={searchInput}
-                placeholder={`Search by name or email (at least 4 letters) to add ${personnelType}...`}
+                placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value)}
               />
               <button

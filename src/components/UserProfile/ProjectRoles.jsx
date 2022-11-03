@@ -123,7 +123,7 @@ class ProjectRoles extends React.Component {
                 type="text"
                 name="query"
                 className="form-control"
-                placeholder={"Search by Project Name (at least 3 letters)..."}
+                placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
                 value={searchQuery}
                 onChange={this.handleInputChange}
               />
