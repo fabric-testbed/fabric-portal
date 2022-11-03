@@ -91,7 +91,10 @@ class ProjectPersonnel extends Component {
                         key={`search-user-result-${index}`}
                         className="list-group-item d-flex flex-row justify-content-between"
                       >
-                        <div className="mt-1">{`${user.name} (${user.email})`}</div>
+                        {
+                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                          <div className="mt-1">{user.name}</div>
+                        }
                         <button
                           className="btn btn-sm btn-primary ml-2"
                           onClick={() => this.handleAddUser(user)}

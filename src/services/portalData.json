@@ -1,8 +1,6 @@
 {
   "defaultFacility": "FABRIC",
-  "facilityOptions": [
-    { "_id": 1, "name": "FABRIC"}
-  ],
+  "facilityOptions": ["FABRIC"],
   "sliverKeyLimit": 10,
   "bastionKeyLimit": 10,
   "selfEnrollRequest": {

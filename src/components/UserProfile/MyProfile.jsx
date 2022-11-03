@@ -10,6 +10,7 @@ class MyProfile extends Form {
   state = {
     data: {
       name: "",
+      email: "",
       bio: "",
       pronouns: "",
       job: "",
@@ -64,6 +65,7 @@ class MyProfile extends Form {
       const user = res.results[0];
       const profile = {
         name: user.name,
+        email: user.email,
         bio: user.profile.bio,
         pronouns: user.profile.pronouns,
         job: user.profile.job,
@@ -91,6 +93,7 @@ class MyProfile extends Form {
 
   schema = {
     name: Joi.string().required().label("Name"),
+    email: Joi.string().required().label("Preferred Email"),
     bio: Joi.string().allow("").label("Bio"),
     pronouns: Joi.string().allow("").label("Pronouns"),
     job: Joi.string().allow("").label("Job Title"),
@@ -130,6 +133,8 @@ class MyProfile extends Form {
       const { data: res } = await getCurrentUser();
       const updatedUser = res.results[0];
       const profile = {
+        name: updatedUser.name,
+        email: updatedUser.email,
         bio: updatedUser.profile.bio,
         pronouns: updatedUser.profile.pronouns,
         job: updatedUser.profile.job,
@@ -166,6 +171,8 @@ class MyProfile extends Form {
         {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
+            {this.renderInput("name", "Name", true)}
+            {this.renderSelect("email", "Preferred Email", true, user.email, user.email_addresses)}
             {this.renderTextarea("bio", "Bio", true)}
             {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}

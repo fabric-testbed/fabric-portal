@@ -106,7 +106,7 @@ class UploadKey extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
                 {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                {this.renderSelect("keyType", "Key Type", true, "", this.getKeyTypeDropdown(maxSliver, maxBastion))}
+                {this("keyType", "Key Type", true, "", this.getKeyTypeDropdown(maxSliver, maxBastion))}
                 {this.renderButton("Upload Public Key")}
               </form>
             </div>

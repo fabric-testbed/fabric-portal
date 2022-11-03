@@ -18,8 +18,8 @@ const Select = ({ name, label, currentOptionName, options, error, disabled, ...r
         <select {...rest} id={name} name={name} className="form-control" disabled={disabled}>
           <option value="" />
           {options.map((option) => (
-            <option key={option.name} value={option.name}>
-              {option.name}
+            <option key={option} value={option}>
+              {option}
             </option>
           ))}
       </select>
