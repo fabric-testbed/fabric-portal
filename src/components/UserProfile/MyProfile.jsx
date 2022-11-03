@@ -44,7 +44,10 @@ class MyProfile extends Form {
       "show_job": "Job Title",
       "show_website": "Website"
     },
-    user: {},
+    user: {
+      email: "",
+      email_addresses: []
+    },
     errors: {},
     showSpinner: false,
     staticInfoRows: [

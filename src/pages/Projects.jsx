@@ -103,12 +103,6 @@ class Projects extends React.Component {
     });
   };
 
-  handleProjectsSearch = () =>{
-    this.setState({ currentPage: 1 }, () => {
-      this.reloadProjectsData();
-    });
-  }
-
   handleProjectTypeChange = (value) => {
     // set isActive field for radio button input style change
     this.setState((prevState) => ({
@@ -121,6 +115,19 @@ class Projects extends React.Component {
     }), () => {
       this.reloadProjectsData();
     });
+  };
+
+  handleProjectsSearch = () =>{
+    this.setState({ currentPage: 1 }, () => {
+      this.reloadProjectsData();
+    });
+  }
+
+  raiseInputKeyDown = (e) => {
+    const val = e.target.value;
+    if ((e.key === "Enter") && val) {
+     this.handleProjectsSearch();
+    }
   };
 
   render() {
@@ -157,6 +164,7 @@ class Projects extends React.Component {
             placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
             value={searchQuery}
             onChange={this.handleInputChange}
+            onKeyDown={this.raiseInputKeyDown}
           />
           <div className="input-group-append">
             <button
