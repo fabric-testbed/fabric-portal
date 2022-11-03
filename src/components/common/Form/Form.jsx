@@ -178,7 +178,7 @@ class Form extends Component {
   }
 
 
-  renderSelect(name, label, notDisabled, currentOptionName, options) {
+  renderSelect(name, label, notDisabled, currentOption, options) {
     const { data, errors } = this.state;
 
     return (
@@ -186,7 +186,7 @@ class Form extends Component {
         name={name}
         value={data[name]} 
         label={label}
-        currentOptionName={currentOptionName}
+        currentOption={currentOption}
         options={options}
         onChange={this.handleChange}
         error={errors[name]}

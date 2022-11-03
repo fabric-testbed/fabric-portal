@@ -50,10 +50,7 @@ class projectForm extends Form {
       "show_project_owners",
       "show_project_members",
     ],
-    publicOptions: [
-      { "_id": 1, "name": "Yes" },
-      { "_id": 2, "name": "No" }
-    ],
+    publicOptions: ["Yes", "No"],
     optionsDisplayMapping: {
       "show_project_owners": "Project Owners",
       "show_project_members": "Project Members"
