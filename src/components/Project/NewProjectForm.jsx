@@ -118,6 +118,13 @@ class NewProjectForm extends Form {
     }
   };
 
+  raiseInputKeyDown = (e) => {
+    const val = e.target.value;
+    if ((e.key === "Enter") && val) {
+     this.handleSearch();
+    }
+  };
+
   handleInputChange = (input, type) => {
     if (type === "po") {
       this.setState({ ownerSearchInput: input });
@@ -210,6 +217,7 @@ class NewProjectForm extends Form {
                 value={this.stateownerSearchInput}
                 placeholder="Search by name/email (at least 4 letters) or UUID to add project owners..."
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"
@@ -257,6 +265,7 @@ class NewProjectForm extends Form {
                 placeholder="Search by name/email (at least 4 letters) or UUID to add project members..."
                 value={memberSearchInput}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"

@@ -39,6 +39,13 @@ class ProjectPersonnel extends Component {
     }
   };
 
+  raiseInputKeyDown = (e) => {
+    const val = e.target.value;
+    if ((e.key === "Enter") && val) {
+     this.handleSearch();
+    }
+  };
+
   handleDeleteUser = (user) => {
     const { personnelType } = this.props;
     this.props.onSinglePersonnelUpdate(personnelType, user, "remove");
@@ -67,6 +74,7 @@ class ProjectPersonnel extends Component {
                 value={searchInput}
                 placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"

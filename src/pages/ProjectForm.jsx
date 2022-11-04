@@ -434,7 +434,7 @@ class projectForm extends Form {
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                 {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions)}
-                {this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate, optionsDisplayMapping)}
+                {data.is_public && this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate, optionsDisplayMapping)}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable
