@@ -19,7 +19,10 @@
     "componentDescription": "Component: Hardware that may be added to a virtual machine to expand its capabilities",
     "networkServiceDescription": "Network Service: Virtualized hardware that links nodes in a topology so that information (e.g., packets) can be passed through the network.",
     "sitesDescription": "Sites: Approximately 30 physical locations where FABRIC hardware exists.",
-    "nodeDescription": "Node: An individual element (e.g., virtual machine) in a topology that is connected to other nodes to represent the physical and logical structure of a network."
+    "nodeDescription": "Node: An individual element (e.g., virtual machine) in a topology that is connected to other nodes to represent the physical and logical structure of a network.",
+    "preferredEmailDescription": "Please choose your preferred contact email among the addresses given to us by your Identity Provider.",
+    "privacyPreferencesDescription": "Please check the information you want to be available to other FABRIC users.",
+    "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators."
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",

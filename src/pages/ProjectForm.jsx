@@ -13,7 +13,6 @@ import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
 import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
-import SpinnerFullPage from "../components/common/SpinnerFullPage";
 
 import { 
   getProjectById,
@@ -433,8 +432,13 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions)}
-                {data.is_public && this.renderInputCheckBoxes("preferences", "Privacy Preferences", canUpdate, optionsDisplayMapping)}
+                {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                {
+                  data.is_public === "Yes" && 
+                  this.renderInputCheckBoxes("preferences", "Privacy Preferences",
+                    canUpdate, optionsDisplayMapping,
+                    portalData.helperText.privacyPreferencesDescription
+                  )}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable

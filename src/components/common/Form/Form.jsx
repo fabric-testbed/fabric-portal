@@ -8,6 +8,7 @@ import TimePicker from "./TimePicker.jsx";
 import Switch from "./Switch.jsx";
 import ProjectTags from "../../Project/ProjectTags";
 import InputCheckboxes from "../InputCheckboxes.jsx";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class Form extends Component {
   state = {
@@ -158,11 +159,29 @@ class Form extends Component {
     );
   }
 
-  renderInputCheckBoxes(name, label, notDisabled, optionsDisplayMapping) {
+  renderInputCheckBoxes(name, label, notDisabled, optionsDisplayMapping, tooltip) {
     const { data } = this.state;
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
+
     return (
       <div className="form-group w-100">
-        <label htmlFor={name}>{label}</label>
+         {
+          tooltip ? <label htmlFor={name}>
+            {label} 
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("select-tooltip", tooltip)}
+            >
+              <i className="fa fa-question-circle text-secondary ml-2"></i>
+            </OverlayTrigger>
+          </label> :
+          <label htmlFor={name}>{label}</label>
+        }
         <InputCheckboxes
           allOptions={data.allOptions}
           selectedOptions={data.selectedOptions}
@@ -172,13 +191,14 @@ class Form extends Component {
           onCheck={this.handleInputBoxCheck}
           key={`input-check-boxes-${data.selectedOptions.length}`}
           disabled={!notDisabled}
+          tooltip={tooltip}
         />
       </div>
     )
   }
 
 
-  renderSelect(name, label, notDisabled, currentOption, options) {
+  renderSelect(name, label, notDisabled, currentOption, options, tooltip) {
     const { data, errors } = this.state;
 
     return (
@@ -191,6 +211,7 @@ class Form extends Component {
         onChange={this.handleChange}
         error={errors[name]}
         disabled={!notDisabled}
+        tooltip={tooltip}
       />
     );
   }

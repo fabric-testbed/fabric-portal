@@ -40,9 +40,9 @@ class ProjectPersonnel extends Component {
   };
 
   raiseInputKeyDown = (e) => {
-    const val = e.target.value;
-    if ((e.key === "Enter") && val) {
-     this.handleSearch();
+    const query = e.target.value;
+    if ((e.key === "Enter") && query) {
+     this.handleSearch(query);
     }
   };
 

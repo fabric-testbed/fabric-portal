@@ -1,5 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
+import { default as portalData } from "../../services/portalData.json";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import AccountInfo from "./AccountInfo";
@@ -175,12 +176,21 @@ class MyProfile extends Form {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
             {this.renderInput("name", "Name", true)}
-            {this.renderSelect("email", "Preferred Email", true, user.email, user.email_addresses)}
+            {
+              this.renderSelect("email", "Preferred Email", true,
+                user.email, user.email_addresses,
+                portalData.helperText.preferredEmailDescription)
+            }
             {this.renderTextarea("bio", "Bio", true)}
             {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}
-            {this.renderInputCheckBoxes("preferences", "Privacy Preferences", true, optionsDisplayMapping)}
+            {
+              this.renderInputCheckBoxes("preferences", "Privacy Preferences",
+                true, optionsDisplayMapping,
+                portalData.helperText.privacyPreferencesDescription
+              )
+            }
             {this.renderButton("Save")}
           </form>
         }
