@@ -13,8 +13,9 @@ import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
 import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
+import SpinnerFullPage from "../components/common/SpinnerFullPage";
 
-import { 
+import {
   getProjectById,
   getProjectTags,
   deleteProject,
