@@ -127,28 +127,7 @@ class PublicUserProfile extends React.Component {
           </table>
         </div>
         <div className="mt-4">
-          <h2>Roles</h2>
-          {
-            roles.globalRoles &&
-             <table className="table table-sm table-striped table-bordered mb-4">
-              <tbody>
-                <tr>
-                  <th>Global Roles</th>
-                  <th>Description</th>
-                </tr>
-                {
-                  roles.globalRoles.map((role, index) => {
-                    return (
-                      <tr key={`global-role-${index}`}>
-                        <td>{role.name}</td>
-                        <td>{role.description}</td>
-                      </tr>
-                    );
-                  })
-                }
-              </tbody>
-            </table>
-          }
+          <h2>Project Roles</h2>
           {
             roles.projectRoles && roles.projectRoles !== null &&  
              <table className="table table-sm table-striped table-bordered my-4">
