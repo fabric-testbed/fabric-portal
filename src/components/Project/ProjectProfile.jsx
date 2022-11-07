@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import CopyButton from "../common/CopyButton";
+import Table from "../common/Table";
 import toLocaleTime from "../../utils/toLocaleTime";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { default as portalData } from "../../services/portalData.json";
 
 class ProjectProfile extends Component {
   state = {
@@ -15,23 +15,22 @@ class ProjectProfile extends Component {
       { label: "Creator Name", path: "creator_name" },
       { label: "Creator Email", path: "creator_email" },
       { label: "Creator ID", path: "creator_id" }
+    ],
+    projectPersonnelColumns: [
+      {
+        path: "name",
+        label: "Name",
+        content: (user) => (
+          <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+        )
+      },
+      { path: "email", label: "Email" },
+      { path: "uuid", label: "ID" },
     ]
   }
 
-  renderTags(tags) {
-    return <ul className="input-tag__tags">
-      {
-        tags && tags.length > 0 && tags.map((tag, index) => 
-          <li key={`project-tag-${index}`}>
-            {tag}
-          </li>
-        )
-      }
-    </ul>;
-  }
-
   render() {
-    const { basicInfoRows } = this.state;
+    const { basicInfoRows, projectPersonnelColumns } = this.state;
     const { project } = this.props;
     return (
       <div>
@@ -46,7 +45,7 @@ class ProjectProfile extends Component {
             </button>
           </Link>
         </div>
-        <table className="table table-striped table-bordered mt-4">
+        <table className="table table-sm table-striped table-bordered mt-4">
           <tbody>
             <tr>
               <td>Project ID</td>
@@ -60,30 +59,18 @@ class ProjectProfile extends Component {
                 />
               </td>
             </tr>
-            <tr>
-              <td>
-                Project Permissions <a
-                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`} 
-                target="_blank" rel="noreferrer" className="ml-1">
-                  <i className="fa fa-question-circle mx-2"></i>
-                </a>
-              </td>
-              <td>
-                { project.tags.length > 0 ? this.renderTags(project.tags) : "No permissions assigned" }
-              </td>
-            </tr>
             {basicInfoRows.map((row, index) => {
                 return (
+                  project[row.path] &&
                   <tr key={`project-basic-info-${index}`}>
                     <td>
                       {row.label}
                     </td>
                     <td className="project-detail-form-td">
                       {
-                        row.path === "created" && toLocaleTime(_.get(project, row.path))
-                      }
-                      {
-                        row.path !== "created" && _.get(project, row.path) 
+                        row.label.includes("Time") ? 
+                          toLocaleTime(_.get(project, row.path)) :
+                          _.get(project, row.path) 
                       }
                     </td>
                   </tr>
@@ -91,6 +78,48 @@ class ProjectProfile extends Component {
               })}
           </tbody>
         </table>
+        <div className="mt-4">
+          <h2>Project Owners</h2>
+          {
+            !project.project_owners &&  <div className="alert alert-primary mb-2" role="alert">
+              The <b>Project Owners</b> information is set as private.
+            </div>
+          }
+          {
+            project.project_owners && project.project_owners.length === 0 && <div className="alert alert-primary mb-2" role="alert">
+              This project doesn't have Project Owner.
+            </div>
+          }
+          {
+             project.project_owners && project.project_owners.length > 0 && 
+             <Table
+                columns={projectPersonnelColumns}
+                data={project.project_owners}
+                size={"sm"}
+              />
+          }
+        </div>
+        <div className="mt-4">
+          <h2>Project Members</h2>
+          {
+            !project.project_members &&  <div className="alert alert-primary mb-2" role="alert">
+              The <b>Project Members</b> information is set as private.
+            </div>
+          }
+          {
+            project.project_members && project.project_members.length === 0 && <div className="alert alert-primary mb-2" role="alert">
+              This project doesn't have Project Member.
+            </div>
+          }
+           {
+             project.project_members && project.project_members.length > 0 && 
+             <Table
+                columns={projectPersonnelColumns}
+                data={project.project_members}
+                size={"sm"}
+              />
+          }
+        </div>
       </div>
     );
   }

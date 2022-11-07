@@ -11,16 +11,36 @@ export function getPeopleByName(name) {
   return http.get(`${apiEndpoint}?search=${name}&offset=0&limit=20`);
 }
 
+export function getPeopleById(uuid) {
+  return http.get(`${apiEndpoint}/${uuid}?as_self=false`);
+}
+
 export function getCurrentUser() {
   const uuid = localStorage.getItem("userID");
   return http.get(`${apiEndpoint}/${uuid}?as_self=true`);
 }
 
-export function updatePeopleProfile(userId, data) {
+export function updatePeopleProfile(userId, data, preferences) {
   return http.patch(`${apiEndpoint}/${userId}/profile`, {
     "bio": data.bio,
     "job": data.job,
     "pronouns": data.pronouns,
-    "website": data.website
+    "website": data.website,
+    "preferences": preferences
   })
+}
+
+export function updatePeoplePreference(userId, data, preferences) {
+  return http.patch(`${apiEndpoint}/${userId}`, {
+    "name": data.name,
+    "preferences": preferences
+  })
+}
+
+export function getUserPreferences() {
+  return http.get(`${apiEndpoint}/preferences`);
+}
+
+export function getUserProfilePreferences() {
+  return http.get(`${apiEndpoint}/profile/preferences`);
 }

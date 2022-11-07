@@ -1,7 +1,6 @@
 import React from "react";
 import SideNav from "../components/common/SideNav";
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
-import AccountInfo from "../components/UserProfile/AccountInfo";
 import MyRoles from "../components/UserProfile/MyRoles";
 import MyProfile from "../components/UserProfile/MyProfile";
 import KeyTabs from "../components/SshKey/KeyTabs";
@@ -12,14 +11,13 @@ import { getActiveKeys } from "../services/sshKeyService";
 class User extends React.Component {
   state = {
     SideNavItems: [
-      { name: "ACCOUNT INFORMATION", active: true },
+      { name: "MY PROFILE", active: true },
       { name: "MY ROLES & PROJECTS", active: false },
       { name: "MY SSH KEYS", active: false },
-      { name: "MY PROFILE", active: false },
     ],
     user: {},
     activeIndex: 0,
-    componentNames: [AccountInfo, MyRoles, KeyTabs, MyProfile],
+    componentNames: [MyProfile, MyRoles, KeyTabs],
     keys: [],
     showFullPageSpinner: false,
   };

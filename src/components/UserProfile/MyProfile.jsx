@@ -1,21 +1,66 @@
 import React from "react";
 import Joi from "joi-browser";
+import { default as portalData } from "../../services/portalData.json";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
-import { getCurrentUser, updatePeopleProfile } from "../../services/peopleService.js";
+import AccountInfo from "./AccountInfo";
+import { getCurrentUser, updatePeopleProfile, updatePeoplePreference } from "../../services/peopleService.js";
 import { toast } from "react-toastify";
 
 class MyProfile extends Form {
   state = {
     data: {
+      name: "",
+      email: "",
       bio: "",
       pronouns: "",
       job: "",
-      website: ""
+      website: "",
+      allOptions: [
+        "show_email",
+        "show_roles",
+        "show_sshkeys",
+        "show_bio",
+        "show_pronouns",
+        "show_job",
+        "show_website"
+      ],
+      selectedOptions: []
     },
-    user: {},
+    allOptions: [
+      "show_email",
+      "show_roles",
+      "show_sshkeys",
+      "show_bio",
+      "show_pronouns",
+      "show_job",
+      "show_website"
+    ],
+    optionsDisplayMapping: {
+      "show_email": "Email",
+      "show_roles": "Roles",
+      "show_sshkeys": "SSH Keys",
+      "show_bio": "Bio",
+      "show_pronouns": "Pronouns",
+      "show_job": "Job Title",
+      "show_website": "Website"
+    },
+    user: {
+      email: "",
+      email_addresses: []
+    },
     errors: {},
     showSpinner: false,
+    staticInfoRows: [
+      { display: "Name", field: "cilogon_name" },
+      { display: "Email", field: "email" },
+      { display: "Affiliation", field: "affiliation" },
+      { display: "FABRIC ID", field: "fabric_id" },
+      { display: "Bastion Login", field: "bastion_login" },
+      { display: "EPPN", field: "eppn" },
+      { display: "UUID", field: "uuid" },
+      { display: "CILogon ID", field: "cilogon_id"},
+    ],
   }
 
   async componentDidMount () {
@@ -23,10 +68,26 @@ class MyProfile extends Form {
       const { data: res } = await getCurrentUser();
       const user = res.results[0];
       const profile = {
+        name: user.name,
+        email: user.email,
         bio: user.profile.bio,
         pronouns: user.profile.pronouns,
         job: user.profile.job,
         website: user.profile.website,
+        allOptions: [
+          "show_email",
+          "show_roles",
+          "show_sshkeys",
+          "show_bio",
+          "show_pronouns",
+          "show_job",
+          "show_website"
+        ],
+        selectedOptions: Object.keys(user.profile.preferences).filter(key => 
+          user.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
+            Object.keys(user.preferences).filter(key =>
+              user.preferences[key] && this.state.allOptions.includes(key))
+          )
       }
       this.setState({ data: profile, user });
     } catch (err) { 
@@ -35,24 +96,67 @@ class MyProfile extends Form {
   }
 
   schema = {
+    name: Joi.string().required().label("Name"),
+    email: Joi.string().required().label("Preferred Email"),
     bio: Joi.string().allow("").label("Bio"),
     pronouns: Joi.string().allow("").label("Pronouns"),
     job: Joi.string().allow("").label("Job Title"),
     website: Joi.string().allow("").label("Website"),
+    allOptions: Joi.array(),
+    selectedOptions: Joi.array()
   };
+
+  parsePreferences = () => {
+    // from array of ["show_bio", "show_website", ...]
+    // to object { "show_bio": true, "show_website": true } 
+    // true for the existing items in array, others false.
+    const preferenceType1 = ["show_email", "show_eppn", "show_roles", "show_sshkeys"];
+    const preferenceType2 = ["show_bio", "show_pronouns", "show_job", "show_website"];
+
+    const preferences1 = {};
+    const preferences2 = {};
+
+    for (const option of preferenceType1) {
+      preferences1[option] = this.state.data.selectedOptions.includes(option);
+    }
+
+    for (const option of preferenceType2) {
+      preferences2[option] = this.state.data.selectedOptions.includes(option);
+    }
+
+    return [preferences1, preferences2];
+  }
 
   doSubmit = async () => {
     this.setState({ showSpinner: true });
     const { data, user } = this.state;
     try {
-      await updatePeopleProfile(user.uuid, data);
+      const parsedPreferences = this.parsePreferences();
+      await updatePeoplePreference(user.uuid, data, parsedPreferences[0]);
+      await updatePeopleProfile(user.uuid, data, parsedPreferences[1]);
       const { data: res } = await getCurrentUser();
       const updatedUser = res.results[0];
       const profile = {
+        name: updatedUser.name,
+        email: updatedUser.email,
         bio: updatedUser.profile.bio,
         pronouns: updatedUser.profile.pronouns,
         job: updatedUser.profile.job,
         website: updatedUser.profile.website,
+        allOptions: [
+          "show_email",
+          "show_roles",
+          "show_sshkeys",
+          "show_bio",
+          "show_pronouns",
+          "show_job",
+          "show_website"
+        ],
+        selectedOptions: Object.keys(updatedUser.profile.preferences).filter(key => 
+          updatedUser.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
+            Object.keys(updatedUser.preferences).filter(key =>
+              updatedUser.preferences[key] && this.state.allOptions.includes(key))
+          )
       }
       this.setState({ data: profile, user: updatedUser, showSpinner: false });
       toast.success("You've successfully updated profile.");
@@ -63,7 +167,7 @@ class MyProfile extends Form {
   };
 
   render() {
-    const { showSpinner } = this.state;
+    const { showSpinner, user, optionsDisplayMapping } = this.state;
     
     return (
       <div className="col-9">
@@ -71,13 +175,26 @@ class MyProfile extends Form {
         {
           showSpinner ? <SpinnerWithText text={"Updating profile..."} /> :
           <form onSubmit={this.handleSubmit}>
+            {this.renderInput("name", "Name", true)}
+            {
+              this.renderSelect("email", "Preferred Email", true,
+                user.email, user.email_addresses,
+                portalData.helperText.preferredEmailDescription)
+            }
             {this.renderTextarea("bio", "Bio", true)}
             {this.renderInput("pronouns", "Pronouns", true)}
             {this.renderInput("job", "Job Title", true)}
             {this.renderInput("website", "Website", true)}
+            {
+              this.renderInputCheckBoxes("preferences", "Privacy Preferences",
+                true, optionsDisplayMapping,
+                portalData.helperText.privacyPreferencesDescription
+              )
+            }
             {this.renderButton("Save")}
           </form>
         }
+        <AccountInfo user={user} />
       </div>
     );
   }

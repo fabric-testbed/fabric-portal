@@ -15,7 +15,7 @@ import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 
-import { 
+import {
   getProjectById,
   getProjectTags,
   deleteProject,
@@ -40,11 +40,21 @@ class projectForm extends Form {
       is_member: false,
       is_owner: false,
       is_public: false,
+      allOptions: [
+        "show_project_owners",
+        "show_project_members",
+      ],
+      selectedOptions: []
     },
-    publicOptions: [
-      { "_id": 1, "name": "Yes" },
-      { "_id": 2, "name": "No" }
+    allOptions: [
+      "show_project_owners",
+      "show_project_members",
     ],
+    publicOptions: ["Yes", "No"],
+    optionsDisplayMapping: {
+      "show_project_owners": "Project Owners",
+      "show_project_members": "Project Members"
+    },
     user: {},
     globalRoles: {
       isProjectLead: false,
@@ -82,7 +92,9 @@ class projectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
-    is_public: Joi.string().required().label("Public")
+    is_public: Joi.string().required().label("Public"),
+    allOptions: Joi.array(),
+    selectedOptions: Joi.array()
   };
 
   async populateProject() {
@@ -100,15 +112,28 @@ class projectForm extends Form {
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
-      this.setState({ 
-        data: this.mapToViewModel(project), 
-        owners: project.project_owners, 
-        members: project.project_members,
-        showSpinner: false,
-        spinnerText: "",
-        selectedTags: project.tags,
-        originalTags: project.tags
-      });
+
+      // check if view as public profile (user is not PC/PO/PM/FO)
+      if(project.memberships && !project.memberships.is_creator && 
+        !project.memberships.is_member && !project.memberships.is_owner &&
+        !this.state.globalRoles.isFacilityOperator) {
+          this.setState({ 
+            data: project, 
+            showSpinner: false,
+            spinnerText: ""
+          });
+      } else {
+        // user is po/pm/pc or Facility Operator.
+        this.setState({ 
+          data: this.mapToViewModel(project), 
+          owners: project.project_owners, 
+          members: project.project_members,
+          showSpinner: false,
+          spinnerText: "",
+          selectedTags: project.tags,
+          originalTags: project.tags
+        });
+      }
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
@@ -118,7 +143,13 @@ class projectForm extends Form {
   }
 
   async componentDidMount() {
-    await this.populateProject();
+    try {
+      const { data: res2 } = await getCurrentUser();
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+    } catch (err) {
+      toast.error("User's credential is expired. Please re-login.");
+      this.props.history.push("/projects");
+    }
 
     try {
       const { data: res1 } = await getProjectTags();
@@ -128,13 +159,7 @@ class projectForm extends Form {
       toast.error("Failed to get tags.");
     }
 
-    try {
-      const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/projects");
-    }
+    await this.populateProject();
   }
 
   mapToViewModel(project) {
@@ -154,8 +179,24 @@ class projectForm extends Form {
       is_creator: project.memberships.is_creator,
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
-      is_public: project.is_public ? "Yes" : "No"
+      is_public: project.is_public ? "Yes" : "No",
+      allOptions: [
+        "show_project_owners",
+        "show_project_members",
+      ],
+      selectedOptions: Object.keys(project.preferences).filter(key => 
+        project.preferences[key] && this.state.allOptions.includes(key))
     };
+  }
+
+  parsePreferences = () => {
+    const preferences = {};
+
+    for (const option of this.state.allOptions) {
+      preferences[option] = this.state.data.selectedOptions.includes(option);
+    }
+
+    return preferences;
   }
 
   doSubmit = async () => {
@@ -163,7 +204,7 @@ class projectForm extends Form {
 
     const { data: project } = this.state;
     try {
-      await updateProject(project);
+      await updateProject(project, this.parsePreferences());
       this.setState({
         showSpinner: false,
         spinnerText: "",
@@ -286,6 +327,7 @@ class projectForm extends Form {
     const {
       data,
       publicOptions,
+      optionsDisplayMapping,
       user,
       globalRoles,
       originalProjectName,
@@ -391,7 +433,13 @@ class projectForm extends Form {
                 {this.renderInput("name", "Name", canUpdate)}
                 {this.renderTextarea("description", "Description", canUpdate)}
                 {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {this.renderSelect("is_public", "Public", canUpdate, "", publicOptions)}
+                {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                {
+                  data.is_public === "Yes" && 
+                  this.renderInputCheckBoxes("preferences", "Privacy Preferences",
+                    canUpdate, optionsDisplayMapping,
+                    portalData.helperText.privacyPreferencesDescription
+                  )}
                 {canUpdate && this.renderButton("Save")}
               </form>
               <ProjectBasicInfoTable
@@ -406,6 +454,8 @@ class projectForm extends Form {
                   <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
+                    showSelectAll={true}
+                    optionDirection={"column"}
                     onCheck={this.handleTagCheck}
                     key={`project-permissions-${selectedTags.length}`}
                   />

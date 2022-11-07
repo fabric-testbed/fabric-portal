@@ -47,18 +47,11 @@ class GenerateKey extends Form {
   getKeyTypeDropdown = (maxSliver, maxBastion) => {
     let dropdownItems = [];
     if (maxSliver) {
-      dropdownItems = [
-        { "_id": 1, "name": "bastion" },
-      ]
+      dropdownItems = ["bastion"]
     } else if (maxBastion) {
-      dropdownItems = [
-        { "_id": 1, "name": "sliver" },
-      ]
+      dropdownItems = ["sliver"]
     } else {
-      dropdownItems = [
-        { "_id": 1, "name": "sliver" },
-        { "_id": 2, "name": "bastion" }
-      ]
+      dropdownItems = ["sliver", "bastion"]
     }
 
     return dropdownItems;
@@ -104,7 +97,7 @@ class GenerateKey extends Form {
                 <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", true, nameTooltip)}
                   {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                  {this.renderSelect("keyType", "Key Type", true, "", this.getKeyTypeDropdown(maxSliver, maxBastion))}
+                  {this.renderSelect("keyType", "Key Type", true, this.getKeyTypeDropdown(maxSliver, maxBastion)[0], this.getKeyTypeDropdown(maxSliver, maxBastion))}
                   {this.renderButton("Generate Key Pair")}
                 </form>
               }

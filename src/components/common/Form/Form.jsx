@@ -7,6 +7,8 @@ import InputTag from "./InputTag.jsx";
 import TimePicker from "./TimePicker.jsx";
 import Switch from "./Switch.jsx";
 import ProjectTags from "../../Project/ProjectTags";
+import InputCheckboxes from "../InputCheckboxes.jsx";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class Form extends Component {
   state = {
@@ -69,6 +71,25 @@ class Form extends Component {
     data.tags = newTags;
     this.setState({ data });
   };
+
+  handleInputBoxCheck = (option) => {
+    const { data } = this.state;
+
+    let selectedOptions = [];
+    
+    if (data.selectedOptions.includes(option)) {
+      for (const s of data.selectedOptions) {
+        if (s !== option) { selectedOptions.push(s); }
+      }
+    } else {
+      selectedOptions = [...data.selectedOptions];
+      selectedOptions.push(option);
+    }
+
+    const updatedData = { ...data };
+    updatedData.selectedOptions = selectedOptions;
+    this.setState({ data: updatedData})
+  }
 
   renderButton(label) {
     return (
@@ -138,20 +159,60 @@ class Form extends Component {
     );
   }
 
-  renderSelect(name, label, notDisabled, currentOptionName, options) {
+  renderInputCheckBoxes(name, label, notDisabled, optionsDisplayMapping, tooltip) {
+    const { data } = this.state;
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
+
+    return (
+      <div className="form-group w-100">
+         {
+          tooltip ? <label htmlFor={name}>
+            {label} 
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 100, hide: 300 }}
+              overlay={renderTooltip("select-tooltip", tooltip)}
+            >
+              <i className="fa fa-question-circle text-secondary ml-2"></i>
+            </OverlayTrigger>
+          </label> :
+          <label htmlFor={name}>{label}</label>
+        }
+        <InputCheckboxes
+          allOptions={data.allOptions}
+          selectedOptions={data.selectedOptions}
+          optionsDisplayMapping={optionsDisplayMapping}
+          showSelectAll={false}
+          optionDirection={"row"}
+          onCheck={this.handleInputBoxCheck}
+          key={`input-check-boxes-${data.selectedOptions.length}`}
+          disabled={!notDisabled}
+          tooltip={tooltip}
+        />
+      </div>
+    )
+  }
+
+
+  renderSelect(name, label, notDisabled, currentOption, options, tooltip) {
     const { data, errors } = this.state;
 
     return (
-        <Select
-          name={name}
-          value={data[name]} 
-          label={label}
-          currentOptionName={currentOptionName}
-          options={options}
-          onChange={this.handleChange}
-          error={errors[name]}
-          disabled={!notDisabled}
-        />
+      <Select
+        name={name}
+        value={data[name]} 
+        label={label}
+        currentOption={currentOption}
+        options={options}
+        onChange={this.handleChange}
+        error={errors[name]}
+        disabled={!notDisabled}
+        tooltip={tooltip}
+      />
     );
   }
 
