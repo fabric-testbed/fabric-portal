@@ -39,6 +39,13 @@ class ProjectPersonnel extends Component {
     }
   };
 
+  raiseInputKeyDown = (e) => {
+    const query = e.target.value;
+    if ((e.key === "Enter") && query) {
+     this.handleSearch(query);
+    }
+  };
+
   handleDeleteUser = (user) => {
     const { personnelType } = this.props;
     this.props.onSinglePersonnelUpdate(personnelType, user, "remove");
@@ -65,8 +72,9 @@ class ProjectPersonnel extends Component {
               <input
                 className="form-control search-owner-input"
                 value={searchInput}
-                placeholder={`Search by name or email (at least 4 letters) to add ${personnelType}...`}
+                placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"
@@ -91,7 +99,10 @@ class ProjectPersonnel extends Component {
                         key={`search-user-result-${index}`}
                         className="list-group-item d-flex flex-row justify-content-between"
                       >
-                        <div className="mt-1">{`${user.name} (${user.email})`}</div>
+                        {
+                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                          <div className="mt-1">{user.name}</div>
+                        }
                         <button
                           className="btn btn-sm btn-primary ml-2"
                           onClick={() => this.handleAddUser(user)}

@@ -31,12 +31,9 @@ class NewProjectForm extends Form {
       uuid: "",
       description: "",
       facility: portalData.defaultFacility,
-      is_public: "Yes",
+      is_public: "Yes"
     },
-    publicOptions: [
-      { "_id": 1, "name": "Yes" },
-      { "_id": 2, "name": "No" }
-    ],
+    publicOptions: ["Yes", "No"],
     errors: {},
     owners: [],
     addedOwners: [],
@@ -121,6 +118,13 @@ class NewProjectForm extends Form {
     }
   };
 
+  raiseInputKeyDown = (e) => {
+    const query = e.target.value;
+    if ((e.key === "Enter") && query) {
+     this.handleSearch(query);
+    }
+  };
+
   handleInputChange = (input, type) => {
     if (type === "po") {
       this.setState({ ownerSearchInput: input });
@@ -176,7 +180,7 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {this.renderSelect("is_public", "Public", true, "", publicOptions)}
+          {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
           {this.renderButton("Create")}
         </form>
         <div className="mt-4">
@@ -211,8 +215,9 @@ class NewProjectForm extends Form {
               <input
                 className="form-control search-owner-input mb-4"
                 value={this.stateownerSearchInput}
-                placeholder="Search by name or email (at least 4 letters) to add project owners..."
+                placeholder="Search by name/email (at least 4 letters) or UUID to add project owners..."
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"
@@ -257,9 +262,10 @@ class NewProjectForm extends Form {
             <div className="toolbar">
               <input
                 className="form-control search-member-input mb-4"
-                placeholder="Search by name or email (at least 4 letters) to add project members..."
+                placeholder="Search by name/email (at least 4 letters) or UUID to add project members..."
                 value={memberSearchInput}
                 onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <button
                 className="btn btn-primary"
@@ -288,7 +294,9 @@ class NewProjectForm extends Form {
                       <FontAwesomeIcon icon={faPlus} size="xs"/>
                     </button>
                     <br></br>
-                    <span>{user.email}</span>
+                    {
+                      user.email && <span>{user.email}</span>
+                    }
                   </li>
                 );
               })}

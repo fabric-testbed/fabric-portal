@@ -46,14 +46,13 @@ export function deleteProject(id) {
   return http.delete(`${apiEndpoint}/${id}`);
 }
 
-export function updateProject(project) {
+export function updateProject(project, preferences) {
   return http.patch(`${apiEndpoint}/${project.uuid}`, {
     "description": project.description,
     "is_public": project.is_public === "Yes",
     "facility": "FABRIC",
     "name": project.name,
-    // "preferences": {
-    // }
+    "preferences": preferences
   });
 }
 

@@ -3,12 +3,16 @@ import Table from "../common/Table";
 import Pagination from "../common/Pagination";
 import _ from "lodash";
 import paginate from "../../utils/paginate";
+import { Link } from "react-router-dom";
 
 class ProjectUserTable extends Component {
   columns = [
     {
       path: "name",
       label: "Name",
+      content: (user) => (
+        <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+      )
     },
     { path: "email", label: "Email" },
     { path: "uuid", label: "ID" },

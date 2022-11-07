@@ -15,6 +15,7 @@ import Experiments from "./pages/Experiments";
 import SliceViewer from "./pages/SliceViewer";
 import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
+import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
 import Header from "./components/Header";
@@ -89,6 +90,7 @@ class App extends React.Component {
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
             <ProtectedRoute path="/projects" component={Projects} />
             <ProtectedRoute path="/experiments" component={Experiments} />
+            <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
             <ProtectedRoute path="/user" component={User} />
             <Route component={NotFound} />
           </Switch>

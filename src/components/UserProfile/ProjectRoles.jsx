@@ -88,6 +88,13 @@ class ProjectRoles extends React.Component {
     });
   }
 
+  raiseInputKeyDown = (e) => {
+    const val = e.target.value;
+    if ((e.key === "Enter") && val) {
+     this.handleProjectsSearch();
+    }
+  };
+
   render() {
     const { projects, projectsCount, pageSize, showSpinner,
       currentPage, searchQuery } = this.state;
@@ -123,9 +130,10 @@ class ProjectRoles extends React.Component {
                 type="text"
                 name="query"
                 className="form-control"
-                placeholder={"Search by Project Name (at least 3 letters)..."}
+                placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
                 value={searchQuery}
                 onChange={this.handleInputChange}
+                onKeyDown={this.raiseInputKeyDown}
               />
               <div className="input-group-append">
                 <button
