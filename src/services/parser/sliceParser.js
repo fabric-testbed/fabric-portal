@@ -192,8 +192,8 @@ export default function parseSlice(slice, sliceType) {
     // "has" => parent/ child nodes.
     if (link.label === "has") {
       // 2 main categories for "has"
-      // 1. VM node has NIC/ GPU/ NVME... / or vice versa
-      if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.target].Type) && 
+      // 1. VM node has NIC/ GPU/ NVME/ Storage or vice versa
+      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.target].Type) && 
         objNodes[link.source].Type === "VM") {
         if (!parentNodeIds.includes(link.source)) {
           // Store VM info, will 
@@ -202,9 +202,9 @@ export default function parseSlice(slice, sliceType) {
         data.parent = link.source;
         generateDataElement(data, link.target);
         elements.push(data);
-      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.source].Type) && 
+      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.source].Type) && 
       objNodes[link.target].Type === "VM") {
-        // EXCEPTION: NIC/ GPU/ NVME has VM
+        // EXCEPTION: NIC/ GPU/ NVME/ Storage has VM
         if (!parentNodeIds.includes(link.target)) {
           parentNodeIds.push(link.target);
         }

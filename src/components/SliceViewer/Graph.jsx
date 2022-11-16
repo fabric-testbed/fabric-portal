@@ -9,6 +9,7 @@ import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
 import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
+import IconStorage from '../../imgs/SliceComponentIcons/RotatingStorage.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -213,6 +214,16 @@ export default class Graph extends Component {
               "selector": ".graphNVME",
               "style": {
                 "background-image": `${IconNVME}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
+              "selector": ".graphStorage",
+              "style": {
+                "background-image": `${IconStorage}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,

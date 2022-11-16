@@ -25,7 +25,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
   const nodes_to_add = [];
   const links_to_add = [];
 
-  // For GPU and NVME, only 1 node and 1 link to add.
+  // For GPU/ NVME/ Storage, only 1 node and 1 link to add.
   // For NIC, add 1 node and 1 link first.
   const component_node = {
     "labels": ":Component:GraphNode",
@@ -225,7 +225,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     })
   }
 
-  if (component.type === "NVME" || component.type === "GPU"){
+  if (["NVme", "GPU", "Storage"].includes(component.type)){
     component_node.layout =  JSON.stringify({
       "parentID": vm_node_id,
       "relevantNodeIDs": [component_node_id],
