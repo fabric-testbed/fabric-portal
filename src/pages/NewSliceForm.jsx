@@ -45,39 +45,29 @@ class NewSliceForm extends React.Component {
     selectedCPs: [],
   }
 
-  componentDidMount() {
-    const resources =  {
-      "model": "{\"directed\": false, \"multigraph\": false, \"graph\": {}, \"nodes\": [{\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"CompositeNode\", \"NodeID\": \"cc04181b-580a-4afe-816a-a9228ddc6412\", \"Name\": \"RENC\", \"Type\": \"Server\", \"Capacities\": \"{\\\"core\\\": 192, \\\"cpu\\\": 6, \\\"disk\\\": 14400, \\\"ram\\\": 1536, \\\"unit\\\": 3}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"Site\": \"RENC\", \"id\": 8641}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"NetworkService\", \"NodeID\": \"75904c3d-2098-4976-ba92-e4373b31b483\", \"Name\": \"RENC_ns\", \"Type\": \"MPLS\", \"id\": 8642}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"b50fe758-ef38-44fb-9044-f125e9da9613\", \"Name\": \"GPU-RTX6000\", \"Type\": \"GPU\", \"Model\": \"RTX6000\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8643}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"c3485578-bf5b-446d-8626-f2fe1242d756\", \"Name\": \"GPU-Tesla T4\", \"Type\": \"GPU\", \"Model\": \"Tesla T4\", \"Capacities\": \"{\\\"unit\\\": 4}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8644}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"e99b6419-3b20-4486-9141-4a5db5d3f043\", \"Name\": \"NVME-P4510\", \"Type\": \"NVME\", \"Model\": \"P4510\", \"Capacities\": \"{\\\"disk\\\": 10000, \\\"unit\\\": 10}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8645}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"f02875f0-3b0e-44d7-aa2d-3638889b2f68\", \"Name\": \"SharedNIC-ConnectX-6\", \"Type\": \"SharedNIC\", \"Model\": \"ConnectX-6\", \"Capacities\": \"{\\\"unit\\\": 381}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8646}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"cd98cad7-27d9-496e-a98e-4a8b858101c9\", \"Name\": \"SmartNIC-ConnectX-6\", \"Type\": \"SmartNIC\", \"Model\": \"ConnectX-6\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8647}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"2cd82afc-e4f5-40c1-953c-6818b02f1815\", \"Name\": \"SmartNIC-ConnectX-5\", \"Type\": \"SmartNIC\", \"Model\": \"ConnectX-5\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8648}], \"links\": [{\"Class\": \"has\", \"source\": 8641, \"target\": 8642}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8643}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8644}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8645}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8646}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8647}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8648}]}"
+  async componentDidMount() {
+    // Show spinner in SideNodes when loading resources
+    this.setState({
+      showResourceSpinner: true,
+      showKeySpinner: true
+    });
+
+    try {
+      const { data: resources } = await getResources();
+      const { data: keys } = await getActiveKeys();
+      const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+      this.setState({ 
+        parsedResources: parsedObj,
+        showResourceSpinner: false,
+        showKeySpinner: false,
+        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
+      });
+    } catch (ex) {
+      toast.error("Failed to load resource/ sliver key information. Please reload this page.");
     }
-    const parsedObj = sitesParser(resources, sitesNameMapping.acronymToShortName);
-    this.setState({ parsedResources: parsedObj });
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }
-
-  // async componentDidMount() {
-  //   // Show spinner in SideNodes when loading resources
-  //   this.setState({
-  //     showResourceSpinner: true,
-  //     showKeySpinner: true
-  //   });
-
-  //   try {
-  //     const { data: resources } = await getResources();
-  //     const { data: keys } = await getActiveKeys();
-  //     const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
-  //     this.setState({ 
-  //       parsedResources: parsedObj,
-  //       showResourceSpinner: false,
-  //       showKeySpinner: false,
-  //       sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
-  //     });
-  //   } catch (ex) {
-  //     toast.error("Failed to load resource/ sliver key information. Please reload this page.");
-  //   }
-  //   // generate a graph uuid for the new slice
-  //   this.setState({ graphID: uuidv4() });
-  // }
 
   refreshSSHKey = async () => {
     this.setState({ showKeySpinner: true });
@@ -380,7 +370,7 @@ class NewSliceForm extends React.Component {
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        {/* <ProjectTags onProjectChange={this.handleProjectChange} /> */}
+                        <ProjectTags onProjectChange={this.handleProjectChange} />
                       </div>
                     </div>
                   </div>

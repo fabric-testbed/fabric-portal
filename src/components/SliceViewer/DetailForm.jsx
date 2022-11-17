@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import CopyButton from "../common/CopyButton";
 import { default as portalData } from "../../services/portalData.json";
 
