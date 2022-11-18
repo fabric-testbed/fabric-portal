@@ -14,6 +14,7 @@ import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import sliceTimeParser from "../utils/sliceTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
+import { saveAs } from "file-saver";
 // import { default as res } from "../services/mockData/slices/slice1.json";
 
 export default class SliceViewer extends Component { 
@@ -101,6 +102,11 @@ export default class SliceViewer extends Component {
 
   handleNodeSelect = (selectedData) => {
     this.setState({ selectedData });
+  }
+
+  handleSaveJSON = () => {
+    var jsonBlob = new Blob([ JSON.stringify(this.state.slice.model) ], { type: 'application/javascript;charset=utf-8' });
+    saveAs( jsonBlob, `${this.state.slice.name}.json` );
   }
   
   render() {
@@ -197,6 +203,7 @@ export default class SliceViewer extends Component {
                   sliceName={slice.name}
                   defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
                   onNodeSelect={this.handleNodeSelect}
+                  onSaveJSON={this.handleSaveJSON}
                 />
               }
               {
