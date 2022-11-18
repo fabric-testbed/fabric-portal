@@ -18,7 +18,7 @@ export default class SingleComponent extends Component {
       "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
       "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
       "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
-      "NAS": "Network Attached Storage"
+      "NAS": "Site-local NAS share"
     },
     componentType: "",
     componentName: "",
