@@ -77,11 +77,6 @@ export default class Graph extends Component {
 
   }
 
-  saveJSON = () => {
-    var jsonBlob = new Blob([ JSON.stringify( this.cy.json() ) ], { type: 'application/javascript;charset=utf-8' });
-    saveAs( jsonBlob, `${this.props.sliceName}.json` );
-  }
-
   savePNG = () => {
     var png64 = this.cy.png({
       'bg': 'white',
@@ -109,9 +104,9 @@ export default class Graph extends Component {
             <OverlayTrigger
               placement="top"
               delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-download-tooltip", "Export the topology in the Cytoscape JSON format used at initialisation.")}
+              overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
             >
-              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
+              <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ml-2">
                 Download JSON
               </button>
             </OverlayTrigger>

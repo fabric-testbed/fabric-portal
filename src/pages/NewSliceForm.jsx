@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 import moment from 'moment';
 import { toast } from "react-toastify";
-
+import { saveAs } from "file-saver";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -13,12 +13,10 @@ import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Calendar from "../components/common/Calendar";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 import validator from "../utils/sliceValidator.js";
-
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
@@ -151,6 +149,19 @@ class NewSliceForm extends React.Component {
       // Toast a successly saved message
       toast.success("The slice draft is successfully saved in your browser.");
     }
+  }
+
+  handleSaveJSON = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    var jsonBlob = new Blob([ JSON.stringify(sliceJSON) ], { type: 'application/javascript;charset=utf-8' });
+    saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
 
   handleUseDraft = () => {
@@ -553,6 +564,7 @@ class NewSliceForm extends React.Component {
                     onSaveDraft={() => this.handleSaveDraft("withMessage")}
                     onUseDraft={this.handleUseDraft}
                     onClearGraph={this.handleClearGraph}
+                    onSaveJSON={this.handleSaveJSON}
                   />
                 </div>
               </div>
