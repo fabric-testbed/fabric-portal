@@ -19,7 +19,11 @@ const DropFile = props => {
     })
   }, [])
 
-  const {getRootProps, getInputProps} = useDropzone({onDrop})
+  const {getRootProps, getInputProps} = useDropzone({
+    onDrop,
+    accept: {
+    'application/json': [],
+  }})
 
   return (
     <div {...getRootProps()}>

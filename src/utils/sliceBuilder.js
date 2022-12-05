@@ -29,7 +29,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
   // For GPU/ NVME/ Storage, only 1 node and 1 link to add.
   // For NIC, add 1 node and 1 link first.
   const component_node = {
-    // "labels": ":Component:GraphNode",
     "Class": "Component",
     "Name": component.name,
     "Capacities": JSON.stringify({"unit": 1}),
@@ -66,7 +65,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 1 Connection Points and OVS has CP link
     const ovs_node = {
-      // "labels": ":GraphNode:NetworkService",
       "Name": `${node.site}-${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
@@ -82,7 +80,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     }
 
     const cp_node =   {
-      // "labels": ":ConnectionPoint:GraphNode",
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
@@ -137,7 +134,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 2 Connection Points and OVS has CP link
     const ovs_node = {
-      // "labels": ":GraphNode:NetworkService",
       "Name": `${node.site}-${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
@@ -153,7 +149,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     }
 
     const cp_node_1 =   {
-      // "labels": ":ConnectionPoint:GraphNode",
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
@@ -170,7 +165,6 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     }
 
     const cp_node_2 =   {
-      // "labels": ":ConnectionPoint:GraphNode",
       "Labels": JSON.stringify({"local_name": "p2"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
@@ -262,7 +256,6 @@ const addVM = (node, components, graphID, nodes, links) => {
   }
 
   const vm_node = {
-    // "labels": ":GraphNode:NetworkNode",
     "Class": "NetworkNode",
     "Name": node.name,
     "Site": node.site,
@@ -273,6 +266,7 @@ const addVM = (node, components, graphID, nodes, links) => {
     "NodeID": uuidv4(),
     "GraphID": graphID,
     "StitchNode": "false",
+    "BootScript": node.bootScript
   }
 
   if (components.length > 0) {
@@ -317,7 +311,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   if (type === "L2Bridge") {
     const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'));
     network_service_node = {
-      // "labels": ":GraphNode:NetworkService",
       "Name": name,
       "Site": siteName,
       "Class": "NetworkService",
@@ -333,7 +326,6 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     }
   } else {
     network_service_node = {
-      // "labels": ":GraphNode:NetworkService",
       "Name": name,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
@@ -363,8 +355,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     relevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
 
     const new_ns_cp = {
-      // "labels": ":ConnectionPoint:GraphNode",
-      // "Labels": JSON.stringify({"local_name": `p${i}`}),
+      "Labels": JSON.stringify({"local_name": `p${i}`}),
       "Class": "ConnectionPoint",
       "Type": "ServicePort",
       "Name": `${cp.properties.name}-p${i}`,

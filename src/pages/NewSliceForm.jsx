@@ -190,11 +190,15 @@ class NewSliceForm extends React.Component {
   handleJsonUpload = (sliceStr) => {
     // similar to use draft
     const sliceJSON = JSON.parse(sliceStr);
-    this.setState({ 
-      sliceNodes: sliceJSON.nodes,
-      sliceLinks: sliceJSON.links,
-      graphID: sliceJSON.nodes.length > 0 ? sliceJSON.nodes[0].GraphID : ""
-    });
+    try {
+      this.setState({ 
+        sliceNodes: sliceJSON.nodes,
+        sliceLinks: sliceJSON.links,
+        graphID: sliceJSON.nodes.length > 0 ? sliceJSON.nodes[0].GraphID : ""
+      });
+    } catch (err) {
+      toast.error("Failed to render the slice topology. Please try with a different slice JSON file.")
+    }
   }
 
   handleClearGraph = () => {
@@ -229,7 +233,7 @@ class NewSliceForm extends React.Component {
     });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, bootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -241,7 +245,8 @@ class NewSliceForm extends React.Component {
         "ram": ram,
         "disk": disk,
       },
-      "image": image
+      "image": image,
+      "bootScript": bootScript
     };
 
     if (type === "VM") {
