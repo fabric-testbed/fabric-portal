@@ -115,6 +115,10 @@ export default class NewSliceDetailForm extends Component {
     this.props.onSingleComponentAdd(data);
   }
 
+  handleFileDrop = (textStr) => {
+    this.props.onJsonUpload(textStr);
+  }
+
   getVMComponents = () => {
     const vm_component_ids = [];
 
@@ -164,7 +168,10 @@ export default class NewSliceDetailForm extends Component {
                     </span>
                   }
                   {
-                    this.props.nodes.length === 0 && <Dropfile />
+                    this.props.nodes.length === 0 && 
+                    <Dropfile
+                      onFileDrop={this.handleFileDrop}
+                    />
                   }
                 </div>
               )

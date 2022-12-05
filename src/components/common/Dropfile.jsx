@@ -1,7 +1,9 @@
 import React, {useCallback} from 'react'
 import {useDropzone} from 'react-dropzone'
 
-export default function DropFile() {
+const DropFile = props => {
+  const { onFileDrop } = props;
+
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader()
@@ -12,12 +14,11 @@ export default function DropFile() {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const textStr = reader.result
-
-        console.log(textStr)
+        onFileDrop(textStr)
       }
     })
-    
   }, [])
+
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 
   return (
@@ -30,3 +31,6 @@ export default function DropFile() {
     </div>
   )
 }
+
+
+export default DropFile;

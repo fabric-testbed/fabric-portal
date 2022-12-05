@@ -187,6 +187,16 @@ class NewSliceForm extends React.Component {
     });
   }
 
+  handleJsonUpload = (sliceStr) => {
+    // similar to use draft
+    const sliceJSON = JSON.parse(sliceStr);
+    this.setState({ 
+      sliceNodes: sliceJSON.nodes,
+      sliceLinks: sliceJSON.links,
+      graphID: sliceJSON.nodes.length > 0 ? sliceJSON.nodes[0].GraphID : ""
+    });
+  }
+
   handleClearGraph = () => {
     this.setState({ sliceNodes: [], sliceLinks: [], selectedData: null, selectedCPs: [] });
   }
@@ -567,6 +577,7 @@ class NewSliceForm extends React.Component {
                     onNodeDelete={this.handleNodeDelete}
                     onVMUpdate={this.handleVMUpdate}
                     onSingleComponentAdd={this.handleSingleComponentAdd}
+                    onJsonUpload={this.handleJsonUpload}
                   />
                   <Graph
                     className="align-self-end"

@@ -105,8 +105,8 @@ export default class SliceViewer extends Component {
   }
 
   handleSaveJSON = () => {
-    var jsonBlob = new Blob([ JSON.stringify(this.state.slice.model) ], { type: 'application/javascript;charset=utf-8' });
-    saveAs( jsonBlob, `${this.state.slice.name}.json` );
+    var jsonBlob = new Blob([ JSON.stringify(this.state.slice) ], { type: 'application/javascript;charset=utf-8' });
+    saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
   
   render() {
