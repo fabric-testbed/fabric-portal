@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import SingleComponent from './SingleComponent';
 import validator from  "../../utils/sliceValidator";
+import Dropfile from "../common/Dropfile";
 
 export default class NewSliceDetailForm extends Component {
   state = {
@@ -154,7 +155,18 @@ export default class NewSliceDetailForm extends Component {
         <form>
             {
               (!data || !data.properties) && (
-                <div className="my-3"><i className="fa fa-info-circle mx-2" />Click an element on the topology to view details or make changes. </div>
+                <div className="my-3">
+                  {
+                    this.props.nodes.length > 0 && 
+                    <span>
+                      <i className="fa fa-info-circle mx-2" />
+                      Click an element on the topology to view details or make changes.
+                    </span>
+                  }
+                  {
+                    this.props.nodes.length === 0 && <Dropfile />
+                  }
+                </div>
               )
             }
 
