@@ -84,11 +84,12 @@ export default function parseSlice(slice, sliceType) {
       }
     }
 
-    // add parent site node/ management IP address if it's network node.
-    if (originalNode.Site) { 
+    // add parent site node/ management IP address if it's VM node.
+    if (originalNode.Site) {
       data.parent = getSiteIdbyName(originalNode.Site);
       data.properties.MgmtIp = originalNode.MgmtIp || "";
       data.properties.ImageRef = originalNode.ImageRef || "";
+      data.bootScript = originalNode.bootScript || ""
     }
   }
 

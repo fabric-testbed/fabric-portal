@@ -266,7 +266,7 @@ const addVM = (node, components, graphID, nodes, links) => {
     "NodeID": uuidv4(),
     "GraphID": graphID,
     "StitchNode": "false",
-    "BootScript": node.bootScript
+    "bootScript": node.bootScript
   }
 
   if (components.length > 0) {

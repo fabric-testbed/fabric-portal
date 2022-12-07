@@ -154,7 +154,6 @@ class SideNodes extends React.Component {
         {content}
       </Tooltip>
     );
-
     return(
       <div>
         {this.props.resources !== null &&

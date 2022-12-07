@@ -13,6 +13,8 @@ export default class NewSliceDetailForm extends Component {
     isRamChanged: false,
     disk: 0,
     isDiskChanged: false,
+    bootScript: "",
+    isBootScriptChanged: false,
     showVMComponent: false,
     validationResult: {
       isValid: true,
@@ -63,6 +65,11 @@ export default class NewSliceDetailForm extends Component {
     this.setState({ disk, validationResult, isDiskChanged: true });
   }
 
+  handleBootScriptChange = (e) => {
+    const bootScript = e.target.value;
+    this.setState({ bootScript, isBootScriptChanged: true });
+  }
+
   handleShowVMComponent = () => {
     const showOrNot = this.state.showVMComponent;
     this.setState({ showVMComponent: !showOrNot });
@@ -71,13 +78,15 @@ export default class NewSliceDetailForm extends Component {
   handleVMUpdate = (e) => {
     e.preventDefault();
     const data = this.props.data;
-    const { nodeName, core, ram, disk, isNameChanged, isCoreChanged, isRamChanged, isDiskChanged } = this.state;
+    const { nodeName, core, ram, disk, bootScript, isNameChanged, isCoreChanged,
+      isRamChanged, isDiskChanged, isBootScriptChanged } = this.state;
     const newName = isNameChanged ? nodeName : data.properties.name;
     const newCore = isCoreChanged ? core : JSON.parse(data.capacities).core;
     const newRam = isRamChanged ? ram : JSON.parse(data.capacities).ram;
     const newDisk = isDiskChanged ? disk : JSON.parse(data.capacities).disk;
+    const newBootScript = isBootScriptChanged ? bootScript : data.bootScript;
     const capacities = JSON.stringify({"core": newCore, "ram": newRam, "disk": newDisk});
-    this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: newName, new_capacities: capacities });
+    this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: newName, new_capacities: capacities, new_boot_script: newBootScript });
   }
 
   isCPAvailable = () => {
@@ -153,6 +162,8 @@ export default class NewSliceDetailForm extends Component {
     }
 
     const { validationResult } = this.state;
+
+    console.log(data)
 
     return (
       <div className="new-slice-detail-form" key={componentKey}>
@@ -244,6 +255,16 @@ export default class NewSliceDetailForm extends Component {
                 {
                   this.state.showVMComponent &&
                   <div className="form-row px-3">
+                     <div className="col-12">
+                      <label for="bootScript" className="slice-builder-label">Boot Script (optional)</label>
+                      <textarea
+                        className="form-control"
+                        id="bootScript"
+                        rows="1"
+                        defaultValue={data.bootScript}
+                        onChange={this.handleBootScriptChange}
+                      />
+                     </div>
                      <div className="col-12">
                       <SingleComponent
                         addedComponents={this.getVMComponents()}
