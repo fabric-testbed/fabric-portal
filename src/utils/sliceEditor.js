@@ -148,11 +148,9 @@ const updateVM = (data, nodes) => {
   const updated_nodes = [];
   for (const node of nodes) {
     if (parseInt(data.vm_id) === parseInt(node.id)) {
-      console.log("name:" + data.new_name)
-      console.log("boot:" + data.new_boot_script)
       node.Name = data.new_name;
       node.Capacities = data.new_capacities;
-      node.bootScript = data.new_boot_script;
+      node.BootScript = data.new_boot_script;
     } 
     updated_nodes.push(node);
   }

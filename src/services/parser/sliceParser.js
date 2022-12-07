@@ -89,7 +89,7 @@ export default function parseSlice(slice, sliceType) {
       data.parent = getSiteIdbyName(originalNode.Site);
       data.properties.MgmtIp = originalNode.MgmtIp || "";
       data.properties.ImageRef = originalNode.ImageRef || "";
-      data.bootScript = originalNode.bootScript || ""
+      data.BootScript = originalNode.BootScript || ""
     }
   }
 

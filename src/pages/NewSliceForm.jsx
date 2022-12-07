@@ -233,7 +233,7 @@ class NewSliceForm extends React.Component {
     });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, bootScript) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -246,7 +246,7 @@ class NewSliceForm extends React.Component {
         "disk": disk,
       },
       "image": image,
-      "bootScript": bootScript
+      "BootScript": BootScript
     };
 
     if (type === "VM") {

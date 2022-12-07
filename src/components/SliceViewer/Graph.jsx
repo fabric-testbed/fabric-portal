@@ -101,15 +101,18 @@ export default class Graph extends Component {
             Reset Layout
           </button>
           <div className="d-flex flex-row-reverse">
-            <OverlayTrigger
-              placement="top"
-              delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
-            >
-              <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ml-2">
-                Download JSON
-              </button>
-            </OverlayTrigger>
+            {
+              this.props.isNewSlice && 
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 100, hide: 300 }}
+                overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
+              >
+                <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ml-2">
+                  Download JSON
+                </button>
+              </OverlayTrigger>
+            }
             <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
             {
               this.props.isNewSlice && 

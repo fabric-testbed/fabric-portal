@@ -18,7 +18,7 @@ class SideNodes extends React.Component {
     nodeComponents: [],
     imageType: "qcow2",
     selectedImageRef: "default_rocky_8",
-    bootScript: ""
+    BootScript: ""
   }
 
   osImageToAbbr = {
@@ -38,10 +38,10 @@ class SideNodes extends React.Component {
   handleAddNode = () => {
     // type: currently only support 'VM'
     const { selectedSite, nodeName, nodeType, core, ram, disk,
-      imageType, selectedImageRef, nodeComponents, bootScript } = this.state;
+      imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
     const image = `${selectedImageRef},${imageType}`;
     this.props.onNodeAdd(nodeType, selectedSite, nodeName, Number(core),
-      Number(ram), Number(disk), image, nodeComponents, bootScript);
+      Number(ram), Number(disk), image, nodeComponents, BootScript);
     this.setState({
       selectedSite: "",
       nodeName: "",
@@ -52,7 +52,7 @@ class SideNodes extends React.Component {
       nodeComponents: [],
       imageType: "qcow2",
       selectedImageRef: "default_rocky_8",
-      bootScript: "",
+      BootScript: "",
     })
   }
 
@@ -111,7 +111,7 @@ class SideNodes extends React.Component {
   }
 
   handleBootScriptChange = (e) => {
-    this.setState({ bootScript: e.target.value });
+    this.setState({ BootScript: e.target.value });
   }
 
   getSiteResource = () => {
@@ -147,7 +147,7 @@ class SideNodes extends React.Component {
 
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram,
-      disk, bootScript, nodeComponents } = this.state;
+      disk, BootScript, nodeComponents } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -289,12 +289,12 @@ class SideNodes extends React.Component {
               }
               <div className="form-row">
                 <div className="form-group slice-builder-form-group col-md-12">
-                  <label for="bootScript" className="slice-builder-label">Boot Script (optional)</label>
+                  <label for="BootScript" className="slice-builder-label">Boot Script (optional)</label>
                   <textarea
                     className="form-control"
-                    id="bootScript"
+                    id="BootScript"
                     rows="1"
-                    value={bootScript}
+                    value={BootScript}
                     onChange={this.handleBootScriptChange}
                   />
                 </div>
