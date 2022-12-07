@@ -10,7 +10,7 @@ class GenerateKey extends Form {
     data: {
       name: "",
       description: "",
-      keyType: "",
+      keyType: "sliver",
     },
     errors: {},
     nameTooltip: {

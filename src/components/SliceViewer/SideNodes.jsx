@@ -289,7 +289,16 @@ class SideNodes extends React.Component {
               }
               <div className="form-row">
                 <div className="form-group slice-builder-form-group col-md-12">
-                  <label for="BootScript" className="slice-builder-label">Boot Script (optional)</label>
+                  <label for="BootScript" className="slice-builder-label">
+                    Boot Script (optional)
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("boot-script-tooltip", portalData.helperText.bootScriptDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
                   <textarea
                     className="form-control"
                     id="BootScript"

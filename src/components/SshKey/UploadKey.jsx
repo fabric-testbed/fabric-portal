@@ -10,7 +10,7 @@ class UploadKey extends Form {
     data: {
       publickey: "",
       description: "",
-      keyType: "",
+      keyType: "sliver",
     },
     errors: {},
     publickeyTooltip: {
