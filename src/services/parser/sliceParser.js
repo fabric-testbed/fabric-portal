@@ -59,6 +59,18 @@ export default function parseSlice(slice, sliceType) {
     return siteId;
   }
   
+  const parseCapacityHints = (capacityHintsStr) => {
+    // Input string example: "fabric.c2.m8.d10"
+    // Output: {"core":2,"disk":10,"ram":8}
+    if (capacityHintsStr === "") return null;
+    const capacitiesObj = {};
+    const arr = capacityHintsStr.split(".");
+    capacitiesObj.core = parseInt(arr[1].slice(1));
+    capacitiesObj.ram = parseInt(arr[2].slice(1));
+    capacitiesObj.disk = parseInt(arr[3].slice(1));
+    return capacitiesObj;
+  }
+
   const generateDataElement = (data, id) => {
     const properties = {};
     const originalNode = objNodes[id];
@@ -80,7 +92,15 @@ export default function parseSlice(slice, sliceType) {
       if (sliceType === "new") {
         data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
       } else {
-        data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+        if(originalNode.Class !== "NetworkNode") {
+          data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+        } else {
+          // parse CapacityHints for VM nodes to get actual allocated capacities.
+          // example: "CapacityHints": "{"instance_type": "fabric.c2.m8.d10"}"
+          const capacityHints = originalNode.CapacityHints ? JSON.parse(originalNode.CapacityHints) : null;
+          const capacityHintsStr = capacityHints ? capacityHints.instance_type : "";
+          data.capacities = parseCapacityHints(capacityHintsStr);
+        }
       }
     }
 
