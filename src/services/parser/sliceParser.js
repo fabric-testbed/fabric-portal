@@ -62,8 +62,14 @@ export default function parseSlice(slice, sliceType) {
   const parseCapacityHints = (capacityHintsStr) => {
     // Input string example: "fabric.c2.m8.d10"
     // Output: {"core":2,"disk":10,"ram":8}
-    if (capacityHintsStr === "") return null;
-    const capacitiesObj = {};
+    const capacitiesObj = {
+      core: 0,
+      ram: 0,
+      disk: 0
+    };
+    
+    if (capacityHintsStr === "") return capacitiesObj;
+
     const arr = capacityHintsStr.split(".");
     capacitiesObj.core = parseInt(arr[1].slice(1));
     capacitiesObj.ram = parseInt(arr[2].slice(1));
