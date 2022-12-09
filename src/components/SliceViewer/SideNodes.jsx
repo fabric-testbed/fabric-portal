@@ -18,6 +18,7 @@ class SideNodes extends React.Component {
     nodeComponents: [],
     imageType: "qcow2",
     selectedImageRef: "default_rocky_8",
+    BootScript: ""
   }
 
   osImageToAbbr = {
@@ -36,9 +37,11 @@ class SideNodes extends React.Component {
 
   handleAddNode = () => {
     // type: currently only support 'VM'
-    const { selectedSite, nodeName, nodeType, core, ram, disk, imageType, selectedImageRef, nodeComponents } = this.state;
+    const { selectedSite, nodeName, nodeType, core, ram, disk,
+      imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
     const image = `${selectedImageRef},${imageType}`;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, Number(core), Number(ram), Number(disk), image, nodeComponents);
+    this.props.onNodeAdd(nodeType, selectedSite, nodeName, Number(core),
+      Number(ram), Number(disk), image, nodeComponents, BootScript);
     this.setState({
       selectedSite: "",
       nodeName: "",
@@ -49,6 +52,7 @@ class SideNodes extends React.Component {
       nodeComponents: [],
       imageType: "qcow2",
       selectedImageRef: "default_rocky_8",
+      BootScript: "",
     })
   }
 
@@ -103,7 +107,11 @@ class SideNodes extends React.Component {
   }
 
   handleImageRefChange = (e) => {
-    this.setState({ selectedImageRef: e.target.value })
+    this.setState({ selectedImageRef: e.target.value });
+  }
+
+  handleBootScriptChange = (e) => {
+    this.setState({ BootScript: e.target.value });
   }
 
   getSiteResource = () => {
@@ -138,14 +146,14 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { selectedSite, nodeName, imageType, selectedImageRef, core, ram, disk, nodeComponents } = this.state;
+    const { selectedSite, nodeName, imageType, selectedImageRef, core, ram,
+      disk, BootScript, nodeComponents } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
       </Tooltip>
     );
-
     return(
       <div>
         {this.props.resources !== null &&
@@ -279,6 +287,27 @@ class SideNodes extends React.Component {
                   {validationResult.message}
                 </div>
               }
+              <div className="form-row">
+                <div className="form-group slice-builder-form-group col-md-12">
+                  <label for="BootScript" className="slice-builder-label">
+                    Boot Script (optional)
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("boot-script-tooltip", portalData.helperText.bootScriptDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
+                  <textarea
+                    className="form-control"
+                    id="BootScript"
+                    rows="1"
+                    value={BootScript}
+                    onChange={this.handleBootScriptChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className="mt-2 bg-light node-components-panel">
               <SingleComponent

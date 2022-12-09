@@ -9,7 +9,8 @@ export default class SingleComponent extends Component {
       "GPU": ["RTX6000", "Tesla T4"],
       "SmartNIC": ["ConnectX-6", "ConnectX-5"],
       "SharedNIC": ["ConnectX-6"],
-      "NVME": ["P4510"]
+      "NVME": ["P4510"],
+      "Storage": ["NAS"]
     },
     modelDetails: {
       "RTX6000": "NVIDIA Corporation TU102GL [Quadro RTX 6000/8000] (rev a1)",
@@ -17,6 +18,7 @@ export default class SingleComponent extends Component {
       "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
       "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
       "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
+      "NAS": "Site-local NAS share"
     },
     componentType: "",
     componentName: "",
@@ -88,6 +90,7 @@ export default class SingleComponent extends Component {
                   <option value="SmartNIC">SmartNIC</option>
                   <option value="SharedNIC">SharedNIC</option>
                   <option value="NVME">NVME</option>
+                  <option value="Storage">Storage</option>
                 </select>
               </div>
               <div className="form-group slice-builder-form-group col-md-3">

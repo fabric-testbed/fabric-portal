@@ -9,6 +9,7 @@ import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
 import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
+import IconStorage from '../../imgs/SliceComponentIcons/RotatingStorage.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -76,11 +77,6 @@ export default class Graph extends Component {
 
   }
 
-  saveJSON = () => {
-    var jsonBlob = new Blob([ JSON.stringify( this.cy.json() ) ], { type: 'application/javascript;charset=utf-8' });
-    saveAs( jsonBlob, `${this.props.sliceName}.json` );
-  }
-
   savePNG = () => {
     var png64 = this.cy.png({
       'bg': 'white',
@@ -105,15 +101,18 @@ export default class Graph extends Component {
             Reset Layout
           </button>
           <div className="d-flex flex-row-reverse">
-            <OverlayTrigger
-              placement="top"
-              delay={{ show: 100, hide: 300 }}
-              overlay={renderTooltip("slice-download-tooltip", "Export the topology in the Cytoscape JSON format used at initialisation.")}
-            >
-              <button onClick={this.saveJSON} className="btn btn-sm btn-outline-primary ml-2">
-                Download JSON
-              </button>
-            </OverlayTrigger>
+            {
+              this.props.isNewSlice && 
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 100, hide: 300 }}
+                overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
+              >
+                <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ml-2">
+                  Download JSON
+                </button>
+              </OverlayTrigger>
+            }
             <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
             {
               this.props.isNewSlice && 
@@ -213,6 +212,16 @@ export default class Graph extends Component {
               "selector": ".graphNVME",
               "style": {
                 "background-image": `${IconNVME}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
+              "selector": ".graphStorage",
+              "style": {
+                "background-image": `${IconStorage}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
