@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 import moment from 'moment';
 import { toast } from "react-toastify";
-
+import { saveAs } from "file-saver";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -13,12 +13,10 @@ import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Calendar from "../components/common/Calendar";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
 import editor from "../utils/sliceEditor.js";
 import validator from "../utils/sliceValidator.js";
-
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
@@ -68,6 +66,16 @@ class NewSliceForm extends React.Component {
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }
+
+  // componentDidMount() {
+  //   const resources =  {
+  //     "model": "{\"directed\": false, \"multigraph\": false, \"graph\": {}, \"nodes\": [{\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"CompositeNode\", \"NodeID\": \"cc04181b-580a-4afe-816a-a9228ddc6412\", \"Name\": \"RENC\", \"Type\": \"Server\", \"Capacities\": \"{\\\"core\\\": 192, \\\"cpu\\\": 6, \\\"disk\\\": 14400, \\\"ram\\\": 1536, \\\"unit\\\": 3}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"Site\": \"RENC\", \"id\": 8641}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"NetworkService\", \"NodeID\": \"75904c3d-2098-4976-ba92-e4373b31b483\", \"Name\": \"RENC_ns\", \"Type\": \"MPLS\", \"id\": 8642}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"b50fe758-ef38-44fb-9044-f125e9da9613\", \"Name\": \"GPU-RTX6000\", \"Type\": \"GPU\", \"Model\": \"RTX6000\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8643}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"c3485578-bf5b-446d-8626-f2fe1242d756\", \"Name\": \"GPU-Tesla T4\", \"Type\": \"GPU\", \"Model\": \"Tesla T4\", \"Capacities\": \"{\\\"unit\\\": 4}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8644}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"e99b6419-3b20-4486-9141-4a5db5d3f043\", \"Name\": \"NVME-P4510\", \"Type\": \"NVME\", \"Model\": \"P4510\", \"Capacities\": \"{\\\"disk\\\": 10000, \\\"unit\\\": 10}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8645}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"f02875f0-3b0e-44d7-aa2d-3638889b2f68\", \"Name\": \"SharedNIC-ConnectX-6\", \"Type\": \"SharedNIC\", \"Model\": \"ConnectX-6\", \"Capacities\": \"{\\\"unit\\\": 381}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8646}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"cd98cad7-27d9-496e-a98e-4a8b858101c9\", \"Name\": \"SmartNIC-ConnectX-6\", \"Type\": \"SmartNIC\", \"Model\": \"ConnectX-6\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8647}, {\"GraphID\": \"2c6257f9-66ad-41f3-9610-b57a4771733f\", \"Class\": \"Component\", \"NodeID\": \"2cd82afc-e4f5-40c1-953c-6818b02f1815\", \"Name\": \"SmartNIC-ConnectX-5\", \"Type\": \"SmartNIC\", \"Model\": \"ConnectX-5\", \"Capacities\": \"{\\\"unit\\\": 2}\", \"CapacityAllocations\": \"\", \"StitchNode\": \"false\", \"id\": 8648}], \"links\": [{\"Class\": \"has\", \"source\": 8641, \"target\": 8642}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8643}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8644}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8645}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8646}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8647}, {\"Class\": \"has\", \"source\": 8641, \"target\": 8648}]}"
+  //   }
+  //   const parsedObj = sitesParser(resources, sitesNameMapping.acronymToShortName);
+  //   this.setState({ parsedResources: parsedObj });
+  //   // generate a graph uuid for the new slice
+  //   this.setState({ graphID: uuidv4() });
+  // }
 
   refreshSSHKey = async () => {
     this.setState({ showKeySpinner: true });
@@ -153,6 +161,23 @@ class NewSliceForm extends React.Component {
     }
   }
 
+  handleSaveJSON = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    var jsonBlob = new Blob([ JSON.stringify(sliceJSON) ], { type: 'application/javascript;charset=utf-8' });
+    if(this.state.sliceName !== "") {
+      saveAs(jsonBlob, `${this.state.sliceName}.json`);
+    } else {
+      saveAs(jsonBlob, `new-slice.json`);
+    }
+  }
+
   handleUseDraft = () => {
     const sliceDraft = JSON.parse(localStorage.getItem("sliceDraft"));
     this.setState({ 
@@ -160,6 +185,20 @@ class NewSliceForm extends React.Component {
       sliceLinks: sliceDraft.links,
       graphID: sliceDraft.nodes.length > 0 ? sliceDraft.nodes[0].GraphID : ""
     });
+  }
+
+  handleJsonUpload = (sliceStr) => {
+    // similar to use draft
+    const sliceJSON = JSON.parse(sliceStr);
+    try {
+      this.setState({ 
+        sliceNodes: sliceJSON.nodes,
+        sliceLinks: sliceJSON.links,
+        graphID: sliceJSON.nodes.length > 0 ? sliceJSON.nodes[0].GraphID : ""
+      });
+    } catch (err) {
+      toast.error("Failed to render the slice topology. Please try with a different slice JSON file.")
+    }
   }
 
   handleClearGraph = () => {
@@ -194,7 +233,7 @@ class NewSliceForm extends React.Component {
     });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents) => {
+  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
 
     const node = {
@@ -206,7 +245,8 @@ class NewSliceForm extends React.Component {
         "ram": ram,
         "disk": disk,
       },
-      "image": image
+      "image": image,
+      "BootScript": BootScript
     };
 
     if (type === "VM") {
@@ -222,7 +262,7 @@ class NewSliceForm extends React.Component {
   }
 
   handleVMUpdate = (data) => {
-    // data: vm_id, new_name and new_capacities
+    // data: vm_id, new_name, new_capacities and new_boot_script
     const updated_nodes = editor.updateVM(data, this.state.sliceNodes);
     this.setState({ sliceNodes: updated_nodes });
     toast.success("VM updated successfully.")
@@ -542,6 +582,7 @@ class NewSliceForm extends React.Component {
                     onNodeDelete={this.handleNodeDelete}
                     onVMUpdate={this.handleVMUpdate}
                     onSingleComponentAdd={this.handleSingleComponentAdd}
+                    onJsonUpload={this.handleJsonUpload}
                   />
                   <Graph
                     className="align-self-end"
@@ -553,6 +594,7 @@ class NewSliceForm extends React.Component {
                     onSaveDraft={() => this.handleSaveDraft("withMessage")}
                     onUseDraft={this.handleUseDraft}
                     onClearGraph={this.handleClearGraph}
+                    onSaveJSON={this.handleSaveJSON}
                   />
                 </div>
               </div>

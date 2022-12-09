@@ -59,6 +59,24 @@ export default function parseSlice(slice, sliceType) {
     return siteId;
   }
   
+  const parseCapacityHints = (capacityHintsStr) => {
+    // Input string example: "fabric.c2.m8.d10"
+    // Output: {"core":2,"disk":10,"ram":8}
+    const capacitiesObj = {
+      core: 0,
+      ram: 0,
+      disk: 0
+    };
+    
+    if (capacityHintsStr === "") return capacitiesObj;
+
+    const arr = capacityHintsStr.split(".");
+    capacitiesObj.core = parseInt(arr[1].slice(1));
+    capacitiesObj.ram = parseInt(arr[2].slice(1));
+    capacitiesObj.disk = parseInt(arr[3].slice(1));
+    return capacitiesObj;
+  }
+
   const generateDataElement = (data, id) => {
     const properties = {};
     const originalNode = objNodes[id];
@@ -80,15 +98,24 @@ export default function parseSlice(slice, sliceType) {
       if (sliceType === "new") {
         data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
       } else {
-        data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+        if(originalNode.Class !== "NetworkNode") {
+          data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+        } else {
+          // parse CapacityHints for VM nodes to get actual allocated capacities.
+          // example: "CapacityHints": "{"instance_type": "fabric.c2.m8.d10"}"
+          const capacityHints = originalNode.CapacityHints ? JSON.parse(originalNode.CapacityHints) : null;
+          const capacityHintsStr = capacityHints ? capacityHints.instance_type : "";
+          data.capacities = parseCapacityHints(capacityHintsStr);
+        }
       }
     }
 
-    // add parent site node/ management IP address if it's network node.
-    if (originalNode.Site) { 
+    // add parent site node/ management IP address if it's VM node.
+    if (originalNode.Site) {
       data.parent = getSiteIdbyName(originalNode.Site);
       data.properties.MgmtIp = originalNode.MgmtIp || "";
       data.properties.ImageRef = originalNode.ImageRef || "";
+      data.BootScript = originalNode.BootScript || ""
     }
   }
 
@@ -192,8 +219,8 @@ export default function parseSlice(slice, sliceType) {
     // "has" => parent/ child nodes.
     if (link.label === "has") {
       // 2 main categories for "has"
-      // 1. VM node has NIC/ GPU/ NVME... / or vice versa
-      if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.target].Type) && 
+      // 1. VM node has NIC/ GPU/ NVME/ Storage or vice versa
+      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.target].Type) && 
         objNodes[link.source].Type === "VM") {
         if (!parentNodeIds.includes(link.source)) {
           // Store VM info, will 
@@ -202,9 +229,9 @@ export default function parseSlice(slice, sliceType) {
         data.parent = link.source;
         generateDataElement(data, link.target);
         elements.push(data);
-      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME"].includes(objNodes[link.source].Type) && 
+      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.source].Type) && 
       objNodes[link.target].Type === "VM") {
-        // EXCEPTION: NIC/ GPU/ NVME has VM
+        // EXCEPTION: NIC/ GPU/ NVME/ Storage has VM
         if (!parentNodeIds.includes(link.target)) {
           parentNodeIds.push(link.target);
         }
