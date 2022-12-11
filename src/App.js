@@ -21,6 +21,7 @@ import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
+import SessionTimeoutModal from "./components/common/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import "./styles/App.scss";
@@ -74,6 +75,9 @@ class App extends React.Component {
                 key={`notice-banner-${index}`}
               />
             )
+          }
+          {
+            <SessionTimeoutModal />
           }
           <Switch>
             <Route path="/" component={Home} exact />
