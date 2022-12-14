@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function ReactModal(props) {
+function SessionTimeoutModal(props) {
   const [show, setShow] = useState(true, false);
 
   const handleLogout = () => {
@@ -19,7 +19,9 @@ function ReactModal(props) {
   }
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
+
+  
 
   return (
     <div>
@@ -35,7 +37,7 @@ function ReactModal(props) {
         </Modal.Header>
         <Modal.Body>
           <p>
-            The current session is about to expire in 5 minutes.
+            The current session is about to expire in {`${props.timeLeft} ${props.timeUnit}s`}.
             Please save your work to prevent loss of data.
           </p>
         </Modal.Body>
@@ -50,4 +52,4 @@ function ReactModal(props) {
   );
 };
 
-export default ReactModal;
+export default SessionTimeoutModal;

@@ -21,7 +21,7 @@ import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
-import SessionTimeoutModal from "./components/common/SessionTimeoutModal";
+import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import "./styles/App.scss";
@@ -30,6 +30,8 @@ class App extends React.Component {
   state = {
     userStatus: "",
     activeNotices: [],
+    showSessionTimeoutModal1: false,
+    showSessionTimeoutModal2: false,
   };
 
   async componentDidMount() {
@@ -51,6 +53,16 @@ class App extends React.Component {
         try {
           const { data: res } = await getCurrentUser();
           localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+          // after user logs in for 3hr55min, pop up first session time-out modal
+          setInterval(() => this.setState({showSessionTimeoutModal1: true}), 14100000);
+
+          // after user logs in for 3hr59min, pop up second session time-out modal
+          setInterval(() => {
+            this.setState({
+              showSessionTimeoutModal1: false,
+              showSessionTimeoutModal2: true,
+            })
+          }, 14340000);
         } catch (err) {
           console.log("Failed to get current user's information.");
         }
@@ -64,6 +76,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
@@ -77,7 +90,18 @@ class App extends React.Component {
             )
           }
           {
-            <SessionTimeoutModal />
+            showSessionTimeoutModal1 &&
+            <SessionTimeoutModal 
+              timeLeft={5}
+              timeUnit={"minute"}
+            />
+          }
+          {
+            showSessionTimeoutModal2 &&
+            <SessionTimeoutModal
+              timeLeft={60}
+              timeUnit={"second"}
+            />
           }
           <Switch>
             <Route path="/" component={Home} exact />
