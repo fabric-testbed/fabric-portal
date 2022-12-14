@@ -1,55 +1,97 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import clearLocalStorage from "../../utils/clearLocalStorage";
 
-function SessionTimeoutModal(props) {
-  const [show, setShow] = useState(true, false);
+class SessionTimeoutModal extends Component {
+  state = {
+    show: true,
+    minutes: 0,
+    seconds: 0,
+  }
 
-  const handleLogout = () => {
-    setShow(false);
-    // remove old user status stored in browser.
-    localStorage.removeItem("idToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userID");
-    localStorage.removeItem("bastionLogin");
-    localStorage.removeItem("userStatus");
-    localStorage.removeItem("sshKeyType");
-    localStorage.removeItem("sliceDraft");
+  handleLogout = () => {
+    this.setState({ show: false });
+    clearLocalStorage();
     window.location.href = "/logout";
   }
 
-  const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  handleClose = () => {
+    this.setState({ show: false });
+  }
 
-  
+  componentDidMount() {
+    let minutes = Math.floor(this.props.timeLeft / 60000);
+    let seconds = ((this.props.timeLeft % 60000) / 1000).toFixed(0);
+    this.setState({ minutes, seconds })
+    
+    let countdownTimer = setInterval(() => {
+      if(seconds > 0){
+        seconds--;
+      } else if (minutes > 0){
+        minutes--;
+        seconds = 59;
+      } else {
+        minutes = 0;
+        seconds = 0;
+      }
+      this.setState({ minutes, seconds })
+    }, 1000);
 
-  return (
-    <div>
-      <Modal
-        size="lg"
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Session Timeout</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            The current session is about to expire in {`${props.timeLeft} ${props.timeUnit}s`}.
-            Please save your work to prevent loss of data.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-  );
-};
+    localStorage.setItem("countdownTimerInterval", countdownTimer);
+  }
+
+  parseTimeStr = (minutes, seconds) => {
+    if (minutes > 0 && seconds > 0) {
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ${seconds} second${seconds > 1 ? "s" : ""}`;
+    } 
+    
+    if (minutes > 0 && seconds === 0) {
+      return `${minutes} minute${minutes > 1 ? "s" : ""}`;
+    }
+
+    if (minutes === 0 && seconds > 1) {
+      return `${seconds} second${seconds > 1 ? "s" : ""}`;
+    }
+
+    if (minutes === 0 && seconds === 1) {
+      clearInterval(localStorage.getItem("countdownTimerInterval"));
+      clearInterval(localStorage.getItem(`sessionTimeoutInterval${this.props.modalId}`));
+      this.handleLogout();
+    }
+  }
+
+  render() {
+    let { minutes, seconds, show } = this.state;
+    return (
+      <div>
+        <Modal
+          size="lg"
+          show={show}
+          onHide={this.handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Session Timeout</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p id="countdownTimerModal">
+              The current session is about to expire <span className="text-danger font-weight-bold">
+              {this.parseTimeStr(minutes, seconds)}</span>.
+              Please save your work to prevent loss of data.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>Close</Button>
+            <Button variant="primary" onClick={this.handleLogout}>
+              Logout
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+}
 
 export default SessionTimeoutModal;
