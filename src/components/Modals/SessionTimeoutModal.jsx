@@ -38,7 +38,7 @@ class SessionTimeoutModal extends Component {
       this.setState({ minutes, seconds })
     }, 1000);
 
-    localStorage.setItem("countdownTimerInterval", countdownTimer);
+    localStorage.setItem("countdownTimerIntervalId", countdownTimer);
   }
 
   parseTimeStr = (minutes, seconds) => {
@@ -55,8 +55,8 @@ class SessionTimeoutModal extends Component {
     }
 
     if (minutes === 0 && seconds === 1) {
-      clearInterval(localStorage.getItem("countdownTimerInterval"));
-      clearInterval(localStorage.getItem(`sessionTimeoutInterval${this.props.modalId}`));
+      clearInterval(localStorage.getItem("countdownTimerIntervalId"));
+      clearInterval(localStorage.getItem(`sessionTimeoutIntervalId${this.props.modalId}`));
       this.handleLogout();
     }
   }
@@ -65,7 +65,8 @@ class SessionTimeoutModal extends Component {
     let { minutes, seconds, show } = this.state;
     return (
       <div>
-        <Modal
+        {
+          this.props.timeLeft > 0 && <Modal
           size="lg"
           show={show}
           onHide={this.handleClose}
@@ -77,7 +78,7 @@ class SessionTimeoutModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <p id="countdownTimerModal">
-              The current session is about to expire <span className="text-danger font-weight-bold">
+              The current session is about to expire in <span className="text-danger font-weight-bold">
               {this.parseTimeStr(minutes, seconds)}</span>.
               Please save your work to prevent loss of data.
             </p>
@@ -89,6 +90,8 @@ class SessionTimeoutModal extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        }
       </div>
     );
   }

@@ -6,7 +6,6 @@ const autoRevokeTokens = async () => {
     await revokeToken(localStorage.getItem("refreshToken"));
   } catch (err) {
     console.log("Failed to revoke token.");
-    // TO DO: what if revoke token fails?
   }
 }
 
@@ -17,6 +16,18 @@ export const autoCreateTokens = async (projectId) => {
     const { data: res } = await createIdToken(projectId, "all");
     localStorage.setItem("idToken", res["data"][0].id_token);
     localStorage.setItem("refreshToken", res["data"][0].refresh_token);
+
+    // autoRefreshToken after 55 minutes
+    // clear last interval if there is any
+    if(localStorage.getItem("refreshTokenIntervalId")) {
+      clearInterval(localStorage.getItem("refreshTokenIntervalId"));
+    }
+    // TODO: set to 55min 
+    const refreshTokenIntervalId = setInterval(() => 
+      autoRefreshTokens(projectId)
+    , 60000);
+    localStorage.setItem("refreshTokenIntervalId", refreshTokenIntervalId);
+
     return res["data"][0];
   } catch (err) {
     toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");

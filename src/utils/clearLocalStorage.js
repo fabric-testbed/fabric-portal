@@ -8,7 +8,8 @@ export default function clearLocalStorage() {
   localStorage.removeItem("userStatus");
   localStorage.removeItem("sshKeyType");
   localStorage.removeItem("sliceDraft");
-  localStorage.removeItem("countdownTimerInterval");
-  localStorage.removeItem("sessionTimeoutInterval1");
-  localStorage.removeItem("sessionTimeoutInterval2");
+  localStorage.removeItem("countdownTimerIntervalId");
+  localStorage.removeItem("sessionTimeoutIntervalId1");
+  localStorage.removeItem("sessionTimeoutIntervalId2");
+  localStorage.removeItem("refreshTokenIntervalId");
 }

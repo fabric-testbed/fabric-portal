@@ -35,24 +35,6 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    // after user logs in for 3hr55min, pop up first session time-out modal
-    // 14100000ms
-    const sessionTimeoutInterval1 = setInterval(() => 
-      this.setState({showSessionTimeoutModal1: true})
-    , 120000);
-
-    // after user logs in for 3hr59min, pop up second session time-out modal
-    // 14340000ms
-    const sessionTimeoutInterval2 =setInterval(() => {
-      this.setState({
-        showSessionTimeoutModal1: false,
-        showSessionTimeoutModal2: true,
-      })
-    }, 60000);
-
-    localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
-    localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
-
     // Check actice maitenance notice(s)
     try {
       const { data: res } = await getActiveMaintenanceNotice();
@@ -71,6 +53,23 @@ class App extends React.Component {
         try {
           const { data: res } = await getCurrentUser();
           localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+          // after user logs in for 3hr55min, pop up first session time-out modal
+          // 14100000ms
+          const sessionTimeoutInterval1 = setInterval(() => 
+            this.setState({showSessionTimeoutModal1: true})
+          , 30000);
+
+          // after user logs in for 3hr59min, pop up second session time-out modal
+          // 14340000ms
+          const sessionTimeoutInterval2 = setInterval(() => {
+            this.setState({
+              showSessionTimeoutModal1: false,
+              showSessionTimeoutModal2: true,
+            })
+          }, 60000);
+
+          localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
+          localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
         } catch (err) {
           console.log("Failed to get current user's information.");
         }
