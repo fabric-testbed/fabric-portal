@@ -87,9 +87,9 @@ class App extends React.Component {
             <Route path="/help" component={Help} />
             <ProtectedRoute path="/slices/:id" component={SliceViewer} />
             <ProtectedRoute path="/new-slice" component={NewSliceForm} />
-            <ProtectedRoute path="/projects/:id" component={ProjectForm} />
-            <ProtectedRoute path="/projects" component={Projects} />
-            <ProtectedRoute path="/experiments" component={Experiments} />
+            <Route path="/projects/:id" component={ProjectForm} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/experiments" component={Experiments} />
             <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
             <ProtectedRoute path="/user" component={User} />
             <Route component={NotFound} />

@@ -13,15 +13,15 @@ class Keys extends React.Component {
     keys: [],
   };
 
-  async componentDidMount() {
-    try {
-      const { data } = await getActiveKeys();
-      const keys = data.results;
-      this.setState({ keys });
-    } catch (err) {
-      toast.error("Failed to load keys. Please reload this page.");
-    }
-  }
+  // async componentDidMount() {
+  //   try {
+  //     const { data } = await getActiveKeys();
+  //     const keys = data.results;
+  //     this.setState({ keys });
+  //   } catch (err) {
+  //     toast.error("Failed to load keys. Please reload this page.");
+  //   }
+  // }
 
  getKeysData = () => {
     const { keys } = this.state;
@@ -40,9 +40,9 @@ class Keys extends React.Component {
 
     return (
       <div className="col-9" id="sshKeys">
-        <KeyTabs sliverKeys={sliverKeys} bastionKeys={bastionKeys} disableKeyDelete={false} styleProp={"w-100"} parent={"Keys"}/>
+        {/* <KeyTabs sliverKeys={sliverKeys} bastionKeys={bastionKeys} disableKeyDelete={false} styleProp={"w-100"} parent={"Keys"}/>
         <GenerateKey maxSliver={maxSliver} maxBastion={maxBastion}/>
-        <UploadKey maxSliver={maxSliver} maxBastion={maxBastion}/>
+        <UploadKey maxSliver={maxSliver} maxBastion={maxBastion}/> */}
       </div>
     );
   }

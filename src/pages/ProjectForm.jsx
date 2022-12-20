@@ -8,6 +8,7 @@ import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import NewProjectForm from "../components/Project/NewProjectForm";
+import Slices from "../components/Experiment/Slices";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
@@ -68,6 +69,8 @@ class projectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
+      { name: "SLICES", active: false },
+      
     ],
     originalProjectName: "",
     owners: [],
@@ -97,70 +100,278 @@ class projectForm extends Form {
     selectedOptions: Joi.array()
   };
 
-  async populateProject() {
-    this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
+  // async populateProject() {
+  //   this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
 
-    try {
-      const projectId = this.props.match.params.id;
-      if (projectId === "new") {
-        this.setState({ showSpinner: false, spinnerText: ""  });
-        return;
-      }
+  //   try {
+  //     const projectId = this.props.match.params.id;
+  //     if (projectId === "new") {
+  //       this.setState({ showSpinner: false, spinnerText: ""  });
+  //       return;
+  //     }
 
-      const { data } = await getProjectById(projectId);
+  //     const { data } = await getProjectById(projectId);
 
-      const project = data.results[0];
-      // keep a shallow copy of project name for project form header
-      this.state.originalProjectName = project.name;
+  //     const project = data.results[0];
+  //     // keep a shallow copy of project name for project form header
+  //     this.state.originalProjectName = project.name;
 
-      // check if view as public profile (user is not PC/PO/PM/FO)
-      if(project.memberships && !project.memberships.is_creator && 
-        !project.memberships.is_member && !project.memberships.is_owner &&
-        !this.state.globalRoles.isFacilityOperator) {
-          this.setState({ 
-            data: project, 
-            showSpinner: false,
-            spinnerText: ""
-          });
-      } else {
-        // user is po/pm/pc or Facility Operator.
-        this.setState({ 
-          data: this.mapToViewModel(project), 
-          owners: project.project_owners, 
-          members: project.project_members,
-          showSpinner: false,
-          spinnerText: "",
-          selectedTags: project.tags,
-          originalTags: project.tags
-        });
-      }
-    } catch (err) {
-      toast.error("Failed to load project.");
-      if (err.response && err.response.status === 404) {
-        this.props.history.replace("/not-found");
-      }
+  //     // check if view as public profile (user is not PC/PO/PM/FO)
+  //     if(project.memberships && !project.memberships.is_creator && 
+  //       !project.memberships.is_member && !project.memberships.is_owner &&
+  //       !this.state.globalRoles.isFacilityOperator) {
+  //         this.setState({ 
+  //           data: project, 
+  //           showSpinner: false,
+  //           spinnerText: ""
+  //         });
+  //     } else {
+  //       // user is po/pm/pc or Facility Operator.
+  //       this.setState({ 
+  //         data: this.mapToViewModel(project), 
+  //         owners: project.project_owners, 
+  //         members: project.project_members,
+  //         showSpinner: false,
+  //         spinnerText: "",
+  //         selectedTags: project.tags,
+  //         originalTags: project.tags
+  //       });
+  //     }
+  //   } catch (err) {
+  //     toast.error("Failed to load project.");
+  //     if (err.response && err.response.status === 404) {
+  //       this.props.history.replace("/not-found");
+  //     }
+  //   }
+  // }
+
+  componentDidMount() {
+    const user =  {
+      "affiliation": "University of North Carolina at Chapel Hill",
+      "bastion_login": "yaxueguo_0026542073",
+      "cilogon_email": "yaxueguo@renci.org",
+      "cilogon_family_name": "Guo",
+      "cilogon_given_name": "Yaxue",
+      "cilogon_id": "http://cilogon.org/serverT/users/26542073",
+      "cilogon_name": "Yaxue Guo",
+      "email": "yaxueguo@renci.org",
+      "email_addresses": [
+        "yaxueguo@renci.org"
+      ],
+      "eppn": "yaxue@unc.edu",
+      "fabric_id": "FABRIC1000004",
+      "name": "Yaxue Guo",
+      "preferences": {
+        "show_email": true,
+        "show_eppn": false,
+        "show_profile": true,
+        "show_publications": true,
+        "show_roles": true,
+        "show_sshkeys": false
+      },
+      "profile": {
+        "bio": "I'm the front-end developer of FABRIC project.",
+        "job": "Front-end Developer",
+        "other_identities": [],
+        "personal_pages": [],
+        "preferences": {
+          "show_bio": true,
+          "show_cv": true,
+          "show_job": true,
+          "show_other_identities": true,
+          "show_personal_pages": true,
+          "show_pronouns": false,
+          "show_website": true
+        },
+        "pronouns": "She/her",
+        "website": "https://github.com/yaxue1123"
+      },
+      "publications": [],
+      "registered_on": "2021-07-14 13:39:13.541644+00:00",
+      "roles": [
+        {
+          "description": "FABRIC Staff No Permissions",
+          "name": "04b14c17-e66a-4405-98fc-d737717e2160-pm"
+        },
+        {
+          "description": "Yaxue's Project",
+          "name": "06e8d02a-b27f-4437-829e-8378d20e5a08-pc"
+        },
+        {
+          "description": "Yaxue's Project",
+          "name": "06e8d02a-b27f-4437-829e-8378d20e5a08-po"
+        },
+        {
+          "description": "FABRIC Staff",
+          "name": "990d8a8b-7e50-4d13-a3be-0f133ffa8653-pm"
+        },
+        {
+          "description": "Laura's UI/Teaching Project",
+          "name": "d66ce3fa-041f-4d08-a8ca-c886c30c468a-pm"
+        },
+        {
+          "description": "Active Users of FABRIC - initially set by enrollment workflow",
+          "name": "fabric-active-users"
+        },
+        {
+          "description": "Jupyterhub access - based on project participation",
+          "name": "Jupyterhub"
+        },
+        {
+          "description": "Portal Administrators for FABRIC",
+          "name": "portal-admins"
+        },
+        {
+          "description": "Project Leads for FABRIC",
+          "name": "project-leads"
+        }
+      ],
+      "sshkeys": [
+        {
+          "comment": "yaxue-test-sliver-key",
+          "created_on": "2022-06-08 15:28:51.592639+00:00",
+          "description": "yaxue-test-sliver-key",
+          "expires_on": "2024-06-07 15:28:51.592639+00:00",
+          "fabric_key_type": "sliver",
+          "fingerprint": "MD5:67:ac:e4:f7:4e:f2:62:86:e3:b8:c1:a5:15:68:b2:2e",
+          "public_key": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFkGY7pH/am+gMVDYK5RKP/+jCXUhlWWVZ3UCZcEK1WmIEpPXf8I8vk5tyNsNFKk9dkBpaHqrFQd6QgOwxzwiMM=",
+          "ssh_key_type": "ecdsa-sha2-nistp256",
+          "uuid": "e53083f8-b4b9-4c06-a282-ce0a080cd2a4"
+        },
+        {
+          "comment": "yaxue-key-sliver",
+          "created_on": "2022-09-20 17:03:08.780276+00:00",
+          "description": "yaxue-key-sliver",
+          "expires_on": "2024-09-19 17:03:08.780304+00:00",
+          "fabric_key_type": "sliver",
+          "fingerprint": "MD5:02:8b:3d:7d:68:93:9a:ef:78:b9:3f:01:fe:2f:5a:e1",
+          "public_key": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBETrjGgRMKqvwE5UFqnJZ88SR2IweNGjHJ73HovkZlaGtT9PHIq3sqmqMUmKI56lN5/WyFcWkqkCQW1d8lhg97E=",
+          "ssh_key_type": "ecdsa-sha2-nistp256",
+          "uuid": "92484012-92b3-4a68-89c6-e6b0e5ccd8b5"
+        }
+      ],
+      "uuid": "6744e0c2-745b-4f41-9746-deb039fb00a0"
     }
+    const tags = [
+      "Component.FPGA",
+      "Component.GPU",
+      "Component.NVME",
+      "Component.SmartNIC",
+      "Component.Storage",
+      "Net.AllFacilityPorts",
+      "Net.FacilityPort.Chameleon-StarLight",
+      "Net.FacilityPort.ESnet-StarLight",
+      "Net.FacilityPort.Internet2-StarLight",
+      "Net.NoLimitBW",
+      "Net.Peering",
+      "Net.PortMirroring",
+      "Slice.Measurements",
+      "Slice.Multisite",
+      "Slice.NoLimitLifetime",
+      "VM.NoLimit",
+      "VM.NoLimitCPU",
+      "VM.NoLimitDisk",
+      "VM.NoLimitRAM"
+    ]
+    const project =   {
+      "active": true,
+      "created": "2022-06-20 20:46:11.521332+00:00",
+      "description": "This project in production portal is for front-end testing purposes.",
+      "facility": "FABRIC",
+      "is_public": true,
+      "memberships": {
+        "is_creator": true,
+        "is_member": false,
+        "is_owner": true
+      },
+      "modified": "2022-10-25 21:14:10.339342+00:00",
+      "name": "Yaxue's Project",
+      "preferences": {
+        "show_profile": true,
+        "show_project_members": true,
+        "show_project_owners": true,
+        "show_publications": true
+      },
+      "profile": {
+        "keywords": [],
+        "notebooks": [],
+        "preferences": {
+          "show_award_information": true,
+          "show_goals": true,
+          "show_keywords": true,
+          "show_notebooks": true,
+          "show_project_status": true,
+          "show_purpose": true,
+          "show_references": true
+        },
+        "references": []
+      },
+      "project_creators": [
+        {
+          "email": "yaxueguo@renci.org",
+          "name": "Yaxue Guo",
+          "uuid": "6744e0c2-745b-4f41-9746-deb039fb00a0"
+        }
+      ],
+      "project_members": [
+        {
+          "email": "paul.ruth@gmail.com",
+          "name": "Paul Ruth",
+          "uuid": "d2b028df-03e7-4aa4-994b-9ed3a174fe10"
+        },
+        {
+          "name": "Michael J. Stealey, Sr",
+          "uuid": "b12b961d-98ec-46f1-a938-af7a5ec0410b"
+        }
+      ],
+      "project_owners": [
+        {
+          "email": "yaxueguo@renci.org",
+          "name": "Yaxue Guo",
+          "uuid": "6744e0c2-745b-4f41-9746-deb039fb00a0"
+        },
+        {
+          "name": "Yaxue G",
+          "uuid": "356a8962-6fd5-4669-871e-651a18afc46c"
+        }
+      ],
+      "publications": [],
+      "tags": [],
+      "uuid": "06e8d02a-b27f-4437-829e-8378d20e5a08"
+    }
+
+    this.setState({
+      user,
+      tagVocabulary: tags,
+      globalRoles: checkGlobalRoles(user),
+      data: this.mapToViewModel(project),
+      originalProjectName: project.name,
+      owners: project.project_owners, 
+      members: project.project_members,
+      selectedTags: project.tags,
+      originalTags: project.tags 
+    });
   }
 
-  async componentDidMount() {
-    try {
-      const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/projects");
-    }
+  // async componentDidMount() {
+  //   try {
+  //     const { data: res2 } = await getCurrentUser();
+  //     this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+  //   } catch (err) {
+  //     toast.error("User's credential is expired. Please re-login.");
+  //     this.props.history.push("/projects");
+  //   }
 
-    try {
-      const { data: res1 } = await getProjectTags();
-      const tags = res1.results;
-      this.setState({ tagVocabulary: tags  });
-    } catch (err) {
-      toast.error("Failed to get tags.");
-    }
+  //   try {
+  //     const { data: res1 } = await getProjectTags();
+  //     const tags = res1.results;
+  //     this.setState({ tagVocabulary: tags  });
+  //   } catch (err) {
+  //     toast.error("Failed to get tags.");
+  //   }
 
-    await this.populateProject();
-  }
+  //   await this.populateProject();
+  // }
 
   mapToViewModel(project) {
     // obj from server -> different kind of obj we can use in this form.
@@ -500,6 +711,17 @@ class projectForm extends Form {
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
                 />
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex !== 3
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-100">
+                <Slices />
               </div>
             </div>
           </div>

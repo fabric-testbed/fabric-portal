@@ -33,43 +33,68 @@ class Slices extends React.Component {
     showSpinner: false,
   };
 
-  async componentDidMount() {
-    // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
-
-    // call PR first to check if the user has project.
-    try {
-      const { data: res } = await getProjects("myProjects", 0, 200);
-      if (res.results.length === 0) {
-        this.setState({ hasProject: false, showSpinner: false });
-      } else {
-      // call credential manager to generate tokens
-      // if nothing found in browser storage
-      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens(res.results[0].uuid).then(async () => {
-        const { data: res } = await getSlices();
-        this.setState({ slices: res.data, showSpinner: false });
-      });
-      } else {
-        // the token has been stored in the browser and is ready to be used.
-          try {
-            const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false });
-          } catch (err) {
-            this.setState({ showSpinner: false });
-            toast.error("Failed to load slices. Please re-login and try.");
-            if (err.response.status === 401) {
-              // 401 Error: Provided token is not valid.
-              // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(res.results[0].uuid);
-            }
-          }
-        }
-      }
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
+  componentDidMount() {
+    const slices = [
+      {
+          "graph_id": "18576eb2-fb1c-45e4-8564-c8ec9817f078",
+          "lease_end_time": "2022-12-21 01:11:16 +0000",
+          "lease_start_time": "2022-12-20 22:11:24 +0000",
+          "name": "testStorage1",
+          "project_id": "8b3a2eae-a0c0-475a-807b-e9af581ce4c0",
+          "slice_id": "d023bb59-5a80-4929-92fb-d2b9d1cd202e",
+          "state": "StableOK"
+      },
+      {
+        "graph_id": "f1b03bce-0d15-430b-a061-b0c77dd5c6e1",
+        "lease_end_time": "2022-12-12 21:14:17 +0000",
+        "lease_start_time": "2022-12-12 16:14:41 +0000",
+        "name": "testBootScript",
+        "project_id": "b9847fa1-13ef-49f9-9e07-ae6ad06cda3f",
+        "slice_id": "ad25fbbb-6297-4d33-885c-499a087c5588",
+        "state": "Dead"
     }
+  ]
+
+  this.setState({ slices, hasProject: true });
   }
+
+  // async componentDidMount() {
+  //   // Show loading spinner and when waiting API response
+  //   this.setState({ showSpinner: true });
+
+  //   // call PR first to check if the user has project.
+  //   try {
+  //     const { data: res } = await getProjects("myProjects", 0, 200);
+  //     if (res.results.length === 0) {
+  //       this.setState({ hasProject: false, showSpinner: false });
+  //     } else {
+  //     // call credential manager to generate tokens
+  //     // if nothing found in browser storage
+  //     if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
+  //       autoCreateTokens(res.results[0].uuid).then(async () => {
+  //       const { data: res } = await getSlices();
+  //       this.setState({ slices: res.data, showSpinner: false });
+  //     });
+  //     } else {
+  //       // the token has been stored in the browser and is ready to be used.
+  //         try {
+  //           const { data: res } = await getSlices();
+  //           this.setState({ slices: res.data, showSpinner: false });
+  //         } catch (err) {
+  //           this.setState({ showSpinner: false });
+  //           toast.error("Failed to load slices. Please re-login and try.");
+  //           if (err.response.status === 401) {
+  //             // 401 Error: Provided token is not valid.
+  //             // refresh the token by calling credential manager refresh_token.
+  //             autoRefreshTokens(res.results[0].uuid);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (err) {
+  //     toast.error("User's credential is expired. Please re-login.");
+  //   }
+  // }
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
@@ -134,7 +159,7 @@ class Slices extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div className="col-9">
+      <div>
         <h1>Slices</h1>
         {
           showSpinner && <SpinnerWithText text={"Loading slices..."} />
