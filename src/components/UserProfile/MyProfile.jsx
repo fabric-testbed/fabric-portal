@@ -63,37 +63,170 @@ class MyProfile extends Form {
     ],
   }
 
-  async componentDidMount () {
-    try {
-      const { data: res } = await getCurrentUser();
-      const user = res.results[0];
-      const profile = {
-        name: user.name,
-        email: user.email,
-        bio: user.profile.bio,
-        pronouns: user.profile.pronouns,
-        job: user.profile.job,
-        website: user.profile.website,
-        allOptions: [
-          "show_email",
-          "show_roles",
-          "show_sshkeys",
-          "show_bio",
-          "show_pronouns",
-          "show_job",
-          "show_website"
-        ],
-        selectedOptions: Object.keys(user.profile.preferences).filter(key => 
-          user.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
-            Object.keys(user.preferences).filter(key =>
-              user.preferences[key] && this.state.allOptions.includes(key))
-          )
-      }
-      this.setState({ data: profile, user });
-    } catch (err) { 
-      toast.error("Failed to load user information. Please re-login.");
+  componentDidMount(){
+    const user =  {
+      "affiliation": "University of North Carolina at Chapel Hill",
+      "bastion_login": "yaxueguo_0026542073",
+      "cilogon_email": "yaxueguo@renci.org",
+      "cilogon_family_name": "Guo",
+      "cilogon_given_name": "Yaxue",
+      "cilogon_id": "http://cilogon.org/serverT/users/26542073",
+      "cilogon_name": "Yaxue Guo",
+      "email": "yaxueguo@renci.org",
+      "email_addresses": [
+        "yaxueguo@renci.org"
+      ],
+      "eppn": "yaxue@unc.edu",
+      "fabric_id": "FABRIC1000004",
+      "name": "Yaxue Guo",
+      "preferences": {
+        "show_email": true,
+        "show_eppn": false,
+        "show_profile": true,
+        "show_publications": true,
+        "show_roles": true,
+        "show_sshkeys": false
+      },
+      "profile": {
+        "bio": "I'm the front-end developer of FABRIC project.",
+        "job": "Front-end Developer",
+        "other_identities": [],
+        "personal_pages": [],
+        "preferences": {
+          "show_bio": true,
+          "show_cv": true,
+          "show_job": true,
+          "show_other_identities": true,
+          "show_personal_pages": true,
+          "show_pronouns": false,
+          "show_website": true
+        },
+        "pronouns": "She/her",
+        "website": "https://github.com/yaxue1123"
+      },
+      "publications": [],
+      "registered_on": "2021-07-14 13:39:13.541644+00:00",
+      "roles": [
+        {
+          "description": "FABRIC Staff No Permissions",
+          "name": "04b14c17-e66a-4405-98fc-d737717e2160-pm"
+        },
+        {
+          "description": "Yaxue's Project",
+          "name": "06e8d02a-b27f-4437-829e-8378d20e5a08-pc"
+        },
+        {
+          "description": "Yaxue's Project",
+          "name": "06e8d02a-b27f-4437-829e-8378d20e5a08-po"
+        },
+        {
+          "description": "FABRIC Staff",
+          "name": "990d8a8b-7e50-4d13-a3be-0f133ffa8653-pm"
+        },
+        {
+          "description": "Laura's UI/Teaching Project",
+          "name": "d66ce3fa-041f-4d08-a8ca-c886c30c468a-pm"
+        },
+        {
+          "description": "Active Users of FABRIC - initially set by enrollment workflow",
+          "name": "fabric-active-users"
+        },
+        {
+          "description": "Jupyterhub access - based on project participation",
+          "name": "Jupyterhub"
+        },
+        {
+          "description": "Portal Administrators for FABRIC",
+          "name": "portal-admins"
+        },
+        {
+          "description": "Project Leads for FABRIC",
+          "name": "project-leads"
+        }
+      ],
+      "sshkeys": [
+        {
+          "comment": "yaxue-test-sliver-key",
+          "created_on": "2022-06-08 15:28:51.592639+00:00",
+          "description": "yaxue-test-sliver-key",
+          "expires_on": "2024-06-07 15:28:51.592639+00:00",
+          "fabric_key_type": "sliver",
+          "fingerprint": "MD5:67:ac:e4:f7:4e:f2:62:86:e3:b8:c1:a5:15:68:b2:2e",
+          "public_key": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFkGY7pH/am+gMVDYK5RKP/+jCXUhlWWVZ3UCZcEK1WmIEpPXf8I8vk5tyNsNFKk9dkBpaHqrFQd6QgOwxzwiMM=",
+          "ssh_key_type": "ecdsa-sha2-nistp256",
+          "uuid": "e53083f8-b4b9-4c06-a282-ce0a080cd2a4"
+        },
+        {
+          "comment": "yaxue-key-sliver",
+          "created_on": "2022-09-20 17:03:08.780276+00:00",
+          "description": "yaxue-key-sliver",
+          "expires_on": "2024-09-19 17:03:08.780304+00:00",
+          "fabric_key_type": "sliver",
+          "fingerprint": "MD5:02:8b:3d:7d:68:93:9a:ef:78:b9:3f:01:fe:2f:5a:e1",
+          "public_key": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBETrjGgRMKqvwE5UFqnJZ88SR2IweNGjHJ73HovkZlaGtT9PHIq3sqmqMUmKI56lN5/WyFcWkqkCQW1d8lhg97E=",
+          "ssh_key_type": "ecdsa-sha2-nistp256",
+          "uuid": "92484012-92b3-4a68-89c6-e6b0e5ccd8b5"
+        }
+      ],
+      "uuid": "6744e0c2-745b-4f41-9746-deb039fb00a0"
     }
+
+    const profile = {
+      name: user.name,
+      email: user.email,
+      bio: user.profile.bio,
+      pronouns: user.profile.pronouns,
+      job: user.profile.job,
+      website: user.profile.website,
+      allOptions: [
+        "show_email",
+        "show_roles",
+        "show_sshkeys",
+        "show_bio",
+        "show_pronouns",
+        "show_job",
+        "show_website"
+      ],
+      selectedOptions: Object.keys(user.profile.preferences).filter(key => 
+        user.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
+          Object.keys(user.preferences).filter(key =>
+            user.preferences[key] && this.state.allOptions.includes(key))
+        )
+    }
+    this.setState({ data: profile, user });
   }
+
+  // async componentDidMount () {
+  //   try {
+  //     const { data: res } = await getCurrentUser();
+  //     const user = res.results[0];
+  //     const profile = {
+  //       name: user.name,
+  //       email: user.email,
+  //       bio: user.profile.bio,
+  //       pronouns: user.profile.pronouns,
+  //       job: user.profile.job,
+  //       website: user.profile.website,
+  //       allOptions: [
+  //         "show_email",
+  //         "show_roles",
+  //         "show_sshkeys",
+  //         "show_bio",
+  //         "show_pronouns",
+  //         "show_job",
+  //         "show_website"
+  //       ],
+  //       selectedOptions: Object.keys(user.profile.preferences).filter(key => 
+  //         user.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
+  //           Object.keys(user.preferences).filter(key =>
+  //             user.preferences[key] && this.state.allOptions.includes(key))
+  //         )
+  //     }
+  //     this.setState({ data: profile, user });
+  //   } catch (err) { 
+  //     toast.error("Failed to load user information. Please re-login.");
+  //   }
+  // }
 
   schema = {
     name: Joi.string().required().label("Name"),

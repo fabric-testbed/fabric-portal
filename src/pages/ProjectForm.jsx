@@ -721,7 +721,9 @@ class projectForm extends Form {
               }`}
             >
               <div className="w-100">
-                <Slices />
+                <Slices
+                  parent="Projects"
+                />
               </div>
             </div>
           </div>

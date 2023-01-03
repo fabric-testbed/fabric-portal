@@ -17,20 +17,104 @@ class ProjectRoles extends React.Component {
     showSpinner: false,
   };
 
-  async componentDidMount(){
-    const { pageSize: limit } = this.state;
-    this.setState({ showSpinner: true });
-
-    try {
-      const { data: res } = await getProjects("myProjects", 0, limit);
-      const projects = res.results;
-      const projectsCount = res.total;
-      this.setState({ projects, projectsCount, showSpinner: false });
-    } catch (err) { 
-      this.setState({ showSpinner: false });
-      toast.error("Failed to load user's projects'. Please re-login.");
-    }
+  componentDidMount(){
+      const projects = [
+        {
+          "created": "2022-08-26 19:39:52+00:00",
+          "description": "Ilya's test project - modified from the portal",
+          "facility": "FABRIC",
+          "is_public": true,
+          "memberships": {
+            "is_creator": false,
+            "is_member": true,
+            "is_owner": false
+          },
+          "name": "Ilya's test project",
+          "tags": [
+            "Component.FPGA",
+            "Component.GPU",
+            "Component.NVME",
+            "Component.SmartNIC",
+            "Component.Storage",
+            "Net.AllFacilityPorts",
+            "Net.NoLimitBW",
+            "Net.Peering",
+            "Net.PortMirroring",
+            "Slice.Measurements",
+            "Slice.Multisite",
+            "Slice.NoLimitLifetime",
+            "VM.NoLimit",
+            "VM.NoLimitCPU",
+            "VM.NoLimitDisk",
+            "VM.NoLimitRAM",
+            "Net.FacilityPort.RENC-Chameleon",
+            "Net.FacilityPort.RENC-GSU"
+          ],
+          "uuid": "7a1ffe53-1945-4934-93c5-ef6df39b45ac"
+        },
+        {
+          "created": "2021-12-01 17:06:57.200610+00:00",
+          "description": "Test creating a project from beta portal.",
+          "facility": "FABRIC",
+          "is_public": true,
+          "memberships": {
+            "is_creator": true,
+            "is_member": false,
+            "is_owner": true
+          },
+          "name": "Test: beta portal ",
+          "tags": [
+            "Component.GPU",
+            "Slice.Multisite"
+          ],
+          "uuid": "f87459b8-3cb9-47f8-b91c-ccbcb79268fc"
+        },
+        {
+          "created": "2021-08-11 18:12:36+00:00",
+          "description": "FABRIC Team",
+          "facility": "FABRIC",
+          "is_public": true,
+          "memberships": {
+            "is_creator": false,
+            "is_member": true,
+            "is_owner": false
+          },
+          "name": "FABRIC Staff",
+          "tags": [
+            "Slice.Multisite",
+            "VM.NoLimit",
+            "Net.AllFacilityPorts",
+            "Net.PortMirroring",
+            "Component.NVME",
+            "Component.SmartNIC",
+            "Component.GPU",
+            "VM.NoLimitDisk",
+            "VM.NoLimitCPU",
+            "VM.NoLimitRAM",
+            "Component.Storage",
+            "Net.FacilityPort.RENC-GSU"
+          ],
+          "uuid": "b9847fa1-13ef-49f9-9e07-ae6ad06cda3f"
+        }
+      ]
+      const projectsCount = 3;
+      this.setState({ projects, projectsCount });
   }
+  
+  // async componentDidMount(){
+  //   const { pageSize: limit } = this.state;
+  //   this.setState({ showSpinner: true });
+
+  //   try {
+  //     const { data: res } = await getProjects("myProjects", 0, limit);
+  //     const projects = res.results;
+  //     const projectsCount = res.total;
+  //     this.setState({ projects, projectsCount, showSpinner: false });
+  //   } catch (err) { 
+  //     this.setState({ showSpinner: false });
+  //     toast.error("Failed to load user's projects'. Please re-login.");
+  //   }
+  // }
 
   renderRoleTableFields(param) {
     switch (typeof param) {

@@ -159,7 +159,7 @@ class Slices extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div>
+      <div className={this.props.styleProp}>
         <h1>Slices</h1>
         {
           showSpinner && <SpinnerWithText text={"Loading slices..."} />
@@ -182,7 +182,7 @@ class Slices extends React.Component {
             </p>
           </div>
         }
-        {
+        {/* {
           !showSpinner && hasProject && slices.length === 0 && 
           <div>
             <div className="d-flex flex-row">
@@ -219,7 +219,7 @@ class Slices extends React.Component {
               </p>
             </div>
           </div>
-        }
+        } */}
         {
           !showSpinner && hasProject && slices.length > 0 && <div>
              <div className="toolbar">
@@ -232,9 +232,12 @@ class Slices extends React.Component {
                 onInputChange={this.handleSearch}
                 className="my-0"
               />
-              <Link to="/new-slice" className="btn btn-primary create-project-btn">
-                Create Slice
-              </Link>
+              {
+                this.props.parent === "Projects" &&
+                <Link to="/new-slice" className="btn btn-primary create-project-btn">
+                  Create Slice
+                </Link>
+              }
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
