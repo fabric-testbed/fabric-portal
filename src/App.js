@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveMaintenanceNotice } from "./services/announcementService.js";
+import { default as portalData } from "./services/portalData.json";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -54,19 +55,17 @@ class App extends React.Component {
           const { data: res } = await getCurrentUser();
           localStorage.setItem("bastionLogin", res.results[0].bastion_login);
           // after user logs in for 3hr55min, pop up first session time-out modal
-          // 14100000ms
           const sessionTimeoutInterval1 = setInterval(() => 
             this.setState({showSessionTimeoutModal1: true})
-          , 30000);
+          , portalData["5minBeforeCookieExpires"]);
 
           // after user logs in for 3hr59min, pop up second session time-out modal
-          // 14340000ms
           const sessionTimeoutInterval2 = setInterval(() => {
             this.setState({
               showSessionTimeoutModal1: false,
               showSessionTimeoutModal2: true,
             })
-          }, 60000);
+          }, portalData["1minBeforeCookieExpires"]);
 
           localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
           localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
