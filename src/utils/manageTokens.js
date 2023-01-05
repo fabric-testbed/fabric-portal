@@ -23,18 +23,16 @@ export const autoCreateTokens = async (projectId) => {
     localStorage.setItem("idToken", res["data"][0].id_token);
     localStorage.setItem("refreshToken", res["data"][0].refresh_token);
 
-    if (projectId !== "all") {
-      // Auto refresh token every 55min
-      const refreshTokenIntervalId = setInterval(() => {
-        if(localStorage.getItem("refreshTokenIntervalId")) {
-          clearInterval(localStorage.getItem("refreshTokenIntervalId"));
-        }
-        autoRefreshTokens(projectId);
+    // Auto refresh token every 55min
+    const refreshTokenIntervalId = setInterval(() => {
+      if(localStorage.getItem("refreshTokenIntervalId")) {
+        clearInterval(localStorage.getItem("refreshTokenIntervalId"));
       }
-      , portalData["autoRefreshTokenInterval"]);
-      localStorage.setItem("refreshTokenIntervalId", refreshTokenIntervalId);
-      return res["data"][0];
+      autoRefreshTokens(projectId);
     }
+    , portalData["autoRefreshTokenInterval"]);
+    localStorage.setItem("refreshTokenIntervalId", refreshTokenIntervalId);
+    return res["data"][0];
   }
   catch (err) {
     toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");
