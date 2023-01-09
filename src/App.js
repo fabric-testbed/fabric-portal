@@ -46,38 +46,45 @@ class App extends React.Component {
 
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
-      const { data } = await getWhoAmI();
-      const user = data.results[0];
-      if (user.enrolled) {
-        localStorage.setItem("userID", user.uuid);
-        localStorage.setItem("userStatus", "active");
-        try {
-          const { data: res } = await getCurrentUser();
-          localStorage.setItem("bastionLogin", res.results[0].bastion_login);
-          // after user logs in for 3hr55min, pop up first session time-out modal
-          const sessionTimeoutInterval1 = setInterval(() => 
-            this.setState({showSessionTimeoutModal1: true})
-          , portalData["5minBeforeCookieExpires"]);
-
-          // after user logs in for 3hr59min, pop up second session time-out modal
-          const sessionTimeoutInterval2 = setInterval(() => {
-            this.setState({
-              showSessionTimeoutModal1: false,
-              showSessionTimeoutModal2: true,
-            })
-          }, portalData["1minBeforeCookieExpires"]);
-
-          localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
-          localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
-        } catch (err) {
-          // error code: 401
-          // err messages:
-          // 1. the user has not logged in (errors.details: "Login required: ...")
-          // 2. the user login but haven't enrolled yet (errors.details: "Enrollment required: ...")
-          console.log("Failed to get current user's information.");
-          console.log(err.response.errors.details);
-          // localStorage.setItem("userStatus", "inactive");
+      try {
+        const { data } = await getWhoAmI();
+        const user = data.results[0];
+        if (user.enrolled) {
+          localStorage.setItem("userID", user.uuid);
+          localStorage.setItem("userStatus", "active");
+          try {
+            const { data: res } = await getCurrentUser();
+            localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+            // after user logs in for 3hr55min, pop up first session time-out modal
+            const sessionTimeoutInterval1 = setInterval(() => 
+              this.setState({showSessionTimeoutModal1: true})
+            , portalData["5minBeforeCookieExpires"]);
+  
+            // after user logs in for 3hr59min, pop up second session time-out modal
+            const sessionTimeoutInterval2 = setInterval(() => {
+              this.setState({
+                showSessionTimeoutModal1: false,
+                showSessionTimeoutModal2: true,
+              })
+            }, portalData["1minBeforeCookieExpires"]);
+  
+            localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
+            localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
+          } catch (err) {
+            console.log("Failed to get current user's information.");
+          }
         }
+      } catch (err) {
+        const errors = err.response.data.errors;
+
+        if (errors && errors[0].details.includes("Login required")) {
+          localStorage.setItem("userStatus", "unauthorized");
+          localStorage.removeItem("userID");
+        }
+  
+        if (errors && errors[0].details.includes("Enrollment required")) {
+          localStorage.setItem("userStatus", "inactive");
+        } 
       }
     }
 
