@@ -7,8 +7,9 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
-      // 1. the user has not logged in
-      // 2. or the auth cookie is expired
+      // 1. the user has not logged in (errors.details: "Login required: ...")
+      // 2. the user login but haven't enrolled yet (errors.details: "Enrollment required: ...")
+      // 3. or the auth cookie is expired
       const isCookieExpired = localStorage.getItem("userStatus", "active");
       // set status to unauthorized
       localStorage.setItem("userStatus", "unauthorized");
@@ -27,11 +28,11 @@ axios.interceptors.response.use(null, (error) => {
       return Promise.reject(error);
     }
 
-    if (error.response && error.response.status === 403) {
-      // the user has logged in but hasn't completed self-signup yet
-      // do not toast error message.
-      return Promise.reject(error); 
-    }
+    // if (error.response && error.response.status === 403) {
+    //   // the user has logged in but hasn't completed self-signup yet
+    //   // do not toast error message.
+    //   return Promise.reject(error); 
+    // }
 
     // Timeout error.
     if(error.code === 'ECONNABORTED') {

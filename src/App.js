@@ -70,11 +70,14 @@ class App extends React.Component {
           localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
           localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
         } catch (err) {
+          // error code: 401
+          // err messages:
+          // 1. the user has not logged in (errors.details: "Login required: ...")
+          // 2. the user login but haven't enrolled yet (errors.details: "Enrollment required: ...")
           console.log("Failed to get current user's information.");
+          console.log(err.response.errors.details);
+          // localStorage.setItem("userStatus", "inactive");
         }
-      } else {
-        // situation 2: logged in, but not self signup, unauthenticated
-        localStorage.setItem("userStatus", "inactive");
       }
     }
 
