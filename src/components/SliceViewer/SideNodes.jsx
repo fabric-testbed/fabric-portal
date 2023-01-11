@@ -148,7 +148,7 @@ class SideNodes extends React.Component {
   render() {
     const { selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents } = this.state;
-    const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents);
+    const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}

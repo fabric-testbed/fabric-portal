@@ -44,7 +44,7 @@ const validateSlice = (sliceName, sshKey, projectIdToGenerateToken, sliceNodes) 
     return validationResult;
 }
 
-const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents) => {
+const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -84,6 +84,13 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
     return validationResult;
   }
 
+  // Boot script should be no more than 1024 characters.
+  if (BootScript.length > 1024) {
+    validationResult.isValid = false;
+    validationResult.message = "The max length supported for Boot Script is 1024 characters.";
+    return validationResult;
+  }
+
   // all validation above are passed.
   validationResult.isValid = true;
   validationResult.message = "";
@@ -112,6 +119,13 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
       return validationResult;
     }
 
+    if (name.length < 2) {
+      validationResult.isValid = false;
+      validationResult.message = "The component name should be at least 2 characters.";
+      validationResult.message = "";
+      return validationResult;
+    }
+
     if (model === "") {
       validationResult.isValid = false;
       // validationResult.message = "Please select a component model.";
@@ -127,7 +141,7 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
           return validationResult;
         }
       }
-    } 
+    }
 
     if (type ==="" || name === "" || model === "") {
       validationResult.isValid = false;
@@ -159,6 +173,13 @@ const validateDetailForm = (type, value, vm_id, nodes) => {
       validationResult.message = "Node name should not be empty.";
       return validationResult;
     }
+
+    if (value.length < 2) {
+      validationResult.isValid = false;
+      validationResult.message = "Node name should be at least 2 characters.";
+      return validationResult;
+    }
+
     // check the VM name is unique in the whole slice graph.
     // check id node name is unique.
     const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(vm_id));
