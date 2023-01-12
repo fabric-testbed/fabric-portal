@@ -12,16 +12,16 @@ axios.interceptors.response.use(null, (error) => {
       // 3. or the auth cookie is expired
       const isCookieExpired = localStorage.getItem("userStatus", "active");
 
-      // const errors = error.response.data.errors;
+      const errors = error.response.data.errors;
 
-      // if (errors && errors[0].details.includes("Login required")) {
-      //   localStorage.setItem("userStatus", "unauthorized");
-      //   localStorage.removeItem("userID");
-      // }
+      if (errors && errors[0].details.includes("Login required")) {
+        localStorage.setItem("userStatus", "unauthorized");
+        localStorage.removeItem("userID");
+      }
 
-      // if (errors && errors[0].details.includes("Enrollment required")) {
-      //   localStorage.setItem("userStatus", "inactive");
-      // } 
+      if (errors && errors[0].details.includes("Enrollment required")) {
+        localStorage.setItem("userStatus", "inactive");
+      } 
 
       // if cookie expired, reload; 
       // otherwise the user is not logged in and no need to reload.
