@@ -44,7 +44,7 @@ const validateSlice = (sliceName, sshKey, projectIdToGenerateToken, sliceNodes) 
     return validationResult;
 }
 
-const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents) => {
+const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -58,9 +58,9 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   }
 
   // Node name must be unique in the graph.
-  if (nodeName === "") {
+  if (nodeName.length < 2) {
     validationResult.isValid = false;
-    validationResult.message = "Please enter a node name.";
+    validationResult.message = "Please enter a node name at least 2 characters.";
     return validationResult;
   } else {
     // check id node name is unique.
@@ -81,6 +81,13 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   if (!isPositiveInteger(core) || !isPositiveInteger(ram) || !isPositiveInteger(disk)) {
     validationResult.isValid = false;
     validationResult.message = "Please enter positive integer for core/ ram/ disk.";
+    return validationResult;
+  }
+
+  // Boot script should be no more than 1024 characters.
+  if (BootScript.length > 1024) {
+    validationResult.isValid = false;
+    validationResult.message = "The max length supported for Boot Script is 1024 characters.";
     return validationResult;
   }
 
@@ -112,6 +119,13 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
       return validationResult;
     }
 
+    if (name.length < 2) {
+      validationResult.isValid = false;
+      validationResult.message = "The component name should be at least 2 characters.";
+      validationResult.message = "";
+      return validationResult;
+    }
+
     if (model === "") {
       validationResult.isValid = false;
       // validationResult.message = "Please select a component model.";
@@ -127,7 +141,7 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
           return validationResult;
         }
       }
-    } 
+    }
 
     if (type ==="" || name === "" || model === "") {
       validationResult.isValid = false;
@@ -159,6 +173,13 @@ const validateDetailForm = (type, value, vm_id, nodes) => {
       validationResult.message = "Node name should not be empty.";
       return validationResult;
     }
+
+    if (value.length < 2) {
+      validationResult.isValid = false;
+      validationResult.message = "Node name should be at least 2 characters.";
+      return validationResult;
+    }
+
     // check the VM name is unique in the whole slice graph.
     // check id node name is unique.
     const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(vm_id));
@@ -196,9 +217,9 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
     message: "Please choose a service type.",
   };
 
-  if (serviceName === "") {
+  if (serviceName.length < 2) {
     validationResult.isValid = false;
-    validationResult.message = "Please enter a service name.";
+    validationResult.message = "Please enter a service name at least 2 characters.";
     return validationResult;
   } else {
     // check if service name is unique

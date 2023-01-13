@@ -1,4 +1,5 @@
 import { createIdToken, refreshToken, revokeToken } from "../services/credentialManagerService.js";
+import { default as portalData } from "../services/portalData.json";
 import { toast } from "react-toastify";
 
 const autoRevokeTokens = async () => {
@@ -6,19 +7,34 @@ const autoRevokeTokens = async () => {
     await revokeToken(localStorage.getItem("refreshToken"));
   } catch (err) {
     console.log("Failed to revoke token.");
-    // TO DO: what if revoke token fails?
   }
 }
 
 export const autoCreateTokens = async (projectId) => {
+  // clear previous autoRefreshToken interval if there is any
+  if (localStorage.getItem("refreshTokenIntervalId")) {
+    clearInterval(localStorage.getItem("refreshTokenIntervalId"));
+  }
+
   try {
     // call credential manager to generate tokens.
     // parameters: project and scope, "all" for both by default.
     const { data: res } = await createIdToken(projectId, "all");
     localStorage.setItem("idToken", res["data"][0].id_token);
     localStorage.setItem("refreshToken", res["data"][0].refresh_token);
+
+    // Auto refresh token every 55min
+    const refreshTokenIntervalId = setInterval(() => {
+      if(localStorage.getItem("refreshTokenIntervalId")) {
+        clearInterval(localStorage.getItem("refreshTokenIntervalId"));
+      }
+      autoRefreshTokens(projectId);
+    }
+    , portalData["autoRefreshTokenInterval"]);
+    localStorage.setItem("refreshTokenIntervalId", refreshTokenIntervalId);
     return res["data"][0];
-  } catch (err) {
+  }
+  catch (err) {
     toast.error("Unable to obtain authentication token, the likely reason is you are not a member of any projects.");
   }
 }

@@ -6,7 +6,7 @@ import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getProjects } from "../../services/projectService.js";
-import { autoCreateTokens, autoRefreshTokens } from "../../utils/manageTokens";
+import { autoCreateTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
@@ -44,30 +44,13 @@ class Slices extends React.Component {
         this.setState({ hasProject: false, showSpinner: false });
       } else {
       // call credential manager to generate tokens
-      // if nothing found in browser storage
-      if (!localStorage.getItem("idToken") || !localStorage.getItem("refreshToken")) {
-        autoCreateTokens(res.results[0].uuid).then(async () => {
+      autoCreateTokens("all").then(async () => {
         const { data: res } = await getSlices();
         this.setState({ slices: res.data, showSpinner: false });
       });
-      } else {
-        // the token has been stored in the browser and is ready to be used.
-          try {
-            const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false });
-          } catch (err) {
-            this.setState({ showSpinner: false });
-            toast.error("Failed to load slices. Please re-login and try.");
-            if (err.response.status === 401) {
-              // 401 Error: Provided token is not valid.
-              // refresh the token by calling credential manager refresh_token.
-              autoRefreshTokens(res.results[0].uuid);
-            }
-          }
-        }
       }
     } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
+      toast.error("Failed to get slices. Please re-login and try again.");
     }
   }
 

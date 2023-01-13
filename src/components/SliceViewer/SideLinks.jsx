@@ -111,6 +111,7 @@ export default class SideLinks extends Component {
                   id="inputServiceName"
                   value={linkName}
                   onChange={this.handleLinkNameChange}
+                  placeholder={"at least 2 characters..."}
                 />
               </div>
             </div>
