@@ -237,6 +237,7 @@ class SideNodes extends React.Component {
                     id="inputNodeName"
                     value={nodeName}
                     onChange={this.handleNameChange}
+                    placeholder={"at least 2 characters..."}
                   />
                 </div>
               </div>

@@ -58,9 +58,9 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   }
 
   // Node name must be unique in the graph.
-  if (nodeName === "") {
+  if (nodeName.length < 2) {
     validationResult.isValid = false;
-    validationResult.message = "Please enter a node name.";
+    validationResult.message = "Please enter a node name at least 2 characters.";
     return validationResult;
   } else {
     // check id node name is unique.
@@ -217,9 +217,9 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
     message: "Please choose a service type.",
   };
 
-  if (serviceName === "") {
+  if (serviceName.length < 2) {
     validationResult.isValid = false;
-    validationResult.message = "Please enter a service name.";
+    validationResult.message = "Please enter a service name at least 2 characters.";
     return validationResult;
   } else {
     // check if service name is unique
