@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveMaintenanceNotice } from "./services/announcementService.js";
+import { default as portalData } from "./services/portalData.json";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import Projects from "./pages/Projects";
@@ -21,6 +22,7 @@ import Help from "./pages/Help";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
+import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import "./styles/App.scss";
@@ -29,6 +31,8 @@ class App extends React.Component {
   state = {
     userStatus: "",
     activeNotices: [],
+    showSessionTimeoutModal1: false,
+    showSessionTimeoutModal2: false,
   };
 
   async componentDidMount() {
@@ -42,20 +46,45 @@ class App extends React.Component {
 
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
-      const { data } = await getWhoAmI();
-      const user = data.results[0];
-      if (user.enrolled) {
-        localStorage.setItem("userID", user.uuid);
-        localStorage.setItem("userStatus", "active");
-        try {
-          const { data: res } = await getCurrentUser();
-          localStorage.setItem("bastionLogin", res.results[0].bastion_login);
-        } catch (err) {
-          console.log("Failed to get current user's information.");
+      try {
+        const { data } = await getWhoAmI();
+        const user = data.results[0];
+        if (user.enrolled) {
+          localStorage.setItem("userID", user.uuid);
+          localStorage.setItem("userStatus", "active");
+          try {
+            const { data: res } = await getCurrentUser();
+            localStorage.setItem("bastionLogin", res.results[0].bastion_login);
+            // after user logs in for 3hr55min, pop up first session time-out modal
+            const sessionTimeoutInterval1 = setInterval(() => 
+              this.setState({showSessionTimeoutModal1: true})
+            , portalData["5minBeforeCookieExpires"]);
+  
+            // after user logs in for 3hr59min, pop up second session time-out modal
+            const sessionTimeoutInterval2 = setInterval(() => {
+              this.setState({
+                showSessionTimeoutModal1: false,
+                showSessionTimeoutModal2: true,
+              })
+            }, portalData["1minBeforeCookieExpires"]);
+  
+            localStorage.setItem("sessionTimeoutInterval1", sessionTimeoutInterval1);
+            localStorage.setItem("sessionTimeoutInterval2", sessionTimeoutInterval2);
+          } catch (err) {
+            console.log("Failed to get current user's information.");
+          }
         }
-      } else {
-        // situation 2: logged in, but not self signup, unauthenticated
-        localStorage.setItem("userStatus", "inactive");
+      } catch (err) {
+        const errors = err.response.data.errors;
+
+        if (errors && errors[0].details.includes("Login required")) {
+          localStorage.setItem("userStatus", "unauthorized");
+          localStorage.removeItem("userID");
+        }
+  
+        if (errors && errors[0].details.includes("Enrollment required")) {
+          localStorage.setItem("userStatus", "inactive");
+        } 
       }
     }
 
@@ -63,6 +92,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
@@ -75,6 +105,20 @@ class App extends React.Component {
               />
             )
           }
+          {
+            showSessionTimeoutModal1 &&
+            <SessionTimeoutModal
+              modalId={1}
+              timeLeft={300000}
+            />
+          }
+          {
+            showSessionTimeoutModal2 &&
+            <SessionTimeoutModal
+              modalId={2}
+              timeLeft={60000}
+            />
+          }
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/login" component={Home} />
@@ -85,7 +129,7 @@ class App extends React.Component {
             <Route path="/signup/:id" component={Signup} />
             <Route path="/resources" component={Resources} />
             <Route path="/help" component={Help} />
-            <ProtectedRoute path="/slices/:id" component={SliceViewer} />
+            <ProtectedRoute path="/slices/:slice_id,:project_id" component={SliceViewer} />
             <ProtectedRoute path="/new-slice" component={NewSliceForm} />
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
             <ProtectedRoute path="/projects" component={Projects} />

@@ -3,6 +3,9 @@
   "facilityOptions": ["FABRIC"],
   "sliverKeyLimit": 10,
   "bastionKeyLimit": 10,
+  "autoRefreshTokenInterval": 3300000,
+  "5minBeforeCookieExpires": 14100000,
+  "1minBeforeCookieExpires": 14340000,
   "selfEnrollRequest": {
     "id": "self-enroll-modal",
     "title": "FABRIC Self Signup",
