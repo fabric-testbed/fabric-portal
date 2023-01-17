@@ -99,6 +99,7 @@ export default class SingleComponent extends Component {
                   type="text" className="form-control form-control-sm" id="inputComponentName"
                   value={componentName}
                   onChange={this.handleComponentNameChange}
+                  placeholder={"at least 2 characters..."}
                 />
               </div>
               <div className="form-group slice-builder-form-group col-md-4">

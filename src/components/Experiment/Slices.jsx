@@ -117,7 +117,7 @@ class Slices extends React.Component {
     const { totalCount, data } = this.getPageData();
 
     return (
-      <div className="col-9">
+      <div className={this.props.styleProp}>
         <h1>Slices</h1>
         {
           showSpinner && <SpinnerWithText text={"Loading slices..."} />
@@ -143,23 +143,25 @@ class Slices extends React.Component {
         {
           !showSpinner && hasProject && slices.length === 0 && 
           <div>
-            <div className="d-flex flex-row">
-              <Link to="/new-slice" className="btn btn-primary mr-4">
-                Create Slice in Portal
-              </Link>
-              <a
-                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
-                className="btn btn-primary"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Create Slice in JupyterHub
-              </a>
-            </div>
+            {
+              this.props.parent === "Projects" &&
+                <div className="d-flex flex-row">
+                  <Link to="/new-slice" className="btn btn-primary mr-4">
+                    Create Slice in Portal
+                  </Link>
+                  <a
+                    href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+                    className="btn btn-primary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Create Slice in JupyterHub
+                  </a>
+                </div>
+            }
             <div className="alert alert-warning mt-3" role="alert">
               <p className="mt-2">
-                We couldn't find your slice. Please create slices in&nbsp;
-                <Link to="/new-slice">Portal</Link> or &nbsp;
+                We couldn't find your slice. Please create slices in Portal or &nbsp;
                 <a
                 href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                 target="_blank"
@@ -190,9 +192,12 @@ class Slices extends React.Component {
                 onInputChange={this.handleSearch}
                 className="my-0"
               />
-              <Link to="/new-slice" className="btn btn-primary create-project-btn">
-                Create Slice
-              </Link>
+              {
+                this.props.parent === "Projects" &&
+                <Link to="/new-slice" className="btn btn-primary create-project-btn">
+                  Create Slice
+                </Link>
+              }
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>

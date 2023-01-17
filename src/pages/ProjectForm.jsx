@@ -14,6 +14,7 @@ import { getCurrentUser } from "../services/peopleService.js";
 import { updateProjectPersonnel } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
+import Slices from "../components/Experiment/Slices";
 
 import {
   getProjectById,
@@ -68,6 +69,7 @@ class projectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
+      { name: "SLICES", active: false },
     ],
     originalProjectName: "",
     owners: [],
@@ -499,6 +501,19 @@ class projectForm extends Form {
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
+                />
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex !== 3
+                  ? "d-none"
+                  : "col-9 d-flex flex-row"
+              }`}
+            >
+              <div className="w-100">
+                <Slices
+                  parent="Projects"
                 />
               </div>
             </div>

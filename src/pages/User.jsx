@@ -4,6 +4,7 @@ import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import MyRoles from "../components/UserProfile/MyRoles";
 import MyProfile from "../components/UserProfile/MyProfile";
 import KeyTabs from "../components/SshKey/KeyTabs";
+import Slices from "../components/Experiment/Slices";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
@@ -14,10 +15,11 @@ class User extends React.Component {
       { name: "MY PROFILE", active: true },
       { name: "MY ROLES & PROJECTS", active: false },
       { name: "MY SSH KEYS", active: false },
+      { name: "MY SLICES", active: false },
     ],
     user: {},
     activeIndex: 0,
-    componentNames: [MyProfile, MyRoles, KeyTabs],
+    componentNames: [MyProfile, MyRoles, KeyTabs, Slices],
     keys: [],
     showFullPageSpinner: false,
   };
