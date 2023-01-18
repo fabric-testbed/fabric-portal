@@ -150,7 +150,7 @@ class projectForm extends Form {
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/projects");
+      this.props.history.push("/experiments#projects");
     }
 
     try {
@@ -262,7 +262,7 @@ class projectForm extends Form {
   handleDeleteProject = async (project) => {
     try {
       // redirect users directly to the projects page
-      this.props.history.push("/projects");
+      this.props.history.push("/experiments#projects");
       toast.info("Deletion request is in process. You'll receive a message when the project is successfully deleted.")
       // while the async call is processing under the hood
       await deleteProject(project.uuid);
@@ -270,7 +270,7 @@ class projectForm extends Form {
       toast.success("Project deleted successfully.");
     } catch (err) {
       toast.error("Failed to delete project.");
-      this.props.history.push("/projects");
+      this.props.history.push("/experiments#projects");
     }
   };
 
@@ -403,7 +403,7 @@ class projectForm extends Form {
                   <i className="fa fa-sign-in mr-2"></i>
                   Request Storage
                 </button>
-                <Link to="/projects">
+                <Link to="/experiments#projects">
                   <button
                     className="btn btn-sm btn-outline-primary my-3"
                   >
@@ -413,7 +413,7 @@ class projectForm extends Form {
                 </Link>
               </div>
               :
-              <Link to="/projects">
+              <Link to="/experiments#projects">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
@@ -514,6 +514,7 @@ class projectForm extends Form {
               <div className="w-100">
                 <Slices
                   parent="Projects"
+                  projectId={data.uuid}
                 />
               </div>
             </div>
