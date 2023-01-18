@@ -22,6 +22,13 @@ class SlicesTable extends Component {
         )
       },
       {
+        path: "project_name",
+        label: "Project",
+        content: (slice) => (
+          <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+        ),
+      },
+      {
         content: (slice) => (
           <CopyButton
             id={slice.slice_id}

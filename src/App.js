@@ -6,7 +6,6 @@ import { getActiveMaintenanceNotice } from "./services/announcementService.js";
 import { default as portalData } from "./services/portalData.json";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
-import Projects from "./pages/Projects";
 import ProjectForm from "./pages/ProjectForm";
 import Signup from "./pages/static/Signup";
 import AUP from "./pages/static/AUP";
@@ -132,7 +131,6 @@ class App extends React.Component {
             <ProtectedRoute path="/slices/:slice_id,:project_id" component={SliceViewer} />
             <ProtectedRoute path="/new-slice" component={NewSliceForm} />
             <ProtectedRoute path="/projects/:id" component={ProjectForm} />
-            <ProtectedRoute path="/projects" component={Projects} />
             <ProtectedRoute path="/experiments" component={Experiments} />
             <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
             <ProtectedRoute path="/user" component={User} />
