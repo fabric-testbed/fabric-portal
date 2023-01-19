@@ -126,7 +126,10 @@ export default class SliceViewer extends Component {
                   </a>
                 </h2>
                 <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End Time: {sliceTimeParser(slice.lease_end_time)}</span>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1">Lease End: {sliceTimeParser(slice.lease_end_time)}</span>
+                </h4>
+                <h4>
+                  Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
                 </h4>
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">

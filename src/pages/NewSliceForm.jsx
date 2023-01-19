@@ -34,7 +34,6 @@ class NewSliceForm extends React.Component {
     showKeySpinner: false,
     showSliceSpinner: false,
     sliverKeys: [],
-    projectIdToGenerateToken: "",
     graphID: "",
     sliceNodes: [],
     sliceLinks: [],
@@ -55,7 +54,6 @@ class NewSliceForm extends React.Component {
       const { data: keys } = await getActiveKeys();
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
       this.setState({
-        projectIdToGenerateToken: this.props.match.params.project_id,
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
@@ -319,8 +317,8 @@ class NewSliceForm extends React.Component {
 
     try {
       // re-create token using user's choice of project
-      const project_id = this.state.projectIdToGenerateToken;
-      autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
+      const project_id = this.props.match.params.project_id;
+      autoCreateTokens(project_id).then(async () => {
         try {
           const { data: res } = await createSlice(requestData);
           toast.success("Slice created successfully.");
@@ -338,12 +336,12 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
+    const { sliceName, sshKey, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
       sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
-    const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
+    const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -407,7 +405,7 @@ class NewSliceForm extends React.Component {
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        <ProjectTags projectId={projectIdToGenerateToken} />
+                        <ProjectTags projectId={this.props.match.params.project_id} />
                       </div>
                     </div>
                   </div>
