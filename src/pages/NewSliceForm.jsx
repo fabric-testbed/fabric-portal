@@ -379,12 +379,12 @@ class NewSliceForm extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to="/experiments#slices" className="align-self-end mr-5">
+              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end mr-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
                   <i className="fa fa-sign-in mr-2"></i>
-                  Back to Slice List
+                  Back to Project
                 </button>
               </Link>
             </div>

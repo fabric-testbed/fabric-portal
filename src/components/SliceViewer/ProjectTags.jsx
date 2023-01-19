@@ -4,11 +4,13 @@ import { getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
+import { Link } from "react-router-dom";
 
 export default class SideLinks extends Component { 
   state = {
     showSpinner: false,
-    project: [],
+    project: {},
+    tags: [],
     tagKeyValuePairs: {
       "VM.NoLimitCPU": "allows to create VMs with more than 2 CPU cores",
       "VM.NoLimitRAM": "allows to create VMs with more than 10 GB of RAM",
@@ -36,15 +38,16 @@ export default class SideLinks extends Component {
   
   async componentDidMount() {
     try {
+      this.setState({ showSpinner: true });
       const { data: res } = await getProjectById(this.props.projectId);
-      this.setState({ project: res.results[0] });
+      this.setState({ project: res.results[0], tags: res.results[0].tags, showSpinner: false });
     } catch (err) {
       toast.error("Failed to load the project information. Please try again later.");
     }
   }
 
   render() {
-    const { project, tagKeyValuePairs, showSpinner } = this.state;
+    const { project, tags, tagKeyValuePairs, showSpinner } = this.state;
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -53,7 +56,7 @@ export default class SideLinks extends Component {
     return(
       <div className="form-group">
       <label htmlFor="projectSelect" className="slice-form-label">
-        Project
+        Project: <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
         <a
           href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
           target="_blank"
@@ -63,23 +66,18 @@ export default class SideLinks extends Component {
           Project Permissions
         </a>
       </label>
-      <select
-        id="selectSliceProject"
-        name="selectSliceProject"
-        className="form-control form-control-sm"
-        disabled
-      >
-        <option value={project.uuid}>{project.name}</option>
-      </select>
       {
         !showSpinner && <div>
           {
-            project.tags.length === 0 && <div className="sm-alert mt-2">
+
+          }
+          {
+            tags.length === 0 && <div className="sm-alert mt-2">
               This project has no permission tags. Please use only SharedNICs and L2Bridge for this slice.
             </div>
           }
           {
-            project.tags.length > 0 && <div className="mt-2">
+            tags.length > 0 && <div className="mt-2">
               { 
                 project.tags.map(tag =>
                   <OverlayTrigger
