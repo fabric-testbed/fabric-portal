@@ -156,7 +156,7 @@ class Slices extends React.Component {
               this.props.parent === "Projects" &&
               <div>
                 <div className="d-flex flex-row">
-                  <Link to="/new-slice" className="btn btn-primary mr-4">
+                  <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary mr-4">
                     Create Slice in Portal
                   </Link>
                   <a
@@ -224,7 +224,7 @@ class Slices extends React.Component {
               />
               {
                 this.props.parent === "Projects" &&
-                <Link to="/new-slice" className="btn btn-primary create-project-btn">
+                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary create-project-btn">
                   Create Slice
                 </Link>
               }

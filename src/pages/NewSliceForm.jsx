@@ -54,7 +54,8 @@ class NewSliceForm extends React.Component {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
-      this.setState({ 
+      this.setState({
+        projectIdToGenerateToken: this.props.match.params.project_id,
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
@@ -90,10 +91,6 @@ class NewSliceForm extends React.Component {
       this.setState({ showKeySpinner: false });
       toast.error("Failed to refresh keys. Please try again later.");
     }
-  }
-
-  handleProjectChange = (uuid) => {
-    this.setState({ projectIdToGenerateToken: uuid });
   }
 
   handleSliceNameChange = (e) => {
@@ -404,13 +401,13 @@ class NewSliceForm extends React.Component {
                       rel="noreferrer"
                     >
                       <button className="btn btn-link">
-                        Step 1: Select Project
+                        Step 1: View Project Permissions
                       </button>
                     </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        <ProjectTags onProjectChange={this.handleProjectChange} />
+                        <ProjectTags projectId={projectIdToGenerateToken} />
                       </div>
                     </div>
                   </div>

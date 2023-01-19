@@ -64,6 +64,7 @@ class Experiments extends React.Component {
           <TagName
             user={this.state.user}
             people={this.state.people}
+            styleProp={"col-9"}
           />
         </div>
       </div>
