@@ -36,18 +36,26 @@ class Slices extends React.Component {
   async componentDidMount() {
     // Show loading spinner and when waiting API response
     this.setState({ showSpinner: true });
-
-    // call PR first to check if the user has project.
     try {
-      const { data: res } = await getProjects("myProjects", 0, 200);
-      if (res.results.length === 0) {
-        this.setState({ hasProject: false, showSpinner: false });
+      if (window.location.href.includes("/projects")) {
+        // call credential manager to generate tokens
+        autoCreateTokens("all").then(async () => {
+          const { data: res } = await getSlices();
+          const slices = res.data.filter(s => s.project_id === this.props.projectId);
+          this.setState({ slices, showSpinner: false });
+        });
       } else {
-      // call credential manager to generate tokens
-      autoCreateTokens("all").then(async () => {
-        const { data: res } = await getSlices();
-        this.setState({ slices: res.data, showSpinner: false });
-      });
+        // call PR first to check if the user has project.
+        const { data: res } = await getProjects("myProjects", 0, 200);
+        if (res.results.length === 0) {
+          this.setState({ hasProject: false, showSpinner: false });
+        } else {
+        // call credential manager to generate tokens
+        autoCreateTokens("all").then(async () => {
+            const { data: res } = await getSlices();
+            this.setState({ slices: res.data, showSpinner: false });
+          });
+        }
       }
     } catch (err) {
       toast.error("Failed to get slices. Please re-login and try again.");
@@ -88,12 +96,7 @@ class Slices extends React.Component {
 
     // filter -> sort -> paginate
     let filtered = allSlices;
-
-    // if the UI is under Project tab, filter only slices under this project.
-    if (this.props.parent === "Project") {
-      filtered = allSlices.filter(s => s.project_id === this.props.projectId);
-    }
-
+    
     const filterMap = {
       "Name": "name",
       "ID": "slice_id",
@@ -153,7 +156,7 @@ class Slices extends React.Component {
           !showSpinner && hasProject && slices.length === 0 && 
           <div>
             {
-              this.props.parent === "Projects" &&
+              this.props.parent === "Projects" ?
               <div>
                 <div className="d-flex flex-row">
                   <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary mr-4">
@@ -170,7 +173,7 @@ class Slices extends React.Component {
                 </div>
                 <div className="alert alert-warning mt-3" role="alert">
                   <p className="mt-2">
-                    You have no slice under this project. Please create slices in Portal or &nbsp;
+                    You have no slice in this project. Please create slices in Portal or &nbsp;
                     <a
                     href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                     target="_blank"
@@ -187,27 +190,27 @@ class Slices extends React.Component {
                     </ul>
                   </p>
                 </div>
-              </div>
+              </div> :
+              <div className="alert alert-warning mt-3" role="alert">
+                  <p className="mt-2">
+                    We couldn't find your slice. Please create slices in Portal or &nbsp;
+                    <a
+                    href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
+                    target="_blank"
+                    rel="noreferrer"
+                    >JupyterHub</a> first. Here are some guide articles you may find helpful:
+                  </p>
+                  <p>
+                    <ul>
+                      <li><a href={portalData.learnArticles.guideToSliceBuilder} target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
+                      <li><a href={portalData.learnArticles.guideToStartExperiment} target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
+                      <li><a href={portalData.learnArticles.guideToInstallPythonAPI} target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
+                      <li><a href={portalData.learnArticles.guideToSliceManager} target="_blank" rel="noreferrer">Slice Manager</a></li>
+                      <li><a href={portalData.learnArticles.guideToSliceEditor} target="_blank" rel="noreferrer">Slice Editor</a></li>
+                    </ul>
+                  </p>
+                </div>
             }
-            <div className="alert alert-warning mt-3" role="alert">
-              <p className="mt-2">
-                We couldn't find your slice. Please create slices in Portal or &nbsp;
-                <a
-                href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
-                target="_blank"
-                rel="noreferrer"
-                >JupyterHub</a> first. Here are some guide articles you may find helpful:
-              </p>
-              <p>
-                <ul>
-                  <li><a href={portalData.learnArticles.guideToSliceBuilder} target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
-                  <li><a href={portalData.learnArticles.guideToStartExperiment} target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
-                  <li><a href={portalData.learnArticles.guideToInstallPythonAPI} target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
-                  <li><a href={portalData.learnArticles.guideToSliceManager} target="_blank" rel="noreferrer">Slice Manager</a></li>
-                  <li><a href={portalData.learnArticles.guideToSliceEditor} target="_blank" rel="noreferrer">Slice Editor</a></li>
-                </ul>
-              </p>
-            </div>
           </div>
         }
         {

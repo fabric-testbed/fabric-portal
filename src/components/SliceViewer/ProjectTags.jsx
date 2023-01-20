@@ -56,28 +56,32 @@ export default class SideLinks extends Component {
     return(
       <div className="form-group">
       <label htmlFor="projectSelect" className="slice-form-label">
-        Project: <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
-        <a
-          href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <i className="fa fa-question-circle mx-2"></i>
-          Project Permissions
-        </a>
+        <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
       </label>
       {
         !showSpinner && <div>
           {
-
-          }
-          {
             tags.length === 0 && <div className="sm-alert mt-2">
-              This project has no permission tags. Please use only SharedNICs and L2Bridge for this slice.
+              This project has no <a
+                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="fa fa-question-circle mr-2"></i>
+                permission tags 
+              </a>. Please use only SharedNICs and L2Bridge for this slice.
             </div>
           }
           {
             tags.length > 0 && <div className="mt-2">
+              <a
+                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="fa fa-question-circle mr-2"></i>
+                Project Permission:
+              </a>
               { 
                 project.tags.map(tag =>
                   <OverlayTrigger
