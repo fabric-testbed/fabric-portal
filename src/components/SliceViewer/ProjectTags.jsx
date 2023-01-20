@@ -54,52 +54,53 @@ export default class SideLinks extends Component {
       </Tooltip>
     ); 
     return(
-      <div className="form-group">
-      <label htmlFor="projectSelect" className="slice-form-label">
-        <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
-      </label>
-      {
-        !showSpinner && <div>
-          {
-            tags.length === 0 && <div className="sm-alert mt-2">
-              This project has no <a
-                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fa fa-question-circle mr-2"></i>
-                permission tags 
-              </a>. Please use only SharedNICs and L2Bridge for this slice.
-            </div>
-          }
-          {
-            tags.length > 0 && <div className="mt-2">
-              <a
-                href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fa fa-question-circle mr-2"></i>
-                Project Permission:
-              </a>
-              { 
-                project.tags.map(tag =>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 100, hide: 300 }}
-                    overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
-                    key={`project-tag-${tag}`}
+      <div>
+        {
+        showSpinner ? <SpinnerWithText text={"Loading project permissions..."} /> :
+        <table className="table table-sm">
+          <tbody>
+            <tr>
+              <td><b>Project</b></td>
+              <td><Link to={`/projects/${project.uuid}`}>{project.name}</Link></td>
+            </tr>
+            <tr>
+              <td>
+                <a
+                  href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <b>Permissions</b><i className="fa fa-question-circle ml-1"></i>
+                </a>
+              </td>
+              <td>
+              {
+                tags.length === 0 ? <span>
+                  This project has no <a
+                    href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                    target="_blank"
+                    rel="noreferrer"
                   >
-                    <span className="badge badge-primary mr-2 project-tag">{tag}</span>
-                  </OverlayTrigger>
-              )}
-            </div>
-          }
-        </div>
-      }
-      {
-        showSpinner && <SpinnerWithText text={"Loading project permissions..."} />
-      }
+                    <i className="fa fa-question-circle mr-2"></i>
+                    permission tags 
+                  </a>. Please use only SharedNICs and L2Bridge for this slice.
+                </span> : 
+                tags.map(tag =>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
+                      key={`project-tag-${tag}`}
+                    >
+                      <span className="badge badge-primary mr-2 project-tag">{tag}</span>
+                    </OverlayTrigger>
+                )
+              }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        }
     </div>
     )
   }

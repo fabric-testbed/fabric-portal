@@ -173,7 +173,7 @@ class Slices extends React.Component {
                 </div>
                 <div className="alert alert-warning mt-3" role="alert">
                   <p className="mt-2">
-                    You have no slice in this project. Please create slices in Portal or &nbsp;
+                    You have no slice in this project. Please create slices in Portal or&nbsp;
                     <a
                     href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                     target="_blank"
