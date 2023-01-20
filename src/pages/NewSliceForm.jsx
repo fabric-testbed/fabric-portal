@@ -34,7 +34,6 @@ class NewSliceForm extends React.Component {
     showKeySpinner: false,
     showSliceSpinner: false,
     sliverKeys: [],
-    projectIdToGenerateToken: "",
     graphID: "",
     sliceNodes: [],
     sliceLinks: [],
@@ -54,7 +53,7 @@ class NewSliceForm extends React.Component {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
-      this.setState({ 
+      this.setState({
         parsedResources: parsedObj,
         showResourceSpinner: false,
         showKeySpinner: false,
@@ -90,10 +89,6 @@ class NewSliceForm extends React.Component {
       this.setState({ showKeySpinner: false });
       toast.error("Failed to refresh keys. Please try again later.");
     }
-  }
-
-  handleProjectChange = (uuid) => {
-    this.setState({ projectIdToGenerateToken: uuid });
   }
 
   handleSliceNameChange = (e) => {
@@ -322,14 +317,14 @@ class NewSliceForm extends React.Component {
 
     try {
       // re-create token using user's choice of project
-      autoCreateTokens(this.state.projectIdToGenerateToken).then(async () => {
+      const project_id = this.props.match.params.project_id;
+      autoCreateTokens(project_id).then(async () => {
         try {
           const { data: res } = await createSlice(requestData);
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
           const slice_id = res.data[0].slice_id;
-          // this.props.history.push("/experiments#slices");
-          this.props.history.push(`/slices/${slice_id}`)
+          this.props.history.push(`/slices/${slice_id},${project_id}`);
         } catch (ex) {
           toast.error("Failed to create slice.");
           that.setState({ showSliceSpinner: false });
@@ -341,12 +336,12 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sliceName, projectIdToGenerateToken, sshKey, sliverKeys, selectedData,
+    const { sliceName, sshKey, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
       sliceNodes, sliceLinks, selectedCPs }
     = this.state;
 
-    const validationResult = validator.validateSlice(sliceName, sshKey, projectIdToGenerateToken, sliceNodes);
+    const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -384,12 +379,12 @@ class NewSliceForm extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to="/experiments#slices" className="align-self-end mr-5">
+              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end mr-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
                   <i className="fa fa-sign-in mr-2"></i>
-                  Back to Slice List
+                  Back to Project
                 </button>
               </Link>
             </div>
@@ -404,13 +399,13 @@ class NewSliceForm extends React.Component {
                       rel="noreferrer"
                     >
                       <button className="btn btn-link">
-                        Step 1: Select Project
+                        Step 1: View Project Permissions
                       </button>
                     </a>
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        <ProjectTags onProjectChange={this.handleProjectChange} />
+                        <ProjectTags projectId={this.props.match.params.project_id} />
                       </div>
                     </div>
                   </div>

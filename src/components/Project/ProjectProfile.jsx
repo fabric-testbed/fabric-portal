@@ -36,7 +36,7 @@ class ProjectProfile extends Component {
       <div>
         <div className="d-flex flex-row justify-content-between">
           <h1>{project.name}</h1>
-          <Link to="/projects">
+          <Link to="/experiments#projects">
             <button
               className="btn btn-sm btn-outline-primary my-3"
             >

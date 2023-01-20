@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getProjects, getProjectById } from "../../services/projectService.js";
+import { getProjectById } from "../../services/projectService.js";
 import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
+import { Link } from "react-router-dom";
 
 export default class SideLinks extends Component { 
   state = {
     showSpinner: false,
-    projects: [],
-    projectIdToGenerateToken: "",
+    project: {},
     tags: [],
     tagKeyValuePairs: {
       "VM.NoLimitCPU": "allows to create VMs with more than 2 CPU cores",
@@ -38,103 +38,69 @@ export default class SideLinks extends Component {
   
   async componentDidMount() {
     try {
-      const { data: res } = await getProjects("myProjects", 0, 200);
-      this.setState({ projects: res.results });
+      this.setState({ showSpinner: true });
+      const { data: res } = await getProjectById(this.props.projectId);
+      this.setState({ project: res.results[0], tags: res.results[0].tags, showSpinner: false });
     } catch (err) {
-      toast.error("Failed to load user's projects. Please try again later.");
-    }
-  }
-
-  handleProjectChange = (e) => {
-    if (e.target.value !== "") {
-      this.setState({ projectIdToGenerateToken: e.target.value }, () => {
-        this.props.onProjectChange(this.state.projectIdToGenerateToken);
-        this.getProjectTags();
-      });
-    } else {
-      this.setState({ projectIdToGenerateToken: "", tags: [] });
-    }
-  }
-
-  async getProjectTags() {
-    this.setState({  showSpinner: true });
-    try {
-      const { data: res } = await getProjectById(this.state.projectIdToGenerateToken);
-      const project = res.results[0];
-      this.setState({ tags: project.tags, showSpinner: false});
-    } catch (err) {
-      this.setState({ showSpinner: false });
-      toast.error("Failed to load the permissions of this project. Please re-select a project.");
+      toast.error("Failed to load the project information. Please try again later.");
     }
   }
 
   render() {
-    const { projects, projectIdToGenerateToken, tags, tagKeyValuePairs, showSpinner } = this.state;
+    const { project, tags, tagKeyValuePairs, showSpinner } = this.state;
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
       </Tooltip>
     ); 
     return(
-      <div className="form-group">
-      <label htmlFor="projectSelect" className="slice-form-label">
-        Project
-        <a
-          href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <i className="fa fa-question-circle mx-2"></i>
-          Project Permissions
-        </a>
-      </label>
-      <select
-        id="selectSliceProject"
-        name="selectSliceProject"
-        className="form-control form-control-sm"
-        value={projectIdToGenerateToken}
-        onChange={this.handleProjectChange}
-      >
-        <option value="">Choose...</option>
+      <div>
         {
-          projects.length > 0 && projects.map(project => 
-            <option value={project.uuid} key={`project-${project.name}`}>{project.name}</option>
-          )
-        }
-      </select>
-      {
-        projectIdToGenerateToken === "" && 
-        <div className="sm-alert mt-2">
-          Please select a project that you want to create slice for.
-        </div>
-      }
-      {
-        projectIdToGenerateToken !== "" && ! showSpinner && <div>
-          {
-            tags.length === 0 && <div className="sm-alert mt-2">
-              This project has no permission tags. Please use only SharedNICs and L2Bridge for this slice.
-            </div>
-          }
-          {
-            tags.length > 0 && <div className="mt-2">
-              { 
-                tags.map(tag =>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 100, hide: 300 }}
-                    overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
-                    key={`project-tag-${tag}`}
+        showSpinner ? <SpinnerWithText text={"Loading project permissions..."} /> :
+        <table className="table table-sm">
+          <tbody>
+            <tr>
+              <td><b>Project</b></td>
+              <td><Link to={`/projects/${project.uuid}`}>{project.name}</Link></td>
+            </tr>
+            <tr>
+              <td>
+                <a
+                  href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <b>Permissions</b><i className="fa fa-question-circle ml-1"></i>
+                </a>
+              </td>
+              <td>
+              {
+                tags.length === 0 ? <span>
+                  This project has no <a
+                    href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                    target="_blank"
+                    rel="noreferrer"
                   >
-                    <span className="badge badge-primary mr-2 project-tag">{tag}</span>
-                  </OverlayTrigger>
-              )}
-            </div>
-          }
-        </div>
-      }
-      {
-        showSpinner && <SpinnerWithText text={"Loading project permissions..."} />
-      }
+                    <i className="fa fa-question-circle mr-2"></i>
+                    permission tags 
+                  </a>. Please use only SharedNICs and L2Bridge for this slice.
+                </span> : 
+                tags.map(tag =>
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
+                      key={`project-tag-${tag}`}
+                    >
+                      <span className="badge badge-primary mr-2 project-tag">{tag}</span>
+                    </OverlayTrigger>
+                )
+              }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        }
     </div>
     )
   }

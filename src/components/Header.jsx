@@ -21,12 +21,6 @@ class Header extends React.Component {
       { name: "Home", path: "/", child: [], exact: true },
       { name: "Resources", path: "/resources", child: [], exact: false },
       {
-        name: "Projects",
-        path: "/projects",
-        child: [],
-        exact: false,
-      },
-      {
         name: "Experiments",
         path: "/experiments",
         child: [],
