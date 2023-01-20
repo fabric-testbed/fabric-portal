@@ -70,7 +70,7 @@ class NewProjectForm extends Form {
       let ownerIDs = addedOwners.map((user) => user.uuid);
       let memberIDs = addedMembers.map((user) => user.uuid);
       // redirect users directly to the projects page
-      this.props.history.push("/projects");
+      this.props.history.push("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
       const  { data: res } = await createProject(data, ownerIDs, memberIDs);
@@ -80,7 +80,7 @@ class NewProjectForm extends Form {
     }
     catch (err) {
       toast.error("Failed to create project.");
-      this.props.history.push("/projects");
+      this.props.history.push("/experiments#projects");
     }
   };
 

@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SpinnerWithText from "../components/common/SpinnerWithText";
-import Pagination from "../components/common/Pagination";
-import ProjectsTable from "../components/Project/ProjectsTable";
-import RadioBtnGroup from "../components/common/RadioBtnGroup";
-import { getCurrentUser } from "../services/peopleService.js";
-import { getProjects } from "../services/projectService.js";
-import { default as portalData } from "../services/portalData.json";
-import checkGlobalRoles from "../utils/checkGlobalRoles"; 
-import toLocaleTime from "../utils/toLocaleTime";
+import SpinnerWithText from "../common/SpinnerWithText";
+import Pagination from "../common/Pagination";
+import ProjectsTable from "../Project/ProjectsTable";
+import RadioBtnGroup from "../common/RadioBtnGroup";
+import { getCurrentUser } from "../../services/peopleService.js";
+import { getProjects } from "../../services/projectService.js";
+import { default as portalData } from "../../services/portalData.json";
+import checkGlobalRoles from "../../utils/checkGlobalRoles"; 
+import toLocaleTime from "../../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
 class Projects extends React.Component {
@@ -135,7 +135,7 @@ class Projects extends React.Component {
       projectsCount, searchQuery } = this.state;
 
     return (
-      <div className="container">
+      <div className="col-9">
         <div className="d-flex flex-row justify-content-between">
           <div className="d-flex flex-row">
             <h1>Projects</h1>

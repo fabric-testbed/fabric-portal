@@ -5,7 +5,42 @@ import CopyButton from "../common/CopyButton";
 import sliceTimeParser from "../../utils/sliceTimeParser.js";
 
 class SlicesTable extends Component {
-  columns = [
+  columns = {
+    "allSlices": [
+      {
+        path: "name",
+        label: "Slice Name",
+        content: (slice) => (
+          <Link to={`/slices/${slice.slice_id},${slice.project_id}`}>{slice.name}</Link>
+        ),
+      },
+      { path: "state", label: "Slice State" },
+      {
+        path: "lease_end_time",
+        label: "Lease End",
+        content: (slice) => (
+          <span>{sliceTimeParser(slice.lease_end_time)}</span>
+        )
+      },
+      {
+        path: "project_name",
+        label: "Project",
+        content: (slice) => (
+          <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+        ),
+      },
+      {
+        content: (slice) => (
+          <CopyButton
+            id={slice.slice_id}
+            text={"Slice ID"}
+            btnStyle={"btn btn-sm btn-primary"}
+            showCopiedValue={true}
+          />
+        ),
+      },
+    ],
+    "projectSlices": [
       {
         path: "name",
         label: "Slice Name",
@@ -31,13 +66,14 @@ class SlicesTable extends Component {
           />
         ),
       },
-    ];
+    ]
+  };
 
   render() {
-    const { slices, onSort, sortColumn } = this.props;
+    const { slices, onSort, sortColumn, parent } = this.props;
     return (
       <Table
-        columns={this.columns}
+        columns={parent === "Projects" ? this.columns["projectSlices"] : this.columns["allSlices"]}
         data={slices}
         sortColumn={sortColumn}
         onSort={onSort}
