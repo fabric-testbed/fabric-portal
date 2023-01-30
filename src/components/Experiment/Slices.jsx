@@ -130,7 +130,12 @@ class Slices extends React.Component {
           this.props.parent === "Projects" ?
             <h2>Project Slices</h2> : <h1>Slices</h1>
         }
-        
+        {
+          this.props.parent !== "Projects" && 
+          <div className="alert alert-primary alert-dismissible fade show" role="alert">
+            To create slice in portal, please select a project first from <Link to="/experiments#projects">Projects &amp; Slices page</Link>.
+          </div>
+        }
         {
           showSpinner && <SpinnerWithText text={"Loading slices..."} />
         }
