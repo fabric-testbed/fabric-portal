@@ -1,4 +1,5 @@
 {
+  "version": "1.4",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "sliverKeyLimit": 10,
@@ -48,6 +49,7 @@
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "learnArticles": {
+    "portalReleaseNotes": "https://learn.fabric-testbed.net/knowledge-base/fabric-portal-release-notes/",
     "faq": "https://learn.fabric-testbed.net/faq/",
     "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/",
     "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
