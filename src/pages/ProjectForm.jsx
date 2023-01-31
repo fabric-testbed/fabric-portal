@@ -66,10 +66,10 @@ class projectForm extends Form {
     errors: {},
     activeIndex: 0,
     SideNavItems: [
-      { name: "BASIC INFORMATION", active: true },
+      { name: "BASIC INFORMATION", active: false },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "SLICES", active: false },
+      { name: "SLICES", active: true },
     ],
     originalProjectName: "",
     owners: [],
@@ -145,6 +145,25 @@ class projectForm extends Form {
   }
 
   async componentDidMount() {
+     // use url anchor for tab display
+     const hash = this.props.location.hash;
+     const activeMap = {
+       "#info": 0,
+       "#owners": 1,
+       "#members": 2,
+       "#slices": 3,
+     }
+ 
+     if (hash) {
+       this.setState({ activeIndex: activeMap[hash] });
+       this.setState({ SideNavItems: [
+         { name: "BASIC INFORMATION", active: hash === "#info" },
+         { name: "PROJECT OWNERS", active: hash === "#owners" },
+         { name: "PROJECT MEMBERS", active: hash === "#members" },
+         { name: "SLICES", active: hash === "#slices" },
+       ]})
+     }
+     
     try {
       const { data: res2 } = await getCurrentUser();
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
@@ -256,7 +275,14 @@ class projectForm extends Form {
   handleSideNavChange = (newIndex) => {
     // change active item in side nav.
     // change the display of main content of right side accordingly.
+    const indexToHash = {
+      0: "#info",
+      1: "#owners",
+      2: "#members",
+      3: "#slices",
+    }
     this.setState({ activeIndex: newIndex });
+    this.props.history.push(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
   handleDeleteProject = async (project) => {
