@@ -134,7 +134,7 @@ class Slices extends React.Component {
           this.props.parent !== "Projects" && 
           <div className="alert alert-primary alert-dismissible fade show" role="alert">
             To create slice in portal, please select a project first from 
-            <Link to="/experiments#projects">
+            <Link to="/experiments#projects" onClick={() => this.props.onChange(0)}>
               <i className="fa fa-sign-in mx-1"></i> Projects &amp; Slices
             </Link>.
           </div>

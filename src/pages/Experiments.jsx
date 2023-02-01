@@ -19,7 +19,7 @@ class Experiments extends React.Component {
     componentNames: [Projects, Slices, Tokens, Keys],
   };
 
-  renderByUrlAnchor = () => {
+  async componentDidMount() {
     // url anchor: #slices, #tokens, #sshKeys
     const hash = this.props.location.hash;
     const activeMap = {
@@ -38,20 +38,6 @@ class Experiments extends React.Component {
         { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
       ]})
     }
-  }
-
-
-  componentWillMount() {
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.renderByUrlAnchor();
-    });
-  }
-  componentWillUnmount() {
-      this.unlisten();
-  }
-
-  async componentDidMount() {
-    this.renderByUrlAnchor();
   }
 
   handleChange = (newIndex) => {
@@ -79,6 +65,7 @@ class Experiments extends React.Component {
             user={this.state.user}
             people={this.state.people}
             styleProp={"col-9"}
+            handleChange={this.handleChange}
           />
         </div>
       </div>
