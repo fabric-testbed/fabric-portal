@@ -64,7 +64,7 @@ class projectForm extends Form {
       isJupterhubUser: false,
     },
     errors: {},
-    activeIndex: 0,
+    activeIndex: 3,
     SideNavItems: [
       { name: "BASIC INFORMATION", active: false },
       { name: "PROJECT OWNERS", active: false },
@@ -455,7 +455,7 @@ class projectForm extends Form {
               handleChange={this.handleSideNavChange}
             />
             <div
-              className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
+              className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             >
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name", canUpdate)}
@@ -498,9 +498,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 1
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 1
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
@@ -515,9 +514,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 2
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 2
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
@@ -532,9 +530,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 3
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 3
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
