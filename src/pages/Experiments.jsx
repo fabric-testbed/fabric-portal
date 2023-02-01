@@ -47,7 +47,14 @@ class Experiments extends React.Component {
       2: "#tokens",
       3: "#sshKeys",
     }
-    this.setState({ activeIndex: newIndex });
+    this.setState({ activeIndex: newIndex,
+      SideNavItems: [
+        { name: "PROJECTS & SLICES", active: newIndex === 0 },
+        { name: "MY SLICES", active: newIndex === 1 },
+        { name: "MANAGE TOKENS", active: newIndex === 2 },
+        { name: "MANAGE SSH KEYS", active: newIndex === 3 },
+      ]
+    });
     this.props.history.push(`/experiments${indexToHash[newIndex]}`);
   };
   
@@ -65,6 +72,8 @@ class Experiments extends React.Component {
             user={this.state.user}
             people={this.state.people}
             styleProp={"col-9"}
+            parent={"Experiments"}
+            handleChange={this.handleChange}
           />
         </div>
       </div>

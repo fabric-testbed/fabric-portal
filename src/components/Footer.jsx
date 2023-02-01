@@ -1,14 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-
 import { default as portalData } from "../services/portalData.json";
-
 import nsfLogo from "../imgs/nsf.png";
 import trustedciBadge from "../imgs/trustedci.png";
 
@@ -36,6 +33,11 @@ class Footer extends React.Component {
             <li><a href={portalData.learnArticles.faq} target="_blank" rel="noopener noreferrer">FAQ</a></li>
             <li>
               <Link to="/help">Contact Us</Link>
+            </li>
+            <li>
+              <a href={portalData.learnArticles.portalReleaseNotes} target="_blank" rel="noopener noreferrer">
+                <i>{`Portal Version: v${portalData.version}`}</i>
+              </a>
             </li>
           </ul>
         </div>

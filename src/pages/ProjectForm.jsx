@@ -64,12 +64,12 @@ class projectForm extends Form {
       isJupterhubUser: false,
     },
     errors: {},
-    activeIndex: 0,
+    activeIndex: 3,
     SideNavItems: [
-      { name: "BASIC INFORMATION", active: true },
+      { name: "BASIC INFORMATION", active: false },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "SLICES", active: false },
+      { name: "SLICES", active: true },
     ],
     originalProjectName: "",
     owners: [],
@@ -145,6 +145,25 @@ class projectForm extends Form {
   }
 
   async componentDidMount() {
+     // use url anchor for tab display
+     const hash = this.props.location.hash;
+     const activeMap = {
+       "#info": 0,
+       "#owners": 1,
+       "#members": 2,
+       "#slices": 3,
+     }
+ 
+     if (hash) {
+       this.setState({ activeIndex: activeMap[hash] });
+       this.setState({ SideNavItems: [
+         { name: "BASIC INFORMATION", active: hash === "#info" },
+         { name: "PROJECT OWNERS", active: hash === "#owners" },
+         { name: "PROJECT MEMBERS", active: hash === "#members" },
+         { name: "SLICES", active: hash === "#slices" },
+       ]})
+     }
+     
     try {
       const { data: res2 } = await getCurrentUser();
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
@@ -256,7 +275,14 @@ class projectForm extends Form {
   handleSideNavChange = (newIndex) => {
     // change active item in side nav.
     // change the display of main content of right side accordingly.
+    const indexToHash = {
+      0: "#info",
+      1: "#owners",
+      2: "#members",
+      3: "#slices",
+    }
     this.setState({ activeIndex: newIndex });
+    this.props.history.push(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
   handleDeleteProject = async (project) => {
@@ -429,7 +455,7 @@ class projectForm extends Form {
               handleChange={this.handleSideNavChange}
             />
             <div
-              className={`${activeIndex !== 0 ? "d-none" : "col-9"}`}
+              className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             >
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("name", "Name", canUpdate)}
@@ -472,9 +498,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 1
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 1
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
@@ -489,9 +514,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 2
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 2
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
@@ -506,9 +530,8 @@ class projectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex !== 3
-                  ? "d-none"
-                  : "col-9 d-flex flex-row"
+                activeIndex === 3
+                  ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
