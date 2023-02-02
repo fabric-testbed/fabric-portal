@@ -22,6 +22,7 @@ const DetailTable = props => {
     ["SharedNIC", "totalSharedNIC", "freeSharedNIC"],
     ["FPGA", "totalFPGA", "freeFPGA"],
   ]
+
   return (
     <div>
       <table className="table">
