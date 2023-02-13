@@ -31,7 +31,8 @@ export const sitesNameMapping = {
     "CERN": "CERN",
     "University of Bristol": "BRIST",
     "University of Amsterdam": "AMST",
-    "University of Tokyo": "TOKY"
+    "University of Tokyo": "TOKY",
+    "HAWI": "HAWI",
   },
   acronymToShortName: {
     "RENC": "RENCI",
@@ -65,7 +66,8 @@ export const sitesNameMapping = {
     "CERN": "CERN",
     "BRIST": "University of Bristol",
     "AMST": "University of Amsterdam",
-    "TOKY": "University of Tokyo"
+    "TOKY": "University of Tokyo",
+    "HAWI": "HAWI",
   },
   acronymToLongName: {
     "RENC": "RENCI",
@@ -99,7 +101,8 @@ export const sitesNameMapping = {
     "CERN": "CERN",
     "BRIST": "University of Bristol",
     "AMST": "University of Amsterdam",
-    "TOKY": "University of Tokyo"
+    "TOKY": "University of Tokyo",
+    "HAWI": "University of Hawai'i",
   },
   shortToLongName: {
     "RENCI": "RENCI",
@@ -133,6 +136,7 @@ export const sitesNameMapping = {
     "CERN": "CERN",
     "University of Bristol": "University of Bristol",
     "University of Amsterdam": "University of Amsterdam",
-    "University of Tokyo": "University of Tokyo"
+    "University of Tokyo": "University of Tokyo",
+    "HAWI": "University of Hawai'i",
   },
 }
