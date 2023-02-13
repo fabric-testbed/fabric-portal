@@ -17,6 +17,7 @@ export const topomap = {
     "UKY": [-84.5040, 38.0307],
     "RENCI": [-79.0469, 35.9049],
     "RNP&ANSP&RedCLARA": [-46.6333, -23.5505],
+    "HAWI": [-157.8581, 21.3099],
     // not actuall coordinates (for display purpose):
     "Clemson": [-81.5369, 34.3738],
     "CLOUDLAB": [-82.5369, 34.3738],
@@ -62,6 +63,7 @@ export const topomap = {
     { markerOffset: -8, name: "StarLight", type: "us_core" },
     { markerOffset: 8, name: "Washington", type: "us_core" },
     { markerOffset: 10, name: "FIU", type: "us_core" },
+    { markerOffset: -10, name:"HAWI", type: "us_core" },
     // U.S. edge nodes
     { markerOffset: -3, name: "LBNL", type: "edge" },
     { markerOffset: 6, name: "SRI", type: "edge" },
@@ -102,6 +104,8 @@ export const topomap = {
     { from: "Washington", to: "New York"},
     { from: "Washington", to: "Atlanta"},
     { from: "FIU", to: "Atlanta"},
+    { from: "HAWI", to: "Seattle" },
+    { from: "HAWI", to: "Los Angeles" },
     // core - edge
     { from: "LBNL",to: "Los Angeles"},
     { from: "SRI",to: "Los Angeles"},
