@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import Table from "../common/Table";
+import { Link } from "react-router-dom";
 
 class SummaryTable extends Component {
   columns = [
     {
-      path: "name",
+      content: (resource) => (
+        <Link to={`/sites/${resource.id}`}>
+          {resource.name}
+        </Link>
+      ),
       label: "Site",
     },
     { path: ["freeCore", "totalCore"], label: "Cores" },

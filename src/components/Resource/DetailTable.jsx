@@ -1,5 +1,6 @@
 import ProgressBar from '../common/ProgressBar';
 import { sitesNameMapping }  from "../../data/sites";
+import { Link } from "react-router-dom";
 
 const generateProgressBar = (total, free) => {
   return (
@@ -29,7 +30,13 @@ const DetailTable = props => {
         <thead>
           <tr>
             <th scope="col" colSpan="2" className="text-center">
-              {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}
+              {
+                resource ? 
+                <Link to={`/sites/${resource.id}`}>
+                  {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}
+                </Link> : 
+                `${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`
+              }
             </th>
           </tr>
         </thead>

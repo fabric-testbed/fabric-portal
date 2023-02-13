@@ -126,5 +126,9 @@ export const topomap = {
     { from: "StarLight", to:  "New York" },
     { from: "Salt Lake City", to: "StarLight" },
     { from: "Los Angeles", to: "Salt Lake City" },
+    { from: "Los Angeles", to: "Dallas" },
+    { from: "Dallas", to: "Atlanta" },
+    { from: "Atlanta", to: "Washington" },
+    { from: "New York", to: "Washington" }
   ]
 }
