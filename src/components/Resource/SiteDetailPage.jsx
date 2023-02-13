@@ -1,5 +1,6 @@
 import React from "react";
 import DetailTable from "./DetailTable";
+import { Link } from "react-router-dom";
 
 class SiteDetailPage extends React.Component {
   state = {
@@ -9,15 +10,13 @@ class SiteDetailPage extends React.Component {
       { display: "Status", field: "status" },
       { display: "Hosting Organization", field: "hosting" },
       { display: "Rack Location", field: "rack" },
-      { display: "Notes", field: "notes" }
     ],
     site: {
       name: "RENCI",
       status: "Up",
       acronym: "RENC",
       hosting: "University of North Carolina-Chapel Hill",
-      rack: "Chapel Hill, NC",
-      notes: "Head-node dual-stack (IPv4, IPv6)"
+      rack: "Chapel Hill, NC"
     },
     resource: {
       "id": 377,
@@ -72,7 +71,17 @@ class SiteDetailPage extends React.Component {
     const { site, resource } = this.state;
     return (
       <div className="container">
-        <h1>Site - {site.name}</h1>
+         <div className="d-flex flex-row justify-content-between">
+          <h1>Site - {site.name}</h1>
+          <Link to="/resources">
+            <button
+              className="btn btn-sm btn-outline-primary my-3"
+            >
+              <i className="fa fa-sign-in mr-2"></i>
+              Back to Resources Overview
+            </button>
+          </Link>
+        </div>
         <div className="mt-4">
           <h2>Basic Information</h2>
           <table className="table table-sm table-striped table-bordered mb-4">

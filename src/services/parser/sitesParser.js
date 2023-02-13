@@ -1,9 +1,23 @@
+const getSiteColor = (status) => {
+  if (status === "Active") {
+    // Color: "primary" for "active" sites
+    return "#5798bc";
+  } else if (status === "Maint" || status === "PreMaint") {
+    // Color: "warning" for "maintenance" sites
+    return "#ff8542";
+  } else {
+    // Color: "secondary" for "down" sites
+    return "#838385";
+  }
+}
+
 export default function parseSites(data, acronymToShortName) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const links = abqm_elements.links;
   const parsedSites = [];
   const siteNames = [];
+  const siteColorMapping = {};
 
   nodes.forEach(node => {
     if (node.Class === "CompositeNode") {
@@ -11,7 +25,8 @@ export default function parseSites(data, acronymToShortName) {
       site.id = node.id;
       site.nodeId = node.NodeID;
       site.name = node.Name;
-
+      /************ retrieve site status in site node. ************/
+      site.status = JSON.parse(node.MaintenanceInfo)[node.Name];
       /************ retrieve site capacity in site node. ************/ 
       const siteCapacityTypes = {
         "CPU": "cpu",
@@ -62,10 +77,15 @@ export default function parseSites(data, acronymToShortName) {
       }
 
       parsedSites.push(site);
+      siteColorMapping[site.name] = getSiteColor(site.status.state);
       siteNames.push(acronymToShortName[site.name]);
     }
   })
 
-  const parsedObj = {"parsedSites": parsedSites, "siteNames": siteNames};
+  const parsedObj = {
+    "parsedSites": parsedSites,
+    "siteNames": siteNames,
+    "siteColorMapping": siteColorMapping
+  };
   return parsedObj;
 }

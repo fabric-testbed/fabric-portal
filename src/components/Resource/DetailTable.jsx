@@ -24,6 +24,21 @@ const DetailTable = props => {
     ["FPGA", "totalFPGA", "freeFPGA"],
   ]
 
+  const statusMapping = {
+    "Maint": {
+      state: "Maintenance",
+      color: "warning"
+    },
+    "PreMaint": {
+      state: "Pre-Maintenance",
+      color: "warning"
+    },
+    "Active": {
+      state: "Up",
+      color: "primary"
+    }
+  }
+
   return (
     <div>
       <table className="table">
@@ -45,11 +60,19 @@ const DetailTable = props => {
             <td>Status</td>
             <td className="align-middle text-center">
               {
-                resource ? (
-                  <span className="badge badge-pill badge-primary px-2">Up</span>
-                ) : (<span className="badge badge-pill badge-danger px-2">Down</span>)
+                !resource &&
+                <span className="badge badge-pill badge-danger px-2">
+                  Down
+                </span>
               }
-              
+              {
+                resource &&
+                <span
+                  className={`badge badge-pill badge-${statusMapping[resource.status.state].color} px-2`}
+                >
+                  { statusMapping[resource.status.state].state }
+                </span>
+              }
             </td>
           </tr>
           {

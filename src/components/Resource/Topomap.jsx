@@ -29,11 +29,6 @@ const Topomap = props => {
     setPosition(position);
   }
 
-  function checkStatus(name) {
-    // return "up" or "down" 
-    return props.sites.includes(name) ? "up" : "down";
-  }
-
   return (
     <div>
       <ComposableMap
@@ -95,7 +90,7 @@ const Topomap = props => {
             >
               <circle
                 r={type === "edge" ? 1.5 : 3} 
-                fill={ checkStatus(name) === "up" ? "#078ac1" : "#838385"}
+                fill={props.siteColorMapping[name] || "#838385"}
                 className="hoverable-node"
               />
               <text
