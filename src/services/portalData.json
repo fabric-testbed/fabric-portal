@@ -48,6 +48,7 @@
   },
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
+  "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
   "learnArticles": {
     "portalReleaseNotes": "https://learn.fabric-testbed.net/knowledge-base/fabric-portal-release-notes/",
     "faq": "https://learn.fabric-testbed.net/faq/",

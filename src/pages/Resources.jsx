@@ -150,6 +150,7 @@ class Resources extends Component {
             <DetailTable
               name={activeDetailName}
               resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
+              parent="resources"
             />
           </div>
         </div>

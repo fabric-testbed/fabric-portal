@@ -2,8 +2,10 @@ const getSiteColor = (status) => {
   if (status === "Active") {
     // Color: "primary" for "active" sites
     return "#5798bc";
-  } else if (status === "Maint" || status === "PreMaint") {
+  } else if (status === "Maint") {
     // Color: "warning" for "maintenance" sites
+    return "#e94948";
+  } else if (status === "PreMaint") {
     return "#ff8542";
   } else {
     // Color: "secondary" for "down" sites
@@ -25,6 +27,8 @@ export default function parseSites(data, acronymToShortName) {
       site.id = node.id;
       site.nodeId = node.NodeID;
       site.name = node.Name;
+      site.location = node.Location;
+      // site.location = JSON.parse(node.Location)["postal"];
       /************ retrieve site status in site node. ************/
       site.status = JSON.parse(node.MaintenanceInfo)[node.Name];
       /************ retrieve site capacity in site node. ************/ 
@@ -87,5 +91,8 @@ export default function parseSites(data, acronymToShortName) {
     "siteNames": siteNames,
     "siteColorMapping": siteColorMapping
   };
+
+  console.log(parsedObj);
+
   return parsedObj;
 }

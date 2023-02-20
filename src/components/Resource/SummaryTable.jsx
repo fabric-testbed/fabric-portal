@@ -6,9 +6,33 @@ class SummaryTable extends Component {
   columns = [
     {
       content: (resource) => (
-        <Link to={`/sites/${resource.id}`}>
-          {resource.name}
-        </Link>
+        <div>
+          <Link
+            to={
+            {
+              pathname:`/sites/${resource.id}`,
+              state: { siteData: resource }
+            }
+          }>
+            {resource.name}
+          </Link>
+          {
+            resource.status && resource.status.state === "Maint" &&
+            <div>
+              <span className="badge badge-pill badge-danger px-2">
+                Maintenance
+              </span>
+            </div>
+          }
+          {
+            resource.status && resource.status.state === "PreMaint" &&
+            <div>
+              <span className="badge badge-pill badge-info px-2">
+                Pre-Maintenance
+              </span>
+            </div>
+          }
+        </div>
       ),
       label: "Site",
     },

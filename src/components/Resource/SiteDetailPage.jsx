@@ -1,113 +1,126 @@
 import React from "react";
 import DetailTable from "./DetailTable";
+import { sitesNameMapping }  from "../../data/sites";
+import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
+import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
 
-class SiteDetailPage extends React.Component {
-  state = {
-    basicRows: [
-      { display: "Name", field: "name" },
-      { display: "Acronym", field: "acronym" },
-      { display: "Status", field: "status" },
-      { display: "Hosting Organization", field: "hosting" },
-      { display: "Rack Location", field: "rack" },
-    ],
-    site: {
-      name: "RENCI",
-      status: "Up",
-      acronym: "RENC",
-      hosting: "University of North Carolina-Chapel Hill",
-      rack: "Chapel Hill, NC"
+const SiteDetailPage = props => {
+  const statusMapping = {
+    "Maint": {
+      state: "Maintenance",
+      color: "warning",
+      explanation: "no requests would be accepted"
     },
-    resource: {
-      "id": 377,
-      "nodeId": "860c2a10-de1c-45e4-b5fb-af8afb2b1cc5",
-      "name": "RENC",
-      "capacities": {
-          "core": 192,
-          "cpu": 6,
-          "disk": 14400,
-          "ram": 1536,
-          "unit": 3
-      },
-      "allocatedCapacities": {},
-      "totalCPU": 6,
-      "allocatedCPU": 0,
-      "freeCPU": 6,
-      "totalCore": 192,
-      "allocatedCore": 0,
-      "freeCore": 192,
-      "totalDisk": 14400,
-      "allocatedDisk": 0,
-      "freeDisk": 14400,
-      "totalRAM": 1536,
-      "allocatedRAM": 0,
-      "freeRAM": 1536,
-      "totalUnit": 3,
-      "allocatedUnit": 0,
-      "freeUnit": 3,
-      "totalGPU": 6,
-      "allocatedGPU": 0,
-      "freeGPU": 6,
-      "totalNVME": 10,
-      "allocatedNVME": 0,
-      "freeNVME": 10,
-      "totalSmartNIC": 4,
-      "allocatedSmartNIC": 0,
-      "freeSmartNIC": 4,
-      "totalSharedNIC": 381,
-      "allocatedSharedNIC": 0,
-      "freeSharedNIC": 381,
-      "totalFPGA": 0,
-      "allocatedFPGA": 0,
-      "freeFPGA": 0
+    "PreMaint": {
+      state: "Pre-Maintenance",
+      color: "warning",
+      explanation: "requests will be expected until the deadline"
+    },
+    "Active": {
+      state: "Active",
+      color: "primary",
+      explanation: ""
+    
+    }
   }
-  };
 
-  // async componentDidMount() {
-  //   const siteId = this.props.match.params.id;
-  // }
+  const { state } = props.location;
 
-  render() {
-    const { site, resource } = this.state;
-    return (
-      <div className="container">
-         <div className="d-flex flex-row justify-content-between">
-          <h1>Site - {site.name}</h1>
-          <Link to="/resources">
-            <button
-              className="btn btn-sm btn-outline-primary my-3"
-            >
-              <i className="fa fa-sign-in mr-2"></i>
-              Back to Resources Overview
-            </button>
-          </Link>
-        </div>
-        <div className="mt-4">
-          <h2>Basic Information</h2>
-          <table className="table table-sm table-striped table-bordered mb-4">
-            <tbody>
-              {this.state.basicRows.map((row, index) => {
-                return (
-                  site[row.field] && 
-                  <tr key={`account-info-${index}`}>
-                    <th scope="row">{row.display}</th>
-                    <td>{site[row.field]}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-4">
-          <h2>Resource Availabilities</h2>
-          <DetailTable
-            name={site.name}
-            resource={resource}
-          />
-        </div>
-      </div>
-    );
-  }
+  console.log(state.siteData.status)
+
+  return (
+    <div className="container">
+    <div className="d-flex flex-row justify-content-between">
+     <h1>Site - {state.siteData.name}</h1>
+     <Link to="/resources">
+       <button
+         className="btn btn-sm btn-outline-primary my-3"
+       >
+         <i className="fa fa-sign-in mr-2"></i>
+         Back to Resources Overview
+       </button>
+     </Link>
+   </div>
+   {
+    ["Maint", "PreMaint"].includes(state.siteData.status["state"]) &&
+    <div className="alert alert-primary mb-2" role="alert">
+      <i className="fa fa-exclamation-triangle mr-2"></i> 
+      Please check the <i className="fa fa-sign-in ml-1 mr-2"></i> 
+      <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">
+       FABRIC Announcements Forum
+      </a> for more detailed site maintenance information.
+    </div>
+   }
+   <div className="mt-4">
+     <h2>Basic Information</h2>
+     <table className="table table-sm table-striped table-bordered mb-4">
+       <tbody>
+        {
+          sitesNameMapping.acronymToShortName[state.siteData.name] && 
+          <tr>
+            <th>Name</th>
+            <td>{ sitesNameMapping.acronymToShortName[state.siteData.name] }</td>
+          </tr>
+        }
+        <tr>
+          <th>Acronym</th>
+          <td>{ state.siteData.name }</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>
+            {
+              state.siteData.status["state"] !== "Active" ? 
+              `${statusMapping[state.siteData.status["state"]].state} (${statusMapping[state.siteData.status["state"]].explanation})` : 
+              statusMapping[state.siteData.status["state"]].state
+            }
+          </td>
+        </tr>
+        {
+          state.siteData.status["state"] === "Maint" && 
+          <tr>
+            <th>Expected End Time</th>
+            <td>
+              {
+                state.siteData.status["expected_end"] ?
+                utcToLocalTimeParser(state.siteData.status["expected_end"]) : "Unknown"
+              }
+            </td>
+          </tr>
+        }
+        {
+          state.siteData.status["state"] === "PreMaint" && 
+          <tr>
+            <th>Deadline</th>
+            <td>
+              {
+                state.siteData.status["deadline"] ? 
+                utcToLocalTimeParser(state.siteData.status["deadline"]) : "Unknown"
+              }
+            </td>
+          </tr>
+        }
+        {
+          state.siteData.location && 
+          <tr>
+            <th>Rack Location</th>
+            <td>{ JSON.parse(state.siteData.location).postal }</td>
+          </tr>
+        }
+       </tbody>
+     </table>
+   </div>
+   <div className="mt-4">
+     <h2>Resource Availabilities</h2>
+     <DetailTable
+       name={ state.siteData.name }
+       resource={ state.siteData }
+       parent="sitepage"
+     />
+   </div>
+ </div>
+  )
 }
 
 export default SiteDetailPage;

@@ -7,7 +7,7 @@ import {
   Line,
   Marker,
 } from "react-simple-maps";
-
+import { sitesNameMapping }  from "../../data/sites";
 import { topomap } from "../../data/topomap.js"
 
 const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
@@ -90,7 +90,7 @@ const Topomap = props => {
             >
               <circle
                 r={type === "edge" ? 1.5 : 3} 
-                fill={props.siteColorMapping[name] || "#838385"}
+                fill={props.siteColorMapping[sitesNameMapping.shortNameToAcronym[name]] || "#838385"}
                 className="hoverable-node"
               />
               <text
