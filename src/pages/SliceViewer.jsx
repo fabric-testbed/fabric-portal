@@ -10,7 +10,7 @@ import { autoCreateTokens } from "../utils/manageTokens";
 import { getSliceById, deleteSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
-import sliceTimeParser from "../utils/sliceTimeParser.js";
+import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
@@ -126,7 +126,7 @@ export default class SliceViewer extends Component {
                   </a>
                 </h2>
                 <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {sliceTimeParser(slice.lease_end_time)}</span>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {utcToLocalTimeParser(slice.lease_end_time)}</span>
                 </h4>
                 {
                   slice.project_name && <h4>

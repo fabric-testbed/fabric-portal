@@ -7,7 +7,7 @@ import {
   Line,
   Marker,
 } from "react-simple-maps";
-
+import { sitesNameMapping }  from "../../data/sites";
 import { topomap } from "../../data/topomap.js"
 
 const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
@@ -27,11 +27,6 @@ const Topomap = props => {
 
   function handleMoveEnd(position) {
     setPosition(position);
-  }
-
-  function checkStatus(name) {
-    // return "up" or "down" 
-    return props.sites.includes(name) ? "up" : "down";
   }
 
   return (
@@ -63,7 +58,7 @@ const Topomap = props => {
             }
           </Geographies>
 
-          {topomap.fab_lines.map(({ from, to }) => (
+          {topomap.lines.map(({ from, to }) => (
             <Line
               key={`line-${from}-to-${to}`}
               from={topomap.coordinates[from]}
@@ -87,6 +82,19 @@ const Topomap = props => {
               />
           ))}
 
+          {topomap.international_lines.map(({ from, to }) => (
+            <Line
+              key={`line-${from}-to-${to}`}
+              from={topomap.coordinates[from]}
+              to={topomap.coordinates[to]}
+              stroke="#6edcff"
+              strokeWidth={1}
+              strokeLinecap="round"
+              onMouseEnter={() => {
+              }}
+            />
+          ))}
+
           {topomap.nodes.map(({ name, markerOffset, type }) => (
             <Marker
               key={name}
@@ -95,7 +103,7 @@ const Topomap = props => {
             >
               <circle
                 r={type === "edge" ? 1.5 : 3} 
-                fill={ checkStatus(name) === "up" ? "#078ac1" : "#838385"}
+                fill={props.siteColorMapping[sitesNameMapping.shortNameToAcronym[name]] || "#838385"}
                 className="hoverable-node"
               />
               <text

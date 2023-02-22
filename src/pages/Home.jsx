@@ -19,13 +19,18 @@ class Home extends React.Component {
     resources: [],
     activeDetailName: "StarLight",
     siteNames: [],
+    siteColorMapping: {}
   }
 
   async componentDidMount() {
     try {
       const { data: res } = await getResources();
       const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
-      this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
+      this.setState({
+        resources: parsedObj.parsedSites,
+        siteNames: parsedObj.siteNames,
+        siteColorMapping: parsedObj.siteColorMapping
+      });
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
@@ -81,12 +86,17 @@ class Home extends React.Component {
               <div className="card-body">
                 <div className="row my-2">
                   <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
-                    <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames} />
+                    <Topomap
+                      onChange={this.handleActiveDetailChange}
+                      sites={this.state.siteNames}
+                      siteColorMapping={this.state.siteColorMapping}
+                    />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-12">
                     <DetailTable
                       name={this.state.activeDetailName}
                       resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
+                      parent="homepage"
                     />
                   </div>
                 </div>

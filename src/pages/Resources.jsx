@@ -9,6 +9,7 @@ import SummaryTable from "../components/Resource/SummaryTable";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
+// import { getResources } from "../services/mockData/fakeResources.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -22,13 +23,36 @@ class Resources extends Component {
     searchQuery: "",
     activeDetailName: "StarLight",
     siteNames: [],
+    siteColorMapping: {}
   }
+
+  // componentDidMount() {
+  //   const res = getResources();
+  //   const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
+  //   this.setState({
+  //     resources: parsedObj.parsedSites,
+  //     siteNames: parsedObj.siteNames,
+  //     siteColorMapping: parsedObj.siteColorMapping
+  //   });
+  // }
 
   async componentDidMount() {
     try {
       const { data: res } = await getResources();
       const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
-      this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
+      this.setState({
+        resources: parsedObj.parsedSites,
+        siteNames: parsedObj.siteNames,
+        siteColorMapping: parsedObj.siteColorMapping
+      });
+      // check if site parameter in url
+      const site = new URLSearchParams(window.location.search).get('site');
+      if(site && parsedObj.siteAcronyms.includes(site)) {
+        this.setState({
+          searchQuery: site,
+          activeDetailName: sitesNameMapping.acronymToShortName[site]
+        })
+      }
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
@@ -129,12 +153,16 @@ class Resources extends Component {
         </div>
         <div className="row my-2">
           <div className="col-9">
-            <Topomap onChange={this.handleActiveDetailChange} sites={this.state.siteNames}/>
+            <Topomap
+              onChange={this.handleActiveDetailChange}
+              siteColorMapping={this.state.siteColorMapping}
+            />
           </div>
           <div className="col-3">
             <DetailTable
               name={activeDetailName}
               resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
+              parent="resources"
             />
           </div>
         </div>

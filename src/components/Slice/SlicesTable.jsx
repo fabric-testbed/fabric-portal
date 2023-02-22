@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
 import CopyButton from "../common/CopyButton";
-import sliceTimeParser from "../../utils/sliceTimeParser.js";
+import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 
 class SlicesTable extends Component {
   columns = {
@@ -19,7 +19,7 @@ class SlicesTable extends Component {
         path: "lease_end_time",
         label: "Lease End",
         content: (slice) => (
-          <span>{sliceTimeParser(slice.lease_end_time)}</span>
+          <span>{utcToLocalTimeParser(slice.lease_end_time)}</span>
         )
       },
       {
@@ -53,7 +53,7 @@ class SlicesTable extends Component {
         path: "lease_end_time",
         label: "Lease End",
         content: (slice) => (
-          <span>{sliceTimeParser(slice.lease_end_time)}</span>
+          <span>{utcToLocalTimeParser(slice.lease_end_time)}</span>
         )
       },
       {
