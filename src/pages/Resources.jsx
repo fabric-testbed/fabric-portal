@@ -8,8 +8,8 @@ import SummaryTable from "../components/Resource/SummaryTable";
 
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-// import { getResources } from "../services/resourceService.js";
-import { getResources } from "../services/mockData/fakeResources.js";
+import { getResources } from "../services/resourceService.js";
+// import { getResources } from "../services/mockData/fakeResources.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -26,25 +26,29 @@ class Resources extends Component {
     siteColorMapping: {}
   }
 
-  componentDidMount() {
-    const res = getResources();
-    const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
-    this.setState({
-      resources: parsedObj.parsedSites,
-      siteNames: parsedObj.siteNames,
-      siteColorMapping: parsedObj.siteColorMapping
-    });
-  }
-
-  // async componentDidMount() {
-  //   try {
-  //     const { data: res } = await getResources();
-  //     const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
-  //     this.setState({ resources: parsedObj.parsedSites, siteNames: parsedObj.siteNames });
-  //   } catch (err) {
-  //     toast.error("Failed to load resource information. Please reload this page.");
-  //   }
+  // componentDidMount() {
+  //   const res = getResources();
+  //   const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
+  //   this.setState({
+  //     resources: parsedObj.parsedSites,
+  //     siteNames: parsedObj.siteNames,
+  //     siteColorMapping: parsedObj.siteColorMapping
+  //   });
   // }
+
+  async componentDidMount() {
+    try {
+      const { data: res } = await getResources();
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
+      this.setState({
+        resources: parsedObj.parsedSites,
+        siteNames: parsedObj.siteNames,
+        siteColorMapping: parsedObj.siteColorMapping
+      });
+    } catch (err) {
+      toast.error("Failed to load resource information. Please reload this page.");
+    }
+  }
 
   getResourcesSum = (resources) => {
     const selectedLabels = [

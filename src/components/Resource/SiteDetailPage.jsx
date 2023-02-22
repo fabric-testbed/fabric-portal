@@ -27,8 +27,6 @@ const SiteDetailPage = props => {
 
   const { state } = props.location;
 
-  console.log(state.siteData.status)
-
   return (
     <div className="container">
     <div className="d-flex flex-row justify-content-between">
