@@ -76,9 +76,9 @@ class SideNodes extends React.Component {
     this.setState({ nodeComponents: updated_nodeComponents });
   }
 
-  getSiteResource = () => {
+  getSiteResource = (name) => {
     for (const site of this.props.resources.parsedSites) {
-      if (site.name === this.state.selectedSiteName) {
+      if (site.name === name) {
         return site;
       }
     }
@@ -173,12 +173,14 @@ class SideNodes extends React.Component {
                   <Link
                     to={
                       {
-                        pathname:`/sites/${selectedSite.id}`,
-                        state: { siteData: selectedSite }
+                        pathname: `/resources?site=${selectedSiteName}`
                       }
-                    }>
-                      {this.state.selectedSiteName} { sitesNameMapping.acronymToLongName[this.state.selectedSiteName] && 
-                      `(${sitesNameMapping.acronymToLongName[this.state.selectedSiteName]})`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                      {selectedSiteName} { sitesNameMapping.acronymToLongName[selectedSiteName] && 
+                      `(${sitesNameMapping.acronymToLongName[selectedSiteName]})`
                       }
                   </Link>
                   {

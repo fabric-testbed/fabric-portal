@@ -45,6 +45,14 @@ class Resources extends Component {
         siteNames: parsedObj.siteNames,
         siteColorMapping: parsedObj.siteColorMapping
       });
+      // check if site parameter in url
+      const site = new URLSearchParams(window.location.search).get('site');
+      if(site && parsedObj.siteAcronyms.includes(site)) {
+        this.setState({
+          searchQuery: site,
+          activeDetailName: sitesNameMapping.acronymToShortName[site]
+        })
+      }
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }

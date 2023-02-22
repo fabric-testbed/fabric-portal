@@ -19,6 +19,7 @@ export default function parseSites(data, acronymToShortName) {
   const links = abqm_elements.links;
   const parsedSites = [];
   const siteNames = [];
+  const siteAcronyms = [];
   const siteColorMapping = {};
 
   nodes.forEach(node => {
@@ -83,13 +84,15 @@ export default function parseSites(data, acronymToShortName) {
       parsedSites.push(site);
       siteColorMapping[site.name] = getSiteColor(site.status.state);
       siteNames.push(acronymToShortName[site.name]);
+      siteAcronyms.push(site.name);
     }
   })
 
   const parsedObj = {
     "parsedSites": parsedSites,
     "siteNames": siteNames,
-    "siteColorMapping": siteColorMapping
+    "siteColorMapping": siteColorMapping,
+    "siteAcronyms": siteAcronyms
   };
 
   console.log(parsedObj);
