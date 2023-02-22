@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default function sliceTimeParser(UTCtime) {
+export default function utcToLocalTimeParser(UTCtime) {
   // the time in orchestrator api response is in UTC 
   // input format: %Y-%m-%d %H:%M:%S %z (offset %z is +0000)
   const utcDateTime = UTCtime.substring(0, 19);

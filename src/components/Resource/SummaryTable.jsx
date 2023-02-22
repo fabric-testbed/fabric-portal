@@ -1,10 +1,39 @@
 import React, { Component } from "react";
 import Table from "../common/Table";
+import { Link } from "react-router-dom";
 
 class SummaryTable extends Component {
   columns = [
     {
-      path: "name",
+      content: (resource) => (
+        <div>
+          <Link
+            to={
+            {
+              pathname:`/sites/${resource.id}`,
+              state: { siteData: resource }
+            }
+          }>
+            {resource.name}
+          </Link>
+          {
+            resource.status && resource.status.state === "Maint" &&
+            <div>
+              <span className="badge badge-pill badge-danger px-2">
+                Maintenance
+              </span>
+            </div>
+          }
+          {
+            resource.status && resource.status.state === "PreMaint" &&
+            <div>
+              <span className="badge badge-pill badge-info px-2">
+                Pre-Maintenance
+              </span>
+            </div>
+          }
+        </div>
+      ),
       label: "Site",
     },
     { path: ["freeCore", "totalCore"], label: "Cores" },

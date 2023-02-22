@@ -5,11 +5,13 @@ import SingleComponent from './SingleComponent';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
 import { sitesNameMapping }  from "../../data/sites";
+import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 
 class SideNodes extends React.Component {
   state = {
-    selectedSite: "",
+    selectedSiteName: "",
+    selectedSite: {},
     nodeName: "",
     core: 2,
     ram: 6,
@@ -37,13 +39,13 @@ class SideNodes extends React.Component {
 
   handleAddNode = () => {
     // type: currently only support 'VM'
-    const { selectedSite, nodeName, nodeType, core, ram, disk,
+    const { selectedSiteName, nodeName, nodeType, core, ram, disk,
       imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
     const image = `${selectedImageRef},${imageType}`;
-    this.props.onNodeAdd(nodeType, selectedSite, nodeName, Number(core),
+    this.props.onNodeAdd(nodeType, selectedSiteName, nodeName, Number(core),
       Number(ram), Number(disk), image, nodeComponents, BootScript);
     this.setState({
-      selectedSite: "",
+      selectedSiteName: "",
       nodeName: "",
       core: 2,
       ram: 6,
@@ -74,15 +76,29 @@ class SideNodes extends React.Component {
     this.setState({ nodeComponents: updated_nodeComponents });
   }
 
+  getSiteResource = (name) => {
+    for (const site of this.props.resources.parsedSites) {
+      if (site.name === name) {
+        return site;
+      }
+    }
+  }
+
   handleSiteChange = (e) => {
     if (e.target.value === "") {
-      this.setState({ selectedSite: ""});
+      this.setState({ selectedSiteName: ""});
     } else if (e.target.value === "Random") {
       const sites = this.props.resources.parsedSites;
       const random_site = sites[Math.floor(Math.random() * sites.length)].name;
-      this.setState({selectedSite: random_site});
+      this.setState({
+        selectedSiteName: random_site,
+        selectedSite: this.getSiteResource(random_site)
+      });
     } else {
-      this.setState({ selectedSite: e.target.value });
+      this.setState({
+        selectedSiteName: e.target.value,
+        selectedSite: this.getSiteResource(e.target.value)
+      });
     }
   }
 
@@ -114,14 +130,6 @@ class SideNodes extends React.Component {
     this.setState({ BootScript: e.target.value });
   }
 
-  getSiteResource = () => {
-    for (const site of this.props.resources.parsedSites) {
-      if (site.name === this.state.selectedSite) {
-        return site;
-      }
-    }
-  }
-
   getResourcesSum = () => {
     const selectedLabels = [
       "freeCore",
@@ -146,9 +154,9 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { selectedSite, nodeName, imageType, selectedImageRef, core, ram,
+    const { selectedSiteName, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents } = this.state;
-    const validationResult = validator.validateNodeComponents(selectedSite, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
+    const validationResult = validator.validateNodeComponents(selectedSiteName, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -159,19 +167,38 @@ class SideNodes extends React.Component {
         {this.props.resources !== null &&
           <div>
             {
-              selectedSite !== "" &&
+              selectedSiteName !== "" &&
               <div>
                 <div className="mb-1">
-                  Available Site Resources -
-                  <span className="ml-1 font-weight-bold">
-                    {this.state.selectedSite} ({sitesNameMapping.acronymToLongName[this.state.selectedSite]})
-                  </span>
+                  <Link
+                    to={
+                      {
+                        pathname: `/resources?site=${selectedSiteName}`
+                      }
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                      {selectedSiteName} { sitesNameMapping.acronymToLongName[selectedSiteName] && 
+                      `(${sitesNameMapping.acronymToLongName[selectedSiteName]})`
+                      }
+                  </Link>
+                  {
+                    selectedSite.status.state === "Maint" && <span className="badge badge-pill badge-danger px-2">
+                      Maintenance
+                    </span>
+                  }
+                  {
+                    selectedSite.status.state === "PreMaint" && <span className="badge badge-pill badge-info px-2">
+                      Pre-Maintenance
+                    </span>
+                  }
                 </div>
-                <SiteResourceTable site={this.getSiteResource()} />
+                <SiteResourceTable site={selectedSite} />
               </div>
             }
             {
-              selectedSite === "" &&
+              selectedSiteName === "" &&
               <div>
                 <div className="mb-1">
                   Available FABRIC Testbed Resources 
@@ -196,7 +223,7 @@ class SideNodes extends React.Component {
                   <select
                     className="form-control form-control-sm"
                     id="siteNameSelect"
-                    value={selectedSite}
+                    value={selectedSiteName}
                     onChange={this.handleSiteChange}
                   >
                     <option value="">Choose...</option>

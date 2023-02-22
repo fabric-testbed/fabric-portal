@@ -16,6 +16,7 @@ import SliceViewer from "./pages/SliceViewer";
 import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
+import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
 import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
 import Header from "./components/Header";
@@ -123,6 +124,7 @@ class App extends React.Component {
             <Route path="/login" component={Home} />
             <Route path="/logout" component={Home} />
             <Route path="/aup" component={AUP} />
+            <Route path="/sites/:id" component={SiteDetailPage} />
             <Route path="/cookie-policy" component={CookiePolicy} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/signup/:id" component={Signup} />

@@ -11,7 +11,7 @@ const Progress = styled.div`
 `
 
 const Bar = styled.div`
-  background-color: #68b3d1;
+  background-color: ${ props => `${props.color}` };
   width: ${ props => `${props.now}%` };
   height: 1rem;
   border-radius: .25rem;
@@ -24,13 +24,15 @@ const PercentLabel = styled.div`
   left:50%;
   transform:translateX(-50%);
   top: .05em;
+  color: ${ props => `${props.labelColor}` };
+  font-weight: 600;
 `
 
-const ProgressBar = ({ label, now, ...rest }) => {
+const ProgressBar = ({ label, now, color, labelColor, ...rest }) => {
   return (
     <Progress>
-        <Bar now={now} />
-        <PercentLabel>{label}</PercentLabel>
+        <Bar now={now} color={color} />
+        <PercentLabel labelColor={labelColor}>{label}</PercentLabel>
     </Progress>
   );
 };
