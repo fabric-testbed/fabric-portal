@@ -58,7 +58,7 @@ const Topomap = props => {
             }
           </Geographies>
 
-          {topomap.fab_lines.map(({ from, to }) => (
+          {topomap.lines.map(({ from, to }) => (
             <Line
               key={`line-${from}-to-${to}`}
               from={topomap.coordinates[from]}
@@ -80,6 +80,19 @@ const Topomap = props => {
                 strokeWidth={2.5}
                 strokeLinecap="round"
               />
+          ))}
+
+          {topomap.international_lines.map(({ from, to }) => (
+            <Line
+              key={`line-${from}-to-${to}`}
+              from={topomap.coordinates[from]}
+              to={topomap.coordinates[to]}
+              stroke="#6edcff"
+              strokeWidth={1}
+              strokeLinecap="round"
+              onMouseEnter={() => {
+              }}
+            />
           ))}
 
           {topomap.nodes.map(({ name, markerOffset, type }) => (

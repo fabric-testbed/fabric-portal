@@ -16,7 +16,7 @@ export const topomap = {
     "UMich": [-83.7382, 42.2780],
     "UKY": [-84.5040, 38.0307],
     "RENCI": [-79.0469, 35.9049],
-    "RNP&ANSP&RedCLARA": [-46.6333, -23.5505],
+    // "RNP&ANSP&RedCLARA": [-46.6333, -23.5505],
     "HAWI": [-157.8581, 21.3099],
     // not actuall coordinates (for display purpose):
     "Clemson": [-81.5369, 34.3738],
@@ -51,7 +51,7 @@ export const topomap = {
     { markerOffset: 12, name: "University of Bristol", type: "international" },
     { markerOffset: -8, name: "University of Amsterdam", type: "international" },
     { markerOffset: 12, name: "CERN", type: "international" },
-    {  markerOffset: 12, name: "RNP&ANSP&RedCLARA", type: "international"},
+    // {  markerOffset: 12, name: "RNP&ANSP&RedCLARA", type: "international"},
     // U.S. core nodes
     { markerOffset: 8, name: "New York", type: "us_core" },
     { markerOffset: -5, name: "Seattle", type: "us_core" },
@@ -60,7 +60,7 @@ export const topomap = {
     { markerOffset: 10, name: "Atlanta", type: "us_core" },
     { markerOffset: 8, name: "Los Angeles", type: "us_core" },
     { markerOffset: 8, name: "Dallas", type: "us_core" },
-    { markerOffset: -8, name: "StarLight", type: "us_core" },
+    { markerOffset: -8, name: "StarLight", type: "us_core" }, 
     { markerOffset: 8, name: "Washington", type: "us_core" },
     { markerOffset: 10, name: "FIU", type: "us_core" },
     { markerOffset: -10, name:"HAWI", type: "us_core" },
@@ -84,12 +84,8 @@ export const topomap = {
     { markerOffset: -2, name: "Princeton", type: "edge" },
     { markerOffset: -2, name: "UMass", type: "edge" },
   ],
-  fab_lines: [
-    { from: "Seattle", to: "University of Tokyo" },
-    { from: "New York", to: "University of Bristol" },
-    { from: "New York", to: "University of Amsterdam" },
-    { from: "New York", to: "CERN" },
-    { from: "RNP&ANSP&RedCLARA", to: "FIU" },
+  lines: [
+    // { from: "RNP&ANSP&RedCLARA", to: "FIU" },
     { from: "Seattle", to: "Salt Lake City" },
     { from: "Seattle", to: "Los Angeles" },
     { from: "Los Angeles", to: "Salt Lake City" },
@@ -125,6 +121,16 @@ export const topomap = {
     { from: "Rutgers", to: "New York" },
     { from: "Princeton", to: "New York" },
     { from: "UMass", to: "New York" },
+  ],
+  international_lines: [
+    { from: "Seattle", to: "University of Tokyo" },
+    { from: "Los Angeles", to: "University of Tokyo" },
+    { from: "Washington", to: "University of Bristol" },
+    { from: "University of Amsterdam", to: "University of Bristol" },
+    { from: "New York", to: "University of Amsterdam" },
+    { from: "Washington", to: "CERN" },
+    { from: "University of Amsterdam", to: "CERN" },
+    // { from: "RNP&ANSP&RedCLARA", to: "FIU" },
   ],
   usa_lines_super: [
     { from: "StarLight", to:  "New York" },
