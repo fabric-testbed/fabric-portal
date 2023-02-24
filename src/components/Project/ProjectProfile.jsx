@@ -11,7 +11,7 @@ class ProjectProfile extends Component {
       { label: "Description", path: "description" },
       { label: "Facility", path: "facility" },
       { label: "Modified Time", path: "modified" },
-      { label: "Created Time", path: "created" },
+      { label: "Created At", path: "created" },
       { label: "Creator Name", path: "creator_name" },
       { label: "Creator Email", path: "creator_email" },
       { label: "Creator ID", path: "creator_id" }

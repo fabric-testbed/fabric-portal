@@ -165,6 +165,15 @@ class Header extends React.Component {
               );
             })}
           </ul>
+          {
+            this.props.userStatus === "active" &&
+            <form class="form-inline my-2 mr-2 my-lg-0">
+               <input class="form-control" type="search" placeholder="Search People/Projects" aria-label="Search" />
+               <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button"><i className="fa fa-search"></i></button>
+                </div>
+             </form>
+          }
           { this.props.userStatus !== "active" ? 
             <form className="form-inline my-2 my-lg-0">
               <NavLink to="/login">

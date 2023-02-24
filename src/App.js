@@ -19,6 +19,7 @@ import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
 import NotFound from "./pages/NotFound";
 import Help from "./pages/Help";
+import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
@@ -136,6 +137,7 @@ class App extends React.Component {
             <ProtectedRoute path="/experiments" component={Experiments} />
             <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
             <ProtectedRoute path="/user" component={User} />
+            <ProtectedRoute path="/search-results" component={SearchResults} />
             <Route component={NotFound} />
           </Switch>
           <Footer />
