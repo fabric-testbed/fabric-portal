@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import SpinnerWithText from "../common/SpinnerWithText";
-import Pagination from "../common/Pagination";
-import ProjectsTable from "../Project/ProjectsTable";
-import { getProjects } from "../../services/projectService.js";
-import toLocaleTime from "../../utils/toLocaleTime";
+import SpinnerWithText from "../components/common/SpinnerWithText";
+import Pagination from "../components/common/Pagination";
+import ProjectsTable from "../components/Project/ProjectsTable";
+import { getProjects } from "../services/projectService.js";
+import toLocaleTime from "../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
 class SearchResults extends Component {
@@ -134,11 +134,11 @@ class SearchResults extends Component {
         {
           showSpinner && <SpinnerWithText text={"Loading search results..."} />
         }
-        <h2>People</h2>
-        <p>******TODO******</p>
         {
           !showSpinner && 
           <div>
+            <h2>People</h2>
+            <p>******TODO******</p>
             <h2>Projects</h2>
             <div className="d-flex flex-row justify-content-start mb-3">
               {projectCount} results.
