@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Pagination from "../components/common/Pagination";
 import ProjectsTable from "../components/Project/ProjectsTable";
-import ProjectUserTable from "../components/Project/ProjectUserTable";
+import UsersTable from "../components/Project/UsersTable";
 import { getProjects } from "../services/projectService.js";
 import { getFullPeopleByName } from "../services/peopleService";
 import toLocaleTime from "../utils/toLocaleTime";
@@ -14,8 +14,8 @@ class SearchResults extends Component {
     people: [],
     pageSize: 5,
     projects: [],
-    projectCurrentPage: 1,
-    peopleCurrentPage: 1,
+    currentProjectPage: 1,
+    currentPeoplePage: 1,
     showSpinner: false,
     projectCount: 0,
     peopleCount: 0
@@ -53,13 +53,13 @@ class SearchResults extends Component {
   }
 
   handleProjectPaginationClick = (page) => {
-    this.setState({ projectCurrentPage: page }, () => {
+    this.setState({ currentProjectPage: page }, () => {
       this.reloadProjectsData();
     });
   };
 
   handlePeoplePaginationClick = (page) => {
-    this.setState({ peopleCurrentPage: page }, () => {
+    this.setState({ currentPeoplePage: page }, () => {
       this.reloadPeopleData();
     });
   };
@@ -123,7 +123,7 @@ class SearchResults extends Component {
   }
 
   render() {
-    const { pageSize, projectCurrentPage, peopleCurrentPage, projects, people,
+    const { pageSize, currentProjectPage, currentPeoplePage, projects, people,
       showSpinner, searchQuery, projectCount, peopleCount } = this.state;
 
     return (
@@ -161,14 +161,14 @@ class SearchResults extends Component {
             </div>
             {
               peopleCount > 0 && <div>
-                  <ProjectUserTable
+                  <UsersTable
                     users={people}
                     canUpdate={false}
                   />
                   <Pagination
                     itemsCount={peopleCount}
                     pageSize={pageSize}
-                    currentPage={peopleCurrentPage}
+                    currentPage={currentPeoplePage}
                     onPageChange={this.handlePeoplePaginationClick}
                   /> 
                 </div>
@@ -183,7 +183,7 @@ class SearchResults extends Component {
                 <Pagination
                   itemsCount={projectCount}
                   pageSize={pageSize}
-                  currentPage={projectCurrentPage}
+                  currentPage={currentProjectPage}
                   onPageChange={this.handleProjectPaginationClick}
                 />  
               </div>
