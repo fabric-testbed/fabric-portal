@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Pagination from "../components/common/Pagination";
 import ProjectsTable from "../components/Project/ProjectsTable";
+import ProjectUserTable from "../components/Project/ProjectUserTable";
 import { getProjects } from "../services/projectService.js";
+import { getFullPeopleByName } from "../services/peopleService";
 import toLocaleTime from "../utils/toLocaleTime";
 import { toast } from "react-toastify";
 
@@ -11,9 +13,9 @@ class SearchResults extends Component {
     searchQuery: "",
     people: [],
     pageSize: 5,
-    peopleCurrentPage: 1,
     projects: [],
     projectCurrentPage: 1,
+    peopleCurrentPage: 1,
     showSpinner: false,
     projectCount: 0,
     peopleCount: 0
@@ -28,7 +30,10 @@ class SearchResults extends Component {
       const { data: res1 } = await getProjects("allProjects", 0, limit, searchQuery);
       const projectCount = res1.total;
       let projects = res1.results;
-
+      const { data: res2 } = await getFullPeopleByName(0, limit, searchQuery);
+      const peopleCount = res2.total;
+      let people = res2;
+     
       // parse create time field to user's local time.
       projects = projects.map((p) => {
         p.created_time  = toLocaleTime(p.created);
@@ -38,6 +43,8 @@ class SearchResults extends Component {
       this.setState({
         projects,
         projectCount,
+        people,
+        peopleCount,
         showSpinner: false
       });
     } catch (err) {
@@ -58,8 +65,8 @@ class SearchResults extends Component {
   };
 
   reloadProjectsData = async () => {
-    const { pageSize: limit, currentPage, searchQuery } = this.state;
-    const offset = (currentPage - 1) * limit;
+    const { pageSize: limit, currentProjectPage, searchQuery } = this.state;
+    const offset = (currentProjectPage - 1) * limit;
     let projects = [];
     let projectCount = 0;
     try {
@@ -75,7 +82,18 @@ class SearchResults extends Component {
 
       this.setState({ projects, projectCount })
     } catch (err) {
-      toast.error("Failed to load projects. Please re-try.");
+      toast.error("Failed to load project search results. Please re-try.");
+    }
+  }
+
+  reloadPeopleData = async () => {
+    const { pageSize: limit, currentPeoplePage, searchQuery } = this.state;
+    const offset = (currentPeoplePage - 1) * limit;
+    try {
+      const { data } = await getFullPeopleByName(offset, limit, searchQuery);
+      this.setState({ people: data.results, peopleCount: data.total })
+    } catch (err) {
+      toast.error("Failed to load people search results. Please re-try.");
     }
   }
 
@@ -93,11 +111,11 @@ class SearchResults extends Component {
   raiseInputKeyDown = (e) => {
     const val = e.target.value;
     if ((e.key === "Enter") && val) {
-     this.handleProjectsSearch();
+     this.handleSearch();
     }
   };
 
-  handleProjectsSearch = () =>{
+  handleSearch = () =>{
     this.setState({ currentPage: 1 }, () => {
       this.reloadProjectsData();
       this.reloadPeopleData();
@@ -105,8 +123,8 @@ class SearchResults extends Component {
   }
 
   render() {
-    const { pageSize, peopleCurrentPage, projectCurrentPage, projects, showSpinner, searchQuery,
-      projectCount } = this.state;
+    const { pageSize, projectCurrentPage, peopleCurrentPage, projects, people,
+      showSpinner, searchQuery, projectCount, peopleCount } = this.state;
 
     return (
       <div className="container">
@@ -138,7 +156,23 @@ class SearchResults extends Component {
           !showSpinner && 
           <div>
             <h2>People</h2>
-            <p>******TODO******</p>
+            <div className="d-flex flex-row justify-content-start mb-3">
+              {peopleCount} results.
+            </div>
+            {
+              peopleCount > 0 && <div>
+                  <ProjectUserTable
+                    users={people}
+                    canUpdate={false}
+                  />
+                  <Pagination
+                    itemsCount={peopleCount}
+                    pageSize={pageSize}
+                    currentPage={peopleCurrentPage}
+                    onPageChange={this.handlePeoplePaginationClick}
+                  /> 
+                </div>
+            }
             <h2>Projects</h2>
             <div className="d-flex flex-row justify-content-start mb-3">
               {projectCount} results.
@@ -150,7 +184,7 @@ class SearchResults extends Component {
                   itemsCount={projectCount}
                   pageSize={pageSize}
                   currentPage={projectCurrentPage}
-                  onPageChange={this.handlePaginationClick}
+                  onPageChange={this.handleProjectPaginationClick}
                 />  
               </div>
             }
