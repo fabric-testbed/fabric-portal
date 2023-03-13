@@ -1,16 +1,14 @@
 import React from "react";
 import Joi from "joi-browser";
 import ProjectUserTable from "./ProjectUserTable";
+import withRouter from "../common/withRouter.jsx";
 import Form from "../common/Form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-
 import { getPeopleByName } from "../../services/peopleService";
-
 import { createProject } from "../../services/projectService";
-
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
@@ -70,7 +68,7 @@ class NewProjectForm extends Form {
       let ownerIDs = addedOwners.map((user) => user.uuid);
       let memberIDs = addedMembers.map((user) => user.uuid);
       // redirect users directly to the projects page
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
       const  { data: res } = await createProject(data, ownerIDs, memberIDs);
@@ -80,7 +78,7 @@ class NewProjectForm extends Form {
     }
     catch (err) {
       toast.error("Failed to create project.");
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
   };
 

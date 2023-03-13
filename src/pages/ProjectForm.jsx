@@ -140,7 +140,7 @@ class ProjectForm extends Form {
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
-        this.props.history.replace("/not-found");
+        this.props.navigate("/not-found");
       }
     }
   }
@@ -170,7 +170,7 @@ class ProjectForm extends Form {
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
-      navigate("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
 
     try {
@@ -239,7 +239,7 @@ class ProjectForm extends Form {
       toast.error("Failed to save project.");
     }
 
-    navigate(`/projects/${project.uuid}`);
+    this.props.navigate(`/projects/${project.uuid}`);
   };
 
   handleTagCheck = (option) => {
@@ -283,13 +283,13 @@ class ProjectForm extends Form {
       3: "#slices",
     }
     this.setState({ activeIndex: newIndex });
-    navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
+    this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
   handleDeleteProject = async (project) => {
     try {
       // redirect users directly to the projects page
-      navigate("/experiments#projects");
+      this.props.navigate("/experiments#projects");
       toast.info("Deletion request is in process. You'll receive a message when the project is successfully deleted.")
       // while the async call is processing under the hood
       await deleteProject(project.uuid);
@@ -297,7 +297,7 @@ class ProjectForm extends Form {
       toast.success("Project deleted successfully.");
     } catch (err) {
       toast.error("Failed to delete project.");
-      navigate("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
   };
 
@@ -347,7 +347,7 @@ class ProjectForm extends Form {
       toast(`Failed to update ${personnelType}.`)
     }
 
-    navigate(`/projects/${data.uuid}`);
+    this.props.navigate(`/projects/${data.uuid}`);
   }
 
   render() {
@@ -387,7 +387,7 @@ class ProjectForm extends Form {
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm history={this.props.history} />
+          <NewProjectForm navigate={this.props.navigate} />
         </div>
       );
     } else if (!data.is_owner && !data.is_member && !data.is_creator && !globalRoles.isFacilityOperator) {
