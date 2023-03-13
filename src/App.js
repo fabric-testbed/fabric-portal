@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveMaintenanceNotice } from "./services/announcementService.js";
@@ -25,7 +25,7 @@ import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
-import ProtectedRoute from "./components/common/ProtectedRoute";
+// import ProtectedRoute from "./components/common/Route";
 import "./styles/App.scss";
 
 class App extends React.Component {
@@ -34,6 +34,7 @@ class App extends React.Component {
     activeNotices: [],
     showSessionTimeoutModal1: false,
     showSessionTimeoutModal2: false,
+    searchQuery: ""
   };
 
   async componentDidMount() {
@@ -92,12 +93,21 @@ class App extends React.Component {
     this.setState({ userStatus: localStorage.getItem("userStatus") });
   }
 
+  handleQueryChange = (e) => {
+    this.setState({ searchQuery: e.target.value });
+  }
+
   render() {
-    const { showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
+    const { userStatus, searchQuery, 
+      showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
-          <Header userStatus={this.state.userStatus} />
+          <Header
+            userStatus={userStatus}
+            searchQuery={searchQuery}
+            onQueryChange={this.handleQueryChange}
+          />
           { this.state.activeNotices.length > 0 && 
             this.state.activeNotices.map((notice, index) => 
               <Banner
@@ -120,26 +130,29 @@ class App extends React.Component {
               timeLeft={60000}
             />
           }
-          <Switch>
-            <Route path="/" component={Home} exact />
-            <Route path="/login" component={Home} />
-            <Route path="/logout" component={Home} />
-            <Route path="/aup" component={AUP} />
-            <Route path="/sites/:id" component={SiteDetailPage} />
-            <Route path="/cookie-policy" component={CookiePolicy} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/signup/:id" component={Signup} />
-            <Route path="/resources" component={Resources} />
-            <Route path="/help" component={Help} />
-            <ProtectedRoute path="/slices/:slice_id,:project_id" component={SliceViewer} />
-            <ProtectedRoute path="/new-slice/:project_id" component={NewSliceForm} />
-            <ProtectedRoute path="/projects/:id" component={ProjectForm} />
-            <ProtectedRoute path="/experiments" component={Experiments} />
-            <ProtectedRoute path="/users/:id" component={PublicUserProfile} />
-            <ProtectedRoute path="/user" component={User} />
-            <ProtectedRoute path="/search-results" component={SearchResults} />
-            <Route component={NotFound} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Home />} />
+            <Route path="/logout" element={<Home />} />
+            <Route path="/aup" element={<AUP />} />
+            <Route path="/sites/:id" element={<SiteDetailPage />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/signup/:id" element={<Signup />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/slices/:slice_id,:project_id" element={<SliceViewer />} />
+            <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
+            <Route path="/projects/:id" element={<ProjectForm />} />
+            <Route path="/experiments" element={<Experiments />} />
+            <Route path="/users/:id" element={<PublicUserProfile />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/search-results" element={<SearchResults
+              searchQuery={searchQuery} 
+              onQueryChange={this.handleQueryChange} 
+            />} />
+            <Route element={<NotFound />} />
+          </Routes>
           <Footer />
           <ToastContainer />
         </Router>

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 class SearchResults extends Component {
   state = {
-    searchQuery: "",
+    query: "",
     people: [],
     pageSize: 5,
     projects: [],
@@ -23,14 +23,14 @@ class SearchResults extends Component {
 
   async componentDidMount() {
     const { pageSize: limit } = this.state;
-    const searchQuery = new URLSearchParams(window.location.search).get('query');
-    this.setState({ showSpinner: true, searchQuery });
+    const query = new URLSearchParams(window.location.search).get('query');
+    this.setState({ showSpinner: true, query });
 
     try {
-      const { data: res1 } = await getProjects("allProjects", 0, limit, searchQuery);
+      const { data: res1 } = await getProjects("allProjects", 0, limit, query);
       const projectCount = res1.total;
       let projects = res1.results;
-      const { data: res2 } = await getFullPeopleByName(0, limit, searchQuery);
+      const { data: res2 } = await getFullPeopleByName(0, limit, query);
       const peopleCount = res2.total;
       let people = res2;
      
@@ -65,12 +65,12 @@ class SearchResults extends Component {
   };
 
   reloadProjectsData = async () => {
-    const { pageSize: limit, currentProjectPage, searchQuery } = this.state;
+    const { pageSize: limit, currentProjectPage, query } = this.state;
     const offset = (currentProjectPage - 1) * limit;
     let projects = [];
     let projectCount = 0;
     try {
-      const { data } = await getProjects("allProjects", offset, limit, searchQuery);
+      const { data } = await getProjects("allProjects", offset, limit, query);
       projects = data.results;
       projectCount = data.total;
     
@@ -87,10 +87,10 @@ class SearchResults extends Component {
   }
 
   reloadPeopleData = async () => {
-    const { pageSize: limit, currentPeoplePage, searchQuery } = this.state;
+    const { pageSize: limit, currentPeoplePage, query } = this.state;
     const offset = (currentPeoplePage - 1) * limit;
     try {
-      const { data } = await getFullPeopleByName(offset, limit, searchQuery);
+      const { data } = await getFullPeopleByName(offset, limit, query);
       this.setState({ people: data.results, peopleCount: data.total })
     } catch (err) {
       toast.error("Failed to load people search results. Please re-try.");
@@ -98,14 +98,7 @@ class SearchResults extends Component {
   }
 
   handleInputChange = (e) => {
-    // if input gets cleared, trigger data reload and reset the search query
-    if (this.state.searchQuery !== "" && e.target.value === "") {
-      this.setState({ currentPage: 1, searchQuery: "" }, () => {
-        this.reloadProjectsData();
-      });
-    } else {
-      this.setState({ searchQuery: e.target.value});
-    }
+    this.setState({ query: e.target.value});
   };
 
   raiseInputKeyDown = (e) => {
@@ -124,7 +117,7 @@ class SearchResults extends Component {
 
   render() {
     const { pageSize, currentProjectPage, currentPeoplePage, projects, people,
-      showSpinner, searchQuery, projectCount, peopleCount } = this.state;
+      showSpinner, query, projectCount, peopleCount } = this.state;
 
     return (
       <div className="container">
@@ -134,7 +127,7 @@ class SearchResults extends Component {
             name="query"
             className="form-control"
             placeholder={"Search Project by Name/ID or Search People by Name(at least 3 characters)..."}
-            value={searchQuery}
+            value={query}
             onChange={this.handleInputChange}
             onKeyDown={this.raiseInputKeyDown}
           />

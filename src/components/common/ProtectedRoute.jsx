@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
   return (
@@ -8,7 +8,7 @@ const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
       render={(props) => {
         if (localStorage.getItem("userStatus") !== "active") {
           return (
-            <Redirect
+            <Navigate
               to={{
                 pathname: "/",
                 state: { from: props.location },
