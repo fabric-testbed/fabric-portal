@@ -147,9 +147,7 @@ class App extends React.Component {
             <Route path="/experiments" element={<Experiments />} />
             <Route path="/users/:id" element={<PublicUserProfile />} />
             <Route path="/user" element={<User />} />
-            <Route path="/search-results" element={<SearchResults
-              searchQuery={searchQuery} 
-              onQueryChange={this.handleQueryChange} 
+            <Route path="/search-results" element={<SearchResults searchQuery={searchQuery}
             />} />
             <Route element={<NotFound />} />
           </Routes>

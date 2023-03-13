@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
+import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
@@ -24,7 +25,7 @@ import {
   updateTags,
 } from "../services/projectService";
 
-class projectForm extends Form {
+class ProjectForm extends Form {
   state = {
     data: {
       uuid: "",
@@ -169,7 +170,7 @@ class projectForm extends Form {
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/experiments#projects");
+      navigate("/experiments#projects");
     }
 
     try {
@@ -238,7 +239,7 @@ class projectForm extends Form {
       toast.error("Failed to save project.");
     }
 
-    this.props.history.push(`/projects/${project.uuid}`);
+    navigate(`/projects/${project.uuid}`);
   };
 
   handleTagCheck = (option) => {
@@ -282,13 +283,13 @@ class projectForm extends Form {
       3: "#slices",
     }
     this.setState({ activeIndex: newIndex });
-    this.props.history.push(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
+    navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
   handleDeleteProject = async (project) => {
     try {
       // redirect users directly to the projects page
-      this.props.history.push("/experiments#projects");
+      navigate("/experiments#projects");
       toast.info("Deletion request is in process. You'll receive a message when the project is successfully deleted.")
       // while the async call is processing under the hood
       await deleteProject(project.uuid);
@@ -296,7 +297,7 @@ class projectForm extends Form {
       toast.success("Project deleted successfully.");
     } catch (err) {
       toast.error("Failed to delete project.");
-      this.props.history.push("/experiments#projects");
+      navigate("/experiments#projects");
     }
   };
 
@@ -346,7 +347,7 @@ class projectForm extends Form {
       toast(`Failed to update ${personnelType}.`)
     }
 
-    this.props.history.push(`/projects/${data.uuid}`);
+    navigate(`/projects/${data.uuid}`);
   }
 
   render() {
@@ -548,4 +549,4 @@ class projectForm extends Form {
   }
 }
 
-export default projectForm;
+export default withRouter(ProjectForm);

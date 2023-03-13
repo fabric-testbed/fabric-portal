@@ -5,6 +5,7 @@ import _ from "lodash";
 import moment from 'moment';
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
+import withRouter from "../components/common/withRouter.jsx";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -601,4 +602,4 @@ class NewSliceForm extends React.Component {
   }
 }
 
-export default NewSliceForm;
+export default withRouter(NewSliceForm);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import withRouter from "../components/common/withRouter.jsx";
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordion';
@@ -16,7 +17,7 @@ import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
 // import { default as res } from "../services/mockData/slices/slice1.json";
 
-export default class SliceViewer extends Component { 
+class SliceViewer extends Component { 
   state = {
     elements: [],
     slice: {
@@ -198,3 +199,5 @@ export default class SliceViewer extends Component {
     )
   }
 }
+
+export default withRouter(SliceViewer);

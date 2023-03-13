@@ -23,7 +23,7 @@ class SearchResults extends Component {
 
   async componentDidMount() {
     const { pageSize: limit } = this.state;
-    const query = new URLSearchParams(window.location.search).get('query');
+    const query = this.props.searchQuery;
     this.setState({ showSpinner: true, query });
 
     try {
@@ -136,6 +136,7 @@ class SearchResults extends Component {
               className="btn btn-outline-primary"
               type="button"
               onClick={this.handleSearch}
+              disabled={query.length < 3}
             >
               Search
             </button>

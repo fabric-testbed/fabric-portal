@@ -1,5 +1,6 @@
 import React from "react";
 import KeyCards from "../SshKey/KeyCards";
+import withRouter from "../common/withRouter.jsx";
 import { getPeopleById } from "../../services/peopleService.js";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -190,4 +191,4 @@ class PublicUserProfile extends React.Component {
   }
 }
 
-export default PublicUserProfile;
+export default withRouter(PublicUserProfile);
