@@ -6,6 +6,21 @@ export default class Help extends React.Component{
     return (
       <div className="container" id="contactUs">
         <h1 className="mb-4">Getting Help in FABRIC</h1>
+        <div className="alert alert-primary mt-3" role="alert">
+          <p className="mt-2">
+            If you are a new user to FABRIC, 
+            please make sure that you have checked these <a href={portalData.learnArticles.gettingStarted} target="_blank" rel="noreferrer">
+            Getting Started</a> articles first.
+          </p>
+          <p>
+            <ul>
+            <li><a href={portalData.learnArticles.thingsToKnowForFirstTime} target="_blank" rel="noreferrer">Things to Know When Using FABRIC for the First Time</a></li>
+              <li><a href={portalData.learnArticles.guideToStartExperiment} target="_blank" rel="noreferrer">Quick Start Guide</a></li>
+              <li><a href={portalData.learnArticles.guideToSliceBuilder} target="_blank" rel="noreferrer">Slice Builder User Guide</a></li>
+              <li><a href={portalData.learnArticles.guideToLoginToFabricVMs} target="_blank" rel="noreferrer">Logging into FABRIC VMs</a></li>
+            </ul>
+          </p>
+        </div>
         <div className="d-flex flex-row">
           <div className="card mr-5">
             <div className="card-header">

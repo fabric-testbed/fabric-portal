@@ -306,4 +306,4 @@ class NewProjectForm extends Form {
   }
 }
 
-export default NewProjectForm;
+export default withRouter(NewProjectForm);

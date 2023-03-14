@@ -121,6 +121,7 @@ class SearchResults extends Component {
 
     return (
       <div className="container">
+          <h1>Search Results</h1>
           <div className="w-100 input-group my-3">
           <input
             type="text"
@@ -142,7 +143,6 @@ class SearchResults extends Component {
             </button>
           </div>
         </div>
-        <h1>Search Results</h1>
         {
           showSpinner && <SpinnerWithText text={"Loading search results..."} />
         }
@@ -153,6 +153,11 @@ class SearchResults extends Component {
             <div className="d-flex flex-row justify-content-start mb-3">
               {peopleCount} results.
             </div>
+            {
+              peopleCount === 0 && <div className="alert alert-primary alert-dismissible fade show" role="alert">
+              No users founded. Please update your search query and re-try. 
+              </div>
+            }
             {
               peopleCount > 0 && <div>
                   <UsersTable
@@ -171,6 +176,11 @@ class SearchResults extends Component {
             <div className="d-flex flex-row justify-content-start mb-3">
               {projectCount} results.
             </div>
+            {
+              projectCount === 0 && <div className="alert alert-primary alert-dismissible fade show" role="alert">
+              No projects founded. Please update your search query and re-try. 
+              </div>
+            }
             {
               projectCount > 0 && <div>
                 <ProjectsTable projects={projects} />
