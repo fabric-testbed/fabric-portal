@@ -11,6 +11,10 @@ export function getPeopleByName(name) {
   return http.get(`${apiEndpoint}?search=${name}&offset=0&limit=20`);
 }
 
+export function getFullPeopleByName(offset, limit, query) {
+  return http.get(`${apiEndpoint}?search=${query}&offset=${offset}&limit=${limit}`);
+}
+
 export function getPeopleById(uuid) {
   return http.get(`${apiEndpoint}/${uuid}?as_self=false`);
 }

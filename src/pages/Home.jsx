@@ -11,6 +11,8 @@ import DetailTable from "../components/Resource/DetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
+import partners from "../imgs/partners.png";
+import news from "../imgs/news.png";
 
 class Home extends React.Component {
   state = {
@@ -73,19 +75,20 @@ class Home extends React.Component {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <button className="btn btn-warning">Learn More</button>
+              <button className="btn btn-warning mr-4 mt-2">MORE ABOUT FABRIC</button>
             </a>
+            <button className="btn btn-warning mt-2">MORE ABOUT FAB</button>
           </div>
         </div>
         <div className="home-lower row">
-          <div className="col-xl-9 col-lg-12">
+          <div className="col-xl-9 col-lg-12 pl-4">
             <div className="card homepage-card mb-4">
               <div className="card-header text-center">
                 <b>Resources</b>
               </div>
               <div className="card-body">
                 <div className="row my-2">
-                  <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
+                  <div className="col-xl-9 col-lg-8 col-sm-12 mb-5">
                     <Topomap
                       onChange={this.handleActiveDetailChange}
                       sites={this.state.siteNames}
@@ -104,8 +107,61 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="col-xl-3 col-lg-12">
+          <div className="homepage-card card">
+            <div className="card-header text-center">
+              <b>Testbed Activity</b>
+            </div>
+            <div className="card-body py-2">
+              <table className="table mt-3">
+                <tbody>
+                  <tr>
+                    <th scope="row">Experiments</th>
+                    <td>500</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Projects</th>
+                    <td>30</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Users</th>
+                    <td>100</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Sites</th>
+                    <td>33</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">...</th>
+                    <td>...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div className="home-lower row">
+          <img
+              src={news}
+              width="1150"
+              height="600"
+              className="d-inline-block align-top"
+              alt=""
+            />
+        </div>
+        <div className="home-lower row">
+          <div className="mx-3 my-5">
             <FacilityUpdates />
           </div>
+        </div>
+        <div className="home-lower row">
+          <img
+              src={partners}
+              width="1092"
+              height="434"
+              className="d-inline-block align-top ml-3"
+              alt=""
+            />
         </div>
         <CookieConsent
           location="bottom"
