@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import withRouter from "./common/withRouter.jsx";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
@@ -76,10 +77,10 @@ const Header = (props) => {
     }
   }
 
-  const navigate = useNavigate();
   const handleSearch = () => {
-    navigate(`/search-results`);
+    props.navigate(`/search-results`);
   };
+  
   const raiseInputKeyDown = (e) => {
     const val = e.target.value;
     if ((e.key === "Enter") && val) {
@@ -228,9 +229,4 @@ const Header = (props) => {
   )
 }
 
-export default Header;
- 
-
-
-
-
+export default withRouter(Header);

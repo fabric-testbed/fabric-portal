@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 class SearchResults extends Component {
   state = {
-    query: "",
     people: [],
     pageSize: 5,
     projects: [],
@@ -24,8 +23,7 @@ class SearchResults extends Component {
   async componentDidMount() {
     const { pageSize: limit } = this.state;
     const query = this.props.searchQuery;
-    this.setState({ showSpinner: true, query });
-
+    this.setState({ showSpinner: true });
     try {
       const { data: res1 } = await getProjects("allProjects", 0, limit, query);
       const projectCount = res1.total;
@@ -65,7 +63,8 @@ class SearchResults extends Component {
   };
 
   reloadProjectsData = async () => {
-    const { pageSize: limit, currentProjectPage, query } = this.state;
+    const { pageSize: limit, currentProjectPage } = this.state;
+    const query = this.props.searchQuery;
     const offset = (currentProjectPage - 1) * limit;
     let projects = [];
     let projectCount = 0;
@@ -87,7 +86,8 @@ class SearchResults extends Component {
   }
 
   reloadPeopleData = async () => {
-    const { pageSize: limit, currentPeoplePage, query } = this.state;
+    const { pageSize: limit, currentPeoplePage } = this.state;
+    const query = this.props.searchQuery;
     const offset = (currentPeoplePage - 1) * limit;
     try {
       const { data } = await getFullPeopleByName(offset, limit, query);
@@ -96,10 +96,6 @@ class SearchResults extends Component {
       toast.error("Failed to load people search results. Please re-try.");
     }
   }
-
-  handleInputChange = (e) => {
-    this.setState({ query: e.target.value});
-  };
 
   raiseInputKeyDown = (e) => {
     const val = e.target.value;
@@ -117,7 +113,8 @@ class SearchResults extends Component {
 
   render() {
     const { pageSize, currentProjectPage, currentPeoplePage, projects, people,
-      showSpinner, query, projectCount, peopleCount } = this.state;
+      showSpinner, projectCount, peopleCount } = this.state
+    const query = this.props.searchQuery;
 
     return (
       <div className="container">
@@ -129,7 +126,7 @@ class SearchResults extends Component {
             className="form-control"
             placeholder={"Search Project by Name/ID or Search People by Name(at least 3 characters)..."}
             value={query}
-            onChange={this.handleInputChange}
+            onChange={this.props.onQueryChange}
             onKeyDown={this.raiseInputKeyDown}
           />
           <div className="input-group-append">
