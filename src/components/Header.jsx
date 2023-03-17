@@ -80,11 +80,11 @@ const Header = (props) => {
   const handleSearch = () => {
     props.navigate(`/search-results`);
   };
-  
+
   const raiseInputKeyDown = (e) => {
     const val = e.target.value;
     if ((e.key === "Enter") && val) {
-      handleSearch();
+      props.navigate(`/search-results`);
     }
   };
 
@@ -174,7 +174,7 @@ const Header = (props) => {
         })}
       </ul>
       {
-        props.userStatus === "active" &&
+        props.userStatus === "active" && !window.location.href.includes("/search-results") &&
         <form className="form-inline my-2 mr-2 my-lg-0">
           <input
             className="form-control"

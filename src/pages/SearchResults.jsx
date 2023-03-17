@@ -30,7 +30,7 @@ class SearchResults extends Component {
       let projects = res1.results;
       const { data: res2 } = await getFullPeopleByName(0, limit, query);
       const peopleCount = res2.total;
-      let people = res2;
+      let people = res2.results;
      
       // parse create time field to user's local time.
       projects = projects.map((p) => {
@@ -105,7 +105,7 @@ class SearchResults extends Component {
   };
 
   handleSearch = () =>{
-    this.setState({ currentPage: 1 }, () => {
+    this.setState({ currentPeoplePage: 1, currentProjectPage: 1 }, () => {
       this.reloadProjectsData();
       this.reloadPeopleData();
     });
