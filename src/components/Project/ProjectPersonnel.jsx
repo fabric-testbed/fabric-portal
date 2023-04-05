@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ProjectUserTable from "./ProjectUserTable";
 import { toast } from "react-toastify";
-import { getPeopleByName } from "../../services/peopleService";
+import { getPeople } from "../../services/peopleService";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -18,7 +18,7 @@ class ProjectPersonnel extends Component {
   handleSearch = async (value) => {
     try {
       if (value.length > 3) {
-        const { data: res } = await getPeopleByName(value);
+        const { data: res } = await getPeople(value);
         if (res.results.length === 0) {
           this.setState({
             searchResults: [],

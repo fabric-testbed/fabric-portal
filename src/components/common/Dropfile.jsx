@@ -31,8 +31,7 @@ const DropFile = props => {
           //   }
           // });
           const textStr = reader.result
-          // onFileDrop(textStr)
-          console.log(textStr)
+          onFileDrop(textStr)
         };
       }
     })

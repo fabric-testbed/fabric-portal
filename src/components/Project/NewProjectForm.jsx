@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { getPeopleByName } from "../../services/peopleService";
+import { getPeople } from "../../services/peopleService";
 import { createProject } from "../../services/projectService";
 import { default as portalData } from "../../services/portalData.json";
 
@@ -89,7 +89,7 @@ class NewProjectForm extends Form {
       this.setState({ ownerSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeopleByName(value);
+          const { data: res } = await getPeople(value);
           const owners = res.results;
           this.setState({ owners });
         } else {
@@ -103,7 +103,7 @@ class NewProjectForm extends Form {
       this.setState({ memberSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeopleByName(value);
+          const { data: res } = await getPeople(value);
           const members = res.results;
           this.setState({ members });
         } else {
