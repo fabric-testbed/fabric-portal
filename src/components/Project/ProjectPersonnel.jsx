@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ProjectUserTable from "./ProjectUserTable";
 import { toast } from "react-toastify";
 import { getPeople } from "../../services/peopleService";
+import Dropfile from "../common/Dropfile";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -9,6 +10,9 @@ class ProjectPersonnel extends Component {
     searchInput: "",
     searchResults: [],
     warningMessage: "",
+    searchCompleted: false,
+    uploadMemberToAdd: [],
+    membersFailedToFind: [],
   };
 
   handleInputChange = (input) => {
@@ -57,8 +61,43 @@ class ProjectPersonnel extends Component {
     this.setState({ searchInput: "", searchResults: [] });
   };
 
+  handleSearchMembers = async () => {
+    this.setState({ showSpinner: true, spinnerText: "Uploading..." });
+    const uploadMembersToAdd = [];
+    const membersFailedToFind = [];
+    for (const memberStr of this.state.memberStrsToAdd) {
+      const email = memberStr.split(",")[1];
+      try {
+        const { data: res } = await getPeople(email);
+        const memberToAdd = res.results[0];
+        uploadMembersToAdd.push(memberToAdd);
+      }
+      catch(err) {
+        membersFailedToFind.push(memberStr);
+        console.log(err)
+      }
+    }
+
+    this.setState({
+      uploadMembersToAdd,
+      membersFailedToFind,
+      searchCompleted: true
+    });
+
+    this.props.onBatchMembersAdd(uploadMembersToAdd);
+  }
+
+  handleFileDrop = (membersStr) => {
+    try {
+      const members = membersStr.split(/\r?\n/);
+      this.handleSearchMembers(members);
+    } catch (err) {
+      toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
+    }
+  }
+
   render() {
-    const { searchInput, searchResults, warningMessage } = this.state;
+    const { searchInput, searchResults, warningMessage, searchCompleted } = this.state;
     const { canUpdate, personnelType, users } = this.props;
 
     return (
@@ -82,6 +121,15 @@ class ProjectPersonnel extends Component {
               >
                 <i className="fa fa-search"></i>
               </button>
+              {
+                personnelType === "Project Members" && 
+                <Dropfile
+                  onFileDrop={this.handleFileDrop}
+                  accept={{'text/csv': [".csv"]}}
+                  acceptFormat={"csv"}
+                  textStr={"Click to select or drag & drop the CSV file here."}
+                />
+              }
             </div>
             {
               warningMessage !== "" && 

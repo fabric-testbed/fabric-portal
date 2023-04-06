@@ -11,7 +11,6 @@ import DetailTable from "../components/Resource/DetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
-import MemberBatchUpdate from "../components/Project/MemberBatchUpdate";
 
 class Home extends React.Component {
   state = {
@@ -49,7 +48,6 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-container">
-         <MemberBatchUpdate />
         {
           (localStorage.getItem("userStatus") === "inactive") &&
           <div className="self-enroll-container">

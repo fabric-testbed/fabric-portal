@@ -24,6 +24,7 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
+import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers.js";
 
 class ProjectForm extends Form {
   state = {
@@ -301,12 +302,27 @@ class ProjectForm extends Form {
     }
   };
 
+  checkUserExist = (user, existingUsers) => {
+    for (const u of existingUsers) {
+      if (user.uuid === u.uuid) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   handleSinglePersonnelUpdate = (personnelType, user, operation) => {
     // personnelType: "Project Owner" / "Project Member"
     // operation: "add" / "remove"
     if (personnelType === "Project Owners") {
       if (operation === "add") {
-        this.setState({ owners: [...this.state.owners, user] });
+        if (this.checkUserExist(user, this.state.owners)) {
+          // if the user exists, toast a message
+          toast.alert(`${user.name} already exists in ${personnelType}.`)
+        } else {
+          // if the user doesn't exist, add
+          this.setState({ owners: [...this.state.owners, user] });
+        }
       }
 
       if (operation === "remove") {
@@ -314,7 +330,12 @@ class ProjectForm extends Form {
       }
     } else if (personnelType === "Project Members") {
       if (operation === "add") {
-        this.setState({ members: [...this.state.members, user] });
+        if (this.checkUserExist(user, this.state.members)) {
+          // if the user exists, toast a message
+          toast.alert(`${user.name} already exists in ${personnelType}.`)
+        } else {
+          this.setState({ members: [...this.state.members, user] });
+        }
       }
 
       if (operation === "remove") {
@@ -323,11 +344,22 @@ class ProjectForm extends Form {
     }
   }
 
+  handleBatchMembersAdd = (members) => {
+    const unExistingMembers = [];
+    for (const m of members) {
+      if(!this.checkUserExist(m, this.state.members)) {
+        unExistingMembers.push(m);
+      }
+    }
+    this.setState({ members: [...this.state.members, unExistingMembers] });
+  }
+
   getIDs = (users) => {
     return users.map(user => user.uuid);
   }
 
   handlePersonnelUpdate = () => {
+
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
     
     this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
@@ -510,6 +542,7 @@ class ProjectForm extends Form {
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onBatchMembersAdd={this.handleBatchMembersAdd}
                 />
               </div>
             </div>
