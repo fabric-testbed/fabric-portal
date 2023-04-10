@@ -12,6 +12,7 @@ class ProjectPersonnel extends Component {
     searchResults: [],
     warningMessage: "",
     searchCompleted: false,
+    uploadMembersToAdd: [],
     membersFailedToFind: [],
   };
 
@@ -81,18 +82,19 @@ class ProjectPersonnel extends Component {
     }
 
     this.setState({
+      uploadMembersToAdd,
       membersFailedToFind,
       searchCompleted: true
     });
 
     console.log(uploadMembersToAdd);
-    this.props.onBatchMembersAdd(uploadMembersToAdd);
   }
 
   handleFileDrop = (membersStr) => {
     try {
       const members = membersStr.split(/\r?\n/);
       this.handleSearchMembers(members);
+      this.props.onBatchMembersAdd(this.state.uploadMembersToAdd);
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
     }
@@ -159,8 +161,8 @@ class ProjectPersonnel extends Component {
         { 
           canUpdate && personnelType === "Project Members" &&
           <Tabs activeTab={"Update"}>
-            <div label="Update" className="pb-2">
-            <div className="d-flex flex-row">
+            <div label="Update">
+            <div className="d-flex flex-row mb-2">
               <input
                 className="form-control search-owner-input"
                 value={searchInput}
@@ -169,6 +171,7 @@ class ProjectPersonnel extends Component {
                 onKeyDown={this.raiseInputKeyDown}
               />
               <button
+                className="btn btn-primary"
                 onClick={() => this.handleSearch(searchInput)}
               >
                 <i className="fa fa-search"></i>
@@ -207,10 +210,10 @@ class ProjectPersonnel extends Component {
                 </ul>
               }
             </div>
-            <div label="Batch Update" className="pb-2">
+            <div label="Batch Update">
               {
                 !searchCompleted &&
-                <div className="w-100 bg-light border">
+                <div className="w-100 bg-light border pt-2 mb-2">
                   <Dropfile
                     onFileDrop={this.handleFileDrop}
                     accept={{'text/csv': [".csv"]}}
@@ -221,7 +224,7 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchCompleted &&
-                <div className="w-100 bg-success border">
+                <div className="w-100 bg-success border mb-2">
                   Project members uploaded successfully! 
                 </div>
               }

@@ -344,6 +344,9 @@ class ProjectForm extends Form {
   }
 
   handleBatchMembersAdd = (members) => {
+    console.log("handleBatchMembersAdd");
+    console.log(members);
+
     const unExistingMembers = [];
     for (const m of members) {
       if(!this.checkUserExist(m, this.state.members)) {
@@ -351,6 +354,7 @@ class ProjectForm extends Form {
       }
     }
     this.setState({ members: [...this.state.members, unExistingMembers] });
+    console.log(this.state.members)
   }
 
   getIDs = (users) => {
