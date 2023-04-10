@@ -63,8 +63,6 @@ class ProjectPersonnel extends Component {
   };
 
   handleSearchMembers = async (members) => {
-    console.log("handle search members...")
-    console.log(members)
     this.setState({ showSpinner: true, spinnerText: "Uploading..." });
     const uploadMembersToAdd = [];
     const membersFailedToFind = [];
@@ -72,11 +70,14 @@ class ProjectPersonnel extends Component {
       const email = memberStr.split(",")[1];
       try {
         const { data: res } = await getPeople(email);
-        const memberToAdd = res.results[0];
-        uploadMembersToAdd.push(memberToAdd);
+        if (res) {
+          const memberToAdd = res.results[0];
+          uploadMembersToAdd.push(memberToAdd);
+        } else {
+          membersFailedToFind.push(memberStr);
+        }
       }
       catch(err) {
-        membersFailedToFind.push(memberStr);
         console.log(err)
       }
     }
@@ -87,14 +88,15 @@ class ProjectPersonnel extends Component {
       searchCompleted: true
     });
 
-    console.log(uploadMembersToAdd);
+    console.log(membersFailedToFind)
+
+    this.props.onBatchMembersUpdate(uploadMembersToAdd);
   }
 
   handleFileDrop = (membersStr) => {
     try {
       const members = membersStr.split(/\r?\n/);
       this.handleSearchMembers(members);
-      this.props.onBatchMembersUpdate(this.state.uploadMembersToAdd);
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
     }
@@ -225,7 +227,7 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchCompleted &&
-                <div className="w-100 bg-success border mb-2 pl-2">
+                <div className="w-100 bg-success border mb-2 p-2">
                   Project members uploaded successfully! 
                 </div>
               }

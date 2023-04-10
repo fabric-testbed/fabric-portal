@@ -344,17 +344,13 @@ class ProjectForm extends Form {
   }
 
   handleBatchMembersUpdate = (members) => {
-    console.log("handleBatchMembersUpdate");
-    console.log(members);
-
     const unExistingMembers = [];
     for (const m of members) {
       if(!this.checkUserExist(m, this.state.members)) {
         unExistingMembers.push(m);
       }
     }
-    this.setState({ members: [...this.state.members, unExistingMembers] });
-    console.log(this.state.members)
+    this.setState({ members: [...this.state.members, ...unExistingMembers] });
   }
 
   getIDs = (users) => {
@@ -362,9 +358,7 @@ class ProjectForm extends Form {
   }
 
   handlePersonnelUpdate = () => {
-
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
-    
     this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
 
     const { data, owners, members } = this.state;
