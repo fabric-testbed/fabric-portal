@@ -122,13 +122,18 @@ class ProjectPersonnel extends Component {
                 <i className="fa fa-search"></i>
               </button>
               {
-                personnelType === "Project Members" && 
+                personnelType === "Project Members" && !searchCompleted &&
                 <Dropfile
                   onFileDrop={this.handleFileDrop}
                   accept={{'text/csv': [".csv"]}}
                   acceptFormat={"csv"}
                   textStr={"Click to select or drag & drop the CSV file here."}
                 />
+              }
+              {
+                personnelType === "Project Members" && searchCompleted && <div>
+                  Project members uploaded successfully! 
+                </div>
               }
             </div>
             {
