@@ -94,14 +94,15 @@ class ProjectPersonnel extends Component {
     try {
       const members = membersStr.split(/\r?\n/);
       this.handleSearchMembers(members);
-      this.props.onBatchMembersAdd(this.state.uploadMembersToAdd);
+      this.props.onBatchMembersUpdate(this.state.uploadMembersToAdd);
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
     }
   }
 
   render() {
-    const { searchInput, searchResults, warningMessage, searchCompleted } = this.state;
+    const { searchInput, searchResults, warningMessage,
+      searchCompleted, membersFailedToFind } = this.state;
     const { canUpdate, personnelType, users } = this.props;
 
     return (
@@ -185,35 +186,35 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchResults.length > 0 &&
-                  <ul className="list-group">
-                  {
-                    searchResults.map((user, index) => {
-                      return (
-                        <li
-                          key={`search-user-result-${index}`}
-                          className="list-group-item d-flex flex-row justify-content-between"
+                <ul className="list-group">
+                {
+                  searchResults.map((user, index) => {
+                    return (
+                      <li
+                        key={`search-user-result-${index}`}
+                        className="list-group-item d-flex flex-row justify-content-between"
+                      >
+                        {
+                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                          <div className="mt-1">{user.name}</div>
+                        }
+                        <button
+                          className="btn btn-sm btn-primary ml-2"
+                          onClick={() => this.handleAddUser(user)}
                         >
-                          {
-                            user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
-                            <div className="mt-1">{user.name}</div>
-                          }
-                          <button
-                            className="btn btn-sm btn-primary ml-2"
-                            onClick={() => this.handleAddUser(user)}
-                          >
-                            Add
-                          </button>
-                        </li>
-                      );
-                    })
-                  }
+                          Add
+                        </button>
+                      </li>
+                    );
+                  })
+                }
                 </ul>
               }
             </div>
             <div label="Batch Update">
               {
                 !searchCompleted &&
-                <div className="w-100 bg-light border pt-2 mb-2">
+                <div className="w-100 bg-light border pt-3 mb-2">
                   <Dropfile
                     onFileDrop={this.handleFileDrop}
                     accept={{'text/csv': [".csv"]}}
@@ -224,8 +225,27 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchCompleted &&
-                <div className="w-100 bg-success border mb-2">
+                <div className="w-100 bg-success border mb-2 pl-2">
                   Project members uploaded successfully! 
+                </div>
+              }
+              {
+                membersFailedToFind.length > 0 &&
+                <div className="alert alert-warning">
+                  We couldn't find the following users:
+                  <ul className="list-group">
+                    {
+                      membersFailedToFind.map((memberStr, index) => {
+                        return (
+                          <li
+                            key={`failed-search-user-result-${index}`}
+                          >
+                            { memberStr }
+                          </li>
+                        );
+                      })
+                    }
+                  </ul>
                 </div>
               }
             </div>

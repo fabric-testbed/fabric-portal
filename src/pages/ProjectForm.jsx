@@ -343,8 +343,8 @@ class ProjectForm extends Form {
     }
   }
 
-  handleBatchMembersAdd = (members) => {
-    console.log("handleBatchMembersAdd");
+  handleBatchMembersUpdate = (members) => {
+    console.log("handleBatchMembersUpdate");
     console.log(members);
 
     const unExistingMembers = [];
@@ -545,7 +545,6 @@ class ProjectForm extends Form {
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
-                  onBatchMembersAdd={this.handleBatchMembersAdd}
                 />
               </div>
             </div>
@@ -562,6 +561,7 @@ class ProjectForm extends Form {
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onBatchMembersUpdate={this.handleBatchMembersUpdate}
                 />
               </div>
             </div>
