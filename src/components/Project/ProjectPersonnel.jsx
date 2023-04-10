@@ -3,6 +3,7 @@ import ProjectUserTable from "./ProjectUserTable";
 import { toast } from "react-toastify";
 import { getPeople } from "../../services/peopleService";
 import Dropfile from "../common/Dropfile";
+import Tabs from "../common/Tabs";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -11,7 +12,6 @@ class ProjectPersonnel extends Component {
     searchResults: [],
     warningMessage: "",
     searchCompleted: false,
-    uploadMemberToAdd: [],
     membersFailedToFind: [],
   };
 
@@ -61,11 +61,13 @@ class ProjectPersonnel extends Component {
     this.setState({ searchInput: "", searchResults: [] });
   };
 
-  handleSearchMembers = async () => {
+  handleSearchMembers = async (members) => {
+    console.log("handle search members...")
+    console.log(members)
     this.setState({ showSpinner: true, spinnerText: "Uploading..." });
     const uploadMembersToAdd = [];
     const membersFailedToFind = [];
-    for (const memberStr of this.state.memberStrsToAdd) {
+    for (const memberStr of members) {
       const email = memberStr.split(",")[1];
       try {
         const { data: res } = await getPeople(email);
@@ -79,11 +81,11 @@ class ProjectPersonnel extends Component {
     }
 
     this.setState({
-      uploadMembersToAdd,
       membersFailedToFind,
       searchCompleted: true
     });
 
+    console.log(uploadMembersToAdd);
     this.props.onBatchMembersAdd(uploadMembersToAdd);
   }
 
@@ -103,10 +105,61 @@ class ProjectPersonnel extends Component {
     return (
       <div>
         <h4>{personnelType}</h4>
+        {
+          canUpdate && personnelType === "Project Owners" && <div className="d-flex flex-column my-4">
+          <div className="d-flex flex-row">
+            <input
+              className="form-control search-owner-input"
+              value={searchInput}
+              placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
+              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+              onKeyDown={this.raiseInputKeyDown}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={() => this.handleSearch(searchInput)}
+            >
+              <i className="fa fa-search"></i>
+            </button>
+          </div>
+          {
+            warningMessage !== "" && 
+            <div className="alert alert-warning" role="alert">
+              {warningMessage}
+            </div>
+          }
+          {
+            searchResults.length > 0 &&
+              <ul className="list-group">
+              {
+                searchResults.map((user, index) => {
+                  return (
+                    <li
+                      key={`search-user-result-${index}`}
+                      className="list-group-item d-flex flex-row justify-content-between"
+                    >
+                      {
+                        user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                        <div className="mt-1">{user.name}</div>
+                      }
+                      <button
+                        className="btn btn-sm btn-primary ml-2"
+                        onClick={() => this.handleAddUser(user)}
+                      >
+                        Add
+                      </button>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          }
+        </div>
+        }
         { 
-          canUpdate
-          &&
-          <div className="d-flex flex-column my-4">
+          canUpdate && personnelType === "Project Members" &&
+          <Tabs activeTab={"Update"}>
+            <div label="Update" className="pb-2">
             <div className="d-flex flex-row">
               <input
                 className="form-control search-owner-input"
@@ -116,59 +169,64 @@ class ProjectPersonnel extends Component {
                 onKeyDown={this.raiseInputKeyDown}
               />
               <button
-                className="btn btn-primary"
                 onClick={() => this.handleSearch(searchInput)}
               >
                 <i className="fa fa-search"></i>
               </button>
-              {
-                personnelType === "Project Members" && !searchCompleted &&
-                <Dropfile
-                  onFileDrop={this.handleFileDrop}
-                  accept={{'text/csv': [".csv"]}}
-                  acceptFormat={"csv"}
-                  textStr={"Click to select or drag & drop the CSV file here."}
-                />
+            </div>
+            {
+                warningMessage !== "" && 
+                <div className="alert alert-warning" role="alert">
+                  {warningMessage}
+                </div>
               }
               {
-                personnelType === "Project Members" && searchCompleted && <div>
+                searchResults.length > 0 &&
+                  <ul className="list-group">
+                  {
+                    searchResults.map((user, index) => {
+                      return (
+                        <li
+                          key={`search-user-result-${index}`}
+                          className="list-group-item d-flex flex-row justify-content-between"
+                        >
+                          {
+                            user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                            <div className="mt-1">{user.name}</div>
+                          }
+                          <button
+                            className="btn btn-sm btn-primary ml-2"
+                            onClick={() => this.handleAddUser(user)}
+                          >
+                            Add
+                          </button>
+                        </li>
+                      );
+                    })
+                  }
+                </ul>
+              }
+            </div>
+            <div label="Batch Update" className="pb-2">
+              {
+                !searchCompleted &&
+                <div className="w-100 bg-light border">
+                  <Dropfile
+                    onFileDrop={this.handleFileDrop}
+                    accept={{'text/csv': [".csv"]}}
+                    acceptFormat={"csv"}
+                    textStr={"Click to select or drag & drop the CSV file here."}
+                  />
+                </div>
+              }
+              {
+                searchCompleted &&
+                <div className="w-100 bg-success border">
                   Project members uploaded successfully! 
                 </div>
               }
             </div>
-            {
-              warningMessage !== "" && 
-              <div className="alert alert-warning" role="alert">
-                {warningMessage}
-              </div>
-            }
-            {
-              searchResults.length > 0 &&
-                <ul className="list-group">
-                {
-                  searchResults.map((user, index) => {
-                    return (
-                      <li
-                        key={`search-user-result-${index}`}
-                        className="list-group-item d-flex flex-row justify-content-between"
-                      >
-                        {
-                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
-                          <div className="mt-1">{user.name}</div>
-                        }
-                        <button
-                          className="btn btn-sm btn-primary ml-2"
-                          onClick={() => this.handleAddUser(user)}
-                        >
-                          Add
-                        </button>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            }
-          </div>
+        </Tabs>
         }
         {
           users.length > 0 &&

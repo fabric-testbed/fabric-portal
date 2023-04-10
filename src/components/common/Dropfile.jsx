@@ -19,17 +19,9 @@ const DropFile = props => {
           onFileDrop(textStr)
         }
       } else if (acceptFormat === "csv") {
-        console.log("csv")
         const reader = new FileReader();
-        // const parser = parse();
         reader.readAsText(file);
-        console.log(reader)
         reader.onload = () => {
-          // parser.on('readable', function(){
-          //   let data; while((data = parser.read()) !== null){
-          //     console.log(data)
-          //   }
-          // });
           const textStr = reader.result
           onFileDrop(textStr)
         };
