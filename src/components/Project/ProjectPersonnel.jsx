@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { getPeople } from "../../services/peopleService";
 import Dropfile from "../common/Dropfile";
 import Tabs from "../common/Tabs";
+import SpinnerWithText from "../common/SpinnerWithText";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -70,7 +71,7 @@ class ProjectPersonnel extends Component {
       const email = memberStr.split(",")[1];
       try {
         const { data: res } = await getPeople(email);
-        if (res) {
+        if (res.results[0]) {
           const memberToAdd = res.results[0];
           uploadMembersToAdd.push(memberToAdd);
         } else {
@@ -88,8 +89,6 @@ class ProjectPersonnel extends Component {
       searchCompleted: true
     });
 
-    console.log(membersFailedToFind)
-
     this.props.onBatchMembersUpdate(uploadMembersToAdd);
   }
 
@@ -104,7 +103,7 @@ class ProjectPersonnel extends Component {
 
   render() {
     const { searchInput, searchResults, warningMessage,
-      searchCompleted, membersFailedToFind } = this.state;
+      searchCompleted, membersFailedToFind, showSpinner } = this.state;
     const { canUpdate, personnelType, users } = this.props;
 
     return (
@@ -161,10 +160,10 @@ class ProjectPersonnel extends Component {
           }
         </div>
         }
-        { 
+        {
           canUpdate && personnelType === "Project Members" &&
-          <Tabs activeTab={"Update"}>
-            <div label="Update">
+          <Tabs activeTab={"Search"}>
+            <div label="Search">
             <div className="d-flex flex-row mb-2">
               <input
                 className="form-control search-owner-input"
@@ -213,23 +212,26 @@ class ProjectPersonnel extends Component {
                 </ul>
               }
             </div>
-            <div label="Batch Update">
+            <div label="Batch Upload">
               {
-                !searchCompleted &&
+                !searchCompleted && !showSpinner &&
                 <div className="w-100 bg-light border pt-3 mb-2">
                   <Dropfile
                     onFileDrop={this.handleFileDrop}
                     accept={{'text/csv': [".csv"]}}
                     acceptFormat={"csv"}
-                    textStr={"Click to select or drag & drop the CSV file here."}
+                    textStr={"Click to select or drag & drop the CSV file with 2 columns (user name and email) here."}
                   />
                 </div>
               }
               {
-                searchCompleted &&
+                searchCompleted && !showSpinner &&
                 <div className="w-100 bg-success border mb-2 p-2">
                   Project members uploaded successfully! 
                 </div>
+              }
+              {
+                showSpinner && <SpinnerWithText text={"Uploading users..."} />
               }
               {
                 membersFailedToFind.length > 0 &&
@@ -256,8 +258,14 @@ class ProjectPersonnel extends Component {
         {
           users.length > 0 &&
           <div>
-            <div className="d-flex flex-row-reverse mb-2">
-              {`${users.length} ${personnelType}`}.
+            <div className="d-flex flex-row justify-content-between mb-2">
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={this.props.onAllMembersDelete}
+              >
+                Delete All
+              </button>
+              <span>{`${users.length} ${personnelType}`}.</span>
             </div>
             <ProjectUserTable
               users={users}

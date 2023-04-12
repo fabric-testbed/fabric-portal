@@ -353,6 +353,10 @@ class ProjectForm extends Form {
     this.setState({ members: [...this.state.members, ...unExistingMembers] });
   }
 
+  handleAllMembersDelete = () => {
+    this.setState({ members: [] });
+  }
+
   getIDs = (users) => {
     return users.map(user => user.uuid);
   }
@@ -556,6 +560,7 @@ class ProjectForm extends Form {
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
                   onBatchMembersUpdate={this.handleBatchMembersUpdate}
+                  onAllMembersDelete={this.handleAllMembersDelete}
                 />
               </div>
             </div>
