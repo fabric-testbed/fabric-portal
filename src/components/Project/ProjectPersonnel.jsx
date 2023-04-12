@@ -86,7 +86,8 @@ class ProjectPersonnel extends Component {
     this.setState({
       uploadMembersToAdd,
       membersFailedToFind,
-      searchCompleted: true
+      searchCompleted: true,
+      showSpinner: false
     });
 
     this.props.onBatchMembersUpdate(uploadMembersToAdd);
@@ -99,6 +100,10 @@ class ProjectPersonnel extends Component {
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
     }
+  }
+
+  refreshTab = () => {
+    window.location.reload();
   }
 
   render() {
@@ -120,7 +125,7 @@ class ProjectPersonnel extends Component {
               onKeyDown={this.raiseInputKeyDown}
             />
             <button
-              className="btn btn-primary"
+              className="btn btn-outline-primary"
               onClick={() => this.handleSearch(searchInput)}
             >
               <i className="fa fa-search"></i>
@@ -147,7 +152,7 @@ class ProjectPersonnel extends Component {
                         <div className="mt-1">{user.name}</div>
                       }
                       <button
-                        className="btn btn-sm btn-primary ml-2"
+                        className="btn btn-sm btn-outline-primary ml-2"
                         onClick={() => this.handleAddUser(user)}
                       >
                         Add
@@ -200,7 +205,7 @@ class ProjectPersonnel extends Component {
                           <div className="mt-1">{user.name}</div>
                         }
                         <button
-                          className="btn btn-sm btn-primary ml-2"
+                          className="btn btn-sm btn-outline-primary ml-2"
                           onClick={() => this.handleAddUser(user)}
                         >
                           Add
@@ -231,12 +236,12 @@ class ProjectPersonnel extends Component {
                 </div>
               }
               {
-                showSpinner && <SpinnerWithText text={"Uploading users..."} />
+                showSpinner && !searchCompleted && <SpinnerWithText text={"Uploading users..."} />
               }
               {
                 membersFailedToFind.length > 0 &&
                 <div className="alert alert-warning">
-                  We couldn't find the following users:
+                  We couldn't find the users below. Please make sure the name and email information are correct.
                   <ul className="list-group">
                     {
                       membersFailedToFind.map((memberStr, index) => {
@@ -257,15 +262,17 @@ class ProjectPersonnel extends Component {
         }
         {
           users.length > 0 &&
-          <div>
+          <div className="mt-2">
             <div className="d-flex flex-row justify-content-between mb-2">
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={this.props.onAllMembersDelete}
-              >
-                Delete All
-              </button>
               <span>{`${users.length} ${personnelType}`}.</span>
+              {
+                canUpdate && <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={this.props.onAllMembersDelete}
+                >
+                  Delete All
+                </button>
+              }
             </div>
             <ProjectUserTable
               users={users}
@@ -282,9 +289,20 @@ class ProjectPersonnel extends Component {
         }
         {
           canUpdate &&
-          <button className="btn btn-primary mt-3" onClick={this.props.onPersonnelUpdate}>
-            Save
-          </button>
+          <div>
+            <button
+              className="btn btn-outline-primary mt-3 mr-2"
+              onClick={this.props.onPersonnelUpdate}
+            >
+              Save
+            </button>
+            <button
+              className="btn btn-outline-primary mt-3"
+              onClick={this.refreshTab}
+            >
+              Don't Save
+            </button>
+          </div>
         }
       </div>
     );
