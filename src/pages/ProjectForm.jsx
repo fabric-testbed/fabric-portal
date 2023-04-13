@@ -77,6 +77,11 @@ class ProjectForm extends Form {
     members: [],
     tagVocabulary: [],
     showSpinner: false,
+    spinner: {
+      text: "",
+      btnText: "",
+      btnPath: ""
+    },
     selectedTags: [],
     originalTags: []
   };
@@ -101,12 +106,26 @@ class ProjectForm extends Form {
   };
 
   async populateProject() {
-    this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+      text: "Loading project...",
+      btnText: "",
+      btnPath: ""
+      }
+    });
 
     try {
       const projectId = this.props.match.params.id;
       if (projectId === "new") {
-        this.setState({ showSpinner: false, spinnerText: ""  });
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
         return;
       }
 
@@ -123,7 +142,11 @@ class ProjectForm extends Form {
           this.setState({ 
             data: project, 
             showSpinner: false,
-            spinnerText: ""
+            spinner: {
+              text: "",
+              btnText: "",
+              btnPath: ""
+            }
           });
       } else {
         // user is po/pm/pc or Facility Operator.
@@ -132,7 +155,11 @@ class ProjectForm extends Form {
           owners: project.project_owners, 
           members: project.project_members,
           showSpinner: false,
-          spinnerText: "",
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          },
           selectedTags: project.tags,
           originalTags: project.tags
         });
@@ -222,20 +249,38 @@ class ProjectForm extends Form {
   }
 
   doSubmit = async () => {
-    this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: "Updating project...",
+        btnText: "",
+        btnPath: ""
+      }
+    });
 
     const { data: project } = this.state;
     try {
       await updateProject(project, this.parsePreferences());
       this.setState({
         showSpinner: false,
-        spinnerText: "",
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        },
         originalProjectName: project.name
       });
       toast.success("Project updated successfully!");
     }
     catch (err) {
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
       toast.error("Failed to save project.");
     }
 
@@ -262,7 +307,14 @@ class ProjectForm extends Form {
 
   handlePermissionUpdate = async () => {
     const {  data: project , selectedTags } = this.state;
-    this.setState({ showSpinner: true, spinnerText: `Updating project permissions...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: "Updating project permissions...",
+        btnText: "",
+        btnPath: ""
+      }
+    });
     try {
       await updateTags( project.uuid, selectedTags);
       this.setState({ originalTags: selectedTags });
@@ -270,7 +322,14 @@ class ProjectForm extends Form {
     } catch (err) {
       toast.error("Failed to save project permissions.");
     }
-    this.setState({ showSpinner: false, spinnerText: ""  });
+    this.setState({
+      showSpinner: false,
+      spinner: {
+        text: "",
+        btnText: "",
+        btnPath: ""
+      }
+    });
   }
 
   handleSideNavChange = (newIndex) => {
@@ -363,7 +422,16 @@ class ProjectForm extends Form {
 
   handlePersonnelUpdate = () => {
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
-    this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: `Updating ${personnelType}... This process may take a while. 
+        Please feel free to use other portal features while waiting. You will receive 
+        a message when the update is completed.`,
+        btnText: "Back to Project List",
+        btnPath: "/experiments#projects"
+      }
+    });
 
     const { data, owners, members } = this.state;
     const ownerIDs = this.getIDs(owners);
@@ -372,11 +440,25 @@ class ProjectForm extends Form {
     try{
       // pass the arr of updated po/pm and the original pm/po
       updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
-        this.setState({ showSpinner: false, spinnerText: ""  });
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
         toast.success(`${personnelType} updated successfully.`);
       });
     } catch (err) {
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
       toast(`Failed to update ${personnelType}.`)
     }
 
@@ -398,7 +480,7 @@ class ProjectForm extends Form {
       owners,
       members,
       showSpinner,
-      spinnerText,
+      spinner,
       tagVocabulary,
       selectedTags,
       originalTags
@@ -411,7 +493,12 @@ class ProjectForm extends Form {
     if (showSpinner) {
       return (
         <div className="container">
-          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
+          <SpinnerFullPage
+            showSpinner={showSpinner}
+            text={spinner.text}
+            btnText={spinner.btnText}
+            btnPath={spinner.btnPath}
+          />
         </div>
       )
     }

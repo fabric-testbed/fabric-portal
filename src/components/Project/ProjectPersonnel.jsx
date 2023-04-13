@@ -117,21 +117,23 @@ class ProjectPersonnel extends Component {
         {
           canUpdate &&
           <div>
-            <div className="alert alert-primary mb-2" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i> 
-              Please SAVE the changes you made before leaving this page to avoid data loss.
+            <div className="alert alert-primary my-4" role="alert">
+              <i className="fa fa-exclamation-triangle mr-2"></i>
+              Please <b>SAVE</b> the changes you made before leaving this page to avoid data loss.
               Or you can revert to undo the changes since you last opened this project.
             </div>
             <button
-              className="btn btn-outline-primary mb-3 mr-2"
+              className="btn btn-outline-primary mr-4"
               onClick={this.props.onPersonnelUpdate}
             >
+              <i className="fa fa-floppy-o mr-1"></i>
               Save
             </button>
             <button
-              className="btn btn-outline-primary mb-3"
+              className="btn btn-outline-primary"
               onClick={this.refreshTab}
             >
+              <i className="fa fa-undo mr-1"></i>
               Revert Changes
             </button>
           </div>
@@ -253,8 +255,10 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchCompleted && !showSpinner &&
-                <div className="w-100 bg-success border mb-2 p-2">
-                  Project members uploaded successfully! 
+                <div className="alert alert-success my-4" role="alert">
+                  <i className="fa fa-check mr-2"></i>
+                  Project members uploaded successfully! Please check the list and&nbsp
+                  <b>SAVE</b> the changes before leaving this page.
                 </div>
               }
               {
