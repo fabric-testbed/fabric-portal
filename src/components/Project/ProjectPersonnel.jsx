@@ -68,7 +68,7 @@ class ProjectPersonnel extends Component {
     const uploadMembersToAdd = [];
     const membersFailedToFind = [];
     for (const memberStr of members) {
-      const email = memberStr.split(",")[1];
+      const email = memberStr.split(",")[0].trim().replace(/\s/g, "");
       try {
         const { data: res } = await getPeople(email);
         if (res.results[0]) {
@@ -114,6 +114,28 @@ class ProjectPersonnel extends Component {
     return (
       <div>
         <h4>{personnelType}</h4>
+        {
+          canUpdate &&
+          <div>
+            <div className="alert alert-primary mb-2" role="alert">
+              <i className="fa fa-exclamation-triangle mr-2"></i> 
+              Please SAVE the changes you made before leaving this page to avoid data loss.
+              Or you can revert to undo the changes since you last opened this project.
+            </div>
+            <button
+              className="btn btn-outline-primary mb-3 mr-2"
+              onClick={this.props.onPersonnelUpdate}
+            >
+              Save
+            </button>
+            <button
+              className="btn btn-outline-primary mb-3"
+              onClick={this.refreshTab}
+            >
+              Revert Changes
+            </button>
+          </div>
+        }
         {
           canUpdate && personnelType === "Project Owners" && <div className="d-flex flex-column my-4">
           <div className="d-flex flex-row">
@@ -225,7 +247,7 @@ class ProjectPersonnel extends Component {
                     onFileDrop={this.handleFileDrop}
                     accept={{'text/csv': [".csv"]}}
                     acceptFormat={"csv"}
-                    textStr={"Click to select or drag & drop the CSV file with 2 columns (user name and email) here."}
+                    textStr={"Click to select or drag & drop the CSV file here (with user email as the first column)."}
                   />
                 </div>
               }
@@ -241,7 +263,8 @@ class ProjectPersonnel extends Component {
               {
                 membersFailedToFind.length > 0 &&
                 <div className="alert alert-warning">
-                  We couldn't find the users below. Please make sure the name and email information are correct.
+                  We couldn't find the users below. Please double-check if the name and email information 
+                  are correct, and make sure they have sucessfully enrolled as active FABRIC users.
                   <ul className="list-group">
                     {
                       membersFailedToFind.map((memberStr, index) => {
@@ -285,23 +308,6 @@ class ProjectPersonnel extends Component {
           users.length === 0 && !canUpdate && 
           <div className="alert alert-primary" role="alert">
             {`This project has no ${personnelType}.`}
-          </div>
-        }
-        {
-          canUpdate &&
-          <div>
-            <button
-              className="btn btn-outline-primary mt-3 mr-2"
-              onClick={this.props.onPersonnelUpdate}
-            >
-              Save
-            </button>
-            <button
-              className="btn btn-outline-primary mt-3"
-              onClick={this.refreshTab}
-            >
-              Don't Save
-            </button>
           </div>
         }
       </div>
