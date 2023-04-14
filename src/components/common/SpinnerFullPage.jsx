@@ -39,7 +39,7 @@ function SpinnerFullPage(props){
               fontSize: "2rem",
               ...props.style,
             }}
-            className="d-flex flex-column align-items-center"
+            className="d-flex flex-column align-items-center justify-content-center"
           >
             <div className="d-flex align-items-center justify-content-center">
               <span className="mr-2">{text}</span>

@@ -116,21 +116,20 @@ class ProjectPersonnel extends Component {
         <h4>{personnelType}</h4>
         {
           canUpdate &&
-          <div>
-            <div className="alert alert-primary my-4" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i>
+          <div className="mb-2">
+            <div className="alert alert-primary my-2" role="alert">
               Please <b>SAVE</b> the changes you made before leaving this page to avoid data loss.
               Or you can revert to undo the changes since you last opened this project.
             </div>
             <button
-              className="btn btn-outline-primary mr-4"
+              className="btn btn-sm btn-primary mr-3"
               onClick={this.props.onPersonnelUpdate}
             >
               <i className="fa fa-floppy-o mr-1"></i>
               Save
             </button>
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-sm btn-primary"
               onClick={this.refreshTab}
             >
               <i className="fa fa-undo mr-1"></i>
@@ -257,7 +256,7 @@ class ProjectPersonnel extends Component {
                 searchCompleted && !showSpinner &&
                 <div className="alert alert-success my-4" role="alert">
                   <i className="fa fa-check mr-2"></i>
-                  Project members uploaded successfully! Please check the list and&nbsp
+                  Project members uploaded successfully! Please check the list and 
                   <b>SAVE</b> the changes before leaving this page.
                 </div>
               }
@@ -267,9 +266,10 @@ class ProjectPersonnel extends Component {
               {
                 membersFailedToFind.length > 0 &&
                 <div className="alert alert-warning">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
                   We couldn't find the users below. Please double-check if the name and email information 
                   are correct, and make sure they have sucessfully enrolled as active FABRIC users.
-                  <ul className="list-group">
+                  <ul className="list-group mt-2 ml-2">
                     {
                       membersFailedToFind.map((memberStr, index) => {
                         return (

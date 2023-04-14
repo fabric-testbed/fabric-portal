@@ -25,6 +25,17 @@ import {
   updateTags,
 } from "../services/projectService";
 
+const ToastMessageWithLink = ({projectId, message}) => (
+  <div className="ml-2">
+    <p className="text-white">{ message }</p>
+    <Link to={`/projects/${projectId}}`}>
+      <button className="btn btn-sm btn-outline-light">
+        View Project
+      </button>
+    </Link>
+  </div>
+)
+
 class ProjectForm extends Form {
   state = {
     data: {
@@ -448,7 +459,13 @@ class ProjectForm extends Form {
             btnPath: ""
           }
         });
-        toast.success(`${personnelType} updated successfully.`);
+        toast.success(
+          <ToastMessageWithLink
+            projectId={data.uuid}
+            message={`${personnelType} updated successfully.`}
+          />,
+          {autoClose: 10000,}
+        );
       });
     } catch (err) {
       this.setState({
