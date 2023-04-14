@@ -5,6 +5,7 @@ import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
+import Banner from "../components/common/Banner";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
@@ -28,7 +29,7 @@ import {
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
     <p className="text-white">{ message }</p>
-    <Link to={`/projects/${projectId}}`}>
+    <Link to={`/projects/${projectId}`}>
       <button className="btn btn-sm btn-outline-light">
         View Project
       </button>
@@ -53,6 +54,7 @@ class ProjectForm extends Form {
       is_member: false,
       is_owner: false,
       is_public: false,
+      is_locked: false,
       allOptions: [
         "show_project_owners",
         "show_project_members",
@@ -503,7 +505,7 @@ class ProjectForm extends Form {
       originalTags
     } = this.state;
     
-    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
+    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner || !data.is_locked;
 
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
@@ -542,6 +544,17 @@ class ProjectForm extends Form {
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
+            {
+              data.is_locked &&  <Banner
+              notice={
+                {
+                  "title": "Project is locked",
+                  "content": "This project is updating now so you cannot modify it. You'll receive a message when the update is completed."
+                }
+              }
+              key={`project-banner`}
+            />
+            }
             {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">
