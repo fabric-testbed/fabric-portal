@@ -114,6 +114,7 @@ class ProjectForm extends Form {
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
+    is_locked: Joi.boolean(),
     allOptions: Joi.array(),
     selectedOptions: Joi.array()
   };
@@ -242,6 +243,7 @@ class ProjectForm extends Form {
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
       is_public: project.is_public ? "Yes" : "No",
+      is_locked: project.is_locked,
       allOptions: [
         "show_project_owners",
         "show_project_members",
@@ -505,7 +507,7 @@ class ProjectForm extends Form {
       originalTags
     } = this.state;
     
-    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner || !data.is_locked;
+    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
 
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
@@ -517,6 +519,19 @@ class ProjectForm extends Form {
             text={spinner.text}
             btnText={spinner.btnText}
             btnPath={spinner.btnPath}
+          />
+        </div>
+      )
+    }
+
+    if (data.is_locked) {
+      return (
+        <div className="container">
+          <SpinnerFullPage
+            showSpinner={showSpinner}
+            text={spinner.text}
+            btnText={"This project is locked because the update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            btnPath={"/experiments#projects"}
           />
         </div>
       )
@@ -544,17 +559,6 @@ class ProjectForm extends Form {
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
-            {
-              data.is_locked &&  <Banner
-              notice={
-                {
-                  "title": "Project is locked",
-                  "content": "This project is updating now so you cannot modify it. You'll receive a message when the update is completed."
-                }
-              }
-              key={`project-banner`}
-            />
-            }
             {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">

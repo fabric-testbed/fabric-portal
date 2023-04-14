@@ -129,10 +129,10 @@ class ProjectPersonnel extends Component {
               Save
             </button>
             <button
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm btn-primary mb-2"
               onClick={this.refreshTab}
             >
-              <i className="fa fa-undo mr-1 mb-2"></i>
+              <i className="fa fa-undo mr-12"></i>
               Revert Changes
             </button>
           </div>

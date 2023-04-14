@@ -42,12 +42,12 @@ function SpinnerFullPage(props){
             className="d-flex flex-column align-items-center justify-content-center"
           >
             <div className="d-flex flex-column align-items-center justify-content-center mx-5 px-5">
-              <span className="mr-2">{text}</span>
+              <span className="mr-2 mb-2">{text}</span>
               <Spinner animation="border" role="status" variant="white" />
             </div>
             {
               btnText && btnText !== "" &&
-              <Link to={btnPath} className="btn btn-outline-primary my-2">
+              <Link to={btnPath} className="btn btn-primary my-4">
                 { btnText }
               </Link>
             }
