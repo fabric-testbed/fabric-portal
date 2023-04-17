@@ -535,6 +535,7 @@ class ProjectForm extends Form {
           />
         </div>
       )
+    }
 
     // 1. New project.
     if (projectId === "new") {
