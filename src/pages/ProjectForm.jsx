@@ -528,9 +528,9 @@ class ProjectForm extends Form {
       return (
         <div className="container">
           <SpinnerFullPage
-            showSpinner={showSpinner}
-            text={spinner.text}
-            btnText={"This project is locked because the update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            showSpinner={true}
+            text={"This project is locked because the update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            btnText={"Back to Project list"}
             btnPath={"/experiments#projects"}
           />
         </div>
