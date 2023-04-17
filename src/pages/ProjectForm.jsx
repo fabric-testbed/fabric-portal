@@ -529,13 +529,12 @@ class ProjectForm extends Form {
         <div className="container">
           <SpinnerFullPage
             showSpinner={true}
-            text={"This project is locked because the update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            text={"This project is locked because an update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
             btnText={"Back to Project list"}
             btnPath={"/experiments#projects"}
           />
         </div>
       )
-    }
 
     // 1. New project.
     if (projectId === "new") {

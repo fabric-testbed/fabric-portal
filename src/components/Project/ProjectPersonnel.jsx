@@ -119,7 +119,7 @@ class ProjectPersonnel extends Component {
           <div className="my-2">
             <div className="alert alert-primary my-2" role="alert">
               Please <b>SAVE</b> the changes you made before leaving this page to avoid data loss.
-              Or you can revert to undo the changes since you last opened this project.
+              Or you can revert to undo the changes since you last saved the update.
             </div>
             <button
               className="btn btn-sm btn-primary mr-3 mb-2"
@@ -132,13 +132,13 @@ class ProjectPersonnel extends Component {
               className="btn btn-sm btn-primary mb-2"
               onClick={this.refreshTab}
             >
-              <i className="fa fa-undo mr-12"></i>
+              <i className="fa fa-undo mr-1"></i>
               Revert Changes
             </button>
           </div>
         }
         {
-          canUpdate && personnelType === "Project Owners" && <div className="d-flex flex-column my-4">
+          canUpdate && personnelType === "Project Owners" && <div className="d-flex flex-column my-2">
           <div className="d-flex flex-row">
             <input
               className="form-control search-owner-input"
@@ -254,7 +254,7 @@ class ProjectPersonnel extends Component {
               }
               {
                 searchCompleted && !showSpinner &&
-                <div className="alert alert-success my-4" role="alert">
+                <div className="alert alert-success my-2" role="alert">
                   <i className="fa fa-check mr-2"></i>
                   Project members uploaded successfully! Please check the list and <b>SAVE</b> the changes before leaving this page.
                 </div>
