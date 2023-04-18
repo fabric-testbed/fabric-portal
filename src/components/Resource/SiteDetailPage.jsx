@@ -45,7 +45,7 @@ const SiteDetailPage = props => {
     <div className="alert alert-primary mb-2" role="alert">
       <i className="fa fa-exclamation-triangle mr-2"></i> 
       Please check the <i className="fa fa-sign-in ml-1 mr-2"></i> 
-      <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">
+      <a href={portalData.fabricAnnouncementsForumLink} target="_blank" rel="noopener noreferrer">
        FABRIC Announcements Forum
       </a> for more detailed site maintenance information.
     </div>
