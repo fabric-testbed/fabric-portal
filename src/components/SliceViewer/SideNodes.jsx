@@ -35,6 +35,12 @@ class SideNodes extends React.Component {
     "Ubuntu 20": "default_ubuntu_20",
     "Ubuntu 21": "default_ubuntu_21",
     "Ubuntu 22": "default_ubuntu_22",
+    "Debian 11": "default_debian_11",
+    "Fedora 36": "default_fedora_36",
+    "Fedora 37": "default_fedora_37",
+    "Custom Rocky 8": "docker_rocky_8",
+    "Custom Ubuntu 20": "docker_ubuntu_20",
+    "Custom Ubuntu 22": "docker_ubuntu_22",
   }
 
   handleAddNode = () => {
