@@ -96,7 +96,11 @@ class ProjectPersonnel extends Component {
   handleFileDrop = (membersStr) => {
     try {
       const members = membersStr.split(/\r?\n/);
-      this.handleSearchMembers(members);
+      if (members.length < 10) {
+        this.handleSearchMembers(members);
+      } else {
+        toast.error("Please upload at max 300 users (300 rows for the CSV file).");
+      }
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
     }
@@ -248,7 +252,7 @@ class ProjectPersonnel extends Component {
                     onFileDrop={this.handleFileDrop}
                     accept={{'text/csv': [".csv"]}}
                     acceptFormat={"csv"}
-                    textStr={"Click to select or drag & drop the CSV file here (with user email as the first column)."}
+                    textStr={"Click to select or drag & drop the CSV file here (with user email as the first column). [Max: 300 rows]"}
                   />
                 </div>
               }
