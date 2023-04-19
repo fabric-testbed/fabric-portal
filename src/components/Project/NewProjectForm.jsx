@@ -301,7 +301,7 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
-        <div className="alert alert-primary mt-2" role="alert">
+        <div className="alert alert-primary mt-4" role="alert">
           <p>
             There are more features on the project detail page after project creation. 
             Please remember to customize your project after creation is completed. The 

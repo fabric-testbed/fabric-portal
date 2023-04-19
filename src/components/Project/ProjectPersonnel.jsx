@@ -96,10 +96,10 @@ class ProjectPersonnel extends Component {
   handleFileDrop = (membersStr) => {
     try {
       const members = membersStr.split(/\r?\n/);
-      if (members.length < 10) {
+      if (members.length <= 300) {
         this.handleSearchMembers(members);
       } else {
-        toast.error("Please upload at max 300 users (300 rows for the CSV file).");
+        toast.error("Please upload at most 300 users (300 rows for the CSV file) at a time.");
       }
     } catch (err) {
       toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
