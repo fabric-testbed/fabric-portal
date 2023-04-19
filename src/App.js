@@ -25,7 +25,7 @@ import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
-import ProtectedRoute from "./components/common/ProtectedRoute";
+import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import "./styles/App.scss";
 
 class App extends React.Component {
@@ -135,41 +135,26 @@ class App extends React.Component {
             <Route path="/login" element={<Home />} />
             <Route path="/logout" element={<Home />} />
             <Route path="/aup" element={<AUP />} />
-            <Route
-              path="/sites/:id"
-              element={
-                <ProtectedRoute>
-                  <SiteDetailPage />
-                </ProtectedRoute>
-              } 
-            />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/help" element={<Help />} />
-            <Route
-              path="/slices/:slice_id/:project_id"
-              element={
-                <ProtectedRoute>
-                  <SliceViewer />
-                </ProtectedRoute>
-              }
-            />
-            {/* <ProtectedRoute path="/new-slice/:project_id" element={<NewSliceForm />} />
-            <ProtectedRoute path="/projects/:id" element={<ProjectForm />} />
-            <ProtectedRoute path="/experiments" element={<Experiments />} />
-            <ProtectedRoute path="/users/:id" element={<PublicUserProfile />} />
-            <ProtectedRoute path="/user" element={<User />} />
-            <ProtectedRoute
-              path="/search-results"
-              element={
-                <SearchResults
-                searchQuery={searchQuery}
-                onQueryChange={this.handleQueryChange}
+            <Route element={<ProtectedRoutes />}>
+                <Route path="/sites/:id" element={<SiteDetailPage />} />
+                <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+                <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
+                <Route path="/projects/:id" element={<ProjectForm />} />
+                <Route path="/experiments" element={<Experiments />} />
+                <Route path="/users/:id" element={<PublicUserProfile />} />
+                <Route path="/user" element={<User />} />
+                <Route
+                  path="/search-results"
+                  element={
+                    <SearchResults searchQuery={searchQuery} onQueryChange={this.handleQueryChange}/>
+                  }
                 />
-              } 
-            /> */}
+            </Route>
             <Route element={<NotFound />} />
           </Routes>
           <Footer />
