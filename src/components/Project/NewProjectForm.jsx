@@ -301,6 +301,19 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
+        <div className="alert alert-primary mt-2" role="alert">
+          <p>
+            There are more features on the project detail page after project creation. 
+            Please remember to customize your project after creation is completed. The 
+            full features include:
+          </p>
+          <ul>
+            <li>Set privacy preferences.</li>
+            <li>Batch upload project members.</li>
+            <li>Create and manage project slices.</li>
+            <li>Request permissions and storage.</li>
+          </ul>
+        </div>
       </div>
     );
   }
