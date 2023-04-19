@@ -135,13 +135,13 @@ class App extends React.Component {
             <Route path="/login" element={<Home />} />
             <Route path="/logout" element={<Home />} />
             <Route path="/aup" element={<AUP />} />
+            <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/help" element={<Help />} />
             <Route element={<ProtectedRoutes />}>
-                <Route path="/sites/:id" element={<SiteDetailPage />} />
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />

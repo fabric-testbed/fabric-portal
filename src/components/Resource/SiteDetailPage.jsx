@@ -1,5 +1,6 @@
 import React from "react";
 import DetailTable from "./DetailTable";
+import withRouter from "../common/withRouter.jsx";
 import { sitesNameMapping }  from "../../data/sites";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import { default as portalData } from "../../services/portalData.json";
@@ -121,4 +122,4 @@ const SiteDetailPage = props => {
   )
 }
 
-export default SiteDetailPage;
+export default withRouter(SiteDetailPage);

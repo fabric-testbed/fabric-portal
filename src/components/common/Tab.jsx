@@ -37,7 +37,7 @@ class Tab extends Component {
       >
         <span>{label}</span>
         {
-          number && <span className="tab-label-number">{number}</span>
+          Number.isInteger(number) && <span className="tab-label-number">{number}</span>
         }
       </li>
     );
