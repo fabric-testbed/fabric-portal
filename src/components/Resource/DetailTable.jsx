@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import ProgressBar from '../common/ProgressBar';
 import { sitesNameMapping }  from "../../data/sites";
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ const generateProgressBar = (total, free, color, labelColor) => {
 
 const DetailTable = props => {
   const {name, resource, parent} = props;
+
   const rows = [
     ["Cores", "totalCore", "freeCore"],
     ["Disk (GB)", "totalDisk", "freeDisk"],
@@ -64,24 +66,18 @@ const DetailTable = props => {
               {
                 resource && parent !== "sitepage" && 
                 <Link
-                  to={
-                    {
-                      pathname:`/sites/${resource.id}`,
-                      state: { siteData: resource }
-                    }
-                  }>
+                  to={`/sites/${resource.id}`}
+                  state={{ data: resource }}
+                >
                   {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}
                 </Link>
               }
               {
                 resource && parent === "sitepage" && sitesNameMapping.acronymToShortName[name] && 
                 <Link
-                  to={
-                    {
-                      pathname:`/sites/${resource.id}`,
-                      state: { siteData: resource }
-                    }
-                  }>
+                  to={`/sites/${resource.id}`}
+                  state={{ resource }}
+                >
                   {`${sitesNameMapping.acronymToShortName[name]} (${sitesNameMapping.acronymToLongName[name]})`}
                 </Link>
               }
