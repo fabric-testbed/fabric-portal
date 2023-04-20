@@ -139,7 +139,7 @@ class App extends React.Component {
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/signup/:id" element={<Signup />} />
-            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />

@@ -177,11 +177,7 @@ class SideNodes extends React.Component {
               <div>
                 <div className="mb-1">
                   <Link
-                    to={
-                      {
-                        pathname: `/resources?site=${selectedSiteName}`
-                      }
-                    }
+                    to={`/resources/${selectedSiteName}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

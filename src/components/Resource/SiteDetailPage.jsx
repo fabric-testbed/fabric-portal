@@ -33,7 +33,7 @@ const SiteDetailPage = props => {
     <div className="container">
     <div className="d-flex flex-row justify-content-between">
      <h1>Site - {data.name}</h1>
-     <Link to="/resources">
+     <Link to="/resources/all">
        <button
          className="btn btn-sm btn-outline-primary my-3"
        >

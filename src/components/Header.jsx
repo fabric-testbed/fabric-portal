@@ -14,13 +14,13 @@ import clearLocalStorage from "../utils/clearLocalStorage";
 const Header = (props) => {
   const nonAuthNavItems = [
     { name: "Home", path: "/", child: [] },
-    { name: "Resources", path: "/resources", child: [] },
+    { name: "Resources", path: "/resources/all", child: [] },
     { name: "Contact Us", path: "/help", child: [] },
   ]
   
   const authNavItems = [
     { name: "Home", path: "/", child: [] },
-    { name: "Resources", path: "/resources", child: [] },
+    { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",
       path: "/experiments",
