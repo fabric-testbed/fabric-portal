@@ -21,8 +21,9 @@ export default class Help extends React.Component{
             </ul>
           </p>
         </div>
-        <div className="d-flex flex-row">
-          <div className="card mr-5">
+        <div className="row">
+        <div class="col-sm-6">
+          <div className="card">
             <div className="card-header">
               <h3 className="mb-0"><i className="fa fa-cog"></i></h3>
             </div>
@@ -43,6 +44,8 @@ export default class Help extends React.Component{
                   </a>
             </div>
           </div>
+        </div>
+        <div class="col-sm-6">
           <div className="card">
             <div className="card-header">
               <h3 className="mb-0"><i className="fa fa-user"></i></h3>
@@ -57,6 +60,30 @@ export default class Help extends React.Component{
                 <i className="fa fa-sign-in mr-2"></i>
                 FABRIC Account Help Portal
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div className="row">
+          <div className="col-sm-6">
+            <div className="card mt-4">
+              <div className="card-header">
+                <h3 className="mb-0"><i className="fa fa-video-camera"></i></h3>
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">
+                  Office Hours
+                  <span className="ml-1 badge badge-pill badge-success">beta</span>
+                </h5>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Lectus arcu bibendum at varius vel pharetra vel turpis nunc. Lectus arcu bibendum at varius vel pharetra vel turpis nunc.
+                </p>
+                <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Book Office Hours
+                </a>
+              </div>
             </div>
           </div>
         </div>
