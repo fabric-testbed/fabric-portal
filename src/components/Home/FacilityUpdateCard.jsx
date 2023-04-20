@@ -22,7 +22,7 @@ const FacilityUpdateCard = ({ showSpinner, updates }) => {
             >
               <h6 className="card-title">{update.display_date}</h6>
               <h5 className="card-title">{update.title}</h5>
-              <p className="card-text">{Parser(update.content)}</p>
+              <div className="card-text">{Parser(update.content)}</div>
               {
                 update.link && (
                   <a

@@ -35,7 +35,10 @@ class Tab extends Component {
         className={className}
         onClick={onClick}
       >
-        <span>{label}</span><span className="tab-label-number">{number}</span>
+        <span>{label}</span>
+        {
+          Number.isInteger(number) && <span className="tab-label-number">{number}</span>
+        }
       </li>
     );
   }

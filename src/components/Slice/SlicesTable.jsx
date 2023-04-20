@@ -11,7 +11,7 @@ class SlicesTable extends Component {
         path: "name",
         label: "Slice Name",
         content: (slice) => (
-          <Link to={`/slices/${slice.slice_id},${slice.project_id}`}>{slice.name}</Link>
+          <Link to={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
         ),
       },
       { path: "state", label: "Slice State" },
@@ -45,7 +45,7 @@ class SlicesTable extends Component {
         path: "name",
         label: "Slice Name",
         content: (slice) => (
-          <Link to={`/slices/${slice.slice_id},${slice.project_id}`}>{slice.name}</Link>
+          <Link to={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
         ),
       },
       { path: "state", label: "Slice State" },

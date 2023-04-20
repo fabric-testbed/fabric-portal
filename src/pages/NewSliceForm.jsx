@@ -5,6 +5,7 @@ import _ from "lodash";
 import moment from 'moment';
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
+import withRouter from "../components/common/withRouter.jsx";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
 import SideNodes from '../components/SliceViewer/SideNodes';
 import SideLinks from '../components/SliceViewer/SideLinks';
@@ -324,7 +325,7 @@ class NewSliceForm extends React.Component {
           toast.success("Slice created successfully.");
           // redirect users directly to the new slice page
           const slice_id = res.data[0].slice_id;
-          this.props.history.push(`/slices/${slice_id},${project_id}`);
+          this.props.navigate(`/slices/${slice_id}/${project_id}`);
         } catch (ex) {
           toast.error("Failed to create slice.");
           that.setState({ showSliceSpinner: false });
@@ -601,4 +602,4 @@ class NewSliceForm extends React.Component {
   }
 }
 
-export default NewSliceForm;
+export default withRouter(NewSliceForm);

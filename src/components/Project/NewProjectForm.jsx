@@ -1,16 +1,14 @@
 import React from "react";
 import Joi from "joi-browser";
 import ProjectUserTable from "./ProjectUserTable";
+import withRouter from "../common/withRouter.jsx";
 import Form from "../common/Form/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-
-import { getPeopleByName } from "../../services/peopleService";
-
+import { getPeople } from "../../services/peopleService";
 import { createProject } from "../../services/projectService";
-
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
@@ -70,7 +68,7 @@ class NewProjectForm extends Form {
       let ownerIDs = addedOwners.map((user) => user.uuid);
       let memberIDs = addedMembers.map((user) => user.uuid);
       // redirect users directly to the projects page
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
       const  { data: res } = await createProject(data, ownerIDs, memberIDs);
@@ -80,7 +78,7 @@ class NewProjectForm extends Form {
     }
     catch (err) {
       toast.error("Failed to create project.");
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
   };
 
@@ -91,7 +89,7 @@ class NewProjectForm extends Form {
       this.setState({ ownerSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeopleByName(value);
+          const { data: res } = await getPeople(value);
           const owners = res.results;
           this.setState({ owners });
         } else {
@@ -105,7 +103,7 @@ class NewProjectForm extends Form {
       this.setState({ memberSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeopleByName(value);
+          const { data: res } = await getPeople(value);
           const members = res.results;
           this.setState({ members });
         } else {
@@ -303,9 +301,22 @@ class NewProjectForm extends Form {
             </ul>
           </div>
         </div>
+        <div className="alert alert-primary mt-4" role="alert">
+          <p>
+            There are more features on the project detail page after project creation. 
+            Please remember to customize your project after creation is completed. The 
+            full features include:
+          </p>
+          <ul>
+            <li>Set privacy preferences.</li>
+            <li>Batch upload project members.</li>
+            <li>Create and manage project slices.</li>
+            <li>Request permissions and storage.</li>
+          </ul>
+        </div>
       </div>
     );
   }
 }
 
-export default NewProjectForm;
+export default withRouter(NewProjectForm);
