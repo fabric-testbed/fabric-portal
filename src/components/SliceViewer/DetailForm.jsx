@@ -15,7 +15,13 @@ export default class DetailForm extends Component {
       "default_ubuntu_18": "ubuntu",
       "default_ubuntu_20": "ubuntu",
       "default_ubuntu_21": "ubuntu",
-      "default_ubuntu_22": "ubuntu"
+      "default_ubuntu_22": "ubuntu",
+      "default_debian_11": "debian",
+      "default_fedora_36": "fedora",
+      "default_fedora_37": "fedora",
+      "docker_rocky_8": "rocky",
+      "docker_ubuntu_20": "ubuntu",
+      "docker_ubuntu_22": "ubuntu"
     }
     const usernameBasedOnImage=usernameOnImageMapping[imageRef.split(",")[0]];
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`

@@ -35,6 +35,12 @@ class SideNodes extends React.Component {
     "Ubuntu 20": "default_ubuntu_20",
     "Ubuntu 21": "default_ubuntu_21",
     "Ubuntu 22": "default_ubuntu_22",
+    "Debian 11": "default_debian_11",
+    "Fedora 36": "default_fedora_36",
+    "Fedora 37": "default_fedora_37",
+    "Custom Rocky 8": "docker_rocky_8",
+    "Custom Ubuntu 20": "docker_ubuntu_20",
+    "Custom Ubuntu 22": "docker_ubuntu_22",
   }
 
   handleAddNode = () => {
@@ -171,11 +177,7 @@ class SideNodes extends React.Component {
               <div>
                 <div className="mb-1">
                   <Link
-                    to={
-                      {
-                        pathname: `/resources?site=${selectedSiteName}`
-                      }
-                    }
+                    to={`/resources/${selectedSiteName}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -285,7 +287,16 @@ class SideNodes extends React.Component {
                     value={disk} onChange={this.handleDiskChange}/>
                 </div>
                 <div className="form-group slice-builder-form-group col-md-4">
-                  <label htmlFor="inputState" className="slice-builder-label">OS Image</label>
+                  <label htmlFor="inputState" className="slice-builder-label">
+                    OS Image
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("node-tooltip", portalData.helperText.customImagesDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
                   <select
                     className="form-control form-control-sm"
                     value={selectedImageRef}

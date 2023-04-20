@@ -180,6 +180,9 @@ export default class NewSliceDetailForm extends Component {
                     this.props.nodes.length === 0 && 
                     <Dropfile
                       onFileDrop={this.handleFileDrop}
+                      accept={{'application/json': []}}
+                      acceptFormat={"json"}
+                      textStr={"Click to select or drag & drop your slice topology JSON file here."}
                     />
                   }
                 </div>

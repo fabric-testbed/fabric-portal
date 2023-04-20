@@ -2,10 +2,11 @@ import React, { useRef } from "react";
 import Spinner from 'react-bootstrap/Spinner';
 import Overlay from 'react-bootstrap/Overlay';
 import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 
 function SpinnerFullPage(props){
   const target = useRef(null);
-  const {text, showSpinner} = props;
+  const {text, showSpinner, btnText, btnPath} = props;
   
   return (
     <div>
@@ -38,10 +39,18 @@ function SpinnerFullPage(props){
               fontSize: "2rem",
               ...props.style,
             }}
-            className="d-flex align-items-center justify-content-center"
+            className="d-flex flex-column align-items-center justify-content-center"
           >
-            {text}
-            <Spinner animation="border" role="status" variant="white" />
+            <div className="d-flex flex-column align-items-center justify-content-center mx-5 px-5">
+              <span className="mr-2 mb-2">{text}</span>
+              <Spinner animation="border" role="status" variant="white" />
+            </div>
+            {
+              btnText && btnText !== "" &&
+              <Link to={btnPath} className="btn btn-primary my-4">
+                { btnText }
+              </Link>
+            }
           </div>
         )}
       </Overlay>

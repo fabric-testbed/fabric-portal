@@ -1,4 +1,5 @@
 import React from "react";
+import withRouter from "../components/common/withRouter.jsx";
 import SideNav from "../components/common/SideNav";
 import Slices from "../components/Experiment/Slices";
 import Projects from "../components/Experiment/Projects";
@@ -55,7 +56,7 @@ class Experiments extends React.Component {
         { name: "MANAGE SSH KEYS", active: newIndex === 3 },
       ]
     });
-    this.props.history.push(`/experiments${indexToHash[newIndex]}`);
+    this.props.navigate(`/experiments${indexToHash[newIndex]}`);
   };
   
   render() {
@@ -81,4 +82,4 @@ class Experiments extends React.Component {
   }
 }
 
-export default Experiments;
+export default withRouter(Experiments);

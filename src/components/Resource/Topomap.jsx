@@ -8,9 +8,8 @@ import {
   Marker,
 } from "react-simple-maps";
 import { sitesNameMapping }  from "../../data/sites";
-import { topomap } from "../../data/topomap.js"
-
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+import { topomap } from "../../data/topomap.js";
+import { default as geoData } from "../../data/world-countries.json";
 
 const Topomap = props => {
   const [position, setPosition] = useState({ coordinates: [-95, 35], zoom: 3 });
@@ -48,7 +47,7 @@ const Topomap = props => {
           onMoveEnd={handleMoveEnd}
         >
           <Geographies
-            geography={geoUrl}
+            geography={geoData}
             fill="#EEEEEE"
             stroke="#FFFFFF"
             strokeWidth={0.5}

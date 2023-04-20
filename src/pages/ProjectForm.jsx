@@ -1,9 +1,11 @@
 import React from "react";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
+import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
+import Banner from "../components/common/Banner";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
@@ -24,7 +26,18 @@ import {
   updateTags,
 } from "../services/projectService";
 
-class projectForm extends Form {
+const ToastMessageWithLink = ({projectId, message}) => (
+  <div className="ml-2">
+    <p className="text-white">{ message }</p>
+    <Link to={`/projects/${projectId}`}>
+      <button className="btn btn-sm btn-outline-light">
+        View Project
+      </button>
+    </Link>
+  </div>
+)
+
+class ProjectForm extends Form {
   state = {
     data: {
       uuid: "",
@@ -41,6 +54,7 @@ class projectForm extends Form {
       is_member: false,
       is_owner: false,
       is_public: false,
+      is_locked: false,
       allOptions: [
         "show_project_owners",
         "show_project_members",
@@ -76,6 +90,11 @@ class projectForm extends Form {
     members: [],
     tagVocabulary: [],
     showSpinner: false,
+    spinner: {
+      text: "",
+      btnText: "",
+      btnPath: ""
+    },
     selectedTags: [],
     originalTags: []
   };
@@ -95,17 +114,32 @@ class projectForm extends Form {
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
+    is_locked: Joi.boolean(),
     allOptions: Joi.array(),
     selectedOptions: Joi.array()
   };
 
   async populateProject() {
-    this.setState({ showSpinner: true, spinnerText: `Loading project...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+      text: "Loading project...",
+      btnText: "",
+      btnPath: ""
+      }
+    });
 
     try {
       const projectId = this.props.match.params.id;
       if (projectId === "new") {
-        this.setState({ showSpinner: false, spinnerText: ""  });
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
         return;
       }
 
@@ -122,7 +156,11 @@ class projectForm extends Form {
           this.setState({ 
             data: project, 
             showSpinner: false,
-            spinnerText: ""
+            spinner: {
+              text: "",
+              btnText: "",
+              btnPath: ""
+            }
           });
       } else {
         // user is po/pm/pc or Facility Operator.
@@ -131,7 +169,11 @@ class projectForm extends Form {
           owners: project.project_owners, 
           members: project.project_members,
           showSpinner: false,
-          spinnerText: "",
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          },
           selectedTags: project.tags,
           originalTags: project.tags
         });
@@ -139,7 +181,7 @@ class projectForm extends Form {
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
-        this.props.history.replace("/not-found");
+        this.props.navigate("/not-found");
       }
     }
   }
@@ -169,7 +211,7 @@ class projectForm extends Form {
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
 
     try {
@@ -201,6 +243,7 @@ class projectForm extends Form {
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
       is_public: project.is_public ? "Yes" : "No",
+      is_locked: project.is_locked,
       allOptions: [
         "show_project_owners",
         "show_project_members",
@@ -221,24 +264,42 @@ class projectForm extends Form {
   }
 
   doSubmit = async () => {
-    this.setState({ showSpinner: true, spinnerText: `Updating project...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: "Updating project...",
+        btnText: "",
+        btnPath: ""
+      }
+    });
 
     const { data: project } = this.state;
     try {
       await updateProject(project, this.parsePreferences());
       this.setState({
         showSpinner: false,
-        spinnerText: "",
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        },
         originalProjectName: project.name
       });
       toast.success("Project updated successfully!");
     }
     catch (err) {
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
       toast.error("Failed to save project.");
     }
 
-    this.props.history.push(`/projects/${project.uuid}`);
+    this.props.navigate(`/projects/${project.uuid}`);
   };
 
   handleTagCheck = (option) => {
@@ -261,7 +322,14 @@ class projectForm extends Form {
 
   handlePermissionUpdate = async () => {
     const {  data: project , selectedTags } = this.state;
-    this.setState({ showSpinner: true, spinnerText: `Updating project permissions...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: "Updating project permissions...",
+        btnText: "",
+        btnPath: ""
+      }
+    });
     try {
       await updateTags( project.uuid, selectedTags);
       this.setState({ originalTags: selectedTags });
@@ -269,7 +337,14 @@ class projectForm extends Form {
     } catch (err) {
       toast.error("Failed to save project permissions.");
     }
-    this.setState({ showSpinner: false, spinnerText: ""  });
+    this.setState({
+      showSpinner: false,
+      spinner: {
+        text: "",
+        btnText: "",
+        btnPath: ""
+      }
+    });
   }
 
   handleSideNavChange = (newIndex) => {
@@ -282,13 +357,13 @@ class projectForm extends Form {
       3: "#slices",
     }
     this.setState({ activeIndex: newIndex });
-    this.props.history.push(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
+    this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
   handleDeleteProject = async (project) => {
     try {
       // redirect users directly to the projects page
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
       toast.info("Deletion request is in process. You'll receive a message when the project is successfully deleted.")
       // while the async call is processing under the hood
       await deleteProject(project.uuid);
@@ -296,16 +371,31 @@ class projectForm extends Form {
       toast.success("Project deleted successfully.");
     } catch (err) {
       toast.error("Failed to delete project.");
-      this.props.history.push("/experiments#projects");
+      this.props.navigate("/experiments#projects");
     }
   };
+
+  checkUserExist = (user, existingUsers) => {
+    for (const u of existingUsers) {
+      if (user.uuid === u.uuid) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   handleSinglePersonnelUpdate = (personnelType, user, operation) => {
     // personnelType: "Project Owner" / "Project Member"
     // operation: "add" / "remove"
     if (personnelType === "Project Owners") {
       if (operation === "add") {
-        this.setState({ owners: [...this.state.owners, user] });
+        if (this.checkUserExist(user, this.state.owners)) {
+          // if the user exists, toast a message
+          toast.alert(`${user.name} already exists in ${personnelType}.`)
+        } else {
+          // if the user doesn't exist, add
+          this.setState({ owners: [...this.state.owners, user] });
+        }
       }
 
       if (operation === "remove") {
@@ -313,7 +403,12 @@ class projectForm extends Form {
       }
     } else if (personnelType === "Project Members") {
       if (operation === "add") {
-        this.setState({ members: [...this.state.members, user] });
+        if (this.checkUserExist(user, this.state.members)) {
+          // if the user exists, toast a message
+          toast.alert(`${user.name} already exists in ${personnelType}.`)
+        } else {
+          this.setState({ members: [...this.state.members, user] });
+        }
       }
 
       if (operation === "remove") {
@@ -322,14 +417,36 @@ class projectForm extends Form {
     }
   }
 
+  handleBatchMembersUpdate = (members) => {
+    const unExistingMembers = [];
+    for (const m of members) {
+      if(!this.checkUserExist(m, this.state.members)) {
+        unExistingMembers.push(m);
+      }
+    }
+    this.setState({ members: [...this.state.members, ...unExistingMembers] });
+  }
+
+  handleAllMembersDelete = () => {
+    this.setState({ members: [] });
+  }
+
   getIDs = (users) => {
     return users.map(user => user.uuid);
   }
 
   handlePersonnelUpdate = () => {
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
-    
-    this.setState({ showSpinner: true, spinnerText: `Updating ${personnelType}...`  });
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: `Updating ${personnelType}... This process may take a while. 
+        Please feel free to use other portal features while waiting. You will receive 
+        a message when the update is completed.`,
+        btnText: "Back to Project List",
+        btnPath: "/experiments#projects"
+      }
+    });
 
     const { data, owners, members } = this.state;
     const ownerIDs = this.getIDs(owners);
@@ -338,15 +455,35 @@ class projectForm extends Form {
     try{
       // pass the arr of updated po/pm and the original pm/po
       updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
-        this.setState({ showSpinner: false, spinnerText: ""  });
-        toast.success(`${personnelType} updated successfully.`);
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
+        toast.success(
+          <ToastMessageWithLink
+            projectId={data.uuid}
+            message={`${personnelType} updated successfully.`}
+          />,
+          {autoClose: 10000,}
+        );
       });
     } catch (err) {
-      this.setState({ showSpinner: false, spinnerText: ""  });
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
       toast(`Failed to update ${personnelType}.`)
     }
 
-    this.props.history.push(`/projects/${data.uuid}`);
+    this.props.navigate(`/projects/${data.uuid}`);
   }
 
   render() {
@@ -364,7 +501,7 @@ class projectForm extends Form {
       owners,
       members,
       showSpinner,
-      spinnerText,
+      spinner,
       tagVocabulary,
       selectedTags,
       originalTags
@@ -377,7 +514,25 @@ class projectForm extends Form {
     if (showSpinner) {
       return (
         <div className="container">
-          <SpinnerFullPage text={spinnerText} showSpinner={showSpinner}/>
+          <SpinnerFullPage
+            showSpinner={showSpinner}
+            text={spinner.text}
+            btnText={spinner.btnText}
+            btnPath={spinner.btnPath}
+          />
+        </div>
+      )
+    }
+
+    if (data.is_locked) {
+      return (
+        <div className="container">
+          <SpinnerFullPage
+            showSpinner={true}
+            text={"This project is locked because an update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            btnText={"Back to Project list"}
+            btnPath={"/experiments#projects"}
+          />
         </div>
       )
     }
@@ -386,7 +541,7 @@ class projectForm extends Form {
     if (projectId === "new") {
       return (
         <div className="container">
-          <NewProjectForm history={this.props.history} />
+          <NewProjectForm navigate={this.props.navigate} />
         </div>
       );
     } else if (!data.is_owner && !data.is_member && !data.is_creator && !globalRoles.isFacilityOperator) {
@@ -525,6 +680,8 @@ class projectForm extends Form {
                   users={members}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
                   onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onBatchMembersUpdate={this.handleBatchMembersUpdate}
+                  onAllMembersDelete={this.handleAllMembersDelete}
                 />
               </div>
             </div>
@@ -548,4 +705,4 @@ class projectForm extends Form {
   }
 }
 
-export default projectForm;
+export default withRouter(ProjectForm);

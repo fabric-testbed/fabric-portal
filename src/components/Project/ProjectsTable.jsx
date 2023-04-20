@@ -27,7 +27,7 @@ class ProjectsTable extends Component {
       { path: "facility", label: "Facility" },
       {
         path: "created_time",
-        label: "Created Time",
+        label: "Created At",
       },
       {
         content: (project) => (

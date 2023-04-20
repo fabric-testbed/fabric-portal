@@ -52,7 +52,7 @@ class ProjectBasicInfoTable extends Component {
               <td>{ toLocaleTime(project.modified) }</td>
             </tr>
             <tr>
-              <td>Created Time</td>
+              <td>Created At</td>
               <td>{ toLocaleTime(project.created) }</td>
             </tr>
             <tr>
