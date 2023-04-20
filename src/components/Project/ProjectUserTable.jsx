@@ -36,8 +36,8 @@ class ProjectUserTable extends Component {
     ),
   };
 
-  componentDidUpdate() {
-    if (this.columns.length === 3 && this.props.canUpdate) {
+  componentDidMount() {
+    if (this.props.canUpdate && this.columns.length <= 3) {
       this.columns.push(this.deletedColumn);
     }
   }
