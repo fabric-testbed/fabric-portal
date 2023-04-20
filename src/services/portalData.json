@@ -27,7 +27,8 @@
     "preferredEmailDescription": "Please choose your preferred contact email among the addresses given to us by your Identity Provider.",
     "privacyPreferencesDescription": "Please check the information you want to be available to other FABRIC users.",
     "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators.",
-    "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned."
+    "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned.",
+    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop."
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",

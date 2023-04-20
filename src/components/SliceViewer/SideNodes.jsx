@@ -291,7 +291,16 @@ class SideNodes extends React.Component {
                     value={disk} onChange={this.handleDiskChange}/>
                 </div>
                 <div className="form-group slice-builder-form-group col-md-4">
-                  <label htmlFor="inputState" className="slice-builder-label">OS Image</label>
+                  <label htmlFor="inputState" className="slice-builder-label">
+                    OS Image
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={renderTooltip("node-tooltip", portalData.helperText.customImagesDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    </OverlayTrigger>
+                  </label>
                   <select
                     className="form-control form-control-sm"
                     value={selectedImageRef}
