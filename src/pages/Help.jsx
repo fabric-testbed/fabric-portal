@@ -31,8 +31,8 @@ export default class Help extends React.Component{
               <h5 className="card-title">Experiment Issues</h5>
               <p>
                   For technical assistance with your experiments, please search in our <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a> or
-                  the <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forum</a>. If you are unable to fix the problem on your
-                  own, please post a question in the appropriate section of our <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forum</a>.
+                  the <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>. If you are unable to fix the problem on your
+                  own, please post a question in the appropriate section of our <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>.
                   </p>
                   <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
                     <i className="fa fa-sign-in mr-2"></i>
@@ -40,7 +40,7 @@ export default class Help extends React.Component{
                   </a>
                   <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                     <i className="fa fa-sign-in mr-2"></i>
-                    Forum
+                    Forums
                   </a>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default class Help extends React.Component{
                   <span className="ml-1 badge badge-pill badge-success">beta</span>
                 </h5>
                 <p>
-                Haven't found an answer to your question on the Forum or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.
+                Haven't found an answer to your question on the Forums or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.
                 </p>
                 <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
                   <i className="fa fa-sign-in mr-2"></i>
