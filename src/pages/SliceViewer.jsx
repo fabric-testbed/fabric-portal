@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import moment from 'moment';
 import withRouter from "../components/common/withRouter.jsx";
 import Graph from '../components/SliceViewer/Graph';
 import DetailForm from '../components/SliceViewer/DetailForm';
@@ -6,16 +7,16 @@ import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordi
 import DeleteModal from "../components/common/DeleteModal";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
+import Calendar from "../components/common/Calendar";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
-import { getSliceById, deleteSlice } from "../services/sliceService.js";
+import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
-// import { default as res } from "../services/mockData/slices/slice1.json";
 
 class SliceViewer extends Component { 
   state = {
@@ -28,11 +29,10 @@ class SliceViewer extends Component {
       "name": "Slice Viewer",
       "state": "StableOK"
     },
-    // elements: sliceParser(res.data[0]["model"]),
-    // slice: res.data[0],
     errors: [],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
+    leaseEndTime: "",
     hasProject: true,
     showSliceSpinner: false,
   }
@@ -46,6 +46,7 @@ class SliceViewer extends Component {
           this.setState({ 
             elements: sliceParser(res.data[0]["model"]),
             slice: res.data[0],
+            leaseEndTime: res.data[0].lease_end_time,
             errors: sliceErrorParser(res.data[0]["model"]),
             showSliceSpinner: false
           });
@@ -81,6 +82,34 @@ class SliceViewer extends Component {
     saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
   
+  handleTimeChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ leaseEndTime: outputTime });
+  }
+
+  handlExtendSlice = async () => {
+    try {
+      const { slice, leaseEndTime } = this.state;
+      await extendSlice(slice.slice_id, leaseEndTime);
+      // toast message to users when the api call is successfully done.
+      toast.success("Slice has been successfully renewed.");
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to renew the slice.");
+      this.setState({
+        leaseEndTime: this.state.slice.lease_end_time
+      });
+    }
+  }
+
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -95,7 +124,7 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSliceSpinner, errors } = this.state;
+      showSliceSpinner, errors, leaseEndTime } = this.state;
 
     let showSlice = !showSliceSpinner && hasProject;
 
@@ -127,7 +156,20 @@ class SliceViewer extends Component {
                   </a>
                 </h2>
                 <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {utcToLocalTimeParser(slice.lease_end_time)}</span>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End:
+                  </span>
+                  <Calendar
+                    id="sliceViewerCalendar"
+                    name="sliceViewerCalendar"
+                    currentTime={utcToLocalTimeParser(leaseEndTime)}
+                    onTimeChange={this.handleTimeChange}
+                  />
+                  <button
+                    className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                    onClick={this.handleExtendSlice}
+                  >
+                    Extend
+                  </button>
                 </h4>
                 {
                   slice.project_name && <h4>
