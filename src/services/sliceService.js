@@ -45,9 +45,15 @@ export function createSlice(slice) {
 }
 
 export function deleteSlice(id) {
-  return http.delete(`${apiEndpoint}/delete/${id}`, {
-    headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
-  });
+  if (id) {
+    return http.delete(`${apiEndpoint}/delete/${id}`, {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+      });
+  } else {
+    return http.delete(`${apiEndpoint}/delete`, {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+      });
+  }
 }
 
 export function extendSlice(id, lease_end_time) {

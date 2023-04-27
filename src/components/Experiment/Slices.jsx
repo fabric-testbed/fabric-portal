@@ -7,7 +7,7 @@ import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
-import { getSlices } from "../../services/sliceService.js";
+import { getSlices, deleteSlice } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import checkPortalType from "../../utils/checkPortalType";
@@ -81,6 +81,16 @@ class Slices extends React.Component {
   handleIncludeDeadSlices = () => {
     const currentChoice = this.state.includeDeadSlices;
     this.setState( { includeDeadSlices: !currentChoice });
+  }
+
+  handleDeleteAllSlices = async () => {
+    try {
+      await deleteSlice();
+      window.location.reload();
+    }
+    catch (err) {
+      toast.error("Failed to delete all slices of this project.")
+    }
   }
 
   getPageData = () => {
@@ -263,6 +273,7 @@ class Slices extends React.Component {
               sortColumn={sortColumn}
               onSort={this.handleSort}
               parent={this.props.parent}
+              onDeleteAllSlices={this.handleDeleteAllSlices}
             />
             <Pagination
               itemsCount={totalCount}

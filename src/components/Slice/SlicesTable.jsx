@@ -30,14 +30,13 @@ class SlicesTable extends Component {
         ),
       },
       {
-        content: (slice) => (
+        content: (slice) => 
           <CopyButton
             id={slice.slice_id}
             text={"Slice ID"}
             btnStyle={"btn btn-sm btn-primary"}
             showCopiedValue={true}
-          />
-        ),
+          />,
       },
     ],
     "projectSlices": [
@@ -57,6 +56,12 @@ class SlicesTable extends Component {
         )
       },
       {
+        label: () => <button
+          className="btn btn-danger"
+          onClick={() => this.props.onDeleteAllSlices}
+        >
+          Delete All
+        </button>,
         content: (slice) => (
           <CopyButton
             id={slice.slice_id}
