@@ -10,10 +10,10 @@ import CountdownTimer from "../components/common/CountdownTimer";
 import Calendar from "../components/common/Calendar";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
+import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
-import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
@@ -109,6 +109,14 @@ class SliceViewer extends Component {
       });
     }
   }
+ 
+  calendarTimeParser = (apiTime) => {
+    console.log("---API time----");
+    console.log(apiTime);
+    console.log("---parsed calendar time----");
+    console.log(utcToLocalTimeParser(apiTime));
+    return utcToLocalTimeParser(apiTime);
+  }
 
   render() {
     const stateColors = {
@@ -158,12 +166,14 @@ class SliceViewer extends Component {
                 <h4>
                   <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End:
                   </span>
-                  <Calendar
-                    id="sliceViewerCalendar"
-                    name="sliceViewerCalendar"
-                    currentTime={utcToLocalTimeParser(leaseEndTime)}
-                    onTimeChange={this.handleTimeChange}
-                  />
+                  {
+                    leaseEndTime !== "" && <Calendar
+                      id="sliceViewerCalendar"
+                      name="sliceViewerCalendar"
+                      currentTime={this.calendarTimeParser(leaseEndTime)}
+                      onTimeChange={this.handleTimeChange}
+                    />
+                  }
                   <button
                     className="btn btn-sm btn-outline-primary m1-3 mr-3"
                     onClick={this.handleExtendSlice}

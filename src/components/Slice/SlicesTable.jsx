@@ -56,12 +56,6 @@ class SlicesTable extends Component {
         )
       },
       {
-        label: () => <button
-          className="btn btn-danger"
-          onClick={() => this.props.onDeleteAllSlices}
-        >
-          Delete All
-        </button>,
         content: (slice) => (
           <CopyButton
             id={slice.slice_id}

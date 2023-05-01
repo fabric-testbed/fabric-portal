@@ -261,6 +261,12 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
+              <button
+                className="btn btn-sm btn-outline-danger"
+                onClick={this.handleDeleteAllSlices}
+              >
+                Delete All
+              </button>
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
@@ -273,7 +279,6 @@ class Slices extends React.Component {
               sortColumn={sortColumn}
               onSort={this.handleSort}
               parent={this.props.parent}
-              onDeleteAllSlices={this.handleDeleteAllSlices}
             />
             <Pagination
               itemsCount={totalCount}
