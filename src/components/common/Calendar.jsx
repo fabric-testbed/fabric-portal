@@ -12,6 +12,8 @@ function Calendar({ onTimeChange, currentTime }) {
     time.setDate(currentTime);
   }
  
+  console.log("show time format for Calendar component:");
+  console.log(time);
 
   const [value, onChange] = useState(time);
 
