@@ -7,8 +7,5 @@ export default function utcToLocalTimeParser(UTCtime) {
   const stillUtc = moment.utc(utcDateTime).toDate();
   const localTime = moment(stillUtc).local().format('YYYY-MM-DD HH:mm:ss');
 
-  console.log("utc to local time: ----")
-  console.log(localTime)
-
   return localTime;
 }

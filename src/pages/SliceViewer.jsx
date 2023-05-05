@@ -34,11 +34,12 @@ class SliceViewer extends Component {
     positionAddNode: { x: 100, y: 600 },
     leaseEndTime: "",
     hasProject: true,
-    showSliceSpinner: false,
+    showSpinner: false,
+    spinnerText: ""
   }
 
   async componentDidMount() {
-    this.setState({ showSliceSpinner: true });
+    this.setState({ showSpinner: true, spinnerText: "Loading slice..." });
     try {
         // call credential manager to generate tokens
         autoCreateTokens(this.props.match.params.project_id).then(async () => {
@@ -48,7 +49,8 @@ class SliceViewer extends Component {
             slice: res.data[0],
             leaseEndTime: res.data[0].lease_end_time,
             errors: sliceErrorParser(res.data[0]["model"]),
-            showSliceSpinner: false
+            showSpinner: false,
+            spinnerText: ""
           });
         });
      } catch (err) {
@@ -95,7 +97,11 @@ class SliceViewer extends Component {
     this.setState({ leaseEndTime: outputTime });
   }
 
-  handlExtendSlice = async () => {
+  handleSliceExtend = async () => {
+    this.setState({
+      showSpinner: true,
+      spinnerText: "Extending slice..."
+    })
     try {
       const { slice, leaseEndTime } = this.state;
       await extendSlice(slice.slice_id, leaseEndTime);
@@ -108,14 +114,6 @@ class SliceViewer extends Component {
         leaseEndTime: this.state.slice.lease_end_time
       });
     }
-  }
- 
-  calendarTimeParser = (apiTime) => {
-    console.log("---API time----");
-    console.log(apiTime);
-    console.log("---parsed calendar time----");
-    console.log(utcToLocalTimeParser(apiTime));
-    return utcToLocalTimeParser(apiTime);
   }
 
   render() {
@@ -132,16 +130,16 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSliceSpinner, errors, leaseEndTime } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
 
-    let showSlice = !showSliceSpinner && hasProject;
+    let showSlice = !showSpinner && hasProject;
 
     return(
       <div>
         {
-          showSliceSpinner && 
+          showSpinner && 
           <div className="container d-flex align-items-center justify-content-center">
-            <SpinnerWithText text={"Loading Slice..."} />
+            <SpinnerWithText text={spinnerText} />
           </div>
         }
         {
@@ -163,24 +161,32 @@ class SliceViewer extends Component {
                     <i className="fa fa-question-circle mx-2" />
                   </a>
                 </h2>
-                <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End:
-                  </span>
+                <div className="d-flex flex-row align-items-center">
+                  <h4>
+                    <span className="badge badge-light font-weight-normal p-2 mt-1 mr-2">Lease End: 
+                    {
+                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                    }
+                    </span>
+                  </h4>
                   {
-                    leaseEndTime !== "" && <Calendar
+                    leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
                       id="sliceViewerCalendar"
                       name="sliceViewerCalendar"
-                      currentTime={this.calendarTimeParser(leaseEndTime)}
+                      currentTime={utcToLocalTimeParser(leaseEndTime)}
                       onTimeChange={this.handleTimeChange}
                     />
                   }
-                  <button
-                    className="btn btn-sm btn-outline-primary m1-3 mr-3"
-                    onClick={this.handleExtendSlice}
-                  >
-                    Extend
-                  </button>
-                </h4>
+                  {
+                    slice.state ==="StableOK" &&
+                    <button
+                      className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                      onClick={this.handleSliceExtend}
+                     >
+                      Extend
+                     </button>
+                  }
+                  </div>
                 {
                   slice.project_name && <h4>
                     <span className="badge badge-light font-weight-normal p-2 mt-1">
