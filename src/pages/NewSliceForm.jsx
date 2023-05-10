@@ -312,7 +312,7 @@ class NewSliceForm extends React.Component {
       autoCreateTokens(project_id).then(async () => {
         try {
           const { data: res } = await createSlice(requestData);
-          toast.success("Slice created successfully.");
+          toast.success("Slice creation request submitted successfully.");
           // redirect users directly to the new slice page
           const slice_id = res.data[0].slice_id;
           this.props.navigate(`/slices/${slice_id}/${project_id}`);

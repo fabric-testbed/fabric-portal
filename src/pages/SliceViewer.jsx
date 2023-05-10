@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import withRouter from "../components/common/withRouter.jsx";
 import Graph from '../components/SliceViewer/Graph';
+import TerminalFormModal from '../components/SliceViewer/TerminalFormModal';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordion';
 import DeleteModal from "../components/common/DeleteModal";
@@ -35,7 +36,8 @@ class SliceViewer extends Component {
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
-    spinnerText: ""
+    spinnerText: "",
+    showModal: false
   }
 
   async componentDidMount() {
@@ -116,6 +118,12 @@ class SliceViewer extends Component {
     }
   }
 
+  toggleModalForm = (operation) => {
+    this.setState({
+      showModal: operation === "open" ? true : false
+    })
+  }
+
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -130,7 +138,7 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
 
     let showSlice = !showSpinner && hasProject;
 
@@ -141,6 +149,13 @@ class SliceViewer extends Component {
           <div className="container d-flex align-items-center justify-content-center">
             <SpinnerWithText text={spinnerText} />
           </div>
+        }
+        {
+          showModal && 
+          <TerminalFormModal
+            userName={"user"}
+            closeModalForm={() => this.toggleModalForm("close")}
+          />
         }
         {
           showSlice &&
@@ -248,6 +263,7 @@ class SliceViewer extends Component {
                 <DetailForm
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
+                  openModalForm={() => this.toggleModalForm("open")}
                 />
               }
             </div>

@@ -73,6 +73,12 @@ export default class DetailForm extends Component {
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={this.props.openModalForm}
+                    >
+                      Open Terminal
+                    </button>
                   </label>
                   <div className="ssh-command">
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
