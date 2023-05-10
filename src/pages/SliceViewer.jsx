@@ -153,7 +153,7 @@ class SliceViewer extends Component {
         {
           showModal && 
           <TerminalFormModal
-            userName={"user"}
+            vmData={selectedData}
             closeModalForm={() => this.toggleModalForm("close")}
           />
         }

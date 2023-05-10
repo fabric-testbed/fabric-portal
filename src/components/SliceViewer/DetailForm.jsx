@@ -4,26 +4,7 @@ import { default as portalData } from "../../services/portalData.json";
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
-    const usernameOnImageMapping = {
-      "default_centos8_stream": "centos",
-      "default_centos9_stream": "centos",
-      "default_centos_7": "centos",
-      "default_centos_8": "centos",
-      "default_debian_10": "debian",
-      "default_fedora_35": "fedora",
-      "default_rocky_8": "rocky",
-      "default_ubuntu_18": "ubuntu",
-      "default_ubuntu_20": "ubuntu",
-      "default_ubuntu_21": "ubuntu",
-      "default_ubuntu_22": "ubuntu",
-      "default_debian_11": "debian",
-      "default_fedora_36": "fedora",
-      "default_fedora_37": "fedora",
-      "docker_rocky_8": "rocky",
-      "docker_ubuntu_20": "ubuntu",
-      "docker_ubuntu_22": "ubuntu"
-    }
-    const usernameBasedOnImage=usernameOnImageMapping[imageRef.split(",")[0]];
+    const usernameBasedOnImage= portalData.usernameOnImageMapping[imageRef.split(",")[0]];
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`
   }
 
@@ -74,8 +55,8 @@ export default class DetailForm extends Component {
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
                     <button
-                      className="btn btn-sm btn-primary"
-                      onClick={this.props.openModalForm}
+                      className="btn btn-sm btn-outline-primary ml-2"
+                      onClick={() => this.props.openModalForm}
                     >
                       Open Terminal
                     </button>
