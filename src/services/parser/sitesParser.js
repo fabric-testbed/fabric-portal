@@ -29,6 +29,12 @@ const retrieveWorkers = (maintenance) => {
     }
   }
 
+workers.map((worker) => {
+    console.log(Object.keys(worker)[0])
+    console.log(Object.values(worker)[0].state)
+  }
+)
+
   // status is an object. e.g. { state: "Maint", deadline: null, expected_end: null }
   return {
     workers: workers,
