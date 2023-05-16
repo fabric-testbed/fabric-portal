@@ -1,3 +1,5 @@
+import { object } from "prop-types";
+
 const getSiteColor = (status) => {
   if (status === "Active") {
     // Color: "primary" for "active" sites
@@ -10,6 +12,31 @@ const getSiteColor = (status) => {
   } else {
     // Color: "secondary" for "down" sites
     return "#838385";
+  }
+}
+
+const retrieveWorkers = (maintenance) => {
+  const workers = [];
+  let status = "PreMaint";
+  for (const [key, value] of Object.entries(maintenance)) {
+    workers.push({
+      [key]: value
+    });
+    // if all workers are in PreMaint state, then PreMaint as the site state
+    // if a Maint worker exists, mark the site as in Maint too
+    if (value.state === "Maint") {
+      status = "Maint";
+    }
+  }
+
+  // status is an object. e.g. { state: "Maint", deadline: null, expected_end: null }
+  return {
+    workers: workers,
+    siteStatus: {
+      state: status,
+      deadline: null,
+      expected_end: null
+    }
   }
 }
 
@@ -31,7 +58,17 @@ export default function parseSites(data, acronymToShortName) {
       site.location = node.Location;
       // site.location = JSON.parse(node.Location)["postal"];
       /************ retrieve site status in site node. ************/
-      site.status = JSON.parse(node.MaintenanceInfo)[node.Name];
+      const maintenance = JSON.parse(node.MaintenanceInfo);
+      if (maintenance[node.Name]) {
+        // the site is active or the maintenance is at site level
+        site.status = maintenance[node.Name];
+        site.workers = [];
+      } else {
+        // the maintenance is at worker level
+        const parsedMaintInfo = retrieveWorkers(maintenance);
+        site.status = parsedMaintInfo.siteStatus;
+        site.workers = parsedMaintInfo.workers;
+      }
       /************ retrieve site capacity in site node. ************/ 
       const siteCapacityTypes = {
         "CPU": "cpu",
@@ -82,7 +119,12 @@ export default function parseSites(data, acronymToShortName) {
       }
 
       parsedSites.push(site);
-      siteColorMapping[site.name] = getSiteColor(site.status.state);
+      try {
+        siteColorMapping[site.name] = getSiteColor(site.status.state);
+      } catch(err) {
+        console.log(site)
+      }
+
       siteNames.push(acronymToShortName[site.name]);
       siteAcronyms.push(site.name);
     }
