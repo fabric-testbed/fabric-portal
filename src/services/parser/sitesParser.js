@@ -29,12 +29,6 @@ const retrieveWorkers = (maintenance) => {
     }
   }
 
-workers.map((worker) => {
-    console.log(Object.keys(worker)[0])
-    console.log(Object.values(worker)[0].state)
-  }
-)
-
   // status is an object. e.g. { state: "Maint", deadline: null, expected_end: null }
   return {
     workers: workers,
@@ -125,10 +119,11 @@ export default function parseSites(data, acronymToShortName) {
       }
 
       parsedSites.push(site);
+      
       try {
         siteColorMapping[site.name] = getSiteColor(site.status.state);
       } catch(err) {
-        console.log(site)
+        console.log(`This site cannot be parsed correctly: ${site}`);
       }
 
       siteNames.push(acronymToShortName[site.name]);
