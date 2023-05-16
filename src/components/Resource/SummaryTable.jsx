@@ -8,12 +8,9 @@ class SummaryTable extends Component {
       content: (resource) => (
         <div>
           <Link
-            to={
-            {
-              pathname:`/sites/${resource.id}`,
-              state: { siteData: resource }
-            }
-          }>
+            to={`/sites/${resource.id}`}
+            state={{ data: resource }}
+          >
             {resource.name}
           </Link>
           {
