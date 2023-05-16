@@ -53,7 +53,7 @@ const SiteDetailPage = props => {
     </div>
    }
    <div className="mt-4">
-     <h2>Basic Information</h2>
+     <h3>Basic Information</h3>
      <table className="table table-sm table-striped table-bordered mb-4">
        <tbody>
         {
@@ -111,8 +111,35 @@ const SiteDetailPage = props => {
        </tbody>
      </table>
    </div>
+   {
+    data.workers.length > 0 && <div className="mt-4">
+      <h3>Workers in Maintenance</h3>
+      <table className="table table-sm table-striped table-bordered mb-4">
+        <tbody>
+          <tr>
+            <th>Worker Name</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Expected End Time</th>
+          </tr>
+          {
+            data.workers.map((worker, index) => {
+              return (
+                <tr key={`maintenance-worker-${index}`}>
+                  <td>{Object.keys(worker)[0]}</td>
+                  <td>{statusMapping[Object.values(worker)[0].state].state}</td>
+                  <td>{Object.values(worker)[0].deadline ? utcToLocalTimeParser(Object.values(worker)[0].deadline) : "Unknown"}</td>
+                  <td>{Object.values(worker)[0].expected_end ? utcToLocalTimeParser(Object.values(worker)[0].expected_end) : "Unknown"}</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+   }
    <div className="mt-4">
-     <h2>Resource Availabilities</h2>
+     <h3>Resource Availabilities</h3>
      <DetailTable
        name={ data.name }
        resource={ data }

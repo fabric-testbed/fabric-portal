@@ -1,5 +1,5 @@
 {
-  "version": "1.4.4",
+  "version": "1.4.6",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "sliverKeyLimit": 10,

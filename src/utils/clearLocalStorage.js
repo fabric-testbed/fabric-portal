@@ -11,5 +11,4 @@ export default function clearLocalStorage() {
   localStorage.removeItem("countdownTimerIntervalId");
   localStorage.removeItem("sessionTimeoutIntervalId1");
   localStorage.removeItem("sessionTimeoutIntervalId2");
-  localStorage.removeItem("refreshTokenIntervalId");
 }
