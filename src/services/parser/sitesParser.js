@@ -7,7 +7,7 @@ const getSiteColor = (status) => {
   } else if (status === "Maint") {
     // Color: "warning" for "maintenance" sites
     return "#e94948";
-  } else if (status === "PreMaint") {
+  } else if (status === "PreMaint" || status === "PartMaint") {
     return "#ff8542";
   } else {
     // Color: "secondary" for "down" sites
@@ -25,7 +25,7 @@ const retrieveWorkers = (maintenance) => {
     // if all workers are in PreMaint state, then PreMaint as the site state
     // if a Maint worker exists, mark the site as in Maint too
     if (value.state === "Maint") {
-      status = "Maint";
+      status = "PartMaint";
     }
   }
 

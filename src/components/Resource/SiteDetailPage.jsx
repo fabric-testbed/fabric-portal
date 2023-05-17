@@ -17,11 +17,15 @@ const SiteDetailPage = props => {
       color: "warning",
       explanation: "requests will be expected until the deadline"
     },
+    "PartMaint": {
+      state: "Partial Maintenance",
+      colorHex: "warning",
+      explanation: "requests may fail due to some equipment being off-line"
+    },
     "Active": {
       state: "Active",
       color: "primary",
       explanation: ""
-    
     }
   }
 
@@ -43,7 +47,7 @@ const SiteDetailPage = props => {
      </Link>
    </div>
    {
-    ["Maint", "PreMaint"].includes(data.status["state"]) &&
+    ["Maint", "PreMaint", "PartMaint"].includes(data.status["state"]) &&
     <div className="alert alert-primary mb-2" role="alert">
       <i className="fa fa-exclamation-triangle mr-2"></i> 
       Please check the <i className="fa fa-sign-in ml-1 mr-2"></i> 
