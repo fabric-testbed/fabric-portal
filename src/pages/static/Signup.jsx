@@ -7,6 +7,7 @@ import StepProgress from '../../components/Signup/StepProgress';
 import Step1 from '../../components/Signup/Step1';
 import Step2 from '../../components/Signup/Step2';
 import Step3 from '../../components/Signup/Step3';
+import DenyEnrollment from '../../components/Signup/DenyEnrollment';
 
 const Signup = () => {
   let { id } = useParams();
@@ -14,7 +15,9 @@ const Signup = () => {
   return (
     <div className="container">
       <h2 className="text-center">FABRIC SignUp</h2>
-      <StepProgress stepId={stepId} />
+      {
+        stepId !== 4 && <StepProgress stepId={stepId} />
+      }
       <div>
         {
           stepId === 1 && <Step1 />
@@ -24,6 +27,9 @@ const Signup = () => {
         }
         {
           stepId === 3 && <Step3 />
+        }
+        {
+          stepId === 4 && <DenyEnrollment />
         }
       </div>
     </div>

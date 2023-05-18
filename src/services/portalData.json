@@ -34,7 +34,8 @@
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
     "accountIssue": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
     "projectPermissionRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
-    "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40"
+    "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
+    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61"
   },
   "fabricSocialLinks": {
     "website": "https://fabric-testbed.net/",
