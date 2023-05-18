@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 class Keys extends React.Component {
   state = {
     keys: [],
+    currentKeyType: "sliver"
   };
 
   async componentDidMount() {
@@ -36,13 +37,13 @@ class Keys extends React.Component {
   };
 
   render() {
-    const { sliverKeys, bastionKeys, maxSliver, maxBastion } = this.getKeysData();
+    const { sliverKeys, bastionKeys, maxSliver, maxBastion, currentKeyType } = this.getKeysData();
 
     return (
       <div className="col-9" id="sshKeys">
         <KeyTabs sliverKeys={sliverKeys} bastionKeys={bastionKeys} disableKeyDelete={false} styleProp={"w-100"} parent={"Keys"}/>
-        <GenerateKey maxSliver={maxSliver} maxBastion={maxBastion}/>
-        <UploadKey maxSliver={maxSliver} maxBastion={maxBastion}/>
+        <GenerateKey maxSliver={maxSliver} maxBastion={maxBastion} currentKeyType={currentKeyType} />
+        <UploadKey maxSliver={maxSliver} maxBastion={maxBastion} currentKeyType={currentKeyType} />
       </div>
     );
   }
