@@ -53,8 +53,17 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
             Currently the sliver keys here are only used when you build a slice via the Portal. JupyterHub uses locally-generated sliver keys.
           </div>
           {
-            sliverKeys.length > 0 ? <div>
-              <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} />
+            <div>
+              {
+                sliverKeys.length > 0 &&
+                <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} />
+              }
+              {
+                sliverKeys.length === 0 &&
+                <div className="alert alert-warning" role="alert">
+                  You have no sliver keys. Please try to generate or upload.
+                </div>
+              }
               {
                 parent === "Keys" &&
                 sliverKeys.length <= portalData.keyLimit &&
@@ -72,15 +81,20 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
                 </div>
               }
             </div>
-             :
-            <div className="alert alert-warning" role="alert">You have no sliver key. Please try to generate or upload.</div>
           }
         </div>
         <div label="Bastion" number={bastionKeys? bastionKeys.length : 0}>
-          {
-            bastionKeys.length > 0 ? 
             <div>
-              <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} />
+              {
+                bastionKeys.length > 0 &&
+                <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} />
+              }
+              {
+                bastionKeys.length === 0 && 
+                <div className="alert alert-warning" role="alert">
+                  You have no bastion keys. Please try to generate or upload.
+                </div>
+              }
               {
                 parent === "Keys" &&
                 bastionKeys.length <= portalData.keyLimit && <div>
@@ -97,9 +111,6 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
                 </div>
               }
             </div>
-             :
-            <div className="alert alert-warning" role="alert">You have no bastion key. Please try to generate or upload.</div>
-          }
         </div>
       </Tabs>
     </div>
