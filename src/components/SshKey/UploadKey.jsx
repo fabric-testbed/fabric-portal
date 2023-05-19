@@ -24,7 +24,7 @@ class UploadKey extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      await uploadPublicKey(data.publickey, data.description);
+      await uploadPublicKey(this.props.type, data.publickey, data.description);
       window.location.reload();
       toast.success("Successfully uploaded.");
     } catch (err) {
@@ -39,7 +39,7 @@ class UploadKey extends Form {
 
   render() {
     const { publickeyTooltip, descriptionTooltip } =  this.state;
-    const keyType = localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver";
+    const keyType = this.props.type;
 
     return (
       <div className="w-100 mb-4">

@@ -28,7 +28,7 @@ class GenerateKey extends Form {
     this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
-      const { data: res } = await generateKeyPairs(data.name, data.description);
+      const { data: res } = await generateKeyPairs(this.props.type, data.name, data.description);
       this.setState({ generatedKey: res.results[0], showKeySpinner: false });
     } catch (err) {
       this.setState({ showKeySpinner: false });
@@ -44,11 +44,11 @@ class GenerateKey extends Form {
   render() {
     const { nameTooltip, descriptionTooltip, generatedKey, data,
       showKeySpinner } =  this.state;
-    const keyType = localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver";
+    const keyType = this.props.type;
 
     return (
       <div className="w-100">
-        <h3 className="mt-4 mb-2">Generate {keyType} Key Pair</h3>
+        <h3 className="my-2">Generate {keyType} Key Pair</h3>
         {
           showKeySpinner && <SpinnerWithText text={"Generating Keys..."} />
         }

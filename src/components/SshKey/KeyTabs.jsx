@@ -59,8 +59,8 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
                 parent === "Keys" &&
                 sliverKeys.length <= portalData.keyLimit &&
                 <div>
-                  <GenerateKey />
-                  <UploadKey />
+                  <GenerateKey type="Sliver" />
+                  <UploadKey type="Sliver"/>
                 </div>
               }
               {
@@ -84,8 +84,8 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
               {
                 parent === "Keys" &&
                 bastionKeys.length <= portalData.keyLimit && <div>
-                  <GenerateKey />
-                  <UploadKey />
+                  <GenerateKey type="Bastion" />
+                  <UploadKey type="Bastion" />
                 </div>
               }
               {
