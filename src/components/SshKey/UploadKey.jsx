@@ -24,6 +24,7 @@ class UploadKey extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
+      localStorage.setItem("sshKeyType", this.props.type);
       await uploadPublicKey(this.props.type, data.publickey, data.description);
       window.location.reload();
       toast.success("Successfully uploaded.");
@@ -58,7 +59,7 @@ class UploadKey extends Form {
           <form onSubmit={this.handleSubmit}>
             {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
             {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-            {this.renderButton("Upload Public Key")}
+            {this.renderButton("Upload")}
           </form>
       </div>
     )

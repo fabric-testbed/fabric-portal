@@ -28,6 +28,7 @@ class GenerateKey extends Form {
     this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
+      localStorage.setItem("sshKeyType", this.props.type);
       const { data: res } = await generateKeyPairs(this.props.type, data.name, data.description);
       this.setState({ generatedKey: res.results[0], showKeySpinner: false });
     } catch (err) {
@@ -58,7 +59,7 @@ class GenerateKey extends Form {
           <form onSubmit={this.handleSubmit}>
             {this.renderInput("name", "Name", true, nameTooltip)}
             {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-            {this.renderButton("Generate Key Pair")}
+            {this.renderButton("Generate")}
           </form>
         }
       </div>
