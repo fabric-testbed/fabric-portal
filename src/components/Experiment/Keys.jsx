@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 
 class Keys extends React.Component {
   state = {
-    keys: [],
-    currentKeyType: "sliver"
+    keys: []
   };
 
   async componentDidMount() {
@@ -29,7 +28,7 @@ class Keys extends React.Component {
   };
 
   render() {
-    const { sliverKeys, bastionKeys, currentKeyType } = this.getKeysData();
+    const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
       <div className="col-9" id="sshKeys">
@@ -39,7 +38,6 @@ class Keys extends React.Component {
           disableKeyDelete={false}
           styleProp={"w-100"}
           parent={"Keys"}
-          currentKeyType={currentKeyType}
         />
       </div>
     );

@@ -20,7 +20,7 @@ const generatePublicKey = (data) => {
 const handleDelete = async (uuid, type) => {
   try {
     await deleteKey(uuid);
-    localStorage.setItem("sshKeyType", type);
+    localStorage.setItem("sshKeyType", type === "bastion" ? "Bastion" : "Sliver");
     window.location.reload();
     toast.success("Successfully deleted.");
   }
