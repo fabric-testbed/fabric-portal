@@ -44,47 +44,21 @@ class GenerateKey extends Form {
   render() {
     const { nameTooltip, descriptionTooltip, generatedKey, data,
       showKeySpinner } =  this.state;
-    const { maxSliver, maxBastion } = this.props;
+
     return (
       <div className="w-100">
         <h3 className="my-4">Generate SSH Key Pair</h3>
         {
           showKeySpinner && <SpinnerWithText text={"Generating Keys..."} />
         }
+        <KeyModal data={generatedKey} name={data.name} />
         {
-          maxSliver && maxBastion ? 
-            <div className="alert alert-warning" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i>
-              You can store 10 keys for each type (sliver or bastion) at maximum. 
-            </div>
-            :
-            <div>
-              {
-                maxSliver && 
-                <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
-                  You have reached the limit of 10 sliver keys.
-                  You can still generate bastion keys.
-                </div>
-              }
-              {
-                maxBastion && 
-                <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
-                  You have reached the limit of 10 bastion keys.
-                  You can still generate sliver keys.
-                </div>
-              }
-              <KeyModal data={generatedKey} name={data.name} />
-              {
-                !showKeySpinner &&
-                <form onSubmit={this.handleSubmit}>
-                  {this.renderInput("name", "Name", true, nameTooltip)}
-                  {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                  {this.renderButton("Generate Key Pair")}
-                </form>
-              }
-            </div>
+          !showKeySpinner &&
+          <form onSubmit={this.handleSubmit}>
+            {this.renderInput("name", "Name", true, nameTooltip)}
+            {this.renderTextarea("description", "Description", true, descriptionTooltip)}
+            {this.renderButton("Generate Key Pair")}
+          </form>
         }
       </div>
     )

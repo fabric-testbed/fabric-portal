@@ -1,7 +1,6 @@
 import React from "react";
 import KeyTabs from "../SshKey/KeyTabs";
 import { getActiveKeys } from "../../services/sshKeyService";
-import { default as portalData } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 
 class Keys extends React.Component {
@@ -26,14 +25,11 @@ class Keys extends React.Component {
     let sliverKeys = keys.filter(k => k.fabric_key_type === "sliver");
     let bastionKeys = keys.filter(k => k.fabric_key_type === "bastion");
 
-    let maxSliver = sliverKeys.length >= portalData.sliverKeyLimit;
-    let maxBastion = bastionKeys.length >= portalData.bastionKeyLimit;
-
-    return { sliverKeys, bastionKeys, maxSliver, maxBastion };
+    return { sliverKeys, bastionKeys};
   };
 
   render() {
-    const { sliverKeys, bastionKeys, maxSliver, maxBastion, currentKeyType } = this.getKeysData();
+    const { sliverKeys, bastionKeys, currentKeyType } = this.getKeysData();
 
     return (
       <div className="col-9" id="sshKeys">
@@ -43,8 +39,6 @@ class Keys extends React.Component {
           disableKeyDelete={false}
           styleProp={"w-100"}
           parent={"Keys"}
-          maxSliver={maxSliver}
-          maxBastion={maxBastion}
           currentKeyType={currentKeyType}
         />
       </div>

@@ -1,6 +1,5 @@
 import Joi from "joi-browser";
 import Form from "../common/Form/Form";
-
 import { uploadPublicKey } from "../../services/sshKeyService";
 import { default as portalData } from "../../services/portalData.json";
 import { toast } from "react-toastify";
@@ -40,7 +39,6 @@ class UploadKey extends Form {
 
   render() {
     const { publickeyTooltip, descriptionTooltip } =  this.state;
-    const { maxSliver, maxBastion } = this.props;
 
     return (
       <div className="w-100">
@@ -56,37 +54,11 @@ class UploadKey extends Form {
             </a>&nbsp;
             to generate FABRIC-compliant keys. We accept keys in OpenSSH key format.
           </div>
-         {
-          maxSliver && maxBastion ? 
-            <div className="alert alert-warning" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i>
-              You can store 10 keys for each type (sliver or bastion) at maximum. 
-            </div>
-            :
-            <div>
-              {
-                maxSliver && 
-                <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
-                  You have reached the limit of 10 sliver keys.
-                  You can still upload bastion keys.
-                </div>
-              }
-              {
-                maxBastion && 
-                <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
-                  You have reached the limit of 10 bastion keys.
-                  You can still upload sliver keys.
-                </div>
-              }
-              <form onSubmit={this.handleSubmit}>
-                {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
-                {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                {this.renderButton("Upload Public Key")}
-              </form>
-            </div>
-        }
+          <form onSubmit={this.handleSubmit}>
+            {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
+            {this.renderTextarea("description", "Description", true, descriptionTooltip)}
+            {this.renderButton("Upload Public Key")}
+          </form>
       </div>
     )
   }

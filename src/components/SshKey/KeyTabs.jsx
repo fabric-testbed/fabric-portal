@@ -5,11 +5,9 @@ import KeyCards from "./KeyCards";
 import GenerateKey from "./GenerateKey";
 import UploadKey from "./UploadKey";
 import CopyButton from "../common/CopyButton";
-
 import { default as portalData } from "../../services/portalData.json";
 
-const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp,
-  parent, maxBastion, maxSliver, currentKeyType }) => {
+const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent }) => {
   return (
     <div className={styleProp}>
       {
@@ -55,35 +53,55 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp,
             Currently the sliver keys here are only used when you build a slice via the Portal. JupyterHub uses locally-generated sliver keys.
           </div>
           {
-            sliverKeys.length > 0 ? 
-            <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} /> :
+            sliverKeys.length > 0 ? <div>
+              <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} />
+              {
+                parent === "Keys" &&
+                sliverKeys.length <= portalData.keyLimit &&
+                <div>
+                  <GenerateKey />
+                  <UploadKey />
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                sliverKeys.length > portalData.keyLimit &&
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  You have reached the limit of {portalData.keyLimit} sliver keys.
+                </div>
+              }
+            </div>
+             :
             <div className="alert alert-warning" role="alert">You have no sliver key. Please try to generate or upload.</div>
           }
         </div>
         <div label="Bastion" number={bastionKeys? bastionKeys.length : 0}>
           {
             bastionKeys.length > 0 ? 
-            <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :
+            <div>
+              <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} />
+              {
+                parent === "Keys" &&
+                bastionKeys.length <= portalData.keyLimit && <div>
+                  <GenerateKey />
+                  <UploadKey />
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                bastionKeys.length > portalData.keyLimit &&
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  You have reached the limit of {portalData.keyLimit} bastion keys.
+                </div>
+              }
+            </div>
+             :
             <div className="alert alert-warning" role="alert">You have no bastion key. Please try to generate or upload.</div>
           }
         </div>
       </Tabs>
-      {
-        parent === "Keys" && 
-        <GenerateKey
-          maxSliver={maxSliver}
-          maxBastion={maxBastion}
-          currentKeyType={currentKeyType}
-        />
-      }
-      {
-        parent === "Keys" && 
-        <UploadKey
-          maxSliver={maxSliver}
-          maxBastion={maxBastion}
-          currentKeyType={currentKeyType}
-        />
-      }
     </div>
   );
 };
