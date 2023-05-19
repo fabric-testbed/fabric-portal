@@ -2,11 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
+import GenerateKey from "./GenerateKey";
+import UploadKey from "./UploadKey";
 import CopyButton from "../common/CopyButton";
 
 import { default as portalData } from "../../services/portalData.json";
 
-const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent }) => {
+const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp,
+  parent, maxBastion, maxSliver, currentKeyType }) => {
   return (
     <div className={styleProp}>
       {
@@ -65,6 +68,22 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
           }
         </div>
       </Tabs>
+      {
+        parent === "Keys" && 
+        <GenerateKey
+          maxSliver={maxSliver}
+          maxBastion={maxBastion}
+          currentKeyType={currentKeyType}
+        />
+      }
+      {
+        parent === "Keys" && 
+        <UploadKey
+          maxSliver={maxSliver}
+          maxBastion={maxBastion}
+          currentKeyType={currentKeyType}
+        />
+      }
     </div>
   );
 };

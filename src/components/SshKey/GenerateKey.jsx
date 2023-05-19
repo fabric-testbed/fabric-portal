@@ -10,7 +10,6 @@ class GenerateKey extends Form {
     data: {
       name: "",
       description: "",
-      keyType: "sliver",
     },
     errors: {},
     nameTooltip: {
@@ -29,9 +28,8 @@ class GenerateKey extends Form {
     this.setState({ showKeySpinner: true });
     try {
       const { data } = this.state;
-      const { data: res } = await generateKeyPairs(data.keyType, data.name, data.description);
+      const { data: res } = await generateKeyPairs(data.name, data.description);
       this.setState({ generatedKey: res.results[0], showKeySpinner: false });
-      localStorage.setItem("sshKeyType", data.keyType);
     } catch (err) {
       this.setState({ showKeySpinner: false });
       toast.error("Failed to generate ssh key pairs.");
@@ -41,21 +39,7 @@ class GenerateKey extends Form {
   schema = {
     name: Joi.string().regex(/^\S+$/).required().min(5).max(100).label("Name"),
     description: Joi.string().required().min(5).max(255).label("Description"),
-    keyType: Joi.string().required().label("Key Type"),
   };
-
-  getKeyTypeDropdown = (maxSliver, maxBastion) => {
-    let dropdownItems = [];
-    if (maxSliver) {
-      dropdownItems = ["bastion"]
-    } else if (maxBastion) {
-      dropdownItems = ["sliver"]
-    } else {
-      dropdownItems = ["sliver", "bastion"]
-    }
-
-    return dropdownItems;
-  }
 
   render() {
     const { nameTooltip, descriptionTooltip, generatedKey, data,
@@ -97,7 +81,6 @@ class GenerateKey extends Form {
                 <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", true, nameTooltip)}
                   {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                  {this.renderSelect("keyType", "Key Type", true, this.getKeyTypeDropdown(maxSliver, maxBastion)[0], this.getKeyTypeDropdown(maxSliver, maxBastion))}
                   {this.renderButton("Generate Key Pair")}
                 </form>
               }

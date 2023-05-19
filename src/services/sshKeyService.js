@@ -18,7 +18,8 @@ export function uploadPublicKey(keytype, openssh, description) {
   )
 }
 
-export function generateKeyPairs(keytype, comment, description) {
+export function generateKeyPairs(comment, description) {
+  const keytype = localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver";
   return http.post(apiEndpoint,
     {
       "comment": comment,

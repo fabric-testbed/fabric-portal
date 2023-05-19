@@ -10,7 +10,6 @@ class UploadKey extends Form {
     data: {
       publickey: "",
       description: "",
-      keyType: "sliver",
     },
     errors: {},
     publickeyTooltip: {
@@ -26,8 +25,7 @@ class UploadKey extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      await uploadPublicKey(data.keyType, data.publickey, data.description);
-      localStorage.setItem("sshKeyType", data.keyType);
+      await uploadPublicKey(data.publickey, data.description);
       window.location.reload();
       toast.success("Successfully uploaded.");
     } catch (err) {
@@ -38,21 +36,7 @@ class UploadKey extends Form {
   schema = {
     publickey: Joi.string().required().label("Public Key"),
     description: Joi.string().required().min(5).max(255).label("Description"),
-    keyType: Joi.string().required().label("Key Type"),
   };
-
-  getKeyTypeDropdown = (maxSliver, maxBastion) => {
-    let dropdownItems = [];
-    if (maxSliver) {
-      dropdownItems = ["bastion"]
-    } else if (maxBastion) {
-      dropdownItems = ["sliver"]
-    } else {
-      dropdownItems = ["sliver", "bastion"]
-    }
-
-    return dropdownItems;
-  }
 
   render() {
     const { publickeyTooltip, descriptionTooltip } =  this.state;
@@ -99,7 +83,6 @@ class UploadKey extends Form {
               <form onSubmit={this.handleSubmit}>
                 {this.renderTextarea("publickey", "Public Key", true, publickeyTooltip)}
                 {this.renderTextarea("description", "Description", true, descriptionTooltip)}
-                {this.renderSelect("keyType", "Key Type", true, this.getKeyTypeDropdown(maxSliver, maxBastion)[0], this.getKeyTypeDropdown(maxSliver, maxBastion))}
                 {this.renderButton("Upload Public Key")}
               </form>
             </div>
