@@ -39,10 +39,11 @@ class UploadKey extends Form {
 
   render() {
     const { publickeyTooltip, descriptionTooltip } =  this.state;
+    const keyType = localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver";
 
     return (
-      <div className="w-100">
-        <h3 className="my-4">Upload Public Key</h3>
+      <div className="w-100 mb-4">
+        <h3 className="mt-4 mb-2">Upload Public {keyType} Key</h3>
           <div className="alert alert-primary" role="alert">
             Please follow &nbsp;
             <a
