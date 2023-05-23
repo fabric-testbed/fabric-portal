@@ -73,5 +73,24 @@
     "guideToInstallPythonAPI": "https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/",
     "guideToSliceManager": "https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/",
     "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/"
-  }
+  },
+  "usernameOnImageMapping": {
+    "default_centos8_stream": "centos",
+    "default_centos9_stream": "centos",
+    "default_centos_7": "centos",
+    "default_centos_8": "centos",
+    "default_debian_10": "debian",
+    "default_fedora_35": "fedora",
+    "default_rocky_8": "rocky",
+    "default_ubuntu_18": "ubuntu",
+    "default_ubuntu_20": "ubuntu",
+    "default_ubuntu_21": "ubuntu",
+    "default_ubuntu_22": "ubuntu",
+    "default_debian_11": "debian",
+    "default_fedora_36": "fedora",
+    "default_fedora_37": "fedora",
+    "docker_rocky_8": "rocky",
+    "docker_ubuntu_20": "ubuntu",
+    "docker_ubuntu_22": "ubuntu"
+  } 
 }

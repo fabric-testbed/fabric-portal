@@ -1,21 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import moment from 'moment';
 import withRouter from "../components/common/withRouter.jsx";
 import Graph from '../components/SliceViewer/Graph';
+import TerminalFormModal from '../components/SliceViewer/TerminalFormModal';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordion';
 import DeleteModal from "../components/common/DeleteModal";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
+import Calendar from "../components/common/Calendar";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
-import { getSliceById, deleteSlice } from "../services/sliceService.js";
+import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
+import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
-import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
-// import { default as res } from "../services/mockData/slices/slice1.json";
 
 class SliceViewer extends Component { 
   state = {
@@ -28,17 +30,18 @@ class SliceViewer extends Component {
       "name": "Slice Viewer",
       "state": "StableOK"
     },
-    // elements: sliceParser(res.data[0]["model"]),
-    // slice: res.data[0],
     errors: [],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
+    leaseEndTime: "",
     hasProject: true,
-    showSliceSpinner: false,
+    showSpinner: false,
+    spinnerText: "",
+    showModal: false
   }
 
   async componentDidMount() {
-    this.setState({ showSliceSpinner: true });
+    this.setState({ showSpinner: true, spinnerText: "Loading slice..." });
     try {
         // call credential manager to generate tokens
         autoCreateTokens(this.props.match.params.project_id).then(async () => {
@@ -46,8 +49,10 @@ class SliceViewer extends Component {
           this.setState({ 
             elements: sliceParser(res.data[0]["model"]),
             slice: res.data[0],
+            leaseEndTime: res.data[0].lease_end_time,
             errors: sliceErrorParser(res.data[0]["model"]),
-            showSliceSpinner: false
+            showSpinner: false,
+            spinnerText: ""
           });
         });
      } catch (err) {
@@ -81,6 +86,44 @@ class SliceViewer extends Component {
     saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
   
+  handleTimeChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ leaseEndTime: outputTime });
+  }
+
+  handleSliceExtend = async () => {
+    this.setState({
+      showSpinner: true,
+      spinnerText: "Extending slice..."
+    })
+    try {
+      const { slice, leaseEndTime } = this.state;
+      await extendSlice(slice.slice_id, leaseEndTime);
+      // toast message to users when the api call is successfully done.
+      toast.success("Slice has been successfully renewed.");
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to renew the slice.");
+      this.setState({
+        leaseEndTime: this.state.slice.lease_end_time
+      });
+    }
+  }
+
+  toggleModalForm = (operation) => {
+    this.setState({
+      showModal: operation === "open" ? true : false
+    })
+  }
+
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -95,17 +138,24 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSliceSpinner, errors } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
 
-    let showSlice = !showSliceSpinner && hasProject;
+    let showSlice = !showSpinner && hasProject;
 
     return(
       <div>
         {
-          showSliceSpinner && 
+          showSpinner && 
           <div className="container d-flex align-items-center justify-content-center">
-            <SpinnerWithText text={"Loading Slice..."} />
+            <SpinnerWithText text={spinnerText} />
           </div>
+        }
+        {
+          showModal && 
+          <TerminalFormModal
+            vmData={selectedData}
+            closeModalForm={() => this.toggleModalForm("close")}
+          />
         }
         {
           showSlice &&
@@ -126,9 +176,32 @@ class SliceViewer extends Component {
                     <i className="fa fa-question-circle mx-2" />
                   </a>
                 </h2>
-                <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {utcToLocalTimeParser(slice.lease_end_time)}</span>
-                </h4>
+                <div className="d-flex flex-row align-items-center">
+                  <h4>
+                    <span className="badge badge-light font-weight-normal p-2 mt-1 mr-2">Lease End: 
+                    {
+                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                    }
+                    </span>
+                  </h4>
+                  {
+                    leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
+                      id="sliceViewerCalendar"
+                      name="sliceViewerCalendar"
+                      currentTime={utcToLocalTimeParser(leaseEndTime)}
+                      onTimeChange={this.handleTimeChange}
+                    />
+                  }
+                  {
+                    slice.state ==="StableOK" &&
+                    <button
+                      className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                      onClick={this.handleSliceExtend}
+                     >
+                      Extend
+                     </button>
+                  }
+                  </div>
                 {
                   slice.project_name && <h4>
                     <span className="badge badge-light font-weight-normal p-2 mt-1">
@@ -190,6 +263,7 @@ class SliceViewer extends Component {
                 <DetailForm
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
+                  openModalForm={() => this.toggleModalForm("open")}
                 />
               }
             </div>

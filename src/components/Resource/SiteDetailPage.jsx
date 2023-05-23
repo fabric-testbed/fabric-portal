@@ -99,8 +99,7 @@ const SiteDetailPage = props => {
             <th>Deadline</th>
             <td>
               {
-                data.status["deadline"] ? 
-                utcToLocalTimeParser(data.status["deadline"]) : "Unknown"
+                data.status["deadline"] ? data.status["deadline"] : "Unknown"
               }
             </td>
           </tr>
