@@ -55,7 +55,7 @@ export default class DetailForm extends Component {
                       <i className="fa fa-question-circle mx-2"></i>
                       <button
                         className="btn btn-sm btn-outline-primary ml-2"
-                        onClick={() => this.props.openModalForm}
+                        onClick={() => this.props.openModalForm()}
                       >
                         Open Terminal
                       </button>

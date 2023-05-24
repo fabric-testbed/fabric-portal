@@ -188,7 +188,7 @@ class SliceViewer extends Component {
                     leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
                       id="sliceViewerCalendar"
                       name="sliceViewerCalendar"
-                      currentTime={utcToLocalTimeParser(leaseEndTime)}
+                      currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
                       onTimeChange={this.handleTimeChange}
                     />
                   }
