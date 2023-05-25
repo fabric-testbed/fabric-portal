@@ -8,10 +8,8 @@ import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordi
 import DeleteModal from "../components/common/DeleteModal";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
-import Calendar from "../components/common/Calendar";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
-import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
@@ -197,41 +195,6 @@ class SliceViewer extends Component {
                 </Link>
               </div>
             </div>
-            <div className="d-flex flex-row justify-content-between align-items-center mt-2">
-              <div className="d-flex flex-row align-items-center">
-                <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-2">Lease End: 
-                  {
-                    slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
-                  }
-                  </span>
-                </h4>
-                {
-                  leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
-                    id="sliceViewerCalendar"
-                    name="sliceViewerCalendar"
-                    currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
-                    onTimeChange={this.handleTimeChange}
-                  />
-                }
-                {
-                  slice.state ==="StableOK" &&
-                  <button
-                    className="btn btn-sm btn-outline-primary m1-3 mr-3"
-                    onClick={this.handleSliceExtend}
-                    >
-                    Extend
-                    </button>
-                }
-              </div>
-              {
-                slice.project_name && <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1">
-                    Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
-                  </span>
-                </h4>
-              }
-            </div>
             {
               ["Configuring", "Modifying"].includes(slice.state)  && 
               <CountdownTimer
@@ -264,9 +227,12 @@ class SliceViewer extends Component {
               {
                 elements.length > 0 &&
                 <DetailForm
+                  slice={slice}
+                  leaseEndTime={leaseEndTime}
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
                   openModalForm={() => this.toggleModalForm("open")}
+                  onTimeChange={this.handleTimeChange}
                 />
               }
             </div>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import CopyButton from "../common/CopyButton";
+import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
+import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
+import Calendar from "../../components/common/Calendar";
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
@@ -9,7 +12,7 @@ export default class DetailForm extends Component {
   }
 
   render() {
-    const data = this.props.data;
+    const { slice, data, leaseEndTime } = this.props;
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -20,7 +23,38 @@ export default class DetailForm extends Component {
             <div className="form-col px-3">
             {
               !data && (
-                <span> Click an element to view details. </span>
+                <div>
+                  <span>Click an element to view details. </span>
+                  {
+                    slice.project_name && <div className="row mb-2">
+                      <label>Project</label>
+                      <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                    </div>
+                  }
+                  <div className="row mb-2">
+                    <label>Lease End at</label>
+                    {
+                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                    }
+                    {
+                      leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
+                        id="sliceViewerCalendar"
+                        name="sliceViewerCalendar"
+                        currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                        onTimeChange={this.props.handleTimeChange}
+                      />
+                    }
+                    {
+                      slice.state ==="StableOK" &&
+                      <button
+                        className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                        onClick={this.handleSliceExtend}
+                        >
+                        Extend
+                      </button>
+                    }
+                  </div>
+                </div>
               )
             }
 
@@ -53,12 +87,12 @@ export default class DetailForm extends Component {
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
-                      <button
+                      {/* <button
                         className="btn btn-sm btn-outline-primary ml-2"
                         onClick={() => this.props.openModalForm()}
                       >
                         Open Terminal
-                      </button>
+                      </button> */}
                     </a>
                   </label>
                   <div className="ssh-command">
