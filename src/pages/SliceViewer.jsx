@@ -176,39 +176,6 @@ class SliceViewer extends Component {
                     <i className="fa fa-question-circle mx-2" />
                   </a>
                 </h2>
-                <div className="d-flex flex-row align-items-center">
-                  <h4>
-                    <span className="badge badge-light font-weight-normal p-2 mt-1 mr-2">Lease End: 
-                    {
-                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
-                    }
-                    </span>
-                  </h4>
-                  {
-                    leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
-                      id="sliceViewerCalendar"
-                      name="sliceViewerCalendar"
-                      currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
-                      onTimeChange={this.handleTimeChange}
-                    />
-                  }
-                  {
-                    slice.state ==="StableOK" &&
-                    <button
-                      className="btn btn-sm btn-outline-primary m1-3 mr-3"
-                      onClick={this.handleSliceExtend}
-                     >
-                      Extend
-                     </button>
-                  }
-                  </div>
-                {
-                  slice.project_name && <h4>
-                    <span className="badge badge-light font-weight-normal p-2 mt-1">
-                      Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
-                    </span>
-                  </h4>
-                }
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
@@ -216,6 +183,7 @@ class SliceViewer extends Component {
                   <DeleteModal
                     name={"Delete Slice"}
                     text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
+                    id={"delete-a-slice"}
                     onDelete={() => this.handleDeleteSlice(slice.slice_id)}
                   />
                 }
@@ -228,6 +196,41 @@ class SliceViewer extends Component {
                   </button>
                 </Link>
               </div>
+            </div>
+            <div className="d-flex flex-row justify-content-between align-items-center mt-2">
+              <div className="d-flex flex-row align-items-center">
+                <h4>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-2">Lease End: 
+                  {
+                    slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                  }
+                  </span>
+                </h4>
+                {
+                  leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
+                    id="sliceViewerCalendar"
+                    name="sliceViewerCalendar"
+                    currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                    onTimeChange={this.handleTimeChange}
+                  />
+                }
+                {
+                  slice.state ==="StableOK" &&
+                  <button
+                    className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                    onClick={this.handleSliceExtend}
+                    >
+                    Extend
+                    </button>
+                }
+              </div>
+              {
+                slice.project_name && <h4>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1">
+                    Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                  </span>
+                </h4>
+              }
             </div>
             {
               ["Configuring", "Modifying"].includes(slice.state)  && 

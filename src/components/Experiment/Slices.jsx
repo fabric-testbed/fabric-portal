@@ -281,6 +281,7 @@ class Slices extends React.Component {
                 <DeleteModal
                   name={"Delete All"}
                   text={"Are you sure you want to delete all the active slices? This process cannot be undone."}
+                  id={"delete-all-slices"}
                   onDelete={() => this.handleDeleteAllSlices()}
                 />
               }

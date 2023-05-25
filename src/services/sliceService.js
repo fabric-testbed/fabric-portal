@@ -58,8 +58,6 @@ export function deleteSlice(id) {
 
 export function extendSlice(id, lease_end_time) {
   return http.post(`${apiEndpoint}/renew/${id}?lease_end_time=${lease_end_time}`, {
-    headers: {
-    'Content-Type': 'text/plain',
-    'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+    headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
   });
 }

@@ -77,7 +77,7 @@ class ProjectForm extends Form {
       isJupterhubUser: false,
     },
     errors: {},
-    activeIndex: 3,
+    activeIndex: 0,
     SideNavItems: [
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },

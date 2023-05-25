@@ -18,7 +18,7 @@ class DeleteModal extends React.Component {
           id={`delete-modal-${id}`}
           tabIndex="-1"
           role="dialog"
-          aria-labelledby={`#delete-ssh-key-modal-${id}`}
+          aria-labelledby={`#delete-modal-${id}`}
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered" role="document">

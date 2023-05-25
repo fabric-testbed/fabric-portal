@@ -75,6 +75,7 @@ class ProjectBasicInfoTable extends Component {
                   <DeleteModal
                     name={"Delete Project"}
                     text={"Are you sure you want to delete the project? This process cannot be undone."}
+                    id={"delete-project"}
                     onDelete={() => onDeleteProject(project)}
                   />
                 </td>
