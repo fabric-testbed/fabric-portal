@@ -5,11 +5,13 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
+// import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
-import { getSlices } from "../../services/sliceService.js";
+import { getSlices, deleteSlice } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
+import sleep from "../../utils/sleep";
 import checkPortalType from "../../utils/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
@@ -31,29 +33,30 @@ class Slices extends React.Component {
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
+    spinnerText: ""
   };
 
   async componentDidMount() {
     // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true });
+    this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
     try {
       if (window.location.href.includes("/projects")) {
         // call credential manager to generate tokens
         autoCreateTokens("all").then(async () => {
           const { data: res } = await getSlices();
           const slices = res.data.filter(s => s.project_id === this.props.projectId);
-          this.setState({ slices, showSpinner: false });
+          this.setState({ slices, showSpinner: false, spinnerText: "" });
         });
       } else {
         // call PR first to check if the user has project.
         const { data: res } = await getProjects("myProjects", 0, 200);
         if (res.results.length === 0) {
-          this.setState({ hasProject: false, showSpinner: false });
+          this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
         } else {
         // call credential manager to generate tokens
         autoCreateTokens("all").then(async () => {
             const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false });
+            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
           });
         }
       }
@@ -81,6 +84,21 @@ class Slices extends React.Component {
   handleIncludeDeadSlices = () => {
     const currentChoice = this.state.includeDeadSlices;
     this.setState( { includeDeadSlices: !currentChoice });
+  }
+
+  handleDeleteAllSlices = async () => {
+    try {
+      this.setState({
+        showSpinner: true,
+        spinnerText: "Deleting all active slices..."
+      })
+      await deleteSlice();
+      await sleep(5000);
+      window.location.reload();
+    }
+    catch (err) {
+      toast.error("Failed to delete all slices of this project.")
+    }
   }
 
   getPageData = () => {
@@ -121,7 +139,8 @@ class Slices extends React.Component {
   };
 
   render() {
-    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery, filterQuery, showSpinner } = this.state;
+    const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
+      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -149,7 +168,7 @@ class Slices extends React.Component {
            </div>
         }
         {
-          showSpinner && <SpinnerWithText text={"Loading slices..."} />
+          showSpinner && <SpinnerWithText text={spinnerText} />
         }
         {
           !showSpinner && !hasProject &&
@@ -254,9 +273,18 @@ class Slices extends React.Component {
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
-                isChecked={this.state.includeDeadSlices}
+                isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
+              {/* {
+                this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
+                <DeleteModal
+                  name={"Delete All"}
+                  text={"Are you sure you want to delete all the active slices? This process cannot be undone."}
+                  id={"delete-all-slices"}
+                  onDelete={() => this.handleDeleteAllSlices()}
+                />
+              } */}
             </div>
             <SlicesTable
               slices={data}

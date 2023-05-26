@@ -5,7 +5,6 @@ import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
-import Banner from "../components/common/Banner";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
@@ -78,12 +77,12 @@ class ProjectForm extends Form {
       isJupterhubUser: false,
     },
     errors: {},
-    activeIndex: 3,
+    activeIndex: 0,
     SideNavItems: [
-      { name: "BASIC INFORMATION", active: false },
+      { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "SLICES", active: true },
+      { name: "SLICES", active: false },
     ],
     originalProjectName: "",
     owners: [],

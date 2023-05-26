@@ -29,6 +29,14 @@ class SummaryTable extends Component {
               </span>
             </div>
           }
+          {
+            resource.status && resource.status.state === "PartMaint" &&
+            <div>
+              <span className="badge badge-pill badge-info px-2">
+                Partial Maintenance
+              </span>
+            </div>
+          }
         </div>
       ),
       label: "Site",

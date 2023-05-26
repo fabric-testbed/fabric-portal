@@ -8,22 +8,22 @@ export function getActiveKeys() {
   return http.get(`${apiEndpoint}?person_uuid=${userID}`);
 }
 
-export function uploadPublicKey(keytype, openssh, description) {
+export function uploadPublicKey(type, openssh, description) {
   return http.put(apiEndpoint,
     {
       "description": description,
-      "keytype": keytype,
+      "keytype": type === "Bastion" ? "bastion" : "sliver",
       "public_openssh": openssh
     }
   )
 }
 
-export function generateKeyPairs(keytype, comment, description) {
+export function generateKeyPairs(type, comment, description) {
   return http.post(apiEndpoint,
     {
       "comment": comment,
       "description": description,
-      "keytype": keytype
+      "keytype": type === "Bastion" ? "bastion" : "sliver"
     }
   )
 }

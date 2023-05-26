@@ -22,7 +22,7 @@ const Step1 = () => {
       </div>
       <div className="text-center">
       <div className="alert alert-warning" role="alert">
-        <i className="fa fa-exclamation-triangle mr-2"></i> Please <b>choose your institution</b> and <b> NOT use the ORCID</b> option from the CILogon page.
+        <i className="fa fa-exclamation-triangle mr-2"></i> Please <b>choose your institution</b> and <b>NOT</b> use the GitHub, Google, Microsoft, or ORCID options from the CILogon page.
         <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
       </div>
         <a href={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}>

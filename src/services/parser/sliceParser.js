@@ -259,7 +259,7 @@ export default function parseSlice(slice, sliceType) {
         elements.push(data);
       }else if (objNodes[link.source].Class === "NetworkService"
         && (objNodes[link.target].Type === "ServicePort" || objNodes[link.target].Type === "DedicatedPort" ) 
-        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.source].Type))){
+        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6","FABNetv4Ext","FABNetv6Ext"].includes(objNodes[link.source].Type))){
           const cp_data = {
             parent: parseInt(link.source),
             id: parseInt(link.target),
@@ -270,7 +270,7 @@ export default function parseSlice(slice, sliceType) {
           elements.push(cp_data);
         } else if (objNodes[link.target].Class === "NetworkService"
         && (objNodes[link.source].Type === "ServicePort" || objNodes[link.source].Type === "DedicatedPort")
-        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6"].includes(objNodes[link.target].Type))){
+        && (["L2Bridge", "L2STS", "L2PTP","FABNetv4", "FABNetv6","FABNetv4Ext","FABNetv6Ext"].includes(objNodes[link.target].Type))){
           data = {
             parent: parseInt(link.target),
             id: parseInt(link.source),
