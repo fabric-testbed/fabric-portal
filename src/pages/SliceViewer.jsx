@@ -16,6 +16,7 @@ import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { saveAs } from "file-saver";
+import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 
 class SliceViewer extends Component { 
   state = {
@@ -135,9 +136,10 @@ class SliceViewer extends Component {
       "ModifyOK": "success"
     }
 
+    // const { slice, elements, selectedData, hasProject, 
+    //   showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
-
+        showSpinner, spinnerText, errors,showModal } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
