@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Tabs from "../common/Tabs";
 import KeyCards from "./KeyCards";
+import GenerateKey from "./GenerateKey";
+import UploadKey from "./UploadKey";
 import CopyButton from "../common/CopyButton";
-
 import { default as portalData } from "../../services/portalData.json";
 
 const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent }) => {
@@ -46,23 +47,70 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
           showCopiedValue={true}
         />
       </div>
-      <Tabs activeTab={localStorage.getItem("sshKeyType") === "bastion" ? "Bastion" : "Sliver"}>
+      <Tabs activeTab={localStorage.getItem("sshKeyType") === "Bastion" ? "Bastion" : "Sliver"}>
         <div label="Sliver" number={sliverKeys? sliverKeys.length : 0}>
           <div className="alert alert-primary" role="alert">
             Currently the sliver keys here are only used when you build a slice via the Portal. JupyterHub uses locally-generated sliver keys.
           </div>
           {
-            sliverKeys.length > 0 ? 
-            <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} /> :
-            <div className="alert alert-warning" role="alert">You have no sliver key. Please try to generate or upload.</div>
+            <div>
+              {
+                sliverKeys.length > 0 &&
+                <KeyCards keys={sliverKeys} disableKeyDelete={disableKeyDelete} />
+              }
+              {
+                sliverKeys.length === 0 &&
+                <div className="alert alert-warning" role="alert">
+                  You have no sliver keys. Please try to generate or upload.
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                sliverKeys.length <= portalData.keyLimit &&
+                <div>
+                  <GenerateKey type="Sliver" />
+                  <UploadKey type="Sliver"/>
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                sliverKeys.length > portalData.keyLimit &&
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  You have reached the limit of {portalData.keyLimit} sliver keys.
+                </div>
+              }
+            </div>
           }
         </div>
         <div label="Bastion" number={bastionKeys? bastionKeys.length : 0}>
-          {
-            bastionKeys.length > 0 ? 
-            <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} /> :
-            <div className="alert alert-warning" role="alert">You have no bastion key. Please try to generate or upload.</div>
-          }
+            <div>
+              {
+                bastionKeys.length > 0 &&
+                <KeyCards keys={bastionKeys} disableKeyDelete={disableKeyDelete} />
+              }
+              {
+                bastionKeys.length === 0 && 
+                <div className="alert alert-warning" role="alert">
+                  You have no bastion keys. Please try to generate or upload.
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                bastionKeys.length <= portalData.keyLimit && <div>
+                  <GenerateKey type="Bastion" />
+                  <UploadKey type="Bastion" />
+                </div>
+              }
+              {
+                parent === "Keys" &&
+                bastionKeys.length > portalData.keyLimit &&
+                <div className="alert alert-warning" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  You have reached the limit of {portalData.keyLimit} bastion keys.
+                </div>
+              }
+            </div>
         </div>
       </Tabs>
     </div>

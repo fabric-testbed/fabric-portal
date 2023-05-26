@@ -1,34 +1,19 @@
 import React, { Component } from 'react'
 import CopyButton from "../common/CopyButton";
+// import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
+// import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
+// import Calendar from "../../components/common/Calendar";
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
-    const usernameOnImageMapping = {
-      "default_centos8_stream": "centos",
-      "default_centos9_stream": "centos",
-      "default_centos_7": "centos",
-      "default_centos_8": "centos",
-      "default_debian_10": "debian",
-      "default_fedora_35": "fedora",
-      "default_rocky_8": "rocky",
-      "default_ubuntu_18": "ubuntu",
-      "default_ubuntu_20": "ubuntu",
-      "default_ubuntu_21": "ubuntu",
-      "default_ubuntu_22": "ubuntu",
-      "default_debian_11": "debian",
-      "default_fedora_36": "fedora",
-      "default_fedora_37": "fedora",
-      "docker_rocky_8": "rocky",
-      "docker_ubuntu_20": "ubuntu",
-      "docker_ubuntu_22": "ubuntu"
-    }
-    const usernameBasedOnImage=usernameOnImageMapping[imageRef.split(",")[0]];
+    const usernameBasedOnImage= portalData.usernameOnImageMapping[imageRef.split(",")[0]];
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`
   }
 
   render() {
-    const data = this.props.data;
+    // const { slice, data, leaseEndTime } = this.props;
+    const { data } = this.props;
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -39,7 +24,38 @@ export default class DetailForm extends Component {
             <div className="form-col px-3">
             {
               !data && (
-                <span> Click an element to view details. </span>
+                <div>
+                  <span>Click an element to view details. </span>
+                  {/* {
+                    slice.project_name && <div className="row mb-2">
+                      <label>Project</label>
+                      <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                    </div>
+                  }
+                  <div className="row mb-2">
+                    <label>Lease End at</label>
+                    {
+                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                    }
+                    {
+                      leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
+                        id="sliceViewerCalendar"
+                        name="sliceViewerCalendar"
+                        currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                        onTimeChange={this.props.onTimeChange}
+                      />
+                    }
+                    {
+                      slice.state ==="StableOK" &&
+                      <button
+                        className="btn btn-sm btn-outline-primary m1-3 mr-3"
+                        onClick={this.props.onSliceExtend}
+                        >
+                        Extend
+                      </button>
+                    }
+                  </div> */}
+                </div>
               )
             }
 
@@ -72,6 +88,12 @@ export default class DetailForm extends Component {
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
+                      {/* <button
+                        className="btn btn-sm btn-outline-primary ml-2"
+                        onClick={() => this.props.openModalForm()}
+                      >
+                        Open Terminal
+                      </button> */}
                     </a>
                   </label>
                   <div className="ssh-command">
