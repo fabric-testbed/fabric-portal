@@ -5,7 +5,7 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import DeleteModal from "../../components/common/DeleteModal";
+// import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
 import { getSlices, deleteSlice } from "../../services/sliceService.js";
@@ -276,7 +276,7 @@ class Slices extends React.Component {
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
-              {
+              {/* {
                 this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
                 <DeleteModal
                   name={"Delete All"}
@@ -284,7 +284,7 @@ class Slices extends React.Component {
                   id={"delete-all-slices"}
                   onDelete={() => this.handleDeleteAllSlices()}
                 />
-              }
+              } */}
             </div>
             <SlicesTable
               slices={data}

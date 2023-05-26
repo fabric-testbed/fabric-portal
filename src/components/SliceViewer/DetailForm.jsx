@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import CopyButton from "../common/CopyButton";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
-import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
-import Calendar from "../../components/common/Calendar";
+// import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
+// import Calendar from "../../components/common/Calendar";
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
@@ -12,7 +12,8 @@ export default class DetailForm extends Component {
   }
 
   render() {
-    const { slice, data, leaseEndTime } = this.props;
+    // const { slice, data, leaseEndTime } = this.props;
+    const { data } = this.props;
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -25,7 +26,7 @@ export default class DetailForm extends Component {
               !data && (
                 <div>
                   <span>Click an element to view details. </span>
-                  {
+                  {/* {
                     slice.project_name && <div className="row mb-2">
                       <label>Project</label>
                       <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
@@ -41,19 +42,19 @@ export default class DetailForm extends Component {
                         id="sliceViewerCalendar"
                         name="sliceViewerCalendar"
                         currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
-                        onTimeChange={this.props.handleTimeChange}
+                        onTimeChange={this.props.onTimeChange}
                       />
                     }
                     {
                       slice.state ==="StableOK" &&
                       <button
                         className="btn btn-sm btn-outline-primary m1-3 mr-3"
-                        onClick={this.handleSliceExtend}
+                        onClick={this.props.onSliceExtend}
                         >
                         Extend
                       </button>
                     }
-                  </div>
+                  </div> */}
                 </div>
               )
             }

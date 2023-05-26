@@ -174,6 +174,16 @@ class SliceViewer extends Component {
                     <i className="fa fa-question-circle mx-2" />
                   </a>
                 </h2>
+                <h4>
+                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {utcToLocalTimeParser(slice.lease_end_time)}</span>
+                </h4>
+                {
+                  slice.project_name && <h4>
+                    <span className="badge badge-light font-weight-normal p-2 mt-1">
+                      Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                    </span>
+                  </h4>
+                }
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
@@ -226,14 +236,19 @@ class SliceViewer extends Component {
               }
               {
                 elements.length > 0 &&
+                // <DetailForm
+                //   slice={slice}
+                //   leaseEndTime={leaseEndTime}
+                //   data={selectedData}
+                //   key={selectedData && selectedData.properties && selectedData.properties.name}
+                //   openModalForm={() => this.toggleModalForm("open")}
+                //   onTimeChange={() => this.handleTimeChange()}
+                //   onSliceExtend={() => this.handleSliceExtend()}
+                // />
                 <DetailForm
-                  slice={slice}
-                  leaseEndTime={leaseEndTime}
-                  data={selectedData}
-                  key={selectedData && selectedData.properties && selectedData.properties.name}
-                  openModalForm={() => this.toggleModalForm("open")}
-                  onTimeChange={this.handleTimeChange}
-                />
+                data={selectedData}
+                key={selectedData && selectedData.properties && selectedData.properties.name}
+              />
               }
             </div>
           </div>
