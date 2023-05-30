@@ -5,7 +5,7 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-// import DeleteModal from "../../components/common/DeleteModal";
+import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
 import { getSlices, deleteSlice } from "../../services/sliceService.js";
@@ -41,23 +41,33 @@ class Slices extends React.Component {
     this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
     try {
       if (window.location.href.includes("/projects")) {
-        // call credential manager to generate tokens
-        autoCreateTokens("all").then(async () => {
-          const { data: res } = await getSlices();
-          const slices = res.data.filter(s => s.project_id === this.props.projectId);
-          this.setState({ slices, showSpinner: false, spinnerText: "" });
-        });
+        if(!localStorage.getItem("idToken")) {
+          // call credential manager to generate tokens
+          autoCreateTokens("all").then(async () => {
+            const { data: res } = await getSlices();
+            const slices = res.data.filter(s => s.project_id === this.props.projectId);
+            this.setState({ slices, showSpinner: false, spinnerText: "" });
+          });
+        } else {
+            const { data: res } = await getSlices();
+            const slices = res.data.filter(s => s.project_id === this.props.projectId);
+            this.setState({ slices, showSpinner: false, spinnerText: "" });
+        }
       } else {
         // call PR first to check if the user has project.
         const { data: res } = await getProjects("myProjects", 0, 200);
         if (res.results.length === 0) {
           this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
-        } else {
-        // call credential manager to generate tokens
-        autoCreateTokens("all").then(async () => {
-            const { data: res } = await getSlices();
-            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-          });
+        } else if(!localStorage.getItem("idToken")) {
+          // call credential manager to generate tokens
+          autoCreateTokens("all").then(async () => {
+              const { data: res } = await getSlices();
+              this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+            });
+          }
+        else {
+          const { data: res } = await getSlices();
+          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
         }
       }
     } catch (err) {
@@ -276,7 +286,7 @@ class Slices extends React.Component {
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
-              {/* {
+              {
                 this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
                 <DeleteModal
                   name={"Delete All"}
@@ -284,7 +294,7 @@ class Slices extends React.Component {
                   id={"delete-all-slices"}
                   onDelete={() => this.handleDeleteAllSlices()}
                 />
-              } */}
+              }
             </div>
             <SlicesTable
               slices={data}
