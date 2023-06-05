@@ -17,8 +17,8 @@ import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
-import NotFound from "./pages/NotFound";
-import Help from "./pages/Help";
+import NotFound from "./pages/static/NotFound";
+import Help from "./pages/static/Help";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
@@ -155,7 +155,7 @@ class App extends React.Component {
                   }
                 />
             </Route>
-            <Route element={<NotFound />} />
+            <Route path="/not-found" element={<NotFound />} />
           </Routes>
           <Footer />
           <ToastContainer />
