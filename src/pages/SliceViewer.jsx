@@ -95,6 +95,9 @@ class SliceViewer extends Component {
 
     const outputTime = [date, time, offset].join(" ");
 
+    console.log("------Slice Viewer time changed:------")
+    console.log(outputTime);
+
     this.setState({ leaseEndTime: outputTime });
   }
 

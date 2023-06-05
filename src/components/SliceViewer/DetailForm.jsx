@@ -24,34 +24,42 @@ export default class DetailForm extends Component {
             {
               !data && (
                 <div>
-                  <span>Click an element to view details. </span>
+                  <div className="alert alert-primary mb-2" role="alert">
+                    Click an element on the topology to view details. 
+                  </div>
                   {
                     slice.project_name && <div className="row mb-2">
                       <label>Project</label>
-                      <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                      <div className="slice-form-element">
+                        <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                      </div>
                     </div>
                   }
                   <div className="row mb-2">
                     <label>Lease End at</label>
                     {
-                      slice.state !=="StableOK" && utcToLocalTimeParser(leaseEndTime)
+                      slice.state !=="StableOK" &&
+                      <div className="slice-form-element">
+                        {utcToLocalTimeParser(leaseEndTime)}
+                      </div>
                     }
                     {
-                      leaseEndTime !== "" && slice.state ==="StableOK" && <Calendar
-                        id="sliceViewerCalendar"
-                        name="sliceViewerCalendar"
-                        currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
-                        onTimeChange={this.props.onTimeChange}
-                      />
-                    }
-                    {
-                      slice.state ==="StableOK" &&
-                      <button
-                        className="btn btn-sm btn-outline-primary m1-3 mr-3"
-                        onClick={this.props.onSliceExtend}
+                      leaseEndTime !== "" && slice.state ==="StableOK" && 
+                      <div className="mt-2">
+                        <Calendar
+                          id="sliceViewerCalendar"
+                          name="sliceViewerCalendar"
+                          currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                          onTimeChange={this.props.onTimeChange}
+                        />
+                        <button
+                          className="btn btn-sm btn-outline-primary ml-2 mr-3"
+                          onClick={this.props.onSliceExtend}
                         >
-                        Extend
-                      </button>
+                          Extend
+                        </button>
+                      </div>
+           
                     }
                   </div>
                 </div>
