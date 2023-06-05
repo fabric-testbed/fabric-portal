@@ -21,20 +21,23 @@ export function createSlice(slice) {
   if (slice.leaseEndTime) {
     query = new URLSearchParams({
       name: slice.name,
-      ssh_key: slice.sshKey,
-      lease_end_time: slice.leaseEndTime,
+      lease_end_time: slice.leaseEndTime
     }).toString();
   } else {
     query = new URLSearchParams({
-      name: slice.name,
-      ssh_key: slice.sshKey,
+      name: slice.name
     }).toString();
+  }
+
+  const requestBody = {
+    "graph_model": slice.json,
+    "ssh_keys": [slice.sshKey]
   }
 
   const url = apiEndpoint + "/create?" + query;
   return http.post(
     url,
-    slice.json,
+    requestBody,
     {
       headers: {
       'Content-Type': 'text/plain',
