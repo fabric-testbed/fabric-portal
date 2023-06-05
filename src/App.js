@@ -155,7 +155,7 @@ class App extends React.Component {
                   }
                 />
             </Route>
-            <Route path="/not-found" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
           <ToastContainer />
