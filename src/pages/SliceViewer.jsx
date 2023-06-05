@@ -136,10 +136,8 @@ class SliceViewer extends Component {
       "ModifyOK": "success"
     }
 
-    // const { slice, elements, selectedData, hasProject, 
-    //   showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
     const { slice, elements, selectedData, hasProject, 
-        showSpinner, spinnerText, errors,showModal } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
@@ -238,19 +236,15 @@ class SliceViewer extends Component {
               }
               {
                 elements.length > 0 &&
-                // <DetailForm
-                //   slice={slice}
-                //   leaseEndTime={leaseEndTime}
-                //   data={selectedData}
-                //   key={selectedData && selectedData.properties && selectedData.properties.name}
-                //   openModalForm={() => this.toggleModalForm("open")}
-                //   onTimeChange={() => this.handleTimeChange()}
-                //   onSliceExtend={() => this.handleSliceExtend()}
-                // />
                 <DetailForm
-                data={selectedData}
-                key={selectedData && selectedData.properties && selectedData.properties.name}
-              />
+                  slice={slice}
+                  leaseEndTime={leaseEndTime}
+                  data={selectedData}
+                  key={selectedData && selectedData.properties && selectedData.properties.name}
+                  // openModalForm={() => this.toggleModalForm("open")}
+                  onTimeChange={() => this.handleTimeChange()}
+                  onSliceExtend={() => this.handleSliceExtend()}
+                />
               }
             </div>
           </div>

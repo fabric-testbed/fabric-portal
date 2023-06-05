@@ -41,7 +41,7 @@ export function createSlice(slice) {
     requestBody,
     {
       headers: {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem("idToken")}`
     }
   });
