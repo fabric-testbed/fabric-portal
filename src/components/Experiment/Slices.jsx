@@ -8,7 +8,7 @@ import SpinnerWithText from "../../components/common/SpinnerWithText";
 import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
-import { getSlices, deleteSlice } from "../../services/sliceService.js";
+import { getMySlices, deleteSlice } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import sleep from "../../utils/sleep";
@@ -44,12 +44,12 @@ class Slices extends React.Component {
         if(!localStorage.getItem("idToken")) {
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-            const { data: res } = await getSlices();
+            const { data: res } = await getMySlices();
             const slices = res.data.filter(s => s.project_id === this.props.projectId);
             this.setState({ slices, showSpinner: false, spinnerText: "" });
           });
         } else {
-            const { data: res } = await getSlices();
+            const { data: res } = await getMySlices();
             const slices = res.data.filter(s => s.project_id === this.props.projectId);
             this.setState({ slices, showSpinner: false, spinnerText: "" });
         }
@@ -61,12 +61,12 @@ class Slices extends React.Component {
         } else if(!localStorage.getItem("idToken")) {
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-              const { data: res } = await getSlices();
+              const { data: res } = await getMySlices();
               this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
             });
           }
         else {
-          const { data: res } = await getSlices();
+          const { data: res } = await getMySlices();
           this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
         }
       }

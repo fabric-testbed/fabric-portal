@@ -20,7 +20,7 @@ const sliceProperties = {
   "2": require('../slices/slice2.json'),
 }
 
-export function getSlices() {
+export function getMySlices() {
   return slices;
 }
 

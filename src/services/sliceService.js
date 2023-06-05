@@ -6,8 +6,8 @@ const headersConfig = {
   headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
 };
 
-export function getSlices() {
-  return http.get(apiEndpoint + "?states=All&limit=200&offset=0", headersConfig);
+export function getMySlices() {
+  return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", headersConfig);
 }
 
 export function getSliceById(id) {
