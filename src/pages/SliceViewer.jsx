@@ -80,12 +80,16 @@ class SliceViewer extends Component {
     this.setState({ selectedData });
   }
 
+  clearSelectedData = () => {
+    this.setState({ selectedData: null });
+  }
+
   handleSaveJSON = () => {
     var jsonBlob = new Blob([ JSON.stringify(this.state.slice) ], { type: 'application/javascript;charset=utf-8' });
     saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
   
-  handleTimeChange = (value) => {
+  handleLeaseEndChange = (value) => {
     const inputTime = moment(value).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
     // output format should be 2022-05-25 10:49:03 -0400
@@ -245,7 +249,8 @@ class SliceViewer extends Component {
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
                   // openModalForm={() => this.toggleModalForm("open")}
-                  onTimeChange={() => this.handleTimeChange()}
+                  clearSelectedData={() => this.clearSelectedData()}
+                  onLeaseEndChange={() => this.handleLeaseEndChange()}
                   onSliceExtend={() => this.handleSliceExtend()}
                 />
               }
