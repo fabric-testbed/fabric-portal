@@ -19,7 +19,7 @@ export default class DetailForm extends Component {
           <div className="card-header">
             Details
           </div>
-          <div className="card-body">
+          <div className="card-body px-3">
             <div className="form-col">
             {
               !data && (
@@ -44,22 +44,25 @@ export default class DetailForm extends Component {
                       </div>
                     }
                     {
-                      leaseEndTime && slice.state ==="StableOK" && 
-                      <div className="mt-2">
-                        <Calendar
-                          id="sliceViewerCalendar"
-                          name="sliceViewerCalendar"
-                          onTimeChange={this.props.onLeaseEndChange}
-                          parent={"sliceDetailForm"}
-                          currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
-                        />
+                      leaseEndTime && slice.state ==="StableOK" &&
+                      <div>
+                        <div className="slice-form-element">
+                          <Calendar
+                            id="sliceViewerCalendar"
+                            name="sliceViewerCalendar"
+                            onTimeChange={this.props.onLeaseEndChange}
+                            parent={"sliceDetailForm"}
+                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                          />
+                        </div>
                         <button
                           className="btn btn-sm btn-outline-primary ml-2 mr-3"
                           onClick={this.props.onSliceExtend}
                         >
                           Extend
                         </button>
-                      </div>
+                      </div> 
+                   
            
                     }
                   </div>

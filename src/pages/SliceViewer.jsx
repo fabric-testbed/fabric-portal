@@ -96,12 +96,7 @@ class SliceViewer extends Component {
     const date = inputTime.substring(0, 10);
     const time = inputTime.substring(11, 19);
     const offset = inputTime.substring(19).replace(":", "");
-
     const outputTime = [date, time, offset].join(" ");
-
-    console.log("------Slice Viewer time changed:------")
-    console.log(outputTime);
-
     this.setState({ leaseEndTime: outputTime });
   }
 
@@ -250,8 +245,8 @@ class SliceViewer extends Component {
                   key={selectedData && selectedData.properties && selectedData.properties.name}
                   // openModalForm={() => this.toggleModalForm("open")}
                   clearSelectedData={() => this.clearSelectedData()}
-                  onLeaseEndChange={() => this.handleLeaseEndChange()}
-                  onSliceExtend={() => this.handleSliceExtend()}
+                  onLeaseEndChange={this.handleLeaseEndChange}
+                  onSliceExtend={this.handleSliceExtend}
                 />
               }
             </div>

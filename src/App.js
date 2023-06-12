@@ -38,7 +38,7 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    // Check actice maitenance notice(s)
+    // Check active maitenance notice(s)
     try {
       const { data: res } = await getActiveMaintenanceNotice();
       this.setState({ activeNotices: res.results });

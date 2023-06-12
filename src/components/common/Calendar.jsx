@@ -9,10 +9,6 @@ function Calendar({ id, name, parent, onTimeChange, currentTime }) {
 
   const [value, onChange] = useState(parent === "sliceDetailForm"? currentTime : time);
 
-  console.log("----Calendar checkpoint----");
-  console.log(value);
-  console.log(currentTime);
-  
   return (
     <div key={`${id}-${name}`}>
       <DateTimePicker
