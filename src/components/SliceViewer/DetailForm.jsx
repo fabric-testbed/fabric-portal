@@ -19,8 +19,8 @@ export default class DetailForm extends Component {
           <div className="card-header">
             Details
           </div>
-          <div className="card-body px-3">
-            <div className="form-col">
+          <div className="card-body">
+            <div className="form-col px-3">
             {
               !data && (
                 <div>
@@ -46,7 +46,7 @@ export default class DetailForm extends Component {
                     {
                       leaseEndTime && slice.state ==="StableOK" &&
                       <div>
-                        <div className="slice-form-element">
+                        <div className="slice-form-element mb-2">
                           <Calendar
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
@@ -61,9 +61,7 @@ export default class DetailForm extends Component {
                         >
                           Extend
                         </button>
-                      </div> 
-                   
-           
+                      </div>
                     }
                   </div>
                 </div>
