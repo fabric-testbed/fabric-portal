@@ -20,13 +20,15 @@ export default class DetailForm extends Component {
             Details
           </div>
           <div className="card-body">
+            {
+              !data && <div className="alert alert-primary px-2 mb-2" role="alert">
+                Click an element on the topology to view details. 
+              </div>
+            }
             <div className="form-col px-3">
             {
               !data && (
                 <div>
-                  <div className="alert alert-primary mb-2" role="alert">
-                    Click an element on the topology to view details. 
-                  </div>
                   {
                     slice.project_name && <div className="row mb-2">
                       <label>Project</label>
@@ -56,7 +58,7 @@ export default class DetailForm extends Component {
                           />
                         </div>
                         <button
-                          className="btn btn-sm btn-outline-primary ml-2 mr-3"
+                          className="btn btn-sm btn-outline-primary mt-1 mr-3"
                           onClick={this.props.onSliceExtend}
                         >
                           Extend
@@ -201,6 +203,7 @@ export default class DetailForm extends Component {
                 </div>
               </div>
             }
+            </div>
             {
               data &&
               <button
@@ -210,7 +213,6 @@ export default class DetailForm extends Component {
                 View Slice Details
               </button>
             }
-            </div>
             </div>
         </form>
       </div>

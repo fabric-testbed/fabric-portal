@@ -15,8 +15,8 @@ import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
+import sleep from "../utils/sleep";
 import { saveAs } from "file-saver";
-import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 
 class SliceViewer extends Component { 
   state = {
@@ -110,11 +110,14 @@ class SliceViewer extends Component {
       await extendSlice(slice.slice_id, leaseEndTime);
       // toast message to users when the api call is successfully done.
       toast.success("Slice has been successfully renewed.");
+      await sleep(2000);
       window.location.reload();
     } catch (err) {
       toast.error("Failed to renew the slice.");
       this.setState({
-        leaseEndTime: this.state.slice.lease_end_time
+        leaseEndTime: this.state.slice.lease_end_time,
+        showSpinner: false,
+        spinnerText: ""
       });
     }
   }
