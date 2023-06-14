@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import Calendar from "../../components/common/Calendar";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
@@ -13,6 +14,11 @@ export default class DetailForm extends Component {
 
   render() {
     const { slice, data, leaseEndTime } = this.props;
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
     return (
       <div className="w-100 card ml-4">
         <form>
@@ -22,7 +28,8 @@ export default class DetailForm extends Component {
           <div className="card-body">
             {
               !data && <div className="alert alert-primary px-2 mb-2" role="alert">
-                Click an element on the topology to view details. 
+                <i className="fa-regular fa-hand-pointer mr-1"></i>
+                Click an element on the topology to view details.
               </div>
             }
             <div className="form-col px-3">
@@ -37,8 +44,20 @@ export default class DetailForm extends Component {
                       </div>
                     </div>
                   }
-                  <div className="row mb-2">
-                    <label>Lease End at</label>
+                  <div className="row d-flex flex-column mb-2">
+                    <label>
+                      Lease End at
+                      {
+                        slice.state === "StableOK" &&
+                        <OverlayTrigger
+                          placement="right"
+                          delay={{ show: 100, hide: 300 }}
+                          overlay={renderTooltip("lease-end-tooltip", "You can extend up to 15 days as of now.")}
+                        >
+                          <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        </OverlayTrigger>
+                      }
+                    </label>
                     {
                       slice.state !=="StableOK" &&
                       <div className="slice-form-element">
@@ -48,7 +67,7 @@ export default class DetailForm extends Component {
                     {
                       leaseEndTime && slice.state ==="StableOK" &&
                       <div>
-                        <div className="slice-form-element mb-2">
+                        <div className="slice-form-element">
                           <Calendar
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
@@ -58,7 +77,7 @@ export default class DetailForm extends Component {
                           />
                         </div>
                         <button
-                          className="btn btn-sm btn-outline-primary mt-1 mr-3"
+                          className="btn btn-sm btn-outline-primary mt-2 mr-3"
                           onClick={this.props.onSliceExtend}
                         >
                           Extend

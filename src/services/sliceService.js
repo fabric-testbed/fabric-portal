@@ -35,7 +35,7 @@ export function createSlice(slice) {
     "ssh_keys": [slice.sshKey]
   }
 
-  const url = apiEndpoint + "/create?" + query;
+  const url = apiEndpoint + "/creates?" + query;
   return http.post(
     url,
     requestBody,

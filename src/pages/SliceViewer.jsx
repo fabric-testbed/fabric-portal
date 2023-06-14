@@ -122,11 +122,11 @@ class SliceViewer extends Component {
     }
   }
 
-  toggleModalForm = (operation) => {
-    this.setState({
-      showModal: operation === "open" ? true : false
-    })
-  }
+  // toggleModalForm = (operation) => {
+  //   this.setState({
+  //     showModal: operation === "open" ? true : false
+  //   })
+  // }
 
   render() {
     const stateColors = {
