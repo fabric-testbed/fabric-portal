@@ -28,7 +28,7 @@ export default class DetailForm extends Component {
           <div className="card-body">
             {
               !data && <div className="alert alert-primary px-2 mb-2" role="alert">
-                <i className="fa fa-mouse-pointer mx-1"></i>
+                <i className="fa fa-hand-pointer-o mx-1"></i>
                 Click an element on the topology to view details.
               </div>
             }
@@ -67,7 +67,7 @@ export default class DetailForm extends Component {
                     {
                       leaseEndTime && slice.state ==="StableOK" &&
                       <div>
-                        <div className="slice-form-element">
+                        <div className="slice-form-element mb-1">
                           <Calendar
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
