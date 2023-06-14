@@ -28,7 +28,7 @@ export default class DetailForm extends Component {
           <div className="card-body">
             {
               !data && <div className="alert alert-primary px-2 mb-2" role="alert">
-                <i className="fa-regular fa-hand-pointer mr-1"></i>
+                <i className="fa fa-mouse-pointer mx-1"></i>
                 Click an element on the topology to view details.
               </div>
             }

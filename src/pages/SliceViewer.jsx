@@ -110,7 +110,7 @@ class SliceViewer extends Component {
       await extendSlice(slice.slice_id, leaseEndTime);
       // toast message to users when the api call is successfully done.
       toast.success("Slice has been successfully renewed.");
-      await sleep(2000);
+      await sleep(1000);
       window.location.reload();
     } catch (err) {
       toast.error("Failed to renew the slice.");
