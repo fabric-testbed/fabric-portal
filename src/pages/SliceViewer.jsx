@@ -15,8 +15,8 @@ import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
+import sleep from "../utils/sleep";
 import { saveAs } from "file-saver";
-import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
 
 class SliceViewer extends Component { 
   state = {
@@ -80,21 +80,23 @@ class SliceViewer extends Component {
     this.setState({ selectedData });
   }
 
+  clearSelectedData = () => {
+    this.setState({ selectedData: null });
+  }
+
   handleSaveJSON = () => {
     var jsonBlob = new Blob([ JSON.stringify(this.state.slice) ], { type: 'application/javascript;charset=utf-8' });
     saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
   
-  handleTimeChange = (value) => {
+  handleLeaseEndChange = (value) => {
     const inputTime = moment(value).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
     // output format should be 2022-05-25 10:49:03 -0400
     const date = inputTime.substring(0, 10);
     const time = inputTime.substring(11, 19);
     const offset = inputTime.substring(19).replace(":", "");
-
     const outputTime = [date, time, offset].join(" ");
-
     this.setState({ leaseEndTime: outputTime });
   }
 
@@ -108,20 +110,23 @@ class SliceViewer extends Component {
       await extendSlice(slice.slice_id, leaseEndTime);
       // toast message to users when the api call is successfully done.
       toast.success("Slice has been successfully renewed.");
+      await sleep(1000);
       window.location.reload();
     } catch (err) {
       toast.error("Failed to renew the slice.");
       this.setState({
-        leaseEndTime: this.state.slice.lease_end_time
+        leaseEndTime: this.state.slice.lease_end_time,
+        showSpinner: false,
+        spinnerText: ""
       });
     }
   }
 
-  toggleModalForm = (operation) => {
-    this.setState({
-      showModal: operation === "open" ? true : false
-    })
-  }
+  // toggleModalForm = (operation) => {
+  //   this.setState({
+  //     showModal: operation === "open" ? true : false
+  //   })
+  // }
 
   render() {
     const stateColors = {
@@ -136,10 +141,8 @@ class SliceViewer extends Component {
       "ModifyOK": "success"
     }
 
-    // const { slice, elements, selectedData, hasProject, 
-    //   showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
     const { slice, elements, selectedData, hasProject, 
-        showSpinner, spinnerText, errors,showModal } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
@@ -176,16 +179,6 @@ class SliceViewer extends Component {
                     <i className="fa fa-question-circle mx-2" />
                   </a>
                 </h2>
-                <h4>
-                  <span className="badge badge-light font-weight-normal p-2 mt-1 mr-3">Lease End: {utcToLocalTimeParser(slice.lease_end_time)}</span>
-                </h4>
-                {
-                  slice.project_name && <h4>
-                    <span className="badge badge-light font-weight-normal p-2 mt-1">
-                      Project: <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
-                    </span>
-                  </h4>
-                }
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
                 {
@@ -238,19 +231,16 @@ class SliceViewer extends Component {
               }
               {
                 elements.length > 0 &&
-                // <DetailForm
-                //   slice={slice}
-                //   leaseEndTime={leaseEndTime}
-                //   data={selectedData}
-                //   key={selectedData && selectedData.properties && selectedData.properties.name}
-                //   openModalForm={() => this.toggleModalForm("open")}
-                //   onTimeChange={() => this.handleTimeChange()}
-                //   onSliceExtend={() => this.handleSliceExtend()}
-                // />
                 <DetailForm
-                data={selectedData}
-                key={selectedData && selectedData.properties && selectedData.properties.name}
-              />
+                  slice={slice}
+                  leaseEndTime={leaseEndTime}
+                  data={selectedData}
+                  key={selectedData && selectedData.properties && selectedData.properties.name}
+                  // openModalForm={() => this.toggleModalForm("open")}
+                  clearSelectedData={() => this.clearSelectedData()}
+                  onLeaseEndChange={this.handleLeaseEndChange}
+                  onSliceExtend={this.handleSliceExtend}
+                />
               }
             </div>
           </div>

@@ -1,5 +1,5 @@
 {
-  "version": "1.4.7",
+  "version": "1.4.8",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "keyLimit": 10,
@@ -52,24 +52,24 @@
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
   "officeHourBookingLink": "https://outlook.office365.com/owa/calendar/FABRICOfficeHours@admin.live.unc.edu/bookings/",
   "learnArticles": {
-    "gettingStarted": "https://learn.fabric-testbed.net/article-categories/getting-started/",
+    "gettingStarted": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/",
     "thingsToKnowForFirstTime": "https://learn.fabric-testbed.net/knowledge-base/things-to-know-when-using-fabric-for-the-first-time/",
     "portalReleaseNotes": "https://learn.fabric-testbed.net/knowledge-base/fabric-portal-release-notes/",
-    "faq": "https://learn.fabric-testbed.net/faq/",
+    "faq": "https://learn.fabric-testbed.net/knowledge-base/frequently-asked-starter-questions/",
     "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/",
-    "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/#ssh-keypair-primer-creating-identifying-fingerprinting-keypairs",
+    "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/generating-ssh-configuration-and-ssh-keys/",
     "guideToProjectRoles": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#managing-projects-in-the-real-world",
     "guideToProjectPermissions": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/",
     "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
     "guideToSliceBuilder": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/",
     "guideToSliceBuilderSections": {
-      "step1": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-1-select-project",
+      "step1": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-1-view-project-permissions",
       "step2": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-2-add-nodes-and-components",
       "step3": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-3-add-network-service",
       "step4": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-4-create-slice",
       "states": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
     },
-    "guideToStartExperiment": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/#3-start-your-first-experiment",
+    "guideToStartExperiment": "https://learn.fabric-testbed.net/knowledge-base/creating-your-first-experiment-in-jupyter-hub/",
     "guideToInstallPythonAPI": "https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/",
     "guideToSliceManager": "https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/",
     "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/"

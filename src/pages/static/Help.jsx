@@ -1,5 +1,5 @@
 import React from "react";
-import { default as portalData } from "../services/portalData.json";
+import { default as portalData } from "../../services/portalData.json";
 
 export default class Help extends React.Component{
   render() {
