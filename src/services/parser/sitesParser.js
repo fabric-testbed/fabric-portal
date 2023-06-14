@@ -131,8 +131,9 @@ export default function parseSites(data, acronymToShortName) {
     }
   })
 
+
   const parsedObj = {
-    "parsedSites": parsedSites,
+    "parsedSites": parsedSites.sort(),
     "siteNames": siteNames,
     "siteColorMapping": siteColorMapping,
     "siteAcronyms": siteAcronyms

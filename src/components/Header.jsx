@@ -15,6 +15,12 @@ const Header = (props) => {
   const nonAuthNavItems = [
     { name: "Home", path: "/", child: [] },
     { name: "Resources", path: "/resources/all", child: [] },
+    {
+      name: "Knowledge Base",
+      href: portalData.knowledgeBaseLink,
+      child: [],
+      path: ""
+    },
     { name: "Contact Us", path: "/help", child: [] },
   ]
   

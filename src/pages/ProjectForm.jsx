@@ -691,10 +691,12 @@ class ProjectForm extends Form {
               }`}
             >
               <div className="w-100">
-                <Slices
-                  parent="Projects"
-                  projectId={data.uuid}
-                />
+                {
+                  activeIndex === 3 && <Slices
+                    parent="Projects"
+                    projectId={data.uuid}
+                  />
+                }
               </div>
             </div>
           </div>

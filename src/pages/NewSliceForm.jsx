@@ -90,7 +90,7 @@ class NewSliceForm extends React.Component {
     this.setState({ sshKey: e.target.value });
   }
 
-  handleTimeChange = (value) => {
+  handleLeaseEndChange = (value) => {
     const inputTime = moment(value).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
     // output format should be 2022-05-25 10:49:03 -0400
@@ -483,7 +483,12 @@ class NewSliceForm extends React.Component {
                                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">
                                   <span>Lease End Time</span>
                                 </label>
-                                <Calendar id="sliceBuilderCalendar" name="sliceBuilderCalendar" onTimeChange={this.handleTimeChange} />
+                                <Calendar
+                                  id="sliceBuilderCalendar"
+                                  name="sliceBuilderCalendar"
+                                  parent={"newSliceForm"}
+                                  onTimeChange={this.handleLeaseEndChange}
+                                />
                               </div>
                             </div>
                             <div className="form-group">

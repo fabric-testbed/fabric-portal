@@ -80,12 +80,7 @@ const DetailTable = props => {
               }
               {
                 resource && parent === "sitepage" && sitesNameMapping.acronymToShortName[name] && 
-                <Link
-                  to={`/sites/${resource.id}`}
-                  state={{ resource }}
-                >
-                  {`${sitesNameMapping.acronymToShortName[name]} (${sitesNameMapping.acronymToLongName[name]})`}
-                </Link>
+                `${sitesNameMapping.acronymToShortName[name]} (${sitesNameMapping.acronymToLongName[name]})`
               }
               {
                 resource && parent === "sitepage" && !sitesNameMapping.acronymToShortName[name] && name
