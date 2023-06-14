@@ -286,7 +286,7 @@ class Slices extends React.Component {
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
-              {
+              {/* {
                 this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
                 <DeleteModal
                   name={"Delete All"}
@@ -294,7 +294,7 @@ class Slices extends React.Component {
                   id={"delete-all-slices"}
                   onDelete={() => this.handleDeleteAllSlices()}
                 />
-              }
+              } */}
             </div>
             <SlicesTable
               slices={data}
