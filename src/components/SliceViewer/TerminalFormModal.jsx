@@ -20,7 +20,36 @@ class TerminalFormModal extends Form {
   }
 
   doSubmit = () => {
-   
+    const { data } = this.state;
+    const { vmData } = this.props;
+    const domain = "beta-5.fabric-testbed.net";
+    // set cookie first
+    const credentials = { 
+      'hostname': vmData.properties.name,
+      'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
+      'privatekey': data.sliverPrivateKey
+    };
+    const bastion_credentials = { 
+      'hostname': vmData.properties.name,
+      'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
+      'privatekey': data.bastionPrivateKey
+    };
+   // open a new tab with the web ssh app
+   const cred_string = Buffer.from(JSON.stringify(credentials), "base64");
+   const bast_string = Buffer.from(JSON.stringify(bastion_credentials), "base64");
+   const now = new Date();
+   now.setSeconds(now.getSeconds() + 15);
+   const nowString = now.toUTCString();
+   // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
+  document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`;
+  document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`;
+  setTimeout(() => {
+    window.open(`https://${domain}`, "_blank");
+  }, 5000);
+  setTimeout(() => {
+    document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
+    document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
+  }, 10000);
   };
 
   schema = {

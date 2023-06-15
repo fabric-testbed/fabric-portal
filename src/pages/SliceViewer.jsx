@@ -122,11 +122,11 @@ class SliceViewer extends Component {
     }
   }
 
-  // toggleModalForm = (operation) => {
-  //   this.setState({
-  //     showModal: operation === "open" ? true : false
-  //   })
-  // }
+  toggleModalForm = (operation) => {
+    this.setState({
+      showModal: operation === "open" ? true : false
+    })
+  }
 
   render() {
     const stateColors = {
@@ -236,7 +236,7 @@ class SliceViewer extends Component {
                   leaseEndTime={leaseEndTime}
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
-                  // openModalForm={() => this.toggleModalForm("open")}
+                  openModalForm={() => this.toggleModalForm("open")}
                   clearSelectedData={() => this.clearSelectedData()}
                   onLeaseEndChange={this.handleLeaseEndChange}
                   onSliceExtend={this.handleSliceExtend}
