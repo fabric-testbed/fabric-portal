@@ -35,8 +35,7 @@ class SliceViewer extends Component {
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
-    spinnerText: "",
-    showModal: false
+    spinnerText: ""
   }
 
   async componentDidMount() {
@@ -122,12 +121,6 @@ class SliceViewer extends Component {
     }
   }
 
-  toggleModalForm = (operation) => {
-    this.setState({
-      showModal: operation === "open" ? true : false
-    })
-  }
-
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -142,23 +135,20 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
       <div>
+        <TerminalFormModal
+          vmData={selectedData}
+          closeModalForm={() => this.toggleModalForm("close")}
+        />
         {
           showSpinner && 
           <div className="container d-flex align-items-center justify-content-center">
             <SpinnerWithText text={spinnerText} />
           </div>
-        }
-        {
-          showModal && 
-          <TerminalFormModal
-            vmData={selectedData}
-            closeModalForm={() => this.toggleModalForm("close")}
-          />
         }
         {
           showSlice &&

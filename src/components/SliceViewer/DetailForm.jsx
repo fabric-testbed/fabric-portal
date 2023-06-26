@@ -118,13 +118,15 @@ export default class DetailForm extends Component {
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
-                      {/* <button
-                        className="btn btn-sm btn-outline-primary ml-2"
-                        onClick={() => this.props.openModalForm()}
-                      >
-                        Open Terminal
-                      </button> */}
                     </a>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-primary ml-2"
+                      data-toggle="modal"
+                      data-target="#TerminalFormModalCenter"
+                    >
+                      Open Terminal
+                    </button>
                   </label>
                   <div className="ssh-command">
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
