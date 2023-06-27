@@ -22,34 +22,39 @@ class TerminalFormModal extends Form {
   doSubmit = () => {
     const { data } = this.state;
     const { vmData } = this.props;
-    const domain = "beta-5.fabric-testbed.net";
+    const domain = "fabric-testbed.net";
     // set cookie first
     const credentials = { 
-      'hostname': vmData.properties.name,
+      'hostname': vmData.properties.MgmtIp,
       'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
       'privatekey': data.sliverPrivateKey
     };
     const bastion_credentials = { 
-      'hostname': vmData.properties.name,
-      'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
+      'hostname': "bastion.fabric-testbed.net",
+      'username': localStorage.getItem("bastionLogin"),
       'privatekey': data.bastionPrivateKey
     };
    // open a new tab with the web ssh app
-   const cred_string = Buffer.from(JSON.stringify(credentials), "base64");
-   const bast_string = Buffer.from(JSON.stringify(bastion_credentials), "base64");
+   const cred_string = JSON.stringify(credentials);
+   const bast_string = JSON.stringify(bastion_credentials);
    const now = new Date();
    now.setSeconds(now.getSeconds() + 15);
    const nowString = now.toUTCString();
+   console.log("set cookie:");
+   console.log(`credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`);
+   console.log(`bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`);
    // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
   document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`;
   document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`;
-  setTimeout(() => {
-    window.open(`https://${domain}`, "_blank");
-  }, 5000);
-  setTimeout(() => {
-    document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
-    document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
-  }, 10000);
+
+  window.open(`https://beta-5.fabric-testbed.net/`, "_blank");
+  // setTimeout(() => {
+  //   window.open(`https://beta-5.fabric-testbed.net/`, "_blank");
+  // }, 5000);
+  // setTimeout(() => {
+  //   document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
+  //   document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
+  // }, 10000);
   };
 
   schema = {
@@ -58,7 +63,7 @@ class TerminalFormModal extends Form {
   };
 
   render() {
-    const { data, sliverTooltip, bastionTooltip } =  this.state;
+    const { sliverTooltip, bastionTooltip } =  this.state;
     const { vmData } = this.props;
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
@@ -81,10 +86,12 @@ class TerminalFormModal extends Form {
                 <label>Management IP Address</label>
                 <input type="text" className="form-control" defaultValue={vmData.properties.MgmtIp} disabled/>
               </div>
-              <div className="row mb-2 mx-1">
-                <label>User Name</label>
-                <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]]} disabled/>
-              </div>
+              {
+                vmData.properties.ImageRef && <div className="row mb-2 mx-1">
+                  <label>User Name</label>
+                  <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]]} disabled/>
+                </div>
+              }
             </form>
           }
         <form onSubmit={this.handleSubmit}>

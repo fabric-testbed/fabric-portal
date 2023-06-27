@@ -221,22 +221,30 @@ class NewSliceForm extends React.Component {
 
   handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
-
-    const node = {
-      "type": type,
-      "site": site,
-      "name": name,
-      "capacities": {
-        "core": core,
-        "ram": ram,
-        "disk": disk,
-      },
-      "image": image,
-      "BootScript": BootScript
-    };
+    let node = {};
 
     if (type === "VM") {
+      node = {
+        "type": type,
+        "site": site,
+        "name": name,
+        "capacities": {
+          "core": core,
+          "ram": ram,
+          "disk": disk,
+        },
+        "image": image,
+        "BootScript": BootScript
+      };
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
+      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+    } else if (type === "Facility") {
+      node = {
+        "type": type,
+        "site": site,
+        "name": name
+      };
+      const { newSliceNodes, newSliceLinks} = builder.addFacilityPort(node, graphID, sliceNodes, sliceLinks);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }

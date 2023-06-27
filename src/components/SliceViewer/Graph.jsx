@@ -189,6 +189,14 @@ export default class Graph extends Component {
               }
             },
             {
+              "selector": ".graphFacility",
+              "style": {
+                "background-color": "#fff",
+                "min-width": 150,
+                "min-height": 150,
+              }
+            },
+            {
               "selector": ".graphSmartNIC",
               "style": {
                 "background-image": `${IconSmartNIC}`,

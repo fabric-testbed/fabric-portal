@@ -14,7 +14,8 @@ export default function parseSlice(slice, sliceType) {
 
   const nodes = abqm.nodes;
   const links = abqm.links;
-  // Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
+  // 1. Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
+  // 2. Site -> Facility Port
 
   // links
   // class 'has' -> parent node
@@ -97,25 +98,27 @@ export default function parseSlice(slice, sliceType) {
     if (originalNode.Class !== "NetworkService") {
       if (sliceType === "new") {
         data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
-      } else {
-        if(originalNode.Class !== "NetworkNode") {
+      } else if(originalNode.Class !== "NetworkNode") {
           data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
-        } else {
-          // parse CapacityHints for VM nodes to get actual allocated capacities.
-          // example: "CapacityHints": "{"instance_type": "fabric.c2.m8.d10"}"
-          const capacityHints = originalNode.CapacityHints ? JSON.parse(originalNode.CapacityHints) : null;
-          const capacityHintsStr = capacityHints ? capacityHints.instance_type : "";
-          data.capacities = parseCapacityHints(capacityHintsStr);
-        }
       }
+    }
+
+    if (sliceType !== "new" && originalNode.Type === "VM") {
+      // parse CapacityHints for VM nodes to get actual allocated capacities.
+      // example: "CapacityHints": "{"instance_type": "fabric.c2.m8.d10"}"
+      const capacityHints = originalNode.CapacityHints ? JSON.parse(originalNode.CapacityHints) : null;
+      const capacityHintsStr = capacityHints ? capacityHints.instance_type : "";
+      data.capacities = parseCapacityHints(capacityHintsStr);
     }
 
     // add parent site node/ management IP address if it's VM node.
     if (originalNode.Site) {
       data.parent = getSiteIdbyName(originalNode.Site);
-      data.properties.MgmtIp = originalNode.MgmtIp || "";
-      data.properties.ImageRef = originalNode.ImageRef || "";
-      data.BootScript = originalNode.BootScript || ""
+      if (originalNode.Type === "VM") {
+        data.properties.MgmtIp = originalNode.MgmtIp || "";
+        data.properties.ImageRef = originalNode.ImageRef || "";
+        data.BootScript = originalNode.BootScript || "";
+      }
     }
   }
 
@@ -193,8 +196,8 @@ export default function parseSlice(slice, sliceType) {
         label: node.Name,
         type: "roundrectangle",
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
-    }
-    elements.push(data);
+      }
+      elements.push(data);
     } else if (node.Class === "NetworkService" && node.Type !== "OVS") {
       data = {
         id: parseInt(node.id),
@@ -208,6 +211,13 @@ export default function parseSlice(slice, sliceType) {
       const data = {};
       generateDataElement(data, node.id);
       elements.push(data);
+    } else if (node.Type === "Facility") {
+      data = {
+        id: parseInt(node.id),
+        label: node.Name,
+        type: "roundrectangle",
+        properties: { class: "NetworkNode", name: node.Name, type: node.Type },
+      };
     }
   })
 

@@ -44,24 +44,33 @@ class SideNodes extends React.Component {
   }
 
   handleAddNode = () => {
-    // type: currently only support 'VM'
-    const { selectedSiteName, nodeName, nodeType, core, ram, disk,
-      imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
-    const image = `${selectedImageRef},${imageType}`;
-    this.props.onNodeAdd(nodeType, selectedSiteName, nodeName, Number(core),
-      Number(ram), Number(disk), image, nodeComponents, BootScript);
-    this.setState({
-      selectedSiteName: "",
-      nodeName: "",
-      core: 2,
-      ram: 6,
-      disk: 10,
-      nodeType: "VM",
-      nodeComponents: [],
-      imageType: "qcow2",
-      selectedImageRef: "default_rocky_8",
-      BootScript: "",
-    })
+    // support types: 'VM', 'Facility'
+    if (this.state.nodeType === "VM") {
+      const { selectedSiteName, nodeName, nodeType, core, ram, disk,
+        imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
+      const image = `${selectedImageRef},${imageType}`;
+      this.props.onNodeAdd(nodeType, selectedSiteName, nodeName, Number(core),
+        Number(ram), Number(disk), image, nodeComponents, BootScript);
+      this.setState({
+        selectedSiteName: "",
+        nodeName: "",
+        core: 2,
+        ram: 6,
+        disk: 10,
+        nodeType: "VM",
+        nodeComponents: [],
+        imageType: "qcow2",
+        selectedImageRef: "default_rocky_8",
+        BootScript: "",
+      })
+    } else if (this.state.nodeType === "Facility") {
+      const { selectedSiteName, nodeName, nodeType } = this.state;
+      this.props.onNodeAdd(nodeType, selectedSiteName, nodeName);
+      this.setState({
+        selectedSiteName: "",
+        nodeType: "VM"
+      })
+    }
   }
 
   handleSliceComponentAdd = (component) => {
@@ -256,11 +265,10 @@ class SideNodes extends React.Component {
                   <select
                     className="form-control form-control-sm"
                     id="nodeTypeSelect"
-                    disabled
                     onChange={this.handleNodeTypeChange}
                   >
                     <option value="VM">VM</option>
-                    {/* <option value="Server">Server</option> */}
+                    <option value="Facility">Facility Port</option>
                   </select>
                 </div>
                 <div className="form-group slice-builder-form-group col-md-6">

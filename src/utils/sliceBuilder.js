@@ -293,6 +293,29 @@ const addVM = (node, components, graphID, nodes, links) => {
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 
+const addFacilityPort = (node, graphID, nodes, links) => {
+  let clonedNodes = _.clone(nodes);
+  let clonedLinks = _.clone(links);
+
+  const facility_port_id = generateID(nodes);
+
+  const facility_port = {
+    "Class": "NetworkNode",
+    "Name": node.name,
+    "Site": node.site,
+    "Type": "Facility",
+    "NodeID": uuidv4(),
+    "GraphID": graphID,
+    "id": facility_port_id,
+    "StitchNode": "false",
+  }
+
+  clonedNodes.push(facility_port);
+
+  // return sliceNodes and sliceLinks.
+  return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
+}
+
 // async, await for adding network service
 // 1. add a Network Service Node and its Connection Points
 // 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2
@@ -431,6 +454,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 const builder = {
   generateID,
   addVM,
+  addFacilityPort,
   addLink,
   addComponent,
 }
