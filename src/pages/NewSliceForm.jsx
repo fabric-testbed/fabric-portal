@@ -127,6 +127,7 @@ class NewSliceForm extends React.Component {
     }
 
     let elements = sliceParser(sliceJSON, "new");
+
     return elements;
   }
 
@@ -220,6 +221,8 @@ class NewSliceForm extends React.Component {
   }
 
   handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
+    console.log(`New Slice Form:---- ${type} - ${site} - ${name}`);
+
     const { graphID, sliceNodes, sliceLinks } =  this.state;
     let node = {};
 
@@ -239,12 +242,14 @@ class NewSliceForm extends React.Component {
       const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     } else if (type === "Facility") {
+      console.log("New Slice Form: added type is Facility. Current Nodes:")
       node = {
         "type": type,
         "site": site,
         "name": name
       };
-      const { newSliceNodes, newSliceLinks} = builder.addFacilityPort(node, graphID, sliceNodes, sliceLinks);
+      const { newSliceNodes, newSliceLinks } = builder.addFacilityPort(node, graphID, sliceNodes, sliceLinks);
+      console.log(newSliceNodes);
       this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
     }
   }
@@ -260,6 +265,12 @@ class NewSliceForm extends React.Component {
     const updated_nodes = editor.updateVM(data, this.state.sliceNodes);
     this.setState({ sliceNodes: updated_nodes });
     toast.success("VM updated successfully.")
+  }
+
+  handleFPUpdate = (data) => {
+    const updated_nodes = editor.updateFP(data, this.state.sliceNodes);
+    this.setState({ sliceNodes: updated_nodes });
+    toast.success("Facility Port updated successfully.")
   }
 
   handleSingleComponentAdd = (data) => {
@@ -580,6 +591,7 @@ class NewSliceForm extends React.Component {
                     onConnectionPointSelect={this.handleCPAdd}
                     onNodeDelete={this.handleNodeDelete}
                     onVMUpdate={this.handleVMUpdate}
+                    onFPUpdate={this.handleFPUpdate}
                     onSingleComponentAdd={this.handleSingleComponentAdd}
                     onJsonUpload={this.handleJsonUpload}
                   />

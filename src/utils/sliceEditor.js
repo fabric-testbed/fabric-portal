@@ -158,9 +158,23 @@ const updateVM = (data, nodes) => {
   return updated_nodes;
 }
 
+const updateFP = (data, nodes) => {
+  // data: fp_id, new_name
+  const updated_nodes = [];
+  for (const node of nodes) {
+    if (parseInt(data.fp_id) === parseInt(node.id)) {
+      node.Name = data.new_name;
+    } 
+    updated_nodes.push(node);
+  }
+
+  return updated_nodes;
+}
+
 const editor = {
   removeNode,
   updateVM,
+  updateFP
 }
 
 export default editor;

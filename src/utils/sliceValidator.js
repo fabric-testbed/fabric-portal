@@ -151,7 +151,7 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
   return validationResult;
 }
 
-const validateDetailForm = (type, value, vm_id, nodes) => {
+const validateDetailForm = (type, value, id, nodes) => {
   // type: "name", "capacity"
   // value: the content of input value
   // nodes: all existing nodes in graph passed from props.
@@ -176,7 +176,7 @@ const validateDetailForm = (type, value, vm_id, nodes) => {
 
     // check the VM name is unique in the whole slice graph.
     // check id node name is unique.
-    const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(vm_id));
+    const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(id));
     if (vm_nodes.length > 0) {
       for (const vm of vm_nodes) {
         if (value === vm.Name) {

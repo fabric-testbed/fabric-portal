@@ -3,7 +3,6 @@ import Cytoscape from 'cytoscape';
 import FCose from 'cytoscape-fcose';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
-
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';

@@ -170,7 +170,7 @@ class SideNodes extends React.Component {
 
   render() {
     const { selectedSiteName, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
-      disk, BootScript, nodeComponents } = this.state;
+      disk, BootScript, nodeComponents, nodeType } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSiteName, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -283,106 +283,115 @@ class SideNodes extends React.Component {
                   />
                 </div>
               </div>
-              <div className="form-row">
-                <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputCore" className="slice-builder-label">Cores</label>
-                  <input type="number" className="form-control form-control-sm" id="inputCore"
-                    value={core} onChange={this.handleCoreChange}/>
-                </div>
-                <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputRam" className="slice-builder-label">RAM(GB)</label>
-                  <input type="number" className="form-control form-control-sm" id="inputRam"
-                    value={ram} onChange={this.handleRamChange}/>
-                </div>
-                <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputDisk" className="slice-builder-label">Disk(GB)</label>
-                  <input type="number" className="form-control form-control-sm" id="inputDisk"
-                    value={disk} onChange={this.handleDiskChange}/>
-                </div>
-                <div className="form-group slice-builder-form-group col-md-4">
-                  <label htmlFor="inputState" className="slice-builder-label">
-                    OS Image
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 100, hide: 300 }}
-                      overlay={renderTooltip("node-tooltip", portalData.helperText.customImagesDescription)}
+              {
+                nodeType === "VM" && 
+                <div className="form-row">
+                  <div className="form-group slice-builder-form-group col-md-2">
+                    <label htmlFor="inputCore" className="slice-builder-label">Cores</label>
+                    <input type="number" className="form-control form-control-sm" id="inputCore"
+                      value={core} onChange={this.handleCoreChange}/>
+                  </div>
+                  <div className="form-group slice-builder-form-group col-md-2">
+                    <label htmlFor="inputRam" className="slice-builder-label">RAM(GB)</label>
+                    <input type="number" className="form-control form-control-sm" id="inputRam"
+                      value={ram} onChange={this.handleRamChange}/>
+                  </div>
+                  <div className="form-group slice-builder-form-group col-md-2">
+                    <label htmlFor="inputDisk" className="slice-builder-label">Disk(GB)</label>
+                    <input type="number" className="form-control form-control-sm" id="inputDisk"
+                      value={disk} onChange={this.handleDiskChange}/>
+                  </div>
+                  <div className="form-group slice-builder-form-group col-md-4">
+                    <label htmlFor="inputState" className="slice-builder-label">
+                      OS Image
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip("node-tooltip", portalData.helperText.customImagesDescription)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
+                    </label>
+                    <select
+                      className="form-control form-control-sm"
+                      value={selectedImageRef}
+                      onChange={this.handleImageRefChange}
                     >
-                      <i className="fa fa-question-circle text-secondary ml-2"></i>
-                    </OverlayTrigger>
-                  </label>
-                  <select
-                    className="form-control form-control-sm"
-                    value={selectedImageRef}
-                    onChange={this.handleImageRefChange}
-                  >
-                    {
-                      Object.entries(this.osImageToAbbr).map((keyValuePairArr) => 
-                        <option
-                          value={keyValuePairArr[1]}
-                          key={`osImage-${keyValuePairArr[1]}`}
-                        >
-                          {keyValuePairArr[0]}
-                        </option>
-                      )
-                    }
-                  </select>
+                      {
+                        Object.entries(this.osImageToAbbr).map((keyValuePairArr) => 
+                          <option
+                            value={keyValuePairArr[1]}
+                            key={`osImage-${keyValuePairArr[1]}`}
+                          >
+                            {keyValuePairArr[0]}
+                          </option>
+                        )
+                      }
+                    </select>
+                  </div>
+                  <div className="form-group slice-builder-form-group col-md-2">
+                    <label htmlFor="inputState" className="slice-builder-label">Format</label>
+                    <select className="form-control form-control-sm" disabled>
+                      <option>{imageType}</option>
+                    </select>
+                  </div> 
                 </div>
-                <div className="form-group slice-builder-form-group col-md-2">
-                  <label htmlFor="inputState" className="slice-builder-label">Format</label>
-                  <select className="form-control form-control-sm" disabled>
-                    <option>{imageType}</option>
-                  </select>
-                </div> 
-              </div>
+              }
               {!validationResult.isValid && validationResult.message !== "" &&
                 <div className="my-2 sm-alert">
                   {validationResult.message}
                 </div>
               }
-              <div className="form-row">
-                <div className="form-group slice-builder-form-group col-md-12">
-                  <label for="BootScript" className="slice-builder-label">
-                    Boot Script (optional)
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 100, hide: 300 }}
-                      overlay={renderTooltip("boot-script-tooltip", portalData.helperText.bootScriptDescription)}
-                    >
-                      <i className="fa fa-question-circle text-secondary ml-2"></i>
-                    </OverlayTrigger>
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="BootScript"
-                    rows="1"
-                    value={BootScript}
-                    onChange={this.handleBootScriptChange}
-                  />
+              {
+                nodeType === "VM" && 
+                <div className="form-row">
+                  <div className="form-group slice-builder-form-group col-md-12">
+                    <label for="BootScript" className="slice-builder-label">
+                      Boot Script (optional)
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip("boot-script-tooltip", portalData.helperText.bootScriptDescription)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="BootScript"
+                      rows="1"
+                      value={BootScript}
+                      onChange={this.handleBootScriptChange}
+                    />
+                  </div>
                 </div>
+              }
+            </div>
+            {
+              nodeType === "VM" &&
+              <div className="mt-2 bg-light node-components-panel">
+                <SingleComponent
+                  addedComponents={nodeComponents}
+                  onSliceComponentAdd={this.handleSliceComponentAdd}
+                />
+                <div className="text-sm-size"><b>Added Components:</b></div>
+                {
+                  nodeComponents.length === 0 &&
+                  <div className="my-2 sm-alert">
+                    No component added. Please click the <b>+</b> button to add a component.
+                  </div>
+                }
+                {
+                  nodeComponents.length > 0 && nodeComponents.map((component) => 
+                    <SingleComponent
+                      key={component.name}
+                      component={component}
+                      onSliceComponentDelete={this.handleSliceComponentDelete}
+                    />
+                  )
+                }
               </div>
-            </div>
-            <div className="mt-2 bg-light node-components-panel">
-              <SingleComponent
-                addedComponents={nodeComponents}
-                onSliceComponentAdd={this.handleSliceComponentAdd}
-              />
-              <div className="text-sm-size"><b>Added Components:</b></div>
-              {
-                nodeComponents.length === 0 &&
-                <div className="my-2 sm-alert">
-                  No component added. Please click the <b>+</b> button to add a component.
-                </div>
-              }
-              {
-                nodeComponents.length > 0 && nodeComponents.map((component) => 
-                  <SingleComponent
-                    key={component.name}
-                    component={component}
-                    onSliceComponentDelete={this.handleSliceComponentDelete}
-                  />
-                )
-              }
-            </div>
+            }
           </form>
           <div className="my-2 d-flex flex-row">
             <button

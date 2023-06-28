@@ -218,6 +218,8 @@ export default function parseSlice(slice, sliceType) {
         type: "roundrectangle",
         properties: { class: "NetworkNode", name: node.Name, type: node.Type },
       };
+      generateDataElement(data, node.id);
+      elements.push(data);
     }
   })
 
@@ -336,6 +338,9 @@ export default function parseSlice(slice, sliceType) {
       cyElements.push({ data: el })
     }
   })
+
+  console.log("cy elements: ");
+  console.log(cyElements);
 
   return cyElements;
 }

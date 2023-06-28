@@ -261,7 +261,7 @@ const addVM = (node, components, graphID, nodes, links) => {
     "Site": node.site,
     "Capacities": JSON.stringify(capacitiesObj),
     "ImageRef": node.image,
-    "Type": "VM",
+    "Type": node.type,
     "id": vm_node_id,
     "NodeID": uuidv4(),
     "GraphID": graphID,
@@ -309,9 +309,7 @@ const addFacilityPort = (node, graphID, nodes, links) => {
     "id": facility_port_id,
     "StitchNode": "false",
   }
-
   clonedNodes.push(facility_port);
-
   // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }

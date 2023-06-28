@@ -89,6 +89,14 @@ export default class NewSliceDetailForm extends Component {
     this.props.onVMUpdate({ vm_id: this.props.data.id, new_name: newName, new_capacities: capacities, new_boot_script: newBootScript });
   }
 
+  handleFPUpdate = (e) => {
+    e.preventDefault();
+    const data = this.props.data;
+    const { nodeName, isNameChanged } = this.state;
+    const newName = isNameChanged ? nodeName : data.properties.name;
+    this.props.onFPUpdate({ fp_id: this.props.data.id, new_name: newName });
+  }
+
   isCPAvailable = () => {
     const cp_id = parseInt(this.props.data.id);
     // check if there is the CP is a 'connects' source.
@@ -198,7 +206,39 @@ export default class NewSliceDetailForm extends Component {
                 </div>
               </div>
             }
-            
+            {
+              data && data.properties && data.properties.type === "Facility" &&    <div className="form-row px-3">
+              <div className="col-3 mb-2">
+                <label className="slice-builder-label">Facility Port Name</label>
+                <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
+              </div>
+              <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                <button
+                  className="btn btn-sm btn-success w-100"
+                  type="button"
+                  disabled={!validationResult.isValid}
+                  onClick={this.handleVMUpdate}
+                  >
+                    Update
+                </button>
+              </div>
+              <div className="col-1 pt-4 pb-2 d-flex flex-row">
+                <button
+                  className="btn btn-sm btn-danger w-100"
+                  type="button"
+                  onClick={this.handleNodeDelete}
+                >
+                  Delete
+                </button>
+              </div>
+              {
+                !validationResult.isValid && validationResult.message !== "" &&
+                <div className="mb-1 sm-alert mx-3">
+                  {validationResult.message}
+                </div>
+              }
+            </div>
+            }
             {
               data && data.properties && data.properties.type === "VM" &&
               <div>
