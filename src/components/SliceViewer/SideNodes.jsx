@@ -43,6 +43,20 @@ class SideNodes extends React.Component {
     "Custom Ubuntu 22": "docker_ubuntu_22",
   }
 
+  facilityPortNames = [
+    "Chameleon-StarLight",
+    "Chameleon-TACC",
+    "Cloud-Facility-AWS",
+    "Cloud-Facility-Azure",
+    "Cloud-Facility-Azure-Gov",
+    "Cloud-Facility-GCP",
+    "ESnet-StarLight",
+    "Internet2-StarLight",
+    "OCT-MGHPCC",
+    "RCNF",
+    "Utah-Cloudlab-Powder"
+  ];
+
   handleAddNode = () => {
     // support types: 'VM', 'Facility'
     if (this.state.nodeType === "VM") {
@@ -52,7 +66,6 @@ class SideNodes extends React.Component {
       this.props.onNodeAdd(nodeType, selectedSiteName, nodeName, Number(core),
         Number(ram), Number(disk), image, nodeComponents, BootScript);
       this.setState({
-        selectedSiteName: "",
         nodeName: "",
         core: 2,
         ram: 6,
@@ -67,8 +80,7 @@ class SideNodes extends React.Component {
       const { selectedSiteName, nodeName, nodeType } = this.state;
       this.props.onNodeAdd(nodeType, selectedSiteName, nodeName);
       this.setState({
-        selectedSiteName: "",
-        nodeType: "VM"
+        nodeName: "",
       })
     }
   }
@@ -143,6 +155,10 @@ class SideNodes extends React.Component {
 
   handleBootScriptChange = (e) => {
     this.setState({ BootScript: e.target.value });
+  }
+
+  handleFPNameChange = (e) => {
+    this.setState({ nodeName: e.target.value });
   }
 
   getResourcesSum = () => {
@@ -271,17 +287,39 @@ class SideNodes extends React.Component {
                     <option value="Facility">Facility Port</option>
                   </select>
                 </div>
-                <div className="form-group slice-builder-form-group col-md-6">
-                  <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    id="inputNodeName"
-                    value={nodeName}
-                    onChange={this.handleNameChange}
-                    placeholder={"at least 2 characters..."}
-                  />
-                </div>
+                {
+                  nodeType === "VM" && <div className="form-group slice-builder-form-group col-md-6">
+                    <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-sm"
+                      id="inputNodeName"
+                      value={nodeName}
+                      onChange={this.handleNameChange}
+                      placeholder={"at least 2 characters..."}
+                    />
+                  </div>
+                }
+                {
+                  nodeType === "Facility" && <div className="form-group slice-builder-form-group col-md-6">
+                    <label htmlFor="selectNodeName" className="slice-builder-label">Node Name</label>
+                    <select
+                      className="form-control form-control-sm"
+                      id="componentSelect"
+                      value={nodeName}
+                      onChange={this.handleFPNameChange}
+                    >
+                      <option value="">Choose...</option>
+                      {
+                        this.facilityPortNames.map((name, i) => {
+                          return (
+                            <option value={name} key={`fp-name-${i}`}>{name}</option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
+                }
               </div>
               {
                 nodeType === "VM" && 

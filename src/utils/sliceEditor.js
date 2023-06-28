@@ -51,6 +51,16 @@ const removeVM = (el_id, nodes, links) => {
   return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
+const removeFP = (el_id, nodes, links) => {
+  // 1. remove Facility Port node;
+  let to_remove_node_ids = [];
+  let to_remove_link_ids = [];
+
+  to_remove_node_ids.push(el_id);
+  // 2. remove any network service connected to this FP.
+  return {nodes: to_remove_node_ids, links: to_remove_link_ids};
+}
+
 const removeNode = (el, nodes, links) => {
   // el: cytoscape element data
   const el_node = nodes.filter(node => node.id === parseInt(el.id))[0];
@@ -124,6 +134,10 @@ const removeNode = (el, nodes, links) => {
     to_remove_link_ids = to_remove.links;
   } else if (el.properties.type === "VM") {
     const to_remove = removeVM(parseInt(el.id), nodes, links);
+    to_remove_node_ids = to_remove.nodes;
+    to_remove_link_ids = to_remove.links;
+  } else if (el.properties.type === "Facility") {
+    const to_remove = removeFP(parseInt(el.id), nodes, links);
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
   }

@@ -217,7 +217,7 @@ export default class NewSliceDetailForm extends Component {
                   className="btn btn-sm btn-success w-100"
                   type="button"
                   disabled={!validationResult.isValid}
-                  onClick={this.handleVMUpdate}
+                  onClick={this.handleFPUpdate}
                   >
                     Update
                 </button>
