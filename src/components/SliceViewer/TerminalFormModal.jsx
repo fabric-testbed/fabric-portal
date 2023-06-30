@@ -1,5 +1,6 @@
 import Joi from "joi-browser";
 import Form from "../common/Form/Form";
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
 
 class TerminalFormModal extends Form {
@@ -17,6 +18,7 @@ class TerminalFormModal extends Form {
       content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
     },
     errors: {},
+    showSpinner: false
   }
 
   doSubmit = () => {
@@ -30,7 +32,7 @@ class TerminalFormModal extends Form {
       'privatekey': data.sliverPrivateKey
     };
     const bastion_credentials = { 
-      'hostname': "bastion.fabric-testbed.net",
+      'hostname': portalData.bastionHostname,
       'username': localStorage.getItem("bastionLogin"),
       'privatekey': data.bastionPrivateKey
     };
@@ -40,7 +42,6 @@ class TerminalFormModal extends Form {
    const now = new Date();
    now.setSeconds(now.getSeconds() + 15);
    const nowString = now.toUTCString();
-   console.log("set cookie:");
    console.log(`credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`);
    console.log(`bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`);
    // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
@@ -63,44 +64,56 @@ class TerminalFormModal extends Form {
   };
 
   render() {
-    const { sliverTooltip, bastionTooltip } =  this.state;
+    const { sliverTooltip, bastionTooltip, showSpinner } =  this.state;
     const { vmData } = this.props;
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div className="modal-body">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           {
-            vmData && vmData.properties && <form>
-              <div className="row mb-2 mx-1">
-                <label>VM Name</label>
-                <input type="text" className="form-control" defaultValue={vmData.properties.name} disabled/>
-              </div>
-              <div className="row mb-2 mx-1">
-                <label>Management IP Address</label>
-                <input type="text" className="form-control" defaultValue={vmData.properties.MgmtIp} disabled/>
-              </div>
-              {
-                vmData.properties.ImageRef && <div className="row mb-2 mx-1">
-                  <label>User Name</label>
-                  <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]]} disabled/>
-                </div>
-              }
-            </form>
+            showSpinner && 
+            <div className="modal-body d-flex align-items-center justify-content-center">
+              <SpinnerWithText text={"Connecting..."} />
+            </div>
           }
-        <form onSubmit={this.handleSubmit}>
-          {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)}
-          {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
-          {this.renderButton("Connect")}
-        </form>
+          {
+            !showSpinner && <div className="modal-body">
+            {
+              vmData && vmData.properties && <form>
+                <div className="row mb-2 mx-1">
+                  <label>Hostname</label>
+                  <input type="text" className="form-control" defaultValue={vmData.properties.MgmtIp} disabled/>
+                </div>
+                {
+                  vmData.properties.ImageRef && <div className="row mb-2 mx-1">
+                    <label>Username</label>
+                    <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]]} disabled/>
+                  </div>
+                }
+                <div className="row mb-2 mx-1">
+                  <label>Bastion Hostname</label>
+                  <input type="text" className="form-control" defaultValue={portalData.bastionHostname} disabled/>
+                </div>
+                <div className="row mb-2 mx-1">
+                  <label>Bastion Username</label>
+                  <input type="text" className="form-control" defaultValue={localStorage.getItem("bastionLogin")} disabled/>
+                </div>
+              </form>
+            }
+          <form onSubmit={this.handleSubmit}>
+            {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)}
+            {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
+            {this.renderButton("Connect")}
+          </form>
+            </div>
+          }
         </div>
-      </div>
     </div>
     </div>
     )

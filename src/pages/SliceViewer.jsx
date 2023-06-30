@@ -140,10 +140,7 @@ class SliceViewer extends Component {
 
     return(
       <div>
-        <TerminalFormModal
-          vmData={selectedData}
-          closeModalForm={() => this.toggleModalForm("close")}
-        />
+        <TerminalFormModal vmData={selectedData}/>
         {
           showSpinner && 
           <div className="container d-flex align-items-center justify-content-center">
@@ -226,7 +223,6 @@ class SliceViewer extends Component {
                   leaseEndTime={leaseEndTime}
                   data={selectedData}
                   key={selectedData && selectedData.properties && selectedData.properties.name}
-                  openModalForm={() => this.toggleModalForm("open")}
                   clearSelectedData={() => this.clearSelectedData()}
                   onLeaseEndChange={this.handleLeaseEndChange}
                   onSliceExtend={this.handleSliceExtend}

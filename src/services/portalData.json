@@ -92,5 +92,6 @@
     "docker_rocky_8": "rocky",
     "docker_ubuntu_20": "ubuntu",
     "docker_ubuntu_22": "ubuntu"
-  } 
+  },
+  "bastionHostname": "bastion.fabric-testbed.net"
 }
