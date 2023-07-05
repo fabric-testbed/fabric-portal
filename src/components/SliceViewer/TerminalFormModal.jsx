@@ -1,6 +1,6 @@
 import Joi from "joi-browser";
 import Form from "../common/Form/Form";
-import SpinnerWithText from "../components/common/SpinnerWithText";
+import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
 
 class TerminalFormModal extends Form {
@@ -63,6 +63,11 @@ class TerminalFormModal extends Form {
     bastionPrivateKey: Joi.string().required().label("Bastion Private Key"),
   };
 
+  closeModal = () => {
+    // clear modal state.
+    
+  }
+
   render() {
     const { sliverTooltip, bastionTooltip, showSpinner } =  this.state;
     const { vmData } = this.props;
@@ -72,7 +77,13 @@ class TerminalFormModal extends Form {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={this.closeModal}
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>

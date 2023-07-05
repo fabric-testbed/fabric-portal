@@ -20,7 +20,9 @@ class SideNodes extends React.Component {
     nodeComponents: [],
     imageType: "qcow2",
     selectedImageRef: "default_rocky_8",
-    BootScript: ""
+    BootScript: "",
+    bandwidth: 0,
+    vlan: ""
   }
 
   osImageToAbbr = {
@@ -63,7 +65,7 @@ class SideNodes extends React.Component {
       const { selectedSiteName, nodeName, nodeType, core, ram, disk,
         imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
       const image = `${selectedImageRef},${imageType}`;
-      this.props.onNodeAdd(nodeType, selectedSiteName, nodeName, Number(core),
+      this.props.onVMAdd(nodeType, selectedSiteName, nodeName, Number(core),
         Number(ram), Number(disk), image, nodeComponents, BootScript);
       this.setState({
         nodeName: "",
@@ -77,10 +79,12 @@ class SideNodes extends React.Component {
         BootScript: "",
       })
     } else if (this.state.nodeType === "Facility") {
-      const { selectedSiteName, nodeName, nodeType } = this.state;
-      this.props.onNodeAdd(nodeType, selectedSiteName, nodeName);
+      const { selectedSiteName, nodeName, nodeType, bandwidth, vlan } = this.state;
+      this.props.onFacilityAdd(nodeType, selectedSiteName, nodeName, Number(bandwidth), vlan);
       this.setState({
         nodeName: "",
+        bandwidth: 0,
+        vlan: ""
       })
     }
   }
@@ -161,6 +165,14 @@ class SideNodes extends React.Component {
     this.setState({ nodeName: e.target.value });
   }
 
+  handleBandwidthChange = (e) => {
+    this.setState({ bandwidth: e.target.value });
+  }
+
+  handleVlanChange = (e) => {
+    this.setState({ vlan: e.target.value });
+  }
+
   getResourcesSum = () => {
     const selectedLabels = [
       "freeCore",
@@ -186,7 +198,7 @@ class SideNodes extends React.Component {
 
   render() {
     const { selectedSiteName, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
-      disk, BootScript, nodeComponents, nodeType } = this.state;
+      disk, BootScript, nodeComponents, nodeType, bandwidth, vlan } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSiteName, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -321,6 +333,21 @@ class SideNodes extends React.Component {
                   </div>
                 }
               </div>
+              { 
+                nodeType === "Facility" && 
+                <div className="form-row">
+                  <div className="form-group slice-builder-form-group col-md-6">
+                    <label htmlFor="inputCore" className="slice-builder-label">Bandwidth</label>
+                    <input type="number" className="form-control form-control-sm" id="inputBandwidth"
+                      value={bandwidth} onChange={this.handleBandwidthChange}/>
+                  </div>
+                  <div className="form-group slice-builder-form-group col-md-6">
+                    <label htmlFor="inputVlan" className="slice-builder-label">VLAN</label>
+                    <input type="text" className="form-control form-control-sm" id="inputVlan"
+                      value={vlan} onChange={this.handleVlanChange}/>
+                  </div>
+                </div>
+              }
               {
                 nodeType === "VM" && 
                 <div className="form-row">

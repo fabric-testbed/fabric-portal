@@ -220,38 +220,40 @@ class NewSliceForm extends React.Component {
     });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
-    console.log(`New Slice Form:---- ${type} - ${site} - ${name}`);
-
+  handleVMAdd = (site, name, core, ram, disk, image, sliceComponents, BootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
-    let node = {};
+    const node = {
+      "type": "VM",
+      "site": site,
+      "name": name,
+      "capacities": {
+        "core": core,
+        "ram": ram,
+        "disk": disk,
+      },
+      "image": image,
+      "BootScript": BootScript
+    };
+    const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+  }
 
-    if (type === "VM") {
-      node = {
-        "type": type,
-        "site": site,
-        "name": name,
-        "capacities": {
-          "core": core,
-          "ram": ram,
-          "disk": disk,
-        },
-        "image": image,
-        "BootScript": BootScript
-      };
-      const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
-      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
-    } else if (type === "Facility") {
-      console.log("New Slice Form: added type is Facility. Current Nodes:")
-      node = {
-        "type": type,
-        "site": site,
-        "name": name
-      };
-      const { newSliceNodes, newSliceLinks } = builder.addFacilityPort(node, graphID, sliceNodes, sliceLinks);
-      console.log(newSliceNodes);
-      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
-    }
+  handleFacilityAdd = (site, name, bandwidth, vlanName) => {
+    const { graphID, sliceNodes, sliceLinks } =  this.state;
+    const node = {
+      "type": "Facility",
+      "site": site,
+      "name": name,
+      "capacities": {
+        "bandwidth": bandwidth
+      },
+      "labels": {
+        "vlan": vlanName
+      }
+    };
+    const { newSliceNodes, newSliceLinks } = builder.addFacility(node, graphID, sliceNodes, sliceLinks);
+    console.log(newSliceNodes);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
   handleLinkAdd = (type, name) => {
@@ -441,7 +443,8 @@ class NewSliceForm extends React.Component {
                           <SideNodes
                             resources={parsedResources}
                             nodes={sliceNodes}
-                            onNodeAdd={this.handleNodeAdd}
+                            onVMAdd={this.handleVMAdd}
+                            onFacilityAdd={this.handleFacilityAdd}
                           />
                         }
                       </div>

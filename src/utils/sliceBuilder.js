@@ -293,23 +293,55 @@ const addVM = (node, components, graphID, nodes, links) => {
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 
-const addFacilityPort = (node, graphID, nodes, links) => {
+const addFacility = (node, graphID, nodes, links) => {
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
 
-  const facility_port_id = generateID(nodes);
+  const facility_id = generateID(nodes);
+  // 1. add Facility node
+  // 2. add vlan node and 'has' link
+  // 3. add facility port and 'connects' link
+  // 4. add "has" link between facility and vlan node
+  // 5. add "connects" link between facility and facility port
 
-  const facility_port = {
+  const facility = {
+    "id": facility_id,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
     "Class": "NetworkNode",
     "Name": node.name,
-    "Site": node.site,
     "Type": "Facility",
-    "NodeID": uuidv4(),
-    "GraphID": graphID,
-    "id": facility_port_id,
+    "Site": node.site,
     "StitchNode": "false",
   }
-  clonedNodes.push(facility_port);
+
+  const vlan = {
+    "id": facility_id + 1,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkService",
+    "Name": node.vlanName,
+    "Type": "VLAN",
+    "StitchNode": "false",
+    "Layer": "L2"
+  }
+
+  const capacitiesObj = {
+    "bw": node.capacities.bandwidth
+  }
+
+  const facility_port = {
+    "id": facility_id + 2,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "ConnectionPoint",
+    "Name": `${node.name}-int`,
+    "Type": "FacilityPort",
+    "Capacities": JSON.stringify(capacitiesObj),
+    "StitchNode": "false"
+  }
+
+  clonedNodes.push(facility, vlan, facility_port);
   // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
@@ -452,7 +484,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 const builder = {
   generateID,
   addVM,
-  addFacilityPort,
+  addFacility,
   addLink,
   addComponent,
 }
