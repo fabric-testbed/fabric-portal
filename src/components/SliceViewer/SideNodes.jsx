@@ -56,8 +56,24 @@ class SideNodes extends React.Component {
     "Internet2-StarLight",
     "OCT-MGHPCC",
     "RCNF",
-    "Utah-Cloudlab-Powder"
+    "Utah-Cloudlab-Powder",
+    "CLemson-Cloudlab"
   ];
+
+  facilityPortVlanRanges = {
+    "Chameleon-StarLight": [3300, 3309],
+    "Chameleon-TACC": [3210, 3499],
+    "Cloud-Facility-AWS": null,
+    "Cloud-Facility-Azure": null,
+    "Cloud-Facility-Azure-Gov": null,
+    "Cloud-Facility-GCP": null,
+    "ESnet-StarLight": null,
+    "Internet2-StarLight": null,
+    "OCT-MGHPCC": [3110, 3119],
+    "RCNF": null,
+    "Utah-Cloudlab-Powder": [2100, 3499],
+    "CLemson-Cloudlab": [1000, 2599]
+  }
 
   handleAddNode = () => {
     // support types: 'VM', 'Facility'
@@ -334,15 +350,31 @@ class SideNodes extends React.Component {
                 }
               </div>
               { 
-                nodeType === "Facility" && 
+                nodeType === "Facility" && nodeName &&
                 <div className="form-row">
-                  <div className="form-group slice-builder-form-group col-md-6">
-                    <label htmlFor="inputCore" className="slice-builder-label">Bandwidth</label>
+                  <div className="form-group slice-builder-form-group col-md-4">
+                    <label htmlFor="inputCore" className="slice-builder-label">
+                      Bandwidth
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip("node-tooltip", portalData.helperText.bandwidthDescription)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
+                    </label>
                     <input type="number" className="form-control form-control-sm" id="inputBandwidth"
                       value={bandwidth} onChange={this.handleBandwidthChange}/>
                   </div>
-                  <div className="form-group slice-builder-form-group col-md-6">
-                    <label htmlFor="inputVlan" className="slice-builder-label">VLAN</label>
+                  <div className="form-group slice-builder-form-group col-md-8">
+                    <label htmlFor="inputVlan" className="slice-builder-label">
+                      VLAN (Range: {
+                        this.facilityPortVlanRanges[nodeName] ? 
+                        `${this.facilityPortVlanRanges[nodeName][0]}-${this.facilityPortVlanRanges[nodeName][1]}` 
+                        :
+                        `####-####`
+                      })
+                    </label>
                     <input type="text" className="form-control form-control-sm" id="inputVlan"
                       value={vlan} onChange={this.handleVlanChange}/>
                   </div>
