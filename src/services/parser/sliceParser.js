@@ -15,7 +15,7 @@ export default function parseSlice(slice, sliceType) {
   const nodes = abqm.nodes;
   const links = abqm.links;
   // 1. Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
-  // 2. Site -> Facility Port
+  // 2. Site -> Facility -> Facility Port and VLAN
 
   // links
   // class 'has' -> parent node
@@ -188,7 +188,7 @@ export default function parseSlice(slice, sliceType) {
 
   nodes.forEach(node => {
     let data = {};
-    if (node.Class === "NetworkService" && node.Type === "L2Bridge") {
+    if (node.Type === "L2Bridge") {
       // Create NetworkService with type "L2Bridge", which has parent site
       data = {
         parent: getSiteIdbyName(node.Site),
@@ -198,7 +198,7 @@ export default function parseSlice(slice, sliceType) {
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
       }
       elements.push(data);
-    } else if (node.Class === "NetworkService" && node.Type !== "OVS") {
+    } else if (node.Class === "NetworkService" && node.Type !== "OVS" && node.Type !== "VLAN") {
       data = {
         id: parseInt(node.id),
         label: node.Name,
@@ -230,12 +230,11 @@ export default function parseSlice(slice, sliceType) {
     let data = {};
     // "has" => parent/ child nodes.
     if (link.label === "has") {
-      // 2 main categories for "has"
+      // Three main categories for "has"
       // 1. VM node has NIC/ GPU/ NVME/ Storage or vice versa
       if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.target].Type) && 
         objNodes[link.source].Type === "VM") {
         if (!parentNodeIds.includes(link.source)) {
-          // Store VM info, will 
           parentNodeIds.push(link.source);
         }
         data.parent = link.source;
@@ -253,10 +252,51 @@ export default function parseSlice(slice, sliceType) {
       }
       // 2. NIC has OVS... / or vise versa
       // No need to generate element for OVS. Done.
+
+      // 3. Facility node has VLAN or vice versa.
+      if (objNodes[link.target].Type === "VLAN" && objNodes[link.source].Type === "Facility") {
+        if (!parentNodeIds.includes(link.source)) {
+          parentNodeIds.push(link.source);
+        }
+        data.parent = link.source;
+        generateDataElement(data, link.target);
+        elements.push(data);
+      } else if (objNodes[link.source].Type === "VLAN" && objNodes[link.target].Type === "Facility") {
+        if (!parentNodeIds.includes(link.target)) {
+          parentNodeIds.push(link.target);
+        }
+        data.parent = link.target;
+        generateDataElement(data, link.source);
+        elements.push(data);
+      }
     }
 
     // 'connects' => edge
     if (link.label === "connects") {
+      // Facility (NetworkNode) connects to Facility Port (ConnectionPoint)
+      if (objNodes[link.source].Class === "NetworkNode"
+      && objNodes[link.target].Class === "ConnectionPoint") {
+        // Facility node has been added independently, add node for the Facility Port
+        const fp_data = {
+          parent: parseInt(link.source),
+          id: parseInt(link.target),
+          label: "",
+          type: "roundrectangle",
+          properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
+        };
+        elements.push(fp_data);
+      } else if (objNodes[link.target].Class === "NetworkNode"
+      && objNodes[link.source].Class === "ConnectionPoint") {
+        const fp_data = {
+          parent: parseInt(link.target),
+          id: parseInt(link.source),
+          label: "",
+          type: "roundrectangle",
+          properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
+        };
+        elements.push(fp_data);
+      }
+
       // if NetworkService to CP, then add CP node inside NS's parent, don't add edge.
       if ((objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
@@ -308,7 +348,7 @@ export default function parseSlice(slice, sliceType) {
           data.target = link.target;
           elements.push(data);
         }
-      }
+    }
   })
 
   for (const linkID in toConnectWithSameTarget) {

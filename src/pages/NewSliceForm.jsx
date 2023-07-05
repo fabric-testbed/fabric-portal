@@ -238,17 +238,17 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
-  handleFacilityAdd = (site, name, bandwidth, vlanName) => {
+  handleFacilityAdd = (site, name, bandwidth, vlan) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
     const node = {
       "type": "Facility",
       "site": site,
       "name": name,
       "capacities": {
-        "bandwidth": bandwidth
+        "bw": bandwidth
       },
       "labels": {
-        "vlan": vlanName
+        "vlan": vlan
       }
     };
     const { newSliceNodes, newSliceLinks } = builder.addFacility(node, graphID, sliceNodes, sliceLinks);
