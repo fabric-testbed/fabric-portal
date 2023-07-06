@@ -51,13 +51,26 @@ const removeVM = (el_id, nodes, links) => {
   return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
-const removeFP = (el_id, nodes, links) => {
+const removeFacility = (el_id, nodes, links) => {
   // 1. remove Facility Port node;
+  // 2. remove VLAN node and the has link;
+  // 3. remove FP node and the connect link.
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
-
+  // remove Facility, VLAN and FP nodes.
   to_remove_node_ids.push(el_id);
-  // 2. remove any network service connected to this FP.
+
+  const facilityNode = nodes.filter(node => node.id === child_id)[0]
+
+  for (const id of JSON.parse(child_node.layout)["relevantNodeIDs"]) {
+    to_remove_node_ids.push(id);
+  }
+
+  for (const id of JSON.parse(child_node.layout)["relevantLinkIDs"]) {
+    to_remove_link_ids.push(id);
+  } 
+
+  // 4. remove any network service connected to this Facility/ FP.
   return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
@@ -128,7 +141,7 @@ const removeNode = (el, nodes, links) => {
   } else if (el.properties.class === "Component" || el.properties.type === "ServicePort") {
     to_remove_node_ids = JSON.parse(el_node.layout)["relevantNodeIDs"];
     to_remove_link_ids = JSON.parse(el_node.layout)["relevantLinkIDs"];
-  } else if (el.properties.class === "NetworkService") {
+  } else if (el.properties.class === "NetworkService" && el.properties.type !== "VLAN") {
     const to_remove = removeNetworkService(parseInt(el.id), nodes, links);
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
@@ -137,7 +150,7 @@ const removeNode = (el, nodes, links) => {
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
   } else if (el.properties.type === "Facility") {
-    const to_remove = removeFP(parseInt(el.id), nodes, links);
+    const to_remove = removeFacility(parseInt(el.id), nodes, links);
     to_remove_node_ids = to_remove.nodes;
     to_remove_link_ids = to_remove.links;
   }

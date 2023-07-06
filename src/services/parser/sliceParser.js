@@ -15,7 +15,7 @@ export default function parseSlice(slice, sliceType) {
   const nodes = abqm.nodes;
   const links = abqm.links;
   // 1. Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
-  // 2. Site -> Facility -> Facility Port and VLAN
+  // 2. Site -> Facility -> VLAN (NS) -> Facility Port
 
   // links
   // class 'has' -> parent node
@@ -278,8 +278,8 @@ export default function parseSlice(slice, sliceType) {
 
     // 'connects' => edge
     if (link.label === "connects") {
-      // Facility (NetworkNode) connects to Facility Port (ConnectionPoint)
-      if (objNodes[link.source].Type === "Facility"
+      // VLAN (NetworkService) connects to Facility Port (ConnectionPoint)
+      if (objNodes[link.source].Type === "VLAN"
       && objNodes[link.target].Type === "FacilityPort") {
         // Facility node has been added independently, add node for the Facility Port
         const fp_data = {
@@ -291,7 +291,7 @@ export default function parseSlice(slice, sliceType) {
         };
         elements.push(fp_data);
       } else if (objNodes[link.target].Type === "FacilityPort"
-      && objNodes[link.source].Type === "Facility") {
+      && objNodes[link.source].Type === "VLAN") {
         const fp_data = {
           parent: parseInt(link.target),
           id: parseInt(link.source),

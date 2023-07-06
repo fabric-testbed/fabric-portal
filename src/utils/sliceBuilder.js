@@ -303,7 +303,10 @@ const addFacility = (node, graphID, nodes, links) => {
   // 2. add vlan node and 'has' link
   // 3. add facility port and 'connects' link
   // 4. add "has" link between facility and vlan node
-  // 5. add "connects" link between facility and facility port
+  // 5. add "connects" link between vlan and facility port
+  // add relevant node/ link data to Facility node for easier modification
+  const relevantNodeIDs = [facility_id + 1, facility_id + 2];
+  const relevantLinkIDs = [facility_link_id, facility_link_id + 1];
 
   const facility = {
     "id": facility_id,
@@ -314,11 +317,12 @@ const addFacility = (node, graphID, nodes, links) => {
     "Type": "Facility",
     "Site": node.site,
     "StitchNode": "false",
+    "layout": JSON.stringify({
+      "relevantNodeIDs": relevantNodeIDs,
+      "relevantLinkIDs": relevantLinkIDs,
+    })
   }
 
-  console.log("facility");
-  console.log(facility);
-  
   const vlan = {
     "id": facility_id + 1,
     "GraphID": graphID,
@@ -335,7 +339,7 @@ const addFacility = (node, graphID, nodes, links) => {
     "GraphID": graphID,
     "NodeID": uuidv4(),
     "Class": "ConnectionPoint",
-    "Name": `${node.name}-int`,
+    "Name": `${node.site}-${node.name}-int`,
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
     "Labels": JSON.stringify(node.Labels),
@@ -350,16 +354,16 @@ const addFacility = (node, graphID, nodes, links) => {
     "target":  facility_id + 1,
   }
 
-  const facility_connects_fp = {
+  const vlan_connects_fp = {
     "label": "connects",
     "Class": "connects",
     "id": facility_link_id + 1,
-    "source": facility_id,
+    "source": facility_id + 1,
     "target":  facility_id + 2,
   }
-
+  
   clonedNodes.push(facility, vlan, facility_port);
-  clonedLinks.push(facility_has_vlan, facility_connects_fp)
+  clonedLinks.push(facility_has_vlan, vlan_connects_fp)
   // return sliceNodes and sliceLinks.
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }

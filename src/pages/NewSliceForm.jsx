@@ -429,7 +429,7 @@ class NewSliceForm extends React.Component {
                         rel="noreferrer"
                       >
                         <button className="btn btn-link">
-                          Step 2: Add Nodes and Components
+                          Step 2: Add Nodes
                         </button>
                       </a>
                     </div>
@@ -594,7 +594,6 @@ class NewSliceForm extends React.Component {
                     onConnectionPointSelect={this.handleCPAdd}
                     onNodeDelete={this.handleNodeDelete}
                     onVMUpdate={this.handleVMUpdate}
-                    onFPUpdate={this.handleFPUpdate}
                     onSingleComponentAdd={this.handleSingleComponentAdd}
                     onJsonUpload={this.handleJsonUpload}
                   />
