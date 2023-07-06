@@ -72,7 +72,26 @@ class SideNodes extends React.Component {
     "OCT-MGHPCC": [3110, 3119],
     "RCNF": null,
     "Utah-Cloudlab-Powder": [2100, 3499],
-    "CLemson-Cloudlab": [1000, 2599]
+    "CLemson-Cloudlab": [1000, 2599],
+    "RENCI-GSU": null,
+    "RENCI-Chameleon": null,
+    "UKY-AL2S": null
+  }
+
+  siteFacilityPortPairing = {
+    "STAR": ["Chameleon-StarLight", "ESnet-StarLight", "Internet2-StarLight"],
+    "TACC": ["Chameleon-TACC"],
+    "AWS": ["Cloud-Facility-AWS"],
+    "Azure": ["Cloud-Facility-Azure"],
+    "Azure-Gov": ["Cloud-Facility-Azure-Gov"],
+    "GCP": ["Cloud-Facility-GCP"],
+    // RCNF to WASH (temporary, until RUTG site is online)
+    "WASH": ["RCNF"],
+    "UTAH": ["Utah-Cloudlab-Powder"],
+    "CLEM": ["CLemson-Cloudlab"],
+    "RENCI": ["RENCI-GSU", "RENCI-Chameleon"],
+    "UKY": ["UKY-AL2S"],
+    "MASS": ["OCT-MGHPCC"]
   }
 
   handleAddNode = () => {
@@ -339,7 +358,8 @@ class SideNodes extends React.Component {
                     >
                       <option value="">Choose...</option>
                       {
-                        this.facilityPortNames.map((name, i) => {
+                        selectedSiteName && this.siteFacilityPortPairing.selectedSiteName.length > 0 && 
+                        this.siteFacilityPortPairing.selectedSiteName.map((name, i) => {
                           return (
                             <option value={name} key={`fp-name-${i}`}>{name}</option>
                           )

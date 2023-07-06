@@ -343,7 +343,11 @@ const addFacility = (node, graphID, nodes, links) => {
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
     "Labels": JSON.stringify(node.Labels),
-    "StitchNode": "false"
+    "StitchNode": "false",
+    "layout": JSON.stringify({
+      "connectFrom": facility_id + 1,
+      "connectLinkIdAsTarget": facility_link_id + 1
+    })
   }
 
   const facility_has_vlan = {

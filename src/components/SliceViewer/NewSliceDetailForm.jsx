@@ -391,7 +391,7 @@ export default class NewSliceDetailForm extends Component {
               </div>
             }
             {
-              data && data.properties && data.properties.type !== "VLAN" &&
+              data && data.properties && data.properties.type === "VLAN" &&
               <div className="form-row px-3">
                 <div className="col-6 mb-2">
                   <label className="slice-builder-label">VLAN Name</label>
