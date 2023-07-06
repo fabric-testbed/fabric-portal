@@ -78,10 +78,10 @@ class SideNodes extends React.Component {
   handleAddNode = () => {
     // support types: 'VM', 'Facility'
     if (this.state.nodeType === "VM") {
-      const { selectedSiteName, nodeName, nodeType, core, ram, disk,
+      const { selectedSiteName, nodeName, core, ram, disk,
         imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
       const image = `${selectedImageRef},${imageType}`;
-      this.props.onVMAdd(nodeType, selectedSiteName, nodeName, Number(core),
+      this.props.onVMAdd(selectedSiteName, nodeName, Number(core),
         Number(ram), Number(disk), image, nodeComponents, BootScript);
       this.setState({
         nodeName: "",
@@ -95,8 +95,8 @@ class SideNodes extends React.Component {
         BootScript: "",
       })
     } else if (this.state.nodeType === "Facility") {
-      const { selectedSiteName, nodeName, nodeType, bandwidth, vlan } = this.state;
-      this.props.onFacilityAdd(nodeType, selectedSiteName, nodeName, Number(bandwidth), vlan);
+      const { selectedSiteName, nodeName, bandwidth, vlan } = this.state;
+      this.props.onFacilityAdd(selectedSiteName, nodeName, Number(bandwidth), vlan);
       this.setState({
         nodeName: "",
         bandwidth: 0,

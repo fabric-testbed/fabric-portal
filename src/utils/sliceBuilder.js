@@ -316,6 +316,9 @@ const addFacility = (node, graphID, nodes, links) => {
     "StitchNode": "false",
   }
 
+  console.log("facility");
+  console.log(facility);
+  
   const vlan = {
     "id": facility_id + 1,
     "GraphID": graphID,

@@ -209,7 +209,7 @@ export default class NewSliceDetailForm extends Component {
             {
               data && data.properties && data.properties.type === "Facility" &&    <div className="form-row px-3">
               <div className="col-3 mb-2">
-                <label className="slice-builder-label">Facility Port Name</label>
+                <label className="slice-builder-label">Facility Name</label>
                 <input type="text" className="form-control form-control-sm" defaultValue={data.properties.name} onChange={this.handleNameChange}/>
               </div>
               <div className="col-1 pt-4 pb-2 d-flex flex-row">

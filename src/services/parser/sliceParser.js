@@ -82,7 +82,12 @@ export default function parseSlice(slice, sliceType) {
     const properties = {};
     const originalNode = objNodes[id];
     data.id = parseInt(originalNode.id);
-    data.label = originalNode.Name;
+    if (originalNode.Type === "VLAN") {
+      data.label = "VLAN";
+    } else {
+      data.label = originalNode.Name;
+    }
+
     data.type = "roundrectangle";
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
@@ -274,8 +279,8 @@ export default function parseSlice(slice, sliceType) {
     // 'connects' => edge
     if (link.label === "connects") {
       // Facility (NetworkNode) connects to Facility Port (ConnectionPoint)
-      if (objNodes[link.source].Class === "NetworkNode"
-      && objNodes[link.target].Class === "ConnectionPoint") {
+      if (objNodes[link.source].Type === "Facility"
+      && objNodes[link.target].Type === "FacilityPort") {
         // Facility node has been added independently, add node for the Facility Port
         const fp_data = {
           parent: parseInt(link.source),
@@ -285,8 +290,8 @@ export default function parseSlice(slice, sliceType) {
           properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
         };
         elements.push(fp_data);
-      } else if (objNodes[link.target].Class === "NetworkNode"
-      && objNodes[link.source].Class === "ConnectionPoint") {
+      } else if (objNodes[link.target].Type === "FacilityPort"
+      && objNodes[link.source].Type === "Facility") {
         const fp_data = {
           parent: parseInt(link.target),
           id: parseInt(link.source),
@@ -295,10 +300,7 @@ export default function parseSlice(slice, sliceType) {
           properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
         };
         elements.push(fp_data);
-      }
-
-      // if NetworkService to CP, then add CP node inside NS's parent, don't add edge.
-      if ((objNodes[link.source].Class === "NetworkService"
+      } else if ((objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
         && objNodes[link.source].Type === "OVS")) {
           generateConnectionPoint(data, link, "normal");
