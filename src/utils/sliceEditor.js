@@ -52,25 +52,37 @@ const removeVM = (el_id, nodes, links) => {
 }
 
 const removeFacility = (el_id, nodes, links) => {
-  // 1. remove Facility Port node;
-  // 2. remove VLAN node and the has link;
-  // 3. remove FP node and the connect link.
+  const facility_node = nodes.filter(node => node.id === el_id)[0];
   let to_remove_node_ids = [];
   let to_remove_link_ids = [];
-  // remove Facility, VLAN and FP nodes.
+  // 1. remove Facility node
   to_remove_node_ids.push(el_id);
-
-  const facilityNode = nodes.filter(node => node.id === child_id)[0]
-
-  for (const id of JSON.parse(child_node.layout)["relevantNodeIDs"]) {
+  // 2. remove the VLAN and Facility nodes in this Facility
+  for (const id of JSON.parse(facility_node.layout)["relevantNodeIDs"]) {
     to_remove_node_ids.push(id);
   }
-
-  for (const id of JSON.parse(child_node.layout)["relevantLinkIDs"]) {
+  // 3. remove the has link between F -> VLAN and connect link between VLAN -> FP
+  for (const id of JSON.parse(facility_node.layout)["relevantLinkIDs"]) {
     to_remove_link_ids.push(id);
   } 
-
   // 4. remove any network service connected to this Facility/ FP.
+  // check if FP is connected with any Link node -> NS CP
+  // find the NS CP node and its relevant nodes/ links
+  const fp_id = to_remove_node_ids[2];
+  for (const link of links) {
+    if (link.Class === "connects" && (link.source === fp_id && link.target !== el_id)) {
+      // Link node id: link.source
+      // Link node's "connectFrom"[0] is NS CP
+      const ns_cp_id = JSON.parse(nodes.filter(node => node.id === link.target)[0].layout)["connectFrom"][0];
+      const ns_cp_node = nodes.filter(node => node.id === ns_cp_id)[0];
+      for (const id of JSON.parse(ns_cp_node.layout)["relevantNodeIDs"]) {
+        to_remove_node_ids.push(id);
+      }
+      for (const id of JSON.parse(ns_cp_node.layout)["relevantLinkIDs"]) {
+        to_remove_link_ids.push(id);
+      }
+    }
+  }
   return {nodes: to_remove_node_ids, links: to_remove_link_ids};
 }
 
