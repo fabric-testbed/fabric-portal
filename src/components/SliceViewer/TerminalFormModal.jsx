@@ -37,27 +37,23 @@ class TerminalFormModal extends Form {
       'username': localStorage.getItem("bastionLogin"),
       'privatekey': data.bastionPrivateKey
     };
-   // open a new tab with the web ssh app
-   // encode the binary string to base64-encoded data.
-   const cred_string = Buffer.from(JSON.stringify(credentials), 'base64');
-   const bast_string = Buffer.from(JSON.stringify(bastion_credentials), 'base64');
-   const now = new Date();
-   now.setSeconds(now.getSeconds() + 15);
-   const nowString = now.toUTCString();
-   console.log(`credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`);
-   console.log(`bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`);
-   // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
-  document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`;
-  document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`;
+    // open a new tab with the web ssh app
+    // encode the binary string to base64-encoded data.
+    const cred_string = Buffer.from(JSON.stringify(credentials), 'base64');
+    const bast_string = Buffer.from(JSON.stringify(bastion_credentials), 'base64');
+    const now = new Date();
+    now.setSeconds(now.getSeconds() + 15);
+    const nowString = now.toUTCString();
+    console.log(`credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`);
+    console.log(`bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`);
+    // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
+    document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`;
+    document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`;
 
-  window.open(`https://beta-5.fabric-testbed.net/`, "_blank");
-  // setTimeout(() => {
-  //   window.open(`https://beta-5.fabric-testbed.net/`, "_blank");
-  // }, 5000);
-  setTimeout(() => {
-    document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
-    document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
-  }, 10000);
+    setTimeout(() => {
+      document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
+      document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
+    }, 10000);
   };
 
   schema = {
@@ -67,7 +63,12 @@ class TerminalFormModal extends Form {
 
   closeModal = () => {
     // clear modal state.
-    
+    const blank_data = {
+      sliverPrivateKey: "",
+      bastionPrivateKey: "",
+    };
+
+    this.setState({data: blank_data});
   }
 
   render() {
@@ -79,20 +80,32 @@ class TerminalFormModal extends Form {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
-            <button
-              type="button"
-              className="close"
+            <a
+              href={portalData.webSshAppLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary"
               data-dismiss="modal"
               aria-label="Close"
               onClick={this.closeModal}
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              <i className="fa fa-sign-in mr-2"></i>
+              Open Terminal
+            </a>
           </div>
           {
-            showSpinner && 
+            showSpinner &&
             <div className="modal-body d-flex align-items-center justify-content-center">
-              <SpinnerWithText text={"Connecting..."} />
+              <SpinnerWithText text={"Connecting to VM..."} />
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                onClick={this.closeModal}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
           }
           {

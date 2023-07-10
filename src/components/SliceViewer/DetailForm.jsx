@@ -125,7 +125,7 @@ export default class DetailForm extends Component {
                       data-toggle="modal"
                       data-target="#TerminalFormModalCenter"
                     >
-                      Open Terminal
+                      Connect to VM
                     </button>
                   </label>
                   <div className="ssh-command">

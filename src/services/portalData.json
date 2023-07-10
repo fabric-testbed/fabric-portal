@@ -94,5 +94,6 @@
     "docker_ubuntu_20": "ubuntu",
     "docker_ubuntu_22": "ubuntu"
   },
-  "bastionHostname": "bastion.fabric-testbed.net"
+  "bastionHostname": "bastion.fabric-testbed.net",
+  "webSshAppLink": "https://beta-5.fabric-testbed.net/"
 }
