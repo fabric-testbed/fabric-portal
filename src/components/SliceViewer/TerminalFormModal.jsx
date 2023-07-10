@@ -1,4 +1,5 @@
 import Joi from "joi-browser";
+import { Buffer } from "buffer";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
@@ -37,8 +38,9 @@ class TerminalFormModal extends Form {
       'privatekey': data.bastionPrivateKey
     };
    // open a new tab with the web ssh app
-   const cred_string = JSON.stringify(credentials);
-   const bast_string = JSON.stringify(bastion_credentials);
+   // encode the binary string to base64-encoded data.
+   const cred_string = Buffer.from(JSON.stringify(credentials), 'base64');
+   const bast_string = Buffer.from(JSON.stringify(bastion_credentials), 'base64');
    const now = new Date();
    now.setSeconds(now.getSeconds() + 15);
    const nowString = now.toUTCString();
@@ -52,10 +54,10 @@ class TerminalFormModal extends Form {
   // setTimeout(() => {
   //   window.open(`https://beta-5.fabric-testbed.net/`, "_blank");
   // }, 5000);
-  // setTimeout(() => {
-  //   document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
-  //   document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
-  // }, 10000);
+  setTimeout(() => {
+    document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
+    document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
+  }, 10000);
   };
 
   schema = {

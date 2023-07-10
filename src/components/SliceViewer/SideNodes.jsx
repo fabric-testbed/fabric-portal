@@ -358,8 +358,7 @@ class SideNodes extends React.Component {
                     >
                       <option value="">Choose...</option>
                       {
-                        selectedSiteName && this.siteFacilityPortPairing.selectedSiteName.length > 0 && 
-                        this.siteFacilityPortPairing.selectedSiteName.map((name, i) => {
+                        this.facilityPortNames.map((name, i) => {
                           return (
                             <option value={name} key={`fp-name-${i}`}>{name}</option>
                           )
