@@ -1,5 +1,4 @@
 import Joi from "joi-browser";
-import { Buffer } from "buffer";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
@@ -39,21 +38,14 @@ class TerminalFormModal extends Form {
     };
     // open a new tab with the web ssh app
     // encode the binary string to base64-encoded data.
-    const cred_string = Buffer.from(JSON.stringify(credentials), 'base64');
-    const bast_string = Buffer.from(JSON.stringify(bastion_credentials), 'base64');
+    const cred_string = btoa(JSON.stringify(credentials));
+    const bast_string = btoa(JSON.stringify(bastion_credentials));
     const now = new Date();
     now.setSeconds(now.getSeconds() + 15);
-    const nowString = now.toUTCString();
-    console.log(`credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`);
-    console.log(`bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`);
-    // we want to make sure cookies don't leak - set Strict and expiry date in 15 seconds
-    document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict; expires=${nowString};`;
-    document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict; expires=${nowString}`;
+    document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict`;
+    document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict`;
 
-    setTimeout(() => {
-      document.cookie = `credentials=nomore; domain=${domain}; SameSite=Strict;`;
-      document.cookie = `bastion-credentials=nomore; domain=${domain}; SameSite=Strict;`;
-    }, 10000);
+    this.setState({ showSpinner: true });
   };
 
   schema = {
@@ -68,7 +60,17 @@ class TerminalFormModal extends Form {
       bastionPrivateKey: "",
     };
 
-    this.setState({data: blank_data});
+    // clear private keys in browser storage
+    setTimeout(() => {
+      document.cookie = `credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+      document.cookie = `bastion-credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+    }, 10000);
+
+    this.setState({ data: blank_data, showSpinner: false });
+  }
+
+  clickCloseModalBtn = () => {
+    document.getElementById("closeModalBtn").click();
   }
 
   render() {
@@ -80,32 +82,35 @@ class TerminalFormModal extends Form {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
-            <a
-              href={portalData.webSshAppLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
+            <button
+              type="button"
+              className="close"
+              id="closeModalBtn"
               data-dismiss="modal"
               aria-label="Close"
               onClick={this.closeModal}
             >
-              <i className="fa fa-sign-in mr-2"></i>
-              Open Terminal
-            </a>
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
           {
             showSpinner &&
-            <div className="modal-body d-flex align-items-center justify-content-center">
+            <div className="modal-body d-flex flex-column align-items-center justify-content-center">
               <SpinnerWithText text={"Connecting to VM..."} />
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={this.closeModal}
+              <a
+                href={portalData.webSshAppLink}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <button
+                  className="mt-2 btn btn-sm btn-primary"
+                  aria-label="Close"
+                  onClick={this.clickCloseModalBtn}
+                >
+                  <i className="fa fa-sign-in mr-2"></i>
+                  Open Terminal
+                </button>
+              </a>
             </div>
           }
           {
