@@ -42,8 +42,8 @@ class TerminalFormModal extends Form {
     const bast_string = btoa(JSON.stringify(bastion_credentials));
     const now = new Date();
     now.setSeconds(now.getSeconds() + 15);
-    document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict`;
-    document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict`;
+    document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict;path=/`;
+    document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict;path=/`;
 
     this.setState({ showSpinner: true });
   };
@@ -62,9 +62,9 @@ class TerminalFormModal extends Form {
 
     // clear private keys in browser storage
     setTimeout(() => {
-      document.cookie = `credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-      document.cookie = `bastion-credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-    }, 10000);
+      document.cookie = `credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
+      document.cookie = `bastion-credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
+    }, 120000);
 
     this.setState({ data: blank_data, showSpinner: false });
   }

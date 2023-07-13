@@ -7,6 +7,7 @@ import validator from  "../../utils/sliceValidator";
 import { sitesNameMapping }  from "../../data/sites";
 import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
+import checkPortalType from "../../utils/checkPortalType";
 
 class SideNodes extends React.Component {
   state = {
@@ -45,7 +46,10 @@ class SideNodes extends React.Component {
     "Custom Ubuntu 22": "docker_ubuntu_22",
   }
 
-  facilityPortNames = [
+  facilityPortNames = {
+    "alpha": ['RENC-Chameleon', 'RENC-GSU'],
+    "beta": ['RENC-Chameleon', 'RENC-GSU', 'UKY-AL2S'],
+    "production": [
     "Chameleon-StarLight",
     "Chameleon-TACC",
     "Cloud-Facility-AWS",
@@ -58,7 +62,7 @@ class SideNodes extends React.Component {
     "RCNF",
     "Utah-Cloudlab-Powder",
     "CLemson-Cloudlab"
-  ];
+  ]};
 
   facilityPortVlanRanges = {
     "Chameleon-StarLight": [3300, 3309],
@@ -122,6 +126,11 @@ class SideNodes extends React.Component {
         vlan: ""
       })
     }
+  }
+
+  getFacilityPortNames = () => {
+    const portalType = checkPortalType(window.location.href);
+    return this.facilityPortNames.portalType;
   }
 
   handleSliceComponentAdd = (component) => {
@@ -358,7 +367,7 @@ class SideNodes extends React.Component {
                     >
                       <option value="">Choose...</option>
                       {
-                        this.facilityPortNames.map((name, i) => {
+                        this.getFacilityPortNames.map((name, i) => {
                           return (
                             <option value={name} key={`fp-name-${i}`}>{name}</option>
                           )
