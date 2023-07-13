@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import { getProjectById } from "../../services/projectService.js";
-import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
 
 export default class SideLinks extends Component { 
   state = {
-    showSpinner: false,
-    project: {},
-    tags: [],
     tagKeyValuePairs: {
       "VM.NoLimitCPU": "allows to create VMs with more than 2 CPU cores",
       "VM.NoLimitRAM": "allows to create VMs with more than 10 GB of RAM",
@@ -35,19 +30,10 @@ export default class SideLinks extends Component {
       "Net.FacilityPort.Internet2-StarLight": "Internet2-StarLight Production"
     }
   }
-  
-  async componentDidMount() {
-    try {
-      this.setState({ showSpinner: true });
-      const { data: res } = await getProjectById(this.props.projectId);
-      this.setState({ project: res.results[0], tags: res.results[0].tags, showSpinner: false });
-    } catch (err) {
-      toast.error("Failed to load the project information. Please try again later.");
-    }
-  }
 
   render() {
-    const { project, tags, tagKeyValuePairs, showSpinner } = this.state;
+    const { tagKeyValuePairs } = this.state;
+    const { project, tags, showSpinner } = this.props;
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}

@@ -22,6 +22,7 @@ import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
 import { createSlice } from "../services/sliceService.js";
+import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 import { default as portalData } from "../services/portalData.json";
@@ -34,6 +35,7 @@ class NewSliceForm extends React.Component {
     showResourceSpinner: false,
     showKeySpinner: false,
     showSliceSpinner: false,
+    showProjectSpinner: false,
     sliverKeys: [],
     graphID: "",
     sliceNodes: [],
@@ -41,24 +43,31 @@ class NewSliceForm extends React.Component {
     selectedData: null,
     parsedResources: null,
     selectedCPs: [],
+    project: {},
+    projectTags: []
   }
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
     this.setState({
       showResourceSpinner: true,
-      showKeySpinner: true
+      showKeySpinner: true,
+      showProjectSpinner: true
     });
 
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
+      const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
       this.setState({
         parsedResources: parsedObj,
         showResourceSpinner: false,
-        showKeySpinner: false,
         sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
+        project: projectRes.results[0],
+        projectTags: projectRes.results[0].tags,
+        showKeySpinner: false,
+        showProjectSpinner: false
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -350,7 +359,7 @@ class NewSliceForm extends React.Component {
   render() {
     const { sliceName, sshKey, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs }
+      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
@@ -417,7 +426,11 @@ class NewSliceForm extends React.Component {
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        <ProjectTags projectId={this.props.match.params.project_id} />
+                        <ProjectTags
+                          project={project}
+                          tags={projectTags}
+                          showSpinner={showProjectSpinner}
+                        />
                       </div>
                     </div>
                   </div>
