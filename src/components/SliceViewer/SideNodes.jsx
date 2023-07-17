@@ -129,8 +129,20 @@ class SideNodes extends React.Component {
   }
 
   getFacilityPortNames = () => {
-    const portalType = checkPortalType(window.location.href);
-    return this.facilityPortNames.portalType;
+    const tags = this.props.projectTags;
+    const fpNames = [];
+    for (const tag of tags) {
+      // if has Net.AllFacilityPorts tag, show all available FPs per the portal tier
+      if (tag === "Net.AllFacilityPorts") {
+        const portalType = checkPortalType(window.location.href);
+        return this.facilityPortNames[portalType];
+      }
+      if (tag.includes("Net.FacilityPort")) {
+        fpNames.push(tag.slice(21));
+      }
+    }
+    
+    return fpNames;
   }
 
   handleSliceComponentAdd = (component) => {
@@ -367,7 +379,7 @@ class SideNodes extends React.Component {
                     >
                       <option value="">Choose...</option>
                       {
-                        this.getFacilityPortNames.map((name, i) => {
+                        this.getFacilityPortNames().map((name, i) => {
                           return (
                             <option value={name} key={`fp-name-${i}`}>{name}</option>
                           )

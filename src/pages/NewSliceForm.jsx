@@ -458,6 +458,7 @@ class NewSliceForm extends React.Component {
                             nodes={sliceNodes}
                             onVMAdd={this.handleVMAdd}
                             onFacilityAdd={this.handleFacilityAdd}
+                            projectTags={projectTags}
                           />
                         }
                       </div>

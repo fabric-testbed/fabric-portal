@@ -60,11 +60,11 @@ class TerminalFormModal extends Form {
       bastionPrivateKey: "",
     };
 
-    // clear private keys in browser storage
+    // clear private keys in browser storage after 10 seconds
     setTimeout(() => {
       document.cookie = `credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
       document.cookie = `bastion-credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
-    }, 120000);
+    }, 10000);
 
     this.setState({ data: blank_data, showSpinner: false });
   }
