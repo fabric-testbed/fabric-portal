@@ -141,7 +141,7 @@ class SideNodes extends React.Component {
         fpNames.push(tag.slice(21));
       }
     }
-    
+
     return fpNames;
   }
 
@@ -256,6 +256,8 @@ class SideNodes extends React.Component {
     const { selectedSiteName, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents, nodeType, bandwidth, vlan } = this.state;
     const validationResult = validator.validateNodeComponents(selectedSiteName, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
+    const availableFPs = this.getFacilityPortNames();
+
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -379,7 +381,7 @@ class SideNodes extends React.Component {
                     >
                       <option value="">Choose...</option>
                       {
-                        this.getFacilityPortNames().map((name, i) => {
+                         availableFPs.length > 0 && availableFPs.map((name, i) => {
                           return (
                             <option value={name} key={`fp-name-${i}`}>{name}</option>
                           )

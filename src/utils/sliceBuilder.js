@@ -381,6 +381,8 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   const new_ns_id = generateID(nodes);
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
+  const nsRelevantNodeIDs = [new_ns_id];
+  const nsRelevantLinkIDs = [];
 
   const ns_layout = {
     connectLinkIdAsSource: [],
@@ -398,11 +400,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": type,
       "Layer": "L2",
       "StitchNode": "false",
-      "GraphID": graphID,
-      "layout": JSON.stringify({
-        "parentID": selectedCPs[0].id,
-      })
-    }
+      "GraphID": graphID
+    };
+    ns_layout.parentID = selectedCPs[0].id;
   } else {
     network_service_node = {
       "Name": name,
@@ -412,7 +412,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": type,
       "Layer": (type === "FABNetv4" || type === "FABNetv6") ? "L3" : "L2",
       "GraphID": graphID,
-      "StitchNode": "false",
+      "StitchNode": "false"
     }
   }
 
@@ -420,7 +420,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   // TODO: Validate if selected CPs aligns with the seleced NS Type
   // ##############################################################
 
-  // Total: 2 nodes and 3 links to add.
+  // Total: for each selected cp, 2 nodes and 3 links to add.
   // Nodes: new NS CP + new Link node
   // Links: NS 'connects' new CP + new CP connects new Link node + selected CP 'connects' New Link Node
   let new_node_id_starts = new_ns_id + 1;
@@ -432,6 +432,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
     relevantNodeIDs.push(new_node_id_starts, new_node_id_starts + 1);
     relevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
+
+    nsRelevantNodeIDs.push(new_node_id_starts, new_node_id_starts + 1);
+    nsRelevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
 
     const new_ns_cp = {
       "Labels": JSON.stringify({"local_name": `p${i}`}),
@@ -462,7 +465,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Layer": "L2",
       "id":  new_node_id_starts + 1,
       "layout": JSON.stringify({
-        "connectFrom": [new_node_id_starts, parseInt(cp.id)],
+        "connectFrom": [new_node_id_starts, parseInt(cp.id), new_ns_id],
         "connectLinkIdAsTarget": [new_link_id_starts + 1, new_link_id_starts + 2],
       })
     }
@@ -499,6 +502,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     clonedNodes.push(new_ns_cp, new_link_node);
     clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, nic_cp_connects_new_link);
   })
+
+  ns_layout.relevantNodeIDs = nsRelevantNodeIDs;
+  ns_layout.relevantLinkIDs = nsRelevantLinkIDs;
 
   network_service_node.layout = JSON.stringify(ns_layout);
 

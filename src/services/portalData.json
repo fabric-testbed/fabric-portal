@@ -19,6 +19,8 @@
   "helperText": {
     "projectLeadDescription": "Project Lead can create new projects, designate Project Owner(s)  and invite regular members into a project. Faculty or senior staff at universities can request this role.",
     "facilityOperatorDescription": "Facility Operator is a 'superuser' allowed to manipulate any project. This role is reserved for FABRIC staff.",
+    "activeUserDescription": "A fully enrolled FABRIC Testbed User with all the rights and privileges therein.",
+    "jupyterhubDescription" : "Provides access to the Jupyterhub cluster. User must be a member of at least one project to maintain this access.",
     "componentDescription": "Component: Hardware that may be added to a virtual machine to expand its capabilities",
     "networkServiceDescription": "Network Service: Virtualized hardware that links nodes in a topology so that information (e.g., packets) can be passed through the network.",
     "sitesDescription": "Sites: Approximately 30 physical locations where FABRIC hardware exists.",
