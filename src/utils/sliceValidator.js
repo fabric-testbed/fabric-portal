@@ -7,7 +7,7 @@ const isPositiveInteger = (input) => {
   return Number.isInteger(num) && num > 0;
 }
 
-const validateSlice = (sliceName, sshKey, sliceNodes) => {
+const validateSlice = (sliceName, selectedKeyIDs, sliceNodes) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -19,7 +19,7 @@ const validateSlice = (sliceName, sshKey, sliceNodes) => {
     return validationResult;
   }
 
-  if (sshKey === "") {
+  if (selectedKeyIDs.length === 0) {
     validationResult.isValid = false;
     validationResult.message = "Please select a sliver key.";
     return validationResult;

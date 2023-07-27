@@ -13,6 +13,7 @@ import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Calendar from "../components/common/Calendar";
+import SliverKeyMultiSelect from "../components/SliceViewer/SliverKeyMultiSelect";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
@@ -26,11 +27,13 @@ import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 import { default as portalData } from "../services/portalData.json";
+import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers.js";
 
 class NewSliceForm extends React.Component {
   state = {
     sliceName: "",
     sshKey: "",
+    selectedKeyIDs: [],
     leaseEndTime: "",
     showResourceSpinner: false,
     showKeySpinner: false,
@@ -95,8 +98,14 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceName: e.target.value });
   }
 
-  handleKeyChange = (e) => {
-    this.setState({ sshKey: e.target.value });
+
+  handleKeyCheck = (keyID) => {
+    const { selectedKeyIDs } = this.state;
+    if (selectedKeyIDs.includes(keyID)) {
+      this.setState({ selectedKeyIDs: selectedKeyIDs.filter(k => k !== keyID) });
+    } else {
+      this.setState({ selectedKeyIDs: [...selectedKeyIDs, keyID] });
+    }
   }
 
   handleLeaseEndChange = (value) => {
@@ -220,12 +229,29 @@ class NewSliceForm extends React.Component {
     this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
-  handleNodeDelete = (data) => {
+  handleNodeDelete = (el) => {
     const { sliceNodes, sliceLinks } =  this.state;
-    const { newSliceNodes, newSliceLinks } = editor.removeNode(data, sliceNodes, sliceLinks);
+    const updated_nodes = [];
+    const updated_links = [];
+    const {to_remove_node_ids, to_remove_link_ids} = el.properties.type === "VM" ? editor.removeVM(el, sliceNodes, sliceLinks) :
+      editor.removeComponent(el, sliceNodes, sliceLinks);
+
+    
+    for (const node of sliceNodes) {
+      if (!to_remove_node_ids.includes(parseInt(node.id))){
+        updated_nodes.push(node);
+      }
+    }
+
+    for (const link of sliceLinks) {
+      if (!to_remove_link_ids.includes(parseInt(link.id))){
+        updated_links.push(link);
+      }
+    }
+
     // due to Cytoscape issue, force clean and update the state.
     this.setState({ sliceNodes: [], sliceLinks: [], selectedData: {} }, () => {
-      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks });
+      this.setState({ sliceNodes: updated_nodes, sliceLinks: updated_links });
     });
   }
 
@@ -312,10 +338,21 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
   }
 
+  generatePublicKeys = () => {
+    const keys = [];
+    const { selectedKeyIDs, sliverKeys} = this.state;
+    for (const key of sliverKeys) {
+      if (selectedKeyIDs.includes(key.uuid)) {
+        keys.push(`${key.ssh_key_type} ${key.public_key} ${key.comment}`)
+      }
+    }
+    return keys;
+  }
+
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
 
-    const { sliceName, sshKey, leaseEndTime } = this.state;
+    const { sliceName, selectedKeyIDs, leaseEndTime } = this.state;
     const that = this;
 
     that.setState({ showSliceSpinner: true });
@@ -324,14 +361,14 @@ class NewSliceForm extends React.Component {
     if (leaseEndTime !== "") {
       requestData = {
         name: sliceName,
-        sshKey: sshKey,
+        sshKeys: this.generatePublicKeys(),
         leaseEndTime: leaseEndTime,
         json: this.generateSliceJSON()
       }
     } else {
       requestData = {
         name: sliceName,
-        sshKey: sshKey,
+        sshKeys: this.generatePublicKeys(),
         json: this.generateSliceJSON()
       }
     }
@@ -357,22 +394,18 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sliceName, sshKey, sliverKeys, selectedData,
+    const { sliceName, selectedKeyIDs, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
       sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner }
     = this.state;
 
-    const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
+    const validationResult = validator.validateSlice(sliceName, selectedKeyIDs, sliceNodes);
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
       </Tooltip>
     );
-
-    const generatePublicKey = (data) => {
-      return `${data.ssh_key_type} ${data.public_key} ${data.comment}`;
-    }
 
     return (
       <div>
@@ -529,27 +562,20 @@ class NewSliceForm extends React.Component {
                             </div>
                             <div className="form-group">
                               <label htmlFor="inputSSHKey" className="slice-form-label">
-                                <span>SSH Key</span>
+                                <span>SSH Keys</span>
                               </label>
                               {
                                 showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
                               }
                               {
                                 sliverKeys.length > 0 && !showKeySpinner && 
-                                  <select
+                                 <SliverKeyMultiSelect 
                                     id="selectSshKey"
                                     name="selectSshKey"
-                                    className="form-control form-control-sm"
-                                    value={sshKey}
-                                    onChange={this.handleKeyChange}
-                                  >
-                                    <option value="">Choose...</option>
-                                    {
-                                      sliverKeys.map(key =>
-                                        <option value={generatePublicKey(key)} key={`sliverkey-${key.comment}`}>{key.comment}</option>
-                                      )
-                                    }
-                                  </select>
+                                    keys={sliverKeys}
+                                    selectedKeyIDs={selectedKeyIDs}
+                                    onKeyCheck={this.handleKeyCheck}
+                                 />
                               }
                               {
                                 sliverKeys.length === 0 && !showKeySpinner && 

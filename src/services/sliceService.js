@@ -32,7 +32,7 @@ export function createSlice(slice) {
 
   const requestBody = {
     "graph_model": slice.json,
-    "ssh_keys": [slice.sshKey]
+    "ssh_keys": slice.sshKeys
   }
 
   const url = apiEndpoint + "/creates?" + query;
