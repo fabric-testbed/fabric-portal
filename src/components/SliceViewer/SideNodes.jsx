@@ -2,6 +2,7 @@ import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
+import Select from 'react-select';
 import _ from "lodash";
 import validator from  "../../utils/sliceValidator";
 import { sitesNameMapping }  from "../../data/sites";
@@ -9,10 +10,11 @@ import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import checkPortalType from "../../utils/checkPortalType";
 
+
 class SideNodes extends React.Component {
   state = {
-    selectedSiteName: "",
-    selectedSite: {},
+    selectedSite: { status: "" },
+    selectedSiteOption: {},
     nodeName: "",
     core: 2,
     ram: 6,
@@ -138,7 +140,7 @@ class SideNodes extends React.Component {
         return this.facilityPortNames[portalType];
       }
       if (tag.includes("Net.FacilityPort")) {
-        fpNames.push(tag.slice(21));
+        fpNames.push(tag.slice(17));
       }
     }
 
@@ -171,20 +173,44 @@ class SideNodes extends React.Component {
     }
   }
 
+  generateSiteOptions = (sites) => {
+    const options = [
+      {
+        value: "Random",
+        label: "*Random*"
+      }
+    ];
+    for (const site of sites) {
+      options.push({ 
+        value: site.name,
+        label: site.name
+      })
+    }
+
+    return options;
+  }
+
   handleSiteChange = (e) => {
-    if (e.target.value === "") {
-      this.setState({ selectedSiteName: ""});
-    } else if (e.target.value === "Random") {
+    if (e.value === "") {
+      this.setState({ selectedSiteOption: {} });
+    } else if (e.value === "Random") {
       const sites = this.props.resources.parsedSites;
-      const random_site = sites[Math.floor(Math.random() * sites.length)].name;
+      const random_site = sites[Math.floor(Math.random() * sites.length)];
+      console.log(random_site)
       this.setState({
-        selectedSiteName: random_site,
-        selectedSite: this.getSiteResource(random_site)
+        selectedSiteOption: {
+          value: random_site.name,
+          label: random_site.name
+        },
+        selectedSite: this.getSiteResource(random_site.name)
       });
     } else {
       this.setState({
-        selectedSiteName: e.target.value,
-        selectedSite: this.getSiteResource(e.target.value)
+        selectedSiteOption: {
+          value: e.value,
+          label: e.value
+        },
+        selectedSite: this.getSiteResource(e.value)
       });
     }
   }
@@ -253,9 +279,9 @@ class SideNodes extends React.Component {
   }
 
   render() {
-    const { selectedSiteName, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
+    const { selectedSiteOption, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents, nodeType, bandwidth, vlan } = this.state;
-    const validationResult = validator.validateNodeComponents(selectedSiteName, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
+    const validationResult = selectedSiteOption && validator.validateNodeComponents(selectedSiteOption.value, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
     const availableFPs = this.getFacilityPortNames();
 
     const renderTooltip = (id, content) => (
@@ -267,17 +293,16 @@ class SideNodes extends React.Component {
       <div>
         {this.props.resources !== null &&
           <div>
-            {
-              selectedSiteName !== "" &&
+            {!_.isEmpty(selectedSiteOption) ?
               <div>
                 <div className="mb-1">
                   <Link
-                    to={`/resources/${selectedSiteName}`}
+                    to={`/resources/${selectedSiteOption.value}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                      {selectedSiteName} { sitesNameMapping.acronymToLongName[selectedSiteName] && 
-                      `(${sitesNameMapping.acronymToLongName[selectedSiteName]})`
+                      {selectedSiteOption.value} { sitesNameMapping.acronymToLongName[selectedSiteOption.value] && 
+                      `(${sitesNameMapping.acronymToLongName[selectedSiteOption.value]})`
                       }
                   </Link>
                   {
@@ -297,16 +322,13 @@ class SideNodes extends React.Component {
                   }
                 </div>
                 <SiteResourceTable site={selectedSite} />
-              </div>
-            }
-            {
-              selectedSiteName === "" &&
-              <div>
-                <div className="mb-1">
-                  Available FABRIC Testbed Resources 
-                </div>
-                <SiteResourceTable site={this.getResourcesSum()} />
-              </div>
+              </div> :
+                 <div>
+                 <div className="mb-1">
+                   Available FABRIC Testbed Resources 
+                 </div>
+                 <SiteResourceTable site={this.getResourcesSum()} />
+               </div>
             }
           <form>
             <div className="bg-light">
@@ -322,20 +344,12 @@ class SideNodes extends React.Component {
                       <i className="fa fa-question-circle text-secondary ml-2"></i>
                     </OverlayTrigger>
                   </label>
-                  <select
-                    className="form-control form-control-sm"
-                    id="siteNameSelect"
-                    value={selectedSiteName}
+                  <Select
+                    value={selectedSiteOption}
+                    isSearchable={true}
                     onChange={this.handleSiteChange}
-                  >
-                    <option value="">Choose...</option>
-                    <option value="Random">Random</option>
-                    {
-                      this.props.resources.parsedSites.map(site => 
-                        <option value={site.name} key={`site${site.id}`}>{site.name}</option>
-                      )
-                    }
-                  </select>
+                    options={this.generateSiteOptions(this.props.resources.parsedSites)}
+                  />
                 </div>
                 <div className="form-group slice-builder-form-group col-md-3">
                   <label htmlFor="NodeType" className="slice-builder-label">
