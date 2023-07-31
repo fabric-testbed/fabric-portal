@@ -170,6 +170,20 @@ export default class DetailForm extends Component {
             }
 
             {
+              data && data.properties && data.properties.type === "Facility" &&
+              <div>
+                <div className="row mb-2">
+                  <label>Facility Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+              </div>
+            }
+
+            {
               data && data.properties && data.properties.class === "Component" &&
               <div>
                 <div className="row mb-2">
@@ -191,7 +205,7 @@ export default class DetailForm extends Component {
               </div>
             }
 
-            {data && data.properties && data.properties.class === "ConnectionPoint" &&
+            {data && data.properties && data.properties.class === "ConnectionPoint" && !data.capacities &&
               <div>
                 <div className="row mb-2">
                   <label>Connection Point Name</label>
@@ -206,6 +220,27 @@ export default class DetailForm extends Component {
                   <div className="row mb-2">
                   <label>MAC Address</label>
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
+                  </div>
+                }
+              </div>
+            }
+
+
+            {data && data.properties && data.properties.class === "ConnectionPoint" && data.capacities &&
+              <div>
+                <div className="row mb-2">
+                  <label>Facility Port Name</label>
+                  <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+                {
+                  data.capacities.bw &&
+                  <div className="row mb-2">
+                  <label>Bandwidth</label>
+                  <input type="text" className="form-control" defaultValue={data.capacities.bw} disabled/>
                   </div>
                 }
               </div>

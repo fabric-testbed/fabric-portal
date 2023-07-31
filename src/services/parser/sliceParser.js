@@ -104,7 +104,7 @@ export default function parseSlice(slice, sliceType) {
       if (sliceType === "new") {
         data.capacities = originalNode.Capacities ? originalNode.Capacities : null;
       } else if(originalNode.Class !== "NetworkNode") {
-          data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
+        data.capacities = originalNode.Capacities ? JSON.parse(originalNode.Capacities) : null;
       }
     }
 
@@ -117,7 +117,7 @@ export default function parseSlice(slice, sliceType) {
     }
 
     // add parent site node/ management IP address if it's VM node.
-    if (originalNode.Site) {
+    if (originalNode.Site && originalNode.Type !== "VLAN") {
       data.parent = getSiteIdbyName(originalNode.Site);
       if (originalNode.Type === "VM") {
         data.properties.MgmtIp = originalNode.MgmtIp || "";
@@ -288,6 +288,7 @@ export default function parseSlice(slice, sliceType) {
           label: "",
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
+          capacities: JSON.parse(objNodes[link.target].Capacities)
         };
         elements.push(fp_data);
       } else if (objNodes[link.target].Type === "FacilityPort"
@@ -298,6 +299,7 @@ export default function parseSlice(slice, sliceType) {
           label: "",
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
+          capacities: JSON.parse(objNodes[link.target].Capacities)
         };
         elements.push(fp_data);
       } else if ((objNodes[link.source].Class === "NetworkService"
