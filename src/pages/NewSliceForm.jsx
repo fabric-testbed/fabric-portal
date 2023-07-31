@@ -27,7 +27,6 @@ import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 import { default as portalData } from "../services/portalData.json";
-import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers.js";
 
 class NewSliceForm extends React.Component {
   state = {
@@ -340,36 +339,41 @@ class NewSliceForm extends React.Component {
 
   generatePublicKeys = () => {
     const keys = [];
+    const keyNames = [];
     const { selectedKeyIDs, sliverKeys} = this.state;
     for (const key of sliverKeys) {
       if (selectedKeyIDs.includes(key.uuid)) {
         keys.push(`${key.ssh_key_type} ${key.public_key} ${key.comment}`)
+        keyNames.push(key.comment);
       }
     }
-    return keys;
+    return { keys, keyNames };
   }
 
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
 
-    const { sliceName, selectedKeyIDs, leaseEndTime } = this.state;
+    const { sliceName, leaseEndTime } = this.state;
     const that = this;
 
     that.setState({ showSliceSpinner: true });
 
     let requestData = {};
+    const pubKeys = this.generatePublicKeys();
     if (leaseEndTime !== "") {
       requestData = {
         name: sliceName,
-        sshKeys: this.generatePublicKeys(),
+        sshKeys: pubKeys.keys,
         leaseEndTime: leaseEndTime,
-        json: this.generateSliceJSON()
+        json: this.generateSliceJSON(),
+        sshKeyNames: pubKeys.keyNames
       }
     } else {
       requestData = {
         name: sliceName,
-        sshKeys: this.generatePublicKeys(),
-        json: this.generateSliceJSON()
+        sshKeys: pubKeys.keys,
+        json: this.generateSliceJSON(),
+        sshKeyNames: pubKeys.keyNames
       }
     }
 

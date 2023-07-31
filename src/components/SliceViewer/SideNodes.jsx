@@ -103,10 +103,10 @@ class SideNodes extends React.Component {
   handleAddNode = () => {
     // support types: 'VM', 'Facility'
     if (this.state.nodeType === "VM") {
-      const { selectedSiteName, nodeName, core, ram, disk,
+      const { selectedSite, nodeName, core, ram, disk,
         imageType, selectedImageRef, nodeComponents, BootScript } = this.state;
       const image = `${selectedImageRef},${imageType}`;
-      this.props.onVMAdd(selectedSiteName, nodeName, Number(core),
+      this.props.onVMAdd(selectedSite.name, nodeName, Number(core),
         Number(ram), Number(disk), image, nodeComponents, BootScript);
       this.setState({
         nodeName: "",
@@ -120,8 +120,8 @@ class SideNodes extends React.Component {
         BootScript: "",
       })
     } else if (this.state.nodeType === "Facility") {
-      const { selectedSiteName, nodeName, bandwidth, vlan } = this.state;
-      this.props.onFacilityAdd(selectedSiteName, nodeName, Number(bandwidth), vlan);
+      const { selectedSite, nodeName, bandwidth, vlan } = this.state;
+      this.props.onFacilityAdd(selectedSite.name, nodeName, Number(bandwidth), vlan);
       this.setState({
         nodeName: "",
         bandwidth: 0,
@@ -195,14 +195,13 @@ class SideNodes extends React.Component {
 
     return options;
   }
-  
+
   handleSiteChange = (e) => {
     if (e.value === "") {
       this.setState({ selectedSiteOption: {} });
     } else if (e.value === "Random") {
       const sites = this.props.resources.parsedSites;
       const random_site = sites[Math.floor(Math.random() * sites.length)];
-      console.log(random_site)
       this.setState({
         selectedSiteOption: {
           value: random_site.name,
@@ -210,6 +209,7 @@ class SideNodes extends React.Component {
         },
         selectedSite: this.getSiteResource(random_site.name)
       });
+      
     } else {
       this.setState({
         selectedSiteOption: {
