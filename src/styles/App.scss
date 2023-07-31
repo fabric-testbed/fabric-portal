@@ -676,8 +676,12 @@ ul,
   line-height: 1.5 !important;
 }
 
-.css-13cymwt-control, .css-1fdsijx-ValueContainer, .css-1hb7zxy-IndicatorsContainer {
+.css-13cymwt-control, .css-t3ipsp-control, .css-1fdsijx-ValueContainer, .css-1hb7zxy-IndicatorsContainer {
   height: calc(1.5em + 0.5rem + 2px) !important;
   min-height: 31px !important;
   max-height: 31px !important;
+}
+
+.css-1fdsijx-ValueContainer {
+  padding: 0px 8px !important;
 }

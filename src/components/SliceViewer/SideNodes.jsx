@@ -174,22 +174,28 @@ class SideNodes extends React.Component {
   }
 
   generateSiteOptions = (sites) => {
-    const options = [
+    let options = [
       {
         value: "Random",
         label: "*Random*"
       }
     ];
+
+    const sortedSiteOptions = [];
     for (const site of sites) {
-      options.push({ 
+      sortedSiteOptions.push({ 
         value: site.name,
         label: site.name
       })
     }
 
+    sortedSiteOptions.sort((a, b) => a.value.localeCompare(b.value));
+
+    options = options.concat(sortedSiteOptions);
+
     return options;
   }
-
+  
   handleSiteChange = (e) => {
     if (e.value === "") {
       this.setState({ selectedSiteOption: {} });
