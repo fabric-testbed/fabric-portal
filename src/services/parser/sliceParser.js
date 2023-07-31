@@ -288,7 +288,8 @@ export default function parseSlice(slice, sliceType) {
           label: "",
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
-          capacities: JSON.parse(objNodes[link.target].Capacities)
+          capacities: objNodes[link.target].Capacities ? JSON.parse(objNodes[link.target].Capacities) : null,
+          labels: objNodes[link.target].Labels ? JSON.parse(objNodes[link.target].Labels) : null
         };
         elements.push(fp_data);
       } else if (objNodes[link.target].Type === "FacilityPort"
@@ -299,7 +300,8 @@ export default function parseSlice(slice, sliceType) {
           label: "",
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
-          capacities: JSON.parse(objNodes[link.target].Capacities)
+          capacities: objNodes[link.source].Capacities ? JSON.parse(objNodes[link.source].Capacities) : null,
+          labels: objNodes[link.source].Labels ? JSON.parse(objNodes[link.source].Labels) : null
         };
         elements.push(fp_data);
       } else if ((objNodes[link.source].Class === "NetworkService"

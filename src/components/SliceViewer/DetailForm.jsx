@@ -226,7 +226,8 @@ export default class DetailForm extends Component {
             }
 
 
-            {data && data.properties && data.properties.class === "ConnectionPoint" && data.capacities &&
+            {
+             data && data.properties && data.properties.type && data.properties.type === "FacilityPort" &&
               <div>
                 <div className="row mb-2">
                   <label>Facility Port Name</label>
@@ -240,7 +241,14 @@ export default class DetailForm extends Component {
                   data.capacities.bw &&
                   <div className="row mb-2">
                   <label>Bandwidth</label>
-                  <input type="text" className="form-control" defaultValue={data.capacities.bw} disabled/>
+                  <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
+                  </div>
+                }
+                {
+                  data.labels && data.labels.vlan && 
+                  <div className="row mb-2">
+                    <label>VLAN</label>
+                    <input type="number" className="form-control" defaultValue={data.labels.vlan} disabled/>
                   </div>
                 }
               </div>

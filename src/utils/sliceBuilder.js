@@ -333,7 +333,6 @@ const addFacility = (node, graphID, nodes, links) => {
     "StitchNode": "false",
     "Layer": "L2",
   }
-
   const facility_port = {
     "id": facility_id + 2,
     "GraphID": graphID,
@@ -342,7 +341,10 @@ const addFacility = (node, graphID, nodes, links) => {
     "Name": `${node.site}-${node.name}-int`,
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
-    "Labels": JSON.stringify(node.Labels),
+    "Labels": JSON.stringify({
+      "local_name": "p1",
+      "vlan": node.labels ? node.labels.vlan : 0
+    }),
     "StitchNode": "false",
     "layout": JSON.stringify({
       "connectFrom": facility_id + 1,

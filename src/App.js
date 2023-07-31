@@ -13,6 +13,7 @@ import CookiePolicy from "./pages/static/CookiePolicy";
 import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
 import SliceViewer from "./pages/SliceViewer";
+import SliceEditor from "./pages/SliceEditor";
 import NewSliceForm from "./pages/NewSliceForm";
 import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
@@ -143,6 +144,7 @@ class App extends React.Component {
             <Route path="/help" element={<Help />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+                <Route path="/slice-editor/:slice_id/:project_id" element={<SliceEditor />} />
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />
                 <Route path="/experiments" element={<Experiments />} />
