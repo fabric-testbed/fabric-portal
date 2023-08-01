@@ -73,15 +73,15 @@ class SideNodes extends React.Component {
     "Cloud-Facility-Azure": null,
     "Cloud-Facility-Azure-Gov": null,
     "Cloud-Facility-GCP": null,
-    "ESnet-StarLight": null,
-    "Internet2-StarLight": null,
+    "ESnet-StarLight": [3737, 3739],
+    "Internet2-StarLight": [3727, 3729],
     "OCT-MGHPCC": [3110, 3119],
-    "RCNF": null,
+    "RCNF": [3741, 3751],
     "Utah-Cloudlab-Powder": [2100, 3499],
     "CLemson-Cloudlab": [1000, 2599],
-    "RENCI-GSU": null,
-    "RENCI-Chameleon": null,
-    "UKY-AL2S": null
+    "RENC-GSU": [1000],
+    "RENCI-Chameleon": [2000, 2001],
+    "UKY-AL2S": [852, 855]
   }
 
   siteFacilityPortPairing = {

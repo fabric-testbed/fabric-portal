@@ -145,6 +145,7 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
+    properties.site = originalNode.layout ? JSON.parse(originalNode.layout).site : "";
     if (originalNode.LabelAllocations && JSON.parse(originalNode.LabelAllocations)["mac"]) {
       properties.mac = JSON.parse(originalNode.LabelAllocations)["mac"];
     } else {

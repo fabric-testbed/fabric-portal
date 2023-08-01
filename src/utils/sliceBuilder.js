@@ -65,7 +65,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 1 Connection Points and OVS has CP link
     const ovs_node = {
-      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Name": `${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
       "id": component_node_id + 1,
@@ -74,6 +74,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "parentID": component_node_id,
         "hasLinkIdAsTarget": component_link_id + 1,
       })
@@ -83,13 +84,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Name":  `${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 2
       })
@@ -134,7 +136,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 2 Connection Points and OVS has CP link
     const ovs_node = {
-      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Name": `${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
       "id": component_node_id + 1,
@@ -143,6 +145,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "parentID": component_node_id,
         "hasLinkIdAsTarget": component_link_id + 1,
       })
@@ -152,13 +155,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Name":  `${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 2
       })
@@ -168,13 +172,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p2"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p2`,
+      "Name":  `${node.name}-${component.name}-p2`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 3
       })
@@ -338,7 +343,7 @@ const addFacility = (node, graphID, nodes, links) => {
     "GraphID": graphID,
     "NodeID": uuidv4(),
     "Class": "ConnectionPoint",
-    "Name": `${node.site}-${node.name}-int`,
+    "Name": `${node.name}-int`,
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
     "Labels": JSON.stringify({
@@ -347,6 +352,7 @@ const addFacility = (node, graphID, nodes, links) => {
     }),
     "StitchNode": "false",
     "layout": JSON.stringify({
+      "site": node.site,
       "connectFrom": facility_id + 1,
       "connectLinkIdAsTarget": facility_link_id + 1
     })

@@ -1,5 +1,9 @@
 const getSite = (cp) => {
-  return cp.properties.name.substr(0, cp.properties.name.indexOf('-'));
+  if (cp.properties && cp.properties.site) {
+    return cp.properties.site;
+  }
+
+  return "";
 }
 
 const isPositiveInteger = (input) => {
