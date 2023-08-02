@@ -685,3 +685,24 @@ ul,
 .css-1fdsijx-ValueContainer {
   padding: 0px 8px !important;
 }
+
+.homepage-partner-header {
+  font-size: 2.5rem;
+  // font-family: 'Montserrat';
+  font-weight: 500;
+  border-bottom: 3px #5798bc solid;
+}
+
+.homepage-partner-text {
+  font-size: 1.25rem;
+  font-family: 'Montserrat';
+  color: $primary-color-dark;
+  margin: 1rem auto;
+}
+
+.homepage-partner-logo-containter {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}

@@ -335,7 +335,7 @@ const addFacility = (node, graphID, nodes, links) => {
     "Class": "NetworkService",
     "Name": `${node.name}-ns`,
     "Type": "VLAN",
-    "StitchNode": "false",
+    "StitchNode": "false", 
     "Layer": "L2",
   }
   const facility_port = {
