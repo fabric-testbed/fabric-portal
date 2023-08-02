@@ -23,6 +23,7 @@
     "font-awesome": "^4.7.0",
     "html-react-parser": "^1.2.4",
     "http-service": "^1.1.3",
+    "infinite-react-carousel": "^1.2.11",
     "joi-browser": "^13.4.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.21",
