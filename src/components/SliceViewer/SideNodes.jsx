@@ -80,7 +80,7 @@ class SideNodes extends React.Component {
     "Utah-Cloudlab-Powder": [2100, 3499],
     "CLemson-Cloudlab": [1000, 2599],
     "RENC-GSU": [1000],
-    "RENCI-Chameleon": [2000, 2001],
+    "RENC-Chameleon": [2000, 2001],
     "UKY-AL2S": [852, 855]
   }
 
@@ -95,7 +95,7 @@ class SideNodes extends React.Component {
     "WASH": ["RCNF"],
     "UTAH": ["Utah-Cloudlab-Powder"],
     "CLEM": ["CLemson-Cloudlab"],
-    "RENCI": ["RENCI-GSU", "RENCI-Chameleon"],
+    "RENC": ["RENC-GSU", "RENC-Chameleon"],
     "UKY": ["UKY-AL2S"],
     "MASS": ["OCT-MGHPCC"]
   }

@@ -343,7 +343,8 @@ const addFacility = (node, graphID, nodes, links) => {
     "GraphID": graphID,
     "NodeID": uuidv4(),
     "Class": "ConnectionPoint",
-    "Name": `${node.name}-int`,
+    // "Name": `${node.name}-int`,
+    "Name": node.name,
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
     "Labels": JSON.stringify({

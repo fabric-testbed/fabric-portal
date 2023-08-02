@@ -10,3 +10,7 @@ export function getActiveFacilityUpdates() {
 export function getActiveMaintenanceNotice() {
   return http.get(`${apiEndpoint}?announcement_type=maintenance&is_active=true&offset=0&limit=3`);
 }
+
+export function getActiveNews() {
+  return http.get(`${apiEndpoint}?announcement_type=news&is_active=true&offset=0&limit=2`);
+}
