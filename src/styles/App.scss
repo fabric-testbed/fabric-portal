@@ -706,3 +706,25 @@ ul,
   align-items: flex-end;
   justify-content: center;
 }
+
+.homepage-scroll-container {
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.carousel-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  height: 100%;
+}
+
+.carousel-track {
+  height: 55px !important;
+}
+
+.homepage-scroll-box {
+  display: flex !important;
+  justify-content: center;
+  align-self: center;
+}
