@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
 import RecentNews from "../components/Home/RecentNews";
+import TwitterFeed from "../components/Home/TwitterFeed";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -113,7 +114,7 @@ class Home extends React.Component {
             <RecentNews />
           </div>
           <div className="col-xl-3 col-lg-12">
-            <FacilityUpdates />
+            <TwitterFeed />
           </div>
         </div>
         <CookieConsent
