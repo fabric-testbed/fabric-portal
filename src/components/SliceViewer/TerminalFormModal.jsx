@@ -1,4 +1,5 @@
 import Joi from "joi-browser";
+import checkPortalType from "../../utils/checkPortalType";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
@@ -98,7 +99,7 @@ class TerminalFormModal extends Form {
             <div className="modal-body d-flex flex-column align-items-center justify-content-center">
               <SpinnerWithText text={"Connecting to VM..."} />
               <a
-                href={portalData.webSshAppLink}
+                href={portalData.webSshAppLinks[checkPortalType(window.location.href)]}
                 target="_blank"
                 rel="noopener noreferrer"
               >
