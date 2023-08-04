@@ -67,21 +67,21 @@ class SideNodes extends React.Component {
   ]};
 
   facilityPortVlanRanges = {
-    "Chameleon-StarLight": [3300, 3309],
-    "Chameleon-TACC": [3210, 3499],
-    "Cloud-Facility-AWS": null,
-    "Cloud-Facility-Azure": null,
-    "Cloud-Facility-Azure-Gov": null,
-    "Cloud-Facility-GCP": null,
-    "ESnet-StarLight": [3737, 3739],
-    "Internet2-StarLight": [3727, 3729],
-    "OCT-MGHPCC": [3110, 3119],
-    "RCNF": [3741, 3751],
-    "Utah-Cloudlab-Powder": [2100, 3499],
-    "CLemson-Cloudlab": [1000, 2599],
-    "RENC-GSU": [1000],
-    "RENC-Chameleon": [2000, 2001],
-    "UKY-AL2S": [852, 855]
+    "Chameleon-StarLight": "3300-3309",
+    "Chameleon-TACC": "3210-3499",
+    "Cloud-Facility-AWS": "####-####",
+    "Cloud-Facility-Azure": "####-####",
+    "Cloud-Facility-Azure-Gov": "####-####",
+    "Cloud-Facility-GCP": "####-####",
+    "ESnet-StarLight": "3737-3739",
+    "Internet2-StarLight": "3727-3729",
+    "OCT-MGHPCC": "3110-3119",
+    "RCNF": "3741-3751",
+    "Utah-Cloudlab-Powder": "2100-3499",
+    "CLemson-Cloudlab": "1000-2599",
+    "RENC-GSU": "1000",
+    "RENC-Chameleon": "2000-2001",
+    "UKY-AL2S": "852-855"
   }
 
   siteFacilityPortPairing = {
@@ -430,12 +430,7 @@ class SideNodes extends React.Component {
                   </div>
                   <div className="form-group slice-builder-form-group col-md-8">
                     <label htmlFor="inputVlan" className="slice-builder-label">
-                      VLAN (Range: {
-                        this.facilityPortVlanRanges[nodeName] ? 
-                        `${this.facilityPortVlanRanges[nodeName][0]}-${this.facilityPortVlanRanges[nodeName][1]}` 
-                        :
-                        `####-####`
-                      })
+                      VLAN (Range: {this.facilityPortVlanRanges[nodeName] })
                     </label>
                     <input type="text" className="form-control form-control-sm" id="inputVlan"
                       value={vlan} onChange={this.handleVlanChange}/>
