@@ -145,7 +145,7 @@ export default function parseSlice(slice, sliceType) {
     properties.name = originalNode.Name;
     properties.class = originalNode.Class;
     properties.type = originalNode.Type;
-    properties.site = originalNode.layout ? JSON.parse(originalNode.layout).site : "";
+    data.site = originalNode.layout ? JSON.parse(originalNode.layout).site : "";
     if (originalNode.LabelAllocations && JSON.parse(originalNode.LabelAllocations)["mac"]) {
       properties.mac = JSON.parse(originalNode.LabelAllocations)["mac"];
     } else {
@@ -290,7 +290,8 @@ export default function parseSlice(slice, sliceType) {
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
           capacities: objNodes[link.target].Capacities ? JSON.parse(objNodes[link.target].Capacities) : null,
-          labels: objNodes[link.target].Labels ? JSON.parse(objNodes[link.target].Labels) : null
+          labels: objNodes[link.target].Labels ? JSON.parse(objNodes[link.target].Labels) : null,
+          site: objNodes[link.target].layout ? JSON.parse(objNodes[link.target].layout).site : ""
         };
         elements.push(fp_data);
       } else if (objNodes[link.target].Type === "FacilityPort"
@@ -302,7 +303,8 @@ export default function parseSlice(slice, sliceType) {
           type: "roundrectangle",
           properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
           capacities: objNodes[link.source].Capacities ? JSON.parse(objNodes[link.source].Capacities) : null,
-          labels: objNodes[link.source].Labels ? JSON.parse(objNodes[link.source].Labels) : null
+          labels: objNodes[link.source].Labels ? JSON.parse(objNodes[link.source].Labels) : null,
+          site: objNodes[link.source].layout ? JSON.parse(objNodes[link.source].layout).site : ""
         };
         elements.push(fp_data);
       } else if ((objNodes[link.source].Class === "NetworkService"
@@ -385,9 +387,6 @@ export default function parseSlice(slice, sliceType) {
       cyElements.push({ data: el })
     }
   })
-
-  console.log("cy elements: ");
-  console.log(cyElements);
 
   return cyElements;
 }

@@ -397,7 +397,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   };
 
   if (type === "L2Bridge") {
-    const siteName = selectedCPs[0].properties.site;
+    const siteName = selectedCPs[0].site;
     network_service_node = {
       "Name": name,
       "Site": siteName,
