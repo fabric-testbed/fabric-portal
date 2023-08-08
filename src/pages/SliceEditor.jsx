@@ -20,6 +20,7 @@ import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
 import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
+import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { default as portalData } from "../services/portalData.json";
 
@@ -27,7 +28,6 @@ class SliceEditor extends React.Component {
   state = {
     sliceName: "",
     leaseEndTime: "",
-    showResourceSpinner: false,
     showSliceSpinner: false,
     sliceNodes: [],
     sliceLinks: [],
@@ -35,7 +35,11 @@ class SliceEditor extends React.Component {
     parsedResources: null,
     selectedCPs: [],
     originalSlice: {},
-    elements: []
+    elements: [],
+    showResourceSpinner: false,
+    project: {},
+    projectTags: [],
+    showProjectSpinner: false
   }
 
   async componentDidMount() {
@@ -55,15 +59,40 @@ class SliceEditor extends React.Component {
             spinnerText: ""
           });
         });
+        const { data: resources } = await getResources();
+        const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
+        const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+        this.setState({
+          parsedResources: parsedObj,
+          showResourceSpinner: false,
+          project: projectRes.results[0],
+          projectTags: projectRes.results[0].tags,
+          showProjectSpinner: false
+        });
      } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
     }
   }
 
+  generateGraphElements = () => {
+    const sliceJSON = {
+      "directed": false,
+      "multigraph": false,
+      "graph": {},
+      "nodes": this.state.sliceNodes,
+      "links": this.state.sliceLinks,
+    }
+
+    let elements = sliceParser(sliceJSON, "new");
+
+    return elements;
+  }
+
   render() {
-    const { sliceName, sshKey, sliverKeys, selectedData,
+    const { sliceName, sshKey, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs, originalSlice, elements }
+      sliceNodes, sliceLinks, selectedCPs, originalSlice, elements,
+      project, projectTags, showProjectSpinner  }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
@@ -111,7 +140,11 @@ class SliceEditor extends React.Component {
             <div className="card">
                 <div>
                   <div className="card-body slice-builder-card-body">
-                    <ProjectTags projectId={this.props.match.params.project_id} />
+                    <ProjectTags
+                       project={project}
+                       tags={projectTags}
+                       showSpinner={showProjectSpinner}
+                    />
                   </div>
                 </div>
               </div>

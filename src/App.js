@@ -142,6 +142,7 @@ class App extends React.Component {
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/slice-editor" element={<SliceEditor />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
                 <Route path="/slice-editor/:slice_id/:project_id" element={<SliceEditor />} />

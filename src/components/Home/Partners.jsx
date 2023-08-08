@@ -54,7 +54,7 @@ const Partners = () => {
       <div className="homepage-scroll-container">
         <Slider
           autoPlay={true}
-          autoplaySpeed={1000}
+          autoplaySpeed={100}
           autoplayScroll={5}
           pauseOnHover={true}
           dots={false}

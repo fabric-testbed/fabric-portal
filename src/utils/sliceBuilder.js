@@ -343,12 +343,10 @@ const addFacility = (node, graphID, nodes, links) => {
     "GraphID": graphID,
     "NodeID": uuidv4(),
     "Class": "ConnectionPoint",
-    // "Name": `${node.name}-int`,
-    "Name": node.name,
+    "Name": `${node.name}-int`,
     "Type": "FacilityPort",
     "Capacities": JSON.stringify(node.capacities),
     "Labels": JSON.stringify({
-      "local_name": "p1",
       "vlan": node.labels ? node.labels.vlan : 0
     }),
     "StitchNode": "false",
@@ -399,7 +397,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   };
 
   if (type === "L2Bridge") {
-    const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'));
+    const siteName = selectedCPs[0].properties.site;
     network_service_node = {
       "Name": name,
       "Site": siteName,
