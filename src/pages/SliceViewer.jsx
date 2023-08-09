@@ -168,14 +168,14 @@ class SliceViewer extends Component {
                 </h2>
               </div>
               <div className="d-flex flex-row justify-content-between align-items-center">
-                  <Link to={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
+                  {/* <Link to={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
                     <button
                       className="btn btn-sm btn-outline-primary my-3 mr-3"
                     >
                       <i className="fa fa-exchange mr-2"></i>
                       Edit Mode
                     </button>
-                  </Link>
+                  </Link> */}
                 {
                   ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
                   <DeleteModal

@@ -73,7 +73,7 @@ export default class DetailForm extends Component {
                             name="sliceViewerCalendar"
                             onTimeChange={this.props.onLeaseEndChange}
                             parent={"sliceDetailForm"}
-                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                           />
                         </div>
                         <button
@@ -205,7 +205,8 @@ export default class DetailForm extends Component {
               </div>
             }
 
-            {data && data.properties && data.properties.class === "ConnectionPoint" && !data.capacities &&
+            {
+             data && data.properties && data.properties.class === "ConnectionPoint" && data.properties.type && data.properties.type !== "FacilityPort" ?
               <div>
                 <div className="row mb-2">
                   <label>Connection Point Name</label>
@@ -222,36 +223,32 @@ export default class DetailForm extends Component {
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
                   </div>
                 }
-              </div>
-            }
-
-
-            {
-             data && data.properties && data.properties.type && data.properties.type === "FacilityPort" &&
+              </div> 
+              :
               <div>
-                <div className="row mb-2">
-                  <label>Facility Port Name</label>
-                  <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
-                </div>
-                <div className="row mb-2">
-                  <label>Type</label>
-                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
-                </div>
-                {
-                  data.capacities.bw &&
-                  <div className="row mb-2">
-                  <label>Bandwidth</label>
-                  <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
-                  </div>
-                }
-                {
-                  data.labels && data.labels.vlan && 
-                  <div className="row mb-2">
-                    <label>VLAN</label>
-                    <input type="number" className="form-control" defaultValue={data.labels.vlan} disabled/>
-                  </div>
-                }
+              <div className="row mb-2">
+                <label>Facility Port Name</label>
+                <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
               </div>
+              <div className="row mb-2">
+                <label>Type</label>
+                <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+              </div>
+              {
+                data.capacities.bw &&
+                <div className="row mb-2">
+                <label>Bandwidth</label>
+                <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
+                </div>
+              }
+              {
+                data.labels && data.labels.vlan && 
+                <div className="row mb-2">
+                  <label>VLAN</label>
+                  <input type="number" className="form-control" defaultValue={data.labels.vlan} disabled/>
+                </div>
+              }
+            </div>
             }
 
             {

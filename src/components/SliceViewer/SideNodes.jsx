@@ -222,7 +222,7 @@ class SideNodes extends React.Component {
   }
 
   handleNodeTypeChange = (e) => {
-    this.setState({ nodeType: e.target.value });
+    this.setState({ nodeType: e.target.value, nodeName: "" });
   }
 
   handleNameChange = (e) => {

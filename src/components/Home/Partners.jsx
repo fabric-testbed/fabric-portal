@@ -25,6 +25,16 @@ const Partners = () => {
   const partnerLogos = [Columbia, Utah, NCSA, FIU, GT, Internet2, Rutgers, SRI,
     TACC, Uchicago, UCSD, Usignite, UVA];
 
+  const settings =  {
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: false,
+    slidesPerRow: 5,
+    autoplayScroll: 1,
+    duration: 25,
+    arrows: false
+  };
+
   return (
     <div className="my-3 d-flex flex-column justify-content-center align-items-center">
       <div className="mb-2">
@@ -52,17 +62,7 @@ const Partners = () => {
         }
       </div>
       <div className="homepage-scroll-container">
-        <Slider
-          autoPlay={true}
-          autoplaySpeed={100}
-          autoplayScroll={5}
-          pauseOnHover={true}
-          dots={false}
-          slidesPerRow={5}
-          centerMode={true}
-          adaptiveHeight={true}
-          duration={100}
-        >
+        <Slider { ...settings }>
           {
             partnerLogos.map((logo, index) =>  
             <div
@@ -71,7 +71,7 @@ const Partners = () => {
             >
               <img
                 src={logo}
-                height="30"
+                height="35"
                 className="mx-2"
                 alt={`fabricPartnerLogo${logo}`}
               />
