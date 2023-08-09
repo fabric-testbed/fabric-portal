@@ -119,14 +119,17 @@ export default class DetailForm extends Component {
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-primary ml-2"
-                      data-toggle="modal"
-                      data-target="#TerminalFormModalCenter"
-                    >
-                      Connect to VM
-                    </button>
+                    {
+                      slice.state === "StableOK" &&
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary ml-2"
+                        data-toggle="modal"
+                        data-target="#TerminalFormModalCenter"
+                      >
+                        Connect to VM
+                      </button>
+                    }
                   </label>
                   <div className="ssh-command">
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
@@ -206,7 +209,7 @@ export default class DetailForm extends Component {
             }
 
             {
-             data && data.properties && data.properties.class === "ConnectionPoint" && data.properties.type && data.properties.type !== "FacilityPort" ?
+             data && data.properties && data.properties.class === "ConnectionPoint" && data.properties.type && data.properties.type !== "FacilityPort" &&
               <div>
                 <div className="row mb-2">
                   <label>Connection Point Name</label>
@@ -224,8 +227,10 @@ export default class DetailForm extends Component {
                   </div>
                 }
               </div> 
-              :
-              <div>
+            }
+            {
+            data && data.properties && data.properties.type && data.properties.type === "FacilityPort" &&
+            <div>
               <div className="row mb-2">
                 <label>Facility Port Name</label>
                 <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
@@ -250,7 +255,6 @@ export default class DetailForm extends Component {
               }
             </div>
             }
-
             {
               data && data.properties && data.properties.class === "NetworkService" &&
               <div>

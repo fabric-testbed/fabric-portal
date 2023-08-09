@@ -138,11 +138,15 @@ class TerminalFormModal extends Form {
                 </div>
               </form>
             }
-          <form onSubmit={this.handleSubmit}>
-            {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)}
-            {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
-            {this.renderButton("Connect")}
-          </form>
+            <div className="alert alert-primary my-1" role="alert">
+              <i className="fa fa-exclamation-triangle mr-2"></i> 
+              Your private keys will only be used to establish connection and will not be stored.
+            </div>
+            <form onSubmit={this.handleSubmit}>
+              {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)}
+              {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
+              {this.renderButton("Connect")}
+            </form>
             </div>
           }
         </div>
