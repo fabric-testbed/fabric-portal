@@ -138,8 +138,8 @@ class TerminalFormModal extends Form {
                 </div>
               </form>
             }
-            <div className="alert alert-primary my-1" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i> 
+            <div className="alert alert-primary mt-2 mb-1" role="alert">
+              <i className="fa fa-exclamation-triangle mr-1"></i> 
               Your private keys will only be used to establish connection and will not be stored.
             </div>
             <form onSubmit={this.handleSubmit}>
