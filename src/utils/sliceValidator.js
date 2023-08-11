@@ -96,7 +96,7 @@ const validateVMNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk
   return validationResult;
 }
 
-const validateFPNode = (selectedSite, bandwidth, vlan, vlanRange) => {
+const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -109,40 +109,45 @@ const validateFPNode = (selectedSite, bandwidth, vlan, vlanRange) => {
     return validationResult;
   }
 
-  // bandwidth validation.
-  if (bandwidth < 0 || bandwidth > 100) {
-    validationResult.isValid = false;
-    validationResult.message = "Please input bandwidth between 0 - 100.";
-    return validationResult;
-  }
+  // Validate bandwidth and vlan once Facility Port is selected
+  if (nodeName) {
+    // bandwidth validation.
+    if (bandwidth < 0 || bandwidth > 100) {
+      validationResult.isValid = false;
+      validationResult.message = "Please input bandwidth between 0 - 100.";
+      return validationResult;
+    }
 
-  // vlan validation (if vlan range is provided)
-  if (!vlan) {
-    validationResult.isValid = false;
-    validationResult.message = "VLAN cannot be empty.";
-    return validationResult;
-  } else {
-    if (vlanRange !== "####-####") {
-      // for vlan range has min and max, e.g. 3300-3309
-      if (vlanRange.includes('-')) {
-        const min = parseInt(vlanRange.substring(0, vlanRange.indexOf('-')));
-        const max = parseInt(vlanRange.substring(vlanRange.indexOf('-') + 1));
-        if (vlan < min || vlan > max) {
-          validationResult.isValid = false;
-          validationResult.message = `Please input VLAN between the range of ${vlanRange}`;
-          return validationResult;
-        }
-      } else {
-        // There is only 1 VLAN value available. e.g. 1000
-        const availableVlan = parseInt(vlanRange);
-        if (vlan !== availableVlan) {
-          validationResult.isValid = false;
-          validationResult.message = `Please input VLAN value as ${vlanRange}`;
-          return validationResult;
+    // vlan validation (if vlan range is provided)
+    if (!vlan) {
+      validationResult.isValid = false;
+      validationResult.message = "VLAN cannot be empty.";
+      return validationResult;
+    } else {
+      if (vlanRange !== "####-####") {
+        // for vlan range has min and max, e.g. 3300-3309
+        if (vlanRange.includes('-')) {
+          const min = parseInt(vlanRange.substring(0, vlanRange.indexOf('-')));
+          const max = parseInt(vlanRange.substring(vlanRange.indexOf('-') + 1));
+          if (vlan < min || vlan > max) {
+            validationResult.isValid = false;
+            validationResult.message = `Please input VLAN between the range of ${vlanRange}`;
+            return validationResult;
+          }
+        } else {
+          // There is only 1 VLAN value available. e.g. 1000
+          const availableVlan = parseInt(vlanRange);
+          if (vlan !== availableVlan) {
+            validationResult.isValid = false;
+            validationResult.message = `Please input VLAN value as ${vlanRange}`;
+            return validationResult;
+          }
         }
       }
     }
   }
+
+  return validationResult;
 }
 
 const validateSingleComponent = (type, name, model, addedComponents) => {
