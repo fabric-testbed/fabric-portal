@@ -232,7 +232,8 @@ class SliceViewer extends Component {
                     slice={slice}
                     leaseEndTime={leaseEndTime}
                     data={selectedData}
-                    key={selectedData && selectedData.properties && selectedData.properties.name}
+                    key={selectedData && selectedData.properties && 
+                      `${selectedData.properties.class}-${selectedData.properties.name}`}
                     clearSelectedData={() => this.clearSelectedData()}
                     onLeaseEndChange={this.handleLeaseEndChange}
                     onSliceExtend={this.handleSliceExtend}

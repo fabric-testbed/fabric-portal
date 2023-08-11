@@ -42,7 +42,7 @@ const validateSlice = (sliceName, selectedKeyIDs, sliceNodes) => {
     return validationResult;
 }
 
-const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
+const validateVMNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -94,6 +94,55 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
   validationResult.message = "";
 
   return validationResult;
+}
+
+const validateFPNode = (selectedSite, bandwidth, vlan, vlanRange) => {
+  const validationResult = {
+    isValid: false,
+    message: "",
+  };
+
+  // Site is required.
+  if (selectedSite === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please select a site or choose the random option.";
+    return validationResult;
+  }
+
+  // bandwidth validation.
+  if (bandwidth < 0 || bandwidth > 100) {
+    validationResult.isValid = false;
+    validationResult.message = "Please input bandwidth between 0 - 100.";
+    return validationResult;
+  }
+
+  // vlan validation (if vlan range is provided)
+  if (!vlan) {
+    validationResult.isValid = false;
+    validationResult.message = "VLAN cannot be empty.";
+    return validationResult;
+  } else {
+    if (vlanRange !== "####-####") {
+      // for vlan range has min and max, e.g. 3300-3309
+      if (vlanRange.includes('-')) {
+        const min = parseInt(vlanRange.substring(0, vlanRange.indexOf('-')));
+        const max = parseInt(vlanRange.substring(vlanRange.indexOf('-') + 1));
+        if (vlan < min || vlan > max) {
+          validationResult.isValid = false;
+          validationResult.message = `Please input VLAN between the range of ${vlanRange}`;
+          return validationResult;
+        }
+      } else {
+        // There is only 1 VLAN value available. e.g. 1000
+        const availableVlan = parseInt(vlanRange);
+        if (vlan !== availableVlan) {
+          validationResult.isValid = false;
+          validationResult.message = `Please input VLAN value as ${vlanRange}`;
+          return validationResult;
+        }
+      }
+    }
+  }
 }
 
 const validateSingleComponent = (type, name, model, addedComponents) => {
@@ -304,7 +353,8 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 
 const validator = {
   validateSlice,
-  validateNodeComponents,
+  validateVMNodeComponents,
+  validateFPNode,
   validateSingleComponent,
   validateNetworkService,
   validateDetailForm,
