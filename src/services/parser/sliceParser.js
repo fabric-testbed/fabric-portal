@@ -294,8 +294,8 @@ export default function parseSlice(slice, sliceType) {
           site: objNodes[link.target].layout ? JSON.parse(objNodes[link.target].layout).site : ""
         };
         elements.push(fp_data);
-      } else if (objNodes[link.target].Type === "FacilityPort"
-      && objNodes[link.source].Type === "VLAN") {
+      } else if (objNodes[link.source].Type === "FacilityPort"
+      && objNodes[link.target].Type === "VLAN") {
         const fp_data = {
           parent: parseInt(link.target),
           id: parseInt(link.source),
@@ -337,7 +337,7 @@ export default function parseSlice(slice, sliceType) {
             id: parseInt(link.source),
             label: "",
             type: "roundrectangle",
-            properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
+            properties: { class: "ConnectionPoint", name: objNodes[link.source].Name, type: objNodes[link.source].Type },
           };
           elements.push(data);
         } else if (objNodes[link.target].Class === "Link"){

@@ -147,6 +147,10 @@ const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
     }
   }
 
+  // all validation above are passed.
+  validationResult.isValid = true;
+  validationResult.message = "";
+
   return validationResult;
 }
 
