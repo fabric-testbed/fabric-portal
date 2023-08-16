@@ -97,6 +97,8 @@ const validateVMNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk
 }
 
 const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
+  const vlanNum = parseInt(vlan);
+
   const validationResult = {
     isValid: false,
     message: "",
@@ -129,7 +131,7 @@ const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
         if (vlanRange.includes('-')) {
           const min = parseInt(vlanRange.substring(0, vlanRange.indexOf('-')));
           const max = parseInt(vlanRange.substring(vlanRange.indexOf('-') + 1));
-          if (vlan < min || vlan > max) {
+          if (vlanNum < min || vlanNum > max) {
             validationResult.isValid = false;
             validationResult.message = `Please input VLAN between the range of ${vlanRange}`;
             return validationResult;
@@ -137,7 +139,7 @@ const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
         } else {
           // There is only 1 VLAN value available. e.g. 1000
           const availableVlan = parseInt(vlanRange);
-          if (vlan !== availableVlan) {
+          if (vlanNum !== availableVlan) {
             validationResult.isValid = false;
             validationResult.message = `Please input VLAN value as ${vlanRange}`;
             return validationResult;
