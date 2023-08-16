@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import SingleComponent from './SingleComponent';
 import validator from  "../../utils/sliceValidator";
-import Dropfile from "../common/Dropfile";
 
-export default class NewSliceDetailForm extends Component {
+export default class SliceEditorDetailForm extends Component {
   state = {
     nodeName: "",
     isNameChanged: false,
@@ -169,22 +168,10 @@ export default class NewSliceDetailForm extends Component {
             {
               (!data || !data.properties) && (
                 <div className="my-3">
-                  {
-                    this.props.nodes.length > 0 && 
                     <span>
                       <i className="fa fa-info-circle mx-2" />
-                      Click an element on the topology to view details or make changes.
+                      Click an element on the topology to make changes.
                     </span>
-                  }
-                  {
-                    this.props.nodes.length === 0 && 
-                    <Dropfile
-                      onFileDrop={this.handleFileDrop}
-                      accept={{'application/json': []}}
-                      acceptFormat={"json"}
-                      textStr={"Click to select or drag & drop your slice topology JSON file here."}
-                    />
-                  }
                 </div>
               )
             }
@@ -280,7 +267,7 @@ export default class NewSliceDetailForm extends Component {
                   this.state.showVMComponent &&
                   <div className="form-row px-3">
                      <div className="col-12">
-                      <label for="BootScript" className="slice-builder-label">Boot Script (optional)</label>
+                      <label htmlFor="BootScript" className="slice-builder-label">Boot Script (optional)</label>
                       <textarea
                         className="form-control"
                         id="BootScript"

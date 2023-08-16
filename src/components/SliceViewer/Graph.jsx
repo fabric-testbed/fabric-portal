@@ -3,7 +3,6 @@ import Cytoscape from 'cytoscape';
 import FCose from 'cytoscape-fcose';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
-
 import IconGPU from '../../imgs/SliceComponentIcons/GPU.png';
 import IconLink from '../../imgs/SliceComponentIcons/Link.png';
 import IconSharedNIC from '../../imgs/SliceComponentIcons/SharedNIC.png';
@@ -182,6 +181,14 @@ export default class Graph extends Component {
             },
             {
               "selector": ".graphVM",
+              "style": {
+                "background-color": "#fff",
+                "min-width": 150,
+                "min-height": 150,
+              }
+            },
+            {
+              "selector": ".graphFacility",
               "style": {
                 "background-color": "#fff",
                 "min-width": 150,

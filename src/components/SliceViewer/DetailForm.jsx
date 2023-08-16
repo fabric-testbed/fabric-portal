@@ -73,7 +73,7 @@ export default class DetailForm extends Component {
                             name="sliceViewerCalendar"
                             onTimeChange={this.props.onLeaseEndChange}
                             parent={"sliceDetailForm"}
-                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime))}
+                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                           />
                         </div>
                         <button
@@ -118,13 +118,18 @@ export default class DetailForm extends Component {
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
                     target="_blank" rel="noreferrer" className="ml-1">
                       <i className="fa fa-question-circle mx-2"></i>
-                      {/* <button
-                        className="btn btn-sm btn-outline-primary ml-2"
-                        onClick={() => this.props.openModalForm()}
-                      >
-                        Open Terminal
-                      </button> */}
                     </a>
+                    {
+                      slice.state === "StableOK" &&
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary ml-2"
+                        data-toggle="modal"
+                        data-target="#TerminalFormModalCenter"
+                      >
+                        Connect to VM
+                      </button>
+                    }
                   </label>
                   <div className="ssh-command">
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
@@ -168,6 +173,20 @@ export default class DetailForm extends Component {
             }
 
             {
+              data && data.properties && data.properties.type === "Facility" &&
+              <div>
+                <div className="row mb-2">
+                  <label>Facility Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                <div className="row mb-2">
+                  <label>Type</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+                </div>
+              </div>
+            }
+
+            {
               data && data.properties && data.properties.class === "Component" &&
               <div>
                 <div className="row mb-2">
@@ -189,7 +208,8 @@ export default class DetailForm extends Component {
               </div>
             }
 
-            {data && data.properties && data.properties.class === "ConnectionPoint" &&
+            {
+             data && data.properties && data.properties.class === "ConnectionPoint" && data.properties.type && data.properties.type !== "FacilityPort" &&
               <div>
                 <div className="row mb-2">
                   <label>Connection Point Name</label>
@@ -206,9 +226,35 @@ export default class DetailForm extends Component {
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
                   </div>
                 }
-              </div>
+              </div> 
             }
-
+            {
+            data && data.properties && data.properties.type && data.properties.type === "FacilityPort" &&
+            <div>
+              <div className="row mb-2">
+                <label>Facility Port Name</label>
+                <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
+              </div>
+              <div className="row mb-2">
+                <label>Type</label>
+                <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
+              </div>
+              {
+                data.capacities.bw &&
+                <div className="row mb-2">
+                <label>Bandwidth</label>
+                <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
+                </div>
+              }
+              {
+                data.labels && data.labels.vlan && 
+                <div className="row mb-2">
+                  <label>VLAN</label>
+                  <input type="number" className="form-control" defaultValue={data.labels.vlan} disabled/>
+                </div>
+              }
+            </div>
+            }
             {
               data && data.properties && data.properties.class === "NetworkService" &&
               <div>

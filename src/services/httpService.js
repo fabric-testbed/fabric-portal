@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import clearLocalStorage from "../utils/clearLocalStorage";
 
 axios.defaults.withCredentials = true;
 // set timeout to be 20 seconds
@@ -23,25 +24,18 @@ axios.interceptors.response.use(null, (error) => {
         localStorage.setItem("userStatus", "inactive");
       } 
 
-      // if cookie expired, reload; 
-      // otherwise the user is not logged in and no need to reload.
+      // if cookie expired, log the user out; 
+      // otherwise the user is not logged in and no need to auto logout.
       if (isCookieExpired) {
         // removed local storage items.
-        localStorage.removeItem("idToken");
-        localStorage.removeItem("refreshToken");
-        // reload the page.
-        window.location.reload();
+        clearLocalStorage();
+        // log the user out.
+        window.location.href = "/logout";
       }
  
       // do not toast error message.
       return Promise.reject(error);
     }
-
-    // if (error.response && error.response.status === 403) {
-    //   // the user has logged in but hasn't completed self-signup yet
-    //   // do not toast error message.
-    //   return Promise.reject(error); 
-    // }
 
     // Timeout error.
     if(error.code === 'ECONNABORTED') {

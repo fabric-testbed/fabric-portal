@@ -75,7 +75,7 @@ class GlobalRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", "A fully enrolled FABRIC Testbed User with all the rights and privileges therein.")}
+                  overlay={renderTooltip("fo-tooltip", portalData.helperText.activeUserDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>
@@ -90,7 +90,7 @@ class GlobalRoles extends React.Component {
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("fo-tooltip", "Provides access to the Jupyterhub cluster. User must be a member of at least one project to maintain this access.")}
+                  overlay={renderTooltip("fo-tooltip", portalData.helperText.jupyterhubDescription)}
                 >
                   <i className="fa fa-question-circle text-secondary ml-2"></i>
                 </OverlayTrigger>

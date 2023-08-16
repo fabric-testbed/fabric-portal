@@ -65,7 +65,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 1 Connection Points and OVS has CP link
     const ovs_node = {
-      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Name": `${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
       "id": component_node_id + 1,
@@ -74,6 +74,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "parentID": component_node_id,
         "hasLinkIdAsTarget": component_link_id + 1,
       })
@@ -83,13 +84,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "SharedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Name":  `${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 2
       })
@@ -134,7 +136,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     // Add NIC has OVS link
     // Add 2 Connection Points and OVS has CP link
     const ovs_node = {
-      "Name": `${node.site}-${node.name}-${component.name}-ovs`,
+      "Name": `${node.name}-${component.name}-ovs`,
       "Class": "NetworkService",
       "NodeID": uuidv4(),
       "id": component_node_id + 1,
@@ -143,6 +145,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "parentID": component_node_id,
         "hasLinkIdAsTarget": component_link_id + 1,
       })
@@ -152,13 +155,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p1"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p1`,
+      "Name":  `${node.name}-${component.name}-p1`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 2,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 2
       })
@@ -168,13 +172,14 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "Labels": JSON.stringify({"local_name": "p2"}),
       "Class": "ConnectionPoint",
       "Type": "DedicatedPort",
-      "Name":  `${node.site}-${node.name}-${component.name}-p2`,
+      "Name":  `${node.name}-${component.name}-p2`,
       "Capacities": JSON.stringify({"unit": 1}),
       "id": component_node_id + 3,
       "NodeID": uuidv4(),
       "StitchNode": "false",
       "GraphID": graphID,
       "layout": JSON.stringify({
+        "site": node.site,
         "connectFrom": component_node_id + 1,
         "connectLinkIdAsTarget": component_link_id + 3
       })
@@ -261,7 +266,7 @@ const addVM = (node, components, graphID, nodes, links) => {
     "Site": node.site,
     "Capacities": JSON.stringify(capacitiesObj),
     "ImageRef": node.image,
-    "Type": "VM",
+    "Type": node.type,
     "id": vm_node_id,
     "NodeID": uuidv4(),
     "GraphID": graphID,
@@ -293,6 +298,87 @@ const addVM = (node, components, graphID, nodes, links) => {
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 
+const addFacility = (node, graphID, nodes, links) => {
+  let clonedNodes = _.clone(nodes);
+  let clonedLinks = _.clone(links);
+
+  const facility_id = generateID(nodes);
+  let facility_link_id = generateID(links);
+  // 1. add Facility node
+  // 2. add vlan node and 'has' link
+  // 3. add facility port and 'connects' link
+  // 4. add "has" link between facility and vlan node
+  // 5. add "connects" link between vlan and facility port
+  // add relevant node/ link data to Facility node for easier modification
+  const relevantNodeIDs = [facility_id + 1, facility_id + 2];
+  const relevantLinkIDs = [facility_link_id, facility_link_id + 1];
+
+  const facility = {
+    "id": facility_id,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkNode",
+    "Name": node.name,
+    "Type": "Facility",
+    "Site": node.site,
+    "StitchNode": "false",
+    "layout": JSON.stringify({
+      "relevantNodeIDs": relevantNodeIDs,
+      "relevantLinkIDs": relevantLinkIDs,
+    })
+  }
+
+  const vlan = {
+    "id": facility_id + 1,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkService",
+    "Name": `${node.name}-ns`,
+    "Type": "VLAN",
+    "StitchNode": "false", 
+    "Layer": "L2",
+  }
+  const facility_port = {
+    "id": facility_id + 2,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "ConnectionPoint",
+    "Name": `${node.name}-int`,
+    "Type": "FacilityPort",
+    "Capacities": JSON.stringify(node.capacities),
+    "Labels": JSON.stringify({
+      "vlan": node.labels ? node.labels.vlan : 0
+    }),
+    "StitchNode": "false",
+    "layout": JSON.stringify({
+      "site": node.site,
+      "connectFrom": facility_id + 1,
+      "connectLinkIdAsTarget": facility_link_id + 1
+    })
+  }
+
+  const facility_has_vlan = {
+    "label": "has",
+    "Class": "has",
+    "id": facility_link_id,
+    "source": facility_id,
+    "target":  facility_id + 1,
+  }
+
+  const vlan_connects_fp = {
+    "label": "connects",
+    "Class": "connects",
+    "id": facility_link_id + 1,
+    "source": facility_id + 1,
+    "target":  facility_id + 2,
+  }
+  
+  clonedNodes.push(facility, vlan, facility_port);
+  clonedLinks.push(facility_has_vlan, vlan_connects_fp)
+  // return sliceNodes and sliceLinks.
+  return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
+}
+
 // async, await for adding network service
 // 1. add a Network Service Node and its Connection Points
 // 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2
@@ -302,6 +388,8 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   const new_ns_id = generateID(nodes);
   let clonedNodes = _.clone(nodes);
   let clonedLinks = _.clone(links);
+  const nsRelevantNodeIDs = [new_ns_id];
+  const nsRelevantLinkIDs = [];
 
   const ns_layout = {
     connectLinkIdAsSource: [],
@@ -309,7 +397,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   };
 
   if (type === "L2Bridge") {
-    const siteName = selectedCPs[0].properties.name.substr(0, selectedCPs[0].properties.name.indexOf('-'));
+    const siteName = selectedCPs[0].site;
     network_service_node = {
       "Name": name,
       "Site": siteName,
@@ -319,11 +407,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": type,
       "Layer": "L2",
       "StitchNode": "false",
-      "GraphID": graphID,
-      "layout": JSON.stringify({
-        "parentID": selectedCPs[0].id,
-      })
-    }
+      "GraphID": graphID
+    };
+    ns_layout.parentID = selectedCPs[0].id;
   } else {
     network_service_node = {
       "Name": name,
@@ -333,7 +419,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Type": type,
       "Layer": (type === "FABNetv4" || type === "FABNetv6") ? "L3" : "L2",
       "GraphID": graphID,
-      "StitchNode": "false",
+      "StitchNode": "false"
     }
   }
 
@@ -341,7 +427,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
   // TODO: Validate if selected CPs aligns with the seleced NS Type
   // ##############################################################
 
-  // Total: 2 nodes and 3 links to add.
+  // Total: for each selected cp, 2 nodes and 3 links to add.
   // Nodes: new NS CP + new Link node
   // Links: NS 'connects' new CP + new CP connects new Link node + selected CP 'connects' New Link Node
   let new_node_id_starts = new_ns_id + 1;
@@ -353,6 +439,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 
     relevantNodeIDs.push(new_node_id_starts, new_node_id_starts + 1);
     relevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
+
+    nsRelevantNodeIDs.push(new_node_id_starts, new_node_id_starts + 1);
+    nsRelevantLinkIDs.push(new_link_id_starts, new_link_id_starts + 1, new_link_id_starts + 2);
 
     const new_ns_cp = {
       "Labels": JSON.stringify({"local_name": `p${i}`}),
@@ -383,7 +472,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
       "Layer": "L2",
       "id":  new_node_id_starts + 1,
       "layout": JSON.stringify({
-        "connectFrom": [new_node_id_starts, parseInt(cp.id)],
+        "connectFrom": [new_node_id_starts, parseInt(cp.id), new_ns_id],
         "connectLinkIdAsTarget": [new_link_id_starts + 1, new_link_id_starts + 2],
       })
     }
@@ -421,6 +510,9 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
     clonedLinks.push(ns_connects_cp, ns_cp_connects_new_link, nic_cp_connects_new_link);
   })
 
+  ns_layout.relevantNodeIDs = nsRelevantNodeIDs;
+  ns_layout.relevantLinkIDs = nsRelevantLinkIDs;
+
   network_service_node.layout = JSON.stringify(ns_layout);
 
   clonedNodes.push(network_service_node);
@@ -431,6 +523,7 @@ const addLink = (type, name, selectedCPs, graphID, nodes, links) => {
 const builder = {
   generateID,
   addVM,
+  addFacility,
   addLink,
   addComponent,
 }

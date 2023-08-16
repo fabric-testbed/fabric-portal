@@ -32,7 +32,7 @@ class FacilityUpdates extends React.Component {
     return (
       <div>
         {
-          updates.length === 0 ? <span>No Facility Update available.</span> : 
+          updates.length === 0 ? <div className="mt-3 ml-4">No Facility Update available.</div> : 
           <FacilityUpdateCard showSpinner={showSpinner} updates={updates} />
         }
       </div>

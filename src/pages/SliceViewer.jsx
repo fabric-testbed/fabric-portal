@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import withRouter from "../components/common/withRouter.jsx";
 import Graph from '../components/SliceViewer/Graph';
+import SliceViewerErrorBoundary from "../components/SliceViewer/SliceViewerErrorBoundary.jsx";
 import TerminalFormModal from '../components/SliceViewer/TerminalFormModal';
 import DetailForm from '../components/SliceViewer/DetailForm';
 import ErrorMessageAccordion from '../components/SliceViewer/ErrorMessageAccordion';
@@ -35,8 +36,7 @@ class SliceViewer extends Component {
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
-    spinnerText: "",
-    showModal: false
+    spinnerText: ""
   }
 
   async componentDidMount() {
@@ -122,12 +122,6 @@ class SliceViewer extends Component {
     }
   }
 
-  // toggleModalForm = (operation) => {
-  //   this.setState({
-  //     showModal: operation === "open" ? true : false
-  //   })
-  // }
-
   render() {
     const stateColors = {
       "Nascent": "primary-dark",
@@ -142,110 +136,114 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime, showModal } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
-      <div>
-        {
-          showSpinner && 
-          <div className="container d-flex align-items-center justify-content-center">
-            <SpinnerWithText text={spinnerText} />
-          </div>
-        }
-        {
-          showModal && 
-          <TerminalFormModal
-            vmData={selectedData}
-            closeModalForm={() => this.toggleModalForm("close")}
-          />
-        }
-        {
-          showSlice &&
-          <div className="mx-5 mb-4 slice-viewer-container">
-            <div className="d-flex flex-row justify-content-between align-items-center mt-2">
-              <div className="d-flex flex-row justify-content-between align-items-center">
-                <h2 className="mr-3">
-                  <b>{slice.name}</b>
-                  <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
-                    {slice.state}
-                  </span>
-                  <a
-                    href={portalData.learnArticles.guideToSliceBuilderSections["states"]}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="ml-1"
-                  >
-                    <i className="fa fa-question-circle mx-2" />
-                  </a>
-                </h2>
+      <SliceViewerErrorBoundary sliceID={slice.slice_id}>
+          <div>
+          <TerminalFormModal vmData={selectedData}/>
+          {
+            showSpinner && 
+            <div className="container d-flex align-items-center justify-content-center">
+              <SpinnerWithText text={spinnerText} />
+            </div>
+          }
+          {
+            showSlice &&
+            <div className="mx-5 mb-4 slice-viewer-container">
+              <div className="d-flex flex-row justify-content-between align-items-center mt-2">
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <h2 className="mr-3">
+                    <b>{slice.name}</b>
+                    <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
+                      {slice.state}
+                    </span>
+                    <a
+                      href={portalData.learnArticles.guideToSliceBuilderSections["states"]}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ml-1"
+                    >
+                      <i className="fa fa-question-circle mx-2" />
+                    </a>
+                  </h2>
+                </div>
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                    {/* <Link to={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
+                      <button
+                        className="btn btn-sm btn-outline-primary my-3 mr-3"
+                      >
+                        <i className="fa fa-exchange mr-2"></i>
+                        Edit Mode
+                      </button>
+                    </Link> */}
+                  {
+                    ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
+                    <DeleteModal
+                      name={"Delete Slice"}
+                      text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
+                      id={"delete-a-slice"}
+                      onDelete={() => this.handleDeleteSlice(slice.slice_id)}
+                    />
+                  }
+                  <Link to="/experiments#slices">
+                    <button
+                      className="btn btn-sm btn-outline-primary my-3 ml-3"
+                    >
+                      <i className="fa fa-sign-in mr-2"></i>
+                      Back to Slice List
+                    </button>
+                  </Link>
+                </div>
               </div>
-              <div className="d-flex flex-row justify-content-between align-items-center">
+              {
+                ["Configuring", "Modifying"].includes(slice.state)  && 
+                <CountdownTimer
+                  text={"This slice is provisioning now."}
+                  interval={30}
+                  onDataReload={() => window.location.reload()}
+                />
+              }
+              {
+                (["Closing", "Dead", "StableError", "ModifyError"].includes(slice.state) 
+                && errors.length > 0) && 
+                <ErrorMessageAccordion
+                  state={slice.state}
+                  errors={errors}
+                />
+              }
+              <div className="d-flex flex-row justify-content-center">
                 {
-                  ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
-                  <DeleteModal
-                    name={"Delete Slice"}
-                    text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
-                    id={"delete-a-slice"}
-                    onDelete={() => this.handleDeleteSlice(slice.slice_id)}
+                  elements.length > 0 &&
+                  <Graph
+                    className="align-self-end"
+                    isNewSlice={false}
+                    elements={elements}
+                    sliceName={slice.name}
+                    defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
+                    onNodeSelect={this.handleNodeSelect}
+                    onSaveJSON={this.handleSaveJSON}
                   />
                 }
-                <Link to="/experiments#slices">
-                  <button
-                    className="btn btn-sm btn-outline-primary my-3 ml-3"
-                  >
-                    <i className="fa fa-sign-in mr-2"></i>
-                    Back to Slice List
-                  </button>
-                </Link>
+                {
+                  elements.length > 0 &&
+                  <DetailForm
+                    slice={slice}
+                    leaseEndTime={leaseEndTime}
+                    data={selectedData}
+                    key={selectedData && selectedData.properties && 
+                      `${selectedData.properties.class}-${selectedData.properties.name}`}
+                    clearSelectedData={() => this.clearSelectedData()}
+                    onLeaseEndChange={this.handleLeaseEndChange}
+                    onSliceExtend={this.handleSliceExtend}
+                  />
+                }
               </div>
             </div>
-            {
-              ["Configuring", "Modifying"].includes(slice.state)  && 
-              <CountdownTimer
-                text={"This slice is provisioning now."}
-                interval={30}
-                onDataReload={() => window.location.reload()}
-              />
-            }
-            {
-              (["Closing", "Dead", "StableError", "ModifyError"].includes(slice.state) 
-              && errors.length > 0) && 
-              <ErrorMessageAccordion
-                state={slice.state}
-                errors={errors}
-              />
-            }
-            <div className="d-flex flex-row justify-content-center">
-              {
-                elements.length > 0 &&
-                <Graph
-                  className="align-self-end"
-                  isNewSlice={false}
-                  elements={elements}
-                  sliceName={slice.name}
-                  defaultSize={{"width": 0.75, "height": 0.75, "zoom": 1}}
-                  onNodeSelect={this.handleNodeSelect}
-                  onSaveJSON={this.handleSaveJSON}
-                />
-              }
-              {
-                elements.length > 0 &&
-                <DetailForm
-                  slice={slice}
-                  leaseEndTime={leaseEndTime}
-                  data={selectedData}
-                  key={selectedData && selectedData.properties && selectedData.properties.name}
-                  // openModalForm={() => this.toggleModalForm("open")}
-                  clearSelectedData={() => this.clearSelectedData()}
-                  onLeaseEndChange={this.handleLeaseEndChange}
-                  onSliceExtend={this.handleSliceExtend}
-                />
-              }
-            </div>
+          }
           </div>
-        }
-      </div>
+      </SliceViewerErrorBoundary>
     )
   }
 }
