@@ -176,6 +176,8 @@ body {
 .navbar {
   padding-top: 0;
   padding-bottom: 0;
+  padding-left: .5rem !important;
+  padding-right: .5rem !important;
 }
 
 .nav-item {
@@ -668,4 +670,63 @@ ul,
   font-size: 1rem;
   font-weight: 400;
   padding: 3px;
+}
+
+.css-b62m3t-container {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+}
+
+.css-13cymwt-control, .css-t3ipsp-control, .css-1fdsijx-ValueContainer, .css-1hb7zxy-IndicatorsContainer {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+  min-height: 31px !important;
+  max-height: 31px !important;
+}
+
+.css-1fdsijx-ValueContainer {
+  padding: 0px 8px !important;
+}
+
+.homepage-partner-header {
+  font-size: 2.5rem;
+  // font-family: 'Montserrat';
+  font-weight: 500;
+  border-bottom: 3px #5798bc solid;
+}
+
+.homepage-partner-text {
+  font-size: 1.25rem;
+  font-family: 'Montserrat';
+  color: $primary-color-dark;
+  margin: 1rem auto;
+}
+
+.homepage-partner-logo-containter {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.homepage-scroll-container {
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.carousel-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  height: 100%;
+}
+
+.carousel-track {
+  height: 55px !important;
+}
+
+.homepage-scroll-box {
+  display: flex !important;
+  justify-content: center;
+  align-self: center;
 }

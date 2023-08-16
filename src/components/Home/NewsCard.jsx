@@ -2,21 +2,21 @@ import React from "react";
 import Parser from 'html-react-parser';
 import SpinnerWithText from "../common/SpinnerWithText";
 
-const FacilityUpdateCard = ({ showSpinner, updates }) => {
+const NewsCard = ({ showSpinner, news }) => {
   return (
     <div className="homepage-card card">
       <div className="card-header text-center">
-        <b>Facility Updates</b>
+        <b>Recent News</b>
       </div>
       <div className="card-body py-2">
         {
-          showSpinner && <SpinnerWithText text={"Loading updates..."} />
+          showSpinner && <SpinnerWithText text={"Loading news..."} />
         }
-        { !showSpinner && updates.length > 0 && updates.map((update, index) => {
+        { !showSpinner && news.length > 0 && news.map((update, index) => {
           return (
             <div
               className={`py-4 mx-4 ${
-                index < updates.length - 1 ? "border-bottom" : ""
+                index < news.length - 1 ? "border-bottom" : ""
               }`}
               key={`card-update-${index}`}
             >
@@ -27,7 +27,7 @@ const FacilityUpdateCard = ({ showSpinner, updates }) => {
                 update.link && (
                   <a
                     href={update.link}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary mt-3 btn-sm"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -43,4 +43,4 @@ const FacilityUpdateCard = ({ showSpinner, updates }) => {
   );
 };
 
-export default FacilityUpdateCard;
+export default NewsCard;

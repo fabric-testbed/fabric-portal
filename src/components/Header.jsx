@@ -13,7 +13,6 @@ import clearLocalStorage from "../utils/clearLocalStorage";
 
 const Header = (props) => {
   const nonAuthNavItems = [
-    { name: "Home", path: "/", child: [] },
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Knowledge Base",
@@ -25,7 +24,6 @@ const Header = (props) => {
   ]
   
   const authNavItems = [
-    { name: "Home", path: "/", child: [] },
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",
@@ -99,12 +97,11 @@ const Header = (props) => {
     <NavLink className="navbar-brand" to="/">
       <img
         src={getLogoSrc()}
-        width="70"
-        height="30"
-        className="d-inline-block align-top"
+        width="60"
+        className="d-inline-block align-top mr-1"
         alt=""
       />
-      FABRIC Portal
+      FABRIC
     </NavLink>
     <button
       className="navbar-toggler"

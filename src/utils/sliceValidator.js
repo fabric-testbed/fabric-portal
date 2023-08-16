@@ -1,5 +1,9 @@
 const getSite = (cp) => {
-  return cp.properties.name.substr(0, cp.properties.name.indexOf('-'));
+  if (cp.properties && cp.properties.site) {
+    return cp.properties.site;
+  }
+
+  return "";
 }
 
 const isPositiveInteger = (input) => {
@@ -7,7 +11,7 @@ const isPositiveInteger = (input) => {
   return Number.isInteger(num) && num > 0;
 }
 
-const validateSlice = (sliceName, sshKey, sliceNodes) => {
+const validateSlice = (sliceName, selectedKeyIDs, sliceNodes) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -19,7 +23,7 @@ const validateSlice = (sliceName, sshKey, sliceNodes) => {
     return validationResult;
   }
 
-  if (sshKey === "") {
+  if (selectedKeyIDs.length === 0) {
     validationResult.isValid = false;
     validationResult.message = "Please select a sliver key.";
     return validationResult;
@@ -38,7 +42,7 @@ const validateSlice = (sliceName, sshKey, sliceNodes) => {
     return validationResult;
 }
 
-const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
+const validateVMNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, nodeComponents, BootScript) => {
   const validationResult = {
     isValid: false,
     message: "",
@@ -83,6 +87,66 @@ const validateNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk, 
     validationResult.isValid = false;
     validationResult.message = "The max length supported for Boot Script is 1024 characters.";
     return validationResult;
+  }
+
+  // all validation above are passed.
+  validationResult.isValid = true;
+  validationResult.message = "";
+
+  return validationResult;
+}
+
+const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
+  const vlanNum = parseInt(vlan);
+
+  const validationResult = {
+    isValid: false,
+    message: "",
+  };
+
+  // Site is required.
+  if (selectedSite === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please select a site or choose the random option.";
+    return validationResult;
+  }
+
+  // Validate bandwidth and vlan once Facility Port is selected
+  if (nodeName) {
+    // bandwidth validation.
+    if (bandwidth < 0 || bandwidth > 100) {
+      validationResult.isValid = false;
+      validationResult.message = "Please input bandwidth between 0 - 100.";
+      return validationResult;
+    }
+
+    // vlan validation (if vlan range is provided)
+    if (!vlan) {
+      validationResult.isValid = false;
+      validationResult.message = "VLAN cannot be empty.";
+      return validationResult;
+    } else {
+      if (vlanRange !== "####-####") {
+        // for vlan range has min and max, e.g. 3300-3309
+        if (vlanRange.includes('-')) {
+          const min = parseInt(vlanRange.substring(0, vlanRange.indexOf('-')));
+          const max = parseInt(vlanRange.substring(vlanRange.indexOf('-') + 1));
+          if (vlanNum < min || vlanNum > max) {
+            validationResult.isValid = false;
+            validationResult.message = `Please input VLAN between the range of ${vlanRange}`;
+            return validationResult;
+          }
+        } else {
+          // There is only 1 VLAN value available. e.g. 1000
+          const availableVlan = parseInt(vlanRange);
+          if (vlanNum !== availableVlan) {
+            validationResult.isValid = false;
+            validationResult.message = `Please input VLAN value as ${vlanRange}`;
+            return validationResult;
+          }
+        }
+      }
+    }
   }
 
   // all validation above are passed.
@@ -151,7 +215,7 @@ const validateSingleComponent = (type, name, model, addedComponents) => {
   return validationResult;
 }
 
-const validateDetailForm = (type, value, vm_id, nodes) => {
+const validateDetailForm = (type, value, id, nodes) => {
   // type: "name", "capacity"
   // value: the content of input value
   // nodes: all existing nodes in graph passed from props.
@@ -176,7 +240,7 @@ const validateDetailForm = (type, value, vm_id, nodes) => {
 
     // check the VM name is unique in the whole slice graph.
     // check id node name is unique.
-    const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(vm_id));
+    const vm_nodes = nodes.filter(node => node.Type === "VM" && node.id !== parseInt(id));
     if (vm_nodes.length > 0) {
       for (const vm of vm_nodes) {
         if (value === vm.Name) {
@@ -300,7 +364,8 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
 
 const validator = {
   validateSlice,
-  validateNodeComponents,
+  validateVMNodeComponents,
+  validateFPNode,
   validateSingleComponent,
   validateNetworkService,
   validateDetailForm,

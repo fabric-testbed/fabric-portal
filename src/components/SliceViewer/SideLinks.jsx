@@ -34,7 +34,7 @@ export default class SideLinks extends Component {
       }
     },
     linkType: "",
-    linkName: "",
+    linkName: ""
   }
   
   handleServiceTypeChange = (e) => {

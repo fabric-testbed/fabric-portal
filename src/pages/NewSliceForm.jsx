@@ -13,6 +13,7 @@ import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import Calendar from "../components/common/Calendar";
+import SliverKeyMultiSelect from "../components/SliceViewer/SliverKeyMultiSelect";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sliceParser from "../services/parser/sliceParser.js";
 import builder from "../utils/sliceBuilder.js";
@@ -22,6 +23,7 @@ import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
 import { createSlice } from "../services/sliceService.js";
+import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { getActiveKeys } from "../services/sshKeyService";
 import { default as portalData } from "../services/portalData.json";
@@ -30,10 +32,12 @@ class NewSliceForm extends React.Component {
   state = {
     sliceName: "",
     sshKey: "",
+    selectedKeyIDs: [],
     leaseEndTime: "",
     showResourceSpinner: false,
     showKeySpinner: false,
     showSliceSpinner: false,
+    showProjectSpinner: false,
     sliverKeys: [],
     graphID: "",
     sliceNodes: [],
@@ -41,24 +45,31 @@ class NewSliceForm extends React.Component {
     selectedData: null,
     parsedResources: null,
     selectedCPs: [],
+    project: {},
+    projectTags: []
   }
 
   async componentDidMount() {
     // Show spinner in SideNodes when loading resources
     this.setState({
       showResourceSpinner: true,
-      showKeySpinner: true
+      showKeySpinner: true,
+      showProjectSpinner: true
     });
 
     try {
       const { data: resources } = await getResources();
       const { data: keys } = await getActiveKeys();
+      const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
       this.setState({
         parsedResources: parsedObj,
         showResourceSpinner: false,
-        showKeySpinner: false,
         sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
+        project: projectRes.results[0],
+        projectTags: projectRes.results[0].tags,
+        showKeySpinner: false,
+        showProjectSpinner: false
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -86,8 +97,14 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceName: e.target.value });
   }
 
-  handleKeyChange = (e) => {
-    this.setState({ sshKey: e.target.value });
+
+  handleKeyCheck = (keyID) => {
+    const { selectedKeyIDs } = this.state;
+    if (selectedKeyIDs.includes(keyID)) {
+      this.setState({ selectedKeyIDs: selectedKeyIDs.filter(k => k !== keyID) });
+    } else {
+      this.setState({ selectedKeyIDs: [...selectedKeyIDs, keyID] });
+    }
   }
 
   handleLeaseEndChange = (value) => {
@@ -127,6 +144,7 @@ class NewSliceForm extends React.Component {
     }
 
     let elements = sliceParser(sliceJSON, "new");
+
     return elements;
   }
 
@@ -210,20 +228,36 @@ class NewSliceForm extends React.Component {
     this.setState({ selectedCPs: updatedSelectedCPs });
   }
 
-  handleNodeDelete = (data) => {
+  handleNodeDelete = (el) => {
     const { sliceNodes, sliceLinks } =  this.state;
-    const { newSliceNodes, newSliceLinks } = editor.removeNode(data, sliceNodes, sliceLinks);
+    const updated_nodes = [];
+    const updated_links = [];
+    const {to_remove_node_ids, to_remove_link_ids} = el.properties.type === "VM" ? editor.removeVM(el, sliceNodes, sliceLinks) :
+      editor.removeComponent(el, sliceNodes, sliceLinks);
+
+    
+    for (const node of sliceNodes) {
+      if (!to_remove_node_ids.includes(parseInt(node.id))){
+        updated_nodes.push(node);
+      }
+    }
+
+    for (const link of sliceLinks) {
+      if (!to_remove_link_ids.includes(parseInt(link.id))){
+        updated_links.push(link);
+      }
+    }
+
     // due to Cytoscape issue, force clean and update the state.
     this.setState({ sliceNodes: [], sliceLinks: [], selectedData: {} }, () => {
-      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks });
+      this.setState({ sliceNodes: updated_nodes, sliceLinks: updated_links });
     });
   }
 
-  handleNodeAdd = (type, site, name, core, ram, disk, image, sliceComponents, BootScript) => {
+  handleVMAdd = (site, name, core, ram, disk, image, sliceComponents, BootScript) => {
     const { graphID, sliceNodes, sliceLinks } =  this.state;
-
     const node = {
-      "type": type,
+      "type": "VM",
       "site": site,
       "name": name,
       "capacities": {
@@ -234,11 +268,26 @@ class NewSliceForm extends React.Component {
       "image": image,
       "BootScript": BootScript
     };
+    const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+  }
 
-    if (type === "VM") {
-      const { newSliceNodes, newSliceLinks} = builder.addVM(node, sliceComponents, graphID, sliceNodes, sliceLinks);
-      this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
-    }
+  handleFacilityAdd = (site, name, bandwidth, vlan) => {
+    const { graphID, sliceNodes, sliceLinks } =  this.state;
+    const node = {
+      "type": "Facility",
+      "site": site,
+      "name": name,
+      "capacities": {
+        "bw": bandwidth
+      },
+      "labels": {
+        "vlan": vlan
+      }
+    };
+    const { newSliceNodes, newSliceLinks } = builder.addFacility(node, graphID, sliceNodes, sliceLinks);
+    console.log(newSliceNodes);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
   handleLinkAdd = (type, name) => {
@@ -252,6 +301,12 @@ class NewSliceForm extends React.Component {
     const updated_nodes = editor.updateVM(data, this.state.sliceNodes);
     this.setState({ sliceNodes: updated_nodes });
     toast.success("VM updated successfully.")
+  }
+
+  handleFPUpdate = (data) => {
+    const updated_nodes = editor.updateFP(data, this.state.sliceNodes);
+    this.setState({ sliceNodes: updated_nodes });
+    toast.success("Facility Port updated successfully.")
   }
 
   handleSingleComponentAdd = (data) => {
@@ -282,27 +337,43 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceNodes: clonedNodes, sliceLinks: clonedLinks });
   }
 
+  generatePublicKeys = () => {
+    const keys = [];
+    const keyNames = [];
+    const { selectedKeyIDs, sliverKeys} = this.state;
+    for (const key of sliverKeys) {
+      if (selectedKeyIDs.includes(key.uuid)) {
+        keys.push(`${key.ssh_key_type} ${key.public_key} ${key.comment}`)
+        keyNames.push(key.comment);
+      }
+    }
+    return { keys, keyNames };
+  }
+
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
 
-    const { sliceName, sshKey, leaseEndTime } = this.state;
+    const { sliceName, leaseEndTime } = this.state;
     const that = this;
 
     that.setState({ showSliceSpinner: true });
 
     let requestData = {};
+    const pubKeys = this.generatePublicKeys();
     if (leaseEndTime !== "") {
       requestData = {
         name: sliceName,
-        sshKey: sshKey,
+        sshKeys: pubKeys.keys,
         leaseEndTime: leaseEndTime,
-        json: this.generateSliceJSON()
+        json: this.generateSliceJSON(),
+        sshKeyNames: pubKeys.keyNames
       }
     } else {
       requestData = {
         name: sliceName,
-        sshKey: sshKey,
-        json: this.generateSliceJSON()
+        sshKeys: pubKeys.keys,
+        json: this.generateSliceJSON(),
+        sshKeyNames: pubKeys.keyNames
       }
     }
 
@@ -327,22 +398,18 @@ class NewSliceForm extends React.Component {
   };
 
   render() {
-    const { sliceName, sshKey, sliverKeys, selectedData,
+    const { sliceName, selectedKeyIDs, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs }
+      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner }
     = this.state;
 
-    const validationResult = validator.validateSlice(sliceName, sshKey, sliceNodes);
+    const validationResult = validator.validateSlice(sliceName, selectedKeyIDs, sliceNodes);
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
       </Tooltip>
     );
-
-    const generatePublicKey = (data) => {
-      return `${data.ssh_key_type} ${data.public_key} ${data.comment}`;
-    }
 
     return (
       <div>
@@ -396,7 +463,11 @@ class NewSliceForm extends React.Component {
                     </div>
                     <div>
                       <div className="card-body slice-builder-card-body">
-                        <ProjectTags projectId={this.props.match.params.project_id} />
+                        <ProjectTags
+                          project={project}
+                          tags={projectTags}
+                          showSpinner={showProjectSpinner}
+                        />
                       </div>
                     </div>
                   </div>
@@ -408,7 +479,7 @@ class NewSliceForm extends React.Component {
                         rel="noreferrer"
                       >
                         <button className="btn btn-link">
-                          Step 2: Add Nodes and Components
+                          Step 2: Add Nodes
                         </button>
                       </a>
                     </div>
@@ -422,7 +493,9 @@ class NewSliceForm extends React.Component {
                           <SideNodes
                             resources={parsedResources}
                             nodes={sliceNodes}
-                            onNodeAdd={this.handleNodeAdd}
+                            onVMAdd={this.handleVMAdd}
+                            onFacilityAdd={this.handleFacilityAdd}
+                            projectTags={projectTags}
                           />
                         }
                       </div>
@@ -493,27 +566,20 @@ class NewSliceForm extends React.Component {
                             </div>
                             <div className="form-group">
                               <label htmlFor="inputSSHKey" className="slice-form-label">
-                                <span>SSH Key</span>
+                                <span>SSH Keys</span>
                               </label>
                               {
                                 showKeySpinner && <SpinnerWithText text={"Loading SSH Keys..."} />
                               }
                               {
                                 sliverKeys.length > 0 && !showKeySpinner && 
-                                  <select
+                                 <SliverKeyMultiSelect 
                                     id="selectSshKey"
                                     name="selectSshKey"
-                                    className="form-control form-control-sm"
-                                    value={sshKey}
-                                    onChange={this.handleKeyChange}
-                                  >
-                                    <option value="">Choose...</option>
-                                    {
-                                      sliverKeys.map(key =>
-                                        <option value={generatePublicKey(key)} key={`sliverkey-${key.comment}`}>{key.comment}</option>
-                                      )
-                                    }
-                                  </select>
+                                    keys={sliverKeys}
+                                    selectedKeyIDs={selectedKeyIDs}
+                                    onKeyCheck={this.handleKeyCheck}
+                                 />
                               }
                               {
                                 sliverKeys.length === 0 && !showKeySpinner && 

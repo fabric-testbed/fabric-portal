@@ -33,6 +33,7 @@ export const sitesNameMapping = {
     "University of Amsterdam": "AMST",
     "University of Tokyo": "TOKY",
     "HAWI": "HAWI",
+    "EDC": "EDC"
   },
   acronymToShortName: {
     "RENC": "RENCI",
@@ -68,6 +69,7 @@ export const sitesNameMapping = {
     "AMST": "University of Amsterdam",
     "TOKY": "University of Tokyo",
     "HAWI": "HAWI",
+    "EDC": "EDC"
   },
   acronymToLongName: {
     "RENC": "RENCI",
@@ -103,6 +105,7 @@ export const sitesNameMapping = {
     "AMST": "University of Amsterdam",
     "TOKY": "University of Tokyo",
     "HAWI": "University of Hawai'i",
+    "EDC": "EDC"
   },
   shortToLongName: {
     "RENCI": "RENCI",
@@ -138,5 +141,6 @@ export const sitesNameMapping = {
     "University of Amsterdam": "University of Amsterdam",
     "University of Tokyo": "University of Tokyo",
     "HAWI": "University of Hawai'i",
+    "EDC": "EDC"
   },
 }
