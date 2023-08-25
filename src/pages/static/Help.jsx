@@ -23,7 +23,7 @@ export default class Help extends React.Component{
         </div>
         <div className="row">
         <div class="col-sm-6">
-          <div className="card">
+          <div className="card contact-us-card">
             <div className="card-header">
               <h3 className="mb-0"><i className="fa fa-cog"></i></h3>
             </div>
@@ -46,7 +46,7 @@ export default class Help extends React.Component{
           </div>
         </div>
         <div class="col-sm-6">
-          <div className="card">
+          <div className="card contact-us-card">
             <div className="card-header">
               <h3 className="mb-0"><i className="fa fa-user"></i></h3>
             </div>
@@ -64,28 +64,49 @@ export default class Help extends React.Component{
           </div>
         </div>
       </div>
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="card mt-4">
-              <div className="card-header">
-                <h3 className="mb-0"><i className="fa fa-video-camera"></i></h3>
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">
-                  Office Hours
-                  <span className="ml-1 badge badge-pill badge-success">beta</span>
-                </h5>
-                <p>
-                Haven't found an answer to your question on the Forums or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.
-                </p>
-                <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
-                  <i className="fa fa-sign-in mr-2"></i>
-                  Book Office Hours
-                </a>
-              </div>
+      <div className="row mt-3">
+        <div className="col-sm-6">
+          <div className="card contact-us-card">
+            <div className="card-header">
+              <h3 className="mb-0"><i className="fa fa-video-camera"></i></h3>
+            </div>
+            <div className="card-body">
+              <h5 className="card-title">
+                Office Hours
+                <span className="ml-1 badge badge-pill badge-success">beta</span>
+              </h5>
+              <p>
+              Haven't found an answer to your question on the Forums or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.
+              </p>
+              <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
+                <i className="fa fa-sign-in mr-2"></i>
+                Book Office Hours
+              </a>
             </div>
           </div>
         </div>
+        <div className="col-sm-6">
+          <div className="card contact-us-card">
+            <div className="card-header">
+              <h3 className="mb-0"><i class="fa fa-graduation-cap"></i></h3>
+            </div>
+            <div className="card-body">
+              <h5 className="card-title">
+                Teaching Classes on FABRIC
+              </h5>
+              <p>
+                To make sure you have a good experience teaching classes on FABRIC we ask that you share your plans with us. Also be sure to sign up to the <a 
+                href={portalData.educatorForumLink} target="_blank" rel="noopener noreferrer">educator forum</a> as a place to ask questions and 
+                share your experiences.
+              </p>
+              <a href={portalData.jiraLinks.educationProjectRequest} target="_blank" rel="noopener noreferrer" className="btn btn-primary mr-2">
+                <i className="fa fa-sign-in mr-2"></i>
+                Tell us about your class
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     );
   }

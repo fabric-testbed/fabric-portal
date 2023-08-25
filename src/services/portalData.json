@@ -37,7 +37,8 @@
     "accountIssue": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
     "projectPermissionRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
     "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
-    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61"
+    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61",
+    "educationProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/64"
   },
   "fabricSocialLinks": {
     "website": "https://fabric-testbed.net/",
@@ -53,6 +54,7 @@
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
+  "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",
   "officeHourBookingLink": "https://outlook.office365.com/owa/calendar/FABRICOfficeHours@admin.live.unc.edu/bookings/",
   "learnArticles": {
     "gettingStarted": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/",
