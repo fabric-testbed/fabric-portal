@@ -24,6 +24,7 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
+import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
@@ -82,11 +83,13 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
+      { name: "LONG-LIVED TOKEN", active: false },
       { name: "SLICES", active: false },
     ],
     originalProjectName: "",
     owners: [],
     members: [],
+    token_holders: [],
     tagVocabulary: [],
     showSpinner: false,
     spinner: {
@@ -167,6 +170,7 @@ class ProjectForm extends Form {
           data: this.mapToViewModel(project), 
           owners: project.project_owners, 
           members: project.project_members,
+          token_holders: project.token_holders,
           showSpinner: false,
           spinner: {
             text: "",
@@ -192,7 +196,8 @@ class ProjectForm extends Form {
        "#info": 0,
        "#owners": 1,
        "#members": 2,
-       "#slices": 3,
+       "#token": 3,
+       "#slices": 4,
      }
  
      if (hash) {
@@ -201,6 +206,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
+         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
        ]})
      }
@@ -353,7 +359,8 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      3: "#slices",
+      3: "#token",
+      4: "#slices",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -687,6 +694,18 @@ class ProjectForm extends Form {
             <div
               className={`${
                 activeIndex === 3
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                <ProjectTokenHolders
+                  token_holders={this.state.token_holders}
+                />
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex === 4
                   ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
