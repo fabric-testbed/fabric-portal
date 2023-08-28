@@ -39,10 +39,10 @@ class ProjectTokenHolders extends Component {
       sortColumn,
     } = this.state;
 
-    const { users } = this.props;
+    const { token_holders } = this.props;
 
     // filter -> sort -> paginate
-    let filtered = users;
+    let filtered = token_holders;
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -61,7 +61,7 @@ class ProjectTokenHolders extends Component {
         <h4>Project Members with Long-lived Token Access</h4>
         {
           token_holders && token_holders.length > 0 &&
-          <div className="mt-2">
+          <div className="mt-3">
             <div className="d-flex flex-row justify-content-between mb-2">
               <span>{`${token_holders.length} users`}.</span>
             </div>
@@ -82,9 +82,18 @@ class ProjectTokenHolders extends Component {
         }
         {
           token_holders && token_holders.length === 0 && 
-          <div className="alert alert-primary" role="alert">
-            {`This project has no member with long-lived token access.`}
+          <div className="alert alert-primary mt-3" role="alert">
+            {`This project has no members with long-lived token access.`}
           </div>
+        }
+        {
+          token_holders && token_holders.length === 0 &&
+          <button
+            className="btn btn-sm btn-outline-success my-3"
+          >
+            <i className="fa fa-sign-in mr-2"></i>
+            Request Long-lived Token Access
+          </button>
         }
       </div>
     );
