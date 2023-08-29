@@ -11,19 +11,8 @@ import alphaLogo from "../imgs/fabric-brand-alpha.png";
 import betaLogo from "../imgs/fabric-brand-beta.png";
 import clearLocalStorage from "../utils/clearLocalStorage";
 
-const Header = (props) => {
-  const nonAuthNavItems = [
-    { name: "Resources", path: "/resources/all", child: [] },
-    {
-      name: "Knowledge Base",
-      href: portalData.knowledgeBaseLink,
-      child: [],
-      path: ""
-    },
-    { name: "Contact Us", path: "/help", child: [] },
-  ]
-  
-  const authNavItems = [
+const Header = (props) => {  
+  const navItems = [
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",
@@ -45,8 +34,6 @@ const Header = (props) => {
     { name: "User Profile", path: "/user", child: [] },
     { name: "Contact Us", path: "/help", child: [] },
   ]
-
-  const navItems = props.userStatus !== "active" ? nonAuthNavItems : authNavItems;
   
   const handleLogin = () => {
     if (getCookieConsentValue("fabricPortalCookieConsent")) {
