@@ -19,6 +19,7 @@ import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
 import NotFound from "./pages/static/NotFound";
+import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
@@ -135,6 +136,7 @@ class App extends React.Component {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Home />} />
             <Route path="/logout" element={<Home />} />
+            <Route path="/login-required" element={<LoginRequired />} />
             <Route path="/aup" element={<AUP />} />
             <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
