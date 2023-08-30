@@ -145,12 +145,11 @@ class App extends React.Component {
             <Route path="/slice-editor" element={<SliceEditor />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
-                {/* <Route path="/slice-editor/:slice_id/:project_id" element={<SliceEditor />} /> */}
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />
-                <Route path="/experiments" element={<Experiments />} />
-                <Route path="/users/:id" element={<PublicUserProfile />} />
-                <Route path="/user" element={<User />} />
+                <Route path="/experiments" element={<Experiments  userStatus={userStatus}/>} />
+                <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />
+                <Route path="/user" element={<User userStatus={userStatus}/>} />
                 <Route
                   path="/search-results"
                   element={

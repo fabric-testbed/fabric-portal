@@ -4,6 +4,7 @@ import Pagination from "../common/Pagination";
 import _ from "lodash";
 import paginate from "../../utils/paginate";
 import { Link } from "react-router-dom";
+import { default as portalData } from "../../services/portalData.json";
 
 class ProjectTokenHolders extends Component {
   columns = [
@@ -52,7 +53,7 @@ class ProjectTokenHolders extends Component {
   };
 
   render() {
-    const { token_holders } = this.props;
+    const { token_holders, urlSuffix, isTokenOwner } = this.props;
     const { pageSize, currentPage, sortColumn } = this.state;
     const { totalCount, data } = this.getPageData();
 
@@ -87,9 +88,12 @@ class ProjectTokenHolders extends Component {
           </div>
         }
         {
-          token_holders && token_holders.length === 0 &&
-          <button
-            className="btn btn-sm btn-outline-success my-3"
+          !isTokenOwner && <button
+            className="btn btn-sm btn-outline-success mr-2 my-3"
+            onClick={() => window.open(
+              `${portalData.jiraLinks.longlivedTokenRequest}?${urlSuffix}`,
+              "_blank")
+            }
           >
             <i className="fa fa-sign-in mr-2"></i>
             Request Long-lived Token Access

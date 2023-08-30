@@ -53,6 +53,7 @@ class ProjectForm extends Form {
       is_creator: false,
       is_member: false,
       is_owner: false,
+      is_token_owner: false,
       is_public: false,
       is_locked: false,
       allOptions: [
@@ -115,6 +116,7 @@ class ProjectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
+    is_token_owner: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
@@ -247,6 +249,7 @@ class ProjectForm extends Form {
       is_creator: project.memberships.is_creator,
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
+      is_token_owner: project.memberships.is_token_owner,
       is_public: project.is_public ? "Yes" : "No",
       is_locked: project.is_locked,
       allOptions: [
@@ -700,6 +703,8 @@ class ProjectForm extends Form {
               <div className="w-100">
                 <ProjectTokenHolders
                   token_holders={this.state.token_holders}
+                  urlSuffix={urlSuffix}
+                  isTokenOwner={data.is_token_owner}
                 />
               </div>
             </div>
