@@ -80,7 +80,7 @@ const SAC = () => {
         sacMembers.map((member, index) => 
         <div className="row mb-3" key={`fabric-sac-member-${index}`}>
           <div className="col-3">
-            <img src={member.photo} alt={`FABRIC SAC ${member.name}`} className="sac-member-photo"/>
+            <img src={member.photo} alt={`FABRIC SAC ${member.name}`} className="member-photo-round"/>
           </div>
           <div className="col-9">
             <h3 className="text-primary mb-3">
