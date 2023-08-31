@@ -32,7 +32,28 @@ const Header = (props) => {
       path: ""
     },
     { name: "User Profile", path: "/user", child: [] },
-    { name: "Contact Us", path: "/help", child: [] },
+    {
+      name: "About",
+      child: [
+        {
+          name: "Overview",
+          path: "/about-fabric"
+        },
+        {
+          name: "FAB",
+          path: "/about-fab"
+        },
+        {
+          name: "SAC",
+          path: "/sac"
+        },
+        {
+          name: "Leadership",
+          path: "/leadership"
+        }
+      ],
+      path: ""
+    },
   ]
   
   const handleLogin = () => {
@@ -145,17 +166,31 @@ const Header = (props) => {
                   aria-labelledby={`navbarDropdownMenuLink-${index}`}
                 >
                   {item.child.map((sub_item, sub_index) => {
-                    return (
-                      <a
-                        className="dropdown-item"
-                        key={sub_index}
-                        href={sub_item.href}
-                        target="_blank"
-                        rel="noreferrer"
+                    if(sub_item.path) {
+                      return (
+                        <NavLink
+                        className={
+                          "nav-link"
+                        }
+                        to={sub_item.path}
+                        id={`navbarSubDropdownMenuLink-${sub_index}`}
                       >
                         {sub_item.name}
-                      </a>
-                    );
+                      </NavLink>
+                      )
+                    } else if (sub_item.href) {
+                      return (
+                        <a
+                          className="dropdown-item"
+                          key={sub_index}
+                          href={sub_item.href}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {sub_item.name}
+                        </a>
+                      )
+                    }
                   })}
                 </div>
               )}

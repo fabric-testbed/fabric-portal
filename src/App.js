@@ -23,6 +23,7 @@ import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
 import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
 import FAB from "./pages/static/FAB.jsx";
+import SAC from "./pages/static/SAC.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
@@ -145,6 +146,7 @@ class App extends React.Component {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/about-fabric" element={<AboutFABRIC />} />
             <Route path="/about-fab" element={<FAB />} />
+            <Route path="/sac" element={<SAC />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />

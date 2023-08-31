@@ -1,0 +1,6 @@
+---
+name: Inder Monga
+photo: ../../images/leadership/inder-monga.jpg
+order: 5
+---
+Indermohan (Inder) S. Monga serves as the Division Director for Scientific Networking Division, Lawrence Berkeley National Lab and Executive Director of Energy Sciences Network, a high-performance network user facility optimized for large-scale science, interconnecting the National Laboratory System in the United States. In addition to managing the organization, his efforts are directed towards advancing the science of networking for collaborative and distributed research applications, as well as contributing to ongoing research projects tackling programmability, analytics and quality of experience driving convergence between application layer and the network. He currently holds 23 patents and has 20+ years of industry and research experience in telecommunications and data networking. His work experience in the private sector includes network engineering for Wellfleet Communications, Bay Networks and Nortel where he focused on application and network convergence. His undergraduate degree is in electrical/electronics engineering from Indian Institute of Technology in Kanpur, India, with graduate studies in computer engineering from Boston University.
