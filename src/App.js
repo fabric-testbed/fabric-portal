@@ -29,6 +29,7 @@ import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import "./styles/App.scss";
+import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
 
 class App extends React.Component {
   state = {
@@ -141,6 +142,7 @@ class App extends React.Component {
             <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/about-fabric" element={<AboutFABRIC />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />
