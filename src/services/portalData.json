@@ -104,5 +104,8 @@
     "alpha": "https://beta-5.fabric-testbed.net/",
     "beta": "https://beta-5.fabric-testbed.net/",
     "production": "https://websession.fabric-testbed.net/"
+  },
+  "marketingWebsiteLinks": {
+    "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
   }
 }

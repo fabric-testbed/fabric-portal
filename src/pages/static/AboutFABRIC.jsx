@@ -4,10 +4,11 @@ import iconInternet from "../../imgs/capabilities/internet.png";
 import iconIot from "../../imgs/capabilities/iot.png";
 import iconMachineLearning from "../../imgs/capabilities/machine-learning.png";
 import iconSecurity from "../../imgs/capabilities/security.png";
+import { default as portalData } from "../../services/portalData.json";
 
 const AboutFABRIC = () => {
   return (
-    <div className="container pb-5">
+    <div className="container pb-5 static-page">
       <h1 className="mb-4">About FABRIC</h1>
       <p>
       FABRIC (FABRIC is Adaptive ProgrammaBle Research Infrastructure for Computer Science and Science Applications) is an International infrastructure that enables cutting-edge experimentation and research at-scale in the areas of networking, cybersecurity, distributed computing, storage, virtual reality, 5G, machine learning, and science applications.
@@ -120,6 +121,11 @@ const AboutFABRIC = () => {
           <h4 className="text-primary">Webinar</h4>
           <iframe title="Webinar: What is FABRIC?" width="100%" height="315" src="https://www.youtube.com/embed/ofLz_7rWTDg" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
         </div>
+      </div>
+      <div className="d-flex justify-content-center">
+        <a href={portalData.marketingWebsiteLinks.generalBrochure} target="_blank" rel="noopener noreferrer">
+          <button className="btn btn-primary mt-5">Download FABRIC Brochure</button>
+        </a>
       </div>
     </div>
   );
