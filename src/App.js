@@ -25,6 +25,7 @@ import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
 import FAB from "./pages/static/FAB.jsx";
 import SAC from "./pages/static/SAC.jsx";
 import Leadership from "./pages/static/Leadership";
+import FundingOpportunities from "./pages/static/FundingOpportunities";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
@@ -149,6 +150,7 @@ class App extends React.Component {
             <Route path="/about-fab" element={<FAB />} />
             <Route path="/sac" element={<SAC />} />
             <Route path="/leadership" element={<Leadership />} />
+            <Route path="/funding-opportunities" element={<FundingOpportunities />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />

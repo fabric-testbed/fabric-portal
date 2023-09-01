@@ -54,6 +54,24 @@ const Header = (props) => {
       ],
       path: ""
     },
+    {
+      name: "Community",
+      child: [
+        {
+          name: "Newsletter Signup",
+          path: "/newsletter-signup"
+        },
+        {
+          name: "Funding Opportunities",
+          path: "/funding-opportunities"
+        },
+        {
+          name: "Testbeds and Facilities",
+          path: "/testbeds-and-facilities"
+        }
+      ],
+      path: ""
+    }
   ]
   
   const handleLogin = () => {
