@@ -781,14 +781,13 @@ ul,
   overflow: hidden;
   border-radius: 4px;
   transition: filter 250ms;
-  filter: drop-shadow(0 0 3px #00000033);
 }
 
 .testbed-header {
   min-height: 200px;
   max-height: 200px;
-  border: solid $primary-color-light;
-  border-width: 0 0 4px 0;
+  border: solid $primary-color-light !important;
+  border-width: 1px 1px 4px 1px !important;
   padding: 1rem;
   display: flex;
   flex-direction: row;
@@ -811,6 +810,7 @@ ul,
   overflow: auto;
   filter: opacity(0.8);
   transition: filter 250ms;
+  filter: drop-shadow(0 0 3px #00000033);
 }
 
 .testbed-footer {
@@ -834,4 +834,5 @@ ul,
 .testbed-logo {
   max-height: 100%;
   max-width: 100%;
+  
 }

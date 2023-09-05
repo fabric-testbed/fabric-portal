@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from 'react';
 import ChameleonCloud from "../../imgs/testbeds/chameleon-cloud.png";
 import Cloudlab from "../../imgs/testbeds/cloudlab.png";
 import Cosmos from "../../imgs/testbeds/cosmos.png";
@@ -94,6 +94,23 @@ const testbeds = [
 ]
  
 const Testbeds = () => {
+  const allTestbeds = testbeds;
+  const [query, setQuery] = useState('')
+
+  const filteredTestbeds = useMemo(() => {
+    const reducedQuery = query.toLowerCase().trim()
+    const newTestbedList = testbeds.sort((t, u) => t.name.toLowerCase() < u.name.toLowerCase() ? -1 : 1)
+    if (!reducedQuery) {
+      return newTestbedList
+    }
+    return newTestbedList
+      .filter(testbed => (
+        testbed.name.toLowerCase().includes(reducedQuery) || testbed.description.toLowerCase().includes(reducedQuery))
+      )
+  }, [query, allTestbeds])
+
+  const handleChangeQuery = event => setQuery(event.target.value)
+
   return (
     <div className="container pb-5 static-page">
       <h1 className="mb-4">Participating Testbeds and Facilities</h1>
@@ -110,9 +127,19 @@ const Testbeds = () => {
       <p>
         The page is community sourced. FABRIC is not responsible for its user-generated content.
       </p>
+      <div className="row px-5">
+        <input
+          className="col-12 border border-primary-light p-2"
+          type="search"
+          placeholder="Search Testbeds and Facilities..."
+          aria-label="Search"
+          value={ query }
+          onChange={ handleChangeQuery }
+        />
+      </div>
       <div className="row mt-5">
         {
-          testbeds.map((testbed, index) => 
+          filteredTestbeds.map((testbed, index) => 
           <div className="testbed-wrapper col-xs-12 col-sm-12 col-md-6 col-lg-4" key={`testbed-${index}`}>
             <div className="testbed-header">
               <img src={testbed.image} alt={`${testbed.name}`} className="testbed-logo"/>

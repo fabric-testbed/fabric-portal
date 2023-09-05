@@ -32,6 +32,7 @@ const Header = (props) => {
       path: ""
     },
     { name: "User Profile", path: "/user", child: [] },
+    { name: "Contact Us", path: "/help", child: [] },
     {
       name: "About",
       child: [
