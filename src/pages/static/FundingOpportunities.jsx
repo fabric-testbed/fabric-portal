@@ -117,7 +117,7 @@ const parsedSolicitations = () => {
 
 const FundingOpportunities = () => {
   return (
-    <div className="container pb-5">
+    <div className="container static-page pb-5">
       <h1 className="mb-4">Get Involved with FABRIC</h1>
       <h2 className="text-primary mb-4">
         Funding Opportunities
@@ -140,7 +140,7 @@ const FundingOpportunities = () => {
           {
             parsedSolicitations().current.map((opportunity, index) => <tr key={`fab-core-member-${index}`}>
               <th>{opportunity.name}</th>
-              <td><a href={opportunity.url} target="_blank" rel="noreferrer"><i class="fa fa-link"></i></a></td>
+              <td><a href={opportunity.url} target="_blank" rel="noreferrer"><i className="fa fa-link"></i></a></td>
               <td>{opportunity.displayDate}</td>
             </tr>
           )
@@ -162,7 +162,7 @@ const FundingOpportunities = () => {
           {
             parsedSolicitations().expired.map((opportunity, index) => <tr key={`fab-core-member-${index}`}>
               <th>{opportunity.name}</th>
-              <td><a href={opportunity.url} target="_blank" rel="noreferrer"><i class="fa fa-link"></i></a></td>
+              <td><a href={opportunity.url} target="_blank" rel="noreferrer"><i className="fa fa-link"></i></a></td>
               <td>{opportunity.displayDate}</td>
             </tr>
           )

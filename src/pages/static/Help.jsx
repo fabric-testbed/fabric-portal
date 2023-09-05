@@ -22,7 +22,7 @@ export default class Help extends React.Component{
           </p>
         </div>
         <div className="row">
-          <div class="col-sm-6">
+          <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header">
                 <h3 className="mb-0"><i className="fa fa-cog"></i></h3>
@@ -45,7 +45,7 @@ export default class Help extends React.Component{
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header">
                 <h3 className="mb-0"><i className="fa fa-user"></i></h3>
@@ -88,7 +88,7 @@ export default class Help extends React.Component{
           <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header">
-                <h3 className="mb-0"><i class="fa fa-graduation-cap"></i></h3>
+                <h3 className="mb-0"><i className="fa fa-graduation-cap"></i></h3>
               </div>
               <div className="card-body">
                 <h5 className="card-title">
