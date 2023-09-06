@@ -1,9 +1,11 @@
 import React from "react";
+import BackgroundImage from "../../imgs/network-bg.svg";
 import { NavLink } from "react-router-dom";
 
 const CookiePolicy = () => {
   return (
     <div className="container">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">FABRIC Portal Cookie Policy</h1>
       <h3 className="mt-4 text-success">
         <i className="fa fa-info-circle"></i> Cookie details

@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const NotFound = () => {
   return (
     <div className="container d-flex flex-row align-items-center justify-content-center">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <div className="d-flex flex-column align-items-center">
         <h1 className="fw-semibold lh-1">{`Ooops, page not found :( `}</h1>
         <p className="lead my-3">

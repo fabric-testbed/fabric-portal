@@ -1,9 +1,11 @@
 import React from "react";
 import HubspotForm from 'react-hubspot-form'
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const NewsletterSignup = () => {
   return (
     <div className="container static-page pb-5">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">Get Involved with FABRIC</h1>
       <h2 className="text-primary mb-4">
         Newsletter Signup

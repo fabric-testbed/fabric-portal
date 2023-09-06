@@ -1,4 +1,6 @@
 import React from "react";
+import FABMap from "../../imgs/fab-map.png";
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const teamMembers = [
   {
@@ -36,6 +38,7 @@ const teamMembers = [
 const FAB = () => {
   return (
     <div className="container pb-5 static-page">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">About FAB</h1>
       <p>FABRIC Across Borders (FAB) is an extension of the FABRIC testbed connecting the core North America infrastructure to four nodes in Asia, Europe, and South America. By creating the networks needed to move vast amounts of data across oceans and time zones seamlessly and securely, the project enables international collaboration to speed scientific discovery.</p>
       <h2 className="text-primary">Science Applications</h2>
@@ -70,6 +73,10 @@ const FAB = () => {
           </tr>
         </tbody>
       </table>
+      <h2 className="text-primary my-4">International Connections</h2>
+      <div className="d-flex justify-content-center mt-3 px-4">
+        <img src={FABMap} alt={`FAB map`} className="w-100" />
+      </div>
       <p>
         FAB will connect FABRIC to five global partners:
       </p>

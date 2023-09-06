@@ -8,6 +8,7 @@ import TomLehman from "../../imgs/leadership/tom-lehman.jpg";
 import PaulRuth from "../../imgs/leadership/paul-ruth.jpg";
 import ZongmingFei from "../../imgs/leadership/zongming-fei.jpg";
 import DaleCarder from "../../imgs/leadership/dale-carder.jpg";
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const leadershipMembers = [
   {
@@ -60,6 +61,7 @@ const leadershipMembers = [
 const Leadership = () => {
   return (
     <div className="container pb-5 static-page">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-5">Leadership Team</h1>
       {
         leadershipMembers.map((member, index) => 

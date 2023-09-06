@@ -150,7 +150,7 @@ const Header = (props) => {
               className={
                 "nav-item" + (item.child.length > 0 ? " dropdown" : "")
               }
-              key={index}
+              key={`navitem-${index}`}
             >
               {
                 item.href && <a
@@ -188,23 +188,24 @@ const Header = (props) => {
                     if(sub_item.path) {
                       return (
                         <NavLink
-                        className={
-                          "nav-link"
-                        }
-                        to={sub_item.path}
-                        id={`navbarSubDropdownMenuLink-${sub_index}`}
-                      >
-                        {sub_item.name}
-                      </NavLink>
+                          className={
+                            "nav-link"
+                          }
+                          to={sub_item.path}
+                          id={`navbarSubDropdownMenuLink-${sub_index}`}
+                          key={`sub-navbar-${sub_index}`}
+                        >
+                          {sub_item.name}
+                        </NavLink>
                       )
                     } else if (sub_item.href) {
                       return (
                         <a
                           className="dropdown-item"
-                          key={sub_index}
                           href={sub_item.href}
                           target="_blank"
                           rel="noreferrer"
+                          key={`sub-navbar-${sub_index}`}
                         >
                           {sub_item.name}
                         </a>

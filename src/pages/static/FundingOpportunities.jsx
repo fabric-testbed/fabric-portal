@@ -1,4 +1,5 @@
 import React from "react";
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const solicitations = [
   {
@@ -118,6 +119,7 @@ const parsedSolicitations = () => {
 const FundingOpportunities = () => {
   return (
     <div className="container static-page pb-5">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">Get Involved with FABRIC</h1>
       <h2 className="text-primary mb-4">
         Funding Opportunities

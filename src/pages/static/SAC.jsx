@@ -7,7 +7,7 @@ import AbrahamMatta from "../../imgs/sac/matta-abraham.jpg";
 import CraigPartridge from "../../imgs/sac/partridge-chris.jpg";
 import ScottShenker from "../../imgs/sac/shenker-scott.jpg";
 import FrankWuerthwein from "../../imgs/sac/wuerthwien-frank.jpg";
-
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const sacMembers = [
   {
@@ -71,6 +71,7 @@ const sacMembers = [
 const SAC = () => {
   return (
     <div className="container pb-5 static-page">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">Scientific Advisory Committee</h1>
       <p>The FABRIC Scientific Advisory Committee (SAC) will help guide the project by providing recommendations and critical feedback. Initially, the focus will be on reviewing the FABRIC design to ensure it can meet the diverse research needs of the future. The committee will also facilitate critical partnerships between collaborating institutions both within and outside of the US. As work progresses, the SAC will develop grand challenges that focus on solving key research problems using the FABRIC infrastructure.</p>
       <h2 className="text-primary mb-5">

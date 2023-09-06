@@ -1,10 +1,12 @@
 import React from "react";
+import BackgroundImage from "../../imgs/network-bg.svg";
 import { default as portalData } from "../../services/portalData.json";
 
 export default class Help extends React.Component{
   render() {
     return (
       <div className="container" id="contactUs">
+        <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
         <h1 className="mb-4">Getting Help in FABRIC</h1>
         <div className="alert alert-primary mt-3" role="alert">
           <p className="mt-2">

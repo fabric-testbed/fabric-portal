@@ -11,6 +11,7 @@ import BristolIsOpen from "../../imgs/testbeds/bristol-is-open.png";
 import Bridges from "../../imgs/testbeds/bridges.png";
 import FAB from "../../imgs/testbeds/fab.png";
 import Colosseum from "../../imgs/testbeds/colosseum.png";
+import BackgroundImage from "../../imgs/network-bg.svg";
 
 const testbeds = [
   {
@@ -113,51 +114,54 @@ const Testbeds = () => {
 
   return (
     <div className="container pb-5 static-page">
-      <h1 className="mb-4">Participating Testbeds and Facilities</h1>
-      <p>
-        FABRIC is a testbed of testbeds, helping users experiment using multiple testbeds. Like Lego blocks, users can get accounts on several testbeds and build an experiment using all of them.
-      </p>
-      <p>
-        Additionally, testbeds can be powered by FABRIC. FABRIC can support testbeds as an underlying infrastructure, while not necessarily exposing the FABRIC interfaces to their users. Find a list of participating testbeds and facilities below.
-      </p>
-      <p>
-        Want your testbed or facility listed? Add it <a href="https://share.hsforms.com/13ryeyx2VRjyaY9Q8kB9Wgg3ry9k" target="_blank" rel="noreferrer">here</a>.
-        Need to update the information for your testbed? Update it <a href="https://share.hsforms.com/1ITfbhOzyQqysDzXoEiodUg3ry9k" target="_blank" rel="noreferrer">here</a>.
-      </p>
-      <p>
-        The page is community sourced. FABRIC is not responsible for its user-generated content.
-      </p>
-      <div className="row px-5">
-        <input
-          className="col-12 border border-primary-light p-2"
-          type="search"
-          placeholder="Search Testbeds and Facilities..."
-          aria-label="Search"
-          value={ query }
-          onChange={ handleChangeQuery }
-        />
-      </div>
-      <div className="row mt-5">
-        {
-          filteredTestbeds.map((testbed, index) => 
-          <div className="testbed-wrapper col-xs-12 col-sm-12 col-md-6 col-lg-4" key={`testbed-${index}`}>
-            <div className="testbed-header">
-              <img src={testbed.image} alt={`${testbed.name}`} className="testbed-logo"/>
-            </div>
-            <div className="testbed-description">
-              <p>{ testbed.description }</p>
-            </div>
-            <div className="testbed-footer">
-              {
-                testbed.url && (
-                  <a href={ testbed.url } target="_blank" rel="noopener noreferrer" className="testbed-link" aria-label={ `Visit the ${ testbed.name } website` }>
-                    <i className="fa fa-link"></i>
-                  </a>
-                )
-              }
-            </div>
-          </div>)
-        }
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
+      <div className="static-page-content">
+        <h1 className="mb-4">Participating Testbeds and Facilities</h1>
+        <p>
+          FABRIC is a testbed of testbeds, helping users experiment using multiple testbeds. Like Lego blocks, users can get accounts on several testbeds and build an experiment using all of them.
+        </p>
+        <p>
+          Additionally, testbeds can be powered by FABRIC. FABRIC can support testbeds as an underlying infrastructure, while not necessarily exposing the FABRIC interfaces to their users. Find a list of participating testbeds and facilities below.
+        </p>
+        <p>
+          Want your testbed or facility listed? Add it <a href="https://share.hsforms.com/13ryeyx2VRjyaY9Q8kB9Wgg3ry9k" target="_blank" rel="noreferrer">here</a>.
+          Need to update the information for your testbed? Update it <a href="https://share.hsforms.com/1ITfbhOzyQqysDzXoEiodUg3ry9k" target="_blank" rel="noreferrer">here</a>.
+        </p>
+        <p>
+          The page is community sourced. FABRIC is not responsible for its user-generated content.
+        </p>
+        <div className="row px-5">
+          <input
+            className="col-12 border border-primary-light p-2"
+            type="search"
+            placeholder="Search Testbeds and Facilities..."
+            aria-label="Search"
+            value={ query }
+            onChange={ handleChangeQuery }
+          />
+        </div>
+        <div className="row mt-5">
+          {
+            filteredTestbeds.map((testbed, index) => 
+            <div className="testbed-wrapper col-xs-12 col-sm-12 col-md-6 col-lg-4" key={`testbed-${index}`}>
+              <div className="testbed-header">
+                <img src={testbed.image} alt={`${testbed.name}`} className="testbed-logo"/>
+              </div>
+              <div className="testbed-description">
+                <p>{ testbed.description }</p>
+              </div>
+              <div className="testbed-footer">
+                {
+                  testbed.url && (
+                    <a href={ testbed.url } target="_blank" rel="noopener noreferrer" className="testbed-link" aria-label={ `Visit the ${ testbed.name } website` }>
+                      <i className="fa fa-link"></i>
+                    </a>
+                  )
+                }
+              </div>
+            </div>)
+          }
+        </div>
       </div>
     </div>
   );

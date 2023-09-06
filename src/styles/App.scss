@@ -55,6 +55,15 @@ body {
   line-height: 2rem;
 }
 
+.static-page-bg {
+  opacity: 0.2;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: auto;
+  margin-top: -25rem;
+}
+
 /* App Footer */
 .app-footer {
   display: flex;
@@ -180,6 +189,7 @@ body {
 
 /* App Header Navbar */
 .navbar {
+  z-index: 99 !important;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: .5rem !important;
@@ -834,5 +844,4 @@ ul,
 .testbed-logo {
   max-height: 100%;
   max-width: 100%;
-  
 }
