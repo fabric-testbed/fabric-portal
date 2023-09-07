@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 function ProfileModal(props) {
   const [isVisible, setIsVisible] = useState(false);
 
-  const { userName: name, email } = props;
+  const { user } = props;
 
   const toggleModal = (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ function ProfileModal(props) {
         onClick={toggleModal}
       >
         <NameInitialsAvatar
-          name={name}
+          name={user? user.name : ""}
           bgColor={"#5798bc"}
           borderColor={"#5798bc"}
           textColor={"#FFF"}
@@ -37,16 +37,16 @@ function ProfileModal(props) {
           <div className="row my-2">
             <div className="col-3 mt-1">
               <NameInitialsAvatar
-                name={name}
+                name={user? user.name : "Anonymous"}
                 bgColor={"#5798bc"}
                 borderColor={"#5798bc"}
                 textColor={"#FFF"}
               />
             </div>
             <div className="col-9">
-              {name}
+              {user? user.name : "Anonymous"}
               <br/>
-              <small>{email}</small>
+              <small>{user? user.email : "Email: Unknown"}</small>
             </div>
           </div>
           <div className="divider div-transparent"></div>

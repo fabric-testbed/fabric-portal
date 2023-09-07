@@ -40,6 +40,7 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
+    user: {},
     activeNotices: [],
     showSessionTimeoutModal1: false,
     showSessionTimeoutModal2: false,
@@ -60,6 +61,7 @@ class App extends React.Component {
       try {
         const { data } = await getWhoAmI();
         const user = data.results[0];
+        this.setState({ user });
         if (user.enrolled) {
           localStorage.setItem("userID", user.uuid);
           localStorage.setItem("userStatus", "active");
@@ -107,12 +109,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { userStatus, searchQuery, 
+    const { user, userStatus, searchQuery, 
       showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
           <Header
+            user={user}
             userStatus={userStatus}
             searchQuery={searchQuery}
             onQueryChange={this.handleQueryChange}
