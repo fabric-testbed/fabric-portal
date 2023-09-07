@@ -21,7 +21,7 @@ const LoginRequired = () => {
     <div className="container d-flex flex-row align-items-center justify-content-center">
       <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <div className="d-flex flex-column align-items-center">
-        <h1 className="fw-semibold lh-2">{`Please log in to use full features of FABRIC Portal.`}</h1>
+        <h1 className="fw-semibold lh-2">{`Please log in first to access this page.`}</h1>
         <NavLink to="/login">
           <button
             className="btn btn-outline-primary mt-5"

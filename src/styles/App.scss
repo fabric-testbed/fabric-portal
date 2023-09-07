@@ -6,7 +6,7 @@ body {
 
 .container {
   min-height: 82vh;
-  margin-top: 2rem;
+  margin-top: 4rem;
   margin-bottom: 2rem;
 }
 
@@ -44,7 +44,8 @@ body {
 
 /* For small screen */
 .home-upper-text {
-  padding: 2rem 2rem;
+  margin-top: 3rem;
+  padding: 2rem;
   width: 85%;
   font-size: 0.5rem;
 }
@@ -58,14 +59,18 @@ body {
 .static-page-bg {
   opacity: 0.2;
   position: fixed;
+  z-index: -1;
   left: 0;
   width: 100%;
   height: auto;
   margin-top: -25rem;
 }
 
-/* App Footer */
 .app-footer {
+  /* Make App Footer always on top of the main-body background image */
+  position: relative;
+  z-index: 99;
+  /* Make App Footer layout */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -187,13 +192,15 @@ body {
   background-color: $primary-color;
 }
 
-/* App Header Navbar */
 .navbar {
-  z-index: 99 !important;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: .5rem !important;
   padding-right: .5rem !important;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100; 
 }
 
 .nav-item {
@@ -768,7 +775,7 @@ ul,
 .divider
 {
 	position: relative;
-	margin: 2rem 0;
+	margin: 1rem 0;
 	height: 1px;
 }
 
@@ -845,3 +852,28 @@ ul,
   max-height: 100%;
   max-width: 100%;
 }
+
+.user-profile-nav-btn {
+  padding: 4px;
+  cursor: pointer;
+}
+
+.user-profile-nav-btn:hover {
+  background-color: rgba(87, 152, 188, 0.3);
+  border-radius: 50%;
+}
+
+.profile-modal {
+  position: fixed;
+  z-index: 99;
+  width: 14rem;
+  top: 3rem;
+  right: 10px;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+

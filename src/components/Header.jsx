@@ -10,6 +10,7 @@ import productionLogo from "../imgs/fabric-brand.png";
 import alphaLogo from "../imgs/fabric-brand-alpha.png";
 import betaLogo from "../imgs/fabric-brand-beta.png";
 import clearLocalStorage from "../utils/clearLocalStorage";
+import ProfileModal from './ProfileModal';
 
 const Header = (props) => {  
   const navItems = [
@@ -31,7 +32,6 @@ const Header = (props) => {
       child: [],
       path: ""
     },
-    { name: "User Profile", path: "/user", child: [] },
     { name: "Contact Us", path: "/help", child: [] },
     {
       name: "About",
@@ -259,14 +259,7 @@ const Header = (props) => {
           </NavLink>
         </form> :
         <form className="form-inline my-2 my-lg-0">
-          <NavLink to="/logout">
-            <button
-              onClick={handleLogout}
-              className="btn btn-outline-success my-2 my-sm-0"
-            >
-              Log out
-            </button>
-          </NavLink>
+          <ProfileModal userName={"Yaxue Guo"} email={"yaxueguo@renci.org"} />
         </form>
       }
     </div>
