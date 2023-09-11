@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 const CookiePolicy = () => {
   return (
-    <div className="container">
+    <div className="container static-page">
       <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">FABRIC Portal Cookie Policy</h1>
       <h3 className="mt-4 text-success">

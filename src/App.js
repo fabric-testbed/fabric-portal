@@ -28,6 +28,7 @@ import Leadership from "./pages/static/Leadership";
 import FundingOpportunities from "./pages/static/FundingOpportunities";
 import NewsletterSignup from "./pages/static/NewsletterSignup";
 import Testbeds from "./pages/static/Testbeds.jsx";
+import Publications from "./pages/static/Publications.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
@@ -151,13 +152,14 @@ class App extends React.Component {
             <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/about-fabric" element={<AboutFABRIC />} />
-            <Route path="/about-fab" element={<FAB />} />
-            <Route path="/sac" element={<SAC />} />
-            <Route path="/leadership" element={<Leadership />} />
-            <Route path="/funding-opportunities" element={<FundingOpportunities />} />
-            <Route path="/newsletter-signup" element={<NewsletterSignup />} />
-            <Route path="/testbeds-and-facilities" element={<Testbeds />} />
+            <Route path="/about/about-fabric" element={<AboutFABRIC />} />
+            <Route path="/about/about-fab" element={<FAB />} />
+            <Route path="/about/sac" element={<SAC />} />
+            <Route path="/about/leadership" element={<Leadership />} />
+            <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
+            <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
+            <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
+            <Route path="/community/publications" element={<Publications />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />

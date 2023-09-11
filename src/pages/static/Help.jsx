@@ -5,7 +5,7 @@ import { default as portalData } from "../../services/portalData.json";
 export default class Help extends React.Component{
   render() {
     return (
-      <div className="container" id="contactUs">
+      <div className="container static-page" id="contactUs">
         <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
         <h1 className="mb-4">Getting Help in FABRIC</h1>
         <div className="alert alert-primary mt-3" role="alert">
@@ -21,7 +21,7 @@ export default class Help extends React.Component{
             <li><a href={portalData.learnArticles.guideToLoginToFabricVMs} target="_blank" rel="noreferrer">Logging into FABRIC VMs</a></li>
           </ul>
         </div>
-        <div className="row">
+        <div className="row mt-5">
           <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header">
@@ -64,7 +64,7 @@ export default class Help extends React.Component{
             </div>
           </div>
         </div>
-        <div className="row mt-3">
+        <div className="row my-5">
           <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header">

@@ -9,7 +9,6 @@ import checkPortalType from "../utils/checkPortalType";
 import productionLogo from "../imgs/fabric-brand.png";
 import alphaLogo from "../imgs/fabric-brand-alpha.png";
 import betaLogo from "../imgs/fabric-brand-beta.png";
-import clearLocalStorage from "../utils/clearLocalStorage";
 import ProfileModal from './ProfileModal';
 
 const Header = (props) => {  
@@ -38,40 +37,44 @@ const Header = (props) => {
       child: [
         {
           name: "Overview",
-          path: "/about-fabric"
+          path: "/about/about-fabric"
         },
         {
           name: "FAB",
-          path: "/about-fab"
+          path: "/about/about-fab"
         },
         {
           name: "SAC",
-          path: "/sac"
+          path: "/about/sac"
         },
         {
           name: "Leadership",
-          path: "/leadership"
+          path: "/about/leadership"
         }
       ],
-      path: ""
+      path: "/about"
     },
     {
       name: "Community",
       child: [
         {
           name: "Newsletter Signup",
-          path: "/newsletter-signup"
+          path: "/community/newsletter-signup"
         },
         {
           name: "Funding Opportunities",
-          path: "/funding-opportunities"
+          path: "/community/funding-opportunities"
         },
         {
           name: "Testbeds and Facilities",
-          path: "/testbeds-and-facilities"
+          path: "/community/testbeds-and-facilities"
+        },
+        {
+          name: "Publications",
+          path: "/community/publications"
         }
       ],
-      path: ""
+      path: "/community"
     }
   ]
   

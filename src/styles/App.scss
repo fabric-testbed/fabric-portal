@@ -50,10 +50,16 @@ body {
   font-size: 0.5rem;
 }
 
+.static-page {
+  padding-top: 1rem;
+}
+
 .static-page p {
   margin-top: 2rem;
   margin-bottom: 1.5rem;
   line-height: 2rem;
+  position: relative;
+  z-index: 99;
 }
 
 .static-page-bg {
@@ -219,7 +225,7 @@ body {
 
 .nav-item .dropdown-menu a.active,
 .nav-item .dropdown-menu a:hover {
-  border-bottom: none;
+  border-bottom: $primary-color solid;;
 }
 
 .dropdown-item.active,
