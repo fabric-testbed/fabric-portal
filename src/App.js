@@ -41,7 +41,8 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
-    user: {},
+    userName: "",
+    userEmail: "",
     activeNotices: [],
     showSessionTimeoutModal1: false,
     showSessionTimeoutModal2: false,
@@ -62,10 +63,11 @@ class App extends React.Component {
       try {
         const { data } = await getWhoAmI();
         const user = data.results[0];
-        this.setState({ user });
         if (user.enrolled) {
           localStorage.setItem("userID", user.uuid);
           localStorage.setItem("userStatus", "active");
+          localStorage.setItem("userName", user.name);
+          localStorage.setItem("userEmail", user.email);
           try {
             const { data: res } = await getCurrentUser();
             localStorage.setItem("bastionLogin", res.results[0].bastion_login);
@@ -94,6 +96,8 @@ class App extends React.Component {
         if (errors && errors[0].details.includes("Login required")) {
           localStorage.setItem("userStatus", "unauthorized");
           localStorage.removeItem("userID");
+          localStorage.removeItem("userName");
+          localStorage.removeItem("userEmail");
         }
   
         if (errors && errors[0].details.includes("Enrollment required")) {
@@ -102,7 +106,11 @@ class App extends React.Component {
       }
     }
 
-    this.setState({ userStatus: localStorage.getItem("userStatus") });
+    this.setState({ 
+      userStatus: localStorage.getItem("userStatus"),
+      userName: localStorage.getItem("userName"),
+      userEmail: localStorage.getItem("userEmail")
+    });
   }
 
   handleQueryChange = (e) => {
@@ -110,13 +118,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, userStatus, searchQuery, 
+    const { userName, userEmail, userStatus, searchQuery, 
       showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
           <Header
-            user={user}
+            userName={userName}
+            userEmail={userEmail}
             userStatus={userStatus}
             searchQuery={searchQuery}
             onQueryChange={this.handleQueryChange}

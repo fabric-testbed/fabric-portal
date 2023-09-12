@@ -68,7 +68,7 @@ class ProjectPersonnel extends Component {
     const uploadMembersToAdd = [];
     const membersFailedToFind = [];
     for (const memberStr of members) {
-      const email = memberStr.split(",")[0].trim().replace(/\s/g, "");
+      const email = memberStr && memberStr.split(",")[0].trim().replace(/\s/g, "");
       try {
         const { data: res } = await getPeople(email);
         if (res.results[0]) {
@@ -95,7 +95,7 @@ class ProjectPersonnel extends Component {
 
   handleFileDrop = (membersStr) => {
     try {
-      const members = membersStr.split(/\r?\n/);
+      const members = membersStr && membersStr.split(/\r?\n/);
       if (members.length <= 300) {
         this.handleSearchMembers(members);
       } else {

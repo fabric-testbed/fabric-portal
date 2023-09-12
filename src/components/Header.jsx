@@ -253,7 +253,7 @@ const Header = (props) => {
           </NavLink>
         </form> :
         <form className="form-inline my-2 my-lg-0">
-          <ProfileModal user={props.user} />
+          <ProfileModal userName={props.userName} userEmail={props.userEmail} />
         </form>
       }
     </div>
