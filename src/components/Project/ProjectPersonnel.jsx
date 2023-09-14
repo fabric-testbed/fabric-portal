@@ -24,7 +24,7 @@ class ProjectPersonnel extends Component {
   handleSearch = async (value) => {
     try {
       if (value.length > 3) {
-        const { data: res } = await getPeople(value);
+        const { data: res } = await getPeople(value, false);
         if (res.results.length === 0) {
           this.setState({
             searchResults: [],
@@ -70,7 +70,7 @@ class ProjectPersonnel extends Component {
     for (const memberStr of members) {
       const email = memberStr && memberStr.split(",")[0].trim().replace(/\s/g, "");
       try {
-        const { data: res } = await getPeople(email);
+        const { data: res } = await getPeople(email, true);
         if (res.results[0]) {
           const memberToAdd = res.results[0];
           uploadMembersToAdd.push(memberToAdd);

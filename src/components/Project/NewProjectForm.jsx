@@ -89,7 +89,7 @@ class NewProjectForm extends Form {
       this.setState({ ownerSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeople(value);
+          const { data: res } = await getPeople(value, false);
           const owners = res.results;
           this.setState({ owners });
         } else {
@@ -103,7 +103,7 @@ class NewProjectForm extends Form {
       this.setState({ memberSearchInput: value });
       try {
         if (value.length > 3) {
-          const { data: res } = await getPeople(value);
+          const { data: res } = await getPeople(value, false);
           const members = res.results;
           this.setState({ members });
         } else {

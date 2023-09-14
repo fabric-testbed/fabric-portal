@@ -8,8 +8,7 @@ import SummaryTable from "../components/Resource/SummaryTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
-// import { getResources } from "../services/resourceService.js";
-import { getResources } from "../services/mockData/fakeResources.js";
+import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -26,44 +25,26 @@ class Resources extends Component {
     siteColorMapping: {}
   }
 
-  // async componentDidMount() {
-  //   try {
-  //     const { data: res } = await getResources();
-  //     const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
-  //     this.setState({
-  //       resources: parsedObj.parsedSites,
-  //       siteNames: parsedObj.siteNames,
-  //       siteColorMapping: parsedObj.siteColorMapping
-  //     });
-
-  //     const resourceId = this.props.match.params.id;
-  //     if(resourceId && resourceId !== "all" && parsedObj.siteAcronyms.includes(resourceId)) {
-  //       this.setState({
-  //         searchQuery: resourceId,
-  //         activeDetailName: sitesNameMapping.acronymToShortName[resourceId]
-  //       })
-  //     }
-  //   } catch (err) {
-  //     toast.error("Failed to load resource information. Please reload this page.");
-  //   }
-  // }
-
-  componentDidMount() {
-    const { data: res } = getResources();
-    const parsedObj = sitesParser(res[0], sitesNameMapping.acronymToShortName);
-    this.setState({
-      resources: parsedObj.parsedSites,
-      siteNames: parsedObj.siteNames,
-      siteColorMapping: parsedObj.siteColorMapping
-    });
-
-    const resourceId = this.props.match.params.id;
-    if(resourceId && resourceId !== "all" && parsedObj.siteAcronyms.includes(resourceId)) {
+  async componentDidMount() {
+    try {
+      const { data: res } = await getResources();
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({
-        searchQuery: resourceId,
-        activeDetailName: sitesNameMapping.acronymToShortName[resourceId]
-      })
-    } 
+        resources: parsedObj.parsedSites,
+        siteNames: parsedObj.siteNames,
+        siteColorMapping: parsedObj.siteColorMapping
+      });
+
+      const resourceId = this.props.match.params.id;
+      if(resourceId && resourceId !== "all" && parsedObj.siteAcronyms.includes(resourceId)) {
+        this.setState({
+          searchQuery: resourceId,
+          activeDetailName: sitesNameMapping.acronymToShortName[resourceId]
+        })
+      }
+    } catch (err) {
+      toast.error("Failed to load resource information. Please reload this page.");
+    }
   }
 
   getResourcesSum = (resources) => {
