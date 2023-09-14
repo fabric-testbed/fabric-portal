@@ -82,6 +82,9 @@ const Header = (props) => {
     if (getCookieConsentValue("fabricPortalCookieConsent")) {
       // remove old user status stored in browser.
       localStorage.removeItem("userStatus");
+      localStorage.removeItem("userID");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
       // nginx handle login url.
       window.location.href = "/login";
     } else {

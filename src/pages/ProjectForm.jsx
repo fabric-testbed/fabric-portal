@@ -149,6 +149,9 @@ class ProjectForm extends Form {
 
       const { data } = await getProjectById(projectId);
 
+      console.log("project data:");
+      console.log(data)
+
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
