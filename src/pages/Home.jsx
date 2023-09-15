@@ -2,7 +2,7 @@ import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
 import RecentNews from "../components/Home/RecentNews";
-import TwitterFeed from "../components/Home/TwitterFeed";
+// import TwitterFeed from "../components/Home/TwitterFeed";
 import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../data/sites";
@@ -111,12 +111,12 @@ class Home extends React.Component {
           </div>
         </div>
         <div className="home-lower row mt-2">
-          <div className="col-xl-9 col-lg-12">
+          <div className="col-xl-12 col-lg-12">
             <RecentNews />
           </div>
-          <div className="col-xl-3 col-lg-12">
+          {/* <div className="col-xl-3 col-lg-12">
             <TwitterFeed />
-          </div>
+          </div> */}
         </div>
         <div className="home-lower row mt-2">
           <div className="col-xl-12 col-lg-12">
