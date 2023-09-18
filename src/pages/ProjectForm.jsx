@@ -387,67 +387,8 @@ class ProjectForm extends Form {
     }
   };
 
-  checkUserExist = (user, existingUsers) => {
-    for (const u of existingUsers) {
-      if (user.uuid === u.uuid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  handleSinglePersonnelUpdate = (personnelType, user, operation) => {
-    // personnelType: "Project Owner" / "Project Member"
-    // operation: "add" / "remove"
-    if (personnelType === "Project Owners") {
-      if (operation === "add") {
-        if (this.checkUserExist(user, this.state.owners)) {
-          // if the user exists, toast a message
-          toast.alert(`${user.name} already exists in ${personnelType}.`)
-        } else {
-          // if the user doesn't exist, add
-          this.setState({ owners: [...this.state.owners, user] });
-        }
-      }
-
-      if (operation === "remove") {
-        this.setState({ owners: this.state.owners.filter(u => u.uuid !== user.uuid) });
-      }
-    } else if (personnelType === "Project Members") {
-      if (operation === "add") {
-        if (this.checkUserExist(user, this.state.members)) {
-          // if the user exists, toast a message
-          toast.alert(`${user.name} already exists in ${personnelType}.`)
-        } else {
-          this.setState({ members: [...this.state.members, user] });
-        }
-      }
-
-      if (operation === "remove") {
-        this.setState({ members: this.state.members.filter(u => u.uuid !== user.uuid) });
-      }
-    }
-  }
-
-  handleBatchMembersUpdate = (members) => {
-    const unExistingMembers = [];
-    for (const m of members) {
-      if(!this.checkUserExist(m, this.state.members)) {
-        unExistingMembers.push(m);
-      }
-    }
-    this.setState({ members: [...this.state.members, ...unExistingMembers] });
-  }
-
-  handleAllMembersDelete = () => {
-    this.setState({ members: [] });
-  }
-
-  getIDs = (users) => {
-    return users.map(user => user.uuid);
-  }
-
-  handlePersonnelUpdate = (usersToAdd) => {
+  handlePersonnelUpdate = (ownerIDs, memberIDs) => {
+    const { data } = this.state;
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
     this.setState({
       showSpinner: true,
@@ -458,26 +399,7 @@ class ProjectForm extends Form {
         btnText: "Back to Project List",
         btnPath: "/experiments#projects"
       }
-    }); 
-
-    let ownerIDs = [];
-    let memberIDs = [];
-    const userIDs = this.getIDs(usersToAdd);
-
-    const { data, owners, members } = this.state;
-    if (this.state.activeIndex === 1) {
-      // new owners added
-      ownerIDs = this.getIDs(owners).concat(userIDs);
-      memberIDs = this.getIDs(members);
-    } else if (this.state.activeIndex === 2) {
-      // new members added
-      ownerIDs = this.getIDs(owners);
-      memberIDs = this.getIDs(members).concat(userIDs);
-    }
-
-    console.log("test project form add users:")
-    console.log(ownerIDs)
-    console.log(memberIDs)
+    });
 
     try{
       // pass the arr of updated po/pm and the original pm/po
@@ -511,6 +433,58 @@ class ProjectForm extends Form {
     }
 
     this.props.navigate(`/projects/${data.uuid}`);
+  }
+
+
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
+  handleDeleteUsers = (personnelType, users) => {
+    // call API and update.
+    const userIDs = users.map(user => user.uuid);
+    let owners = this.state.owners;
+    let members = this.state.members;
+
+    if (personnelType === "Project Owners") {
+      owners.filter(owner => !userIDs.includes(owner.uuid));
+    } else if (personnelType === "Project Members") {
+      members.filter(member => !userIDs.includes(member.uuid));
+    }
+
+    const ownerIDs = this.getIDs(owners);
+    const memberIDs = this.getIDs(members);
+
+    this.handlePersonnelUpdate(ownerIDs, memberIDs);
+  }
+
+  handleBatchMembersUpdate = (members) => {
+    const unExistingMembers = [];
+    for (const m of members) {
+      if(!this.checkUserExist(m, this.state.members)) {
+        unExistingMembers.push(m);
+      }
+    }
+    this.setState({ members: [...this.state.members, ...unExistingMembers] });
+  }
+
+  handleAddUsers = (usersToAdd) => {
+    let ownerIDs = [];
+    let memberIDs = [];
+    const userIDs = this.getIDs(usersToAdd);
+
+    const { owners, members } = this.state;
+    if (this.state.activeIndex === 1) {
+      // new owners added
+      ownerIDs = this.getIDs(owners).concat(userIDs);
+      memberIDs = this.getIDs(members);
+    } else if (this.state.activeIndex === 2) {
+      // new members added
+      ownerIDs = this.getIDs(owners);
+      memberIDs = this.getIDs(members).concat(userIDs);
+    }
+
+    this.handlePermissionUpdate(ownerIDs, memberIDs);
   }
 
   render() {
@@ -689,8 +663,8 @@ class ProjectForm extends Form {
                   personnelType={"Project Owners"}
                   canUpdate={canUpdate}
                   users={owners}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onPersonnelAdd={this.handleAddUsers}
+                  onDeleteUsers={this.handleDeleteUsers}
                 />
               </div>
             </div>
@@ -705,10 +679,9 @@ class ProjectForm extends Form {
                   personnelType={"Project Members"}
                   canUpdate={canUpdate}
                   users={members}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onPersonnelAdd={this.handleAddUsers}
+                  onDeleteUsers={this.handleDeleteUsers}
                   onBatchMembersUpdate={this.handleBatchMembersUpdate}
-                  onAllMembersDelete={this.handleAllMembersDelete}
                 />
               </div>
             </div>

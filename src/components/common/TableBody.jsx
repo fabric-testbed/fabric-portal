@@ -28,9 +28,14 @@ class TableBody extends Component {
           <tr key={index}>
             {
               isSelectable && <td>
-              <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id={`tableCheck${index}`} />
-                  <label class="custom-control-label" for={`tableCheck${index}`} />
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id={`tableCheckHeader`} 
+                  onClick={() => this.props.onCheck(item)}
+                />
               </div>
             </td>
             }

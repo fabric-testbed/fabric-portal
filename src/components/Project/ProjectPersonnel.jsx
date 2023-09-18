@@ -3,9 +3,6 @@ import AddPersonnel from "./AddPersonnel";
 import ProjectUserTable from "./ProjectUserTable";
 import { toast } from "react-toastify";
 import { getPeople } from "../../services/peopleService";
-import Dropfile from "../common/Dropfile";
-import Tabs from "../common/Tabs";
-import SpinnerWithText from "../common/SpinnerWithText";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -16,13 +13,14 @@ class ProjectPersonnel extends Component {
     searchCompleted: false,
     uploadMembersToAdd: [],
     membersFailedToFind: [],
+    checkedUsers: []
   };
 
   handleInputChange = (input) => {
     this.setState({ searchInput: input, warningMessage: "" });
   }
 
-  handleSearch = async (value) => {
+  handleSearchExistingUsers = async (value) => {
     try {
       if (value.length > 3) {
         const { data: res } = await getPeople(value, false);
@@ -49,70 +47,20 @@ class ProjectPersonnel extends Component {
   raiseInputKeyDown = (e) => {
     const query = e.target.value;
     if ((e.key === "Enter") && query) {
-     this.handleSearch(query);
+     this.handleSearchExistingUsers(query);
     }
   };
 
-  handleDeleteUser = (user) => {
-    const { personnelType } = this.props;
-    this.props.onSinglePersonnelUpdate(personnelType, user, "remove");
-  };
-
-  handleAddUser = (user) => {
-    const { personnelType } = this.props;
-    this.props.onSinglePersonnelUpdate(personnelType, user, "add");
-    this.setState({ searchInput: "", searchResults: [] });
-  };
-
-  handleSearchMembers = async (members) => {
-    this.setState({ showSpinner: true, spinnerText: "Uploading..." });
-    const uploadMembersToAdd = [];
-    const membersFailedToFind = [];
-    for (const memberStr of members) {
-      const email = memberStr && memberStr.split(",")[0].trim().replace(/\s/g, "");
-      try {
-        const { data: res } = await getPeople(email, true);
-        if (res.results[0]) {
-          const memberToAdd = res.results[0];
-          uploadMembersToAdd.push(memberToAdd);
-        } else {
-          membersFailedToFind.push(memberStr);
-        }
-      }
-      catch(err) {
-        console.log(err)
-      }
-    }
-
-    this.setState({
-      uploadMembersToAdd,
-      membersFailedToFind,
-      searchCompleted: true,
-      showSpinner: false
-    });
-
-    this.props.onBatchMembersUpdate(uploadMembersToAdd);
-  }
-
-  handleFileDrop = (membersStr) => {
-    try {
-      const members = membersStr && membersStr.split(/\r?\n/);
-      if (members.length <= 300) {
-        this.handleSearchMembers(members);
-      } else {
-        toast.error("Please upload at most 300 users (300 rows for the CSV file) at a time.");
-      }
-    } catch (err) {
-      toast.error("Failed to gather members' data from the CSV file. Please check if your file meets the format requirements.")
-    }
-  }
-
-  refreshTab = () => {
-    window.location.reload();
+  handleCheckUser = (user) => {
+    console.log("handle check user")
+    console.log(user)
+    const users = [...this.state.checkedUsers];
+    users.push(user);
+    this.setState({ checkedUsers: users });
   }
 
   render() {
-    const { canUpdate, personnelType, users } = this.props;
+    const { canUpdate, personnelType, users, checkedUsers } = this.props;
 
     return (
       <div>
@@ -121,7 +69,8 @@ class ProjectPersonnel extends Component {
           canUpdate && 
           <AddPersonnel
             personnelType={personnelType}
-            onPersonnelUpdate={this.props.onPersonnelUpdate}
+            onPersonnelAdd={this.props.onPersonnelAdd}
+            users={users}
           />
         }
         {
@@ -129,20 +78,19 @@ class ProjectPersonnel extends Component {
           <div className="mt-2">
             <div className="d-flex flex-row justify-content-between mb-2">
               <span>{`${users.length} ${personnelType}`}.</span>
-              {
-                canUpdate && <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={this.props.onAllMembersDelete}
-                >
-                  Delete All
-                </button>
-              }
             </div>
             <ProjectUserTable
               users={users}
-              onDelete={this.handleDeleteUser}
               canUpdate={canUpdate}
+              onCheckUser={this.handleCheckUser}
             />
+            <button
+              onClick={() => this.props.onDeleteUsers(this.state.checkedUsers)}
+              className="btn btn-outline-danger"
+              disabled={checkedUsers.length === 0}
+            >
+              Delete
+            </button>
           </div>
         }
         {

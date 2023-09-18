@@ -61,15 +61,29 @@ class AddPersonnel extends Component {
     }
   };
 
+  checkUserExist = (user, existingUsers) => {
+    for (const u of existingUsers) {
+      if (user.uuid === u.uuid) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   handleAddUser = (user) => {
     const { personnelType } = this.props;
-    // get a shallow copy
-    const members = [...this.state.usersToAdd];
-    members.push(user);
-    // this.props.onSinglePersonnelUpdate(personnelType, user, "add");
-    this.setState({
-      usersToAdd: members
-    })
+    if (this.checkUserExist(user, this.props.users)) {
+      // if the user exists, toast a message
+      toast.alert(`${user.name} already exists in ${personnelType}.`)
+    } else {
+      // get a shallow copy
+      const users = [...this.state.usersToAdd];
+      users.push(user);
+      // this.props.onSinglePersonnelUpdate(personnelType, user, "add");
+      this.setState({
+        usersToAdd: users
+      })
+    }
     this.setState({ searchInput: "", searchResults: [] });
   };
 
@@ -299,7 +313,7 @@ class AddPersonnel extends Component {
             </ul>
             <button
               className="btn btn-sm btn-outline-primary mr-3 mt-3"
-              onClick={() => this.props.onPersonnelUpdate(usersToAdd)}
+              onClick={() => this.props.onPersonnelAdd(usersToAdd)}
             >
               Add to {personnelType}
             </button>

@@ -24,24 +24,6 @@ class ProjectUserTable extends Component {
     sortColumn: { path: "name", order: "asc" },
   }
 
-  deletedColumn = {
-    key: "delete",
-    content: (user) => (
-      <button
-        onClick={() => this.props.onDelete(user)}
-        className="btn btn-danger btn-sm"
-      >
-        Delete
-      </button>
-    ),
-  };
-
-  componentDidMount() {
-    if (this.props.canUpdate && this.columns.length <= 3) {
-      this.columns.push(this.deletedColumn);
-    }
-  }
-
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
@@ -83,6 +65,7 @@ class ProjectUserTable extends Component {
           onSort={this.handleSort}
           size={canUpdate ? "sm" : "md"}
           isSelectable={true}
+          onCheck={this.props.onCheckUser}
         />
         <Pagination
           itemsCount={totalCount}

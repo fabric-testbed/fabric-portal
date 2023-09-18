@@ -37,11 +37,15 @@ class TableHeader extends Component {
         <tr>
           {
             isSelectable && <th scope="col">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id={`tableCheckHeader`} />
-                <label class="custom-control-label" for={`tableCheckHeader`} />
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id={`tableCheckHeader`} 
+                  onClick={() => this.props.onCheck("all")}
+                />
               </div>
-              Select All
             </th>
           }
           {sortColumn && this.props.columns.map((column) => (
