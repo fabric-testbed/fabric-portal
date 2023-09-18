@@ -84,7 +84,7 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "LONG-LIVED TOKEN", active: false },
+      // { name: "LONG-LIVED TOKEN", active: false },
       { name: "SLICES", active: false },
     ],
     originalProjectName: "",
@@ -211,7 +211,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
-         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
+        //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
        ]})
      }
@@ -365,8 +365,8 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      3: "#token",
-      4: "#slices",
+      // 3: "#token",
+      3: "#slices",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -447,7 +447,7 @@ class ProjectForm extends Form {
     return users.map(user => user.uuid);
   }
 
-  handlePersonnelUpdate = () => {
+  handlePersonnelUpdate = (usersToAdd) => {
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
     this.setState({
       showSpinner: true,
@@ -458,11 +458,26 @@ class ProjectForm extends Form {
         btnText: "Back to Project List",
         btnPath: "/experiments#projects"
       }
-    });
+    }); 
+
+    let ownerIDs = [];
+    let memberIDs = [];
+    const userIDs = this.getIDs(usersToAdd);
 
     const { data, owners, members } = this.state;
-    const ownerIDs = this.getIDs(owners);
-    const memberIDs = this.getIDs(members);
+    if (this.state.activeIndex === 1) {
+      // new owners added
+      ownerIDs = this.getIDs(owners).concat(userIDs);
+      memberIDs = this.getIDs(members);
+    } else if (this.state.activeIndex === 2) {
+      // new members added
+      ownerIDs = this.getIDs(owners);
+      memberIDs = this.getIDs(members).concat(userIDs);
+    }
+
+    console.log("test project form add users:")
+    console.log(ownerIDs)
+    console.log(memberIDs)
 
     try{
       // pass the arr of updated po/pm and the original pm/po
@@ -675,7 +690,7 @@ class ProjectForm extends Form {
                   canUpdate={canUpdate}
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onPersonnelUpdate={(usersToAdd) => this.handlePersonnelUpdate(usersToAdd)}
                 />
               </div>
             </div>
