@@ -690,7 +690,7 @@ class ProjectForm extends Form {
                   canUpdate={canUpdate}
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={(usersToAdd) => this.handlePersonnelUpdate(usersToAdd)}
+                  onPersonnelUpdate={() => this.handlePersonnelUpdate}
                 />
               </div>
             </div>

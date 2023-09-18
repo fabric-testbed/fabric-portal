@@ -299,7 +299,7 @@ class AddPersonnel extends Component {
             </ul>
             <button
               className="btn btn-sm btn-outline-primary mr-3 mt-3"
-              onClick={this.props.onPersonnelUpdate(usersToAdd)}
+              onClick={() => this.props.onPersonnelUpdate(usersToAdd)}
             >
               Add to {personnelType}
             </button>
