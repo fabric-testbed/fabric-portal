@@ -12,9 +12,19 @@ class AddPersonnel extends Component {
     searchResults: [],
     warningMessage: "",
     searchCompleted: false,
-    membersFailedToFind: [],
-    membersToAdd: []
+    usersFailedToFind: [],
+    usersToAdd: []
   };
+
+  handleUserDelete = (userToDelete) => {
+    const newUsers = [];
+    for (const user of this.state.usersToAdd) {
+      if (user.name !== userToDelete) {
+        newUsers.push(user);
+      }
+    }
+    this.setState({ usersToAdd: newUsers });
+  }
 
   handleInputChange = (input) => {
     this.setState({ searchInput: input, warningMessage: "" });
@@ -53,27 +63,29 @@ class AddPersonnel extends Component {
 
   handleAddUser = (user) => {
     const { personnelType } = this.props;
-    const members = this.state.membersToAdd;
+    // get a shallow copy
+    const members = [...this.state.usersToAdd];
+    members.push(user);
     // this.props.onSinglePersonnelUpdate(personnelType, user, "add");
     this.setState({
-      memberToAdd: [members, user]
+      usersToAdd: members
     })
     this.setState({ searchInput: "", searchResults: [] });
   };
 
   handleSearchMembers = async (members) => {
     this.setState({ showSpinner: true, spinnerText: "Uploading..." });
-    const membersToAdd = [];
-    const membersFailedToFind = [];
+    const usersToAdd = [];
+    const usersFailedToFind = [];
     for (const memberStr of members) {
       const email = memberStr && memberStr.split(",")[0].trim().replace(/\s/g, "");
       try {
         const { data: res } = await getPeople(email, true);
         if (res.results[0]) {
           const memberToAdd = res.results[0];
-          membersToAdd.push(memberToAdd);
+          usersToAdd.push(memberToAdd);
         } else {
-          membersFailedToFind.push(memberStr);
+          usersFailedToFind.push(memberStr);
         }
       }
       catch(err) {
@@ -82,13 +94,13 @@ class AddPersonnel extends Component {
     }
 
     this.setState({
-      membersToAdd,
-      membersFailedToFind,
+      usersToAdd,
+      usersFailedToFind,
       searchCompleted: true,
       showSpinner: false
     });
 
-    this.props.onBatchMembersUpdate(membersToAdd);
+    this.props.onBatchMembersUpdate(usersToAdd);
   }
 
   handleFileDrop = (membersStr) => {
@@ -110,77 +122,21 @@ class AddPersonnel extends Component {
 
   render() {
     const { searchInput, searchResults, warningMessage,
-      searchCompleted, membersFailedToFind, showSpinner, membersToAdd } = this.state;
+      searchCompleted, usersFailedToFind, showSpinner, usersToAdd } = this.state;
     const { personnelType } = this.props;
 
     return (
-      <div className="add-project-personnel">
-        <button
-          className="btn btn-sm btn-primary mr-3 mb-2"
-          onClick={this.props.onPersonnelUpdate}
-        >
-          <i className="fa fa-floppy-o mr-1"></i>
-          Add
-        </button>
-        {
-          membersToAdd.length > 0 && membersToAdd.map(member => <span className="badge badge-secondary">member</span>)
-        }
-        {
-          personnelType === "Project Owners" && <div className="d-flex flex-column my-2">
-          <div className="d-flex flex-row">
-            <input
-              className="form-control search-owner-input"
-              value={searchInput}
-              placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
-              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-              onKeyDown={this.raiseInputKeyDown}
-            />
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => this.handleSearch(searchInput)}
-            >
-              <i className="fa fa-search"></i>
-            </button>
-          </div>
-          {
-            warningMessage !== "" && 
-            <div className="alert alert-warning" role="alert">
-              {warningMessage}
-            </div>
-          }
-          {
-            searchResults.length > 0 &&
-            <ul className="list-group">
-              {
-                searchResults.map((user, index) => {
-                  return (
-                    <li
-                      key={`search-user-result-${index}`}
-                      className="list-group-item d-flex flex-row justify-content-between"
-                    >
-                      {
-                        user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
-                        <div className="mt-1">{user.name}</div>
-                      }
-                      <button
-                        className="btn btn-sm btn-outline-primary ml-2"
-                        onClick={() => this.handleAddUser(user)}
-                      >
-                        Add
-                      </button>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          }
+      <div className="card">
+        <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
+          <h5 className="mb-0">
+            Add {personnelType} 
+          </h5>
         </div>
-        }
-        {
-          personnelType === "Project Members" &&
-          <Tabs activeTab={"Search"}>
-            <div label="Search">
-            <div className="d-flex flex-row mb-2">
+        <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div className="card-body">
+            {
+            personnelType === "Project Owners" && <div className="d-flex flex-column my-2">
+            <div className="d-flex flex-row">
               <input
                 className="form-control search-owner-input"
                 value={searchInput}
@@ -189,21 +145,21 @@ class AddPersonnel extends Component {
                 onKeyDown={this.raiseInputKeyDown}
               />
               <button
-                className="btn btn-primary"
+                className="btn btn-outline-primary"
                 onClick={() => this.handleSearch(searchInput)}
               >
                 <i className="fa fa-search"></i>
               </button>
             </div>
             {
-                warningMessage !== "" && 
-                <div className="alert alert-warning" role="alert">
-                  {warningMessage}
-                </div>
-              }
-              {
-                searchResults.length > 0 &&
-                <ul className="list-group">
+              warningMessage !== "" && 
+              <div className="alert alert-warning" role="alert">
+                {warningMessage}
+              </div>
+            }
+            {
+              searchResults.length > 0 &&
+              <ul className="list-group">
                 {
                   searchResults.map((user, index) => {
                     return (
@@ -219,61 +175,136 @@ class AddPersonnel extends Component {
                           className="btn btn-sm btn-outline-primary ml-2"
                           onClick={() => this.handleAddUser(user)}
                         >
-                          Add
+                          <i className="fa fa-plus"></i>
                         </button>
                       </li>
                     );
                   })
                 }
-                </ul>
-              }
-            </div>
-            <div label="Batch Upload">
+              </ul>
+            }
+          </div>
+          }
+          {
+            personnelType === "Project Members" &&
+            <Tabs activeTab={"Search"}>
+              <div label="Search">
+              <div className="d-flex flex-row mb-2">
+                <input
+                  className="form-control search-owner-input"
+                  value={searchInput}
+                  placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
+                  onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                  onKeyDown={this.raiseInputKeyDown}
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={() => this.handleSearch(searchInput)}
+                >
+                  <i className="fa fa-search"></i>
+                </button>
+              </div>
               {
-                !searchCompleted && !showSpinner &&
-                <div className="w-100 bg-light border pt-3 mb-2">
-                  <Dropfile
-                    onFileDrop={this.handleFileDrop}
-                    accept={{'text/csv': [".csv"]}}
-                    acceptFormat={"csv"}
-                    textStr={"Click to select or drag & drop the CSV file here (with user email as the first column). [Max: 300 rows]"}
-                  />
-                </div>
-              }
-              {
-                searchCompleted && !showSpinner &&
-                <div className="alert alert-success my-2" role="alert">
-                  <i className="fa fa-check mr-2"></i>
-                  Project members uploaded successfully! Please check the list and <b>SAVE</b> the changes before leaving this page.
-                </div>
-              }
-              {
-                showSpinner && !searchCompleted && <SpinnerWithText text={"Uploading users..."} />
-              }
-              {
-                membersFailedToFind.length > 0 &&
-                <div className="alert alert-warning">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
-                  We couldn't find the users below. Please make sure:  1. email is the first column of the CSV file; 2. name and email information 
-                  are correct; 3. users have sucessfully enrolled as active FABRIC users.
-                  <ul className="list-group mt-2 ml-4">
-                    {
-                      membersFailedToFind.map((memberStr, index) => {
-                        return (
-                          <li
-                            key={`failed-search-user-result-${index}`}
+                  warningMessage !== "" && 
+                  <div className="alert alert-warning" role="alert">
+                    {warningMessage}
+                  </div>
+                }
+                {
+                  searchResults.length > 0 &&
+                  <ul className="list-group">
+                  {
+                    searchResults.map((user, index) => {
+                      return (
+                        <li
+                          key={`search-user-result-${index}`}
+                          className="list-group-item d-flex flex-row justify-content-between"
+                        >
+                          {
+                            user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                            <div className="mt-1">{user.name}</div>
+                          }
+                          <button
+                            className="btn btn-sm btn-outline-primary ml-2"
+                            onClick={() => this.handleAddUser(user)}
                           >
-                            { memberStr }
-                          </li>
-                        );
-                      })
-                    }
+                            <i className="fa fa-plus"></i>
+                          </button>
+                        </li>
+                      );
+                    })
+                  }
                   </ul>
+                }
+              </div>
+                <div label="Batch Upload">
+                  {
+                    !searchCompleted && !showSpinner &&
+                    <div className="w-100 bg-light border pt-3 mb-2">
+                      <Dropfile
+                        onFileDrop={this.handleFileDrop}
+                        accept={{'text/csv': [".csv"]}}
+                        acceptFormat={"csv"}
+                        textStr={"Click to select or drag & drop the CSV file here (with user email as the first column). [Max: 300 rows]"}
+                      />
+                    </div>
+                  }
+                  {
+                    searchCompleted && !showSpinner &&
+                    <div className="alert alert-success my-2" role="alert">
+                      <i className="fa fa-check mr-2"></i>
+                      Project members uploaded successfully! Please check the list and <b>SAVE</b> the changes before leaving this page.
+                    </div>
+                  }
+                  {
+                    showSpinner && !searchCompleted && <SpinnerWithText text={"Uploading users..."} />
+                  }
+                  {
+                    usersFailedToFind.length > 0 &&
+                    <div className="alert alert-warning">
+                      <i className="fa fa-exclamation-triangle mr-2"></i>
+                      We couldn't find the users below. Please make sure:  1. email is the first column of the CSV file; 2. name and email information 
+                      are correct; 3. users have sucessfully enrolled as active FABRIC users.
+                      <ul className="list-group mt-2 ml-4">
+                        {
+                          usersFailedToFind.map((memberStr, index) => {
+                            return (
+                              <li
+                                key={`failed-search-user-result-${index}`}
+                              >
+                                { memberStr }
+                              </li>
+                            );
+                          })
+                        }
+                      </ul>
+                    </div>
+                  }
                 </div>
+              </Tabs>
+            }
+            <ul className="input-tag__tags">
+              {
+                usersToAdd.length > 0 && 
+                usersToAdd.map((user, index) => <li key={`user-to-add-${index}`}>
+                  {user.name}
+                <i
+                  className="fa fa-times ml-2"
+                  onClick={() => {
+                    this.handleUserDelete(user.name);
+                  }}
+                ></i>
+              </li>)
               }
-            </div>
-          </Tabs>
-        }
+            </ul>
+            <button
+              className="btn btn-sm btn-outline-primary mr-3 my-2"
+              onClick={this.props.onPersonnelUpdate}
+            >
+              Add to {personnelType}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
