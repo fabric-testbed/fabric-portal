@@ -21,11 +21,19 @@ class TableBody extends Component {
   };
 
   render() {
-    const { data, columns } = this.props;
+    const { data, columns, isSelectable } = this.props;
     return (
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
+            {
+              isSelectable && <td>
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id={`tableCheck${index}`} />
+                  <label class="custom-control-label" for={`tableCheck${index}`} />
+              </div>
+            </td>
+            }
             {columns.map((column) => (
               <td key={this.createKey(index, column)} className="align-middle">
                 {this.renderCell(item, column)}

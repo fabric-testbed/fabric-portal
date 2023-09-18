@@ -690,7 +690,7 @@ class ProjectForm extends Form {
                   canUpdate={canUpdate}
                   users={owners}
                   onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={() => this.handlePersonnelUpdate}
+                  onPersonnelUpdate={this.handlePersonnelUpdate}
                 />
               </div>
             </div>
@@ -712,7 +712,7 @@ class ProjectForm extends Form {
                 />
               </div>
             </div>
-            <div
+            {/* <div
               className={`${
                 activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
@@ -725,10 +725,10 @@ class ProjectForm extends Form {
                   isTokenHolder={data.is_token_holder}
                 />
               </div>
-            </div>
+            </div> */}
             <div
               className={`${
-                activeIndex === 4
+                activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >

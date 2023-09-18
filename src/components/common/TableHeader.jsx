@@ -31,15 +31,25 @@ class TableHeader extends Component {
   };
 
   render() {
-    const { sortColumn } = this.props;
+    const { sortColumn, isSelectable } = this.props;
     return (
       <thead>
         <tr>
+          {
+            isSelectable && <th scope="col">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id={`tableCheckHeader`} />
+                <label class="custom-control-label" for={`tableCheckHeader`} />
+              </div>
+              Select All
+            </th>
+          }
           {sortColumn && this.props.columns.map((column) => (
             <th
               className="clickable"
               key={column.path || column.key || "table-header"}
               onClick={() => this.raiseSort(column.path)}
+              scope="col"
             >
               {column.label} {this.renderSortIcon(column)}
             </th>

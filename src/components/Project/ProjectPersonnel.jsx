@@ -121,7 +121,7 @@ class ProjectPersonnel extends Component {
           canUpdate && 
           <AddPersonnel
             personnelType={personnelType}
-            onPersonnelUpdate={() => this.props.onPersonnelUpdate}
+            onPersonnelUpdate={this.props.onPersonnelUpdate}
           />
         }
         {
