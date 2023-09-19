@@ -142,9 +142,9 @@ class AddPersonnel extends Component {
     return (
       <div className="card">
         <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
-          <h5 className="mb-0">
-            Add {personnelType} 
-          </h5>
+          <h6 className="mb-0">
+            Add New {personnelType}
+          </h6>
         </div>
         <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
           <div className="card-body">
@@ -299,8 +299,12 @@ class AddPersonnel extends Component {
             }
             <ul className="input-tag__tags">
               {
-                usersToAdd.length > 0 && 
-                usersToAdd.map((user, index) => <li key={`user-to-add-${index}`}>
+                usersToAdd.length > 0 &&
+                usersToAdd.map((user, index) => 
+                <li
+                  key={`user-to-add-${index}`}
+                  className="mr-2 mb-2"
+                >
                   {user.name}
                 <i
                   className="fa fa-times ml-2"
@@ -312,7 +316,7 @@ class AddPersonnel extends Component {
               }
             </ul>
             <button
-              className="btn btn-sm btn-outline-primary mr-3 mt-3"
+              className="btn btn-sm btn-outline-primary mr-3 mt-1"
               onClick={() => this.props.onPersonnelAdd(usersToAdd)}
             >
               Add to {personnelType}

@@ -22,6 +22,7 @@ class TableBody extends Component {
 
   render() {
     const { data, columns, isSelectable } = this.props;
+    const that = this;
     return (
       <tbody>
         {data.map((item, index) => (
@@ -33,8 +34,8 @@ class TableBody extends Component {
                   className="form-check-input"
                   type="checkbox"
                   value=""
-                  id={`tableCheckHeader`} 
-                  onClick={() => this.props.onCheck(item)}
+                  id={`tableCheckHeader`}
+                  onClick={() => that.props.onCheck(item)}
                 />
               </div>
             </td>

@@ -60,7 +60,8 @@ class ProjectPersonnel extends Component {
   }
 
   render() {
-    const { canUpdate, personnelType, users, checkedUsers } = this.props;
+    const { canUpdate, personnelType, users } = this.props;
+    const { checkedUsers } = this.state;
 
     return (
       <div>
@@ -75,22 +76,29 @@ class ProjectPersonnel extends Component {
         }
         {
           users.length > 0 &&
-          <div className="mt-2">
-            <div className="d-flex flex-row justify-content-between mb-2">
-              <span>{`${users.length} ${personnelType}`}.</span>
+          <div className="card">
+            <div className="card-header" id="headingTwo">
+              <h6 className="mb-0">
+                Manage {personnelType} 
+              </h6>
             </div>
-            <ProjectUserTable
-              users={users}
-              canUpdate={canUpdate}
-              onCheckUser={this.handleCheckUser}
-            />
-            <button
-              onClick={() => this.props.onDeleteUsers(this.state.checkedUsers)}
-              className="btn btn-outline-danger"
-              disabled={checkedUsers.length === 0}
-            >
-              Delete
-            </button>
+            <div className="card-body">
+              <div className="d-flex flex-row justify-content-between mb-2">
+                <span>{`${users.length} ${personnelType}`}.</span>
+              </div>
+              <ProjectUserTable
+                users={users}
+                canUpdate={canUpdate}
+                onCheckUser={this.handleCheckUser}
+              />
+              <button
+                onClick={() => this.props.onDeleteUsers(checkedUsers)}
+                className="btn btn-sm btn-outline-danger"
+                disabled={checkedUsers.length === 0}
+              >
+                Remove from {personnelType}
+              </button>
+            </div>
           </div>
         }
         {
