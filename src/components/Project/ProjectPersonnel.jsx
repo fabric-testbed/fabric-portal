@@ -15,8 +15,6 @@ class ProjectPersonnel extends Component {
   };
 
   handleCheckUser = (user) => {
-    console.log("handle check user")
-    console.log(user)
     const users = [...this.state.checkedUsers];
     users.push(user);
     this.setState({ checkedUsers: users });
@@ -48,11 +46,12 @@ class ProjectPersonnel extends Component {
             <div className="card-body">
               <ProjectUserTable
                 users={users}
+                personnelType={personnelType}
                 canUpdate={canUpdate}
                 onCheckUser={this.handleCheckUser}
               />
               <button
-                onClick={() => this.props.onDeleteUsers(checkedUsers)}
+                onClick={() => this.props.onDeleteUsers(personnelType, checkedUsers)}
                 className="btn btn-sm btn-outline-danger"
                 disabled={checkedUsers.length === 0}
               >

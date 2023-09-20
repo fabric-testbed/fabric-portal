@@ -19,7 +19,7 @@ class ProjectUserTable extends Component {
   ];
 
   state = {
-    pageSize: 10,
+    pageSize: 5,
     currentPage: 1,
     sortColumn: { path: "name", order: "asc" },
     searchQuery: "",
@@ -45,9 +45,11 @@ class ProjectUserTable extends Component {
 
     const lowercaseQuery = searchQuery.toLowerCase();
     // filter -> sort -> paginate
-    let filtered = users.filter(user => (
-      user.name.toLowerCase().includes(lowercaseQuery) || user.email.toLowerCase().includes(lowercaseQuery))
-    );
+    let filtered = users.filter(user =>  user.email ?
+      (user.name.toLowerCase().includes(lowercaseQuery) || user.email.toLowerCase().includes(lowercaseQuery))
+      :
+      user.name.toLowerCase().includes(lowercaseQuery)
+    )
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -85,16 +87,16 @@ class ProjectUserTable extends Component {
   render() {
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
     const { totalCount, data } = this.reloadPageData();
-    const { canUpdate } = this.props;
+    const { canUpdate, personnelType } = this.props;
 
     return (
       <div>
-        <div className="w-100 input-group mt-3 mb-1">
+        <div className="w-100 input-group my-1">
           <input
             type="text"
             name="query"
             className="form-control"
-            placeholder={"Filter by user name or email..."}
+            placeholder={`Filter ${personnelType}...`}
             value={searchQuery}
             onChange={this.handleInputChange}
             onKeyDown={this.raiseInputKeyDown}

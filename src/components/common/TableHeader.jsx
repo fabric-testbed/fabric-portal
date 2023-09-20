@@ -32,13 +32,13 @@ class TableHeader extends Component {
 
   render() {
     const { sortColumn, isSelectable } = this.props;
-    const that = this;
+    // const that = this;
     return (
       <thead>
         <tr>
           {
             isSelectable && <th scope="col">
-              <div className="form-check">
+              {/* <div className="form-check">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -46,7 +46,7 @@ class TableHeader extends Component {
                   id={`tableCheckHeader`} 
                   onClick={() => that.props.onCheck("all")}
                 />
-              </div>
+              </div> */}
             </th>
           }
           {sortColumn && this.props.columns.map((column) => (

@@ -318,6 +318,7 @@ class AddPersonnel extends Component {
             <button
               className="btn btn-sm btn-outline-primary mr-3 mt-1"
               onClick={() => this.props.onPersonnelAdd(usersToAdd)}
+              disabled={ usersToAdd.length === 0}
             >
               Add to {personnelType}
             </button>

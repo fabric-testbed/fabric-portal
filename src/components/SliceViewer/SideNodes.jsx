@@ -288,9 +288,9 @@ class SideNodes extends React.Component {
     const { selectedSiteOption, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents, nodeType, bandwidth, vlan } = this.state;
 
-    const validationResult = nodeType === "VM" ? selectedSiteOption 
-    && validator.validateVMNodeComponents(selectedSiteOption.value, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript)
-    : selectedSiteOption && validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, this.facilityPortVlanRanges[nodeName]);
+    const validationResult = nodeType === "VM" ? (selectedSiteOption
+    && validator.validateVMNodeComponents(selectedSiteOption.value, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript))
+    : (selectedSiteOption && validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, this.facilityPortVlanRanges[nodeName]));
 
     const availableFPs = this.getFacilityPortNames();
 
