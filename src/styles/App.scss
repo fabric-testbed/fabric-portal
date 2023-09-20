@@ -880,3 +880,8 @@ ul,
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+
+.max-height-overflow-scroll {
+  max-height: 10rem;
+  overflow-y: scroll;
+}

@@ -414,7 +414,7 @@ class ProjectForm extends Form {
             projectId={data.uuid}
             message={`${personnelType} updated successfully.`}
           />,
-          {autoClose: 10000,}
+          {autoClose: 10000}
         );
       });
     } catch (err) {
@@ -429,7 +429,7 @@ class ProjectForm extends Form {
       toast(`Failed to update ${personnelType}.`)
     }
 
-    this.props.navigate(`/projects/${data.uuid}`);
+    window.location.reload();
   }
 
 
@@ -444,9 +444,9 @@ class ProjectForm extends Form {
     let members = this.state.members;
 
     if (personnelType === "Project Owners") {
-      owners.filter(owner => !userIDs.includes(owner.uuid));
+      owners = owners.filter(owner => !userIDs.includes(owner.uuid));
     } else if (personnelType === "Project Members") {
-      members.filter(member => !userIDs.includes(member.uuid));
+      members = members.filter(member => !userIDs.includes(member.uuid));
     }
 
     const ownerIDs = this.getIDs(owners);
@@ -481,7 +481,7 @@ class ProjectForm extends Form {
       memberIDs = this.getIDs(members).concat(userIDs);
     }
 
-    this.handlePermissionUpdate(ownerIDs, memberIDs);
+    this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
   render() {

@@ -70,24 +70,24 @@ class AddPersonnel extends Component {
     return false;
   }
 
-  handleAddUser = (user) => {
-    const { personnelType } = this.props;
-    if (this.checkUserExist(user, this.props.users)) {
+  handleAddUser = (newUser) => {
+    const { personnelType, users } = this.props;
+    if (this.checkUserExist(newUser, users)) {
       // if the user exists, toast a message
-      toast.alert(`${user.name} already exists in ${personnelType}.`)
+      toast.warning(`${newUser.name} already exists in ${personnelType}.`)
     } else {
       // get a shallow copy
-      const users = [...this.state.usersToAdd];
-      users.push(user);
-      // this.props.onSinglePersonnelUpdate(personnelType, user, "add");
-      this.setState({
-        usersToAdd: users
+      const toAdd = [...this.state.usersToAdd];
+      toAdd.push(newUser);
+      this.setState({                                  
+        usersToAdd: toAdd 
       })
     }
     this.setState({ searchInput: "", searchResults: [] });
   };
 
   handleSearchMembers = async (members) => {
+    const { personnelType, users } = this.props;
     this.setState({ showSpinner: true, spinnerText: "Uploading..." });
     const usersToAdd = [];
     const usersFailedToFind = [];
@@ -97,7 +97,12 @@ class AddPersonnel extends Component {
         const { data: res } = await getPeople(email, true);
         if (res.results[0]) {
           const memberToAdd = res.results[0];
-          usersToAdd.push(memberToAdd);
+          if (this.checkUserExist(memberToAdd, users)) {
+            // if the user exists, toast a message
+            toast.warning(`${memberToAdd.name} already exists in ${personnelType}.`)
+          } else {
+            usersToAdd.push(memberToAdd);
+          }
         } else {
           usersFailedToFind.push(memberStr);
         }
@@ -267,7 +272,7 @@ class AddPersonnel extends Component {
                     searchCompleted && !showSpinner &&
                     <div className="alert alert-success my-2" role="alert">
                       <i className="fa fa-check mr-2"></i>
-                      Project members uploaded successfully! Please check the list and <b>SAVE</b> the changes before leaving this page.
+                      Project members uploaded successfully!
                     </div>
                   }
                   {
@@ -275,7 +280,7 @@ class AddPersonnel extends Component {
                   }
                   {
                     usersFailedToFind.length > 0 &&
-                    <div className="alert alert-warning">
+                    <div className="alert alert-warning max-height-overflow-scroll">
                       <i className="fa fa-exclamation-triangle mr-2"></i>
                       We couldn't find the users below. Please make sure:  1. email is the first column of the CSV file; 2. name and email information 
                       are correct; 3. users have sucessfully enrolled as active FABRIC users.
@@ -303,7 +308,7 @@ class AddPersonnel extends Component {
                 usersToAdd.map((user, index) => 
                 <li
                   key={`user-to-add-${index}`}
-                  className="mr-2 mb-2"
+                  className="mr-2 my-2"
                 >
                   {user.name}
                 <i
