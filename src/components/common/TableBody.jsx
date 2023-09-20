@@ -21,25 +21,11 @@ class TableBody extends Component {
   };
 
   render() {
-    const { data, columns, isSelectable } = this.props;
-    const that = this;
+    const { data, columns } = this.props;
     return (
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            {
-              isSelectable && <td>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id={`tableCheckHeader`}
-                  onClick={() => that.props.onCheck(item)}
-                />
-              </div>
-            </td>
-            }
             {columns.map((column) => (
               <td key={this.createKey(index, column)} className="align-middle">
                 {this.renderCell(item, column)}

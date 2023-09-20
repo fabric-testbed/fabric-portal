@@ -264,15 +264,8 @@ class AddPersonnel extends Component {
                         onFileDrop={this.handleFileDrop}
                         accept={{'text/csv': [".csv"]}}
                         acceptFormat={"csv"}
-                        textStr={"Click to select or drag & drop the CSV file here (with user email as the first column). [Max: 300 rows]"}
+                        textStr={"Click to select or drag & drop CSV file (with user email as the first column). [Max: 300 rows]"}
                       />
-                    </div>
-                  }
-                  {
-                    searchCompleted && !showSpinner &&
-                    <div className="alert alert-success my-2" role="alert">
-                      <i className="fa fa-check mr-2"></i>
-                      Project members uploaded successfully!
                     </div>
                   }
                   {
@@ -301,6 +294,13 @@ class AddPersonnel extends Component {
                   }
                 </div>
               </Tabs>
+            }
+            {
+              searchCompleted && !showSpinner &&
+              <div className="alert alert-success my-2" role="alert">
+                <i className="fa fa-check mr-2"></i>
+                Users below are uploaded successfully! Please click the <b>Add</b> button to complete adding to project members.
+              </div>
             }
             <ul className="input-tag__tags">
               {

@@ -437,9 +437,8 @@ class ProjectForm extends Form {
     return users.map(user => user.uuid);
   }
 
-  handleDeleteUsers = (personnelType, users) => {
+  handleDeleteUsers = (personnelType, userIDs) => {
     // call API and update.
-    const userIDs = users.map(user => user.uuid);
     let owners = this.state.owners;
     let members = this.state.members;
 

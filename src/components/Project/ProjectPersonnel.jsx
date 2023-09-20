@@ -5,24 +5,11 @@ import ProjectUserTable from "./ProjectUserTable";
 class ProjectPersonnel extends Component {
   state = {
     showSpinner: false,
-    searchInput: "",
-    searchResults: [],
     warningMessage: "",
-    searchCompleted: false,
-    uploadMembersToAdd: [],
-    membersFailedToFind: [],
-    checkedUsers: []
   };
-
-  handleCheckUser = (user) => {
-    const users = [...this.state.checkedUsers];
-    users.push(user);
-    this.setState({ checkedUsers: users });
-  }
 
   render() {
     const { canUpdate, personnelType, users } = this.props;
-    const { checkedUsers } = this.state;
 
     return (
       <div>
@@ -48,15 +35,8 @@ class ProjectPersonnel extends Component {
                 users={users}
                 personnelType={personnelType}
                 canUpdate={canUpdate}
-                onCheckUser={this.handleCheckUser}
+                onDeleteUsers={this.props.onDeleteUsers}
               />
-              <button
-                onClick={() => this.props.onDeleteUsers(personnelType, checkedUsers)}
-                className="btn btn-sm btn-outline-danger"
-                disabled={checkedUsers.length === 0}
-              >
-                Remove from {personnelType}
-              </button>
             </div>
           </div>
         }
