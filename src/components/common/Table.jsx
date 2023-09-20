@@ -15,6 +15,7 @@ const Table = ({ columns, onSort, sortColumn, data, size, isSelectable, onCheck 
         columns={columns}
         data={data}
         isSelectable={isSelectable ? true : false}
+        onCheck={onCheck}
       />
     </table>
   );

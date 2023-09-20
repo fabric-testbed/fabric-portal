@@ -24,7 +24,7 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
-import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
+// import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">

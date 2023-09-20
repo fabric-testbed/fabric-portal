@@ -143,7 +143,7 @@ class AddPersonnel extends Component {
       <div className="card">
         <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
           <h6 className="mb-0">
-            Add New {personnelType}
+            Add {personnelType}
           </h6>
         </div>
         <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">

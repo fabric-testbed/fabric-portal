@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import AddPersonnel from "./AddPersonnel";
 import ProjectUserTable from "./ProjectUserTable";
-import { toast } from "react-toastify";
-import { getPeople } from "../../services/peopleService";
 
 class ProjectPersonnel extends Component {
   state = {
@@ -14,41 +12,6 @@ class ProjectPersonnel extends Component {
     uploadMembersToAdd: [],
     membersFailedToFind: [],
     checkedUsers: []
-  };
-
-  handleInputChange = (input) => {
-    this.setState({ searchInput: input, warningMessage: "" });
-  }
-
-  handleSearchExistingUsers = async (value) => {
-    try {
-      if (value.length > 3) {
-        const { data: res } = await getPeople(value, false);
-        if (res.results.length === 0) {
-          this.setState({
-            searchResults: [],
-            warningMessage: "No users found. Please update your search term and try again." 
-          });
-        } else {
-          this.setState({ searchResults: res.results, warningMessage: "" });
-        }
-      } else {
-        this.setState({
-          searchResults: [], 
-          warningMessage: "Please enter at least 4 letters to search." 
-        });
-      }
-    } catch (err) {
-      toast.error("Cannot find the user. Please check your input to search by name or email address.");
-      this.setState({ searchResults: [] });
-    }
-  };
-
-  raiseInputKeyDown = (e) => {
-    const query = e.target.value;
-    if ((e.key === "Enter") && query) {
-     this.handleSearchExistingUsers(query);
-    }
   };
 
   handleCheckUser = (user) => {
@@ -76,16 +39,13 @@ class ProjectPersonnel extends Component {
         }
         {
           users.length > 0 &&
-          <div className="card">
+          <div className="card mt-3">
             <div className="card-header" id="headingTwo">
               <h6 className="mb-0">
                 Manage {personnelType} 
               </h6>
             </div>
             <div className="card-body">
-              <div className="d-flex flex-row justify-content-between mb-2">
-                <span>{`${users.length} ${personnelType}`}.</span>
-              </div>
               <ProjectUserTable
                 users={users}
                 canUpdate={canUpdate}
