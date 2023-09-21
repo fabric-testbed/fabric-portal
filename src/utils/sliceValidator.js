@@ -112,7 +112,7 @@ const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
   }
 
   // Validate bandwidth and vlan once Facility Port is selected
-  if (nodeName) {
+  if (nodeName !== "") {
     // bandwidth validation.
     if (bandwidth < 0 || bandwidth > 100) {
       validationResult.isValid = false;

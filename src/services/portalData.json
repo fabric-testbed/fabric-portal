@@ -30,7 +30,8 @@
     "privacyPreferencesDescription": "Please check the information you want to be available to other FABRIC users.",
     "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators.",
     "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned.",
-    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop."
+    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop.",
+    "nodeNameDescription": "Sliver name regex allows strings consisting of alphanumeric characters, underscores, hyphens, and periods, with a length between 2 and 255 characters."
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
