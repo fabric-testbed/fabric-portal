@@ -885,12 +885,3 @@ ul,
   max-height: 10rem;
   overflow-y: scroll;
 }
-
-.search-box-list-group {
-  position: absolute;
-  z-index: 99;
-}
-
-.search-box-list-group .list-group-item {
-  padding: .25rem 1.25rem !important;
-}

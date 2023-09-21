@@ -286,7 +286,6 @@ class NewSliceForm extends React.Component {
       }
     };
     const { newSliceNodes, newSliceLinks } = builder.addFacility(node, graphID, sliceNodes, sliceLinks);
-    console.log(newSliceNodes);
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 

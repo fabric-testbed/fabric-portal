@@ -38,18 +38,6 @@ class NewProjectForm extends Form {
     members: [],
     addedMembers: [],
     activeTabIndex: 0,
-    ownerSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
-    memberSetting: {
-      pageSize: 5,
-      currentPage: 1,
-      searchQuery: "",
-      sortColumn: { path: "name", order: "asc" },
-    },
     ownerSearchInput: "",
     memberSearchInput: "",
   };

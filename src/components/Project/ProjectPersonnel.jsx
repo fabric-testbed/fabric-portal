@@ -15,7 +15,7 @@ class ProjectPersonnel extends Component {
       <div>
         <h4>{personnelType}</h4>
         {
-          canUpdate && 
+          canUpdate &&
           <AddPersonnel
             personnelType={personnelType}
             onPersonnelAdd={this.props.onPersonnelAdd}
@@ -27,7 +27,7 @@ class ProjectPersonnel extends Component {
           <div className="card mt-3">
             <div className="card-header" id="headingTwo">
               <h6 className="mb-0">
-                Manage {personnelType} 
+                {canUpdate ? `Manage ${personnelType}` : `View ${personnelType}`}
               </h6>
             </div>
             <div className="card-body">

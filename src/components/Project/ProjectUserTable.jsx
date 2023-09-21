@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 class ProjectUserTable extends Component {
   state = {
-    pageSize: 5,
+    pageSize: 10,
     currentPage: 1,
     sortColumn: { path: "name", order: "asc" },
     searchQuery: "",
@@ -15,19 +15,20 @@ class ProjectUserTable extends Component {
     checkedAll: false
   }
 
-  columns = [
+  columns = this.props.canUpdate ? [
     {
       path: "",
-      label: <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          value=""
-          id={`tableCheckAll`}
-          checked={this.state.checkedAll}
-          onClick={() => this.handleCheckAll}
-        />
-      </div>,
+      label: "",
+      // <div className="form-check">
+      //   <input
+      //     className="form-check-input"
+      //     type="checkbox"
+      //     value=""
+      //     id={`tableCheckAll`}
+      //     checked={this.state.checkedAll}
+      //     onClick={() => this.handleCheckAll}
+      //   />
+      // </div>,
       content: (user) => (
         <div className="form-check">
           <input
@@ -50,16 +51,27 @@ class ProjectUserTable extends Component {
     },
     { path: "email", label: "Email" },
     { path: "uuid", label: "ID" },
-  ];
+    ] : 
+    [
+      {
+        path: "name",
+        label: "Name",
+        content: (user) => (
+          <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+        )
+      },
+      { path: "email", label: "Email" },
+      { path: "uuid", label: "ID" },
+    ];
 
-  handleCheckAll = () => {
-    console.log("the checked all is clicked");
-    if (this.state.checkedAll) {
-      this.setState({ checkedAll: false, checkedUserIDs: [] });
-    } else {
-      this.setState({ checkedAll: true, checkedUserIDs: this.props.users.map(user => user.uuid) });
-    }
-  }
+  // handleCheckAll = () => {
+  //   console.log("the checked all is clicked");
+  //   if (this.state.checkedAll) {
+  //     this.setState({ checkedAll: false, checkedUserIDs: [] });
+  //   } else {
+  //     this.setState({ checkedAll: true, checkedUserIDs: this.props.users.map(user => user.uuid) });
+  //   }
+  // }
 
   handleCheckUser = (userID) => {
     let userIDs = []
@@ -157,9 +169,11 @@ class ProjectUserTable extends Component {
             onKeyDown={this.raiseInputKeyDown}
           />
         </div>
-        <div className="d-flex flex-row-reverse">
-          <span>{`${totalCount} results`}.</span>
-          {checkedUserIDs.length > 0 && <span>{`${checkedUserIDs.length} of ${totalCount} row(s) selected.`}</span> }
+        <div className="d-flex justify-content-between">
+          {checkedUserIDs.length > 0 && 
+            <div>{`${checkedUserIDs.length} of ${totalCount} row(s) selected.`}</div>
+          }
+          <div>{`${totalCount} results`}.</div>
         </div>
         <Table
           columns={this.columns}
@@ -175,13 +189,15 @@ class ProjectUserTable extends Component {
           currentPage={currentPage}
           onPageChange={this.handlePageChange}
         />
-        <button
-          onClick={() => this.props.onDeleteUsers(personnelType, checkedUserIDs)}
-          className="btn btn-sm btn-outline-danger"
-          disabled={checkedUserIDs.length === 0}
-        >
-          Remove from {personnelType}
-        </button>
+        {
+          canUpdate && <button
+            onClick={() => this.props.onDeleteUsers(personnelType, checkedUserIDs)}
+            className="btn btn-sm btn-outline-danger"
+            disabled={checkedUserIDs.length === 0}
+          >
+            Remove from {personnelType}
+          </button>
+        }
       </div>
     );
   }
