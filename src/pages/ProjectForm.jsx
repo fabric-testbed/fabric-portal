@@ -414,16 +414,17 @@ class ProjectForm extends Form {
         // reload the page to get updated data
         if (window.location.href.includes("fabric-testbed.net/projects/")) {
           window.location.reload();
+        } else {
+          // user may switch to other pages
+          // toast a success message with link to the updated project
+          toast.success(
+            <ToastMessageWithLink
+              projectId={data.uuid}
+              message={`${personnelType} updated successfully.`}
+            />,
+            {autoClose: 10000}
+          );
         }
-        // user may switch to other pages
-        // toast a success message with link to the updated project
-        toast.success(
-          <ToastMessageWithLink
-            projectId={data.uuid}
-            message={`${personnelType} updated successfully.`}
-          />,
-          {autoClose: 10000}
-        );
       });
     } catch (err) {
       this.setState({

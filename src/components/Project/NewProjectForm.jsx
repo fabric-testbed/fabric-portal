@@ -1,10 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
-import ProjectUserTable from "./ProjectUserTable";
 import withRouter from "../common/withRouter.jsx";
 import Form from "../common/Form/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getPeople } from "../../services/peopleService";
@@ -33,13 +30,12 @@ class NewProjectForm extends Form {
     },
     publicOptions: ["Yes", "No"],
     errors: {},
-    owners: [],
-    addedOwners: [],
-    members: [],
-    addedMembers: [],
     activeTabIndex: 0,
-    ownerSearchInput: "",
-    memberSearchInput: "",
+    searchInput: "",
+    searchResults: [],
+    ownersToAdd: [],
+    membersToAdd: [],
+    warningMessage: "",
   };
 
   schema = {
@@ -51,10 +47,10 @@ class NewProjectForm extends Form {
   };
 
   doSubmit = async () => {
-    const { addedMembers, addedOwners, data } = this.state;
+    const { membersToAdd, ownersToAdd, data } = this.state;
     try {
-      let ownerIDs = addedOwners.map((user) => user.uuid);
-      let memberIDs = addedMembers.map((user) => user.uuid);
+      let ownerIDs = ownersToAdd.map((user) => user.uuid);
+      let memberIDs = membersToAdd.map((user) => user.uuid);
       // redirect users directly to the projects page
       this.props.navigate("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
@@ -71,36 +67,26 @@ class NewProjectForm extends Form {
   };
 
   handleSearch = async (value) => {
-    const { activeTabIndex } = this.state;
-
-    if (activeTabIndex === 0) {
-      this.setState({ ownerSearchInput: value });
-      try {
-        if (value.length > 3) {
-          const { data: res } = await getPeople(value, false);
-          const owners = res.results;
-          this.setState({ owners });
+    try {
+      if (value.length > 3) {
+        const { data: res } = await getPeople(value, false);
+        if (res.results.length === 0) {
+          this.setState({
+            searchResults: [],
+            warningMessage: "No users found. Please update your search query and try again." 
+          });
         } else {
-          this.setState({ owners: [] });
+          this.setState({ searchResults: res.results, warningMessage: "" });
         }
-      } catch (err) {
-        toast.error("Cannot find the user. Please check your input to search by name or email address.");
-        this.setState({ owners: [] });
+      } else {
+        this.setState({
+          searchResults: [], 
+          warningMessage: "Please enter at least 4 letters to search." 
+        });
       }
-    } else if (activeTabIndex === 1) {
-      this.setState({ memberSearchInput: value });
-      try {
-        if (value.length > 3) {
-          const { data: res } = await getPeople(value, false);
-          const members = res.results;
-          this.setState({ members });
-        } else {
-          this.setState({ members: [] });
-        }
-      } catch (err) {
-        toast.error("Cannot find the user. Please check your input to search by name or email address.");
-        this.setState({ members: [] });
-      }
+    } catch (err) {
+      toast.error("Cannot find the user. Please check your input to search by name or email address.");
+      this.setState({ searchResults: [] });
     }
   };
 
@@ -111,54 +97,74 @@ class NewProjectForm extends Form {
     }
   };
 
-  handleInputChange = (input, type) => {
-    if (type === "po") {
-      this.setState({ ownerSearchInput: input });
+  handleInputChange = (input) => {
+    this.setState({ searchInput: input, warningMessage: "" });
+  }
+
+  checkUserExist = (user, existingUsers) => {
+    for (const u of existingUsers) {
+      if (user.uuid === u.uuid) {
+        return true;
+      }
     }
-    if (type === "pm") {
-      this.setState({ memberSearchInput: input });
+    return false;
+  }
+
+  handleAddUser = (newUser) => {
+    const { activeTabIndex, ownersToAdd, membersToAdd }= this.state;
+    const personnelType = activeTabIndex === 0 ? "Project Owners" : "Project Members";
+    const users = activeTabIndex === 0 ? ownersToAdd : membersToAdd;
+    if (this.checkUserExist(newUser, users)) {
+      // if the user exists, toast a message
+      toast.warning(`${newUser.name} already exists in ${personnelType}.`)
+    } else {
+      // get a shallow copy
+      const usersToAdd = [...users];
+      usersToAdd.push(newUser);
+      if (activeTabIndex === 0) {
+        this.setState({ ownersToAdd: usersToAdd });
+      } else {
+        this.setState({ membersToAdd: usersToAdd });
+      }
+    }
+
+    this.setState({ searchInput: "", searchResults: [], warningMessage: "" });
+  };
+
+  handleDeleteUser = (userToDelete) => {
+    const newUsers = [];
+    if (this.state.activeTabIndex === 0) {
+      for (const user of this.state.ownersToAdd) {
+        if (user.name !== userToDelete) {
+          newUsers.push(user);
+        }
+      }
+      this.setState({ ownersToAdd: newUsers });
+    } else {
+      for (const user of this.state.membersToAdd) {
+        if (user.name !== userToDelete) {
+          newUsers.push(user);
+        }
+      }
+      this.setState({ membersToAdd: newUsers });
     }
   }
 
-  handleAddUser = (user) => {
-    const { activeTabIndex, addedOwners, addedMembers } = this.state;
-
-    const added = activeTabIndex === 0 ? addedOwners : addedMembers;
-    const found = added.filter((a) => a.uuid === user.uuid).length > 0;
-    if (!found) {
-      added.push(user);
-      if (activeTabIndex === 0) {
-        // clear search input field/ search results
-        this.setState({ addedOwners: added, ownerSearchInput: "", owners: [] });
-      } else {
-        this.setState({ addedMembers: added, memberSearchInput: "", members: [] });
-      }
-    }
-  };
-
-  handleDelete = (user) => {
-    const { activeTabIndex, addedOwners, addedMembers } = this.state;
-    // only delete a added user from state, no interaction with api.
-    if (activeTabIndex === 0) {
-      let added = addedOwners;
-      added = added.filter((u) => u.uuid !== user.uuid);
-      this.setState({ addedOwners: added });
-    } else if (activeTabIndex === 1) {
-      let added = addedMembers;
-      added = added.filter((u) => u.uuid !== user.uuid);
-      this.setState({ addedMembers: added });
-    }
-  };
-
   handleToggleTab = (index) => {
-    this.setState({ activeTabIndex: index });
+    this.setState({ 
+      activeTabIndex: index,
+      searchInput: "",
+      searchResults: [],
+      warningMessage: "",
+    });
   };
 
   render() {
-    const that = this;
-    const { publicOptions, activeTabIndex, ownerSearchInput, memberSearchInput,
-      addedOwners, addedMembers, owners, members } = this.state;
-
+    const { publicOptions, activeTabIndex, searchInput, searchResults, warningMessage, 
+      ownersToAdd, membersToAdd } = this.state;
+    let personnelType = activeTabIndex === 0 ? "Project Owners" : "Project Members";
+    let usersToAdd = activeTabIndex === 0 ? ownersToAdd : membersToAdd;
+    
     return (
       <div>
         <h1>New Project</h1>
@@ -191,104 +197,73 @@ class NewProjectForm extends Form {
             </li>
           </ul>
         </div>
-        <div
-          className={`${
-            activeTabIndex !== 0 ? "d-none" : "d-flex flex-row"
-          }`}
-        >
-          <div className="w-75">
-            <div className="toolbar">
-              <input
-                className="form-control search-owner-input mb-4"
-                value={this.stateownerSearchInput}
-                placeholder="Search by name/email (at least 4 letters) or UUID to add project owners..."
-                onChange={(e) => this.handleInputChange(e.currentTarget.value, "po")}
-                onKeyDown={this.raiseInputKeyDown}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={() => this.handleSearch(ownerSearchInput)}
-              >
-                <i className="fa fa-search"></i>
-              </button>
-            </div>
-            <ProjectUserTable
-              users={addedOwners}
-              onDelete={this.handleDelete}
-              canUpdate={true}
+        <div className="d-flex flex-column my-2">
+          <div className="d-flex flex-row">
+            <input
+              className="form-control search-owner-input"
+              value={searchInput}
+              placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
+              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+              onKeyDown={this.raiseInputKeyDown}
             />
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => this.handleSearch(searchInput)}
+            >
+              <i className="fa fa-search"></i>
+            </button>
           </div>
-          <div className="search-result w-25 border ml-2 p-2">
-            <ul className="list-group text-center m-2">
-              <li className="list-group-item">Search Result:</li>
-              {owners.map((user, index) => {
-                return (
-                  <li key={index} className="list-group-item overflow-auto">
-                    <span>{user.name}</span>
-                    <button
-                      className="btn btn-sm btn-primary ml-2"
-                      onClick={() => that.handleAddUser(user)}
-                    >
-                      <FontAwesomeIcon icon={faPlus} size="xs"/>
-                    </button>
-                    <br></br>
-                    <span>{user.email}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-        <div
-          className={`${
-            activeTabIndex !== 1 ? "d-none" : "d-flex flex-row"
-          }`}
-        >
-          <div className="w-75">
-            <div className="toolbar">
-              <input
-                className="form-control search-member-input mb-4"
-                placeholder="Search by name/email (at least 4 letters) or UUID to add project members..."
-                value={memberSearchInput}
-                onChange={(e) => this.handleInputChange(e.currentTarget.value, "pm")}
-                onKeyDown={this.raiseInputKeyDown}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={() => this.handleSearch(memberSearchInput)}
-              >
-                <i className="fa fa-search"></i>
-              </button>
+          {
+            warningMessage !== "" && 
+            <div className="alert alert-warning" role="alert">
+              {warningMessage}
             </div>
-            <ProjectUserTable
-              users={addedMembers}
-              onDelete={this.handleDelete}
-              canUpdate={true}
-            />
-          </div>
-          <div className="search-result w-25 border ml-2 p-2">
-            <ul className="list-group text-center m-2">
-              <li className="list-group-item">Search Result:</li>
-              {members.map((user, index) => {
-                return (
-                  <li key={index} className="list-group-item overflow-auto">
-                    <span>{user.name}</span>
-                    <button
-                      className="btn btn-sm btn-primary ml-2"
-                      onClick={() => that.handleAddUser(user)}
+          }
+          {
+            searchResults.length > 0 &&
+            <ul className="list-group mb-2 search-box-list-group">
+              {
+                searchResults.map((user, index) => {
+                  return (
+                    <li
+                      key={`search-user-result-${index}`}
+                      className="list-group-item d-flex flex-row justify-content-between"
                     >
-                      <FontAwesomeIcon icon={faPlus} size="xs"/>
-                    </button>
-                    <br></br>
-                    {
-                      user.email && <span>{user.email}</span>
-                    }
-                  </li>
-                );
-              })}
+                      {
+                        user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                        <div className="mt-1">{user.name}</div>
+                      }
+                      <button
+                        className="btn btn-sm btn-outline-primary ml-2"
+                        onClick={() => this.handleAddUser(user)}
+                      >
+                        <i className="fa fa-plus"></i>
+                      </button>
+                    </li>
+                  );
+                })
+              }
             </ul>
-          </div>
+          }
         </div>
+        <ul className="input-tag__tags">
+          {
+            usersToAdd.length > 0 &&
+            usersToAdd.map((user, index) => 
+            <li
+              key={`user-to-add-${index}`}
+              className="mr-2 my-2"
+            >
+              {user.email ? `${user.name}(${user.email})` : user.name}
+            <i
+              className="fa fa-times ml-2"
+              onClick={() => {
+                this.handleDeleteUser(user.name);
+              }}
+            ></i>
+          </li>)
+          }
+        </ul>
         <div className="alert alert-primary mt-4" role="alert">
           <p>
             There are more features on the project detail page after project creation. 

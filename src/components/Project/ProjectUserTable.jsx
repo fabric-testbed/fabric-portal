@@ -171,9 +171,9 @@ class ProjectUserTable extends Component {
         </div>
         <div className="d-flex justify-content-between">
           {checkedUserIDs.length > 0 && 
-            <div>{`${checkedUserIDs.length} of ${totalCount} row(s) selected.`}</div>
+            <div>{`${checkedUserIDs.length} row(s) selected.`}</div>
           }
-          <div>{`${totalCount} results`}.</div>
+          <div>{`${totalCount} result(s)`}.</div>
         </div>
         <Table
           columns={this.columns}

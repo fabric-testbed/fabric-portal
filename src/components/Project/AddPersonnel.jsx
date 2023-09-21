@@ -16,7 +16,7 @@ class AddPersonnel extends Component {
     usersToAdd: []
   };
 
-  handleUserDelete = (userToDelete) => {
+  handleDeleteUser = (userToDelete) => {
     const newUsers = [];
     for (const user of this.state.usersToAdd) {
       if (user.name !== userToDelete) {
@@ -37,7 +37,7 @@ class AddPersonnel extends Component {
         if (res.results.length === 0) {
           this.setState({
             searchResults: [],
-            warningMessage: "No users found. Please update your search term and try again." 
+            warningMessage: "No users found. Please update your search query and try again." 
           });
         } else {
           this.setState({ searchResults: res.results, warningMessage: "" });
@@ -152,61 +152,8 @@ class AddPersonnel extends Component {
         <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
           <div className="card-body">
             {
-            personnelType === "Project Owners" && <div className="d-flex flex-column my-2">
-            <div className="d-flex flex-row">
-              <input
-                className="form-control search-owner-input"
-                value={searchInput}
-                placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
-                onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-                onKeyDown={this.raiseInputKeyDown}
-              />
-              <button
-                className="btn btn-outline-primary"
-                onClick={() => this.handleSearch(searchInput)}
-              >
-                <i className="fa fa-search"></i>
-              </button>
-            </div>
-            {
-              warningMessage !== "" && 
-              <div className="alert alert-warning" role="alert">
-                {warningMessage}
-              </div>
-            }
-            {
-              searchResults.length > 0 &&
-              <ul className="list-group search-box-list-group">
-                {
-                  searchResults.map((user, index) => {
-                    return (
-                      <li
-                        key={`search-user-result-${index}`}
-                        className="list-group-item d-flex flex-row justify-content-between"
-                      >
-                        {
-                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
-                          <div className="mt-1">{user.name}</div>
-                        }
-                        <button
-                          className="btn btn-sm btn-outline-primary ml-2"
-                          onClick={() => this.handleAddUser(user)}
-                        >
-                          <i className="fa fa-plus"></i>
-                        </button>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            }
-          </div>
-          }
-          {
-            personnelType === "Project Members" &&
-            <Tabs activeTab={"Search"}>
-              <div label="Search">
-              <div className="d-flex flex-row mb-2">
+              personnelType === "Project Owners" && <div className="d-flex flex-column my-2">
+              <div className="d-flex flex-row">
                 <input
                   className="form-control search-owner-input"
                   value={searchInput}
@@ -215,21 +162,21 @@ class AddPersonnel extends Component {
                   onKeyDown={this.raiseInputKeyDown}
                 />
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-outline-primary"
                   onClick={() => this.handleSearch(searchInput)}
                 >
                   <i className="fa fa-search"></i>
                 </button>
               </div>
               {
-                  warningMessage !== "" && 
-                  <div className="alert alert-warning" role="alert">
-                    {warningMessage}
-                  </div>
-                }
-                {
-                  searchResults.length > 0 &&
-                  <ul className="list-group search-box-list-group">
+                warningMessage !== "" && 
+                <div className="alert alert-warning" role="alert">
+                  {warningMessage}
+                </div>
+              }
+              {
+                searchResults.length > 0 &&
+                <ul className="list-group mb-2 search-box-list-group">
                   {
                     searchResults.map((user, index) => {
                       return (
@@ -251,9 +198,62 @@ class AddPersonnel extends Component {
                       );
                     })
                   }
-                  </ul>
-                }
-              </div>
+                </ul>
+              }
+            </div>
+            }
+            {
+              personnelType === "Project Members" &&
+              <Tabs activeTab={"Search"}>
+                <div label="Search">
+                <div className="d-flex flex-row mb-2">
+                  <input
+                    className="form-control search-owner-input"
+                    value={searchInput}
+                    placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
+                    onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                    onKeyDown={this.raiseInputKeyDown}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.handleSearch(searchInput)}
+                  >
+                    <i className="fa fa-search"></i>
+                  </button>
+                </div>
+                {
+                    warningMessage !== "" && 
+                    <div className="alert alert-warning" role="alert">
+                      {warningMessage}
+                    </div>
+                  }
+                  {
+                    searchResults.length > 0 &&
+                    <ul className="list-group search-box-list-group">
+                    {
+                      searchResults.map((user, index) => {
+                        return (
+                          <li
+                            key={`search-user-result-${index}`}
+                            className="list-group-item d-flex flex-row justify-content-between"
+                          >
+                            {
+                              user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                              <div className="mt-1">{user.name}</div>
+                            }
+                            <button
+                              className="btn btn-sm btn-outline-primary ml-2"
+                              onClick={() => this.handleAddUser(user)}
+                            >
+                              <i className="fa fa-plus"></i>
+                            </button>
+                          </li>
+                        );
+                      })
+                    }
+                    </ul>
+                  }
+                </div>
                 <div label="Batch Upload">
                   {
                     !searchCompleted && !showSpinner &&
@@ -312,7 +312,7 @@ class AddPersonnel extends Component {
                 <i
                   className="fa fa-times ml-2"
                   onClick={() => {
-                    this.handleUserDelete(user.name);
+                    this.handleDeleteUser(user.name);
                   }}
                 ></i>
               </li>)
