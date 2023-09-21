@@ -6,10 +6,28 @@ import paginate from "../../utils/paginate";
 import { Link } from "react-router-dom";
 
 class ProjectUserTable extends Component {
+  state = {
+    pageSize: 5,
+    currentPage: 1,
+    sortColumn: { path: "name", order: "asc" },
+    searchQuery: "",
+    checkedUserIDs: [],
+    checkedAll: false
+  }
+
   columns = [
     {
-      path: "isChecked",
-      label: "",
+      path: "",
+      label: <div className="form-check">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          value=""
+          id={`tableCheckAll`}
+          checked={this.state.checkedAll}
+          onClick={() => this.handleCheckAll}
+        />
+      </div>,
       content: (user) => (
         <div className="form-check">
           <input
@@ -34,17 +52,26 @@ class ProjectUserTable extends Component {
     { path: "uuid", label: "ID" },
   ];
 
-  state = {
-    pageSize: 5,
-    currentPage: 1,
-    sortColumn: { path: "name", order: "asc" },
-    searchQuery: "",
-    checkedUserIDs: []
+  handleCheckAll = () => {
+    console.log("the checked all is clicked");
+    if (this.state.checkedAll) {
+      this.setState({ checkedAll: false, checkedUserIDs: [] });
+    } else {
+      this.setState({ checkedAll: true, checkedUserIDs: this.props.users.map(user => user.uuid) });
+    }
   }
 
   handleCheckUser = (userID) => {
-    const userIDs = [...this.state.checkedUserIDs];
-    userIDs.push(userID);
+    let userIDs = []
+    // the user is not checked yet
+    if (!this.state.checkedUserIDs.includes(userID)) {
+      userIDs = [...this.state.checkedUserIDs];
+      userIDs.push(userID);
+    } else {
+      // the user is already checked, uncheck the user
+      userIDs = this.state.checkedUserIDs.filter(id => id !== userID);
+    }
+
     this.setState({ checkedUserIDs: userIDs });
   }
 
@@ -131,7 +158,8 @@ class ProjectUserTable extends Component {
           />
         </div>
         <div className="d-flex flex-row-reverse">
-          {`${data.length} results`}.
+          <span>{`${totalCount} results`}.</span>
+          {checkedUserIDs.length > 0 && <span>{`${checkedUserIDs.length} of ${totalCount} row(s) selected.`}</span> }
         </div>
         <Table
           columns={this.columns}

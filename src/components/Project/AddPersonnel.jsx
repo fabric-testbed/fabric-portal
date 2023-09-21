@@ -118,8 +118,6 @@ class AddPersonnel extends Component {
       searchCompleted: true,
       showSpinner: false
     });
-
-    this.props.onBatchMembersUpdate(usersToAdd);
   }
 
   handleFileDrop = (membersStr) => {
@@ -178,7 +176,7 @@ class AddPersonnel extends Component {
             }
             {
               searchResults.length > 0 &&
-              <ul className="list-group">
+              <ul className="list-group search-box-list-group">
                 {
                   searchResults.map((user, index) => {
                     return (
@@ -231,7 +229,7 @@ class AddPersonnel extends Component {
                 }
                 {
                   searchResults.length > 0 &&
-                  <ul className="list-group">
+                  <ul className="list-group search-box-list-group">
                   {
                     searchResults.map((user, index) => {
                       return (
@@ -310,7 +308,7 @@ class AddPersonnel extends Component {
                   key={`user-to-add-${index}`}
                   className="mr-2 my-2"
                 >
-                  {user.name}
+                  {user.email ? `${user.name}(${user.email})` : user.name}
                 <i
                   className="fa fa-times ml-2"
                   onClick={() => {

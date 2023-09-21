@@ -9,7 +9,7 @@ function SpinnerFullPage(props){
   const {text, showSpinner, btnText, btnPath} = props;
   
   return (
-    <div>
+    <div className="container">
       <Button ref={target}
        style={{
         position:"absolute",

@@ -24,6 +24,7 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
+import sleep from "../utils/sleep.js";
 // import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -409,6 +410,13 @@ class ProjectForm extends Form {
             btnPath: ""
           }
         });
+        // user waits the API call on the spinner UI
+        // reload the page to get updated data
+        if (window.location.href.includes("fabric-testbed.net/projects/")) {
+          window.location.reload();
+        }
+        // user may switch to other pages
+        // toast a success message with link to the updated project
         toast.success(
           <ToastMessageWithLink
             projectId={data.uuid}
@@ -428,8 +436,6 @@ class ProjectForm extends Form {
       });
       toast(`Failed to update ${personnelType}.`)
     }
-
-    window.location.reload();
   }
 
 
@@ -452,16 +458,6 @@ class ProjectForm extends Form {
     const memberIDs = this.getIDs(members);
 
     this.handlePersonnelUpdate(ownerIDs, memberIDs);
-  }
-
-  handleBatchMembersUpdate = (members) => {
-    const unExistingMembers = [];
-    for (const m of members) {
-      if(!this.checkUserExist(m, this.state.members)) {
-        unExistingMembers.push(m);
-      }
-    }
-    this.setState({ members: [...this.state.members, ...unExistingMembers] });
   }
 
   handleAddUsers = (usersToAdd) => {
@@ -677,7 +673,6 @@ class ProjectForm extends Form {
                   users={members}
                   onPersonnelAdd={this.handleAddUsers}
                   onDeleteUsers={this.handleDeleteUsers}
-                  onBatchMembersUpdate={this.handleBatchMembersUpdate}
                 />
               </div>
             </div>
