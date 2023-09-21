@@ -156,6 +156,7 @@ class ProjectRoles extends React.Component {
                   <th>Facility</th>
                   <th>Project Member</th>
                   <th>Project Owner</th>
+                  {/* <th>Long-lived Token</th> */}
                 </tr>
                 {
                   projects.map((project, index) => {
@@ -168,6 +169,7 @@ class ProjectRoles extends React.Component {
                         <td>{project.facility}</td>
                         <td>{this.renderRoleTableFields(project.memberships.is_member)}</td>
                         <td>{this.renderRoleTableFields(project.memberships.is_owner)}</td>
+                        {/* <td>{this.renderRoleTableFields(project.memberships.is_token_holder)}</td> */}
                       </tr>
                     );
                   })

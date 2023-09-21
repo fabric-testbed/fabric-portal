@@ -24,6 +24,8 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
+import sleep from "../utils/sleep.js";
+// import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
@@ -52,6 +54,7 @@ class ProjectForm extends Form {
       is_creator: false,
       is_member: false,
       is_owner: false,
+      is_token_holder: false,
       is_public: false,
       is_locked: false,
       allOptions: [
@@ -82,11 +85,13 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
+      // { name: "LONG-LIVED TOKEN", active: false },
       { name: "SLICES", active: false },
     ],
     originalProjectName: "",
     owners: [],
     members: [],
+    token_holders: [],
     tagVocabulary: [],
     showSpinner: false,
     spinner: {
@@ -112,6 +117,7 @@ class ProjectForm extends Form {
     is_creator: Joi.boolean(),
     is_member: Joi.boolean(),
     is_owner: Joi.boolean(),
+    is_token_holder: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
@@ -167,6 +173,7 @@ class ProjectForm extends Form {
           data: this.mapToViewModel(project), 
           owners: project.project_owners, 
           members: project.project_members,
+          token_holders: project.token_holders,
           showSpinner: false,
           spinner: {
             text: "",
@@ -192,7 +199,8 @@ class ProjectForm extends Form {
        "#info": 0,
        "#owners": 1,
        "#members": 2,
-       "#slices": 3,
+       "#token": 3,
+       "#slices": 4,
      }
  
      if (hash) {
@@ -201,6 +209,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
+        //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
        ]})
      }
@@ -241,6 +250,7 @@ class ProjectForm extends Form {
       is_creator: project.memberships.is_creator,
       is_member: project.memberships.is_member,
       is_owner: project.memberships.is_owner,
+      is_token_holder: project.memberships.is_token_holder,
       is_public: project.is_public ? "Yes" : "No",
       is_locked: project.is_locked,
       allOptions: [
@@ -353,6 +363,7 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
+      // 3: "#token",
       3: "#slices",
     }
     this.setState({ activeIndex: newIndex });
@@ -374,67 +385,8 @@ class ProjectForm extends Form {
     }
   };
 
-  checkUserExist = (user, existingUsers) => {
-    for (const u of existingUsers) {
-      if (user.uuid === u.uuid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  handleSinglePersonnelUpdate = (personnelType, user, operation) => {
-    // personnelType: "Project Owner" / "Project Member"
-    // operation: "add" / "remove"
-    if (personnelType === "Project Owners") {
-      if (operation === "add") {
-        if (this.checkUserExist(user, this.state.owners)) {
-          // if the user exists, toast a message
-          toast.alert(`${user.name} already exists in ${personnelType}.`)
-        } else {
-          // if the user doesn't exist, add
-          this.setState({ owners: [...this.state.owners, user] });
-        }
-      }
-
-      if (operation === "remove") {
-        this.setState({ owners: this.state.owners.filter(u => u.uuid !== user.uuid) });
-      }
-    } else if (personnelType === "Project Members") {
-      if (operation === "add") {
-        if (this.checkUserExist(user, this.state.members)) {
-          // if the user exists, toast a message
-          toast.alert(`${user.name} already exists in ${personnelType}.`)
-        } else {
-          this.setState({ members: [...this.state.members, user] });
-        }
-      }
-
-      if (operation === "remove") {
-        this.setState({ members: this.state.members.filter(u => u.uuid !== user.uuid) });
-      }
-    }
-  }
-
-  handleBatchMembersUpdate = (members) => {
-    const unExistingMembers = [];
-    for (const m of members) {
-      if(!this.checkUserExist(m, this.state.members)) {
-        unExistingMembers.push(m);
-      }
-    }
-    this.setState({ members: [...this.state.members, ...unExistingMembers] });
-  }
-
-  handleAllMembersDelete = () => {
-    this.setState({ members: [] });
-  }
-
-  getIDs = (users) => {
-    return users.map(user => user.uuid);
-  }
-
-  handlePersonnelUpdate = () => {
+  handlePersonnelUpdate = (ownerIDs, memberIDs) => {
+    const { data } = this.state;
     const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
     this.setState({
       showSpinner: true,
@@ -447,10 +399,6 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data, owners, members } = this.state;
-    const ownerIDs = this.getIDs(owners);
-    const memberIDs = this.getIDs(members);
-
     try{
       // pass the arr of updated po/pm and the original pm/po
       updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
@@ -462,13 +410,21 @@ class ProjectForm extends Form {
             btnPath: ""
           }
         });
-        toast.success(
-          <ToastMessageWithLink
-            projectId={data.uuid}
-            message={`${personnelType} updated successfully.`}
-          />,
-          {autoClose: 10000,}
-        );
+        // user waits the API call on the spinner UI
+        // reload the page to get updated data
+        if (window.location.href.includes("fabric-testbed.net/projects/")) {
+          window.location.reload();
+        } else {
+          // user may switch to other pages
+          // toast a success message with link to the updated project
+          toast.success(
+            <ToastMessageWithLink
+              projectId={data.uuid}
+              message={`${personnelType} updated successfully.`}
+            />,
+            {autoClose: 10000}
+          );
+        }
       });
     } catch (err) {
       this.setState({
@@ -481,8 +437,47 @@ class ProjectForm extends Form {
       });
       toast(`Failed to update ${personnelType}.`)
     }
+  }
 
-    this.props.navigate(`/projects/${data.uuid}`);
+
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
+  handleDeleteUsers = (personnelType, userIDs) => {
+    // call API and update.
+    let owners = this.state.owners;
+    let members = this.state.members;
+
+    if (personnelType === "Project Owners") {
+      owners = owners.filter(owner => !userIDs.includes(owner.uuid));
+    } else if (personnelType === "Project Members") {
+      members = members.filter(member => !userIDs.includes(member.uuid));
+    }
+
+    const ownerIDs = this.getIDs(owners);
+    const memberIDs = this.getIDs(members);
+
+    this.handlePersonnelUpdate(ownerIDs, memberIDs);
+  }
+
+  handleAddUsers = (usersToAdd) => {
+    let ownerIDs = [];
+    let memberIDs = [];
+    const userIDs = this.getIDs(usersToAdd);
+
+    const { owners, members } = this.state;
+    if (this.state.activeIndex === 1) {
+      // new owners added
+      ownerIDs = this.getIDs(owners).concat(userIDs);
+      memberIDs = this.getIDs(members);
+    } else if (this.state.activeIndex === 2) {
+      // new members added
+      ownerIDs = this.getIDs(owners);
+      memberIDs = this.getIDs(members).concat(userIDs);
+    }
+
+    this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
   render() {
@@ -661,8 +656,8 @@ class ProjectForm extends Form {
                   personnelType={"Project Owners"}
                   canUpdate={canUpdate}
                   users={owners}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
+                  onPersonnelAdd={this.handleAddUsers}
+                  onDeleteUsers={this.handleDeleteUsers}
                 />
               </div>
             </div>
@@ -677,13 +672,25 @@ class ProjectForm extends Form {
                   personnelType={"Project Members"}
                   canUpdate={canUpdate}
                   users={members}
-                  onSinglePersonnelUpdate={this.handleSinglePersonnelUpdate}
-                  onPersonnelUpdate={this.handlePersonnelUpdate}
-                  onBatchMembersUpdate={this.handleBatchMembersUpdate}
-                  onAllMembersDelete={this.handleAllMembersDelete}
+                  onPersonnelAdd={this.handleAddUsers}
+                  onDeleteUsers={this.handleDeleteUsers}
                 />
               </div>
             </div>
+            {/* <div
+              className={`${
+                activeIndex === 3
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                <ProjectTokenHolders
+                  token_holders={this.state.token_holders}
+                  urlSuffix={urlSuffix}
+                  isTokenHolder={data.is_token_holder}
+                />
+              </div>
+            </div> */}
             <div
               className={`${
                 activeIndex === 3

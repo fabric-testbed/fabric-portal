@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0",
+  "version": "1.5.1",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "keyLimit": 10,
@@ -11,8 +11,8 @@
     "title": "FABRIC Self Signup",
     "links": {
       "alpha": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:558",
-      "beta": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:594",
-      "production": "https://registry.cilogon.org/registry/co_petitions/start/coef:190"
+      "beta": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:848",
+      "production": "https://registry.cilogon.org/registry/co_petitions/start/coef:423"
     },
     "content": "<p>Dear Experimenter,</p><p>Welcome to FABRIC. We noticed you are not yet registered with FABRIC. In order for you to begin using FABRIC you must go through a 3-step guided enrollment workflow. <b>Clicking the Signup button below will take you to the first step of this process</b>.</p><p><b>If you have already started the enrollment process and are waiting for the approval, please continue to check your email for an approval message.</b> We aim to process enrollment requests within one business day. You will be able to login after receiving this approval.</p><p>Please note: you will <b>always</b> use your institutional credentials to login to FABRIC portal via your institution's Identity Provider - we <b>do not and will never store your password or login information</b>. Any password changes that you go through with your institutional account will also affect how you login to the FABRIC portal.</p>"
   },
@@ -30,14 +30,17 @@
     "privacyPreferencesDescription": "Please check the information you want to be available to other FABRIC users.",
     "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators.",
     "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned.",
-    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop."
+    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop.",
+    "nodeNameDescription": "Sliver name regex allows strings consisting of alphanumeric characters, underscores, hyphens, and periods, with a length between 2 and 255 characters."
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
     "accountIssue": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
     "projectPermissionRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
     "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
-    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61"
+    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61",
+    "educationProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/64",
+    "longlivedTokenRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/65"
   },
   "fabricSocialLinks": {
     "website": "https://fabric-testbed.net/",
@@ -53,6 +56,7 @@
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
+  "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",
   "officeHourBookingLink": "https://outlook.office365.com/owa/calendar/FABRICOfficeHours@admin.live.unc.edu/bookings/",
   "learnArticles": {
     "gettingStarted": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/",
@@ -101,5 +105,8 @@
     "alpha": "https://beta-5.fabric-testbed.net/",
     "beta": "https://beta-5.fabric-testbed.net/",
     "production": "https://websession.fabric-testbed.net/"
+  },
+  "marketingWebsiteLinks": {
+    "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
   }
 }

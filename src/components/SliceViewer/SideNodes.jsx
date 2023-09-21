@@ -288,9 +288,14 @@ class SideNodes extends React.Component {
     const { selectedSiteOption, selectedSite, nodeName, imageType, selectedImageRef, core, ram,
       disk, BootScript, nodeComponents, nodeType, bandwidth, vlan } = this.state;
 
-    const validationResult = nodeType === "VM" ? selectedSiteOption 
-    && validator.validateVMNodeComponents(selectedSiteOption.value, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript)
-    : selectedSiteOption && validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, this.facilityPortVlanRanges[nodeName]);
+    let validationResult = false;
+    if (nodeType === "VM") {
+      validationResult = selectedSiteOption &&
+      validator.validateVMNodeComponents(selectedSiteOption.value, nodeName, this.props.nodes, core, ram, disk, nodeComponents, BootScript);
+    } else if (nodeType === "Facility") {
+      validationResult = selectedSiteOption &&
+      validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, this.facilityPortVlanRanges[nodeName])
+    }
 
     const availableFPs = this.getFacilityPortNames();
 
@@ -375,6 +380,7 @@ class SideNodes extends React.Component {
                   <select
                     className="form-control form-control-sm"
                     id="nodeTypeSelect"
+                    disabled={availableFPs.length === 0}
                     onChange={this.handleNodeTypeChange}
                   >
                     <option value="VM">VM</option>
@@ -383,7 +389,16 @@ class SideNodes extends React.Component {
                 </div>
                 {
                   nodeType === "VM" && <div className="form-group slice-builder-form-group col-md-6">
-                    <label htmlFor="inputNodeName" className="slice-builder-label">Node Name</label>
+                    <label htmlFor="inputNodeName" className="slice-builder-label">
+                      Node Name
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip("site-tooltip", portalData.helperText.nodeNameDescription)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
+                    </label>
                     <input
                       type="text"
                       className="form-control form-control-sm"
@@ -556,7 +571,7 @@ class SideNodes extends React.Component {
               className="btn btn-sm btn-success mb-2"
               type="button"
               onClick={() => this.handleAddNode()}
-              disabled={!validationResult.isValid}
+              disabled={!(selectedSiteOption && selectedSiteOption.value) || nodeName === "" || !validationResult.isValid}
             >
               Add Node
             </button>
