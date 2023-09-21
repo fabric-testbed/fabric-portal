@@ -7,8 +7,8 @@ export function getWhoAmI(){
   return http.get(`${config.fabricCoreApiUrl}/whoami`);
 }
 
-export function getPeople(query) {
-  return http.get(`${apiEndpoint}?search=${query}&offset=0&limit=20`);
+export function getPeople(query, exact_match) {
+  return http.get(`${apiEndpoint}?search=${query}&exact_match=${exact_match}&offset=0&limit=20`);
 }
 
 export function getFullPeopleByName(offset, limit, query) {

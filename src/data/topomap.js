@@ -45,6 +45,7 @@ export const topomap = {
     "CHAMELEON": [-88.3173, 41.8962],
     "COSMOS": [-75.9162, 42.2043],
     "EDC": [-89.707458, 40.3125],
+    "EDUKY": [-83.3040, 38.5307]
   },
   nodes: [
     // international nodes
@@ -85,6 +86,7 @@ export const topomap = {
     { markerOffset: -2, name: "Princeton", type: "edge" },
     { markerOffset: -2, name: "UMass", type: "edge" },
     { markerOffset: -3, name: "EDC", type: "edge" },
+    { markerOffset: -3, name: "EDUKY", type: "edge" },
   ],
   lines: [
     // { from: "RNP&ANSP&RedCLARA", to: "FIU" },
@@ -116,6 +118,7 @@ export const topomap = {
     { from: "StarLight", to: "UMich" },
     { from: "StarLight", to: "NCSA" },
     { from: "StarLight", to: "EDC" },
+    { from: "StarLight", to: "EDUKY" },
     { from: "Clemson", to: "Atlanta"},
     { from: "GaTech", to: "Atlanta"},
     { from: "PSC", to: "Washington" },

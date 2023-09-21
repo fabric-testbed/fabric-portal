@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _ from "lodash";
 
 // interface
 // columns: array
@@ -8,17 +9,19 @@ import React, { Component } from "react";
 class TableHeader extends Component {
   // logic to determine the sort order.
   raiseSort = (path) => {
-    const sortColumn = { ...this.props.sortColumn };
-    // click twice on the same col to reverse sorting.
-    // click the first time will ascend at default.
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
+    if (path !== "") {
+      const sortColumn = { ...this.props.sortColumn };
+      // click twice on the same col to reverse sorting.
+      // click the first time will ascend at default.
+      if (sortColumn.path === path) {
+        sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+      } else {
+        sortColumn.path = path;
+        sortColumn.order = "asc";
+      }
+  
+      this.props.onSort(sortColumn);
     }
-
-    this.props.onSort(sortColumn);
   };
 
   renderSortIcon = (column) => {
@@ -40,6 +43,7 @@ class TableHeader extends Component {
               className="clickable"
               key={column.path || column.key || "table-header"}
               onClick={() => this.raiseSort(column.path)}
+              scope="col"
             >
               {column.label} {this.renderSortIcon(column)}
             </th>

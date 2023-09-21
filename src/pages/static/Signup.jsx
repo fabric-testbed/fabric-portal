@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  useParams
-} from "react-router-dom";
-
+import { useParams } from "react-router-dom";
+import BackgroundImage from "../../imgs/network-bg.svg";
 import StepProgress from '../../components/Signup/StepProgress';
 import Step1 from '../../components/Signup/Step1';
 import Step2 from '../../components/Signup/Step2';
@@ -14,6 +12,7 @@ const Signup = () => {
   let stepId = parseInt(id)
   return (
     <div className="container">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
       <h2 className="text-center">FABRIC SignUp</h2>
       {
         stepId !== 4 && <StepProgress stepId={stepId} />

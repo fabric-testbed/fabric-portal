@@ -286,7 +286,6 @@ class NewSliceForm extends React.Component {
       }
     };
     const { newSliceNodes, newSliceLinks } = builder.addFacility(node, graphID, sliceNodes, sliceLinks);
-    console.log(newSliceNodes);
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
@@ -412,7 +411,7 @@ class NewSliceForm extends React.Component {
     );
 
     return (
-      <div>
+      <div className="slice-page-container">
         {
           showSliceSpinner && 
           <div className="container d-flex align-items-center justify-content-center">

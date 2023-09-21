@@ -19,7 +19,16 @@ import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
 import NotFound from "./pages/static/NotFound";
+import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
+import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
+import FAB from "./pages/static/FAB.jsx";
+import SAC from "./pages/static/SAC.jsx";
+import Leadership from "./pages/static/Leadership";
+import FundingOpportunities from "./pages/static/FundingOpportunities";
+import NewsletterSignup from "./pages/static/NewsletterSignup";
+import Testbeds from "./pages/static/Testbeds.jsx";
+import Publications from "./pages/static/Publications.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
@@ -32,6 +41,8 @@ import "./styles/App.scss";
 class App extends React.Component {
   state = {
     userStatus: "",
+    userName: "",
+    userEmail: "",
     activeNotices: [],
     showSessionTimeoutModal1: false,
     showSessionTimeoutModal2: false,
@@ -55,6 +66,8 @@ class App extends React.Component {
         if (user.enrolled) {
           localStorage.setItem("userID", user.uuid);
           localStorage.setItem("userStatus", "active");
+          localStorage.setItem("userName", user.name);
+          localStorage.setItem("userEmail", user.email);
           try {
             const { data: res } = await getCurrentUser();
             localStorage.setItem("bastionLogin", res.results[0].bastion_login);
@@ -83,6 +96,8 @@ class App extends React.Component {
         if (errors && errors[0].details.includes("Login required")) {
           localStorage.setItem("userStatus", "unauthorized");
           localStorage.removeItem("userID");
+          localStorage.removeItem("userName");
+          localStorage.removeItem("userEmail");
         }
   
         if (errors && errors[0].details.includes("Enrollment required")) {
@@ -91,7 +106,11 @@ class App extends React.Component {
       }
     }
 
-    this.setState({ userStatus: localStorage.getItem("userStatus") });
+    this.setState({ 
+      userStatus: localStorage.getItem("userStatus"),
+      userName: localStorage.getItem("userName"),
+      userEmail: localStorage.getItem("userEmail")
+    });
   }
 
   handleQueryChange = (e) => {
@@ -99,12 +118,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { userStatus, searchQuery, 
+    const { userName, userEmail, userStatus, searchQuery, 
       showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
         <Router>
           <Header
+            userName={userName}
+            userEmail={userEmail}
             userStatus={userStatus}
             searchQuery={searchQuery}
             onQueryChange={this.handleQueryChange}
@@ -135,22 +156,30 @@ class App extends React.Component {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Home />} />
             <Route path="/logout" element={<Home />} />
+            <Route path="/login-required" element={<LoginRequired />} />
             <Route path="/aup" element={<AUP />} />
             <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/about/about-fabric" element={<AboutFABRIC />} />
+            <Route path="/about/about-fab" element={<FAB />} />
+            <Route path="/about/sac" element={<SAC />} />
+            <Route path="/about/leadership" element={<Leadership />} />
+            <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
+            <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
+            <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
+            <Route path="/community/publications" element={<Publications />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />
             <Route path="/slice-editor" element={<SliceEditor />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
-                {/* <Route path="/slice-editor/:slice_id/:project_id" element={<SliceEditor />} /> */}
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />
-                <Route path="/experiments" element={<Experiments />} />
-                <Route path="/users/:id" element={<PublicUserProfile />} />
-                <Route path="/user" element={<User />} />
+                <Route path="/experiments" element={<Experiments  userStatus={userStatus}/>} />
+                <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />
+                <Route path="/user" element={<User userStatus={userStatus}/>} />
                 <Route
                   path="/search-results"
                   element={

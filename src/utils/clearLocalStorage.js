@@ -6,6 +6,8 @@ export default function clearLocalStorage() {
   localStorage.removeItem("userID");
   localStorage.removeItem("bastionLogin");
   localStorage.removeItem("userStatus");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userEmail");
   localStorage.removeItem("sshKeyType");
   localStorage.removeItem("sliceDraft");
   localStorage.removeItem("countdownTimerIntervalId");

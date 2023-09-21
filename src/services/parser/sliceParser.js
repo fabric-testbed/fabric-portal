@@ -71,7 +71,7 @@ export default function parseSlice(slice, sliceType) {
     
     if (capacityHintsStr === "") return capacitiesObj;
 
-    const arr = capacityHintsStr.split(".");
+    const arr = capacityHintsStr && capacityHintsStr.split(".");
     capacitiesObj.core = parseInt(arr[1].slice(1));
     capacitiesObj.ram = parseInt(arr[2].slice(1));
     capacitiesObj.disk = parseInt(arr[3].slice(1));
