@@ -411,7 +411,7 @@ class NewSliceForm extends React.Component {
     );
 
     return (
-      <div className="container">
+      <div className="slice-page-container">
         {
           showSliceSpinner && 
           <div className="container d-flex align-items-center justify-content-center">
