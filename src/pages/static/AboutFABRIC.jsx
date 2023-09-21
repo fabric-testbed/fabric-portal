@@ -20,6 +20,23 @@ const AboutFABRIC = () => {
       
       <h2 className="my-4">FABRIC Capabilities</h2>
       <div className="row text-center">
+        <div className="col-sm-6">
+            <div className="card contact-us-card">
+              <div className="card-header bg-primary-light d-flex justify-content-center">
+                <img
+                  src={iconInternet}
+                  key={`about-fabric-internet`}
+                  className="align-self-center"
+                  height="40"
+                  alt="about-fabric-internet"
+                />
+              </div>
+              <div className="card-body">
+                <h3 className="my-3">FABRIC Enables New Internet and Science Applications</h3>
+                <p className="text-center">Encourages a multidisciplinary approach to designing the next generation Internet supporting end users as well as science domains that depend on large-scale intelligent networks. Provides access to cutting-edge programmable network technologies, like P4 and OpenFlow. </p>
+              </div>
+            </div>
+          </div>
           <div className="col-sm-6">
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
@@ -37,24 +54,6 @@ const AboutFABRIC = () => {
               </div>
             </div>
           </div>
-          <div className="col-sm-6">
-            <div className="card contact-us-card">
-              <div className="card-header bg-primary-light d-flex justify-content-center">
-                <img
-                  src={iconInternet}
-                  key={`about-fabric-internet`}
-                  className="align-self-center"
-                  height="40"
-                  alt="about-fabric-internet"
-                />
-              </div>
-              <div className="card-body">
-                <h3 className="my-3">FABRIC Enables New Internet and Science Applications</h3>
-                <p className="text-center">Encourages a multidisciplinary approach to designing the next generation Internet supporting end users as well as science domains that depend on large-scale intelligent networks. Provides access to cutting-edge programmable network technologies, like P4 and OpenFlow. </p>
-              </div>
-            </div>
-          </div>
- 
       </div>
       <div className="row mt-4 text-center">
           <div className="col-sm-6">
@@ -106,7 +105,9 @@ const AboutFABRIC = () => {
               </div>
               <div className="card-body">
                 <h3 className="my-3">FABRIC Promotes Education</h3>
-                <p className="text-center">Enables novel approaches to distributed and network systems control and management by integrating Machine Learning capabilities.</p>
+                <p className="text-center">
+                  FABRIC helps train the next generation of computer science researchers.
+                </p>
               </div>
             </div>
           </div>
