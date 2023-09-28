@@ -68,3 +68,9 @@ export function updateProjectPersonnel(projectId, ownerIDs, memberIDs) {
     "project_members": memberIDs
   })
 }
+
+export function updateProjectTokenHolders(projectId, operation, userIDs) {
+  return http.patch(`${apiEndpoint}/${projectId}/token-holders?operation=${operation}`, {
+    "token_holders": userIDs
+  })
+}

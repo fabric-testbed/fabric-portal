@@ -9,7 +9,7 @@ class ProjectPersonnel extends Component {
   };
 
   render() {
-    const { canUpdate, personnelType, users } = this.props;
+    const { canUpdate, personnelType, users, isFO } = this.props;
 
     return (
       <div>
@@ -35,7 +35,9 @@ class ProjectPersonnel extends Component {
                 users={users}
                 personnelType={personnelType}
                 canUpdate={canUpdate}
+                isFO={isFO}
                 onDeleteUsers={this.props.onDeleteUsers}
+                onAddTokenHolders={this.props.onAddTokenHolders}
               />
             </div>
           </div>

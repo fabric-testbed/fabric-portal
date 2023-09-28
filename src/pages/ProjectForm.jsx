@@ -12,7 +12,7 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import { updateProjectPersonnel } from "../services/projectService";
+import { updateProjectPersonnel, updateProjectTokenHolders } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
@@ -461,6 +461,60 @@ class ProjectForm extends Form {
     this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
+  handleAddTokenHolders = (tokenHoldersToAdd) => {
+    const { data } = this.state;
+    const userIDs = this.getIDs(tokenHoldersToAdd);
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: `Adding token holders... This process may take a while. 
+        Please feel free to use other portal features while waiting. You will receive 
+        a message when the update is completed.`,
+        btnText: "Back to Project List",
+        btnPath: "/experiments#projects"
+      }
+    });
+
+    try{
+      // pass the arr of updated po/pm and the original pm/po
+      updateProjectTokenHolders(data.uuid, "add", userIDs).then(() => {
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
+        // user waits the API call on the spinner UI
+        // reload the page to get updated data
+        if (window.location.href.includes("fabric-testbed.net/projects/")) {
+          window.location.reload();
+        } else {
+          // user may switch to other pages
+          // toast a success message with link to the updated project
+          toast.success(
+            <ToastMessageWithLink
+              projectId={data.uuid}
+              message={`Project updated successfully.`}
+            />,
+            {autoClose: 10000}
+          );
+        }
+      });
+    } catch (err) {
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
+      toast(`Failed to add token holders.`)
+    }
+  }
+
   handleAddUsers = (usersToAdd) => {
     let ownerIDs = [];
     let memberIDs = [];
@@ -671,9 +725,11 @@ class ProjectForm extends Form {
                 <ProjectPersonnel
                   personnelType={"Project Members"}
                   canUpdate={canUpdate}
+                  isFO={globalRoles.isFacilityOperator}
                   users={members}
                   onPersonnelAdd={this.handleAddUsers}
                   onDeleteUsers={this.handleDeleteUsers}
+                  onAddTokenHolders={this.handleAddTokenHolders}
                 />
               </div>
             </div>

@@ -154,7 +154,7 @@ class ProjectUserTable extends Component {
   render() {
     const { pageSize, currentPage, sortColumn, searchQuery, checkedUserIDs } = this.state;
     const { totalCount, data } = this.reloadPageData();
-    const { canUpdate, personnelType } = this.props;
+    const { canUpdate, personnelType, isFO } = this.props;
 
     return (
       <div>
@@ -196,6 +196,15 @@ class ProjectUserTable extends Component {
             disabled={checkedUserIDs.length === 0}
           >
             Remove from {personnelType}
+          </button>
+        }
+        {
+          isFO && <button 
+            onClick={() => this.props.onAddTokenHolders(checkedUserIDs)}
+            className="btn btn-sm btn-outline-danger"
+            disabled={checkedUserIDs.length === 0}
+          >
+            Assign Long-lived Token Access
           </button>
         }
       </div>
