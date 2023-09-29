@@ -198,15 +198,6 @@ class ProjectUserTable extends Component {
             Remove from {personnelType}
           </button>
         }
-        {
-          isFO && <button 
-            onClick={() => this.props.onAddTokenHolders(checkedUserIDs)}
-            className="btn btn-sm btn-outline-danger"
-            disabled={checkedUserIDs.length === 0}
-          >
-            Assign Long-lived Token Access
-          </button>
-        }
       </div>
     );
   }

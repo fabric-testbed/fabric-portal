@@ -8,6 +8,7 @@ import SideNav from "../components/common/SideNav";
 import ProjectPersonnel from "../components/Project/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
+import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
@@ -25,7 +26,6 @@ import {
   updateTags,
 } from "../services/projectService";
 import sleep from "../utils/sleep.js";
-// import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
@@ -85,7 +85,7 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      // { name: "LONG-LIVED TOKEN", active: false },
+      { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
     ],
     originalProjectName: "",
@@ -209,7 +209,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
-        //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
+         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
        ]})
      }
@@ -387,7 +387,12 @@ class ProjectForm extends Form {
 
   handlePersonnelUpdate = (ownerIDs, memberIDs) => {
     const { data } = this.state;
-    const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
+    const indexToTypeMapping = {
+      "1": "Project Owners",
+      "2": "Project Members",
+      "3": "Token Holders"
+    }
+    const personnelType = indexToTypeMapping[this.state.activeIndex];
     this.setState({
       showSpinner: true,
       spinner: {
@@ -729,11 +734,10 @@ class ProjectForm extends Form {
                   users={members}
                   onPersonnelAdd={this.handleAddUsers}
                   onDeleteUsers={this.handleDeleteUsers}
-                  onAddTokenHolders={this.handleAddTokenHolders}
                 />
               </div>
             </div>
-            {/* <div
+            <div
               className={`${
                 activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
@@ -744,12 +748,15 @@ class ProjectForm extends Form {
                   token_holders={this.state.token_holders}
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
+                  isFO={globalRoles.isFacilityOperator}
+                  onPersonnelAdd={this.handleAddUsers}
+                  onDeleteUsers={this.handleDeleteUsers}
                 />
               </div>
-            </div> */}
+            </div>
             <div
               className={`${
-                activeIndex === 3
+                activeIndex === 4
                   ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >

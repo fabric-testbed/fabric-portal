@@ -1,24 +1,10 @@
 import React, { Component } from "react";
-import Table from "../common/Table";
-import Pagination from "../common/Pagination";
+import ProjectUserTable from "./ProjectUserTable";
 import _ from "lodash";
 import paginate from "../../utils/paginate";
-import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 
 class ProjectTokenHolders extends Component {
-  columns = [
-    {
-      path: "name",
-      label: "Name",
-      content: (user) => (
-        <Link to={`/users/${user.uuid}`}>{user.name}</Link>
-      )
-    },
-    { path: "email", label: "Email" },
-    { path: "uuid", label: "ID" },
-  ];
-
   state = {
     pageSize: 10,
     currentPage: 1,
@@ -53,42 +39,51 @@ class ProjectTokenHolders extends Component {
   };
 
   render() {
-    const { token_holders, urlSuffix, isTokenHolder } = this.props;
-    const { pageSize, currentPage, sortColumn } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { token_holders, urlSuffix, isTokenHolder, isFO, personnelType } = this.props;
 
     return (
       <div>
-        <h4>Project Members with Long-lived Token Access</h4>
+        <h4>Token Holders with Long-lived Token Access</h4>
+        {
+          isFO &&
+          <div className="card mt-3">
+            <div className="card-header" id="headingTwo">
+              <h6 className="mb-0">
+                Add Token Holders
+              </h6>
+            </div>
+            <div className="card-body">
+              
+            </div>
+          </div>
+        }
         {
           token_holders && token_holders.length > 0 &&
-          <div className="mt-3">
-            <div className="d-flex flex-row justify-content-between mb-2">
-              <span>{`${token_holders.length} users`}.</span>
+          <div className="card mt-3">
+            <div className="card-header" id="headingTwo">
+              <h6 className="mb-0">
+                {isFO ? `Manage Token Holders` : `View Token Holders`}
+              </h6>
             </div>
-              <Table
-                columns={this.columns}
-                data={data}
-                sortColumn={sortColumn}
-                onSort={this.handleSort}
-                size={"md"}
+            <div className="card-body">
+              <ProjectUserTable
+                users={token_holders}
+                personnelType={personnelType}
+                isFO={isFO}
+                onDeleteUsers={this.props.onDeleteUsers}
+                onAddTokenHolders={this.props.onAddTokenHolders}
               />
-              <Pagination
-                itemsCount={totalCount}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                onPageChange={this.handlePageChange}
-              />
+            </div>
           </div>
         }
         {
-          token_holders && token_holders.length === 0 && 
-          <div className="alert alert-primary mt-3" role="alert">
-            {`This project has no members with long-lived token access.`}
+          token_holders.length === 0 && !isFO && 
+          <div className="alert alert-primary" role="alert">
+            {`This project has no ${personnelType}.`}
           </div>
         }
         {
-          !isTokenHolder && <button
+          !isTokenHolder && !isFO && <button
             className="btn btn-sm btn-outline-success mr-2 my-3"
             onClick={() => window.open(
               `${portalData.jiraLinks.longlivedTokenRequest}?${urlSuffix}`,
