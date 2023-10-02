@@ -39,7 +39,8 @@ class ProjectTokenHolders extends Component {
   };
 
   render() {
-    const { token_holders, urlSuffix, isTokenHolder, isFO, personnelType } = this.props;
+    const { token_holders, urlSuffix, isTokenHolder, 
+      isFO, personnelType, project_members } = this.props;
 
     return (
       <div>
@@ -53,7 +54,13 @@ class ProjectTokenHolders extends Component {
               </h6>
             </div>
             <div className="card-body">
-              
+              <ProjectUserTable
+                users={project_members}
+                personnelType={personnelType}
+                canUpdate={isFO}
+                onAddTokenHolders={this.props.onAddTokenHolders}
+                btnText={`Add to ${personnelType}`}
+              />
             </div>
           </div>
         }
@@ -69,9 +76,9 @@ class ProjectTokenHolders extends Component {
               <ProjectUserTable
                 users={token_holders}
                 personnelType={personnelType}
-                isFO={isFO}
+                canUpdate={isFO}
                 onDeleteUsers={this.props.onDeleteUsers}
-                onAddTokenHolders={this.props.onAddTokenHolders}
+                btnText={`Remove from ${personnelType}`}
               />
             </div>
           </div>

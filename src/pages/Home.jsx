@@ -71,13 +71,9 @@ class Home extends React.Component {
               <li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li>
               <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
             </ul>
-            <a
-              href="https://portal.fabric-testbed.net/about/about-fabric"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button className="btn btn-warning">Learn More</button>
-            </a>
+            <NavLink to="/about/about-fabric">
+              Learn More
+            </NavLink>
           </div>
         </div>
         <div className="home-lower row">

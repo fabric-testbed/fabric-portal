@@ -37,7 +37,7 @@ class ProjectPersonnel extends Component {
                 canUpdate={canUpdate}
                 isFO={isFO}
                 onDeleteUsers={this.props.onDeleteUsers}
-                onAddTokenHolders={this.props.onAddTokenHolders}
+                btnText={`Remove from ${personnelType}`}
               />
             </div>
           </div>

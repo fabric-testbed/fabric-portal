@@ -745,7 +745,9 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 <ProjectTokenHolders
+                  personnelType={"Token Holders"}
                   token_holders={this.state.token_holders}
+                  project_members={members}
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
                   isFO={globalRoles.isFacilityOperator}

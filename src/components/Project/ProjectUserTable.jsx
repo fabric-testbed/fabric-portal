@@ -154,7 +154,7 @@ class ProjectUserTable extends Component {
   render() {
     const { pageSize, currentPage, sortColumn, searchQuery, checkedUserIDs } = this.state;
     const { totalCount, data } = this.reloadPageData();
-    const { canUpdate, personnelType, isFO } = this.props;
+    const { canUpdate, personnelType, btnText } = this.props;
 
     return (
       <div>
@@ -195,7 +195,7 @@ class ProjectUserTable extends Component {
             className="btn btn-sm btn-outline-danger"
             disabled={checkedUserIDs.length === 0}
           >
-            Remove from {personnelType}
+            {btnText}
           </button>
         }
       </div>
