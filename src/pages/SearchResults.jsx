@@ -23,30 +23,32 @@ class SearchResults extends Component {
   async componentDidMount() {
     const { pageSize: limit } = this.state;
     const query = this.props.searchQuery;
-    this.setState({ showSpinner: true });
-    try {
-      const { data: res1 } = await getProjects("allProjects", 0, limit, query);
-      const projectCount = res1.total;
-      let projects = res1.results;
-      const { data: res2 } = await getFullPeopleByName(0, limit, query);
-      const peopleCount = res2.total;
-      let people = res2.results;
-     
-      // parse create time field to user's local time.
-      projects = projects.map((p) => {
-        p.created_time  = toLocaleTime(p.created);
-        return p;
-      });
+    if (query !== "") {
+      this.setState({ showSpinner: true });
+      try {
+        const { data: res1 } = await getProjects("allProjects", 0, limit, query);
+        const projectCount = res1.total;
+        let projects = res1.results;
+        const { data: res2 } = await getFullPeopleByName(0, limit, query);
+        const peopleCount = res2.total;
+        let people = res2.results;
+      
+        // parse create time field to user's local time.
+        projects = projects.map((p) => {
+          p.created_time  = toLocaleTime(p.created);
+          return p;
+        });
 
-      this.setState({
-        projects,
-        projectCount,
-        people,
-        peopleCount,
-        showSpinner: false
-      });
-    } catch (err) {
-      toast.error("Failed to get search results. Please reload this page.");
+        this.setState({
+          projects,
+          projectCount,
+          people,
+          peopleCount,
+          showSpinner: false
+        });
+      } catch (err) {
+        toast.error("Failed to get search results. Please reload this page.");
+      }
     }
   }
 

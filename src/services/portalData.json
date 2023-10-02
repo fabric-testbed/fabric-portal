@@ -54,6 +54,8 @@
     "production": "https://jupyter.fabric-testbed.net/"
   },
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
+  "knowledgeBaseNewsLink": "https://learn.fabric-testbed.net/article-categories/news-archive/",
+  "knowledgeBaseEventsLink": "https://learn.fabric-testbed.net/article-categories/events/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
   "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",

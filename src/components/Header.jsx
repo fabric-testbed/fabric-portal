@@ -58,6 +58,14 @@ const Header = (props) => {
       name: "Community",
       child: [
         {
+          name: "News",
+          href: portalData.knowledgeBaseNewsLink,
+        },
+        {
+          name: "Events",
+          href: portalData.knowledgeBaseEventsLink,
+        },
+        {
           name: "Newsletter Signup",
           path: "/community/newsletter-signup"
         },
