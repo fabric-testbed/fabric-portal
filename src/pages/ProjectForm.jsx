@@ -449,7 +449,7 @@ class ProjectForm extends Form {
     return users.map(user => user.uuid);
   }
 
-  handleDeleteUsers = (personnelType, userIDs) => {
+  handleDeleteUsers = (personnelType, userIDs, operation) => {
     // call API and update.
     let owners = this.state.owners;
     let members = this.state.members;
@@ -466,9 +466,8 @@ class ProjectForm extends Form {
     this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
-  handleAddTokenHolders = (tokenHoldersToAdd) => {
+  handleUpdateTokenHolders = (personnelType, tokenHolderIDs, operation) => {
     const { data } = this.state;
-    const userIDs = this.getIDs(tokenHoldersToAdd);
     this.setState({
       showSpinner: true,
       spinner: {
@@ -482,7 +481,7 @@ class ProjectForm extends Form {
 
     try{
       // pass the arr of updated po/pm and the original pm/po
-      updateProjectTokenHolders(data.uuid, "add", userIDs).then(() => {
+      updateProjectTokenHolders(data.uuid, operation, tokenHolderIDs).then(() => {
         this.setState({
           showSpinner: false,
           spinner: {
@@ -716,7 +715,7 @@ class ProjectForm extends Form {
                   canUpdate={canUpdate}
                   users={owners}
                   onPersonnelAdd={this.handleAddUsers}
-                  onDeleteUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handleDeleteUsers}
                 />
               </div>
             </div>
@@ -733,7 +732,7 @@ class ProjectForm extends Form {
                   isFO={globalRoles.isFacilityOperator}
                   users={members}
                   onPersonnelAdd={this.handleAddUsers}
-                  onDeleteUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handleDeleteUsers}
                 />
               </div>
             </div>
@@ -751,8 +750,7 @@ class ProjectForm extends Form {
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
                   isFO={globalRoles.isFacilityOperator}
-                  onPersonnelAdd={this.handleAddUsers}
-                  onDeleteUsers={this.handleDeleteUsers}
+                  onUpdateTokenHolders={this.handleUpdateTokenHolders}
                 />
               </div>
             </div>

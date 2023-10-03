@@ -36,8 +36,9 @@ class ProjectPersonnel extends Component {
                 personnelType={personnelType}
                 canUpdate={canUpdate}
                 isFO={isFO}
-                onDeleteUsers={this.props.onDeleteUsers}
-                btnText={`Remove from ${personnelType}`}
+                onUpdateUsers={this.props.onUpdateUsers}
+                inputText={`Filter ${personnelType}...`}
+                operation="remove"
               />
             </div>
           </div>

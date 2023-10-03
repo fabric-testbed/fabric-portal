@@ -55,11 +55,12 @@ class ProjectTokenHolders extends Component {
             </div>
             <div className="card-body">
               <ProjectUserTable
-                users={project_members}
+                users={project_members.filter(user => !token_holders.find(holder => holder.uuid === user.uuid))}
                 personnelType={personnelType}
                 canUpdate={isFO}
-                onAddTokenHolders={this.props.onAddTokenHolders}
-                btnText={`Add to ${personnelType}`}
+                onAddTokenHolders={this.props.onUpdateTokenHolders}
+                inputText={"Filter Project Members..."}
+                operation="add"
               />
             </div>
           </div>
@@ -77,8 +78,9 @@ class ProjectTokenHolders extends Component {
                 users={token_holders}
                 personnelType={personnelType}
                 canUpdate={isFO}
-                onDeleteUsers={this.props.onDeleteUsers}
-                btnText={`Remove from ${personnelType}`}
+                onUpdateUsers={this.props.onUpdateTokenHolders}
+                inputText={`Filter ${personnelType}...`}
+                operation="remove"
               />
             </div>
           </div>
