@@ -58,15 +58,13 @@ class ProjectTokenHolders extends Component {
                 users={project_members.filter(user => !token_holders.find(holder => holder.uuid === user.uuid))}
                 personnelType={personnelType}
                 canUpdate={isFO}
-                onAddTokenHolders={this.props.onUpdateTokenHolders}
+                onUpdateUsers={this.props.onUpdateTokenHolders}
                 inputText={"Filter Project Members..."}
                 operation="add"
               />
             </div>
           </div>
         }
-        {
-          token_holders && token_holders.length > 0 &&
           <div className="card mt-3">
             <div className="card-header" id="headingTwo">
               <h6 className="mb-0">
@@ -74,6 +72,8 @@ class ProjectTokenHolders extends Component {
               </h6>
             </div>
             <div className="card-body">
+            {
+              token_holders && token_holders.length > 0 ?
               <ProjectUserTable
                 users={token_holders}
                 personnelType={personnelType}
@@ -81,10 +81,14 @@ class ProjectTokenHolders extends Component {
                 onUpdateUsers={this.props.onUpdateTokenHolders}
                 inputText={`Filter ${personnelType}...`}
                 operation="remove"
-              />
+              /> :
+              <div className="alert alert-primary" role="alert">
+                {`This project has no ${personnelType}.`}
+              </div>
+            }
             </div>
           </div>
-        }
+
         {
           token_holders.length === 0 && !isFO && 
           <div className="alert alert-primary" role="alert">

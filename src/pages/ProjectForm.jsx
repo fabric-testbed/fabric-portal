@@ -46,6 +46,7 @@ class ProjectForm extends Form {
       description: "",
       facility: "",
       tags: [],
+      expired: "",
       modified: "",
       created: "",
       creator_name: "",
@@ -109,6 +110,7 @@ class ProjectForm extends Form {
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
     tags: Joi.array(),
+    expired: Joi.string().allow(""),
     modified: Joi.string().allow(""),
     created: Joi.string().allow(""),
     creator_name: Joi.string().allow(""),
@@ -242,6 +244,7 @@ class ProjectForm extends Form {
       description: project.description,
       facility: project.facility,
       tags: project.tags,
+      expired: project.expires_on,
       modified: project.modified,
       created: project.created,
       creator_name: project.project_creators[0].name,
@@ -363,8 +366,8 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      // 3: "#token",
-      3: "#slices",
+      3: "#token",
+      4: "#slices",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -471,7 +474,7 @@ class ProjectForm extends Form {
     this.setState({
       showSpinner: true,
       spinner: {
-        text: `Adding token holders... This process may take a while. 
+        text: `Updating token holders... This process may take a while. 
         Please feel free to use other portal features while waiting. You will receive 
         a message when the update is completed.`,
         btnText: "Back to Project List",

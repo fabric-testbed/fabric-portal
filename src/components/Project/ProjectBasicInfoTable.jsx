@@ -48,6 +48,10 @@ class ProjectBasicInfoTable extends Component {
               </td>
             </tr>
             <tr>
+              <td>Expiration Time</td>
+              <td>{ toLocaleTime(project.expired) }</td>
+            </tr>
+            <tr>
               <td>Modified Time</td>
               <td>{ toLocaleTime(project.modified) }</td>
             </tr>
