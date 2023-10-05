@@ -684,6 +684,7 @@ class ProjectForm extends Form {
                 project={data}
                 projectTags={originalTags}
                 canUpdate={canUpdate}
+                isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
               />
               {

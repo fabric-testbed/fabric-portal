@@ -74,3 +74,9 @@ export function updateProjectTokenHolders(projectId, operation, userIDs) {
     "token_holders": userIDs
   })
 }
+
+export function updateProjectExpirationTime(projectId, time) {
+  return http.patch(`${apiEndpoint}/${projectId}/token-holders?expires-on`, {
+    "expires_on": time
+  })
+}

@@ -192,7 +192,7 @@ class ProjectUserTable extends Component {
         {
           canUpdate && <button
             onClick={() => this.props.onUpdateUsers(personnelType, checkedUserIDs, operation)}
-            className="btn btn-sm btn-outline-danger"
+            className={operation === "add" ? "btn btn-sm btn-outline-primary" : "btn btn-sm btn-outline-danger"}
             disabled={checkedUserIDs.length === 0}
           >
             {operation === "add" && `Add to ${personnelType}`}

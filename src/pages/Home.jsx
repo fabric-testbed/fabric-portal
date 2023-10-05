@@ -72,7 +72,7 @@ class Home extends React.Component {
               <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
             </ul>
             <NavLink to="/about/about-fabric">
-              Learn More
+              <button className="btn btn-warning">Learn More</button>
             </NavLink>
           </div>
         </div>

@@ -1,10 +1,20 @@
 import React, { Component } from "react";
+import moment from 'moment';
 import DeleteModal from "../common/DeleteModal";
 import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
+import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
+import Calendar from "../../components/common/Calendar";
+import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
+import sleep from "../../utils/sleep";
+import { updateProjectExpirationTime } from "../../services/projectService";
 
 class ProjectBasicInfoTable extends Component {
+  state = {
+    expirationTime: this.props.project.expired,
+  }
+
   renderTags(tags) {
     return <ul className="input-tag__tags">
       {
@@ -17,8 +27,41 @@ class ProjectBasicInfoTable extends Component {
     </ul>;
   }
 
+  handleExpirationTimeChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
+    this.setState({ leaseEndTime: outputTime });
+  }
+
+  handleSetExpiration = async () => {
+    this.setState({
+      showSpinner: true,
+      spinnerText: "Updating project expiration time..."
+    })
+    try {
+      await updateProjectExpirationTime(this.props.project.uuid, this.state.expirationTime);
+      // toast message to users when the api call is successfully done.
+      toast.success("Slice has been successfully renewed.");
+      await sleep(1000);
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to renew the slice.");
+      this.setState({
+        leaseEndTime: this.props.project.expired,
+        showSpinner: false,
+        spinnerText: ""
+      });
+    }
+  }
+
+
   render() {
-    const { project, projectTags, canUpdate, onDeleteProject } = this.props;
+    const { project, projectTags, canUpdate, onDeleteProject, isFO } = this.props;
     return (
       <div className="table-responsive">
         <table className="table table-striped table-bordered mt-4">
@@ -49,7 +92,30 @@ class ProjectBasicInfoTable extends Component {
             </tr>
             <tr>
               <td>Expiration Time</td>
-              <td>{ toLocaleTime(project.expired) }</td>
+              <td>
+                {
+                  isFO ? 
+                  <div>
+                  <div className="slice-form-element mb-1">
+                    <Calendar
+                      id="projectExpirationCalendar"
+                      name="projectExpirationCalendar"
+                      onTimeChange={this.handleExpirationTimeChange}
+                      parent={"ProjectForm"}
+                      currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
+                    />
+                    </div>
+                    <button
+                      className="btn btn-sm btn-outline-primary mt-2 mr-3"
+                      onClick={this.handleSetExpiration}
+                    >
+                      Update
+                    </button>
+                  </div>
+                  :
+                  toLocaleTime(project.expired)
+                }
+              </td>
             </tr>
             <tr>
               <td>Modified Time</td>
