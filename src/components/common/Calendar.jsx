@@ -7,7 +7,7 @@ function Calendar({ id, name, parent, onTimeChange, currentTime }) {
   const time = new Date(today);
   time.setDate(time.getDate() + 1);
 
-  const [value, onChange] = useState(parent === "sliceDetailForm"? currentTime : time);
+  const [value, onChange] = useState(parent !== "newSliceForm"? currentTime : time);
 
   return (
     <div key={`${id}-${name}`}>

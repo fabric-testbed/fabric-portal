@@ -101,11 +101,10 @@ class ProjectBasicInfoTable extends Component {
                       name="projectExpirationCalendar"
                       onTimeChange={this.handleExpirationTimeChange}
                       parent={"ProjectForm"}
-                      // currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
-                      currentTime={project.expired}
+                      currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
                     />
                     <button
-                      className="btn btn-sm btn-primary mt-2 mr-3"
+                      className="btn btn-sm btn-primary"
                       onClick={this.handleSetExpiration}
                     >
                       Update

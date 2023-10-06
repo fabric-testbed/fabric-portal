@@ -17,7 +17,7 @@ import { updateProjectPersonnel, updateProjectTokenHolders } from "../services/p
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
-
+import moment from 'moment';
 import {
   getProjectById,
   getProjectTags,
@@ -25,7 +25,6 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
-import sleep from "../utils/sleep.js";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
@@ -541,6 +540,14 @@ class ProjectForm extends Form {
     this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
+  checkProjectExpiration = (expirationTime) => {
+    const utcDateTime = expirationTime.substring(0, 19);
+    const stillUtc = moment.utc(utcDateTime).toDate();
+
+    console.log("checkProjectExpiration" + stillUtc < new Date());
+    return stillUtc < new Date();
+  }
+
   render() {
     const projectId = this.props.match.params.id;
 
@@ -562,7 +569,8 @@ class ProjectForm extends Form {
       originalTags
     } = this.state;
     
-    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
+    let canUpdate = !this.checkProjectExpiration(data.expired) && 
+     (globalRoles.isFacilityOperator || data.is_creator || data.is_owner);
 
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
@@ -579,7 +587,7 @@ class ProjectForm extends Form {
       )
     }
 
-    if (data.is_locked) {
+    if (data.is_locked && !this.checkProjectExpiration(data.expired)) {
       return (
         <div className="container">
           <SpinnerFullPage
@@ -614,6 +622,10 @@ class ProjectForm extends Form {
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
+            {
+              this.checkProjectExpiration(data.expired) && 
+              <span class="badge bg-dangerous">Expired</span>
+            }
             {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">
