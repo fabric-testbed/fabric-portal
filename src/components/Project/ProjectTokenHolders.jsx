@@ -44,7 +44,7 @@ class ProjectTokenHolders extends Component {
 
     return (
       <div>
-        <h4>Token Holders with Long-lived Token Access</h4>
+        <h4>{ personnelType }</h4>
         {
           isFO &&
           <div className="card mt-3">

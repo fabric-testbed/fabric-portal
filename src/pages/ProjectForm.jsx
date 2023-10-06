@@ -766,7 +766,7 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 {
-                  activeIndex === 3 && <Slices
+                  activeIndex === 4 && <Slices
                     parent="Projects"
                     projectId={data.uuid}
                   />

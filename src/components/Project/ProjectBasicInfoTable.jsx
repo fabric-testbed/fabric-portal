@@ -35,7 +35,7 @@ class ProjectBasicInfoTable extends Component {
     const time = inputTime.substring(11, 19);
     const offset = inputTime.substring(19).replace(":", "");
     const outputTime = [date, time, offset].join(" ");
-    this.setState({ leaseEndTime: outputTime });
+    this.setState({ expirationTime: outputTime });
   }
 
   handleSetExpiration = async () => {
@@ -46,11 +46,11 @@ class ProjectBasicInfoTable extends Component {
     try {
       await updateProjectExpirationTime(this.props.project.uuid, this.state.expirationTime);
       // toast message to users when the api call is successfully done.
-      toast.success("Slice has been successfully renewed.");
+      toast.success("Project expiration time updated successfully.");
       await sleep(1000);
       window.location.reload();
     } catch (err) {
-      toast.error("Failed to renew the slice.");
+      toast.error("Failed to update project expiration time.");
       this.setState({
         leaseEndTime: this.props.project.expired,
         showSpinner: false,
@@ -95,18 +95,17 @@ class ProjectBasicInfoTable extends Component {
               <td>
                 {
                   isFO ? 
-                  <div>
-                  <div className="slice-form-element mb-1">
+                  <div className="d-flex justify-content-between align-items-center">
                     <Calendar
                       id="projectExpirationCalendar"
                       name="projectExpirationCalendar"
                       onTimeChange={this.handleExpirationTimeChange}
                       parent={"ProjectForm"}
-                      currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
+                      // currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
+                      currentTime={project.expired}
                     />
-                    </div>
                     <button
-                      className="btn btn-sm btn-outline-primary mt-2 mr-3"
+                      className="btn btn-sm btn-primary mt-2 mr-3"
                       onClick={this.handleSetExpiration}
                     >
                       Update
@@ -152,7 +151,7 @@ class ProjectBasicInfoTable extends Component {
               </tr>
             }
           </tbody>
-        </table>
+        </table>   
       </div>
     );
   }
