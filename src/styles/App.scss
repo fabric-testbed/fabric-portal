@@ -37,22 +37,80 @@ body {
   margin-bottom: 4rem;
 }
 
-.home-upper {
-  margin: 0;
-  height: 23rem;
-  background: url("../imgs/home-bg.jpg");
-  background-size: 100%;
-  background-repeat: repeat;
-  opacity: 0.8;
+.homepage-carousel {
+  margin-top: 3rem;
   margin-bottom: 2rem;
 }
 
-/* For small screen */
-.home-upper-text {
-  margin-top: 3rem;
-  padding: 2rem;
-  width: 85%;
-  font-size: 0.5rem;
+.carousel-item img {
+  max-height: 30rem;
+}
+
+.carousel-caption {
+  position: absolute;
+  right: 15%;
+  left: 10%;
+  z-index: 10;
+  text-align: left !important;
+  line-height: 200%;
+  background: rgba(0, 0, 0, 0.35) !important;
+  color: white;
+  /* For small screen */
+  width: 40%;
+  font-size: 1rem; 
+  top: 2.5rem;
+  bottom: 2.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.carousel-caption-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .app-footer {
+    height: 22rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .carousel-caption {
+    width: 40%;
+    font-size: 1.15rem; 
+    top: 2.5rem;
+    bottom: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .homepage-card {
+    height: 33rem;
+    max-height: 33rem;
+    min-height: 33rem;
+    overflow: scroll;
+  }
+
+  .app-footer div {
+    width: 85%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .homepage-card {
+    height: 60vh;
+    max-height: 60vh;
+    min-height: 60vh;
+    overflow: scroll;
+  }
+
+  .app-footer div {
+    width: 75%;
+  }
 }
 
 .static-page {
@@ -106,70 +164,10 @@ body {
   font-size: 0.85em;
 }
 
-@media only screen and (min-width: 576px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 85%;
-    font-size: 0.75rem;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 85%;
-    font-size: 1rem;
-  }
-
-  .app-footer {
-    height: 22rem;
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 80%;
-    font-size: 1rem;
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  .home-upper-text {
-    padding: 2.5rem 4rem;
-    width: 75%;
-    font-size: 1rem;
-  }
-
-  .homepage-card {
-    height: 33rem;
-    max-height: 33rem;
-    min-height: 33rem;
-    overflow: scroll;
-  }
-
-  .app-footer div {
-    width: 85%;
-  }
-}
-
-@media only screen and (min-width: 1400px) {
-  .homepage-card {
-    height: 60vh;
-    max-height: 60vh;
-    min-height: 60vh;
-    overflow: scroll;
-  }
-
-  .app-footer div {
-    width: 75%;
-  }
-}
-
-.home-upper-text h1,
-.home-upper-text p,
-.home-upper-text li,
-.home-upper-text button {
+.carousel-caption h1,
+.carousel-caption p,
+.carousel-caption li,
+.carousel-caption button {
   color: $white;
 }
 

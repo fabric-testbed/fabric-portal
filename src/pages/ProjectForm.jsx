@@ -621,10 +621,6 @@ class ProjectForm extends Form {
           <div className="d-flex flex-row justify-content-between">
             <h1>{originalProjectName}</h1>
             {
-              this.checkProjectExpiration(data.expired) && 
-              <span class="badge badge-danger">Expired</span>
-            }
-            {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">
                 <button
