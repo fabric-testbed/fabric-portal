@@ -624,7 +624,7 @@ class ProjectForm extends Form {
             <h1>{originalProjectName}</h1>
             {
               this.checkProjectExpiration(data.expired) && 
-              <span class="badge bg-dangerous">Expired</span>
+              <span class="badge bg-danger">Expired</span>
             }
             {
               canUpdate ?
@@ -671,6 +671,13 @@ class ProjectForm extends Form {
               </Link>
             }
           </div>
+          {
+            this.checkProjectExpiration(data.expired) &&
+            <div className="alert alert-danger mb-2" role="alert">
+              <i className="fa fa-exclamation-triangle mr-2"></i>
+              This project is expired and no operations allowed. Please contact Facility Operator if you need assistance.
+            </div>
+          }
           <div className="row mt-4">
             <SideNav
               items={SideNavItems}
@@ -766,6 +773,7 @@ class ProjectForm extends Form {
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
                   isFO={globalRoles.isFacilityOperator}
+                  projectExpired={this.checkProjectExpiration(data.expired)}
                   onUpdateTokenHolders={this.handleUpdateTokenHolders}
                 />
               </div>
