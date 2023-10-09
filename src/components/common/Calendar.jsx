@@ -15,7 +15,7 @@ function Calendar({ id, name, parent, onTimeChange, currentTime }) {
         onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
-        minDate={today}
+        // minDate={today}
         required={true}
         format="yyyy-MM-dd HH:mm:ss"
       />

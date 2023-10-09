@@ -543,8 +543,6 @@ class ProjectForm extends Form {
   checkProjectExpiration = (expirationTime) => {
     const utcDateTime = expirationTime.substring(0, 19);
     const stillUtc = moment.utc(utcDateTime).toDate();
-
-    console.log("checkProjectExpiration" + stillUtc < new Date());
     return stillUtc < new Date();
   }
 
@@ -624,7 +622,7 @@ class ProjectForm extends Form {
             <h1>{originalProjectName}</h1>
             {
               this.checkProjectExpiration(data.expired) && 
-              <span class="badge bg-danger">Expired</span>
+              <span class="badge badge-danger">Expired</span>
             }
             {
               canUpdate ?
@@ -675,7 +673,7 @@ class ProjectForm extends Form {
             this.checkProjectExpiration(data.expired) &&
             <div className="alert alert-danger mb-2" role="alert">
               <i className="fa fa-exclamation-triangle mr-2"></i>
-              This project is expired and no operations allowed. Please contact Facility Operator if you need assistance.
+              This project is expired and no operations are allowed. Please contact Facility Operator if you need assistance.
             </div>
           }
           <div className="row mt-4">
