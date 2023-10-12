@@ -38,7 +38,7 @@ body {
 }
 
 .homepage-carousel {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   margin-bottom: 2rem;
 }
 
@@ -52,15 +52,23 @@ body {
   left: 10%;
   z-index: 10;
   text-align: left !important;
-  line-height: 200%;
-  background: rgba(0, 0, 0, 0.35) !important;
+  background: rgba(0, 0, 0, 0.45) !important;
   color: white;
   /* For small screen */
-  width: 40%;
-  font-size: 1rem; 
-  top: 2.5rem;
-  bottom: 2.5rem;
+  line-height: 100%;
+  width: 55%;
+  top: 2rem;
+  bottom: 2rem;
   padding: 1rem 1.5rem;
+  font-size: .75rem;
+}
+
+.carousel-caption h3 {
+  font-size: 1rem;
+}
+
+.carousel-caption ul {
+  font-size: .6rem;
 }
 
 .carousel-caption-content {
@@ -71,28 +79,94 @@ body {
   justify-content: center;
 }
 
+.app-footer {
+  /* Make App Footer always on top of the main-body background image */
+  position: relative;
+  z-index: 99;
+  /* Make App Footer layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50rem;
+  margin-top: 0;
+  padding: 0 2rem;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.app-footer div {
+  width: 100%;
+}
+
 @media only screen and (min-width: 768px) {
   .app-footer {
     height: 22rem;
   }
 }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 960px) {
+  .homepage-carousel {
+    margin-top: 3rem;
+  }
+
   .carousel-caption {
-    width: 40%;
-    font-size: 1.15rem; 
+    width: 45%;
+    font-size: 1.25rem; 
     top: 2.5rem;
     bottom: 2.5rem;
     padding: 1rem 1.5rem;
   }
+
+  .carousel-caption h3 {
+    font-size: 1.25rem;
+  }
+
+  .carousel-caption p {
+    font-size: .8rem;
+    line-height: 125%;
+  }
+
+  .carousel-caption ul {
+    font-size: .75rem;
+    line-height: 100%;
+  }
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1250px) {
   .homepage-card {
     height: 33rem;
     max-height: 33rem;
     min-height: 33rem;
     overflow: scroll;
+  }
+
+  .carousel-caption {
+    width: 45%;
+    font-size: 1.25rem; 
+    top: 2.5rem;
+    bottom: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .carousel-caption h3 {
+    font-size: 1.75rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1rem;
+    line-height: 175%;
+  }
+
+  .carousel-caption ul {
+    font-size: 1rem;
+    line-height: 135%;
+  }
+
+  .carousel-caption li {
+    margin-bottom: .25rem;
   }
 
   .app-footer div {
@@ -132,28 +206,6 @@ body {
   width: 100%;
   height: auto;
   margin-top: -25rem;
-}
-
-.app-footer {
-  /* Make App Footer always on top of the main-body background image */
-  position: relative;
-  z-index: 99;
-  /* Make App Footer layout */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 50rem;
-  margin-top: 0;
-  padding: 0 2rem;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-.app-footer div {
-  width: 100%;
 }
 
 .text-sm-size {

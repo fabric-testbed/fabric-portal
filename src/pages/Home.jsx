@@ -88,7 +88,7 @@ class Home extends React.Component {
                     <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
                   </ul>
                   <NavLink to="/about/about-fabric">
-                    <button className="btn btn-warning">Learn More</button>
+                    <button className="btn btn-sm btn-warning">Learn More</button>
                   </NavLink>
                 </div>
               </div>
@@ -108,7 +108,7 @@ class Home extends React.Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <button className="btn btn-warning">Learn More</button>
+                    <button className="btn btn-sm btn-warning">Learn More</button>
                   </a>
                 </div>
               </div>
@@ -128,7 +128,7 @@ class Home extends React.Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <button className="btn btn-warning">Learn More</button>
+                    <button className="btn btn-sm btn-warning">Learn More</button>
                   </a>
                 </div>
               </div>
