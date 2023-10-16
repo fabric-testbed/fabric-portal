@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ProjectUserTable from "./ProjectUserTable";
 import _ from "lodash";
-import paginate from "../../utils/paginate";
-import { default as portalData } from "../../services/portalData.json";
+import paginate from "../../../utils/paginate";
+import { default as portalData } from "../../../services/portalData.json";
 
 class ProjectTokenHolders extends Component {
   state = {

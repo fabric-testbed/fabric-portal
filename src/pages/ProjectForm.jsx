@@ -5,10 +5,11 @@ import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
-import ProjectPersonnel from "../components/Project/ProjectPersonnel";
+import ProjectPersonnel from "../components/Project/Personnel/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
-import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
+import ProjectTokenHolders from "../components/Project/Personnel/ProjectTokenHolders.jsx";
+import PersistentStorage from "../components/Project/Storage/PersistentStorage.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
@@ -87,6 +88,7 @@ class ProjectForm extends Form {
       { name: "PROJECT MEMBERS", active: false },
       { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
+      { name: "Persistent Storage", active: false },
     ],
     originalProjectName: "",
     owners: [],
@@ -202,6 +204,7 @@ class ProjectForm extends Form {
        "#members": 2,
        "#token": 3,
        "#slices": 4,
+       "#volumes": 5
      }
  
      if (hash) {
@@ -212,6 +215,7 @@ class ProjectForm extends Form {
          { name: "PROJECT MEMBERS", active: hash === "#members" },
          { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
+         { name: "PERSISTENT Storage", active: hash === "#volumes"}
        ]})
      }
      
@@ -367,6 +371,7 @@ class ProjectForm extends Form {
       2: "#members",
       3: "#token",
       4: "#slices",
+      5: "#volumes",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -781,6 +786,21 @@ class ProjectForm extends Form {
               <div className="w-100">
                 {
                   activeIndex === 4 && <Slices
+                    parent="Projects"
+                    projectId={data.uuid}
+                  />
+                }
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex === 5
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                {
+                  activeIndex === 4 && <PersistentStorage
                     parent="Projects"
                     projectId={data.uuid}
                   />

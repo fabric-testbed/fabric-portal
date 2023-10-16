@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Table from "../common/Table";
-import Pagination from "../common/Pagination";
+import Table from "../../common/Table";
+import Pagination from "../../common/Pagination";
 import _ from "lodash";
-import paginate from "../../utils/paginate";
+import paginate from "../../../utils/paginate";
 import { Link } from "react-router-dom";
 
 class ProjectUserTable extends Component {

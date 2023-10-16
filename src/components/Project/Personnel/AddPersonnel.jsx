@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
-import { getPeople } from "../../services/peopleService";
-import Dropfile from "../common/Dropfile";
-import Tabs from "../common/Tabs";
-import SpinnerWithText from "../common/SpinnerWithText";
+import { getPeople } from "../../../services/peopleService";
+import Dropfile from "../../common/Dropfile";
+import Tabs from "../../common/Tabs";
+import SpinnerWithText from "../../common/SpinnerWithText";
 
 class AddPersonnel extends Component {
   state = {
@@ -143,7 +143,7 @@ class AddPersonnel extends Component {
     const { personnelType } = this.props;
 
     return (
-      <div className="card">
+      <div className="card mt-3">
         <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
           <h6 className="mb-0">
             Add {personnelType}
