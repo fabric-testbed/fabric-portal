@@ -14,6 +14,7 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
+import { getStorage } from "../services/storageService";
 import { updateProjectPersonnel, updateProjectTokenHolders } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
@@ -88,7 +89,7 @@ class ProjectForm extends Form {
       { name: "PROJECT MEMBERS", active: false },
       { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
-      { name: "Persistent Storage", active: false },
+      { name: "PERSISTENT STORAGE", active: false },
     ],
     originalProjectName: "",
     owners: [],
@@ -102,7 +103,8 @@ class ProjectForm extends Form {
       btnPath: ""
     },
     selectedTags: [],
-    originalTags: []
+    originalTags: [],
+    volumes: []
   };
 
   schema = {
@@ -152,8 +154,9 @@ class ProjectForm extends Form {
       }
 
       const { data } = await getProjectById(projectId);
-
+      const { data: data2 } = await getStorage(this.props.projectId, 0, 100);
       const project = data.results[0];
+      const volumes = data2.results;
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
 
@@ -162,7 +165,8 @@ class ProjectForm extends Form {
         !project.memberships.is_member && !project.memberships.is_owner &&
         !this.state.globalRoles.isFacilityOperator) {
           this.setState({ 
-            data: project, 
+            data: project,
+            volumes,
             showSpinner: false,
             spinner: {
               text: "",
@@ -569,7 +573,8 @@ class ProjectForm extends Form {
       spinner,
       tagVocabulary,
       selectedTags,
-      originalTags
+      originalTags,
+      volumes
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -800,9 +805,10 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 {
-                  activeIndex === 4 && <PersistentStorage
+                  activeIndex === 5 && <PersistentStorage
                     parent="Projects"
                     projectId={data.uuid}
+                    volumes={volumes}
                   />
                 }
               </div>
