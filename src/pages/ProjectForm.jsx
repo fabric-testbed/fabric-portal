@@ -154,9 +154,7 @@ class ProjectForm extends Form {
       }
 
       const { data } = await getProjectById(projectId);
-      const { data: data2 } = await getStorage(this.props.projectId, 0, 100);
       const project = data.results[0];
-      const volumes = data2.results;
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
 
@@ -166,7 +164,6 @@ class ProjectForm extends Form {
         !this.state.globalRoles.isFacilityOperator) {
           this.setState({ 
             data: project,
-            volumes,
             showSpinner: false,
             spinner: {
               text: "",
@@ -224,6 +221,14 @@ class ProjectForm extends Form {
      }
      
     try {
+      const { data: res1 } = await getProjectTags();
+      const tags = res1.results;
+      this.setState({ tagVocabulary: tags  });
+    } catch (err) {
+      toast.error("Failed to get tags.");
+    }
+
+    try {
       const { data: res2 } = await getCurrentUser();
       this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
     } catch (err) {
@@ -232,11 +237,11 @@ class ProjectForm extends Form {
     }
 
     try {
-      const { data: res1 } = await getProjectTags();
-      const tags = res1.results;
-      this.setState({ tagVocabulary: tags  });
+      const projectId = this.props.match.params.id;
+      const { data: res3 } = await getStorage(projectId, 0, 100);
+      this.setState({ volumes: res3.results });
     } catch (err) {
-      toast.error("Failed to get tags.");
+      toast.error("Failed to load persistent storage.")
     }
 
     await this.populateProject();
