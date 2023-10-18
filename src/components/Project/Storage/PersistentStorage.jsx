@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import toLocaleTime from "../../../utils/toLocaleTime";
 
 class PersistentStorage extends React.Component {
-  getUserNameByID = async (uuid) => {
+ async getUserNameByID(uuid) {
     try {
       const { data: res } = await getPeopleById(uuid);
       const user = res.results[0];
@@ -16,7 +16,7 @@ class PersistentStorage extends React.Component {
     }
   }
 
-  parseVolumeData = () => {
+  parseVolumeData() {
       // parse date to local time
       // parse requested user id to user name
       const { volumes } = this.props;
@@ -24,7 +24,7 @@ class PersistentStorage extends React.Component {
       let parsed_volumes = volumes.map((v) => {
         v.created_on = toLocaleTime(v.created_on);
         v.expires_on = toLocaleTime(v.expires_on);
-        v.requested_by_name = getPeopleById(v.requested_by_uuid);
+        v.requested_by_name = this.getUserNameByID(v.requested_by_uuid);
         return v;
       });
 
