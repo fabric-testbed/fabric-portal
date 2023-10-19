@@ -103,8 +103,7 @@ class ProjectForm extends Form {
       btnPath: ""
     },
     selectedTags: [],
-    originalTags: [],
-    volumes: []
+    originalTags: []
   };
 
   schema = {
@@ -234,14 +233,6 @@ class ProjectForm extends Form {
     } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
       this.props.navigate("/experiments#projects");
-    }
-
-    try {
-      const projectId = this.props.match.params.id;
-      const { data: res3 } = await getStorage(projectId, 0, 100);
-      this.setState({ volumes: res3.results });
-    } catch (err) {
-      toast.error("Failed to load persistent storage.")
     }
 
     await this.populateProject();
