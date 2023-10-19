@@ -3,14 +3,14 @@ import StorageCard from "./StorageCard";
 import { getPeopleById } from "../../../services/peopleService";
 import { toast } from "react-toastify";
 import toLocaleTime from "../../../utils/toLocaleTime";
-import { getStorage } from "../services/storageService";
+import { getStorage } from "../../../services/storageService";
 
 class PersistentStorage extends React.Component {
   state = {
     volumes: []
   }
 
-  getUserNameByID = async (uuid) => {
+  async getUserNameByID(uuid) {
     try {
       const { data: res } = await getPeopleById(uuid);
       const user = res.results[0];
@@ -23,17 +23,18 @@ class PersistentStorage extends React.Component {
   }
 
   parseVolumes = (volumes) => {
+    const parsedVolumes = [];
     // parse date to local time
     // parse requested user id to user name
-    const parsed_volumes = volumes.map((v) => {
-      v.created_on = toLocaleTime(v.created_on);
-      v.expires_on = toLocaleTime(v.expires_on);
-      v.requested_by_name = "name";
-    // v.requested_by_name = this.getUserNameByID(v.requested_by_uuid);
-      return v;
-    })
+    for(const volume of volumes) {
+      const parsedVolume = { ...volume };
+      parsedVolume.created_on = toLocaleTime(volume.created_on);
+      parsedVolume.expires_on = toLocaleTime(volume.expires_on);
+      // parsedVolume.requested_by_name = this.getUserNameByID(volume.requested_by_uuid);
+      parsedVolumes.push(parsedVolume);
+    }
 
-    return parsed_volumes;
+    return parsedVolumes;
   }
 
   async componentDidMount() {
