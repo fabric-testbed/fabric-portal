@@ -47,56 +47,67 @@ class CheckCookies extends Component {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>User Name</td>
-                  <td>
-                    <span className="mr-2">
-                      { cookie.cookie_attributes.name }
-                    </span>
-                    <CopyButton
-                      id={cookie.cookie_attributes.name}
-                      text=""
-                      showCopiedValue={true}
-                      btnStyle={"btn btn-sm btn-primary"}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>
-                    <span className="mr-2">{ cookie.cookie_attributes.email }</span>
-                    <CopyButton
-                      id={cookie.cookie_attributes.email}
-                      text=""
-                      showCopiedValue={true}
-                      btnStyle={"btn btn-sm btn-primary"}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>CILogon ID</td>
-                  <td>
-                    <span className="mr-2">{ cookie.cookie_attributes.sub }</span>
-                    <CopyButton
-                      id={cookie.cookie_attributes.sub}
-                      text=""
-                      showCopiedValue={true}
-                      btnStyle={"btn btn-sm btn-primary"}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>UUID</td>
-                  <td>
-                    <span className="mr-2">{ cookie.fabric_attributes.uuid }</span>
-                    <CopyButton
-                      id={cookie.fabric_attributes.uuid}
-                      text=""
-                      showCopiedValue={true}
-                      btnStyle={"btn btn-sm btn-primary"}
-                    />
-                  </td>
-                </tr>
+                {
+                  cookie.cookie_attributes && <tr>
+                    <td>User Name</td>
+                    <td>
+                      <span className="mr-2">
+                        {cookie.cookie_attributes.name}
+                      </span>
+                      <CopyButton
+                        id={cookie.cookie_attributes.name}
+                        text=""
+                        showCopiedValue={true}
+                        btnStyle={"btn btn-sm btn-primary"}
+                      />
+                    </td>
+                  </tr>
+                }
+                {
+                  cookie.cookie_attributes &&
+                  <tr>
+                    <td>Email</td>
+                    <td>
+                      <span className="mr-2">{ cookie.cookie_attributes.email }</span>
+                      <CopyButton
+                        id={cookie.cookie_attributes.email}
+                        text=""
+                        showCopiedValue={true}
+                        btnStyle={"btn btn-sm btn-primary"}
+                      />
+                    </td>
+                  </tr>
+                }
+                {
+                  cookie.cookie_attributes &&
+                  <tr>
+                    <td>CILogon ID</td>
+                    <td>
+                      <span className="mr-2">{ cookie.cookie_attributes.sub }</span>
+                      <CopyButton
+                        id={cookie.cookie_attributes.sub}
+                        text=""
+                        showCopiedValue={true}
+                        btnStyle={"btn btn-sm btn-primary"}
+                      />
+                    </td>
+                  </tr>
+                }
+                {
+                  cookie.fabric_attributes &&
+                  <tr>
+                    <td>UUID</td>
+                    <td>
+                      <span className="mr-2">{ cookie.fabric_attributes.uuid }</span>
+                      <CopyButton
+                        id={cookie.fabric_attributes.uuid}
+                        text=""
+                        showCopiedValue={true}
+                        btnStyle={"btn btn-sm btn-primary"}
+                      />
+                    </td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>

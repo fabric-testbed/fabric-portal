@@ -1,6 +1,5 @@
 import React from "react";
 import StorageCard from "./StorageCard";
-import { getPeopleById } from "../../../services/peopleService";
 import { toast } from "react-toastify";
 import toLocaleTime from "../../../utils/toLocaleTime";
 import { getStorage } from "../../../services/storageService";
@@ -8,18 +7,6 @@ import { getStorage } from "../../../services/storageService";
 class PersistentStorage extends React.Component {
   state = {
     volumes: []
-  }
-
-  async getUserNameByID(uuid) {
-    try {
-      const { data: res } = await getPeopleById(uuid);
-      const user = res.results[0];
-      return user.name;
-    } catch (err) {
-      toast.error("Failed to get the requester's name.");
-    }
-
-    return "unknown name";
   }
 
   parseVolumes = (volumes) => {
@@ -30,7 +17,6 @@ class PersistentStorage extends React.Component {
       const parsedVolume = { ...volume };
       parsedVolume.created_on = toLocaleTime(volume.created_on);
       parsedVolume.expires_on = toLocaleTime(volume.expires_on);
-      // parsedVolume.requested_by_name = this.getUserNameByID(volume.requested_by_uuid);
       parsedVolumes.push(parsedVolume);
     }
 
