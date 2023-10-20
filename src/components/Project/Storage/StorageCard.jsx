@@ -33,15 +33,17 @@ class StorageCard extends React.Component {
           <div className="mb-2"><b>Created</b>: {data.created_on ? data.created_on : "Unknown"}</div>
           <div className="mb-2"><b>Expiration</b>: {data.expires_on ? data.expires_on : "Unknown"}</div>
           <div className="mb-2">
-            <b>Requested By</b>:
-            {
-              data.requested_by_uuid && userName ?  
-              <Link to={`/users/${data.requested_by_uuid}`}>
-                {userName}
-              </Link> 
-              :
-              "Unknown"
-            }
+            <b>
+              <span className="mr-2">Requested By:</span>
+              {
+                data.requested_by_uuid && userName ?  
+                <Link to={`/users/${data.requested_by_uuid}`}>
+                  {userName}
+                </Link> 
+                :
+                "Unknown"
+              }
+            </b>
           </div>
           <div className="mb-2"><b>UUID</b>: {data.uuid ? data.uuid : "Unknown"}</div>
         </div>
