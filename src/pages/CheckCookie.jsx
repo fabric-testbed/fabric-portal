@@ -3,6 +3,7 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCookie } from "../services/cookieService";
 import { toast } from "react-toastify";
 import CopyButton from "../components/common/CopyButton";
+import { default as portalData } from "../services/portalData.json";
 
 class CheckCookies extends Component {
   state = {
@@ -26,14 +27,18 @@ class CheckCookies extends Component {
 
     return (
       <div className="container">
-        <h1>Accound Information</h1>
+        <h2>Check Account Information via Cookie</h2>
+        <div className="alert alert-primary mt-3" role="alert">
+          Please copy and paste the useful account information into the FABRIC Account Help Portal issue
+          regarding Sign up, Log in, or other account related status questions.
+        </div>
         {
           showSpinner && <SpinnerWithText text={"Loading account information..."} />
         }
         {
-          cookie && 
-          <div>
-            <table className="table table-striped table-bordered mt-4">
+          !showSpinner && cookie && 
+          <div className="d-flex flex-column align-items-center">
+            <table className="table table-striped table-bordered mt-2">
               <tbody>
                 <tr>
                   <td>Cookie Name</td>
@@ -43,12 +48,13 @@ class CheckCookies extends Component {
                       id={cookie.cookie_name}
                       text=""
                       showCopiedValue={true}
-                      btnStyle={"btn btn-sm btn-primary"}
+                      btnStyle={"btn btn-sm btn-primary ml-3"}
                     />
                   </td>
                 </tr>
                 {
-                  cookie.cookie_attributes && <tr>
+                  cookie.cookie_attributes && cookie.cookie_name !== "COOKIE_NOT_FOUND" && 
+                  <tr>
                     <td>User Name</td>
                     <td>
                       <span className="mr-2">
@@ -58,13 +64,13 @@ class CheckCookies extends Component {
                         id={cookie.cookie_attributes.name}
                         text=""
                         showCopiedValue={true}
-                        btnStyle={"btn btn-sm btn-primary"}
+                        btnStyle={"btn btn-sm btn-primary ml-3"}
                       />
                     </td>
                   </tr>
                 }
                 {
-                  cookie.cookie_attributes &&
+                  cookie.cookie_attributes && cookie.cookie_name !== "COOKIE_NOT_FOUND" &&
                   <tr>
                     <td>Email</td>
                     <td>
@@ -73,13 +79,13 @@ class CheckCookies extends Component {
                         id={cookie.cookie_attributes.email}
                         text=""
                         showCopiedValue={true}
-                        btnStyle={"btn btn-sm btn-primary"}
+                        btnStyle={"btn btn-sm btn-primary ml-3"}
                       />
                     </td>
                   </tr>
                 }
                 {
-                  cookie.cookie_attributes &&
+                  cookie.cookie_attributes && cookie.cookie_name !== "COOKIE_NOT_FOUND" &&
                   <tr>
                     <td>CILogon ID</td>
                     <td>
@@ -88,13 +94,13 @@ class CheckCookies extends Component {
                         id={cookie.cookie_attributes.sub}
                         text=""
                         showCopiedValue={true}
-                        btnStyle={"btn btn-sm btn-primary"}
+                        btnStyle={"btn btn-sm btn-primary ml-3"}
                       />
                     </td>
                   </tr>
                 }
                 {
-                  cookie.fabric_attributes &&
+                  cookie.fabric_attributes && cookie.cookie_name !== "COOKIE_NOT_FOUND" &&
                   <tr>
                     <td>UUID</td>
                     <td>
@@ -103,13 +109,21 @@ class CheckCookies extends Component {
                         id={cookie.fabric_attributes.uuid}
                         text=""
                         showCopiedValue={true}
-                        btnStyle={"btn btn-sm btn-primary"}
+                        btnStyle={"btn btn-sm btn-primary ml-3"}
                       />
                     </td>
                   </tr>
                 }
               </tbody>
             </table>
+            <a
+              href={portalData.jiraLinks.accountIssue}
+              target="_blank" rel="noopener noreferrer"
+              className="btn btn-outline-primary"
+            >
+              <i className="fa fa-sign-in mr-2" />
+              FABRIC Account Help Portal
+            </a>
           </div>
         }
       </div>

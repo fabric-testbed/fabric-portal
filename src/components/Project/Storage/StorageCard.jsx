@@ -35,7 +35,7 @@ class StorageCard extends React.Component {
           <div className="mb-2">
             <b>Requested By</b>:
             {
-              data.requested_by_uuid && data.requested_by_name ?  
+              data.requested_by_uuid && userName ?  
               <Link to={`/users/${data.requested_by_uuid}`}>
                 {userName}
               </Link> 
