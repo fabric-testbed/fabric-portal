@@ -1,7 +1,6 @@
 import React from "react";
 import StorageCard from "./StorageCard";
 import { toast } from "react-toastify";
-import toLocaleTime from "../../../utils/toLocaleTime";
 import { getStorage } from "../../../services/storageService";
 
 class PersistentStorage extends React.Component {
@@ -15,8 +14,8 @@ class PersistentStorage extends React.Component {
     // parse requested user id to user name
     for(const volume of volumes) {
       const parsedVolume = { ...volume };
-      parsedVolume.created_on = toLocaleTime(volume.created_on);
-      parsedVolume.expires_on = toLocaleTime(volume.expires_on);
+      parsedVolume.created_on = volume.created_on.substring(0, 10);
+      parsedVolume.expires_on = volume.expires_on.substring(0, 10);
       parsedVolumes.push(parsedVolume);
     }
 
@@ -63,7 +62,7 @@ class PersistentStorage extends React.Component {
           {
             volumes && volumes.length === 0 && 
             <div className="alert alert-primary" role="alert">
-              No persistent storage for this project. Project Owners can request storage 
+              No persistent storage volumes allocated for this project. Project Owners can request storage 
               by clicking the <b>Request Storage</b> button next to the project name.
             </div>
           }
