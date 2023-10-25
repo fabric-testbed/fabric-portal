@@ -69,6 +69,18 @@ export function updateProjectPersonnel(projectId, ownerIDs, memberIDs) {
   })
 }
 
+export function updateProjectOwners(projectId, operation, userIDs) {
+  return http.patch(`${apiEndpoint}/${projectId}/project-owners?operation=${operation}`, {
+    "project_owners": userIDs,
+  })
+}
+
+export function updateProjectMembers(projectId, operation, userIDs) {
+  return http.patch(`${apiEndpoint}/${projectId}/project-members?operation=${operation}`, {
+    "project_members": userIDs,
+  })
+}
+
 export function updateProjectTokenHolders(projectId, operation, userIDs) {
   return http.patch(`${apiEndpoint}/${projectId}/token-holders?operation=${operation}`, {
     "token_holders": userIDs
