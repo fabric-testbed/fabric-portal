@@ -102,6 +102,29 @@ body {
   width: 100%;
 }
 
+.navbar-brand img {
+  margin-top: 1px !important;
+  margin-right: 1px !important;
+}
+
+.navbar .form-control {
+  padding: 0px 8px !important;
+  height: 35px !important;
+}
+
+.navbar .btn {
+  height: 35px !important;
+  padding: 4px 10px !important;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    margin-top: 0px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .app-footer {
     height: 22rem;
@@ -277,6 +300,11 @@ body {
 .nav-item .dropdown-menu a.active,
 .nav-item .dropdown-menu a:hover {
   border-bottom: $primary-color solid;;
+}
+
+.letter-avatar {
+  height: 35px !important;
+  width: 35px !important;
 }
 
 .dropdown-item.active,
@@ -921,7 +949,7 @@ ul,
 }
 
 .user-profile-nav-btn {
-  padding: 4px;
+  padding: 2px;
   cursor: pointer;
 }
 
@@ -934,8 +962,8 @@ ul,
   position: fixed;
   z-index: 99;
   width: 14rem;
-  top: 3rem;
-  right: 10px;
+  top: 42px;
+  right: 0px;
   background-color: #fff;
   padding: 10px;
   border: 1px solid #ccc;

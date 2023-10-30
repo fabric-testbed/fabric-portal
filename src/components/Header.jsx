@@ -130,7 +130,7 @@ const Header = (props) => {
       <img
         src={getLogoSrc()}
         height="24"
-        className="d-inline-block align-top mr-1 mt-1"
+        className="d-inline-block align-top"
         alt=""
       />
     </NavLink>
