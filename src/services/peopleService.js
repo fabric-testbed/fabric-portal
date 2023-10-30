@@ -30,6 +30,7 @@ export function updatePeopleProfile(userId, data, preferences) {
     "job": data.job,
     "pronouns": data.pronouns,
     "website": data.website,
+    "email": data.email,
     "preferences": preferences
   })
 }

@@ -6,9 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
 import { getCookieConsentValue } from "react-cookie-consent";
 import checkPortalType from "../utils/checkPortalType";
-import productionLogo from "../imgs/fabric-brand.png";
-import alphaLogo from "../imgs/fabric-brand-alpha.png";
-import betaLogo from "../imgs/fabric-brand-beta.png";
+import productionLogo from "../imgs/logos/fabric-brand.png";
+import alphaLogo from "../imgs/logos/fabric-brand-alpha.png";
+import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
 
 const Header = (props) => {  
@@ -31,7 +31,7 @@ const Header = (props) => {
       child: [],
       path: ""
     },
-    { name: "Contact", path: "/help", child: [] },
+    { name: "Contact Us", path: "/help", child: [] },
     {
       name: "About",
       child: [
@@ -129,11 +129,10 @@ const Header = (props) => {
     <NavLink className="navbar-brand" to="/">
       <img
         src={getLogoSrc()}
-        width="60"
-        className="d-inline-block align-top mr-1"
+        height="24"
+        className="d-inline-block align-top mr-1 mt-1"
         alt=""
       />
-      FABRIC
     </NavLink>
     <button
       className="navbar-toggler"
