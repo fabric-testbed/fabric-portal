@@ -391,14 +391,8 @@ class ProjectForm extends Form {
     }
   };
 
-  handlePersonnelUpdate = (ownerIDs, memberIDs) => {
+  handlePersonnelUpdate = (personnelType, userIDs, operation) => {
     const { data } = this.state;
-    const indexToTypeMapping = {
-      "1": "Project Owners",
-      "2": "Project Members",
-      "3": "Token Holders"
-    }
-    const personnelType = indexToTypeMapping[this.state.activeIndex];
     this.setState({
       showSpinner: true,
       spinner: {
@@ -412,7 +406,7 @@ class ProjectForm extends Form {
 
     try{
       // pass the arr of updated po/pm and the original pm/po
-      updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
+      updateProjectPersonnel(data.uuid, userIDs, operation, personnelType).then(() => {
         this.setState({
           showSpinner: false,
           spinner: {
@@ -448,28 +442,6 @@ class ProjectForm extends Form {
       });
       toast(`Failed to update ${personnelType}.`)
     }
-  }
-
-
-  getIDs = (users) => {
-    return users.map(user => user.uuid);
-  }
-
-  handleDeleteUsers = (personnelType, userIDs, operation) => {
-    // call API and update.
-    let owners = this.state.owners;
-    let members = this.state.members;
-
-    if (personnelType === "Project Owners") {
-      owners = owners.filter(owner => !userIDs.includes(owner.uuid));
-    } else if (personnelType === "Project Members") {
-      members = members.filter(member => !userIDs.includes(member.uuid));
-    }
-
-    const ownerIDs = this.getIDs(owners);
-    const memberIDs = this.getIDs(members);
-
-    this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
   handleUpdateTokenHolders = (personnelType, tokenHolderIDs, operation) => {
@@ -523,25 +495,6 @@ class ProjectForm extends Form {
       });
       toast(`Failed to add token holders.`)
     }
-  }
-
-  handleAddUsers = (usersToAdd) => {
-    let ownerIDs = [];
-    let memberIDs = [];
-    const userIDs = this.getIDs(usersToAdd);
-
-    const { owners, members } = this.state;
-    if (this.state.activeIndex === 1) {
-      // new owners added
-      ownerIDs = this.getIDs(owners).concat(userIDs);
-      memberIDs = this.getIDs(members);
-    } else if (this.state.activeIndex === 2) {
-      // new members added
-      ownerIDs = this.getIDs(owners);
-      memberIDs = this.getIDs(members).concat(userIDs);
-    }
-
-    this.handlePersonnelUpdate(ownerIDs, memberIDs);
   }
 
   checkProjectExpiration = (expirationTime) => {
@@ -736,8 +689,7 @@ class ProjectForm extends Form {
                   personnelType={"Project Owners"}
                   canUpdate={canUpdate}
                   users={owners}
-                  onPersonnelAdd={this.handleAddUsers}
-                  onUpdateUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handlePersonnelUpdate}
                 />
               </div>
             </div>
@@ -753,8 +705,7 @@ class ProjectForm extends Form {
                   canUpdate={canUpdate}
                   isFO={globalRoles.isFacilityOperator}
                   users={members}
-                  onPersonnelAdd={this.handleAddUsers}
-                  onUpdateUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handlePersonnelUpdate}
                 />
               </div>
             </div>
