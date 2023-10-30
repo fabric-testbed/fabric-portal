@@ -14,3 +14,9 @@ export function getActiveMaintenanceNotice() {
 export function getActiveNews() {
   return http.get(`${apiEndpoint}?announcement_type=news&is_active=true&offset=0&limit=2`);
 }
+
+export function getActiveCarouselItems() {
+  return http.get(`${apiEndpoint}?announcement_type=carousel&is_active=true&offset=0&limit=10`);
+}
+
+

@@ -137,6 +137,10 @@ class AddPersonnel extends Component {
     window.location.reload();
   }
 
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
   render() {
     const { searchInput, searchResults, warningMessage,
       searchCompleted, usersFailedToFind, showSpinner, usersToAdd } = this.state;
@@ -320,7 +324,7 @@ class AddPersonnel extends Component {
             </ul>
             <button
               className="btn btn-sm btn-outline-primary mr-3 mt-1"
-              onClick={() => this.props.onUpdateUsers(personnelType, usersToAdd, "add")}
+              onClick={() => this.props.onUpdateUsers(personnelType, this.getIDs(usersToAdd), "add")}
               disabled={ usersToAdd.length === 0}
             >
               Add to {personnelType}
