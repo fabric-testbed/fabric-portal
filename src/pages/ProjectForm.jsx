@@ -631,7 +631,10 @@ class ProjectForm extends Form {
           </div>
           {
             this.checkProjectExpiration(data.expired) &&
-            <div className="alert alert-warning mb-2 d-flex flex-row justify-content-between" role="alert">
+            <div
+              className="alert alert-danger mb-2 d-flex flex-row justify-content-between align-items-center" 
+              role="alert"
+            >
               <span>
                 <i className="fa fa-exclamation-triangle mr-2"></i>
                 This project is expired and no operations are allowed. Please submit a ticket to renew the project.
@@ -652,7 +655,10 @@ class ProjectForm extends Form {
           {
             !this.checkProjectExpiration(data.expired) && 
             this.checkProjectExpireInOneMonth(data.expired) &&
-            <div className="alert alert-warning mb-2" role="alert">
+            <div
+              className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
+              role="alert"
+            >
               <span>
                 <i className="fa fa-exclamation-triangle mr-2"></i>
                 This project is going to expire in a month. Please submit a ticket to renew the project.
