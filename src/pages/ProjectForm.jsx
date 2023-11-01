@@ -86,7 +86,7 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "TOKEN HOLDERS", active: false },
+      // { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
@@ -201,9 +201,9 @@ class ProjectForm extends Form {
        "#info": 0,
        "#owners": 1,
        "#members": 2,
-       "#token": 3,
-       "#slices": 4,
-       "#volumes": 5
+      //  "#token": 3,
+       "#slices": 3,
+       "#volumes": 4
      }
  
      if (hash) {
@@ -212,7 +212,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
-         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
+        //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
          { name: "PERSISTENT Storage", active: hash === "#volumes"}
        ]})
@@ -631,12 +631,14 @@ class ProjectForm extends Form {
           </div>
           {
             this.checkProjectExpiration(data.expired) &&
-            <div className="alert alert-danger mb-2" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i>
-              This project is expired and no operations are allowed. Please submit a ticket to renew the project.
+            <div className="alert alert-warning mb-2 d-flex flex-row justify-content-between" role="alert">
+              <span>
+                <i className="fa fa-exclamation-triangle mr-2"></i>
+                This project is expired and no operations are allowed. Please submit a ticket to renew the project.
+              </span>
               <button
                 type="button"
-                className="btn btn-sm btn-outline-success mr-2 my-3"
+                className="btn btn-sm btn-success"
                 onClick={() => window.open(
                   `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
                   "_blank")
@@ -648,13 +650,16 @@ class ProjectForm extends Form {
             </div>
           }
           {
+            !this.checkProjectExpiration(data.expired) && 
             this.checkProjectExpireInOneMonth(data.expired) &&
             <div className="alert alert-warning mb-2" role="alert">
-              <i className="fa fa-exclamation-triangle mr-2"></i>
-              This project is going to expire in a month. Please submit a ticket to renew the project.
+              <span>
+                <i className="fa fa-exclamation-triangle mr-2"></i>
+                This project is going to expire in a month. Please submit a ticket to renew the project.
+              </span>
               <button
                 type="button"
-                className="btn btn-sm btn-outline-success mr-2 my-3"
+                className="btn btn-sm btn-success"
                 onClick={() => window.open(
                   `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
                   "_blank")
@@ -744,7 +749,7 @@ class ProjectForm extends Form {
                 />
               </div>
             </div>
-            <div
+            {/* <div
               className={`${
                 activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
@@ -762,6 +767,21 @@ class ProjectForm extends Form {
                   onUpdateTokenHolders={this.handleUpdateTokenHolders}
                 />
               </div>
+            </div> */}
+            <div
+              className={`${
+                activeIndex === 3
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                {
+                  activeIndex === 3 && <Slices
+                    parent="Projects"
+                    projectId={data.uuid}
+                  />
+                }
+              </div>
             </div>
             <div
               className={`${
@@ -771,22 +791,7 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 {
-                  activeIndex === 4 && <Slices
-                    parent="Projects"
-                    projectId={data.uuid}
-                  />
-                }
-              </div>
-            </div>
-            <div
-              className={`${
-                activeIndex === 5
-                  ? "col-9 d-flex flex-row" : "d-none"
-              }`}
-            >
-              <div className="w-100">
-                {
-                  activeIndex === 5 && <PersistentStorage
+                  activeIndex === 4 && <PersistentStorage
                     parent="Projects"
                     projectId={data.uuid}
                     volumes={volumes}
