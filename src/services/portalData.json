@@ -40,7 +40,8 @@
     "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
     "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61",
     "educationProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/64",
-    "longlivedTokenRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/65"
+    "longlivedTokenRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/65",
+    "renewProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/66"
   },
   "fabricSocialLinks": {
     "website": "https://fabric-testbed.net/",

@@ -20,7 +20,7 @@ const Header = (props) => {
       child: []
     },
     {
-      name: "KnowledgeBase",
+      name: "Knowledge Base",
       href: portalData.knowledgeBaseLink,
       child: [],
       path: ""

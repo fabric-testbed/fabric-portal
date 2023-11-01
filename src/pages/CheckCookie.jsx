@@ -76,8 +76,7 @@ class CheckCookies extends Component {
           && !showSpinner && cookie && 
           <div className="d-flex flex-column align-items-center">
             <div className="alert alert-primary mt-3 w-100" role="alert">
-              Please copy and paste the cookie object into the FABRIC Account Help Portal issue.
-              The cookie will be used to debug Sign up, Log in, or other account related status issues.
+              Please copy and paste the cookie information below into the appropriate field in the FABRIC Account Help Portal. It will help us debug the account issues you may be having. 
             </div>
             <table className="table table-striped table-bordered mt-2">
               <tbody>

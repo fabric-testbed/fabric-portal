@@ -503,6 +503,12 @@ class ProjectForm extends Form {
     return stillUtc < new Date();
   }
 
+  checkProjectExpireInOneMonth = (expirationTime) => {
+    const utcDateTime = expirationTime.substring(0, 19);
+    const stillUtc = moment.utc(utcDateTime).toDate();
+    return stillUtc < moment(new Date()).add(1, 'M');
+  }
+
   render() {
     const projectId = this.props.match.params.id;
 
@@ -627,7 +633,36 @@ class ProjectForm extends Form {
             this.checkProjectExpiration(data.expired) &&
             <div className="alert alert-danger mb-2" role="alert">
               <i className="fa fa-exclamation-triangle mr-2"></i>
-              This project is expired and no operations are allowed. Please contact Facility Operator if you need assistance.
+              This project is expired and no operations are allowed. Please submit a ticket to renew the project.
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-success mr-2 my-3"
+                onClick={() => window.open(
+                  `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
+                  "_blank")
+                }
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Renew Project
+              </button>
+            </div>
+          }
+          {
+            this.checkProjectExpireInOneMonth(data.expired) &&
+            <div className="alert alert-warning mb-2" role="alert">
+              <i className="fa fa-exclamation-triangle mr-2"></i>
+              This project is going to expire in a month. Please submit a ticket to renew the project.
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-success mr-2 my-3"
+                onClick={() => window.open(
+                  `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
+                  "_blank")
+                }
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Renew Project
+              </button>
             </div>
           }
           <div className="row mt-4">

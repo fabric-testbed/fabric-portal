@@ -22,14 +22,15 @@ const Step1 = () => {
       </div>
       <div className="text-center">
       <div className="alert alert-warning" role="alert">
-        <i className="fa fa-exclamation-triangle mr-2"></i> Please <b>choose your institution</b> and <b>NOT</b> use the GitHub, Google, Microsoft, or ORCID options from the CILogon page.
-        <br></br>(<b>Note</b>: the list may take a moment to populate beyond the default of ORCID).
+      <i className="fa fa-exclamation-triangle mr-2"></i> Before choosing ORCID, Google, Microsoft or GitHub from the list in CILogon page, <b>please try to find your home institution first</b>. Selecting one of these four providers requires additional human-in-the-loop assistance and review and will delay your registration.
+      <br></br>
+      (<b>Note</b>: depending on the speed of your Internet connection the list may take a moment to populate beyond the default ORCID).
       </div>
         <a href={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}>
           <button
             className="btn btn-primary mt-2"
           >
-            Proceed
+            Proceed to CILogon
           </button>
         </a>
       </div>
