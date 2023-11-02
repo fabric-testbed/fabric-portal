@@ -93,7 +93,7 @@ class ProjectBasicInfoTable extends Component {
                 </td>
               </tr>
               <tr>
-                <td>Expiration Time</td>
+                <td>Expiration Date</td>
                 <td>
                   {
                     isFO ? 

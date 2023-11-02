@@ -13,10 +13,6 @@ import DetailTable from "../components/Resource/DetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
-import bg1 from "../imgs/homepage/bg1.jpeg";
-import bg2 from "../imgs/homepage/bg2.jpeg";
-import bg3 from "../imgs/homepage/bg3.jpeg";
-
 
 class Home extends React.Component {
   state = {

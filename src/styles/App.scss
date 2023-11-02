@@ -103,7 +103,7 @@ body {
 }
 
 .navbar-brand img {
-  margin-top: 1px !important;
+  margin-top: 2px !important;
   margin-right: 1px !important;
 }
 
@@ -113,15 +113,17 @@ body {
 }
 
 .navbar .btn {
-  height: 35px !important;
-  padding: 4px 10px !important;
+  height: 33px !important;
+  padding: 3px 10px !important;
 }
 
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-nav .nav-link {
     margin-top: 0px !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+    height: 38.5px !important;
+    color:rgba(0, 0, 0, 0.5) !important;
   }
 }
 
@@ -295,6 +297,7 @@ body {
 .nav-item a.active,
 .nav-item a:hover {
   border-bottom: 3px $primary-color solid;
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .nav-item .dropdown-menu a.active,
@@ -315,7 +318,7 @@ body {
 }
 
 .dropdown-menu {
-  min-width: 12rem !important;
+  min-width: 12.5rem !important;
 }
 
 /* Side Navbar */
@@ -808,7 +811,6 @@ ul,
 
 .homepage-partner-header {
   font-size: 2.5rem;
-  // font-family: 'Montserrat';
   font-weight: 500;
   border-bottom: 3px #5798bc solid;
 }
