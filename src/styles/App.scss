@@ -34,46 +34,50 @@ body {
 .home-container {
   min-height: 75vh;
   margin: 0;
+  margin-top: -6px;
   margin-bottom: 4rem;
 }
 
-.home-upper {
-  margin: 0;
-  height: 23rem;
-  background: url("../imgs/home-bg.jpg");
-  background-size: 100%;
-  background-repeat: repeat;
-  opacity: 0.8;
+.homepage-carousel {
+  margin-top: 2.5rem;
   margin-bottom: 2rem;
 }
 
-/* For small screen */
-.home-upper-text {
-  margin-top: 3rem;
-  padding: 2rem;
-  width: 85%;
-  font-size: 0.5rem;
+.carousel-item img {
+  max-height: 30rem;
 }
 
-.static-page {
-  padding-top: 1rem;
+.carousel-caption {
+  position: absolute;
+  right: 15%;
+  left: 10%;
+  z-index: 10;
+  text-align: left !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  color: white;
+  /* For small screen */
+  line-height: 100%;
+  width: 55%;
+  top: 2rem;
+  bottom: 2rem;
+  padding: 1rem 1.5rem;
+  font-size: .75rem;
 }
 
-.static-page p {
-  margin: 1.5rem 0;
-  line-height: 2rem;
-  position: relative;
-  z-index: 99;
+.carousel-caption h3 {
+  font-size: 1rem;
 }
 
-.static-page-bg {
-  opacity: 0.2;
-  position: fixed;
-  z-index: -1;
-  left: 0;
-  width: 100%;
-  height: auto;
-  margin-top: -25rem;
+.carousel-caption ul {
+  font-size: .6rem;
+}
+
+.carousel-caption-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
 }
 
 .app-footer {
@@ -98,54 +102,97 @@ body {
   width: 100%;
 }
 
-.text-sm-size {
-  font-size: 0.75em;
+.navbar-brand img {
+  margin-top: 2px !important;
+  margin-right: 1px !important;
 }
 
-.text-md-size {
-  font-size: 0.85em;
+.navbar .form-control {
+  padding: 0px 8px !important;
+  height: 35px !important;
 }
 
-@media only screen and (min-width: 576px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 85%;
-    font-size: 0.75rem;
+.navbar .btn {
+  height: 33px !important;
+  padding: 3px 10px !important;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    margin-top: 0px !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+    height: 38.5px !important;
+    color:rgba(0, 0, 0, 0.5) !important;
   }
 }
 
 @media only screen and (min-width: 768px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 85%;
-    font-size: 1rem;
-  }
-
   .app-footer {
     height: 22rem;
   }
 }
 
-@media only screen and (min-width: 992px) {
-  .home-upper-text {
-    padding: 2rem 2rem;
-    width: 80%;
-    font-size: 1rem;
+@media only screen and (min-width: 960px) {
+  .homepage-carousel {
+    margin-top: 3rem;
+  }
+
+  .carousel-caption {
+    width: 45%;
+    font-size: 1.25rem; 
+    top: 2.5rem;
+    bottom: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .carousel-caption h3 {
+    font-size: 1.25rem;
+  }
+
+  .carousel-caption p {
+    font-size: .8rem;
+    line-height: 125%;
+  }
+
+  .carousel-caption ul {
+    font-size: .75rem;
+    line-height: 100%;
   }
 }
 
-@media only screen and (min-width: 1200px) {
-  .home-upper-text {
-    padding: 2.5rem 4rem;
-    width: 75%;
-    font-size: 1rem;
-  }
-
+@media only screen and (min-width: 1250px) {
   .homepage-card {
     height: 33rem;
     max-height: 33rem;
     min-height: 33rem;
     overflow: scroll;
+  }
+
+  .carousel-caption {
+    width: 45%;
+    font-size: 1.25rem; 
+    top: 2.5rem;
+    bottom: 2.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .carousel-caption h3 {
+    font-size: 1.75rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1rem;
+    line-height: 175%;
+  }
+
+  .carousel-caption ul {
+    font-size: 1rem;
+    line-height: 135%;
+  }
+
+  .carousel-caption li {
+    margin-bottom: .25rem;
   }
 
   .app-footer div {
@@ -166,10 +213,39 @@ body {
   }
 }
 
-.home-upper-text h1,
-.home-upper-text p,
-.home-upper-text li,
-.home-upper-text button {
+.static-page {
+  padding-top: 1rem;
+}
+
+.static-page p {
+  margin: 1.5rem 0;
+  line-height: 2rem;
+  position: relative;
+  z-index: 99;
+}
+
+.static-page-bg {
+  opacity: 0.2;
+  position: fixed;
+  z-index: -1;
+  left: 0;
+  width: 100%;
+  height: auto;
+  margin-top: -25rem;
+}
+
+.text-sm-size {
+  font-size: 0.75em;
+}
+
+.text-md-size {
+  font-size: 0.85em;
+}
+
+.carousel-caption h1,
+.carousel-caption p,
+.carousel-caption li,
+.carousel-caption button {
   color: $white;
 }
 
@@ -208,14 +284,10 @@ body {
   padding-left: .5rem !important;
   padding-right: .5rem !important;
   position: fixed;
+  font-size: 15px !important;
   top: 0;
   width: 100%;
-  z-index: 100; 
-}
-
-.nav-item {
-  padding-top: 4px;
-  padding-bottom: 2px;
+  z-index: 100;
 }
 
 .nav-item a {
@@ -225,6 +297,7 @@ body {
 .nav-item a.active,
 .nav-item a:hover {
   border-bottom: 3px $primary-color solid;
+  color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .nav-item .dropdown-menu a.active,
@@ -232,11 +305,20 @@ body {
   border-bottom: $primary-color solid;;
 }
 
+.letter-avatar {
+  height: 35px !important;
+  width: 35px !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   color: $black;
   text-decoration: none;
   background-color: $white;
+}
+
+.dropdown-menu {
+  min-width: 12.5rem !important;
 }
 
 /* Side Navbar */
@@ -609,7 +691,8 @@ ul,
 }
 
 .notice-banner {
-  margin-bottom: 0 !important;
+  margin-top: 2.5rem;
+  margin-bottom: -3rem !important;
 }
 
 .node-components-panel {
@@ -721,9 +804,13 @@ ul,
   padding: 0px 8px !important;
 }
 
+.homepage-carousel-content {
+  margin: 1rem 0 2rem 0;
+  line-height: 150%;
+}
+
 .homepage-partner-header {
   font-size: 2.5rem;
-  // font-family: 'Montserrat';
   font-weight: 500;
   border-bottom: 3px #5798bc solid;
 }
@@ -864,7 +951,7 @@ ul,
 }
 
 .user-profile-nav-btn {
-  padding: 4px;
+  padding: 2px;
   cursor: pointer;
 }
 
@@ -877,8 +964,8 @@ ul,
   position: fixed;
   z-index: 99;
   width: 14rem;
-  top: 3rem;
-  right: 10px;
+  top: 42px;
+  right: 0px;
   background-color: #fff;
   padding: 10px;
   border: 1px solid #ccc;
@@ -889,4 +976,8 @@ ul,
 .max-height-overflow-scroll {
   max-height: 10rem;
   overflow-y: scroll;
+}
+
+.check-cookie-textarea {
+  height: 15rem !important;
 }

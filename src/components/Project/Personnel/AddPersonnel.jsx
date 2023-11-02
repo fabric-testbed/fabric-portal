@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
-import { getPeople } from "../../services/peopleService";
-import Dropfile from "../common/Dropfile";
-import Tabs from "../common/Tabs";
-import SpinnerWithText from "../common/SpinnerWithText";
+import { getPeople } from "../../../services/peopleService";
+import Dropfile from "../../common/Dropfile";
+import Tabs from "../../common/Tabs";
+import SpinnerWithText from "../../common/SpinnerWithText";
 
 class AddPersonnel extends Component {
   state = {
@@ -137,13 +137,17 @@ class AddPersonnel extends Component {
     window.location.reload();
   }
 
+  getIDs = (users) => {
+    return users.map(user => user.uuid);
+  }
+
   render() {
     const { searchInput, searchResults, warningMessage,
       searchCompleted, usersFailedToFind, showSpinner, usersToAdd } = this.state;
     const { personnelType } = this.props;
 
     return (
-      <div className="card">
+      <div className="card mt-3">
         <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
           <h6 className="mb-0">
             Add {personnelType}
@@ -320,7 +324,7 @@ class AddPersonnel extends Component {
             </ul>
             <button
               className="btn btn-sm btn-outline-primary mr-3 mt-1"
-              onClick={() => this.props.onPersonnelAdd(usersToAdd)}
+              onClick={() => this.props.onUpdateUsers(personnelType, this.getIDs(usersToAdd), "add")}
               disabled={ usersToAdd.length === 0}
             >
               Add to {personnelType}

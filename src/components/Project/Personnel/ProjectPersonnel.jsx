@@ -9,7 +9,7 @@ class ProjectPersonnel extends Component {
   };
 
   render() {
-    const { canUpdate, personnelType, users } = this.props;
+    const { canUpdate, personnelType, users, isFO } = this.props;
 
     return (
       <div>
@@ -18,7 +18,7 @@ class ProjectPersonnel extends Component {
           canUpdate &&
           <AddPersonnel
             personnelType={personnelType}
-            onPersonnelAdd={this.props.onPersonnelAdd}
+            onUpdateUsers={this.props.onUpdateUsers}
             users={users}
           />
         }
@@ -35,7 +35,10 @@ class ProjectPersonnel extends Component {
                 users={users}
                 personnelType={personnelType}
                 canUpdate={canUpdate}
-                onDeleteUsers={this.props.onDeleteUsers}
+                isFO={isFO}
+                onUpdateUsers={this.props.onUpdateUsers}
+                inputText={`Filter ${personnelType}...`}
+                operation="remove"
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import BackgroundImage from "../../imgs/network-bg.svg";
 import { default as portalData } from "../../services/portalData.json";
+import { Link } from "react-router-dom";
 
 export default class Help extends React.Component{
   render() {
@@ -58,10 +59,10 @@ export default class Help extends React.Component{
                     If you are having problems with enrolling or logging into your FABRIC account 
                     or logging into your experiment's resources via bastion hosts, please use our <a href={portalData.jiraLinks.accountIssue} target="_blank" rel="noopener noreferrer">FABRIC Account Help Portal</a> or email us at <b>account-help@fabric-testbed.net</b>.
                   </p>
-                <a href={portalData.jiraLinks.accountIssue} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary">
-                  <i className="fa fa-sign-in mr-2"></i>
-                  FABRIC Account Help Portal
-                </a>
+                  <Link to="/check-cookie" className="btn btn-outline-primary">
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Check Account Information
+                  </Link>
               </div>
             </div>
           </div>

@@ -5,18 +5,20 @@ import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
-import ProjectPersonnel from "../components/Project/ProjectPersonnel";
+import ProjectPersonnel from "../components/Project/Personnel/ProjectPersonnel";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
+import ProjectTokenHolders from "../components/Project/Personnel/ProjectTokenHolders.jsx";
+import PersistentStorage from "../components/Project/Storage/PersistentStorage.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import { updateProjectPersonnel } from "../services/projectService";
+import { updateProjectPersonnel, updateProjectTokenHolders } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
-
+import moment from 'moment';
 import {
   getProjectById,
   getProjectTags,
@@ -24,8 +26,6 @@ import {
   updateProject,
   updateTags,
 } from "../services/projectService";
-import sleep from "../utils/sleep.js";
-// import ProjectTokenHolders from "../components/Project/ProjectTokenHolders.jsx";
 
 const ToastMessageWithLink = ({projectId, message}) => (
   <div className="ml-2">
@@ -46,6 +46,7 @@ class ProjectForm extends Form {
       description: "",
       facility: "",
       tags: [],
+      expired: "",
       modified: "",
       created: "",
       creator_name: "",
@@ -85,8 +86,9 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      // { name: "LONG-LIVED TOKEN", active: false },
+      // { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
+      { name: "PERSISTENT STORAGE", active: false },
     ],
     originalProjectName: "",
     owners: [],
@@ -109,6 +111,7 @@ class ProjectForm extends Form {
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
     tags: Joi.array(),
+    expired: Joi.string().allow(""),
     modified: Joi.string().allow(""),
     created: Joi.string().allow(""),
     creator_name: Joi.string().allow(""),
@@ -149,7 +152,6 @@ class ProjectForm extends Form {
       }
 
       const { data } = await getProjectById(projectId);
-
       const project = data.results[0];
       // keep a shallow copy of project name for project form header
       this.state.originalProjectName = project.name;
@@ -159,7 +161,7 @@ class ProjectForm extends Form {
         !project.memberships.is_member && !project.memberships.is_owner &&
         !this.state.globalRoles.isFacilityOperator) {
           this.setState({ 
-            data: project, 
+            data: project,
             showSpinner: false,
             spinner: {
               text: "",
@@ -199,8 +201,9 @@ class ProjectForm extends Form {
        "#info": 0,
        "#owners": 1,
        "#members": 2,
-       "#token": 3,
-       "#slices": 4,
+      //  "#token": 3,
+       "#slices": 3,
+       "#volumes": 4
      }
  
      if (hash) {
@@ -211,23 +214,24 @@ class ProjectForm extends Form {
          { name: "PROJECT MEMBERS", active: hash === "#members" },
         //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
+         { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
      }
      
-    try {
-      const { data: res2 } = await getCurrentUser();
-      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
-    } catch (err) {
-      toast.error("User's credential is expired. Please re-login.");
-      this.props.navigate("/experiments#projects");
-    }
-
     try {
       const { data: res1 } = await getProjectTags();
       const tags = res1.results;
       this.setState({ tagVocabulary: tags  });
     } catch (err) {
       toast.error("Failed to get tags.");
+    }
+
+    try {
+      const { data: res2 } = await getCurrentUser();
+      this.setState({ user: res2.results[0], globalRoles: checkGlobalRoles(res2.results[0]) });
+    } catch (err) {
+      toast.error("User's credential is expired. Please re-login.");
+      this.props.navigate("/experiments#projects");
     }
 
     await this.populateProject();
@@ -242,6 +246,7 @@ class ProjectForm extends Form {
       description: project.description,
       facility: project.facility,
       tags: project.tags,
+      expired: project.expires_on,
       modified: project.modified,
       created: project.created,
       creator_name: project.project_creators[0].name,
@@ -363,8 +368,9 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      // 3: "#token",
-      3: "#slices",
+      3: "#token",
+      4: "#slices",
+      5: "#volumes",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -385,9 +391,8 @@ class ProjectForm extends Form {
     }
   };
 
-  handlePersonnelUpdate = (ownerIDs, memberIDs) => {
+  handlePersonnelUpdate = (personnelType, userIDs, operation) => {
     const { data } = this.state;
-    const personnelType = this.state.activeIndex === 1 ? "Project Owners" : "Project Members";
     this.setState({
       showSpinner: true,
       spinner: {
@@ -401,7 +406,7 @@ class ProjectForm extends Form {
 
     try{
       // pass the arr of updated po/pm and the original pm/po
-      updateProjectPersonnel(data.uuid, ownerIDs, memberIDs).then(() => {
+      updateProjectPersonnel(data.uuid, userIDs, operation, personnelType).then(() => {
         this.setState({
           showSpinner: false,
           spinner: {
@@ -439,45 +444,69 @@ class ProjectForm extends Form {
     }
   }
 
+  handleUpdateTokenHolders = (personnelType, tokenHolderIDs, operation) => {
+    const { data } = this.state;
+    this.setState({
+      showSpinner: true,
+      spinner: {
+        text: `Updating token holders... This process may take a while. 
+        Please feel free to use other portal features while waiting. You will receive 
+        a message when the update is completed.`,
+        btnText: "Back to Project List",
+        btnPath: "/experiments#projects"
+      }
+    });
 
-  getIDs = (users) => {
-    return users.map(user => user.uuid);
+    try{
+      // pass the arr of updated po/pm and the original pm/po
+      updateProjectTokenHolders(data.uuid, operation, tokenHolderIDs).then(() => {
+        this.setState({
+          showSpinner: false,
+          spinner: {
+            text: "",
+            btnText: "",
+            btnPath: ""
+          }
+        });
+        // user waits the API call on the spinner UI
+        // reload the page to get updated data
+        if (window.location.href.includes("fabric-testbed.net/projects/")) {
+          window.location.reload();
+        } else {
+          // user may switch to other pages
+          // toast a success message with link to the updated project
+          toast.success(
+            <ToastMessageWithLink
+              projectId={data.uuid}
+              message={`Project updated successfully.`}
+            />,
+            {autoClose: 10000}
+          );
+        }
+      });
+    } catch (err) {
+      this.setState({
+        showSpinner: false,
+        spinner: {
+          text: "",
+          btnText: "",
+          btnPath: ""
+        }
+      });
+      toast(`Failed to add token holders.`)
+    }
   }
 
-  handleDeleteUsers = (personnelType, userIDs) => {
-    // call API and update.
-    let owners = this.state.owners;
-    let members = this.state.members;
-
-    if (personnelType === "Project Owners") {
-      owners = owners.filter(owner => !userIDs.includes(owner.uuid));
-    } else if (personnelType === "Project Members") {
-      members = members.filter(member => !userIDs.includes(member.uuid));
-    }
-
-    const ownerIDs = this.getIDs(owners);
-    const memberIDs = this.getIDs(members);
-
-    this.handlePersonnelUpdate(ownerIDs, memberIDs);
+  checkProjectExpiration = (expirationTime) => {
+    const utcDateTime = expirationTime.substring(0, 19);
+    const stillUtc = moment.utc(utcDateTime).toDate();
+    return stillUtc < new Date();
   }
 
-  handleAddUsers = (usersToAdd) => {
-    let ownerIDs = [];
-    let memberIDs = [];
-    const userIDs = this.getIDs(usersToAdd);
-
-    const { owners, members } = this.state;
-    if (this.state.activeIndex === 1) {
-      // new owners added
-      ownerIDs = this.getIDs(owners).concat(userIDs);
-      memberIDs = this.getIDs(members);
-    } else if (this.state.activeIndex === 2) {
-      // new members added
-      ownerIDs = this.getIDs(owners);
-      memberIDs = this.getIDs(members).concat(userIDs);
-    }
-
-    this.handlePersonnelUpdate(ownerIDs, memberIDs);
+  checkProjectExpireInOneMonth = (expirationTime) => {
+    const utcDateTime = expirationTime.substring(0, 19);
+    const stillUtc = moment.utc(utcDateTime).toDate();
+    return stillUtc < moment(new Date()).add(1, 'M');
   }
 
   render() {
@@ -498,10 +527,12 @@ class ProjectForm extends Form {
       spinner,
       tagVocabulary,
       selectedTags,
-      originalTags
+      originalTags,
+      volumes
     } = this.state;
     
-    let canUpdate = globalRoles.isFacilityOperator || data.is_creator || data.is_owner;
+    let canUpdate = !this.checkProjectExpiration(data.expired) && 
+     (globalRoles.isFacilityOperator || data.is_creator || data.is_owner);
 
     const urlSuffix = `email=${user.email}&customfield_10058=${data.uuid}&customfield_10059=${encodeURIComponent(data.name)}`;
 
@@ -518,7 +549,7 @@ class ProjectForm extends Form {
       )
     }
 
-    if (data.is_locked) {
+    if (data.is_locked && !this.checkProjectExpiration(data.expired)) {
       return (
         <div className="container">
           <SpinnerFullPage
@@ -598,6 +629,53 @@ class ProjectForm extends Form {
               </Link>
             }
           </div>
+          {
+            this.checkProjectExpiration(data.expired) &&
+            <div
+              className="alert alert-danger mb-2 d-flex flex-row justify-content-between align-items-center" 
+              role="alert"
+            >
+              <span>
+                <i className="fa fa-exclamation-triangle mr-2"></i>
+                This project is expired and no operations are allowed. Please submit a ticket to renew the project.
+              </span>
+              <button
+                type="button"
+                className="btn btn-sm btn-success"
+                onClick={() => window.open(
+                  `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
+                  "_blank")
+                }
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Renew Project
+              </button>
+            </div>
+          }
+          {
+            !this.checkProjectExpiration(data.expired) && 
+            this.checkProjectExpireInOneMonth(data.expired) &&
+            <div
+              className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
+              role="alert"
+            >
+              <span>
+                <i className="fa fa-exclamation-triangle mr-2"></i>
+                This project is going to expire in a month. Please submit a ticket to renew the project.
+              </span>
+              <button
+                type="button"
+                className="btn btn-sm btn-success"
+                onClick={() => window.open(
+                  `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
+                  "_blank")
+                }
+              >
+                <i className="fa fa-sign-in mr-2"></i>
+                Renew Project
+              </button>
+            </div>
+          }
           <div className="row mt-4">
             <SideNav
               items={SideNavItems}
@@ -623,6 +701,7 @@ class ProjectForm extends Form {
                 project={data}
                 projectTags={originalTags}
                 canUpdate={canUpdate}
+                isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
               />
               {
@@ -656,8 +735,7 @@ class ProjectForm extends Form {
                   personnelType={"Project Owners"}
                   canUpdate={canUpdate}
                   users={owners}
-                  onPersonnelAdd={this.handleAddUsers}
-                  onDeleteUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handlePersonnelUpdate}
                 />
               </div>
             </div>
@@ -671,9 +749,9 @@ class ProjectForm extends Form {
                 <ProjectPersonnel
                   personnelType={"Project Members"}
                   canUpdate={canUpdate}
+                  isFO={globalRoles.isFacilityOperator}
                   users={members}
-                  onPersonnelAdd={this.handleAddUsers}
-                  onDeleteUsers={this.handleDeleteUsers}
+                  onUpdateUsers={this.handlePersonnelUpdate}
                 />
               </div>
             </div>
@@ -685,9 +763,14 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 <ProjectTokenHolders
+                  personnelType={"Token Holders"}
                   token_holders={this.state.token_holders}
+                  project_members={members}
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
+                  isFO={globalRoles.isFacilityOperator}
+                  projectExpired={this.checkProjectExpiration(data.expired)}
+                  onUpdateTokenHolders={this.handleUpdateTokenHolders}
                 />
               </div>
             </div> */}
@@ -702,6 +785,22 @@ class ProjectForm extends Form {
                   activeIndex === 3 && <Slices
                     parent="Projects"
                     projectId={data.uuid}
+                  />
+                }
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex === 4
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                {
+                  activeIndex === 4 && <PersistentStorage
+                    parent="Projects"
+                    projectId={data.uuid}
+                    volumes={volumes}
                   />
                 }
               </div>
