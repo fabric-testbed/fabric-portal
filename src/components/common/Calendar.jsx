@@ -7,7 +7,7 @@ function Calendar({ id, name, parent, onTimeChange, currentTime }) {
   const time = new Date(today);
   time.setDate(time.getDate() + 1);
 
-  const [value, onChange] = useState(parent === "sliceDetailForm"? currentTime : time);
+  const [value, onChange] = useState(parent !== "newSliceForm"? currentTime : time);
 
   return (
     <div key={`${id}-${name}`}>
@@ -15,7 +15,7 @@ function Calendar({ id, name, parent, onTimeChange, currentTime }) {
         onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
-        minDate={today}
+        // minDate={today}
         required={true}
         format="yyyy-MM-dd HH:mm:ss"
       />

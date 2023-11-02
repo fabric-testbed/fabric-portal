@@ -6,6 +6,5 @@ export default function utcToLocalTimeParser(UTCtime) {
   const utcDateTime = UTCtime.substring(0, 19);
   const stillUtc = moment.utc(utcDateTime).toDate();
   const localTime = moment(stillUtc).local().format('YYYY-MM-DD HH:mm:ss');
-
   return localTime;
 }

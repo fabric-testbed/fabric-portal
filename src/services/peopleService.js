@@ -30,6 +30,7 @@ export function updatePeopleProfile(userId, data, preferences) {
     "job": data.job,
     "pronouns": data.pronouns,
     "website": data.website,
+    "email": data.email,
     "preferences": preferences
   })
 }
@@ -37,6 +38,7 @@ export function updatePeopleProfile(userId, data, preferences) {
 export function updatePeoplePreference(userId, data, preferences) {
   return http.patch(`${apiEndpoint}/${userId}`, {
     "name": data.name,
+    "email": data.email,
     "preferences": preferences
   })
 }

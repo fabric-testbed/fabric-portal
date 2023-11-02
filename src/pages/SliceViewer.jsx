@@ -140,7 +140,7 @@ class SliceViewer extends Component {
     let showSlice = !showSpinner && hasProject;
 
     return(
-      <SliceViewerErrorBoundary sliceID={slice.slice_id}>
+      <SliceViewerErrorBoundary slice={slice}>
         <div className="slice-page-container">
           <TerminalFormModal vmData={selectedData}/>
           {

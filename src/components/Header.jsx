@@ -6,9 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
 import { getCookieConsentValue } from "react-cookie-consent";
 import checkPortalType from "../utils/checkPortalType";
-import productionLogo from "../imgs/fabric-brand.png";
-import alphaLogo from "../imgs/fabric-brand-alpha.png";
-import betaLogo from "../imgs/fabric-brand-beta.png";
+import productionLogo from "../imgs/logos/fabric-brand.png";
+import alphaLogo from "../imgs/logos/fabric-brand-alpha.png";
+import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
 
 const Header = (props) => {  
@@ -57,6 +57,14 @@ const Header = (props) => {
     {
       name: "Community",
       child: [
+        {
+          name: "News",
+          href: portalData.knowledgeBaseNewsLink,
+        },
+        {
+          name: "Events",
+          href: portalData.knowledgeBaseEventsLink,
+        },
         {
           name: "Newsletter Signup",
           path: "/community/newsletter-signup"
@@ -121,11 +129,10 @@ const Header = (props) => {
     <NavLink className="navbar-brand" to="/">
       <img
         src={getLogoSrc()}
-        width="60"
-        className="d-inline-block align-top mr-1"
+        height="24"
+        className="d-inline-block align-top"
         alt=""
       />
-      FABRIC
     </NavLink>
     <button
       className="navbar-toggler"
@@ -185,9 +192,7 @@ const Header = (props) => {
                     if(sub_item.path) {
                       return (
                         <NavLink
-                          className={
-                            "nav-link"
-                          }
+                          className="nav-link"
                           to={sub_item.path}
                           id={`navbarSubDropdownMenuLink-${sub_index}`}
                           key={`sub-navbar-${sub_index}`}
@@ -198,7 +203,7 @@ const Header = (props) => {
                     } else if (sub_item.href) {
                       return (
                         <a
-                          className="dropdown-item"
+                          className="nav-link"
                           href={sub_item.href}
                           target="_blank"
                           rel="noreferrer"

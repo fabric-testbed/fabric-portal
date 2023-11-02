@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Table from "../common/Table";
-import Pagination from "../common/Pagination";
+import Table from "../../common/Table";
+import Pagination from "../../common/Pagination";
 import _ from "lodash";
-import paginate from "../../utils/paginate";
+import paginate from "../../../utils/paginate";
 import { Link } from "react-router-dom";
 
 class ProjectUserTable extends Component {
@@ -154,7 +154,7 @@ class ProjectUserTable extends Component {
   render() {
     const { pageSize, currentPage, sortColumn, searchQuery, checkedUserIDs } = this.state;
     const { totalCount, data } = this.reloadPageData();
-    const { canUpdate, personnelType } = this.props;
+    const { canUpdate, personnelType, inputText, operation } = this.props;
 
     return (
       <div>
@@ -163,7 +163,7 @@ class ProjectUserTable extends Component {
             type="text"
             name="query"
             className="form-control"
-            placeholder={`Filter ${personnelType}...`}
+            placeholder={inputText}
             value={searchQuery}
             onChange={this.handleInputChange}
             onKeyDown={this.raiseInputKeyDown}
@@ -191,11 +191,12 @@ class ProjectUserTable extends Component {
         />
         {
           canUpdate && <button
-            onClick={() => this.props.onDeleteUsers(personnelType, checkedUserIDs)}
-            className="btn btn-sm btn-outline-danger"
+            onClick={() => this.props.onUpdateUsers(personnelType, checkedUserIDs, operation)}
+            className={operation === "add" ? "btn btn-sm btn-outline-primary" : "btn btn-sm btn-outline-danger"}
             disabled={checkedUserIDs.length === 0}
           >
-            Remove from {personnelType}
+            {operation === "add" && `Add to ${personnelType}`}
+            {operation === "remove" && `Remove from ${personnelType}`}
           </button>
         }
       </div>

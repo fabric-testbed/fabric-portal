@@ -68,7 +68,7 @@ class ProjectProfile extends Component {
                     </td>
                     <td className="project-detail-form-td">
                       {
-                        row.label.includes("Time") ? 
+                        ["Modified Time", "Created At"].includes(row.label) ? 
                           toLocaleTime(_.get(project, row.path)) :
                           _.get(project, row.path) 
                       }

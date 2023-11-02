@@ -1,6 +1,5 @@
 import React from "react";
 import { getActiveNews } from "../../services/announcementService";
-// import { getMockActiveNews } from "../../services/mockData/mockRecentNews";
 import NewsCard from "./NewsCard";
 import { toast } from "react-toastify";
 
@@ -27,16 +26,6 @@ class RecentNews extends React.Component {
       toast.error("Failed to load recent news. Please reload this page.");
     }
   }
-
-  // componentDidMount() {
-  //   let news = getMockActiveNews().results;
-  //   news = news.map(update => {
-  //     const long_date = update.display_date
-  //     update.display_date = long_date.substring(0, 10);
-  //     return update;
-  //   })
-  //   this.setState({ news });
-  // }
 
   render() {
     const { news, showSpinner } = this.state;

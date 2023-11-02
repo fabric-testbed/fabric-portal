@@ -1,8 +1,7 @@
 import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
-import RecentNews from "../components/Home/RecentNews";
-// import TwitterFeed from "../components/Home/TwitterFeed";
+import Carousel from "../components/Home/Carousel";
 import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../data/sites";
@@ -62,24 +61,7 @@ class Home extends React.Component {
             />
           </div>
         }
-        <div className="home-upper">
-          <div className="home-upper-text">
-            <h1>FABRIC Portal</h1>
-            <p>FABRIC portal is your guide, helping make your experiment a success.</p>
-            <ul>
-              <li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li>
-              <li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li>
-              <li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li>
-            </ul>
-            <a
-              href="https://fabric-testbed.net/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button className="btn btn-warning">Learn More</button>
-            </a>
-          </div>
-        </div>
+        <Carousel />
         <div className="home-lower row">
           <div className="col-xl-9 col-lg-12">
             <div className="card homepage-card mb-4">
@@ -109,14 +91,6 @@ class Home extends React.Component {
           <div className="col-xl-3 col-lg-12">
             <FacilityUpdates />
           </div>
-        </div>
-        <div className="home-lower row mt-2">
-          <div className="col-xl-12 col-lg-12">
-            <RecentNews />
-          </div>
-          {/* <div className="col-xl-3 col-lg-12">
-            <TwitterFeed />
-          </div> */}
         </div>
         <div className="home-lower row mt-2">
           <div className="col-xl-12 col-lg-12">

@@ -62,9 +62,26 @@ export function updateTags(projectId, tags) {
   });
 }
 
-export function updateProjectPersonnel(projectId, ownerIDs, memberIDs) {
-  return http.patch(`${apiEndpoint}/${projectId}/personnel`, {
-    "project_owners": ownerIDs,
-    "project_members": memberIDs
+export function updateProjectPersonnel(projectId, userIDs, operation, personnelType) {
+  if (personnelType === "Project Owners") {
+    return http.patch(`${apiEndpoint}/${projectId}/project-owners?operation=${operation}`, {
+      "project_owners": userIDs,
+    })
+  } else {
+    return http.patch(`${apiEndpoint}/${projectId}/project-members?operation=${operation}`, {
+      "project_members": userIDs,
+    })
+  }
+}
+
+export function updateProjectTokenHolders(projectId, operation, userIDs) {
+  return http.patch(`${apiEndpoint}/${projectId}/token-holders?operation=${operation}`, {
+    "token_holders": userIDs
+  })
+}
+
+export function updateProjectExpirationTime(projectId, time) {
+  return http.patch(`${apiEndpoint}/${projectId}/expires-on`, {
+    "expires_on": time
   })
 }

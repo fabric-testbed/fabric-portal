@@ -51,14 +51,14 @@ function ProfileModal(props) {
           </div>
           <div className="divider div-transparent"></div>
           <div className="d-flex justify-content-center">
-            <button
-              className="btn btn-sm btn-outline-primary mr-3"
-              onClick={toggleModal}
-            >
-              <NavLink to="/user">
-                User Profile
-              </NavLink>
-            </button>
+              <button
+                className="btn btn-sm btn-outline-primary mr-3"
+                onClick={toggleModal}
+              >
+                <NavLink to="/user">
+                  User Profile
+                </NavLink>
+              </button>
             <NavLink to="/logout">
               <button
                 className="btn btn-sm btn-outline-success"
