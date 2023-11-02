@@ -1,21 +1,21 @@
 import { Component } from "react";
 import CopyButton from "../common/CopyButton";
 import { Link } from "react-router-dom";
-import DeleteModal from "../common/DeleteModal";
+// import DeleteModal from "../common/DeleteModal";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
 import moment from 'moment';
 import { deleteSlice, extendSlice } from "../../services/sliceService.js";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import Calendar from "../../components/common/Calendar";
+// import Calendar from "../../components/common/Calendar";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 
 export default class SliceViewerErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: true,
+    this.state = {
+      hasError: false,
       leaseEndTime: this.props.slice.lease_end_time
     };
   }
@@ -87,7 +87,7 @@ export default class SliceViewerErrorBoundary extends Component {
   }
 
   render() {
-    const { hasError, leaseEndTime } = this.state;
+    const { hasError } = this.state;
     const { slice } = this.props;
  
     const stateColors = {
@@ -207,7 +207,7 @@ export default class SliceViewerErrorBoundary extends Component {
                         <div className="row d-flex flex-column mb-2">
                           <label>
                             Lease End at
-                            {
+                            {/* {
                               slice.state === "StableOK" &&
                               <OverlayTrigger
                                 placement="right"
@@ -216,10 +216,10 @@ export default class SliceViewerErrorBoundary extends Component {
                               >
                                 <i className="fa fa-question-circle text-secondary ml-2"></i>
                               </OverlayTrigger>
-                            }
+                            } */}
                           </label>
                           <div className="slice-form-element">
-                            {utcToLocalTimeParser(leaseEndTime)}
+                            {utcToLocalTimeParser(this.props.slice.lease_end_time)}
                           </div>
                           {/* {
                             slice.state !=="StableOK" &&

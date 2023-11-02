@@ -214,7 +214,7 @@ class ProjectForm extends Form {
          { name: "PROJECT MEMBERS", active: hash === "#members" },
         //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
-         { name: "PERSISTENT Storage", active: hash === "#volumes"}
+         { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
      }
      

@@ -38,6 +38,13 @@ class PersistentStorage extends React.Component {
     return (
       <div id="persistentStorage">
         <h4 className="mb-3">Persistent Storage</h4>
+        {
+          volumes && volumes.length === 0 && 
+          <div className="alert alert-primary" role="alert">
+            No persistent storage volumes allocated for this project. Project Owners can request storage 
+            by clicking the <b>Request Storage</b> button next to the project name.
+          </div>
+        }
         <div className="row text-sm-size">
           {
             volumes && volumes.length > 0 && volumes.map((volume, index) => {
@@ -58,13 +65,6 @@ class PersistentStorage extends React.Component {
                 )
               )
             })
-          }
-          {
-            volumes && volumes.length === 0 && 
-            <div className="alert alert-primary" role="alert">
-              No persistent storage volumes allocated for this project. Project Owners can request storage 
-              by clicking the <b>Request Storage</b> button next to the project name.
-            </div>
           }
         </div>
       </div>
