@@ -33,7 +33,7 @@ class StorageCard extends React.Component {
     const { userName } = this.state;
 
     return (
-      <div className="persistent-storage-card">
+      <div className="persistent-storage-card py-3">
         <div className="mb-2"><b>Name</b>: {data.volume_name ? data.volume_name : "Unknown"}</div>
         <div className="mb-2"><b>Size</b>: {data.volume_size_gb ? data.volume_size_gb : 0} GB</div>
         <div className="mb-2"><b>Sites</b>: {data.site_list ? this.parseSites(data.site_list) : "Unknown"}</div>
