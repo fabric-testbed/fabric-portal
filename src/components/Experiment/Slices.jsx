@@ -287,7 +287,7 @@ class Slices extends React.Component {
                 className="my-0"
               />
               {
-                this.props.parent === "Projects" &&
+                this.props.parent === "Projects" && !this.props.isProjectExpired &&
                 <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary create-project-btn">
                   Create Slice
                 </Link>

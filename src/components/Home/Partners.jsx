@@ -45,10 +45,10 @@ import MERIT from "../../imgs/partners/merit.png";
 const Partners = () => {
   const corePartnerLogos = [UK, Clemson, UIUC, Esnet];
 
-  const partnerLogos = [Columbia, Peering, Utah, NCSA, FIU, GT, Internet2, Rutgers,
-    TACC, Uchicago, UCSD, SDSC, Usignite, UVA, Starlight, IndianaU, Maxgigapop, UofMich,
-    UofMass, MGHPCC, UMKC, PrincetonUniversity, PSC, UofBristol, UofAmsterdam, 
-    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Powder, NJEdge,
+  const partnerLogos = [Utah, NCSA, FIU, GT, Internet2, Rutgers,
+    TACC, Uchicago, UCSD, SDSC, Usignite, UVA, Starlight, IndianaU, Maxgigapop,
+    UofMass, MGHPCC, UofMich, UMKC, PrincetonUniversity, PSC, UofBristol, UofAmsterdam, 
+    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Columbia, Peering, Powder, NJEdge,
     CENIC, GPN, CERN, MERIT, SRI];
 
   return (
