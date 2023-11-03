@@ -15,25 +15,41 @@ import SRI from "../../imgs/partners/sri.png";
 import TACC from "../../imgs/partners/tacc.png";
 import Uchicago from "../../imgs/partners/uchicago.png";
 import UCSD from "../../imgs/partners/ucsd.png";
+import SDSC from "../../imgs/partners/sdsc.png";
 import Usignite from "../../imgs/partners/usignite.png";
 import UVA from "../../imgs/partners/uva.png";
-import Slider from 'infinite-react-carousel';
+import Starlight from "../../imgs/partners/starlight.png";
+import IndianaU from "../../imgs/partners/indiana-university.png";
+import Maxgigapop from "../../imgs/partners/maxgigapop.png";
+import UofMich from "../../imgs/partners/university-of-michiagan.png";
+import UofMass from "../../imgs/partners/university-of-massachusetts-amherst.png";
+import MGHPCC from "../../imgs/partners/mghpcc.png";
+import UMKC from "../../imgs/partners/umkc.png";
+import PrincetonUniversity from "../../imgs/partners/princeton-university.png";
+import PSC from "../../imgs/partners/psc.png";
+import UofBristol from "../../imgs/partners/university-of-bristol.png";
+import UofAmsterdam from "../../imgs/partners/university-of-amsterdam.png";
+import UofTokyo from "../../imgs/partners/university-of-tokyo.png";
+import UofHawaii from "../../imgs/partners/university-of-hawaii.png";
+import Chameleon from "../../imgs/partners/chameleon.png";
+import Cloudlab from "../../imgs/partners/cloudlab.png";
+import Cosmos from "../../imgs/partners/cosmos.png";
+import Powder from "../../imgs/partners/powder.png";
+import Peering from "../../imgs/partners/peering.png";
+import NJEdge from "../../imgs/partners/NJEdge.png";
+import CENIC from "../../imgs/partners/cenic.png";
+import GPN from "../../imgs/partners/GPN.png";
+import CERN from "../../imgs/partners/cern.png";
+import MERIT from "../../imgs/partners/merit.png";
 
 const Partners = () => {
   const corePartnerLogos = [UK, Clemson, UIUC, Esnet];
 
-  const partnerLogos = [Columbia, Utah, NCSA, FIU, GT, Internet2, Rutgers, SRI,
-    TACC, Uchicago, UCSD, Usignite, UVA];
-
-  const settings =  {
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: false,
-    slidesPerRow: 5,
-    autoplayScroll: 1,
-    duration: 25,
-    arrows: false
-  };
+  const partnerLogos = [Utah, NCSA, FIU, GT, Internet2, Rutgers,
+    TACC, Uchicago, UCSD, SDSC, Usignite, UVA, Starlight, IndianaU, Maxgigapop,
+    UofMass, MGHPCC, UofMich, UMKC, PrincetonUniversity, PSC, UofBristol, UofAmsterdam, 
+    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Columbia, Peering, Powder, NJEdge,
+    CENIC, GPN, CERN, MERIT, SRI];
 
   return (
     <div className="my-3 d-flex flex-column justify-content-center align-items-center">
@@ -41,11 +57,11 @@ const Partners = () => {
         <span className="homepage-partner-header">Our Partners</span>
       </div>
       <span className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</span>
-      <div className="homepage-partner-logo-containter">
+      <div className="homepage-partner-logo-containter my-1">
         <img
           src={RENCI}
           key={`partners-logo-renci`}
-          height="105"
+          height="95"
           className="d-inline-block align-top mr-4"
           alt=""
         />
@@ -54,31 +70,25 @@ const Partners = () => {
             <img
               src={logo}
               key={`partners-logo-${index}`}
-              height="65"
+              height="55"
               className="d-inline-block align-top mx-4"
               alt={`fabricPartnerLogo${logo}`}
             />
           )
         }
       </div>
-      <div className="homepage-scroll-container">
-        <Slider { ...settings }>
-          {
-            partnerLogos.map((logo, index) =>  
-            <div
-              className="homepage-scroll-box"
-              key={`partners-logo-${index}`}
-            >
-              <img
-                src={logo}
-                height="35"
-                className="mx-2"
-                alt={`fabricPartnerLogo${logo}`}
-              />
-            </div>
-            )
-          }
-        </Slider>
+      <div className="mt-5 px-5">
+        {
+          partnerLogos.map((logo, index) =>  
+            <img
+              key={`partner-logo-${index}`}
+              src={logo}
+              height="30"
+              className="mx-4 my-3"
+              alt={`fabricPartnerLogo${logo}`}
+            />
+          )
+        }
       </div>
     </div>
   );
