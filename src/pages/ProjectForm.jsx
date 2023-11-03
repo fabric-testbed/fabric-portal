@@ -368,9 +368,9 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      3: "#token",
-      4: "#slices",
-      5: "#volumes",
+      // 3: "#token",
+      3: "#slices",
+      4: "#volumes",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -785,6 +785,7 @@ class ProjectForm extends Form {
                   activeIndex === 3 && <Slices
                     parent="Projects"
                     projectId={data.uuid}
+                    isProjectExpired={this.checkProjectExpiration(data.expired)}
                   />
                 }
               </div>
