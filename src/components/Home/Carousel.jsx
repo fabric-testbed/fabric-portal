@@ -35,7 +35,12 @@ class Carousel extends React.Component {
         <ol className="carousel-indicators">
           {
             items && items.length > 0 && items.map((item, index) =>
-              <li data-target="#homepageCarouselIndicators" data-slide-to={index} className={index === 0? "active" : ""} />
+              <li
+                key={`carousel-indicators-${index}`}
+                data-target="#homepageCarouselIndicators"
+                data-slide-to={index}
+                className={index === 0? "active" : ""}
+              />
             )
           }
         </ol>

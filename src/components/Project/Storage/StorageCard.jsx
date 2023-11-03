@@ -23,7 +23,7 @@ class StorageCard extends React.Component {
   parseSites = (sites) => {
     let sitesStr = sites[0];
     for (const site of sites.slice(1)) {
-      sitesStr += ` ,${site}`;
+      sitesStr += `, ${site}`;
     }
     return sitesStr;
   }
