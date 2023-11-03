@@ -17,23 +17,36 @@ import Uchicago from "../../imgs/partners/uchicago.png";
 import UCSD from "../../imgs/partners/ucsd.png";
 import Usignite from "../../imgs/partners/usignite.png";
 import UVA from "../../imgs/partners/uva.png";
-import Slider from 'infinite-react-carousel';
+import Starlight from "../../imgs/partners/starlight.png";
+import IndianaU from "../../imgs/partners/indiana-university.png";
+import Maxgigapop from "../../imgs/partners/maxgigapop.png";
+import UofMich from "../../imgs/partners/university-of-michiagan.png";
+import UofMass from "../../imgs/partners/university-of-massachusetts-amherst.png";
+import MGHPCC from "../../imgs/partners/mghpcc.png";
+import UMKC from "../../imgs/partners/umkc.png";
+import PrincetonUniversity from "../../imgs/partners/princeton-university.png";
+import PSC from "../../imgs/partners/psc.png";
+import UofBristol from "../../imgs/partners/university-of-bristol.png";
+import UofAmsterdam from "../../imgs/partners/university-of-amsterdam.png";
+import UofTokyo from "../../imgs/partners/university-of-tokyo.png";
+import UofHawaii from "../../imgs/partners/university-of-hawaii.png";
+import Chameleon from "../../imgs/partners/chameleon.png";
+import Cloudlab from "../../imgs/partners/cloudlab.png";
+import Cosmos from "../../imgs/partners/cosmos.png";
+import Powder from "../../imgs/partners/powder.png";
+import Peering from "../../imgs/partners/peering.png";
+import NJEdge from "../../imgs/partners/NJEdge.png";
+import CENIC from "../../imgs/partners/cenic.png";
+import GPN from "../../imgs/partners/GPN.png";
 
 const Partners = () => {
   const corePartnerLogos = [UK, Clemson, UIUC, Esnet];
 
   const partnerLogos = [Columbia, Utah, NCSA, FIU, GT, Internet2, Rutgers, SRI,
-    TACC, Uchicago, UCSD, Usignite, UVA];
-
-  const settings =  {
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: false,
-    slidesPerRow: 5,
-    autoplayScroll: 1,
-    duration: 25,
-    arrows: false
-  };
+    TACC, Uchicago, UCSD, Usignite, UVA, Starlight, IndianaU, Maxgigapop, UofMich,
+    UofMass, MGHPCC, UMKC, PrincetonUniversity, PSC, UofBristol, UofAmsterdam, 
+    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Powder, Peering, NJEdge,
+    CENIC, GPN];
 
   return (
     <div className="my-3 d-flex flex-column justify-content-center align-items-center">
@@ -61,24 +74,18 @@ const Partners = () => {
           )
         }
       </div>
-      <div className="homepage-scroll-container">
-        <Slider { ...settings }>
-          {
-            partnerLogos.map((logo, index) =>  
-            <div
-              className="homepage-scroll-box"
-              key={`partners-logo-${index}`}
-            >
-              <img
-                src={logo}
-                height="35"
-                className="mx-2"
-                alt={`fabricPartnerLogo${logo}`}
-              />
-            </div>
-            )
-          }
-        </Slider>
+      <div className="mt-5">
+        {
+          partnerLogos.map((logo, index) =>  
+            <img
+              key={`partner-logo-${index}`}
+              src={logo}
+              height="25"
+              className="mx-4 my-3"
+              alt={`fabricPartnerLogo${logo}`}
+            />
+          )
+        }
       </div>
     </div>
   );
