@@ -50,13 +50,13 @@ class PersistentStorage extends React.Component {
             volumes && volumes.length > 0 && volumes.map((volume, index) => {
               return (
                 index % 2 === 0 ? (
-                  <div className="col" key={`storage-card-${index}`}>
+                  <div className="col-6" key={`storage-card-${index}`}>
                     <StorageCard
                       data={volume}
                     />
                   </div>
                 ): (
-                  <div className="col" key={`storage-card-${index}`}>
+                  <div className="col-6" key={`storage-card-${index}`}>
                     <StorageCard
                       data={volume}
                     />
