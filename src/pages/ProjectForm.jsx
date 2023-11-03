@@ -785,6 +785,7 @@ class ProjectForm extends Form {
                   activeIndex === 3 && <Slices
                     parent="Projects"
                     projectId={data.uuid}
+                    isProjectExpired={this.checkProjectExpiration(data.expired)}
                   />
                 }
               </div>

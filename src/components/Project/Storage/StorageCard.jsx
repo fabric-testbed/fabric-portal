@@ -20,6 +20,14 @@ class StorageCard extends React.Component {
     }
   }
 
+  parseSites = (sites) => {
+    let sitesStr = sites[0];
+    for (const site of sites.slice(1)) {
+      sitesStr += `,${site}`;
+    }
+    return sitesStr;
+  }
+
   render() {
     const { data } = this.props;
     const { userName } = this.state;
@@ -29,7 +37,7 @@ class StorageCard extends React.Component {
         <div className="card-body">
           <div className="mb-2"><b>Name</b>: {data.volume_name ? data.volume_name : "Unknown"}</div>
           <div className="mb-2"><b>Size</b>: {data.volume_size_gb ? data.volume_size_gb : 0} GB</div>
-          <div className="mb-2"><b>Sites</b>: {data.site_list ? data.site_list : "Unknown"}</div>
+          <div className="mb-2"><b>Sites</b>: {data.site_list ? this.parseSites(data.site_list) : "Unknown"}</div>
           <div className="mb-2"><b>Create Date</b>: {data.created_on ? data.created_on : "Unknown"}</div>
           <div className="mb-2"><b>Expiration Date</b>: {data.expires_on ? data.expires_on : "Unknown"}</div>
           <div className="mb-2">
