@@ -15,6 +15,7 @@ import SRI from "../../imgs/partners/sri.png";
 import TACC from "../../imgs/partners/tacc.png";
 import Uchicago from "../../imgs/partners/uchicago.png";
 import UCSD from "../../imgs/partners/ucsd.png";
+import SDSC from "../../imgs/partners/sdsc.png";
 import Usignite from "../../imgs/partners/usignite.png";
 import UVA from "../../imgs/partners/uva.png";
 import Starlight from "../../imgs/partners/starlight.png";
@@ -38,15 +39,17 @@ import Peering from "../../imgs/partners/peering.png";
 import NJEdge from "../../imgs/partners/NJEdge.png";
 import CENIC from "../../imgs/partners/cenic.png";
 import GPN from "../../imgs/partners/GPN.png";
+import CERN from "../../imgs/partners/cern.png";
+import MERIT from "../../imgs/partners/merit.png";
 
 const Partners = () => {
   const corePartnerLogos = [UK, Clemson, UIUC, Esnet];
 
-  const partnerLogos = [Columbia, Utah, NCSA, FIU, GT, Internet2, Rutgers, SRI,
-    TACC, Uchicago, UCSD, Usignite, UVA, Starlight, IndianaU, Maxgigapop, UofMich,
+  const partnerLogos = [Columbia, Peering, Utah, NCSA, FIU, GT, Internet2, Rutgers,
+    TACC, Uchicago, UCSD, SDSC, Usignite, UVA, Starlight, IndianaU, Maxgigapop, UofMich,
     UofMass, MGHPCC, UMKC, PrincetonUniversity, PSC, UofBristol, UofAmsterdam, 
-    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Powder, Peering, NJEdge,
-    CENIC, GPN];
+    UofTokyo, UofHawaii, Chameleon, Cloudlab, Cosmos, Powder, NJEdge,
+    CENIC, GPN, CERN, MERIT, SRI];
 
   return (
     <div className="my-3 d-flex flex-column justify-content-center align-items-center">
@@ -54,11 +57,11 @@ const Partners = () => {
         <span className="homepage-partner-header">Our Partners</span>
       </div>
       <span className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</span>
-      <div className="homepage-partner-logo-containter">
+      <div className="homepage-partner-logo-containter my-1">
         <img
           src={RENCI}
           key={`partners-logo-renci`}
-          height="105"
+          height="95"
           className="d-inline-block align-top mr-4"
           alt=""
         />
@@ -67,20 +70,20 @@ const Partners = () => {
             <img
               src={logo}
               key={`partners-logo-${index}`}
-              height="65"
+              height="55"
               className="d-inline-block align-top mx-4"
               alt={`fabricPartnerLogo${logo}`}
             />
           )
         }
       </div>
-      <div className="mt-5">
+      <div className="mt-5 px-5">
         {
           partnerLogos.map((logo, index) =>  
             <img
               key={`partner-logo-${index}`}
               src={logo}
-              height="25"
+              height="30"
               className="mx-4 my-3"
               alt={`fabricPartnerLogo${logo}`}
             />
