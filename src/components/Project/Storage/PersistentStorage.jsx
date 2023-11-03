@@ -46,9 +46,9 @@ class PersistentStorage extends React.Component {
           </div>
         }
         <div className="row text-sm-size">
-          {
-            volumes && volumes.length > 0 && volumes.map((volume, index) => {
-              return (
+        {
+          volumes && volumes.length > 0 && volumes.map((volume, index) => {
+            return (
                 index % 2 === 0 ? (
                   <div className="col-6" key={`storage-card-${index}`}>
                     <StorageCard
@@ -63,9 +63,9 @@ class PersistentStorage extends React.Component {
                     <div className="w-100"></div>
                   </div>
                 )
-              )
-            })
-          }
+            )
+          })
+        }
         </div>
       </div>
     );
