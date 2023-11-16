@@ -18,12 +18,13 @@ export function uploadPublicKey(type, openssh, description) {
   )
 }
 
-export function generateKeyPairs(type, comment, description) {
+export function generateKeyPairs(type, comment, description, store_pubkey) {
   return http.post(apiEndpoint,
     {
       "comment": comment,
       "description": description,
-      "keytype": type === "Bastion" ? "bastion" : "sliver"
+      "keytype": type === "Bastion" ? "bastion" : "sliver",
+      "store_pubkey": store_pubkey
     }
   )
 }

@@ -2,6 +2,7 @@ import http from './httpService';
 import { default as config } from "../config.json";
 
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
+const poasEndpoint = `${config.orchestratorApiUrl}/poas`;
 
 export function getMySlices() {
   return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", {
@@ -71,4 +72,15 @@ export function extendSlice(id, lease_end_time) {
     'Authorization': `Bearer ${localStorage.getItem("idToken")}`
   }
 });
+}
+
+export function installEphemeralKey(sliverID, keys) {
+  return http.post(`${poasEndpoint}/create/${sliverID}`),
+  { keys: keys },
+  {
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem("idToken")}`
+    }
+  }
 }
