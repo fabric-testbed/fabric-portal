@@ -123,6 +123,7 @@ export default function parseSlice(slice, sliceType) {
         data.properties.MgmtIp = originalNode.MgmtIp || "";
         data.properties.ImageRef = originalNode.ImageRef || "";
         data.BootScript = originalNode.BootScript || "";
+        data.properties.sliverId = (originalNode.ReservationInfo && originalNode.ReservationInfo.reservation_id) || "";
       }
     }
   }

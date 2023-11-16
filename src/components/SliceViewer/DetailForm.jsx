@@ -4,12 +4,20 @@ import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import Calendar from "../../components/common/Calendar";
+import { generateKeyPairs } from "../../services/sshKeyService.js";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
   sshCommand = (managementIp, imageRef) => {
     const usernameBasedOnImage= portalData.usernameOnImageMapping[imageRef.split(",")[0]];
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`
+  }
+
+  generateEphemeralKey = async (sliverId) => {
+    const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
+    `ephemeral key to web ssh, sliver ${sliverId}`, false);
+    console.log("generated ephemeral key:");
+    console.log(res.results[0])
   }
 
   render() {
@@ -126,6 +134,7 @@ export default class DetailForm extends Component {
                         className="btn btn-sm btn-outline-primary ml-2"
                         data-toggle="modal"
                         data-target="#TerminalFormModalCenter"
+                        onClick={() => this.generateEphemeralKey(data.properties.sliverId)}
                       >
                         Connect to VM
                       </button>
