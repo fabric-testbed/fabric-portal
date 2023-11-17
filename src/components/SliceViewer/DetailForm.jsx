@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import Calendar from "../../components/common/Calendar";
-import { generateKeyPairs } from "../../services/sshKeyService.js";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
@@ -13,15 +12,9 @@ export default class DetailForm extends Component {
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`
   }
 
-  generateEphemeralKey = async (sliverId) => {
-    const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
-    `ephemeral key to web ssh, sliver ${sliverId}`, false);
-    console.log("generated ephemeral key:");
-    console.log(res.results[0])
-  }
-
   render() {
     const { slice, data, leaseEndTime } = this.props;
+
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}
@@ -134,7 +127,7 @@ export default class DetailForm extends Component {
                         className="btn btn-sm btn-outline-primary ml-2"
                         data-toggle="modal"
                         data-target="#TerminalFormModalCenter"
-                        onClick={() => this.generateEphemeralKey(data.properties.sliverId)}
+                        onClick={this.props.onGenerateEphemeralKey(data.properties.sliverId)}
                       >
                         Connect to VM
                       </button>

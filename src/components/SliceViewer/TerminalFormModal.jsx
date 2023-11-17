@@ -76,7 +76,7 @@ class TerminalFormModal extends Form {
 
   render() {
     const { sliverTooltip, bastionTooltip, showSpinner } =  this.state;
-    const { vmData } = this.props;
+    const { vmData, ephemeralKey } = this.props;
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
@@ -136,6 +136,10 @@ class TerminalFormModal extends Form {
                   <label>Bastion Username</label>
                   <input type="text" className="form-control" defaultValue={localStorage.getItem("bastionLogin")} disabled/>
                 </div>
+                <div className="row mb-2 mx-1">
+                  <label>Ephemeral Sliver Private Key</label>
+                  <textarea type="text" className="form-control" defaultValue={ephemeralKey.private_openssh} disabled />
+                </div>
               </form>
             }
             <div className="alert alert-primary mt-2 mb-1" role="alert">
@@ -143,7 +147,7 @@ class TerminalFormModal extends Form {
               Your private keys will only be used to establish connection and will not be stored.
             </div>
             <form onSubmit={this.handleSubmit}>
-              {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)}
+              {/* {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)} */}
               {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
               {this.renderButton("Connect")}
             </form>

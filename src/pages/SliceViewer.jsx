@@ -14,6 +14,7 @@ import { autoCreateTokens } from "../utils/manageTokens";
 import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
+import { generateKeyPairs } from "../services/sshKeyService.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import sleep from "../utils/sleep";
@@ -36,7 +37,8 @@ class SliceViewer extends Component {
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
-    spinnerText: ""
+    spinnerText: "",
+    ephemeralKey: {}
   }
 
   async componentDidMount() {
@@ -57,6 +59,17 @@ class SliceViewer extends Component {
      } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
     }
+  }
+
+  generateEphemeralKey = async (sliverId) => {
+    const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
+    `ephemeral key to web ssh, sliver ${sliverId}`, false);
+    this.setState({
+      ephemeralKey: res.results[0]
+    })
+    console.log("sliver id passed in param: " + sliverId);
+    console.log("generated ephemeral key:");
+    console.log(res.results[0])
   }
 
   handleDeleteSlice = async (id) => {
@@ -136,13 +149,16 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, ephemeralKey } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
       <SliceViewerErrorBoundary slice={slice}>
         <div className="slice-page-container">
-          <TerminalFormModal vmData={selectedData}/>
+          <TerminalFormModal
+            vmData={selectedData}
+            ephemeralKey={ephemeralKey}
+          />
           {
             showSpinner && 
             <div className="container d-flex align-items-center justify-content-center">
@@ -237,6 +253,7 @@ class SliceViewer extends Component {
                     clearSelectedData={() => this.clearSelectedData()}
                     onLeaseEndChange={this.handleLeaseEndChange}
                     onSliceExtend={this.handleSliceExtend}
+                    onGenerateEphemeralKey={this.generateEphemeralKey}
                   />
                 }
               </div>
