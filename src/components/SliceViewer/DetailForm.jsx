@@ -127,7 +127,6 @@ export default class DetailForm extends Component {
                         className="btn btn-sm btn-outline-primary ml-2"
                         data-toggle="modal"
                         data-target="#TerminalFormModalCenter"
-                        onClick={this.props.onGenerateEphemeralKey(data.properties.sliverId)}
                       >
                         Connect to VM
                       </button>

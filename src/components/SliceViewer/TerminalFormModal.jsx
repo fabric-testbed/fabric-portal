@@ -19,7 +19,9 @@ class TerminalFormModal extends Form {
       content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
     },
     errors: {},
-    showSpinner: false
+    showSpinner: false,
+    // unselected, copied, ephemeral
+    keySelectStatus: "unselected"
   }
 
   doSubmit = () => {
@@ -74,9 +76,13 @@ class TerminalFormModal extends Form {
     document.getElementById("closeModalBtn").click();
   }
 
+  handleInputChange = (e) => {
+    this.setState({ keySelectStatus: e.target.value });
+  }
+
   render() {
-    const { sliverTooltip, bastionTooltip, showSpinner } =  this.state;
-    const { vmData, ephemeralKey } = this.props;
+    const { sliverTooltip, bastionTooltip, showSpinner, keySelectStatus } =  this.state;
+    const { vmData, ephemeralKey, sliverId } = this.props;
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
@@ -136,10 +142,49 @@ class TerminalFormModal extends Form {
                   <label>Bastion Username</label>
                   <input type="text" className="form-control" defaultValue={localStorage.getItem("bastionLogin")} disabled/>
                 </div>
-                <div className="row mb-2 mx-1">
-                  <label>Ephemeral Sliver Private Key</label>
-                  <textarea type="text" className="form-control" defaultValue={ephemeralKey.private_openssh} disabled />
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="keyRadios"
+                    id="keyRadios1"
+                    value="copied"
+                    checked={keySelectStatus==="copied"}
+                    onChange={(e) => this.handleInputChange(e)}
+                  />
+                  <label className="form-check-label" for="keyRadios1">
+                    Input Sliver Private Key
+                  </label>
                 </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="keyRadios"
+                    id="keyRadios2"
+                    value="ephemeral"
+                    checked={keySelectStatus==="ephemeral"}
+                    onChange={(e) => this.handleInputChange(e)}
+                    onClick={() => this.props.onGenerateEphemeralKey(sliverId)}
+                  />
+                  <label className="form-check-label" for="keyRadios2">
+                    Generate and Install Ephemeral Key
+                  </label>
+                </div>
+                {
+                  keySelectStatus === "copied" &&
+                  <div className="row mb-2 mx-1">
+                    <label>Sliver Private Key</label>
+                    <textarea type="text" className="form-control" />
+                  </div>
+                }
+                {
+                  keySelectStatus === "ephemeral" &&
+                  <div className="row mb-2 mx-1">
+                    <label>Ephemeral Sliver Private Key</label>
+                    <textarea type="text" className="form-control" defaultValue={ephemeralKey.private_openssh} disabled />
+                  </div>
+                }
               </form>
             }
             <div className="alert alert-primary mt-2 mb-1" role="alert">

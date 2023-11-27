@@ -158,6 +158,10 @@ class SliceViewer extends Component {
           <TerminalFormModal
             vmData={selectedData}
             ephemeralKey={ephemeralKey}
+            sliverId={selectedData 
+              && selectedData.properties 
+              && selectedData.properties.sliverId}
+            onGenerateEphemeralKey={this.generateEphemeralKey}
           />
           {
             showSpinner && 
@@ -253,7 +257,6 @@ class SliceViewer extends Component {
                     clearSelectedData={() => this.clearSelectedData()}
                     onLeaseEndChange={this.handleLeaseEndChange}
                     onSliceExtend={this.handleSliceExtend}
-                    onGenerateEphemeralKey={this.generateEphemeralKey}
                   />
                 }
               </div>
