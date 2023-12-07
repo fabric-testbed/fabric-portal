@@ -10,6 +10,7 @@ import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconStorage from '../../imgs/SliceComponentIcons/RotatingStorage.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
+import IconFPGA from '../../imgs/SliceComponentIcons/NetworkService.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -209,6 +210,16 @@ export default class Graph extends Component {
               "selector": ".graphSharedNIC",
               "style": {
                 "background-image": `${IconSharedNIC}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
+              "selector": ".graphFPGA",
+              "style": {
+                "background-image": `${IconFPGA}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,

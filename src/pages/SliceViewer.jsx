@@ -11,7 +11,7 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
-import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
+import { getSliceById, deleteSlice, extendSlice, installEphemeralKey } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
 import { generateKeyPairs } from "../services/sshKeyService.js";
@@ -61,15 +61,21 @@ class SliceViewer extends Component {
     }
   }
 
-  generateEphemeralKey = async (sliverId) => {
-    const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
-    `ephemeral key to web ssh, sliver ${sliverId}`, false);
-    this.setState({
-      ephemeralKey: res.results[0]
-    })
-    console.log("sliver id passed in param: " + sliverId);
-    console.log("generated ephemeral key:");
-    console.log(res.results[0])
+  generateEphemeralKey = async () => {
+    const { selectedData } = this.state;
+    const sliverId = selectedData && selectedData.properties && selectedData.properties.sliverId;
+    try {
+      // step 1: generate ephemeral key
+      const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
+      `ephemeral key to web ssh, sliver ${sliverId}`, false);
+      this.setState({
+        ephemeralKey: res.results[0]
+      });
+      // step 2: install ephemeral key to the sliver
+      await installEphemeralKey(sliverId, [res.results[0].public_openssh]);
+    } catch (err) {
+      toast.error("Failed to generate and install ephemeral key. Please try again or input your key.")
+    }
   }
 
   handleDeleteSlice = async (id) => {
@@ -158,9 +164,6 @@ class SliceViewer extends Component {
           <TerminalFormModal
             vmData={selectedData}
             ephemeralKey={ephemeralKey}
-            sliverId={selectedData 
-              && selectedData.properties 
-              && selectedData.properties.sliverId}
             onGenerateEphemeralKey={this.generateEphemeralKey}
           />
           {

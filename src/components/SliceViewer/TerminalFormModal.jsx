@@ -3,13 +3,12 @@ import checkPortalType from "../../utils/checkPortalType";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class TerminalFormModal extends Form {
   state = {
-    data: {
-      sliverPrivateKey: "",
-      bastionPrivateKey: "",
-    },
+    sliverPrivateKey: "",
+    bastionPrivateKey: "",
     sliverTooltip: {
       id: "sliverKeyTooltip",
       content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
@@ -25,19 +24,19 @@ class TerminalFormModal extends Form {
   }
 
   doSubmit = () => {
-    const { data } = this.state;
+    const { sliverPrivateKey, bastionPrivateKey } = this.state;
     const { vmData } = this.props;
     const domain = "fabric-testbed.net";
     // set cookie first
     const credentials = { 
       'hostname': vmData.properties.MgmtIp,
       'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
-      'privatekey': data.sliverPrivateKey
+      'privatekey': sliverPrivateKey
     };
     const bastion_credentials = { 
       'hostname': portalData.bastionHostname,
       'username': localStorage.getItem("bastionLogin"),
-      'privatekey': data.bastionPrivateKey
+      'privatekey': bastionPrivateKey
     };
     // open a new tab with the web ssh app
     // encode the binary string to base64-encoded data.
@@ -57,19 +56,16 @@ class TerminalFormModal extends Form {
   };
 
   closeModal = () => {
-    // clear modal state.
-    const blank_data = {
-      sliverPrivateKey: "",
-      bastionPrivateKey: "",
-    };
-
     // clear private keys in browser storage after 10 seconds
     setTimeout(() => {
       document.cookie = `credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
       document.cookie = `bastion-credentials=nomore;domain=fabric-testbed.net;SameSite=Strict;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/`;
     }, 10000);
 
-    this.setState({ data: blank_data, showSpinner: false });
+    this.setState({
+      sliverPrivateKey: "",
+      bastionPrivateKey: "", 
+      showSpinner: false });
   }
 
   clickCloseModalBtn = () => {
@@ -80,9 +76,16 @@ class TerminalFormModal extends Form {
     this.setState({ keySelectStatus: e.target.value });
   }
 
+  renderTooltip = (id, content) => (
+    <Tooltip id={id}>
+      {content}
+    </Tooltip>
+  );
+
   render() {
     const { sliverTooltip, bastionTooltip, showSpinner, keySelectStatus } =  this.state;
-    const { vmData, ephemeralKey, sliverId } = this.props;
+    const { vmData, ephemeralKey } = this.props;
+
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
@@ -123,7 +126,7 @@ class TerminalFormModal extends Form {
           {
             !showSpinner && <div className="modal-body">
             {
-              vmData && vmData.properties && <form>
+              vmData && vmData.properties && <form onSubmit={this.handleSubmit}>
                 <div className="row mb-2 mx-1">
                   <label>Hostname</label>
                   <input type="text" className="form-control" defaultValue={vmData.properties.MgmtIp} disabled/>
@@ -141,6 +144,13 @@ class TerminalFormModal extends Form {
                 <div className="row mb-2 mx-1">
                   <label>Bastion Username</label>
                   <input type="text" className="form-control" defaultValue={localStorage.getItem("bastionLogin")} disabled/>
+                </div>
+                <div className="alert alert-primary mt-2 mb-1" role="alert">
+                  <i className="fa fa-exclamation-triangle mr-1"></i> 
+                  Your private keys will only be used to establish connection and will not be stored.
+                </div>
+                <div className="row mb-2 mx-1">
+                  <label>Please choose</label>
                 </div>
                 <div className="form-check">
                   <input
@@ -165,7 +175,7 @@ class TerminalFormModal extends Form {
                     value="ephemeral"
                     checked={keySelectStatus==="ephemeral"}
                     onChange={(e) => this.handleInputChange(e)}
-                    onClick={() => this.props.onGenerateEphemeralKey(sliverId)}
+                    onClick={() => this.props.onGenerateEphemeralKey()}
                   />
                   <label className="form-check-label" for="keyRadios2">
                     Generate and Install Ephemeral Key
@@ -185,17 +195,24 @@ class TerminalFormModal extends Form {
                     <textarea type="text" className="form-control" defaultValue={ephemeralKey.private_openssh} disabled />
                   </div>
                 }
+                <div className="row mb-2 mx-1">
+                  <label>
+                    Bastion Private Key
+                  </label>
+                  <OverlayTrigger
+                    placement="right"
+                    delay={{ show: 100, hide: 300 }}
+                    overlay={this.renderTooltip("bastion-key-tooltip", bastionTooltip)}
+                  >
+                    <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  </OverlayTrigger>
+                  <textarea type="text" className="form-control" />
+                </div>
+                <button className="btn btn-primary">
+                  Connect
+                </button>
               </form>
             }
-            <div className="alert alert-primary mt-2 mb-1" role="alert">
-              <i className="fa fa-exclamation-triangle mr-1"></i> 
-              Your private keys will only be used to establish connection and will not be stored.
-            </div>
-            <form onSubmit={this.handleSubmit}>
-              {/* {this.renderTextarea("sliverPrivateKey", "Sliver Private Key", true, sliverTooltip)} */}
-              {this.renderTextarea("bastionPrivateKey", "Bastion Private Key", true, bastionTooltip)}
-              {this.renderButton("Connect")}
-            </form>
             </div>
           }
         </div>
