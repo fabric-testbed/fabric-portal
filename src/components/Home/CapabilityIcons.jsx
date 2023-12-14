@@ -27,6 +27,35 @@ const CapabilityIcons = () => {
       "icon": iconEducation
     }
   ]
+
+  return (
+    <div className="mb-5 d-flex flex-column align-items-center">
+      <div className="d-flex flex-row justify-content-center">
+        {
+          capabilities.map((capability, index) => {
+              return (
+                <img
+                  src={capability.icon}
+                  key={`fabric-icon-${index}`}
+                  height="40"
+                  alt={`fabric-icon-${index}`}
+                  className="homepage-icon"
+                />
+              )
+            }
+          )
+        }
+      </div>
+      <div className="w-50 d-flex flex-row justify-content-between mt-4">
+        <button className="btn btn-warning">
+          MORE ABOUT FABRIC
+        </button>
+        <button className="btn btn-warning">
+          MORE ABOUT FAB
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default CapabilityIcons;

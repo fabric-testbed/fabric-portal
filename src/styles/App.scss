@@ -834,6 +834,21 @@ ul,
   width: 100%;
 }
 
+.homepage-icon {
+  display: inline;
+  margin: 1.5rem;
+  background-color: $primary-color;
+  transform: scale(0.9);
+  padding: 1.25rem;
+  border-radius: 3px;
+  min-height: 80px;
+  max-height: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
 .carousel-row {
   display: flex !important;
   flex-direction: row !important;
