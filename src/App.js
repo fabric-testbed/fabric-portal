@@ -31,6 +31,7 @@ import NewsletterSignup from "./pages/static/NewsletterSignup";
 import Testbeds from "./pages/static/Testbeds.jsx";
 import Publications from "./pages/static/Publications.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
+import Branding from "./pages/static/Branding.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
@@ -170,6 +171,7 @@ class App extends React.Component {
             <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
             <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
             <Route path="/community/publications" element={<Publications />} />
+            <Route path="/branding" element={<Branding />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />

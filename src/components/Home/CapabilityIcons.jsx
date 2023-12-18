@@ -47,10 +47,10 @@ const CapabilityIcons = () => {
         }
       </div>
       <div className="w-50 d-flex flex-row justify-content-between mt-4">
-        <button className="btn btn-warning">
+        <button className="btn homepage-icon-btn">
           MORE ABOUT FABRIC
         </button>
-        <button className="btn btn-warning">
+        <button className="btn homepage-icon-btn">
           MORE ABOUT FAB
         </button>
       </div>
