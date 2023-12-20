@@ -65,6 +65,45 @@ const fabDarkBgLogos = [
   }
 ]
 
+const colors = [
+  {
+    name: "primary",
+    hex: "#5798bc"
+  },
+  {
+    name: "primary light",
+    hex: "#8ac9ef"
+  },
+  {
+    name: "primary dark",
+    hex: "#1f6a8c"
+  },
+  {
+    name: "secondary",
+    hex: "#838385"
+  },
+  {
+    name: "success",
+    hex: "#008e7a"
+  },
+  {
+    name: "danger",
+    hex: "#b00020"
+  },
+  {
+    name: "warning",
+    hex: "#ff8542"
+  },
+  {
+    name: "info",
+    hex: "#b481a4"
+  },
+  {
+    name: "dark",
+    hex: "#374955"
+  }
+]
+
 const Branding = () => {
   return (
     <div className="container pb-5 static-page">
@@ -73,7 +112,7 @@ const Branding = () => {
       <h2 className="mb-3">
         Logos
       </h2>
-      <h3>FABRIC</h3>
+      <h3 className="text-primary">FABRIC</h3>
       <p>
         We have a few different style and color variations on the FABRIC surface logo design available for download. Feel free to download and use the FABRIC logo that best suits your use case. Note that each of the logos has a transparent background and are optimized for use on either light of dark background colors.
       </p>
@@ -81,7 +120,10 @@ const Branding = () => {
       <p>Each of these logos has a transparent background and are optimized for use on light background colors.</p>
       <div className="w-100 row">
         {
-          lightBgLogos.map((logo, index) => <div className="col-sm d-flex flex-column align-items-center">
+          lightBgLogos.map((logo, index) => <div
+            className="col-sm d-flex flex-column align-items-center"
+            key={`light-bg-logo-${index}`}
+          >
             <div className="branding-logo-container"><img src={logo.url} className="branding-logo" alt={logo.altText} /></div>
             <u><a href={ logo.url } target="_blank" rel="noopener noreferrer">Download</a></u>
           </div>)
@@ -91,7 +133,10 @@ const Branding = () => {
       <p>Each of these logos has a transparent background and are optimized for use on dark background colors.</p>
       <div className="w-100 row">
         {
-          darkBgLogos.map((logo, index) => <div className="col-sm d-flex flex-column align-items-center">
+          darkBgLogos.map((logo, index) => <div
+            className="col-sm d-flex flex-column align-items-center"
+            key={`dark-bg-logo-${index}`}
+          >
             <div className="branding-logo-container" style={{"background-color": "#666677"}}>
               <img src={logo.url} className="branding-logo" alt={logo.altText} />
             </div>
@@ -99,7 +144,7 @@ const Branding = () => {
           </div>)
         }
       </div>
-      <h3 className="mt-4">FAB</h3>
+      <h3 className="mt-4 text-primary">FAB</h3>
       <p>
         Like the FABRIC logo, the FAB Globe logo comes in different variants to suit several use cases. Note that each of the logos has a transparent background and are optimized for use on either light of dark background colors.
       </p>
@@ -107,7 +152,10 @@ const Branding = () => {
       <p>Each of these logos has a transparent background and are optimized for use on light background colors.</p>
       <div className="w-100 row">
         {
-          fabLightBgLogos.map((logo, index) => <div className="col-sm-6 d-flex flex-column align-items-center mb-3">
+          fabLightBgLogos.map((logo, index) => <div
+            className="col-sm-6 d-flex flex-column align-items-center mb-3"
+            key={`fab-light-bg-color-${index}`}
+          >
             <div className="branding-logo-container">
               <img src={logo.url} className="branding-logo" alt={logo.altText} />
             </div>
@@ -119,7 +167,10 @@ const Branding = () => {
       <p>Each of thes logos has a transparent background and are optimized for use on dark background colors.</p>
       <div className="w-100 row">
         {
-          fabDarkBgLogos.map((logo, index) => <div className="col-sm d-flex flex-column align-items-center mb-3">
+          fabDarkBgLogos.map((logo, index) => <div
+            className="col-sm d-flex flex-column align-items-center mb-3"
+            key={`fab-dark-bg-logo-${index}`}
+          >
             <div className="branding-logo-container" style={{"background-color": "#666677"}}>
               <img src={logo.url} className="branding-logo" alt={logo.altText} />
             </div>
@@ -127,6 +178,76 @@ const Branding = () => {
           </div>)
         }
       </div>
+      <h2 className="my-3">
+        Portal and Knowledge Base Style
+      </h2>
+      <h4 className="mb-3 text-primary">
+        Topography
+      </h4>
+      <div className="card">
+        <div className="card-header">
+          Heading Text - <a
+            href="https://fonts.google.com/specimen/Montserrat"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <u>Montserrat</u>
+          </a>
+        </div>
+        <div className="card-body">
+          <h3>Heading</h3>
+          <h4>Subheading</h4>
+        </div>
+      </div>
+      <div className="card mt-3">
+        <div className="card-header">
+          Body Text - <u><a
+            href="https://fonts.google.com/knowledge/glossary/system_font_web_safe_font"
+            target="_blank"
+            rel="noreferrer"
+          >
+            system-ui
+          </a></u>
+        </div>
+        <div className="card-body">
+          <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta fuga deserunt libero, voluptatum non quae suscipit sapiente rem architecto nihil esse soluta odio, quasi aliquid assumenda quo praesentium consectetur aut.</span>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit mollitia quam nam aperiam debitis optio neque delectus rerum, blanditiis perferendis voluptates explicabo dicta, quas error facilis corrupti, ad obcaecati pariatur voluptatem incidunt ipsa impedit. Quis commodi fugiat repellat natus cumque. Quidem eligendi placeat, laborum nulla doloribus harum odio deserunt culpa sapiente. Quam voluptas magnam dolores minus blanditiis fuga quo quibusdam reprehenderit, facere! Quas minima esse earum asperiores facere possimus eligendi tenetur velit, nam delectus odio, beatae sed quisquam iste consequuntur, modi. Qui voluptates, alias nostrum beatae unde sit veniam neque, corporis reiciendis architecto. Cupiditate possimus ea dolor, laudantium in aperiam.</p>
+        </div>
+      </div>
+      <h4 className="mt-3 text-primary">
+        Colors
+      </h4>
+      <div className="row px-3">
+        {
+          colors.map((color, index) => <div
+            className="card col-sm-4 mt-3 branding-color-card"
+            key={`branding-color-${index}`}
+            >
+          <div className="card-header w-100 bg-light">
+            { color.name }
+          </div>
+          <div className="card-body w-100" style={{"background-color": `${color.hex}`}}>
+            <div>{ color.hex }</div>
+          </div>
+        </div>)
+        }
+      </div>
+      <h2 className="my-4">
+        FABRIC PR Resources
+      </h2>
+      <h3 className="mt-3 text-primary">
+        PR Resource Branding and Style Guide
+      </h3>
+      <p>
+        Do you want to write about FABRIC or use our branding resources?
+        Feel free to download and use our FABRIC logos, and
+        consult our <a href="https://www.dropbox.com/s/knsk13dtpy8v83y/2019_NRIG_FABRIC%20Style%20Guide%20V2.pdf?dl=0" target="_blank" rel="noopener noreferrer">Branding & Style Guide</a> to
+        see how to best utilize FABRIC brand assets, including our logos, colors, typography.
+      </p>
+      <h3 className="text-primary">
+        Graphics
+      </h3>
+      <p>We make detailed graphics to illustrate features for FABRIC. They are made publicly accessible, so feel free to use the graphics below to help spread the word about FABRIC.</p>
     </div>
   );
 };

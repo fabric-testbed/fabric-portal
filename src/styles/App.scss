@@ -2,6 +2,11 @@
 html,
 body {
   height: 100%;
+  // font-family: "Roboto";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat";
 }
 
 .container {
@@ -1030,4 +1035,25 @@ ul,
   padding: 0;
   display: block;
   margin: auto;
+}
+
+.branding-color-card {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.branding-color-card .card-body {
+  position: relative;
+  height: 5rem;
+}
+
+.branding-color-card .card-body div {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  color: #fff;
+  font-size: 85%;
+  border-radius: 5px;
+  padding: 0.15rem 0.5rem;
 }
