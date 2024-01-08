@@ -232,7 +232,7 @@ const Branding = () => {
         </div>)
         }
       </div>
-      <h2 className="my-4">
+      {/* <h2 className="my-4">
         FABRIC PR Resources
       </h2>
       <h3 className="mt-3 text-primary">
@@ -247,7 +247,7 @@ const Branding = () => {
       <h3 className="text-primary">
         Graphics
       </h3>
-      <p>We make detailed graphics to illustrate features for FABRIC. They are made publicly accessible, so feel free to use the graphics below to help spread the word about FABRIC.</p>
+      <p>We make detailed graphics to illustrate features for FABRIC. They are made publicly accessible, so feel free to use the graphics below to help spread the word about FABRIC.</p> */}
     </div>
   );
 };

@@ -846,12 +846,59 @@ ul,
   transform: scale(0.9);
   padding: 1.25rem;
   border-radius: 3px;
-  min-height: 80px;
-  max-height: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  min-height: 75px;
+  max-height: 75px;
+  min-width: 75px;
+  max-width: 75px;
   filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
   transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-active {
+  display: inline;
+  margin: 1.5rem;
+  background-color: $warning;
+  transform: scale(0.9);
+  padding: 1.25rem;
+  border-radius: 3px;
+  min-height: 85px;
+  max-height: 85px;
+  min-width: 85px;
+  max-width: 85px;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-heading {
+  display: none;
+  color: $warning;
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem; 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-heading-active {
+  opacity: 1;
+  color: $warning;
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem; 
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+  margin-top: .75rem;
+  margin-bottom: 1rem;
+}
+
+.homepage-icon-heading-active::before {
+  content: "FABRIC";
+  color: $primary-color;
+  font-weight: normal;
+  font-size: 2rem;
+  margin-right: 1rem;
 }
 
 .homepage-icon-btn {
