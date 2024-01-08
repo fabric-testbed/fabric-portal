@@ -86,7 +86,7 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      // { name: "TOKEN HOLDERS", active: false },
+      { name: "TOKEN HOLDERS", active: false },
       { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
@@ -201,9 +201,9 @@ class ProjectForm extends Form {
        "#info": 0,
        "#owners": 1,
        "#members": 2,
-      //  "#token": 3,
-       "#slices": 3,
-       "#volumes": 4
+       "#token": 3,
+       "#slices": 4,
+       "#volumes": 5
      }
  
      if (hash) {
@@ -212,7 +212,7 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT OWNERS", active: hash === "#owners" },
          { name: "PROJECT MEMBERS", active: hash === "#members" },
-        //  { name: "LONG-LIVED TOKEN", active: hash === "#token"},
+         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
          { name: "SLICES", active: hash === "#slices" },
          { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
@@ -368,9 +368,9 @@ class ProjectForm extends Form {
       0: "#info",
       1: "#owners",
       2: "#members",
-      // 3: "#token",
-      3: "#slices",
-      4: "#volumes",
+      3: "#token",
+      4: "#slices",
+      5: "#volumes",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -755,7 +755,7 @@ class ProjectForm extends Form {
                 />
               </div>
             </div>
-            {/* <div
+            <div
               className={`${
                 activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
@@ -773,22 +773,6 @@ class ProjectForm extends Form {
                   onUpdateTokenHolders={this.handleUpdateTokenHolders}
                 />
               </div>
-            </div> */}
-            <div
-              className={`${
-                activeIndex === 3
-                  ? "col-9 d-flex flex-row" : "d-none"
-              }`}
-            >
-              <div className="w-100">
-                {
-                  activeIndex === 3 && <Slices
-                    parent="Projects"
-                    projectId={data.uuid}
-                    isProjectExpired={this.checkProjectExpiration(data.expired)}
-                  />
-                }
-              </div>
             </div>
             <div
               className={`${
@@ -798,7 +782,23 @@ class ProjectForm extends Form {
             >
               <div className="w-100">
                 {
-                  activeIndex === 4 && <PersistentStorage
+                  activeIndex === 4 && <Slices
+                    parent="Projects"
+                    projectId={data.uuid}
+                    isProjectExpired={this.checkProjectExpiration(data.expired)}
+                  />
+                }
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex === 5
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                {
+                  activeIndex === 5 && <PersistentStorage
                     parent="Projects"
                     projectId={data.uuid}
                     volumes={volumes}

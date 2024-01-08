@@ -3,20 +3,20 @@ import checkPortalType from "../../utils/checkPortalType";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+// import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class TerminalFormModal extends Form {
   state = {
     sliverPrivateKey: "",
     bastionPrivateKey: "",
-    sliverTooltip: {
-      id: "sliverKeyTooltip",
-      content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
-    },
-    bastionTooltip: {
-      id: "bastionKeyTooltip",
-      content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
-    },
+    // sliverTooltip: {
+    //   id: "sliverKeyTooltip",
+    //   content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
+    // },
+    // bastionTooltip: {
+    //   id: "bastionKeyTooltip",
+    //   content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
+    // },
     errors: {},
     showSpinner: false,
     // unselected, copied, ephemeral
@@ -76,14 +76,8 @@ class TerminalFormModal extends Form {
     this.setState({ keySelectStatus: e.target.value });
   }
 
-  renderTooltip = (id, content) => (
-    <Tooltip id={id}>
-      {content}
-    </Tooltip>
-  );
-
   render() {
-    const { sliverTooltip, bastionTooltip, showSpinner, keySelectStatus } =  this.state;
+    const { showSpinner, keySelectStatus } =  this.state;
     const { vmData, ephemeralKey } = this.props;
 
     return (
@@ -149,7 +143,7 @@ class TerminalFormModal extends Form {
                   <i className="fa fa-exclamation-triangle mr-1"></i> 
                   Your private keys will only be used to establish connection and will not be stored.
                 </div>
-                <div className="row mb-2 mx-1">
+                <div className="row mx-1 mt-2">
                   <label>Please choose</label>
                 </div>
                 <div className="form-check">
@@ -199,13 +193,6 @@ class TerminalFormModal extends Form {
                   <label>
                     Bastion Private Key
                   </label>
-                  <OverlayTrigger
-                    placement="right"
-                    delay={{ show: 100, hide: 300 }}
-                    overlay={this.renderTooltip("bastion-key-tooltip", bastionTooltip)}
-                  >
-                    <i className="fa fa-question-circle text-secondary ml-2"></i>
-                  </OverlayTrigger>
                   <textarea type="text" className="form-control" />
                 </div>
                 <button className="btn btn-primary">
