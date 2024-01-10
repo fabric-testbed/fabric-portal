@@ -44,7 +44,10 @@ class ProjectTokenHolders extends Component {
 
     return (
       <div>
-        <h4>{ personnelType }</h4>
+        <h4>Long-lived Token Holders</h4>
+        <div className="alert alert-primary mb-2" role="alert">
+          {"Users running long-lived experiments supported by unattended automated tools can now request non-renewable long-lived API Tokens(lifetime up to 5 weeks)." }
+        </div>
         {
           isFO && !projectExpired &&
           <div className="card mt-3">

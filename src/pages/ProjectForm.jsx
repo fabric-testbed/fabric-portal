@@ -86,7 +86,7 @@ class ProjectForm extends Form {
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT OWNERS", active: false },
       { name: "PROJECT MEMBERS", active: false },
-      { name: "TOKEN HOLDERS", active: false },
+      { name: "Long-lived Token", active: false },
       { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
