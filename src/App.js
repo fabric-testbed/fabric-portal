@@ -39,6 +39,7 @@ import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import "./styles/App.scss";
+import moment from 'moment';
 
 class App extends React.Component {
   state = {
@@ -51,11 +52,21 @@ class App extends React.Component {
     searchQuery: ""
   };
 
+  checkNotExpired = (start, end) => {
+    const startUTC = start.substring(0, 19);
+    const stillStartUTC = moment.utc(startUTC).toDate();
+    const endUTC = end.substring(0, 19);
+    const stillEndUTC = moment.utc(endUTC).toDate();
+    return stillEndUTC > new Date() && stillStartUTC < new Date();
+  }
+
   async componentDidMount() {
     // Check active maitenance notice(s)
     try {
       const { data: res } = await getActiveMaintenanceNotice();
-      this.setState({ activeNotices: res.results });
+      this.setState({ 
+        activeNotices: res.results.filter(notice => this.checkNotExpired(notice.start_date, notice.end_date)) 
+      });
     } catch (err) {
       toast.error("Failed to load maintenance notice.")
     }
