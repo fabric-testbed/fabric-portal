@@ -3,20 +3,20 @@ import checkPortalType from "../../utils/checkPortalType";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
-// import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class TerminalFormModal extends Form {
   state = {
     sliverPrivateKey: "",
     bastionPrivateKey: "",
-    // sliverTooltip: {
-    //   id: "sliverKeyTooltip",
-    //   content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
-    // },
-    // bastionTooltip: {
-    //   id: "bastionKeyTooltip",
-    //   content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
-    // },
+    sliverTooltip: {
+      id: "sliverKeyTooltip",
+      content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
+    },
+    bastionTooltip: {
+      id: "bastionKeyTooltip",
+      content: "Paste your private key value here. It will be used as authorization credential to log in to the web terminal and will be cleared from the browser storage afterwards."
+    },
     errors: {},
     showSpinner: false,
     // unselected, copied, ephemeral
@@ -76,9 +76,23 @@ class TerminalFormModal extends Form {
     this.setState({ keySelectStatus: e.target.value });
   }
 
+  handleSliverKeyChange = (e) => {
+    this.setState({ sliverPrivateKey: e.target.value });
+  }
+
+  handleBastionKeyChange = (e) => {
+    this.setState({ bastionPrivateKey: e.target.value });
+  }
+
   render() {
-    const { showSpinner, keySelectStatus } =  this.state;
+    const { showSpinner, keySelectStatus, sliverPrivateKey, bastionPrivateKey, sliverTooltip, bastionTooltip } =  this.state;
     const { vmData, ephemeralKey } = this.props;
+
+    const renderTooltip = (id, content) => (
+      <Tooltip id={id}>
+        {content}
+      </Tooltip>
+    );
 
     return (
     <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
@@ -178,8 +192,21 @@ class TerminalFormModal extends Form {
                 {
                   keySelectStatus === "copied" &&
                   <div className="row mb-2 mx-1">
-                    <label>Sliver Private Key</label>
-                    <textarea type="text" className="form-control" />
+                    <label>Sliver Private Key 
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip(sliverTooltip.id, sliverTooltip.content)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
+                    </label> 
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      value={sliverPrivateKey}
+                      onChange={(e) => this.handleSliverKeyChange(e)}
+                    />
                   </div>
                 }
                 {
@@ -192,8 +219,20 @@ class TerminalFormModal extends Form {
                 <div className="row mb-2 mx-1">
                   <label>
                     Bastion Private Key
+                      <OverlayTrigger
+                        placement="right"
+                        delay={{ show: 100, hide: 300 }}
+                        overlay={renderTooltip(bastionTooltip.id, bastionTooltip.content)}
+                      >
+                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      </OverlayTrigger>
                   </label>
-                  <textarea type="text" className="form-control" />
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    value={bastionPrivateKey}
+                    onChange={(e) => this.handleBastionKeyChange(e)}
+                  />
                 </div>
                 <button className="btn btn-primary">
                   Connect

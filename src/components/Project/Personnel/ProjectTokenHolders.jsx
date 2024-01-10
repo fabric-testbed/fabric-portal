@@ -46,7 +46,15 @@ class ProjectTokenHolders extends Component {
       <div>
         <h4>Long-lived Token Holders</h4>
         <div className="alert alert-primary mb-2" role="alert">
-          {"Users running long-lived experiments supported by unattended automated tools can now request non-renewable long-lived API Tokens(lifetime up to 5 weeks)." }
+          {"Users running long-lived experiments supported by unattended automated tools can now request non-renewable long-lived API Tokens (lifetime up to 5 weeks)."}
+          {"For more information, please read this guide article: "}
+          <a
+            href={portalData.learnArticles.guideToLongLivedTokens}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Using long-lived API Tokens
+          </a>.
         </div>
         {
           isFO && !projectExpired &&
