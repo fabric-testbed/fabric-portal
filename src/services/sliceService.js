@@ -74,13 +74,21 @@ export function extendSlice(id, lease_end_time) {
 });
 }
 
-export function installEphemeralKey(sliverID, keys) {
-  return http.post(`${poasEndpoint}/create/${sliverID}`),
-  { keys: keys },
+export function installEphemeralKey(sliverID, public_openssh) {
+  return http.post(`${poasEndpoint}/create/${sliverID}`, 
+  { 
+    data: { 
+      keys: [{
+        "comment": `ephemeral-key-${sliverID}`,
+        "key": public_openssh
+      }],
+    },
+    "operation": "cpuinfo"
+  },
   {
     headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem("idToken")}`
     }
-  }
+  })
 }

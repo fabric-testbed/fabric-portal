@@ -72,7 +72,7 @@ class SliceViewer extends Component {
         ephemeralKey: res.results[0]
       });
       // step 2: install ephemeral key to the sliver
-      await installEphemeralKey(sliverId, [res.results[0].public_openssh]);
+      await installEphemeralKey(sliverId, res.results[0].public_openssh);
     } catch (err) {
       toast.error("Failed to generate and install ephemeral key. Please try again or input your key.")
     }

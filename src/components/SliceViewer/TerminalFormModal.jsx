@@ -25,13 +25,13 @@ class TerminalFormModal extends Form {
 
   doSubmit = () => {
     const { sliverPrivateKey, bastionPrivateKey } = this.state;
-    const { vmData } = this.props;
+    const { vmData, ephemeralKey  } = this.props;
     const domain = "fabric-testbed.net";
     // set cookie first
     const credentials = { 
       'hostname': vmData.properties.MgmtIp,
       'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
-      'privatekey': sliverPrivateKey
+      'privatekey': sliverPrivateKey ? sliverPrivateKey : ephemeralKey.private_openssh
     };
     const bastion_credentials = { 
       'hostname': portalData.bastionHostname,
