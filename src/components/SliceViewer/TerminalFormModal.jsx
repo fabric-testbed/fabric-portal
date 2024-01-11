@@ -20,7 +20,7 @@ class TerminalFormModal extends Form {
     errors: {},
     showSpinner: false,
     // unselected, copied, ephemeral
-    keySelectStatus: "unselected"
+    keySelectStatus: "copied"
   }
 
   doSubmit = () => {
@@ -157,7 +157,7 @@ class TerminalFormModal extends Form {
                   <i className="fa fa-exclamation-triangle mr-1"></i> 
                   Your private keys will only be used to establish connection and will not be stored.
                 </div>
-                <div className="row mx-1 mt-2">
+                {/* <div className="row mx-1 mt-2">
                   <label>Please choose</label>
                 </div>
                 <div className="form-check">
@@ -188,7 +188,7 @@ class TerminalFormModal extends Form {
                   <label className="form-check-label" for="keyRadios2">
                     Generate and Install Ephemeral Key
                   </label>
-                </div>
+                </div> */}
                 {
                   keySelectStatus === "copied" &&
                   <div className="row mb-2 mx-1">

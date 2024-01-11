@@ -91,7 +91,7 @@ export default class SingleComponent extends Component {
                   <option value="GPU">GPU</option>
                   <option value="SmartNIC">SmartNIC</option>
                   <option value="SharedNIC">SharedNIC</option>
-                  <option value="FPGA">FPGA</option>
+                  {/* <option value="FPGA">FPGA</option> */}
                   <option value="NVME">NVME</option>
                   <option value="Storage">Storage</option>
                 </select>
