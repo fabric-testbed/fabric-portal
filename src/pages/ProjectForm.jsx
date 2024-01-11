@@ -659,21 +659,27 @@ class ProjectForm extends Form {
               className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
               role="alert"
             >
-              <span>
+              <div>
                 <i className="fa fa-exclamation-triangle mr-2"></i>
-                This project is going to expire in a month. Please submit a ticket to renew the project.
-              </span>
-              <button
-                type="button"
-                className="btn btn-sm btn-success"
-                onClick={() => window.open(
-                  `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
-                  "_blank")
+                This project is going to expire in a month. 
+                {
+                  canUpdate ? <span>Please submit a ticket to renew the project.</span> : 
+                  <span>Please contact your project owner to request project renewal.</span>
                 }
-              >
-                <i className="fa fa-sign-in mr-2"></i>
-                Renew Project
-              </button>
+              </div>
+              {
+                canUpdate ? <button
+                    type="button"
+                    className="btn btn-sm btn-success"
+                    onClick={() => window.open(
+                      `${portalData.jiraLinks.renewProjectRequest}?${urlSuffix}`,
+                      "_blank")
+                    }
+                  >
+                    <i className="fa fa-sign-in mr-2"></i>
+                    Renew Project
+                  </button> : <div></div>
+              }
             </div>
           }
           <div className="row mt-4">
