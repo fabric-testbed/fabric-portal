@@ -14,6 +14,7 @@ export default class DetailForm extends Component {
 
   render() {
     const { slice, data, leaseEndTime } = this.props;
+
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
         {content}

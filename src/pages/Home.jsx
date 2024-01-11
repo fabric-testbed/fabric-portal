@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
 import Carousel from "../components/Home/Carousel";
+import CapabilityIcons from "../components/Home/CapabilityIcons";
 import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../data/sites";
@@ -92,6 +93,7 @@ class Home extends React.Component {
             <FacilityUpdates />
           </div>
         </div>
+        <CapabilityIcons />
         <div className="home-lower row mt-2">
           <div className="col-xl-12 col-lg-12">
             <Partners />

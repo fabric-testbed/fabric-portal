@@ -17,13 +17,11 @@ class Footer extends React.Component {
           <ul>
             <li><b>Useful Links</b></li>
             <li>
-              <a href={portalData.fabricSocialLinks.website} target="_blank" rel="noopener noreferrer">FABRIC Website</a>
-            </li>
-            <li>
               <Link to="/aup">Acceptable Use Policy</Link>
             </li>
             <li><Link to="/cookie-policy">Cookie Policy</Link></li>
             <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/branding">Branding Resources</Link></li>
           </ul>
         </div>
         <div className="col-sm-12 col-md-3">
@@ -89,7 +87,7 @@ class Footer extends React.Component {
               className="d-inline-block align-top mr-2"
               alt=""
             />
-            <u><i>FABRIC is supported in part by a Mid-Scale RI-1 NSF award under Grant No. 1935966.</i></u>
+            <u><i>FABRIC is funded by NSF grants CNS-1935966, CNS-2029261, CNS-2029235, CNS-2029200, and CNS-2029260.</i></u>
           </div>
         </div>
       </div>

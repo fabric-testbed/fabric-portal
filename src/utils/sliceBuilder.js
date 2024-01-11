@@ -230,6 +230,105 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
     })
   }
 
+  if (component.type === "FPGA") {
+    // Add P4 Network Service Node
+    // Add FPGA has NS link
+    // Add 2 Connection Points and NS connects CP link
+    const p4_node = {
+      "Name": `${node.name}-${component.name}-l2p4`,
+      "Class": "NetworkService",
+      "NodeID": uuidv4(),
+      "id": component_node_id + 1,
+      "Type": "P4",
+      "Layer": "L2",
+      "StitchNode": "false",
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "site": node.site,
+        "parentID": component_node_id,
+        "hasLinkIdAsTarget": component_link_id + 1,
+      })
+    }
+
+    const cp_node_1 =   {
+      "Labels": JSON.stringify({"local_name": "p1"}),
+      "Class": "ConnectionPoint",
+      "Type": "DedicatedPort",
+      "Name":  `${node.name}-${component.name}-p1`,
+      "Capacities": JSON.stringify({"unit": 1}),
+      "id": component_node_id + 2,
+      "NodeID": uuidv4(),
+      "StitchNode": "false",
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "site": node.site,
+        "connectFrom": component_node_id + 1,
+        "connectLinkIdAsTarget": component_link_id + 2
+      })
+    }
+
+    const cp_node_2 =   {
+      "Labels": JSON.stringify({"local_name": "p2"}),
+      "Class": "ConnectionPoint",
+      "Type": "DedicatedPort",
+      "Name":  `${node.name}-${component.name}-p2`,
+      "Capacities": JSON.stringify({"unit": 1}),
+      "id": component_node_id + 3,
+      "NodeID": uuidv4(),
+      "StitchNode": "false",
+      "GraphID": graphID,
+      "layout": JSON.stringify({
+        "site": node.site,
+        "connectFrom": component_node_id + 1,
+        "connectLinkIdAsTarget": component_link_id + 3
+      })
+    }
+
+    nodes_to_add.push(cp_node_1);
+    nodes_to_add.push(cp_node_2);
+    nodes_to_add.push(p4_node);
+
+    // FPGA has P4 NS
+    const p4_link = {
+      "label": "has",
+      "Class": "has",
+      "id": component_link_id + 1,
+      "source": component_node_id,
+      "target": component_node_id + 1,
+    }
+
+    const cp_link_1 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": component_link_id + 2,
+      "source": component_node_id + 1,
+      "target": component_node_id + 2,
+    }
+
+    const cp_link_2 = {
+      "label": "connects",
+      "Class": "connects",
+      "id": component_link_id + 3,
+      "source": component_node_id + 1,
+      "target": component_node_id + 3,
+    }
+
+    links_to_add.push(p4_link);
+    links_to_add.push(cp_link_1);
+    links_to_add.push(cp_link_2);
+
+    const component_relevant_node_ids = [];
+    const component_relevant_link_ids = [];
+    component_relevant_node_ids.push(component_node_id, component_node_id + 1, component_node_id + 2, component_node_id + 3);
+    component_relevant_link_ids.push(component_link_id, component_link_id + 1, component_link_id + 2, component_link_id + 3);
+
+    component_node.layout =  JSON.stringify({
+      "parentID": vm_node_id,
+      "relevantNodeIDs": component_relevant_node_ids,
+      "relevantLinkIDs": component_relevant_link_ids,
+    })
+  }
+
   if (["NVME", "GPU", "Storage"].includes(component.type)){
     component_node.layout =  JSON.stringify({
       "parentID": vm_node_id,

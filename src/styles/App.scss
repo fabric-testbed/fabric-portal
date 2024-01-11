@@ -2,6 +2,11 @@
 html,
 body {
   height: 100%;
+  // font-family: "Roboto";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat";
 }
 
 .container {
@@ -45,6 +50,10 @@ body {
 
 .carousel-item img {
   max-height: 30rem;
+}
+
+.carousel-item a {
+  color: #fff !important;
 }
 
 .carousel-caption {
@@ -834,6 +843,78 @@ ul,
   width: 100%;
 }
 
+.homepage-icon {
+  display: inline;
+  margin: 1.5rem;
+  background-color: $primary-color;
+  transform: scale(0.9);
+  padding: 1.25rem;
+  border-radius: 3px;
+  min-height: 75px;
+  max-height: 75px;
+  min-width: 75px;
+  max-width: 75px;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-active {
+  display: inline;
+  margin: 1.5rem;
+  background-color: $warning;
+  transform: scale(0.9);
+  padding: 1.25rem;
+  border-radius: 3px;
+  min-height: 85px;
+  max-height: 85px;
+  min-width: 85px;
+  max-width: 85px;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-heading {
+  display: none;
+  color: $warning;
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem; 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+}
+
+.homepage-icon-heading-active {
+  opacity: 1;
+  color: $warning;
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem; 
+  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
+  margin-top: .75rem;
+  margin-bottom: 1rem;
+}
+
+.homepage-icon-heading-active::before {
+  content: "FABRIC";
+  color: $primary-color;
+  font-weight: normal;
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.homepage-icon-btn {
+  background-color: $warning;
+  color: #fff;
+}
+
+.homepage-icon-btn:hover {
+  background-color: $warning-light;
+  color: #fff;
+}
+
 .carousel-row {
   display: flex !important;
   flex-direction: row !important;
@@ -984,4 +1065,46 @@ ul,
 
 .persistent-storage-card {
   border-top: 2px $primary-color solid;
+}
+
+.branding-logo-container {
+  border: 1px solid $primary-color;
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  margin: 0 1rem 0.5rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 16rem;
+  width: 100%;
+}
+
+.branding-logo {
+  max-width: 100%;
+  padding: 0;
+  display: block;
+  margin: auto;
+}
+
+.branding-color-card {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.branding-color-card .card-body {
+  position: relative;
+  height: 5rem;
+}
+
+.branding-color-card .card-body div {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  color: #fff;
+  font-size: 85%;
+  border-radius: 5px;
+  padding: 0.15rem 0.5rem;
 }
