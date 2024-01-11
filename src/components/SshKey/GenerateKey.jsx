@@ -29,7 +29,7 @@ class GenerateKey extends Form {
     try {
       const { data } = this.state;
       localStorage.setItem("sshKeyType", this.props.type);
-      const { data: res } = await generateKeyPairs(this.props.type, data.name, data.description);
+      const { data: res } = await generateKeyPairs(this.props.type, data.name, data.description, true);
       this.setState({ generatedKey: res.results[0], showKeySpinner: false });
     } catch (err) {
       this.setState({ showKeySpinner: false });

@@ -31,6 +31,7 @@ import NewsletterSignup from "./pages/static/NewsletterSignup";
 import Testbeds from "./pages/static/Testbeds.jsx";
 import Publications from "./pages/static/Publications.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
+import Branding from "./pages/static/Branding.jsx";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
@@ -38,6 +39,7 @@ import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import "./styles/App.scss";
+import moment from 'moment';
 
 class App extends React.Component {
   state = {
@@ -50,11 +52,21 @@ class App extends React.Component {
     searchQuery: ""
   };
 
+  checkNotExpired = (start, end) => {
+    const startUTC = start.substring(0, 19);
+    const stillStartUTC = moment.utc(startUTC).toDate();
+    const endUTC = end.substring(0, 19);
+    const stillEndUTC = moment.utc(endUTC).toDate();
+    return stillEndUTC > new Date() && stillStartUTC < new Date();
+  }
+
   async componentDidMount() {
     // Check active maitenance notice(s)
     try {
       const { data: res } = await getActiveMaintenanceNotice();
-      this.setState({ activeNotices: res.results });
+      this.setState({ 
+        activeNotices: res.results.filter(notice => this.checkNotExpired(notice.start_date, notice.end_date)) 
+      });
     } catch (err) {
       toast.error("Failed to load maintenance notice.")
     }
@@ -170,6 +182,7 @@ class App extends React.Component {
             <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
             <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
             <Route path="/community/publications" element={<Publications />} />
+            <Route path="/branding" element={<Branding />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources/:id" element={<Resources />} />
             <Route path="/help" element={<Help />} />

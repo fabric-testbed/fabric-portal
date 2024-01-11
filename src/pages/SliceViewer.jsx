@@ -11,9 +11,10 @@ import SpinnerWithText from "../components/common/SpinnerWithText";
 import CountdownTimer from "../components/common/CountdownTimer";
 import { Link } from "react-router-dom";
 import { autoCreateTokens } from "../utils/manageTokens";
-import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
+import { getSliceById, deleteSlice, extendSlice, installEphemeralKey } from "../services/sliceService.js";
 import sliceParser from "../services/parser/sliceParser.js";
 import sliceErrorParser from "../services/parser/sliceErrorParser.js";
+import { generateKeyPairs } from "../services/sshKeyService.js";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import sleep from "../utils/sleep";
@@ -36,7 +37,8 @@ class SliceViewer extends Component {
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
-    spinnerText: ""
+    spinnerText: "",
+    ephemeralKey: {}
   }
 
   async componentDidMount() {
@@ -56,6 +58,23 @@ class SliceViewer extends Component {
         });
      } catch (err) {
       toast.error("User's credential is expired. Please re-login.");
+    }
+  }
+
+  generateEphemeralKey = async () => {
+    const { selectedData } = this.state;
+    const sliverId = selectedData && selectedData.properties && selectedData.properties.sliverId;
+    try {
+      // step 1: generate ephemeral key
+      const { data: res } = await generateKeyPairs("sliver", `ephemeral-key-${sliverId}`, 
+      `ephemeral key to web ssh, sliver ${sliverId}`, false);
+      this.setState({
+        ephemeralKey: res.results[0]
+      });
+      // step 2: install ephemeral key to the sliver
+      await installEphemeralKey(sliverId, res.results[0].public_openssh);
+    } catch (err) {
+      toast.error("Failed to generate and install ephemeral key. Please try again or input your key.")
     }
   }
 
@@ -136,13 +155,17 @@ class SliceViewer extends Component {
     }
 
     const { slice, elements, selectedData, hasProject, 
-      showSpinner, spinnerText, errors, leaseEndTime } = this.state;
+      showSpinner, spinnerText, errors, leaseEndTime, ephemeralKey } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
       <SliceViewerErrorBoundary slice={slice}>
         <div className="slice-page-container">
-          <TerminalFormModal vmData={selectedData}/>
+          <TerminalFormModal
+            vmData={selectedData}
+            ephemeralKey={ephemeralKey}
+            onGenerateEphemeralKey={this.generateEphemeralKey}
+          />
           {
             showSpinner && 
             <div className="container d-flex align-items-center justify-content-center">
