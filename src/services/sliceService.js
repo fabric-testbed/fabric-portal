@@ -83,7 +83,7 @@ export function installEphemeralKey(sliverID, public_openssh) {
         "key": public_openssh
       }],
     },
-    "operation": "cpuinfo"
+    "operation": "addkey"
   },
   {
     headers: {
