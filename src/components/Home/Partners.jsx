@@ -57,7 +57,7 @@ const Partners = () => {
         <span className="homepage-partner-header">Our Partners</span>
       </div>
       <span className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</span>
-      <div className="homepage-partner-logo-containter my-1">
+      <div className="homepage-partner-logo-containter">
         <img
           src={RENCI}
           key={`partners-logo-renci`}
