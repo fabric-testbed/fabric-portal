@@ -37,13 +37,13 @@ const DetailTable = props => {
     },
     "PreMaint": {
       state: "Pre-Maintenance",
-      colorName: "info",
+      colorName: "warning",
       colorHex: "#ffb670",
       labelColorHex: "#212529"
     },
     "PartMaint": {
       state: "Partial Maintenance",
-      colorName: "info",
+      colorName: "warning",
       colorHex: "#ffb670",
       labelColorHex: "#212529"
     },

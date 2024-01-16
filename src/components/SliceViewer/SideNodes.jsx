@@ -326,12 +326,12 @@ class SideNodes extends React.Component {
                     </span>
                   }
                   {
-                    selectedSite.status.state === "PreMaint" && <span className="badge badge-pill badge-info px-2">
+                    selectedSite.status.state === "PreMaint" && <span className="badge badge-pill badge-warning px-2">
                       Pre-Maintenance
                     </span>
                   }
                   {
-                    selectedSite.status.state === "PartMaint" && <span className="badge badge-pill badge-info px-2">
+                    selectedSite.status.state === "PartMaint" && <span className="badge badge-pill badge-warning px-2">
                       Partial Maintenance
                     </span>
                   }

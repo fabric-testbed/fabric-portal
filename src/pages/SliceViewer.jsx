@@ -79,17 +79,13 @@ class SliceViewer extends Component {
   }
 
   handleDeleteSlice = async (id) => {
+    this.setState({ showSpinner: true, spinnerText: "Deleting Slice" });
     try {
       await deleteSlice(id);
       // toast message to users when the api call is successfully done.
       toast.success("Slice deleted successfully.");
-      // change slice state to Dead.
-      this.setState(prevState => ({ 
-        slice: {
-          ...prevState.slice,
-          "state": "Dead"
-        }
-      }))
+      await sleep(1000);
+      window.location.reload();
     } catch (err) {
       toast.error("Failed to delete the slice.");
     }
@@ -159,7 +155,12 @@ class SliceViewer extends Component {
     let showSlice = !showSpinner && hasProject;
 
     return(
-      <SliceViewerErrorBoundary slice={slice}>
+      <SliceViewerErrorBoundary 
+        slice={slice}
+        leaseEndTime={leaseEndTime}
+        onLeaseEndChange={this.handleLeaseEndChange}
+        onSliceExtend={this.handleSliceExtend}
+      >
         <div className="slice-page-container">
           <TerminalFormModal
             vmData={selectedData}

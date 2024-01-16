@@ -126,6 +126,18 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3px 10px !important;
 }
 
+.homepage-carousel-content {
+  display: none;
+}
+
+.carousel-caption {
+  width: 80%;
+}
+
+.carousel-caption-content h3 {
+  font-size: 1.5rem; 
+}
+
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-nav .nav-link {
     margin-top: 0px !important;
@@ -137,6 +149,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media only screen and (min-width: 768px) {
+  .homepage-carousel-content {
+    display: block;
+  }
+
   .app-footer {
     height: 22rem;
   }
@@ -156,7 +172,12 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .carousel-caption h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .homepage-carousel-content {
+    font-size: .8rem;
+    line-height: 125%;
   }
 
   .carousel-caption p {
@@ -188,6 +209,11 @@ h1, h2, h3, h4, h5, h6 {
 
   .carousel-caption h3 {
     font-size: 1.75rem;
+  }
+
+  .homepage-carousel-content {
+    font-size: 1rem;
+    line-height: 175%;
   }
 
   .carousel-caption p {
@@ -836,6 +862,11 @@ ul,
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
+  flex-wrap: wrap;
+}
+
+.homepage-partner-logo-containter img {
+  margin-top: 1.5rem;
 }
 
 .homepage-scroll-container {

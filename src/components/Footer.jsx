@@ -20,7 +20,7 @@ class Footer extends React.Component {
               <Link to="/aup">Acceptable Use Policy</Link>
             </li>
             <li><Link to="/cookie-policy">Cookie Policy</Link></li>
-            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            {/* <li><Link to="/privacy-policy">Privacy Policy</Link></li> */}
             <li><Link to="/branding">Branding Resources</Link></li>
           </ul>
         </div>
