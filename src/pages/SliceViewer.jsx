@@ -155,7 +155,7 @@ class SliceViewer extends Component {
     let showSlice = !showSpinner && hasProject;
 
     return(
-      <SliceViewerErrorBoundary slice={slice}>
+      <SliceViewerErrorBoundary slice={slice} leaseEndTime={leaseEndTime}>
         <div className="slice-page-container">
           <TerminalFormModal
             vmData={selectedData}
