@@ -5,8 +5,7 @@ import DeleteModal from "../common/DeleteModal";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
-import moment from 'moment';
-import { deleteSlice, extendSlice } from "../../services/sliceService.js";
+import { deleteSlice} from "../../services/sliceService.js";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Calendar from "../../components/common/Calendar";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
@@ -15,8 +14,7 @@ export default class SliceViewerErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false,
-      leaseEndTime: this.props.slice.lease_end_time
+      hasError: false
     };
   }
 
@@ -33,39 +31,6 @@ export default class SliceViewerErrorBoundary extends Component {
     // logErrorToMyService(error, errorInfo);
     if (error.message) {
       console.log(`Failed to render the slice topology: ${error.message}`);
-    }
-  }
-
-  handleLeaseEndChange = (value) => {
-    const inputTime = moment(value).format();
-    // input format e.g. 2022-05-25T10:49:03-04:00
-    // output format should be 2022-05-25 10:49:03 -0400
-    const date = inputTime.substring(0, 10);
-    const time = inputTime.substring(11, 19);
-    const offset = inputTime.substring(19).replace(":", "");
-    const outputTime = [date, time, offset].join(" ");
-    this.setState({ leaseEndTime: outputTime });
-  }
-
-  handleSliceExtend = async () => {
-    this.setState({
-      showSpinner: true,
-      spinnerText: "Extending slice..."
-    })
-    try {
-      const { slice, leaseEndTime } = this.state;
-      await extendSlice(slice.slice_id, leaseEndTime);
-      // toast message to users when the api call is successfully done.
-      toast.success("Slice has been successfully renewed.");
-      await sleep(1000);
-      window.location.reload();
-    } catch (err) {
-      toast.error("Failed to renew the slice.");
-      this.setState({
-        leaseEndTime: this.state.slice.lease_end_time,
-        showSpinner: false,
-        spinnerText: ""
-      });
     }
   }
 
@@ -207,15 +172,12 @@ export default class SliceViewerErrorBoundary extends Component {
                               <OverlayTrigger
                                 placement="right"
                                 delay={{ show: 100, hide: 300 }}
-                                overlay={renderTooltip("lease-end-tooltip", "You can up to 15 days as of now.")}
+                                overlay={renderTooltip("lease-end-tooltip", "You can extend up to 15 days as of now.")}
                               >
                                 <i className="fa fa-question-circle text-secondary ml-2"></i>
                               </OverlayTrigger>
                             }
                           </label>
-                          <div className="slice-form-element">
-                            {utcToLocalTimeParser(this.props.slice.lease_end_time)}
-                          </div>
                           {
                             slice.state !=="StableOK" &&
                             <div className="slice-form-element">
@@ -229,14 +191,14 @@ export default class SliceViewerErrorBoundary extends Component {
                                 <Calendar
                                   id="sliceViewerCalendar"
                                   name="sliceViewerCalendar"
-                                  onTimeChange={this.handleLeaseEndChange}
+                                  onTimeChange={this.props.onLeaseEndChange}
                                   parent={"sliceDetailForm"}
                                   currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                                 />
                               </div>
                               <button
                                 className="btn btn-sm btn-outline-primary mt-2 mr-3"
-                                onClick={this.handleSliceExtend}
+                                onClick={this.props.onSliceExtend}
                               >
                                 Extend
                               </button>
