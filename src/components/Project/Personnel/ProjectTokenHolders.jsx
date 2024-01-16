@@ -46,7 +46,7 @@ class ProjectTokenHolders extends Component {
       <div>
         <h4>Long-lived Token Holders</h4>
         <div className="alert alert-primary mb-2" role="alert">
-          {"Users running long-lived experiments supported by unattended automated tools can now request non-renewable long-lived API Tokens (lifetime up to 5 weeks)."}
+          {"Users running long-lived experiments supported by unattended automated tools can now request non-renewable long-lived API Tokens (lifetime up to 9 weeks)."}
           {"For more information, please read this guide article: "}
           <a
             href={portalData.learnArticles.guideToLongLivedTokens}
@@ -94,18 +94,11 @@ class ProjectTokenHolders extends Component {
                 operation="remove"
               /> :
               <div className="alert alert-primary" role="alert">
-                {`This project has no ${personnelType}.`}
+                {`This project has no long-lived ${personnelType}.`}
               </div>
             }
             </div>
           </div>
-
-        {
-          token_holders.length === 0 && !isFO && 
-          <div className="alert alert-primary" role="alert">
-            {`This project has no ${personnelType}.`}
-          </div>
-        }
         {
           !isTokenHolder && !isFO && !projectExpired && <button
             className="btn btn-sm btn-outline-success mr-2 my-3"

@@ -1,6 +1,5 @@
 import React from "react";
 import { getActiveCarouselItems } from "../../services/announcementService";
-import { toast } from "react-toastify";
 import Parser from 'html-react-parser';
 
 class Carousel extends React.Component {
@@ -8,13 +7,28 @@ class Carousel extends React.Component {
     items: [],
   };
 
+  placeholderItems = [
+    {
+      "announcement_type": "carousel",
+      "background_image_url": "https://github.com/fabric-testbed/fabric-portal/assets/37635744/f2365fff-d40e-4204-9a74-a4697ddefc08",
+      "button": "Learn More",
+      "content": "<ul><li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li><li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li><li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li></ul>",
+      "is_active": true,
+      "link": "https://portal.fabric-testbed.net/about/about-fabric",
+      "sequence": 1,
+      "start_date": "2023-11-02 18:49:51.339756+00:00",
+      "title": "FABRIC Portal is your guide, helping make your experiment a success.",
+      "uuid": "e0d53c5f-0922-4e3d-8f43-8cd520921ea4"
+    }
+  ]
+
   async componentDidMount() {
     try {
       const { data: res } = await getActiveCarouselItems();
       let items = res.results;
       this.setState({ items });
     } catch (err) {
-      toast.error("Failed to load carousel items. Please reload this page.");
+      this.setState({ items: this.placeholderItems });
     }
   }
 
@@ -49,7 +63,7 @@ class Carousel extends React.Component {
           items && items.length > 0 && items.map((item, index) =>
           <div className={`carousel-item ${index === 0? "active" : ""}`}>
             <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
-            <div className="carousel-caption d-none d-md-block">
+            <div className="carousel-caption d-md-block">
               <div className="carousel-caption-content">
                 <h3>{item.title}</h3>
                 <div className="homepage-carousel-content">
