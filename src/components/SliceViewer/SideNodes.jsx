@@ -127,6 +127,12 @@ class SideNodes extends React.Component {
         bandwidth: 0,
         vlan: ""
       })
+    } else if (this.state.nodeType === "Switch") {
+      const { selectedSite, nodeName } = this.state;
+      this.props.onSwitchAdd(selectedSite.name, nodeName);
+      this.setState({
+        nodeName: ""
+      })
     }
   }
 
@@ -385,10 +391,11 @@ class SideNodes extends React.Component {
                   >
                     <option value="VM">VM</option>
                     <option value="Facility">Facility Port</option>
+                    <option value="Switch">Switch</option>
                   </select>
                 </div>
                 {
-                  nodeType === "VM" && <div className="form-group slice-builder-form-group col-md-6">
+                  ["VM", "Switch"].includes(nodeType) && <div className="form-group slice-builder-form-group col-md-6">
                     <label htmlFor="inputNodeName" className="slice-builder-label">
                       Node Name
                       <OverlayTrigger
