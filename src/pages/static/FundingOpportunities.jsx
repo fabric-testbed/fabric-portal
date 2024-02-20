@@ -30,7 +30,7 @@ const solicitations = [
     "name": "NSF 23-576",
     "url": "https://new.nsf.gov/funding/opportunities/computer-information-science-engineering-research/nsf23-576/solicitation",
     "sortDate": "2024-09-18",
-    "displayDate": "September 09, 2024"
+    "displayDate": "September 18, 2024"
   },
   {
     "name": "NSF 24-536",
