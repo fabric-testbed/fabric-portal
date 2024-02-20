@@ -6,13 +6,13 @@ const solicitations = [
     "name": "NAIRR Pilot",
     "url": "https://idaorg.gov1.qualtrics.com/jfe/form/SV_cRMnkUFJoXs7UfI?utm_medium=email&_hsmi=293777879&_hsenc=p2ANqtz-8gCHxFAq6pzEEOUbzQtu5DjeJN1XcGeiTT8HCy-OHDwJKJtYZ24lViNDFoFe8krDf5GGJZJoJ_qJrhh6PKwRg9Ah1IzA&utm_content=293777879&utm_source=hs_email",
     "sortDate": "2024-03-08",
-    "displayDate": "March 03, 2024"
+    "displayDate": "March 08, 2024"
   },
   {
     "name": "NSF 24-530",
     "url": "https://new.nsf.gov/funding/opportunities/campus-cyberinfrastructure-cc",
     "sortDate": "2024-04-22",
-    "displayDate": "April 04, 2024"
+    "displayDate": "April 22, 2024"
   },
   {
     "name": "NSF 23-589",
