@@ -3,10 +3,28 @@ import BackgroundImage from "../../imgs/network-bg.svg";
 
 const solicitations = [
   {
-    "name": "CC* 21-528",
-    "url": "https://www.nsf.gov/pubs/2021/nsf21528/nsf21528.htm",
-    "sortDate": "2021-10-21",
-    "displayDate": "March 01, 2021; October 11, 2021"
+    "name": "NAIRR Pilot",
+    "url": "https://idaorg.gov1.qualtrics.com/jfe/form/SV_cRMnkUFJoXs7UfI?utm_medium=email&_hsmi=293777879&_hsenc=p2ANqtz-8gCHxFAq6pzEEOUbzQtu5DjeJN1XcGeiTT8HCy-OHDwJKJtYZ24lViNDFoFe8krDf5GGJZJoJ_qJrhh6PKwRg9Ah1IzA&utm_content=293777879&utm_source=hs_email",
+    "sortDate": "2024-03-08",
+    "displayDate": "March 03, 2024"
+  },
+  {
+    "name": "NSF 24-530",
+    "url": "https://new.nsf.gov/funding/opportunities/campus-cyberinfrastructure-cc",
+    "sortDate": "2024-04-22",
+    "displayDate": "April 04, 2024"
+  },
+  {
+    "name": "NSF 23-589",
+    "url": "https://new.nsf.gov/funding/opportunities/community-infrastructure-research-computer/nsf23-589/solicitation",
+    "sortDate": "2024-09-13",
+    "displayDate": "September 13, 2024"
+  },
+  {
+    "name": "NSF 24-504",
+    "url": "https://new.nsf.gov/funding/opportunities/secure-trustworthy-cyberspace-satc/nsf24-504/solicitation",
+    "sortDate": "2025-01-01",
+    "displayDate": "No deadline"
   },
   {
     "name": "CISE-MSI Program",
@@ -21,46 +39,10 @@ const solicitations = [
     "displayDate": "TBD"
   },
   {
-    "name": "CISE Core 20-591",
-    "url": "https://www.nsf.gov/pubs/2020/nsf20591/nsf20591.htm",
-    "sortDate": "2020-10-28",
-    "displayDate": "October 28, 2020 for Medium and OAC Core Projects, October 1, 2020 for Small projects"
-  },
-  {
-    "name": "CC* 20-507",
-    "url": "https://www.nsf.gov/pubs/2020/nsf20507/nsf20507.htm",
-    "sortDate": "2020-11-18",
-    "displayDate": "November 18, 2020"
-  },
-  {
-    "name": "IRNC 20-535",
-    "url": "https://www.nsf.gov/pubs/2020/nsf20535/nsf20535.htm",
-    "sortDate": "2020-04-08",
-    "displayDate": "April 08, 2020"
-  },
-  {
-    "name": "CICI",
-    "url": "https://www.nsf.gov/pubs/2021/nsf21512/nsf21512.htm",
-    "sortDate": "2021-01-08",
-    "displayDate": "January 08, 2021"
-  },
-  {
-    "name": "NSF 21-581",
-    "url": "https://www.nsf.gov/pubs/2021/nsf21581/nsf21581.htm",
-    "sortDate": "2021-07-29",
-    "displayDate": "5pm July 29, 2021"
-  },
-  {
     "name": "NSF 21-591",
     "url": "https://www.nsf.gov/pubs/2021/nsf21591/nsf21591.htm",
     "sortDate": "2021-09-20",
     "displayDate": "5pm September 20, 2021, Third Monday in September, Annually Thereafter"
-  },
-  {
-    "name": "NSF 22-509",
-    "url": "https://www.nsf.gov/pubs/2022/nsf22509/nsf22509.htm",
-    "sortDate": "2022-06-23",
-    "displayDate": "June 23, 2022"
   },
   {
     "name": "NSF 22-518",
@@ -73,30 +55,6 @@ const solicitations = [
     "url": "https://www.nsf.gov/pubs/2022/nsf22517/nsf22517.htm",
     "sortDate": "2023-12-31",
     "displayDate": "Proposals Accepted Anytime"
-  },
-  {
-    "name": "NSF 22-582",
-    "url": "https://www.nsf.gov/pubs/2022/nsf22582/nsf22582.htm",
-    "sortDate": "2022-06-27",
-    "displayDate": "June 27, 2022"
-  },
-  {
-    "name": "NGI Enrichers Program",
-    "url": "https://enrichers.ngi.eu/",
-    "sortDate": "2023-01-31",
-    "displayDate": "January 31, 2023"
-  },
-  {
-    "name": "Campus Cyberinfrastructure (CC*)",
-    "url": "https://www.nsf.gov/pubs/2023/nsf23526/nsf23526.htm",
-    "sortDate": "2023-09-11",
-    "displayDate": "September 11, 2023"
-  },
-  {
-    "name": "Community Infrastructure for Research in Computer and Information Science and Engineering (CIRC)",
-    "url": "https://new.nsf.gov/funding/opportunities/community-infrastructure-research-computer",
-    "sortDate": "2023-09-08",
-    "displayDate": "September 8, 2023"
   }
 ]
 
