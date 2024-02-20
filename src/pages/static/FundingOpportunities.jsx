@@ -27,34 +27,16 @@ const solicitations = [
     "displayDate": "No deadline"
   },
   {
-    "name": "CISE-MSI Program",
-    "url": "https://www.nsf.gov/pubs/2021/nsf21533/nsf21533.htm?org=NSF",
-    "sortDate": "2021-04-15",
-    "displayDate": "April 15, 2021 (April 15, annually thereafter)"
+    "name": "NSF 23-576",
+    "url": "https://new.nsf.gov/funding/opportunities/computer-information-science-engineering-research/nsf23-576/solicitation",
+    "sortDate": "2024-09-18",
+    "displayDate": "September 09, 2024"
   },
   {
-    "name": "ICE-T",
-    "url": "https://www.nsf.gov/pubs/2018/nsf18535/nsf18535.htm",
-    "sortDate": "2021-02-02",
-    "displayDate": "TBD"
-  },
-  {
-    "name": "NSF 21-591",
-    "url": "https://www.nsf.gov/pubs/2021/nsf21591/nsf21591.htm",
-    "sortDate": "2021-09-20",
-    "displayDate": "5pm September 20, 2021, Third Monday in September, Annually Thereafter"
-  },
-  {
-    "name": "NSF 22-518",
-    "url": "https://www.nsf.gov/pubs/2022/nsf22518/nsf22518.htm",
-    "sortDate": "2022-02-11",
-    "displayDate": "February 11. 2022; Annually Thereafter"
-  },
-  {
-    "name": "NSF 22-517",
-    "url": "https://www.nsf.gov/pubs/2022/nsf22517/nsf22517.htm",
-    "sortDate": "2023-12-31",
-    "displayDate": "Proposals Accepted Anytime"
+    "name": "NSF 24-536",
+    "url": "https://new.nsf.gov/funding/opportunities/computer-information-science-engineering-research-0/nsf24-536/solicitation",
+    "sortDate": "2024-05-02",
+    "displayDate": "May 02, 2024"
   }
 ]
 
