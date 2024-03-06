@@ -3,6 +3,7 @@ import iconInternet from "../../imgs/capabilities/internet.png";
 import iconIot from "../../imgs/capabilities/iot.png";
 import iconMachineLearning from "../../imgs/capabilities/machine-learning.png";
 import iconSecurity from "../../imgs/capabilities/security.png";
+import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -78,15 +79,20 @@ const CapabilityIcons = () => {
           )
         }
       </div>
-      <div className="w-50 d-flex flex-row justify-content-between mt-4">
+      <div className="w-75 d-flex flex-row justify-content-between mt-4 px-5">
         <Link to="/about/about-fabric">
           <button className="btn homepage-icon-btn">
-            MORE ABOUT FABRIC
+            About FABRIC
           </button>
         </Link>
-        <Link to="/about/about-fab">
+        <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">
           <button className="btn homepage-icon-btn">
-            MORE ABOUT FAB
+            Knowledge Base
+          </button>
+        </a>
+        <Link to="/community/publications">
+          <button className="btn homepage-icon-btn">
+            Cite FABRIC
           </button>
         </Link>
       </div>

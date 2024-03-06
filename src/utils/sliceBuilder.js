@@ -10,7 +10,7 @@ const modelDetails = {
   "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
   "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
   "NAS": "Site-local NAS share",
-  "OpenStack-vNIC": "OpenStack virtual vNIC typically 1Gbps",
+  // "OpenStack-vNIC": "OpenStack virtual vNIC typically 1Gbps",
   "Xilinx-U280": "Xilinx U280 FPGA Dual 100G port accelerator card"
 }
 

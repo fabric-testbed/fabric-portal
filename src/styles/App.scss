@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 .home-container {
   min-height: 75vh;
   margin: 0;
-  margin-top: -6px;
+  margin-top: -8px;
   margin-bottom: 4rem;
 }
 
@@ -937,6 +937,7 @@ ul,
 }
 
 .homepage-icon-btn {
+  width: 10rem;
   background-color: $warning;
   color: #fff;
 }

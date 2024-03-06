@@ -8,7 +8,7 @@ export default class SingleComponent extends Component {
     componentTypeModel: {
       "GPU": ["RTX6000", "Tesla T4", "A30", "A40"],
       "SmartNIC": ["ConnectX-6", "ConnectX-5"],
-      "SharedNIC": ["ConnectX-6", "OpenStack-vNIC"],
+      "SharedNIC": ["ConnectX-6"],
       "FPGA": ["Xilinx-U280"],
       "NVME": ["P4510"],
       "Storage": ["NAS"]
@@ -20,7 +20,7 @@ export default class SingleComponent extends Component {
       "A40": "NVIDIA Corporation GA102GL [A40] (rev a1)",
       "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
       "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
-      "OpenStack-vNIC": "OpenStack virtual vNIC typically 1Gbps",
+      // "OpenStack-vNIC": "OpenStack virtual vNIC typically 1Gbps",
       "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
       "NAS": "Site-local NAS share",
       "Xilinx-U280": "Xilinx U280 FPGA Dual 100G port accelerator card"
