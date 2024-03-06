@@ -6,9 +6,9 @@ import { default as portalData } from "../../services/portalData.json";
 export default class SingleComponent extends Component { 
   state = {
     componentTypeModel: {
-      "GPU": ["RTX6000", "Tesla T4"],
+      "GPU": ["RTX6000", "Tesla T4", "A30", "A40"],
       "SmartNIC": ["ConnectX-6", "ConnectX-5"],
-      "SharedNIC": ["ConnectX-6"],
+      "SharedNIC": ["ConnectX-6", "OpenStack-vNIC"],
       "FPGA": ["Xilinx-U280"],
       "NVME": ["P4510"],
       "Storage": ["NAS"]
@@ -16,8 +16,11 @@ export default class SingleComponent extends Component {
     modelDetails: {
       "RTX6000": "NVIDIA Corporation TU102GL [Quadro RTX 6000/8000] (rev a1)",
       "Tesla T4": "NVIDIA Corporation TU104GL [Tesla T4] (rev a1)",
+      "A30": "NVIDIA Corporation GA100GL [A30 PCIe] (rev a1)",
+      "A40": "NVIDIA Corporation GA102GL [A40] (rev a1)",
       "ConnectX-6": "Mellanox ConnectX-6 VPI MCX653 dual port 100Gbps",
       "ConnectX-5": "Mellanox ConnectX-5 Dual Port 10/25GbE",
+      "OpenStack-vNIC": "OpenStack virtual vNIC typically 1Gbps",
       "P4510": "Dell Express Flash NVMe P4510 1TB SFF",
       "NAS": "Site-local NAS share",
       "Xilinx-U280": "Xilinx U280 FPGA Dual 100G port accelerator card"
