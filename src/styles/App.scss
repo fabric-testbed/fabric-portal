@@ -588,6 +588,11 @@ ul,
   min-height: 82vh;
 }
 
+.slice-viewer-project-tags-card-body {
+  max-height: 7.75rem;
+  overflow: scroll;
+}
+
 .tab-content {
   border-bottom: 1px solid #dee2e6;
   border-left: 1px solid #dee2e6;
