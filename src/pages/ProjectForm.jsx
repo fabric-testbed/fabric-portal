@@ -498,15 +498,19 @@ class ProjectForm extends Form {
   }
 
   checkProjectExpiration = (expirationTime) => {
-    const utcDateTime = expirationTime.substring(0, 19);
-    const stillUtc = moment.utc(utcDateTime).toDate();
-    return stillUtc < new Date();
+    if (expirationTime) {
+      const utcDateTime = expirationTime.substring(0, 19);
+      const stillUtc = moment.utc(utcDateTime).toDate();
+      return stillUtc < new Date();
+    }
   }
 
   checkProjectExpireInOneMonth = (expirationTime) => {
-    const utcDateTime = expirationTime.substring(0, 19);
-    const stillUtc = moment.utc(utcDateTime).toDate();
-    return stillUtc < moment(new Date()).add(1, 'M');
+    if (expirationTime) {
+      const utcDateTime = expirationTime.substring(0, 19);
+      const stillUtc = moment.utc(utcDateTime).toDate();
+      return stillUtc < moment(new Date()).add(1, 'M');
+    }
   }
 
   render() {

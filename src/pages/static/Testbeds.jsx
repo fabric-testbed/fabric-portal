@@ -82,7 +82,7 @@ const testbeds = [
   },
   {
     "name": "FAB",
-    "url": "https://portal.fabric-testbed.net/about/about-fab",
+    "url": "https://portal.fabric-testbed.net/about/about-fabric",
     "image": FAB,
     "description": "FABRIC Across Borders (FAB) is an extension of the FABRIC testbed connecting the core North America infrastructure to four nodes in Asia, Europe, and South America. By creating the networks needed to move vast amounts of data across oceans and time zones seamlessly and securely, the project enables international collaboration to speed scientific discovery."
   },

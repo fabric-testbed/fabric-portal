@@ -23,7 +23,6 @@ import NotFound from "./pages/static/NotFound";
 import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
 import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
-import FAB from "./pages/static/FAB.jsx";
 import SAC from "./pages/static/SAC.jsx";
 import Leadership from "./pages/static/Leadership";
 import FundingOpportunities from "./pages/static/FundingOpportunities";
@@ -175,7 +174,6 @@ class App extends React.Component {
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/about/about-fabric" element={<AboutFABRIC />} />
-            <Route path="/about/about-fab" element={<FAB />} />
             <Route path="/about/sac" element={<SAC />} />
             <Route path="/about/leadership" element={<Leadership />} />
             <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
