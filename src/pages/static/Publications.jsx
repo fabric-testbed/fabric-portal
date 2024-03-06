@@ -5,7 +5,7 @@ const Publications = () => {
   return (
     <div className="container static-page pb-5">
       <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
-      <h1 className="mb-4">Publications</h1>
+      <h1 className="mb-4">Cite FABRIC</h1>
       <h2 className="text-primary mb-4">
         <u>
           <a

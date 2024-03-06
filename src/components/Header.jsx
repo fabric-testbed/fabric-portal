@@ -40,10 +40,6 @@ const Header = (props) => {
           path: "/about/about-fabric"
         },
         {
-          name: "FAB",
-          path: "/about/about-fab"
-        },
-        {
           name: "SAC",
           path: "/about/sac"
         },
@@ -78,7 +74,7 @@ const Header = (props) => {
           path: "/community/testbeds-and-facilities"
         },
         {
-          name: "Publications",
+          name: "Cite FABRIC",
           path: "/community/publications"
         }
       ],
