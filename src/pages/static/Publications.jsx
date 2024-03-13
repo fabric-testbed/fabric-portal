@@ -19,15 +19,35 @@ const Publications = () => {
       </h2>
       <p>
       Ilya Baldin, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, Paul Ruth <br></br>
-      <u>
-        <a
-          href="https://ieeexplore.ieee.org/document/8972790"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          DOI: 10.1109/MIC.2019.2958545
-        </a>
-      </u>
+      <div className="d-flex align-items-center">
+        <u>
+          <a
+            href="https://ieeexplore.ieee.org/document/8972790"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            DOI: 10.1109/MIC.2019.2958545
+          </a>
+        </u>
+        <div className="modal fade" id="citeFABRICModal" tabindex="-1" role="dialog" aria-labelledby="citeFABRICModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content" id="citeFABRICModalContent">
+              <div className="modal-header">
+                <h5 className="modal-title" id="citeFABRICModalLabel">Cite FABRIC</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                ...
+              </div>
+            </div>
+          </div>
+        </div>
+        <button className="btn btn-outline-primary ml-3" data-toggle="modal" data-target="#citeFABRICModal">
+          Cite FABRIC
+        </button>
+      </div>
       </p>
       <p>
         <b>Abstract:</b><br></br>

@@ -1145,3 +1145,11 @@ ul,
   border-radius: 5px;
   padding: 0.15rem 0.5rem;
 }
+
+.modal-backdrop {
+  z-index: -1;
+}
+
+#citeFABRICModalContent {
+  margin-top: 5rem;
+}
