@@ -260,7 +260,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .static-page-bg {
-  opacity: 0.2;
+  opacity: 0.1;
   position: fixed;
   z-index: -1;
   left: 0;
@@ -816,6 +816,15 @@ ul,
   padding: 3px;
 }
 
+.cite-fabric-copy {
+  padding: 1rem 0.5rem;
+  width: 100%;
+  font-size: 90%;
+  color: rgb(77, 77, 77);
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+
 .slice-form-element {
   width: 100%;
   background-color: #e9ecef;
@@ -1144,12 +1153,4 @@ ul,
   font-size: 85%;
   border-radius: 5px;
   padding: 0.15rem 0.5rem;
-}
-
-.modal-backdrop {
-  z-index: -1;
-}
-
-#citeFABRICModalContent {
-  margin-top: 5rem;
 }
