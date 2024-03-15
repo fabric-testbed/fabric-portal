@@ -13,6 +13,22 @@ const Publications = () => {
       <div className="cite-fabric-copy">
         {
           `
+          Baldin, Ilya, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, and Paul Ruth. “FABRIC: A national-scale programmable experimental network infrastructure.” IEEE Internet Computing 23, no. 6 (2019): 38-47.
+          `
+        }
+        <CopyButton
+          id={
+            `Baldin, Ilya, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, and Paul Ruth. “FABRIC: A national-scale programmable experimental network infrastructure.” IEEE Internet Computing 23, no. 6 (2019): 38-47.`
+          }
+          btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
+          showCopiedValue={false}
+          text=""
+        />
+      </div>
+      <p>or using <b>BibTeX</b> below:</p>
+      <div className="cite-fabric-copy">
+        {
+          `
             @article{fabric-2019,
               title={{FABRIC: A national-scale programmable experimental network infrastructure}},
               author={Baldin, Ilya and Nikolich, Anita and Griffioen, James and Monga, Indermohan Inder S and Wang, Kuang-Ching and Lehman, Tom and Ruth, Paul},
@@ -36,22 +52,6 @@ const Publications = () => {
               pages={38--47},
               publisher={IEEE}
             }`
-          }
-          btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
-          showCopiedValue={false}
-          text=""
-        />
-      </div>
-      <p>or</p>
-      <div className="cite-fabric-copy">
-        {
-          `
-          Baldin, Ilya, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, and Paul Ruth. “FABRIC: A national-scale programmable experimental network infrastructure.” IEEE Internet Computing 23, no. 6 (2019): 38-47.
-          `
-        }
-        <CopyButton
-          id={
-            `Baldin, Ilya, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, and Paul Ruth. “FABRIC: A national-scale programmable experimental network infrastructure.” IEEE Internet Computing 23, no. 6 (2019): 38-47.`
           }
           btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
           showCopiedValue={false}
