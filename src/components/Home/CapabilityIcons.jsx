@@ -80,7 +80,7 @@ const CapabilityIcons = () => {
           )
         }
       </div>
-      <div className="w-75 d-flex flex-row justify-content-between mt-4 px-5">
+      <div className="fabric-capability-button">
         <Link to="/about/about-fabric">
           <button className="btn homepage-icon-btn">
             About FABRIC
