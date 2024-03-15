@@ -57,7 +57,7 @@ const DetailTable = props => {
 
   return (
     <div>
-      <table className="table">
+      <table className="table resource-detail-table">
         <thead>
           <tr>
             <th scope="col" colSpan="2" className="text-center">
@@ -85,11 +85,21 @@ const DetailTable = props => {
               {
                 resource && parent === "sitepage" && !sitesNameMapping.acronymToShortName[name] && name
               }
+              {
+                resource &&
+                <span
+                  className={`badge badge-pill badge-${statusMapping[resource.status.state].colorName} px-2 ml-2`}
+                >
+                  { statusMapping[resource.status.state].state }
+                </span>
+              }
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+        {
+            !resource &&
+            <tr>
             <td>Status</td>
             <td className="align-middle text-center">
               {
@@ -108,6 +118,16 @@ const DetailTable = props => {
               }
             </td>
           </tr>
+        }
+          {
+            resource &&
+            <tr>
+              <td className="text-md-size"><b>Resource</b></td>
+              <td className="align-middle w-75 text-md-size text-center">
+                <b>available / total</b>
+              </td>
+            </tr>
+          }
           {
             resource && rows.map((row, index) => {
               return (

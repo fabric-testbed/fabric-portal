@@ -12,7 +12,7 @@ import { default as portalData } from "../../services/portalData.json";
 const nsfAwardNumbers = [1935966, 2029176, 2029200, 2029235, 2029260, 2029261, 2330891];
 const teamMembers = [
   {
-    name: "Ilya Baldin",
+    name: "Paul Ruth",
     org: "RENCI",
     link: "https://renci.org/"
   },
