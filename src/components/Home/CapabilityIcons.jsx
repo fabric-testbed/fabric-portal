@@ -71,9 +71,10 @@ const CapabilityIcons = () => {
                     index === tabIndex ? 
                     "homepage-icon-heading-active" : 
                     "homepage-icon-heading"}
-                  >
-                    {capability.title} 
-                  </div>
+                  key={`capability-icon-${index}`}
+                >
+                  {capability.title} 
+                </div>
               )
             }
           )
