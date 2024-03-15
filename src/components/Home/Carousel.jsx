@@ -62,7 +62,10 @@ class Carousel extends React.Component {
         <div className="carousel-inner">
         {
           items && items.length > 0 && items.map((item, index) =>
-          <div className={`carousel-item ${index === 0? "active" : ""}`}>
+          <div
+            className={`carousel-item ${index === 0? "active" : ""}`}
+            key={`carousel-item-${index}`}
+          >
             {
               index === 0 ? 
               <img src={bg1} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/> :
