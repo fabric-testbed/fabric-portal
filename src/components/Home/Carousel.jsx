@@ -1,5 +1,6 @@
 import React from "react";
 import { getActiveCarouselItems } from "../../services/announcementService";
+import bg1 from "../../imgs/homepage/bg1.jpeg";
 import Parser from 'html-react-parser';
 
 class Carousel extends React.Component {
@@ -61,8 +62,15 @@ class Carousel extends React.Component {
         <div className="carousel-inner">
         {
           items && items.length > 0 && items.map((item, index) =>
-          <div className={`carousel-item ${index === 0? "active" : ""}`}>
-            <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
+          <div
+            className={`carousel-item ${index === 0? "active" : ""}`}
+            key={`carousel-item-${index}`}
+          >
+            {
+              index === 0 ? 
+              <img src={bg1} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/> :
+              <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
+            }
             <div className="carousel-caption d-md-block">
               <div className="carousel-caption-content">
                 <h3>{item.title}</h3>

@@ -8,13 +8,14 @@ import TomLehman from "../../imgs/leadership/tom-lehman.jpg";
 import PaulRuth from "../../imgs/leadership/paul-ruth.jpg";
 import ZongmingFei from "../../imgs/leadership/zongming-fei.jpg";
 import DaleCarder from "../../imgs/leadership/dale-carder.jpg";
+import BryttanyTodd from "../../imgs/leadership/bryttany-todd.jpg";
 import BackgroundImage from "../../imgs/network-bg.svg";
 
 const leadershipMembers = [
   {
-    "name": "Ilya Baldin",
-    "photo": IlyaBaldin ,
-    "description": "Ilya Baldin leads RENCI’s network research and infrastructure group (NRIG). He is a networking researcher with a wide range of interests, including high-speed optical network architectures, cross-layer interactions, novel signaling schemes, and network security. He was a co-PI for the ExoGENI project – part of the GENI testbed and is now the PI and Project Director for the new FABRIC testbed. Before coming to RENCI, Baldin was the principal scientist at the Center for Advanced Network Research at the Research Triangle Institute and a network research engineer at the Advanced Network Research group at MCNC, where he was a team member and a leader of a number of federally funded research efforts. He holds PhD and MS degrees in computer science from North Carolina State University."
+    "name": "Paul Ruth",
+    "photo": PaulRuth,
+    "description": "Paul Ruth is an Assistant Director of the Network Research and Infrastructure Group at RENCI, UNC-Chapel Hill. His research interests include building and using dynamic cloud computing and network testbeds targeting computational and data-driven scientific workflows. He is a long-time contributor to several large system and networking testbeds, including GENI (ExoGENI) and Chameleon, and is now the PI and Project Director for the FABRIC testbed. He earned his Ph.D. degree in Computer Science from Purdue University in 2007."
   },
   {
     "name": "Anita Nikolich",
@@ -42,11 +43,6 @@ const leadershipMembers = [
     "description": "Tom Lehman is currently a Research Scientist for Virnao. His research interests include technologies and systems which facilitate the orchestration of high-performance network, computation, and storage resources in service of big data driven domain science application workflows. He was previously the Director of Research at the University of Maryland Mid-Atlantic Crossroads where he was responsible for leading advanced cyberinfrastructure systems research and development. Prior to joining the University of Maryland, he was a Computer Scientist and Project Leader at the University of Southern California, Information Science Institute. He received a B.S. from Virginia Tech and a M.S. in Electrical Engineering from The Johns Hopkins University."
   },
   {
-    "name": "Paul Ruth",
-    "photo": PaulRuth,
-    "description": "Paul Ruth is a Senior Research Scientist at RENCI, UNC-Chapel Hill. He is a researcher in the network research and infrastructure (NRIG). His research interests include building and using dynamic cloud computing and network testbeds for software-defined exchanges targeted at data-driven scientific workflows. He earned his Ph.D. degree in Computer Science from Purdue University in 2007."
-  },
-  {
     "name": "Zongming Fei",
     "photo": ZongmingFei,
     "description": "Zongming Fei is a Professor and Director of Graduate Studies in the Department of Computer Science at the University of Kentucky. His research interests include Network Protocols, Distributed Systems, and Cyber-Physical systems, with a recent focus on cloud computing, software-defined networking, overlay networks, and smart grid communications."
@@ -55,6 +51,11 @@ const leadershipMembers = [
     "name": "Dale Carder",
     "photo": DaleCarder,
     "description": "Dale Carder is a Network Engineer at Lawrence Berkeley National Laboratory working on ESnet. He builds large-scale, complex, resilient, next-generation long-haul networks for International science projects such as the Large Hadron Collider (LHC). His expertise lies in the areas of dynamic provisioning, global traffic engineering and control frameworks. He comfortably works at the intersection of software, network, compute, application workflows, and systems engineering and has run R&E networks for 20 years."
+  },
+  {
+    "name": "Bryttany Todd",
+    "photo": BryttanyTodd,
+    "description": "Bryttany Todd is the Acting Assistant Director of Research at RENCI, UNC-Chapel Hill. Her interests include developing and executing project and program management strategy and operational needs . She currently manages various research projects and RENCI programs including FABRIC, MERIF, and RENCI's internship program."
   }  
 ]
 
@@ -80,6 +81,22 @@ const Leadership = () => {
         </div>
         )
       }
+      <h2>
+        Past Collaborators
+      </h2>
+      <div className="row my-5">
+          <div className="col-3">
+            <img src={IlyaBaldin} alt={`FABRIC Leadership Ilya`} className="member-photo-round"/>
+          </div>
+          <div className="col-9">
+            <h3 className="text-primary mb-3">
+              Ilya Baldin
+            </h3>
+            <p>
+              Ilya Baldin is the former leader of RENCI’s network research and infrastructure group (NRIG). He is currently working for DOE Jefferson Lab as a Data Fabric Integration Architect for the High-Performance Data Facility (HPDF). Ilya is a networking researcher with a wide range of interests, including high-speed optical network architectures, cross-layer interactions, novel signaling schemes, and network security. He was a co-PI for the ExoGENI project – part of the GENI testbed and was the PI and Project Director for the FABRIC testbed from 2019-2023 during its construction phase. Before coming to RENCI, Baldin was the principal scientist at the Center for Advanced Network Research at the Research Triangle Institute and a network research engineer at the Advanced Network Research group at MCNC, where he was a team member and a leader of a number of federally funded research efforts. He holds PhD and MS degrees in computer science from North Carolina State University.
+            </p>
+          </div>
+        </div>
     </div>
   );
 };

@@ -297,64 +297,64 @@ const validateNetworkService = (serviceType, selectedCPs, serviceName, nodes) =>
     return validationResult;
   }
 
-  if (serviceType === "L2Bridge") {
-    // expect all selected CP's site are the same.
-    const site = getSite(selectedCPs[0]);
-    for (const cp of selectedCPs) {
-      if (getSite(cp) !== site) {
-        validationResult.isValid = false;
-        validationResult.message = "Please select ports from the same site for L2Bridge service.";
-        return validationResult;
-      }
-    }
-  }
+  // if (serviceType === "L2Bridge") {
+  //   // expect all selected CP's site are the same.
+  //   const site = getSite(selectedCPs[0]);
+  //   for (const cp of selectedCPs) {
+  //     if (getSite(cp) !== site) {
+  //       validationResult.isValid = false;
+  //       validationResult.message = "Please select ports from the same site for L2Bridge service.";
+  //       return validationResult;
+  //     }
+  //   }
+  // }
 
-  if (serviceType === "L2PTP") {
-    // Only allows 2 connection points.
-    if (selectedCPs.length !== 2) {
-      validationResult.isValid = false;
-      validationResult.message = "Please select 2 ports for L2PTP service.";
-      return validationResult;
-    }
+  // if (serviceType === "L2PTP") {
+  //   // Only allows 2 connection points.
+  //   if (selectedCPs.length !== 2) {
+  //     validationResult.isValid = false;
+  //     validationResult.message = "Please select 2 ports for L2PTP service.";
+  //     return validationResult;
+  //   }
 
-    // ports must be DedicatedPort.
-    if(selectedCPs[0].properties.type !== "DedicatedPort" 
-    || selectedCPs[1].properties.type !== "DedicatedPort") {
-      validationResult.isValid = false;
-      validationResult.message = "Please select both DedicatedPort for L2PTP service.";
-      return validationResult;
-    }
+  //   // ports must be DedicatedPort.
+  //   if(selectedCPs[0].properties.type !== "DedicatedPort" 
+  //   || selectedCPs[1].properties.type !== "DedicatedPort") {
+  //     validationResult.isValid = false;
+  //     validationResult.message = "Please select both DedicatedPort for L2PTP service.";
+  //     return validationResult;
+  //   }
 
-    // 2 connection points must belong to 2 different sites.
-     if (getSite(selectedCPs[0]) === getSite(selectedCPs[1])) {
-      validationResult.isValid = false;
-      validationResult.message = "Please select ports from 2 different sites for L2PTP service.";
-      return validationResult;
-    }
-  }
+  //   // 2 connection points must belong to 2 different sites.
+  //    if (getSite(selectedCPs[0]) === getSite(selectedCPs[1])) {
+  //     validationResult.isValid = false;
+  //     validationResult.message = "Please select ports from 2 different sites for L2PTP service.";
+  //     return validationResult;
+  //   }
+  // }
 
-  if (serviceType === "L2STS") {
-    const siteNames = []
-    // all CPs should belong to exact 2 sites.
-    selectedCPs.forEach(cp => {
-      const cp_site = getSite(cp);
-      if (!siteNames.includes(cp_site)) {
-        siteNames.push(cp_site);
-      }
+  // if (serviceType === "L2STS") {
+  //   const siteNames = []
+  //   // all CPs should belong to exact 2 sites.
+  //   selectedCPs.forEach(cp => {
+  //     const cp_site = getSite(cp);
+  //     if (!siteNames.includes(cp_site)) {
+  //       siteNames.push(cp_site);
+  //     }
 
-      if (siteNames.length > 2) {
-        validationResult.isValid = false;
-        validationResult.message = "Please select ports from 2 sites for L2STS service.";
-        return validationResult;
-      }
-    })
+  //     if (siteNames.length > 2) {
+  //       validationResult.isValid = false;
+  //       validationResult.message = "Please select ports from 2 sites for L2STS service.";
+  //       return validationResult;
+  //     }
+  //   })
     
-    if (siteNames.length !== 2) {
-      validationResult.isValid = false;
-      validationResult.message = "Please select ports from 2 sites for L2STS service.";
-      return validationResult;
-    }
-  }
+  //   if (siteNames.length !== 2) {
+  //     validationResult.isValid = false;
+  //     validationResult.message = "Please select ports from 2 sites for L2STS service.";
+  //     return validationResult;
+  //   }
+  // }
 
   validationResult.isValid = true;
   validationResult.message = "";
