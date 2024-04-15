@@ -1,5 +1,5 @@
 {
-  "version": "1.6.3",
+  "version": "1.6.4",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "keyLimit": 10,
@@ -57,6 +57,7 @@
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
   "knowledgeBaseNewsLink": "https://learn.fabric-testbed.net/article-categories/news-archive/",
   "knowledgeBaseEventsLink": "https://learn.fabric-testbed.net/article-categories/events/",
+  "knowledgeBaseBlogsLink": "https://learn.fabric-testbed.net/article-categories/blogs/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
   "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",
