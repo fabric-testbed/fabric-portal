@@ -76,6 +76,10 @@ const Header = (props) => {
         {
           name: "Cite FABRIC",
           path: "/community/publications"
+        },
+        {
+          name: "Blogs",
+          href: portalData.knowledgeBaseBlogsLink,
         }
       ],
       path: "/community"

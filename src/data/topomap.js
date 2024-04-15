@@ -8,7 +8,7 @@ export const topomap = {
     "Washington": [-77.0369, 38.9072],
     "MGHPCC": [-72.6162, 42.2043],
     "StarLight": [-87.6173, 41.8962],
-    "University of Tokyo": [-139.6503, 35.6762],
+    "University of Tokyo": [-179.6503, 35.6762],
     "University of Bristol": [-2.5879, 51.4545],
     "University of Amsterdam": [4.9041, 52.3676],
     "CERN": [6.1432, 46.2044],
