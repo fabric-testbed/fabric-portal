@@ -482,6 +482,73 @@ const addFacility = (node, graphID, nodes, links) => {
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 
+const addSwitch = (node, graphID, nodes, links) => {
+  let clonedNodes = _.clone(nodes);
+  let clonedLinks = _.clone(links);
+
+  const switch_id = generateID(nodes);
+  let switch_link_id = generateID(links);
+  // 1. add Switch node
+  // 2. add 8 port node and 'connects' link
+  const relevantNodeIDs = [];
+  const relevantLinkIDs = [];
+  for (let i = 1; i < 9; i++) {
+    relevantNodeIDs.push(switch_id + i);
+    relevantLinkIDs.push(switch_link_id, switch_link_id + i)
+  }
+
+  const p4switch = {
+    "id": switch_id,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkNode",
+    "Name": node.name,
+    "Type": "Switch",
+    "Site": node.site,
+    "StitchNode": "false",
+    "layout": JSON.stringify({
+      "relevantNodeIDs": relevantNodeIDs,
+      "relevantLinkIDs": relevantLinkIDs
+    })
+  }
+
+  clonedNodes.push(p4switch);
+
+  for (let i = 1; i < 9; i++) { 
+    const switch_port = {
+      "id": switch_id + i,
+      "GraphID": graphID,
+      "NodeID": uuidv4(),
+      "Class": "ConnectionPoint",
+      "Name": `${node.name}-int`,
+      "Type": "FacilityPort",
+      "Capacities": JSON.stringify(node.capacities),
+      "Labels": JSON.stringify({
+        "vlan": node.labels ? node.labels.vlan : 0
+      }),
+      "StitchNode": "false",
+      "layout": JSON.stringify({
+        "site": node.site,
+        "connectFrom": switch_id,
+        "connectLinkIdAsTarget": switch_id + i
+      })
+    }
+
+    const switch_connects_port = {
+      "label": "connects",
+      "Class": "connects",
+      "id": switch_link_id + i - 1,
+      "source": switch_id,
+      "target": switch_id + i,
+    }
+
+    clonedNodes.push(switch_port);
+    clonedLinks.push(switch_connects_port)
+  }
+  // return sliceNodes and sliceLinks.
+  return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
+}
+
 // async, await for adding network service
 // 1. add a Network Service Node and its Connection Points
 // 2. add two 'connects' links: cpID1 - NS.cp1 and NS.cp2 - cpID2

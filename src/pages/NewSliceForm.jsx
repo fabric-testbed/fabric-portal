@@ -289,6 +289,17 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
+  handleSwitchAdd = (site, name) => {
+    const { graphID, sliceNodes, sliceLinks } =  this.state;
+    const node = {
+      "type": "Switch",
+      "site": site,
+      "name": name
+    };
+    const { newSliceNodes, newSliceLinks } = builder.addSwitch(node, graphID, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+  }
+
   handleLinkAdd = (type, name) => {
     const { selectedCPs, graphID, sliceNodes, sliceLinks } =  this.state;
     const { newSliceNodes, newSliceLinks} = builder.addLink(type, name, selectedCPs, graphID, sliceNodes, sliceLinks);
@@ -494,6 +505,7 @@ class NewSliceForm extends React.Component {
                             nodes={sliceNodes}
                             onVMAdd={this.handleVMAdd}
                             onFacilityAdd={this.handleFacilityAdd}
+                            onSwitchAdd={this.handleSwitchAdd}
                             projectTags={projectTags}
                           />
                         }
