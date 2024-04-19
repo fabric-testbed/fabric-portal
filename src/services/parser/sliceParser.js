@@ -206,7 +206,7 @@ export default function parseSlice(slice, sliceType) {
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
       }
       elements.push(data);
-    } else if (node.Class === "NetworkService" && node.Type !== "OVS" && node.Type !== "VLAN") {
+    } else if (node.Class === "NetworkService" && !["OVS", "P4"].includes(node.Type) && node.Type !== "VLAN") {
       data = {
         id: parseInt(node.id),
         label: node.Name,
@@ -240,7 +240,7 @@ export default function parseSlice(slice, sliceType) {
     if (link.label === "has") {
       // Three main categories for "has"
       // 1. VM node has NIC/ GPU/ NVME/ Storage or vice versa
-      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.target].Type) && 
+      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage", "FPGA"].includes(objNodes[link.target].Type) && 
         objNodes[link.source].Type === "VM") {
         if (!parentNodeIds.includes(link.source)) {
           parentNodeIds.push(link.source);
@@ -248,7 +248,7 @@ export default function parseSlice(slice, sliceType) {
         data.parent = link.source;
         generateDataElement(data, link.target);
         elements.push(data);
-      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.source].Type) && 
+      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage", "FPGA"].includes(objNodes[link.source].Type) && 
       objNodes[link.target].Type === "VM") {
         // EXCEPTION: NIC/ GPU/ NVME/ Storage has VM
         if (!parentNodeIds.includes(link.target)) {
