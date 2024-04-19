@@ -301,6 +301,7 @@ const addComponent = (node, component, graphID, vm_node_id, component_node_id, c
       "target": component_node_id + 1,
     }
 
+    // P4 NS connnects two connection ports
     const cp_link_1 = {
       "label": "connects",
       "Class": "connects",

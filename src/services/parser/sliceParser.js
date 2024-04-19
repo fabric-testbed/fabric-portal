@@ -163,9 +163,10 @@ export default function parseSlice(slice, sliceType) {
   const findParentNode = (id) => {
     let parentId = -1;
     for (let i = 0; i < links.length; i++) {
-      // EXCEPTION status: OVS has SmartNIC (usually SmartNIC has OVS)
-      if (links[i].label === "has" && ["SmartNIC", "SharedNIC"].includes(objNodes[links[i].target].Type) && 
-      objNodes[links[i].source].Type === "OVS" && links[i].source === id) {
+      // EXCEPTION status: OVS has NIC (usually NIC has OVS)
+      // EXCEPTION status: P4 network service has FPGA (usually FPGA has P4)
+      if (links[i].label === "has" && ["SmartNIC", "SharedNIC", "FPGA"].includes(objNodes[links[i].target].Type) && 
+      ["OVS", "P4"].includes(objNodes[links[i].source].Type) && links[i].source === id) {
         parentId = parseInt(objNodes[links[i].target].id);
         break;
       }
@@ -218,7 +219,7 @@ export default function parseSlice(slice, sliceType) {
       const data = {};
       generateDataElement(data, node.id);
       elements.push(data);
-    } else if (node.Type === "Facility") {
+    } else if (["Facility", "Switch"].includes(node.Type)) {
       data = {
         id: parseInt(node.id),
         label: node.Name,
@@ -310,12 +311,12 @@ export default function parseSlice(slice, sliceType) {
         elements.push(fp_data);
       } else if ((objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
-        && objNodes[link.source].Type === "OVS")) {
+        && ["OVS", "P4"].includes(objNodes[link.source].Type))) {
           generateConnectionPoint(data, link, "normal");
           elements.push(data);
       } else if ((objNodes[link.target].Class === "NetworkService"
       && objNodes[link.source].Class === "ConnectionPoint"
-      && objNodes[link.target].Type === "OVS")) {
+      && ["OVS", "P4"].includes(objNodes[link.target].Type))) {
         // EXCEPTION: Connection Point (source) has OVS (target)
         generateConnectionPoint(data, link, "reverse");
         elements.push(data);
