@@ -668,8 +668,8 @@ class ProjectForm extends Form {
                 <i className="fa fa-exclamation-triangle mr-2"></i>
                 This project is going to expire in a month on {utcToLocalTimeParser(data.expired)}. 
                 {
-                  canUpdate ? <span>Please submit a ticket to renew the project.</span> : 
-                  <span>Please contact your project owner to request project renewal.</span>
+                  canUpdate ? <span> Please submit a ticket to renew the project.</span> : 
+                  <span> Please contact your project owner to request project renewal.</span>
                 }
               </div>
               {
