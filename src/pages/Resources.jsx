@@ -17,7 +17,7 @@ class Resources extends Component {
   state = {
     resources: [],
     sortColumn: { path: "name", order: "asc" },
-    pageSize: 3,
+    pageSize: 6,
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
@@ -113,6 +113,7 @@ class Resources extends Component {
 
   handlePageChange = (page, pagesCount) => {
     const currentPage = this.state.currentPage;
+    // page: -1 -> prev page; page: -2 -> next page
     if(page === -1 && currentPage > 1) {
       this.setState({ currentPage: currentPage - 1 });
     } else if (page === -2 && currentPage < pagesCount) {

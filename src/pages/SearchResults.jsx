@@ -52,16 +52,40 @@ class SearchResults extends Component {
     }
   }
 
-  handleProjectPaginationClick = (page) => {
-    this.setState({ currentProjectPage: page }, () => {
-      this.reloadProjectsData();
-    });
+  handleProjectPaginationClick = (page, pagesCount) => {
+      const currentPage = this.state.currentProjectPage;
+      // page: -1 -> prev page; page: -2 -> next page
+      if(page === -1 && currentPage > 1) {
+        this.setState({ currentProjectPage: currentPage - 1 }, () => {
+          this.reloadProjectsData();
+        });
+      } else if (page === -2 && currentPage < pagesCount) {
+        this.setState({ currentProjectPage: currentPage + 1 }, () => {
+          this.reloadProjectsData();
+        });
+      } else {
+        this.setState({ currentProjectPage: page }, () => {
+          this.reloadProjectsData();
+        });
+      }
   };
 
-  handlePeoplePaginationClick = (page) => {
-    this.setState({ currentPeoplePage: page }, () => {
-      this.reloadPeopleData();
-    });
+  handlePeoplePaginationClick = (page, pagesCount) => {
+    const currentPage = this.state.currentPeoplePage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPeoplePage: currentPage - 1 }, () => {
+        this.reloadProjectsData();
+      });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPeoplePage: currentPage + 1 }, () => {
+        this.reloadProjectsData();
+      });
+    } else {
+      this.setState({ currentPeoplePage: page }, () => {
+        this.reloadProjectsData();
+      });
+    }
   };
 
   reloadProjectsData = async () => {

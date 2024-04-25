@@ -91,9 +91,17 @@ class ProjectUserTable extends Component {
     this.setState({ sortColumn });
   };
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
+  handlePageChange = (page, pagesCount) => {
+    const currentPage = this.state.currentPage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPage: currentPage - 1 });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPage: currentPage + 1 });
+    } else {
+      this.setState({ currentPage: page });
+    }
+  }
 
   reloadPageData = () => {
     const {

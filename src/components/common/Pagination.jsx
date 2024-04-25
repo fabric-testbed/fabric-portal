@@ -4,24 +4,24 @@ import PropTypes from "prop-types";
 
 const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);
-  const maxPageDisplay = 5;
+  const boundaryCount = 6;
 
   // don't need the pagination if only 1 page.
   if (pagesCount === 1) return null;
 
   // range(start, end, step), start included, end excluded, step is 1 by default
   let pages = [];
-  if (pagesCount <= maxPageDisplay) {
+  if (pagesCount <= boundaryCount) {
     pages = _.range(1, pagesCount + 1);
-  } else if (currentPage < maxPageDisplay) {
+  } else if (currentPage < boundaryCount - 1) {
     // 1, 2, 3, 4, 5, ..., n
-    pages = [..._.range(1, maxPageDisplay + 1), -99, pagesCount];
+    pages = [..._.range(1, boundaryCount), -99, pagesCount];
   } else if (currentPage >= pagesCount - 3) {
     // 1, ..., n-4, n-3, n-2, n-1, n
     pages = [1, -99, pagesCount - 4, pagesCount - 3, pagesCount - 2, pagesCount - 1, pagesCount];
   } else {
     // 1, ..., 5, 6, 7, ..., n
-    pages = [1, -99, currentPage - 1, currentPage, currentPage + 1, -99, pagesCount];
+    pages = [1, -99, currentPage - 1, currentPage, currentPage + 1, -100, pagesCount];
   }
 
   console.log(pages)
