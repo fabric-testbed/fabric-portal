@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
 import Carousel from "../components/Home/Carousel";
+import DynamicMetrics from "../components/Home/DynamicMetrics";
 import CapabilityIcons from "../components/Home/CapabilityIcons";
 import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
@@ -63,7 +64,10 @@ class Home extends React.Component {
           </div>
         }
         <Carousel />
-        <div className="home-lower row">
+        <div className="home-colored-bg">
+          <DynamicMetrics />
+        </div>
+        <div className="home-lower row my-5">
           <div className="col-xl-9 col-lg-12">
             <div className="card homepage-card mb-4">
               <div className="card-header text-center">
@@ -93,7 +97,9 @@ class Home extends React.Component {
             <FacilityUpdates />
           </div>
         </div>
-        <CapabilityIcons />
+        <div className="home-colored-bg">
+          <CapabilityIcons />
+        </div>
         <div className="home-lower row mt-2">
           <div className="col-xl-12 col-lg-12">
             <Partners />
