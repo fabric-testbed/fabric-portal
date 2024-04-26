@@ -83,17 +83,17 @@ const CapabilityIcons = () => {
       <div className="fabric-capability-button">
         <Link to="/about/about-fabric">
           <button className="btn homepage-icon-btn">
-            About FABRIC
+            <i className="fa fa-sign-in mr-2"></i><b>About FABRIC</b>
           </button>
         </Link>
         <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">
           <button className="btn homepage-icon-btn">
-            Knowledge Base
+            <i className="fa fa-sign-in mr-2"></i><b>Knowledge Base</b>
           </button>
         </a>
         <Link to="/community/publications">
           <button className="btn homepage-icon-btn">
-            Cite FABRIC
+            <i className="fa fa-sign-in mr-2"></i><b>Cite FABRIC</b>
           </button>
         </Link>
       </div>
