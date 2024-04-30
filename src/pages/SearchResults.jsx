@@ -75,15 +75,15 @@ class SearchResults extends Component {
     // page: -1 -> prev page; page: -2 -> next page
     if(page === -1 && currentPage > 1) {
       this.setState({ currentPeoplePage: currentPage - 1 }, () => {
-        this.reloadProjectsData();
+        this.reloadPeopleData();
       });
     } else if (page === -2 && currentPage < pagesCount) {
       this.setState({ currentPeoplePage: currentPage + 1 }, () => {
-        this.reloadProjectsData();
+        this.reloadPeoplesData();
       });
     } else {
       this.setState({ currentPeoplePage: page }, () => {
-        this.reloadProjectsData();
+        this.reloadPeopleData();
       });
     }
   };

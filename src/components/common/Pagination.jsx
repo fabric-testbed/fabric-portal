@@ -24,8 +24,6 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
     pages = [1, -99, currentPage - 1, currentPage, currentPage + 1, -100, pagesCount];
   }
 
-  console.log(pages)
-
   return (
     <div className="pagination-container">
       {

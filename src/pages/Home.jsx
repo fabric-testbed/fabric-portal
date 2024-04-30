@@ -69,7 +69,7 @@ class Home extends React.Component {
         </div>
         <div className="home-lower row my-5">
           <div className="col-xl-9 col-lg-12">
-            <div className="card homepage-card mb-4">
+            <div className="card homepage-card my-4">
               <div className="card-header text-center">
                 <b>Resources</b>
               </div>

@@ -84,7 +84,9 @@ class ProjectRoles extends React.Component {
         this.reloadProjectsData();
       });
     } else if (page === -2 && currentPage < pagesCount) {
-      this.setState({ currentPage: currentPage + 1 });
+      this.setState({ currentPage: currentPage + 1 }, () => {
+        this.reloadProjectsData();
+      });
     } else {
       this.setState({ currentPage: page }, () => {
         this.reloadProjectsData();
