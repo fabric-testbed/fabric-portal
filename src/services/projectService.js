@@ -38,6 +38,14 @@ export function createProject(project, project_owners, project_members) {
       "tags": project.tags,
       "project_owners": project_owners,
       "project_members": project_members,
+      "project_funding": [
+        {
+          "agency": project.funidng_agency,
+          "award_amount": project.award_amount,
+          "award_number": project.award_number,
+          "directorate": project.funding_directorate
+        }
+      ]
     }
   );
 }
@@ -84,4 +92,12 @@ export function updateProjectExpirationTime(projectId, time) {
   return http.patch(`${apiEndpoint}/${projectId}/expires-on`, {
     "expires_on": time
   })
+}
+
+export function getFundingAgencies() {
+  return http.get(`${apiEndpoint}/projects/funding-agencies`);
+}
+
+export function getFundingDirectorates() {
+  return http.get(`${apiEndpoint}/projects/funding-directorates`);
 }

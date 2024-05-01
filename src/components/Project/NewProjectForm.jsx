@@ -5,7 +5,7 @@ import Form from "../common/Form/Form";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getPeople } from "../../services/peopleService";
-import { createProject } from "../../services/projectService";
+import { createProject, getFundingAgencies, getFundingDirectorates } from "../../services/projectService";
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
@@ -26,6 +26,10 @@ class NewProjectForm extends Form {
       uuid: "",
       description: "",
       facility: portalData.defaultFacility,
+      funding_agency: "",
+      funding_directorate: "",
+      award_number: "",
+      award_amount: "",
       is_public: "Yes"
     },
     publicOptions: ["Yes", "No"],
@@ -36,13 +40,32 @@ class NewProjectForm extends Form {
     ownersToAdd: [],
     membersToAdd: [],
     warningMessage: "",
+    fundingAgencyOptions: [],
+    fundingDirectorateOptions: []
   };
+
+  async componentDidMount() {
+    try {
+      const { data: res1 } = await getFundingAgencies();
+      const { data: res2 } = await getFundingDirectorates();
+      this.setState({
+        fundingAgencyOptions: res1.results,
+        fundingDirectorateOptions: res2.results
+      })
+    } catch (err) {
+      toast.error("Failed to load funding agency and directorate options. Please reload this page.");
+    }
+  }
 
   schema = {
     uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
+    funding_agency: Joi.string().required().label("Funding Agency"),
+    funding_directorate: Joi.string().required().label("NSF Directorate"),
+    award_number: Joi.string().required().label("Award Number"),
+    award_amount: Joi.string().required().label("Award Amount"),
     is_public: Joi.string().required().label("Public")
   };
 
@@ -161,7 +184,7 @@ class NewProjectForm extends Form {
 
   render() {
     const { publicOptions, activeTabIndex, searchInput, searchResults, warningMessage, 
-      ownersToAdd, membersToAdd } = this.state;
+      ownersToAdd, membersToAdd, fundingAgencyOptions, fundingDirectorateOptions } = this.state;
     let personnelType = activeTabIndex === 0 ? "Project Owners" : "Project Members";
     let usersToAdd = activeTabIndex === 0 ? ownersToAdd : membersToAdd;
     
@@ -172,6 +195,10 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
+          {this.renderSelect("funding_agency", "Funding Agency", true, "", fundingAgencyOptions)}
+          {this.renderSelect("funding_directorate", "NSF Directorate", true, "", fundingDirectorateOptions)}
+          {this.renderInput("award_number", "Award Number", true)}
+          {this.renderInput("award_amount", "Award Amount", true)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
           {this.renderButton("Create")}
         </form>
