@@ -95,9 +95,9 @@ export function updateProjectExpirationTime(projectId, time) {
 }
 
 export function getFundingAgencies() {
-  return http.get(`${apiEndpoint}/projects/funding-agencies`);
+  return http.get(`${apiEndpoint}/funding-agencies`);
 }
 
 export function getFundingDirectorates() {
-  return http.get(`${apiEndpoint}/projects/funding-directorates`);
+  return http.get(`${apiEndpoint}/funding-directorates`);
 }

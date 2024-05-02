@@ -2,6 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import withRouter from "../common/withRouter.jsx";
 import Form from "../common/Form/Form";
+import Funding from "./Community/Funding.jsx";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getPeople } from "../../services/peopleService";
@@ -202,6 +203,10 @@ class NewProjectForm extends Form {
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
           {this.renderButton("Create")}
         </form>
+        <h2>
+          Funding Information
+        </h2>
+        <Funding />
         <div className="mt-4">
           <ul className="nav nav-tabs mb-4">
             <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
