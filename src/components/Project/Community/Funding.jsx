@@ -46,7 +46,8 @@ class Funding extends React.Component {
     const fundings = this.state.project_funding;
     const { funding_agency, funding_directorate, award_number, award_amount } = this.state;
     fundings.push({ funding_agency, funding_directorate, award_number, award_amount});
-    console.log("handle funding add: " + fundings);
+    console.log("funding added:")
+    console.log(fundings);
     this.setState({
       project_funding: fundings,
       funding_agency: "",
@@ -56,9 +57,20 @@ class Funding extends React.Component {
     })
   }
 
+  handleDeleteFunding = (fundingToDelete) => {
+    const newFundings = [];
+    for (const f of this.state.project_funding) {
+      if (JSON.stringify(f) !== JSON.stringify(fundingToDelete)) {
+        newFundings.push(f);
+      }
+    }
+    this.setState({ project_funding: newFundings });
+  }
+
   render() {
     const { funding_agency, funding_directorate, award_number, 
-      award_amount, funding_agency_options, funding_directorate_options } = this.state;
+      award_amount, funding_agency_options, funding_directorate_options,
+      project_funding } = this.state;
     return (
       <div className="form-row">
       <div className="form-group slice-builder-form-group col-md-3">
@@ -119,6 +131,27 @@ class Funding extends React.Component {
         >
           <i className="fa fa-plus"></i>
         </button>
+      </div>
+      <div>
+        <ul className="input-tag__tags">
+          {
+            project_funding.length > 0 &&
+            project_funding.map((funding, index) => 
+            <li
+              key={`funding-to-add-${index}`}
+              className="mr-2 my-2"
+            >
+              {`${funding.funding_agency} ${funding.funding_directorate ? funding.funding_directorate : ""} 
+               ${funding.award_number ? funding.award_number : ""} $${funding.award_amount ? funding.award_amount : ""}`}
+            <i
+              className="fa fa-times ml-2"
+              onClick={() => {
+                this.handleDeleteFunding(funding);
+              }}
+            ></i>
+          </li>)
+          }
+        </ul>
       </div>
     </div>
     )
