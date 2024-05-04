@@ -28,7 +28,7 @@ export function getProjectTags() {
   return http.get(`${apiEndpoint}/tags`);
 }
 
-export function createProject(project, project_owners, project_members) {
+export function createProject(project, project_owners, project_members, project_funding) {
   return http.post(`${apiEndpoint}`,
     {
       "name": project.name,
@@ -38,14 +38,7 @@ export function createProject(project, project_owners, project_members) {
       "tags": project.tags,
       "project_owners": project_owners,
       "project_members": project_members,
-      "project_funding": [
-        {
-          "agency": project.funidng_agency,
-          "award_amount": project.award_amount,
-          "award_number": project.award_number,
-          "directorate": project.funding_directorate
-        }
-      ]
+      "project_funding": project_funding
     }
   );
 }

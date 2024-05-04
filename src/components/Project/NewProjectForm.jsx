@@ -27,10 +27,6 @@ class NewProjectForm extends Form {
       uuid: "",
       description: "",
       facility: portalData.defaultFacility,
-      funding_agency: "",
-      funding_directorate: "",
-      award_number: "",
-      award_amount: "",
       is_public: "Yes"
     },
     publicOptions: ["Yes", "No"],
@@ -41,37 +37,19 @@ class NewProjectForm extends Form {
     ownersToAdd: [],
     membersToAdd: [],
     warningMessage: "",
-    fundingAgencyOptions: [],
-    fundingDirectorateOptions: []
+    projectFunding: []
   };
-
-  async componentDidMount() {
-    try {
-      const { data: res1 } = await getFundingAgencies();
-      const { data: res2 } = await getFundingDirectorates();
-      this.setState({
-        fundingAgencyOptions: res1.results,
-        fundingDirectorateOptions: res2.results
-      })
-    } catch (err) {
-      toast.error("Failed to load funding agency and directorate options. Please reload this page.");
-    }
-  }
 
   schema = {
     uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
     facility: Joi.string().required().label("Facility"),
-    funding_agency: Joi.string().required().label("Funding Agency"),
-    funding_directorate: Joi.string().required().label("NSF Directorate"),
-    award_number: Joi.string().required().label("Award Number"),
-    award_amount: Joi.string().required().label("Award Amount"),
     is_public: Joi.string().required().label("Public")
   };
 
-  doSubmit = async () => {
-    const { membersToAdd, ownersToAdd, data } = this.state;
+  handleCreateProject = async () => {
+    const { membersToAdd, ownersToAdd, data, projectFunding } = this.state;
     try {
       let ownerIDs = ownersToAdd.map((user) => user.uuid);
       let memberIDs = membersToAdd.map((user) => user.uuid);
@@ -79,7 +57,7 @@ class NewProjectForm extends Form {
       this.props.navigate("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const  { data: res } = await createProject(data, ownerIDs, memberIDs);
+      const  { data: res } = await createProject(data, ownerIDs, memberIDs, projectFunding);
       const newProject = res.results[0];
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
@@ -183,9 +161,24 @@ class NewProjectForm extends Form {
     });
   };
 
+  handleUpdateFunding = (operation, funding) => {
+    if (operation === "add") {
+      const fundings = this.state.projectFunding;
+      fundings.push(funding);
+      this.setState({ projectFunding: fundings });
+    } else if (operation === "remove") {
+      const newFundings = [];
+      for (const f of this.state.projectFunding) {
+        if (JSON.stringify(f) !== JSON.stringify(funding)) {
+          newFundings.push(f);
+        }
+      }
+      this.setState({ projectFunding: newFundings });
+    }
+  }
   render() {
     const { publicOptions, activeTabIndex, searchInput, searchResults, warningMessage, 
-      ownersToAdd, membersToAdd, fundingAgencyOptions, fundingDirectorateOptions } = this.state;
+      ownersToAdd, membersToAdd, projectFunding } = this.state;
     let personnelType = activeTabIndex === 0 ? "Project Owners" : "Project Members";
     let usersToAdd = activeTabIndex === 0 ? ownersToAdd : membersToAdd;
     
@@ -196,17 +189,15 @@ class NewProjectForm extends Form {
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {this.renderSelect("funding_agency", "Funding Agency", true, "", fundingAgencyOptions)}
-          {this.renderSelect("funding_directorate", "NSF Directorate", true, "", fundingDirectorateOptions)}
-          {this.renderInput("award_number", "Award Number", true)}
-          {this.renderInput("award_amount", "Award Amount", true)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
-          {this.renderButton("Create")}
         </form>
         <h2>
           Funding Information
         </h2>
-        <Funding />
+        <Funding
+          fundings={projectFunding}
+          onFundingUpdate={() => this.handleUpdateFunding}
+        />
         <div className="mt-4">
           <ul className="nav nav-tabs mb-4">
             <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
@@ -296,6 +287,12 @@ class NewProjectForm extends Form {
           </li>)
           }
         </ul>
+        <button
+          className="btn btn-primary"
+          onClick={() => this.handleCreateProject}
+        >
+          Create Project
+        </button>
         <div className="alert alert-primary mt-4" role="alert">
           <p>
             There are more features on the project detail page after project creation. 
