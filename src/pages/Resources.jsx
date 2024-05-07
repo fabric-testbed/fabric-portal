@@ -5,6 +5,7 @@ import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
+import ToolLinks from "../components/Resource/ToolLinks.jsx";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -177,6 +178,7 @@ class Resources extends Component {
             />
           </div>
         </div>
+        <ToolLinks />
       </div>
     );
   }
