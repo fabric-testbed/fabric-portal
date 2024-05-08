@@ -33,10 +33,10 @@ const ToolLinks = ()=> {
             {tool.title}
           </h3>
           <div className="row mt-3" key={`tool-link-${index}`}>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <img src={tool.image} alt={`tool-link-${tool.title}`}/>
             </div>
-            <div className="col-6 d-flex flex-column">
+            <div className="col-12 col-md-6 d-flex flex-column">
               <p>{Parser(tool.content)}</p>
               <a href={tool.link} target="_blank" rel="noreferrer">
                 <button
