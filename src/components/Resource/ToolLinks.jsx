@@ -1,6 +1,7 @@
 import InfrastructureMetrics from '../../imgs/toolLinks/InfrastructureMetrics.png';
 import PublicMetrics from '../../imgs/toolLinks/PublicMetrics.png';
 import OpticalData from '../../imgs/toolLinks/OpticalData.png';
+import Parser from 'html-react-parser';
 
 const ToolLinks = ()=> {
   const toolsData = [
@@ -19,15 +20,15 @@ const ToolLinks = ()=> {
     {
       "title": "Optical Data",
       "image": OpticalData,
-      "content": "This is a space where ESnet shares public Grafana dashboards of targeted data sets. It complements the data found at the my.es.net portal. The data comes primarily from ESnet's Stardust system and provides a flexible way to show interesting views of the data.",
+      "content": "This is a space where ESnet shares public Grafana dashboards of targeted data sets. It complements the data found at the <a href='https://my.es.net/'target='_blank' rel='noreferrer'>my.es.net portal</a>. The data comes primarily from ESnet's Stardust system and provides a flexible way to show interesting views of the data.",
       "link": "https://public.stardust.es.net/dashboards/f/fdhq1z6q5smwwb/?orgId=2"
     }
   ]
   return (
-    <div>
+    <div className="mt-3">
       {
         toolsData.map((tool, index) =>
-        <div className="my-5 tool-link-block">
+        <div className="tool-link-block px-3 mb-5">
           <h3 className="text-primary">
             {tool.title}
           </h3>
@@ -36,7 +37,7 @@ const ToolLinks = ()=> {
               <img src={tool.image} alt={`tool-link-${tool.title}`}/>
             </div>
             <div className="col-6 d-flex flex-column">
-              <p>{tool.content}</p>
+              <p>{Parser(tool.content)}</p>
               <a href={tool.link} target="_blank" rel="noreferrer">
                 <button
                   className="btn btn-sm btn-outline-primary mt-2"
