@@ -5,7 +5,9 @@ import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
+import ToolLinks from "../components/Resource/ToolLinks.jsx";
 import withRouter from "../components/common/withRouter.jsx";
+import Tabs from "../components/common/Tabs";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
@@ -145,46 +147,53 @@ class Resources extends Component {
     return (
       <div className="container">
         <h1>Resources</h1>
-        <div className="row my-2">
-          <TestbedTable sum={this.getResourcesSum(this.state.resources)} />
-        </div>
-        <div className="row my-2">
-          <div className="col-9">
-            <Topomap
-              onChange={this.handleActiveDetailChange}
-              siteColorMapping={this.state.siteColorMapping}
-            />
+        <Tabs activeTab={"Testbed Resources"}>
+          <div label="Testbed Resources">
+            <div className="row my-2 px-3">
+              <TestbedTable sum={this.getResourcesSum(this.state.resources)} />
+            </div>
+            <div className="row my-2 px-3">
+              <div className="col-9">
+                <Topomap
+                  onChange={this.handleActiveDetailChange}
+                  siteColorMapping={this.state.siteColorMapping}
+                />
+              </div>
+              <div className="col-3">
+                <DetailTable
+                  name={activeDetailName}
+                  resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
+                  parent="resources"
+                />
+              </div>
+            </div>
+            <div className="row my-2 px-3">
+              <div className="col-12">
+                <SearchBox
+                  value={searchQuery}
+                  placeholder={"Search Resources by Site Name..."}
+                  onChange={this.handleSearch}
+                  className="my-0"
+                />
+                <p>Showing resource availability of <b>{totalCount}</b> sites.</p> 
+                <SummaryTable
+                  resources={data}
+                  sortColumn={sortColumn}
+                  onSort={this.handleSort}
+                />
+                <Pagination
+                  itemsCount={totalCount}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  onPageChange={this.handlePageChange}
+                />
+              </div>
+            </div>
           </div>
-          <div className="col-3">
-            <DetailTable
-              name={activeDetailName}
-              resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
-              parent="resources"
-            />
+          <div label="Measuring and Monitoring Tools">
+            <ToolLinks />
           </div>
-        </div>
-        <div className="row my-2">
-          <div className="col-12">
-            <SearchBox
-              value={searchQuery}
-              placeholder={"Search Resources by Site Name..."}
-              onChange={this.handleSearch}
-              className="my-0"
-            />
-            <p>Showing resource availability of <b>{totalCount}</b> sites.</p> 
-            <SummaryTable
-              resources={data}
-              sortColumn={sortColumn}
-              onSort={this.handleSort}
-            />
-            <Pagination
-              itemsCount={totalCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={this.handlePageChange}
-            />
-          </div>
-        </div>
+        </Tabs>
       </div>
     );
   }
