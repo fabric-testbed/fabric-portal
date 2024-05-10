@@ -292,7 +292,7 @@ class NewProjectForm extends Form {
         </ul>
         <button
           className="btn btn-primary"
-          onClick={() => this.handleCreateProject}
+          onClick={this.handleCreateProject}
         >
           Create Project
         </button>
