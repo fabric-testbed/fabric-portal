@@ -6,7 +6,7 @@ import Funding from "./Community/Funding.jsx";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getPeople } from "../../services/peopleService";
-import { createProject, getFundingAgencies, getFundingDirectorates } from "../../services/projectService";
+import { createProject } from "../../services/projectService";
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
@@ -191,9 +191,9 @@ class NewProjectForm extends Form {
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
         </form>
-        <h2>
+        <h3>
           Funding Information
-        </h2>
+        </h3>
         <Funding
           fundings={projectFunding}
           onFundingUpdate={() => this.handleUpdateFunding}

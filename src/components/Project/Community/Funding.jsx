@@ -64,9 +64,9 @@ class Funding extends React.Component {
     const { fundings } = this.props;
     return (
       <div className="form-row">
-      <div className="form-group slice-builder-form-group col-md-3">
+      <div className="form-group slice-builder-form-group col-md-2">
         <label htmlFor="inputFundingAgency" className="slice-builder-label">
-          Funding Agency
+          Funding Agency*
         </label>
         <select
           className="form-control form-control-sm"
@@ -120,7 +120,7 @@ class Funding extends React.Component {
           type="button"
           onClick={this.handleFundingAdd}
         >
-          <i className="fa fa-plus"></i>
+          Add
         </button>
       </div>
       <div>
@@ -132,8 +132,8 @@ class Funding extends React.Component {
               key={`funding-to-add-${index}`}
               className="mr-2 my-2"
             >
-              {`${funding.funding_agency} ${funding.funding_directorate ? funding.funding_directorate : ""} 
-               ${funding.award_number ? funding.award_number : ""} $${funding.award_amount ? funding.award_amount : ""}`}
+              {`${funding.funding_agency} | ${funding.funding_directorate ? funding.funding_directorate : ""} |
+               ${funding.award_number ? funding.award_number : ""} | $${funding.award_amount ? funding.award_amount : ""}`}
             <i
               className="fa fa-times ml-2"
               onClick={() => {

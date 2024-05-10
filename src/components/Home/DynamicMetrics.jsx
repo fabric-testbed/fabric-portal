@@ -1,34 +1,67 @@
 import React from "react";
 import AnimatedNumber from "react-animated-number";
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
+import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
+import { toast } from "react-toastify";
 
 class DynamicMetrics extends React.Component {
   state = {
-    data: {
-      total_slices_count: 25392,
-      active_slices_count: 435,
-      total_users_count: 1392,
-      total_projects_count: 164
-    },
     metricsItems: [
       {
         name: "Total Slices",
-        count: 25392
+        count: 0
       },
       {
         name: "Active Slices",
-        count: 435
+        count: 0
       },
       {
         name: "Active Users",
-        count: 1392
+        count: 0
       },
       {
         name: "Total Projects",
-        count: 164
+        count: 0
       }
     ]
   };
+
+  async componentDidMount() {
+    try {
+      const { data: resCoreMetrics } = await getCoreApiMetrics();
+      const { data: resOrchestratorMetrics } = await getOrchestratorMetrics();
+      this.setState({
+        metricsItems: this.generateMetricsItems(resCoreMetrics.results[0], resOrchestratorMetrics.results[0])
+      });
+    } catch (err) {
+      toast.error("Failed to load FABRIC metrics data.")
+    }
+  }
+
+  generateMetricsItems = (coreMetrics, sliceMetrics) => {
+    const metricsItems = [];
+    // total slices' count and active slices' count
+    metricsItems.push({
+      name: "Total Slices",
+      count: sliceMetrics.slices.active_cumulative +  sliceMetrics.slices.non_active_cumulative
+    });
+    metricsItems.push({
+      name: "Active Slices",
+      count: sliceMetrics.slices.active_cumulative
+    });
+
+    // active users' count and total project
+    metricsItems.push({
+      name: "Active Users",
+      count: coreMetrics.users.active_cumulative
+    });
+    metricsItems.push({
+      name: "Total Projects",
+      count: coreMetrics.projects.active_cumulative + coreMetrics.projects.non_active_cumulative
+    });
+
+    return metricsItems;
+  }
 
   render() {
     const { metricsItems: items }  = this.state;
@@ -69,7 +102,7 @@ class DynamicMetrics extends React.Component {
                         fontSize: 48,
                         transitionProperty: "background-color, color, opacity"
                       }}
-                      duration={1600}
+                      duration={1500}
                       formatValue={n => Intl.NumberFormat("en-US").format(n)}
                     />
                   </div>
