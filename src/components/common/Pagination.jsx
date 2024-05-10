@@ -7,7 +7,7 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const boundaryCount = 6;
 
   // don't need the pagination if only 1 page.
-  if (pagesCount === 1) return null;
+  if (pagesCount === 1 || pagesCount === 0) return null;
 
   // range(start, end, step), start included, end excluded, step is 1 by default
   let pages = [];

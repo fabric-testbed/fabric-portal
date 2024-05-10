@@ -5,7 +5,6 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
 import { getMySlices, deleteSlice } from "../../services/sliceService.js";

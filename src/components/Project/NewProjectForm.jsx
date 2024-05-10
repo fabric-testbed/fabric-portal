@@ -191,14 +191,17 @@ class NewProjectForm extends Form {
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
         </form>
-        <h3>
+        <h3 className="mt-3">
           Funding Information
         </h3>
         <Funding
           fundings={projectFunding}
-          onFundingUpdate={() => this.handleUpdateFunding}
+          onFundingUpdate={this.handleUpdateFunding}
         />
         <div className="mt-4">
+          <h3>
+            Project Membership
+          </h3>
           <ul className="nav nav-tabs mb-4">
             <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
               <span
