@@ -2,7 +2,6 @@ import React from "react";
 import Joi from "joi-browser";
 import withRouter from "../common/withRouter.jsx";
 import Form from "../common/Form/Form";
-import Funding from "./Community/Funding.jsx";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getPeople } from "../../services/peopleService";
@@ -36,8 +35,7 @@ class NewProjectForm extends Form {
     searchResults: [],
     ownersToAdd: [],
     membersToAdd: [],
-    warningMessage: "",
-    projectFunding: []
+    warningMessage: ""
   };
 
   schema = {
@@ -49,7 +47,7 @@ class NewProjectForm extends Form {
   };
 
   handleCreateProject = async () => {
-    const { membersToAdd, ownersToAdd, data, projectFunding } = this.state;
+    const { membersToAdd, ownersToAdd, data } = this.state;
     try {
       let ownerIDs = ownersToAdd.map((user) => user.uuid);
       let memberIDs = membersToAdd.map((user) => user.uuid);
@@ -57,7 +55,7 @@ class NewProjectForm extends Form {
       this.props.navigate("/experiments#projects");
       toast.info("Creation request is in process. You'll receive a message when the project is successfully created.");
       // while the async call is processing under the hood
-      const  { data: res } = await createProject(data, ownerIDs, memberIDs, projectFunding);
+      const  { data: res } = await createProject(data, ownerIDs, memberIDs);
       const newProject = res.results[0];
       // toast message to users when the api call is successfully done.
       toast.success(<ToastMessageWithLink newProject={newProject} />, {autoClose: 10000,});
@@ -161,24 +159,9 @@ class NewProjectForm extends Form {
     });
   };
 
-  handleUpdateFunding = (operation, funding) => {
-    if (operation === "add") {
-      const fundings = this.state.projectFunding;
-      fundings.push(funding);
-      this.setState({ projectFunding: fundings });
-    } else if (operation === "remove") {
-      const newFundings = [];
-      for (const f of this.state.projectFunding) {
-        if (JSON.stringify(f) !== JSON.stringify(funding)) {
-          newFundings.push(f);
-        }
-      }
-      this.setState({ projectFunding: newFundings });
-    }
-  }
   render() {
     const { publicOptions, activeTabIndex, searchInput, searchResults, warningMessage, 
-      ownersToAdd, membersToAdd, projectFunding } = this.state;
+      ownersToAdd, membersToAdd } = this.state;
     let personnelType = activeTabIndex === 0 ? "Project Owners" : "Project Members";
     let usersToAdd = activeTabIndex === 0 ? ownersToAdd : membersToAdd;
     
@@ -191,14 +174,7 @@ class NewProjectForm extends Form {
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
         </form>
-        <h3 className="mt-3">
-          Funding Information
-        </h3>
-        <Funding
-          fundings={projectFunding}
-          onFundingUpdate={this.handleUpdateFunding}
-        />
-        <div className="mt-4">
+        <div className="mt-4 border">
           <h3>
             Project Membership
           </h3>

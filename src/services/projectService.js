@@ -28,7 +28,7 @@ export function getProjectTags() {
   return http.get(`${apiEndpoint}/tags`);
 }
 
-export function createProject(project, project_owners, project_members, project_funding) {
+export function createProject(project, project_owners, project_members) {
   return http.post(`${apiEndpoint}`,
     {
       "name": project.name,
@@ -37,8 +37,7 @@ export function createProject(project, project_owners, project_members, project_
       "facility": project.facility,
       "tags": project.tags,
       "project_owners": project_owners,
-      "project_members": project_members,
-      "project_funding": project_funding
+      "project_members": project_members
     }
   );
 }
@@ -74,6 +73,19 @@ export function updateProjectPersonnel(projectId, userIDs, operation, personnelT
     })
   }
 }
+
+export function updateProjectFunding(projectId, project_funding) {
+  return http.patch(`${apiEndpoint}/${projectId}/project-funding`, {
+    "project_funding": project_funding
+  })
+}
+
+export function updateProjectCommunity(projectId, communities) {
+  return http.patch(`${apiEndpoint}/${projectId}/communities`, {
+    "communities": communities
+  })
+}
+
 
 export function updateProjectTokenHolders(projectId, operation, userIDs) {
   return http.patch(`${apiEndpoint}/${projectId}/token-holders?operation=${operation}`, {

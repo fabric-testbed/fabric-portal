@@ -5,6 +5,8 @@ import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import Calendar from "../../components/common/Calendar";
+import Funding from "./Community/Funding.jsx";
+import CommunityTags from "./Community/CommunityTags.jsx";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
@@ -12,7 +14,7 @@ import { updateProjectExpirationTime } from "../../services/projectService";
 
 class ProjectBasicInfoTable extends Component {
   state = {
-    expirationTime: this.props.project.expired,
+    expirationTime: this.props.project.expired
   }
 
   renderTags(tags) {
@@ -59,11 +61,26 @@ class ProjectBasicInfoTable extends Component {
     }
   }
 
-
   render() {
-    const { project, projectTags, canUpdate, onDeleteProject, isFO } = this.props;
+    const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
+      communities } = this.props;
     return (
-      <div className="table-responsive">
+      <div>
+        <Funding
+          fundings={projectFunding}
+          onFundingUpdate={() => this.props.onUpdateFunding}
+        />
+        <CommunityTags
+          communities={communities}
+          onCommunityUpdate={() => this.onUpdateCommunity}
+        />
+        <h3 className="mt-3">
+          Project Science Domain/ Community
+        </h3>
+        <h3 className="mt-3">
+          Publications
+        </h3>
+        <div className="table-responsive mt-3">
         {
           project && project.expired && 
           <table className="table table-striped table-bordered mt-4">
@@ -155,6 +172,7 @@ class ProjectBasicInfoTable extends Component {
           </table>
         }
       </div> 
+      </div>
     );
   }
 }
