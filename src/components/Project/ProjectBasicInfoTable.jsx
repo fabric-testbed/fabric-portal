@@ -68,18 +68,18 @@ class ProjectBasicInfoTable extends Component {
       <div>
         <Funding
           fundings={projectFunding}
-          onFundingUpdate={() => this.props.onUpdateFunding}
+          onFundingUpdate={() => this.props.onFundingUpdate}
         />
         <CommunityTags
           communities={communities}
-          onCommunityUpdate={() => this.onUpdateCommunity}
+          onCommunityUpdate={() => this.props.onCommunityUpdate}
         />
-        <h3 className="mt-3">
-          Project Science Domain/ Community
-        </h3>
-        <h3 className="mt-3">
-          Publications
-        </h3>
+        <button
+          className="btn btn-md btn-primary"
+          onClick={() => this.props.onUpdateProject}
+        >
+          Save
+        </button>
         <div className="table-responsive mt-3">
         {
           project && project.expired && 

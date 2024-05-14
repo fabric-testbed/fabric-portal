@@ -338,6 +338,9 @@ class ProjectForm extends Form {
   }
 
   handleUpdateFunding = (operation, funding) => {
+    console.log("Project Form -  update funding");
+    console.log(operation);
+    console.log(funding);
     if (operation === "add") {
       const fundings = this.state.projectFunding;
       fundings.push(funding);
@@ -354,6 +357,8 @@ class ProjectForm extends Form {
   }
 
   handleUpdateCommunity = (operation, community) => {
+    console.log("project form");
+    console.log(operation + ' ' + community);
     if (operation === "add") {
       const communities = this.state.communities;
       communities.push(community);
@@ -750,23 +755,18 @@ class ProjectForm extends Form {
                 canUpdate={canUpdate}
                 isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
-                onUpdateFunding={this.handleUpdateFunding}
-                onUpdateCommunity={this.handleUpdateCommunity}
+                onFundingUpdate={this.handleUpdateFunding}
+                onCommunityUpdate={this.handleUpdateCommunity}
+                onUpdateProject={this.handleUpdateProject}
               />
-              <button
-                className="btn btn-md btn-primary"
-                onClick={this.handleUpdateProject}
-              >
-                Save
-              </button>
               {
-                globalRoles.isFacilityOperator && <div className="mt-2">
-                  <h4>Project Permissions</h4>
+                globalRoles.isFacilityOperator && <div className="border-top my-2">
+                  <h4 className="my-2">Project Permissions</h4>
                   <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
                     showSelectAll={true}
-                    optionDirection={"column"}
+                    optionDirection={"row"}
                     onCheck={this.handleTagCheck}
                     key={`project-permissions-${selectedTags.length}`}
                   />

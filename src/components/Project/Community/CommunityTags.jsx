@@ -80,10 +80,10 @@ class Community extends React.Component {
 
   handleDomainChange = (e) => {
     let subdomain_options = [];
-    if (e.target.value in this.state.domain_options) {
+    if (this.state.domain_options.includes(e.target.value)) {
       subdomain_options = this.state.subdomains_mapping[e.target.value];
     }
-    this.setState({ selected_domain: e.target.value, subdomain_options});
+    this.setState({ selected_domain: e.target.value, subdomain_options: subdomain_options});
   }
 
   handleSubdomainChange = (e) => {
@@ -104,70 +104,74 @@ class Community extends React.Component {
     const { domain_options, subdomain_options, selected_domain, selected_subdomain } = this.state;
     const { communities } = this.props;
     return (
-      <div className="form-row border-top">
-        <h5>Community</h5>
-        <div className="form-group slice-builder-form-group col-md-2">
-          <label htmlFor="inputCommunityAgency" className="slice-builder-label">
-            Science Domain
-          </label>
-          <select
-            className="form-control form-control-sm"
-            id="communityAgencySelect"
-            value={selected_domain}
-            onChange={this.handleDomainChange}
-          >
-            <option value="">Choose...</option>
-            { 
-              domain_options.map((domain, index) => 
-                <option value={domain} key={`community-domain-${index}`}>{domain}</option>
-              )
-            }
-          </select>
-        </div>
-        <div className="form-group slice-builder-form-group col-md-3">
-          <label htmlFor="inputComponent" className="slice-builder-label">Subdomain</label>
-          <select
-            className="form-control form-control-sm"
-            id="directorateSelect"
-            value={selected_subdomain}
-            onChange={this.handleSubdomainChange}
-          >
-            <option value="">Choose...</option>
-            { 
-              subdomain_options.map((directorate, index) => 
-                <option value={directorate} key={`community-directorate-${index}`}>{directorate}</option>
-              )
-            }
-          </select>
-        </div>
-        <div className="form-group slice-builder-form-group col-md-1">
-          <button
-            className="btn btn-sm btn-outline-success mt-4"
-            type="button"
-            onClick={this.handleCommunityAdd}
-          >
-            Add
-          </button>
-        </div>
-        <div>
-          <ul className="input-tag__tags">
-            {
-              communities.length > 0 &&
-              communities.map((community, index) => 
-              <li
-                key={`community-to-add-${index}`}
-                className="mr-2 my-2"
-              >
-                {community}
-              <i
-                className="fa fa-times ml-2"
-                onClick={() => {
-                  this.props.onUpdateCommunity("remove", community);
-                }}
-              ></i>
-            </li>)
-            }
-          </ul>
+      <div className="border-top mt-2">
+        <h5 className="my-2">Community</h5>
+        <div className="form-row">
+          <div className="form-group slice-builder-form-group col-md-2">
+            <label htmlFor="inputCommunityAgency" className="slice-builder-label">
+              Science Domain
+            </label>
+            <select
+              className="form-control form-control-sm"
+              id="communityAgencySelect"
+              value={selected_domain}
+              onChange={this.handleDomainChange}
+            >
+              <option value="">Choose...</option>
+              { 
+                domain_options.map((domain, index) => 
+                  <option value={domain} key={`community-domain-${index}`}>{domain}</option>
+                )
+              }
+            </select>
+          </div>
+          <div className="form-group slice-builder-form-group col-md-3">
+            <label htmlFor="inputComponent" className="slice-builder-label">Subdomain</label>
+            <select
+              className="form-control form-control-sm"
+              id="directorateSelect"
+              value={selected_subdomain}
+              onChange={this.handleSubdomainChange}
+              disabled={subdomain_options.length === 0}
+            >
+              <option value="">Choose...</option>
+              { 
+                subdomain_options.length > 0 &&
+                subdomain_options.map((directorate, index) => 
+                  <option value={directorate} key={`community-directorate-${index}`}>{directorate}</option>
+                )
+              }
+            </select>
+          </div>
+          <div className="form-group slice-builder-form-group col-md-1">
+            <button
+              className="btn btn-sm btn-outline-success mt-4"
+              type="button"
+              onClick={this.handleCommunityAdd}
+            >
+              Add
+            </button>
+          </div>
+          <div>
+            <ul className="input-tag__tags">
+              {
+                communities.length > 0 &&
+                communities.map((community, index) => 
+                <li
+                  key={`community-to-add-${index}`}
+                  className="mr-2 my-2"
+                >
+                  {community}
+                <i
+                  className="fa fa-times ml-2"
+                  onClick={() => {
+                    this.props.onCommunityUpdate("remove", community);
+                  }}
+                ></i>
+              </li>)
+              }
+            </ul>
+          </div>
         </div>
       </div>
     )
