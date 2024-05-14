@@ -175,7 +175,7 @@ class NewProjectForm extends Form {
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
         </form>
         <div className="border px-2 py-2">
-          <div className="mt-4">
+          <div className="mt-2">
             <h3>
               Project Membership
             </h3>
@@ -269,7 +269,7 @@ class NewProjectForm extends Form {
           </ul>
         </div>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary mt-2"
           onClick={this.handleCreateProject}
         >
           Create Project

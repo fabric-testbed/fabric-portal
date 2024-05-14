@@ -14,8 +14,6 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import { updateProjectPersonnel, updateProjectTokenHolders,
-  updateProjectFunding, updateProjectCommunity } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
@@ -27,6 +25,11 @@ import {
   deleteProject,
   updateProject,
   updateTags,
+  updateProjectPersonnel,
+  updateProjectTokenHolders,
+  updateProjectCommunity,
+  updateProjectFunding,
+  updateMatrix
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -107,7 +110,8 @@ class ProjectForm extends Form {
     selectedTags: [],
     originalTags: [],
     projectFunding: [],
-    communities: []
+    communities: [],
+    fabricMatrix: ""
   };
 
   schema = {
@@ -167,8 +171,7 @@ class ProjectForm extends Form {
         !this.state.globalRoles.isFacilityOperator) {
           this.setState({ 
             data: project,
-            projectFunding: project.project_funding,
-            communities: project.communities,
+            fabricMatrix: project.profile.references["fabric_matrix"] ?? "",
             showSpinner: false,
             spinner: {
               text: "",
@@ -179,7 +182,9 @@ class ProjectForm extends Form {
       } else {
         // user is po/pm/pc or Facility Operator.
         this.setState({ 
-          data: this.mapToViewModel(project), 
+          data: this.mapToViewModel(project),
+          projectFunding: project.project_funding,
+          communities: project.communities,
           owners: project.project_owners, 
           members: project.project_members,
           token_holders: project.token_holders,
@@ -296,11 +301,12 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix } = this.state;
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
       await updateProjectCommunity(project.uuid, communities);
+      await updateMatrix(project.uuid, fabricMatrix);
       window.location.reload();
       toast.success("Project updated successfully!");
     }
@@ -372,6 +378,11 @@ class ProjectForm extends Form {
       }
       this.setState({ communities: newCommunities });
     }
+  }
+
+  handleUpdateMatrix = (matrix) => {
+    console.log("matrix" + matrix);
+    this.setState({ fabricMatrix:  matrix });
   }
 
   handlePermissionUpdate = async () => {
@@ -573,7 +584,8 @@ class ProjectForm extends Form {
       originalTags,
       volumes,
       projectFunding,
-      communities
+      communities,
+      fabricMatrix
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -751,11 +763,13 @@ class ProjectForm extends Form {
                 project={data}
                 projectTags={originalTags}
                 projectFunding={projectFunding}
+                fabricMatrix={fabricMatrix}
                 communities={communities}
                 canUpdate={canUpdate}
                 isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
                 onFundingUpdate={this.handleUpdateFunding}
+                onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
                 onUpdateProject={this.handleUpdateProject}
               />

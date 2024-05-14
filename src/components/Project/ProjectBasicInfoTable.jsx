@@ -11,10 +11,12 @@ import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
 import { updateProjectExpirationTime } from "../../services/projectService";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class ProjectBasicInfoTable extends Component {
   state = {
-    expirationTime: this.props.project.expired
+    expirationTime: this.props.project.expired,
+    fabricMatrixTooltip: "Insert the link of the FABRIC Matrix slide including the current state, approach, challenges and impact of this project."
   }
 
   renderTags(tags) {
@@ -61,25 +63,54 @@ class ProjectBasicInfoTable extends Component {
     }
   }
 
+  renderTooltip = (id, content) => (
+    <Tooltip id={id}>
+      {content}
+    </Tooltip>
+  );
+
+
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
-      communities } = this.props;
+      communities, fabricMatrix, fabricMatrixTooltip } = this.props;
     return (
       <div>
+        <div className="form-group">
+          <label htmlFor={"fabrix-matrix"}>
+            FABRIC Matrix
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 100, hide: 300 }}
+                overlay={this.renderTooltip("fabrix-matrix", fabricMatrixTooltip)}
+              >
+                <i className="fa fa-question-circle text-secondary ml-2"></i>
+              </OverlayTrigger>
+          </label>
+          <input
+            className="form-control"
+            value={fabricMatrix}
+            onChange={() => this.props.onMatrixChange}
+          />
+        </div>
         <Funding
           fundings={projectFunding}
-          onFundingUpdate={() => this.props.onFundingUpdate}
+          canUpdate={canUpdate}
+          onFundingUpdate={this.props.onFundingUpdate}
         />
         <CommunityTags
           communities={communities}
-          onCommunityUpdate={() => this.props.onCommunityUpdate}
+          canUpdate={canUpdate}
+          onCommunityUpdate={this.props.onCommunityUpdate}
         />
-        <button
-          className="btn btn-md btn-primary"
-          onClick={() => this.props.onUpdateProject}
-        >
-          Save
-        </button>
+        {
+          canUpdate && 
+          <button
+            className="btn btn-md btn-primary mt-2"
+            onClick={this.props.onUpdateProject}
+          >
+            Save
+          </button>
+        }
         <div className="table-responsive mt-3">
         {
           project && project.expired && 

@@ -64,8 +64,8 @@ class Funding extends React.Component {
     const { fundings } = this.props;
     return (
       <div className="border-top mt-2">
-        <h5 className="my-2">Funding Information</h5>
-        <div className="form-row border-top">
+        <h5 className="mt-2">Funding Information</h5>
+        <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-2">
             <label htmlFor="inputFundingAgency" className="slice-builder-label">
               Funding Agency*

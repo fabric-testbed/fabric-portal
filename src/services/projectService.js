@@ -86,6 +86,16 @@ export function updateProjectCommunity(projectId, communities) {
   })
 }
 
+export function updateMatrix(projectId, matrix) {
+  return http.patch(`${apiEndpoint}/${projectId}/profile`, {
+    "references": [
+      {
+        "description": "fabric-matrix",
+        "url": matrix
+      }
+    ]
+  })
+}
 
 export function updateProjectTokenHolders(projectId, operation, userIDs) {
   return http.patch(`${apiEndpoint}/${projectId}/token-holders?operation=${operation}`, {
