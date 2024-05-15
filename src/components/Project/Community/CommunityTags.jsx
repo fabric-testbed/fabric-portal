@@ -81,7 +81,7 @@ class Community extends React.Component {
   handleDomainChange = (e) => {
     let subdomain_options = [];
     console.log("community tag domain selected" + e.target.value);
-    if (this.state.subdomains_mapping.keys().includes(e.target.value)) {
+    if (Object.keys(this.state.subdomains_mapping).includes(e.target.value)) {
       subdomain_options = this.state.subdomains_mapping[e.target.value];
     }
     this.setState({ selected_domain: e.target.value, subdomain_options: subdomain_options});
@@ -108,7 +108,7 @@ class Community extends React.Component {
       <div className="border-top mt-2">
         <h5 className="mt-2">Community</h5>
         <div className="form-row">
-          <div className="form-group slice-builder-form-group col-md-2">
+          <div className="form-group slice-builder-form-group col-md-4">
             <label htmlFor="inputCommunityAgency" className="slice-builder-label">
               Science Domain
             </label>
@@ -126,7 +126,7 @@ class Community extends React.Component {
               }
             </select>
           </div>
-          <div className="form-group slice-builder-form-group col-md-3">
+          <div className="form-group slice-builder-form-group col-md-7">
             <label htmlFor="inputComponent" className="slice-builder-label">Subdomain</label>
             <select
               className="form-control form-control-sm"

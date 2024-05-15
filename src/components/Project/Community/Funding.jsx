@@ -138,9 +138,7 @@ class Funding extends React.Component {
                   ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`}
                 <i
                   className="fa fa-times ml-2"
-                  onClick={() => {
-                    this.props.onUpdateFunding("remove", funding);
-                  }}
+                  onClick={this.props.onUpdateFunding("remove", funding)}
                 ></i>
               </li>)
               }

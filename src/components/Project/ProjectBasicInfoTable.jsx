@@ -69,7 +69,6 @@ class ProjectBasicInfoTable extends Component {
     </Tooltip>
   );
 
-
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
       communities, fabricMatrix, fabricMatrixTooltip } = this.props;
@@ -89,7 +88,7 @@ class ProjectBasicInfoTable extends Component {
           <input
             className="form-control"
             value={fabricMatrix}
-            onChange={() => this.props.onMatrixChange}
+            onChange={this.props.onMatrixUpdate}
           />
         </div>
         <Funding
@@ -105,7 +104,7 @@ class ProjectBasicInfoTable extends Component {
         {
           canUpdate && 
           <button
-            className="btn btn-md btn-primary mt-2"
+            className="btn btn-md btn-outline-primary mt-2"
             onClick={this.props.onUpdateProject}
           >
             Save
@@ -124,7 +123,7 @@ class ProjectBasicInfoTable extends Component {
                     id={project.uuid}
                     text=""
                     showCopiedValue={true}
-                    btnStyle={"btn btn-sm btn-primary"}
+                    btnStyle={"btn btn-sm btn-outline-primary"}
                   />
                 </td>
               </tr>
@@ -154,7 +153,7 @@ class ProjectBasicInfoTable extends Component {
                         currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
                       />
                       <button
-                        className="btn btn-sm btn-primary"
+                        className="btn btn-sm btn-outline-primary"
                         onClick={this.handleSetExpiration}
                       >
                         Update

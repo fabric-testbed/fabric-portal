@@ -785,7 +785,7 @@ class ProjectForm extends Form {
                     key={`project-permissions-${selectedTags.length}`}
                   />
                   <button
-                    className="btn btn-primary mt-2"
+                    className="btn btn-outline-primary mt-2"
                     onClick={this.handlePermissionUpdate}
                   >
                     Update Permissions
