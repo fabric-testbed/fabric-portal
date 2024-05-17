@@ -63,7 +63,7 @@ class Funding extends React.Component {
       award_amount, agency_options, directorate_options } = this.state;
     const { fundings } = this.props;
     return (
-      <div className="border-top mt-2">
+      <div className="border-top mt-4">
         <h5 className="mt-2">Funding Information</h5>
         <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-2">
@@ -125,7 +125,7 @@ class Funding extends React.Component {
               Add
             </button>
           </div>
-          <div>
+          <div className="ml-1">
             <ul className="input-tag__tags">
               {
                 fundings.length > 0 &&
@@ -138,7 +138,7 @@ class Funding extends React.Component {
                   ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`}
                 <i
                   className="fa fa-times ml-2"
-                  onClick={this.props.onUpdateFunding("remove", funding)}
+                  onClick={() => {this.props.onFundingUpdate("remove", funding);}}
                 ></i>
               </li>)
               }

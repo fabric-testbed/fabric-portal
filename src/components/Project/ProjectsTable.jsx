@@ -4,7 +4,8 @@ import Table from "../common/Table";
 import _ from "lodash";
 
 class ProjectsTable extends Component {
-  columns = [
+  columns = {
+    "private":   [
       {
         path: "name",
         label: "Project Name",
@@ -38,14 +39,45 @@ class ProjectsTable extends Component {
           </Link>
         ),
       }
+    ],
+    "public":   [
+      {
+        path: "name",
+        label: "Project Name",
+        content: (project) => (
+          <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+        ),
+      },
+      { 
+        path: "description",
+        label: "Description",
+        content: (project) => (
+          <span>
+            {_.truncate(project.description, {
+              'length': 250,
+              'separator': ' '
+            })}
+          </span>
+        )
+      },
+      {
+        content: (project) => (
+          <Link to={`/projects/${project.uuid}`}>
+            <button className="btn btn-sm btn-primary">
+              View
+            </button>
+          </Link>
+        ),
+      }
     ]
+  }
 
   render() {
-    const { projects } = this.props;
+    const { projects, isPublic } = this.props;
   
     return (
       <Table
-        columns={this.columns}
+        columns={isPublic ? this.columns["public"] : this.columns["private"]}
         data={projects}
         size={"md"}
       />

@@ -183,6 +183,7 @@ class ProjectForm extends Form {
         // user is po/pm/pc or Facility Operator.
         this.setState({ 
           data: this.mapToViewModel(project),
+          fabricMatrix: project.profile.references["fabric_matrix"] ?? "",
           projectFunding: project.project_funding,
           communities: project.communities,
           owners: project.project_owners, 
@@ -380,9 +381,9 @@ class ProjectForm extends Form {
     }
   }
 
-  handleUpdateMatrix = (matrix) => {
-    console.log("matrix" + matrix);
-    this.setState({ fabricMatrix:  matrix });
+  handleUpdateMatrix = (e) => {
+    console.log("matrix" + e.target.value);
+    this.setState({ fabricMatrix:  e.target.value });
   }
 
   handlePermissionUpdate = async () => {
@@ -775,7 +776,7 @@ class ProjectForm extends Form {
               />
               {
                 globalRoles.isFacilityOperator && <div className="border-top my-2">
-                  <h4 className="my-2">Project Permissions</h4>
+                  <h5 className="my-2">Project Permissions</h5>
                   <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}

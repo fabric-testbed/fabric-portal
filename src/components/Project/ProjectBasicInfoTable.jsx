@@ -104,104 +104,105 @@ class ProjectBasicInfoTable extends Component {
         {
           canUpdate && 
           <button
-            className="btn btn-md btn-outline-primary mt-2"
+            className="btn btn-md btn-outline-primary mt-3"
             onClick={this.props.onUpdateProject}
           >
             Save
           </button>
         }
-        <div className="table-responsive mt-3">
-        {
-          project && project.expired && 
-          <table className="table table-striped table-bordered mt-4">
-            <tbody>
-              <tr>
-                <td>Project ID</td>
-                <td>
-                  <span className="mr-2">{ project.uuid }</span>
-                  <CopyButton
-                    id={project.uuid}
-                    text=""
-                    showCopiedValue={true}
-                    btnStyle={"btn btn-sm btn-outline-primary"}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Project Permissions <a
-                  href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                  target="_blank" rel="noreferrer" className="ml-1">
-                    <i className="fa fa-question-circle mx-2"></i>
-                  </a>
-                </td>
-                <td>
-                  { projectTags.length > 0 ? this.renderTags(projectTags) : "No permissions assigned" }
-                </td>
-              </tr>
-              <tr>
-                <td>Expiration Date</td>
-                <td>
-                  {
-                    isFO ? 
-                    <div className="d-flex justify-content-between align-items-center">
-                      <Calendar
-                        id="projectExpirationCalendar"
-                        name="projectExpirationCalendar"
-                        onTimeChange={this.handleExpirationTimeChange}
-                        parent={"ProjectForm"}
-                        currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
-                      />
-                      <button
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={this.handleSetExpiration}
-                      >
-                        Update
-                      </button>
-                    </div>
-                    :
-                    toLocaleTime(project.expired)
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td>Modified Time</td>
-                <td>{ toLocaleTime(project.modified) }</td>
-              </tr>
-              <tr>
-                <td>Created At</td>
-                <td>{ toLocaleTime(project.created) }</td>
-              </tr>
-              <tr>
-                <td>Creator Name</td>
-                <td>{ project.creator_name }</td>
-              </tr>
-              <tr>
-                <td>Creator Email</td>
-                <td>{ project.creator_email }</td>
-              </tr>
-              <tr>
-                <td>Creator ID</td>
-                <td>{ project.creator_id }</td>
-              </tr>    
-              {
-                canUpdate && 
+        <div className="table-responsive mt-3 border-top">
+          <h5 className="mt-2">Other Information</h5>
+          {
+            project && project.expired && 
+            <table className="table table-striped table-bordered mt-3">
+              <tbody>
                 <tr>
-                  <td>Danger Zone</td>
+                  <td>Project ID</td>
                   <td>
-                    <DeleteModal
-                      name={"Delete Project"}
-                      text={"Are you sure you want to delete the project? This process cannot be undone."}
-                      id={"delete-project"}
-                      onDelete={() => onDeleteProject(project)}
+                    <span className="mr-2">{ project.uuid }</span>
+                    <CopyButton
+                      id={project.uuid}
+                      text=""
+                      showCopiedValue={true}
+                      btnStyle={"btn btn-sm btn-outline-primary"}
                     />
                   </td>
                 </tr>
-              }
-            </tbody>
-          </table>
-        }
-      </div> 
+                <tr>
+                  <td>
+                    Project Permissions <a
+                    href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
+                    target="_blank" rel="noreferrer" className="ml-1">
+                      <i className="fa fa-question-circle mx-2"></i>
+                    </a>
+                  </td>
+                  <td>
+                    { projectTags.length > 0 ? this.renderTags(projectTags) : "No permissions assigned" }
+                  </td>
+                </tr>
+                <tr>
+                  <td>Expiration Date</td>
+                  <td>
+                    {
+                      isFO ? 
+                      <div className="d-flex justify-content-between align-items-center">
+                        <Calendar
+                          id="projectExpirationCalendar"
+                          name="projectExpirationCalendar"
+                          onTimeChange={this.handleExpirationTimeChange}
+                          parent={"ProjectForm"}
+                          currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
+                        />
+                        <button
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={this.handleSetExpiration}
+                        >
+                          Update
+                        </button>
+                      </div>
+                      :
+                      toLocaleTime(project.expired)
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td>Modified Time</td>
+                  <td>{ toLocaleTime(project.modified) }</td>
+                </tr>
+                <tr>
+                  <td>Created At</td>
+                  <td>{ toLocaleTime(project.created) }</td>
+                </tr>
+                <tr>
+                  <td>Creator Name</td>
+                  <td>{ project.creator_name }</td>
+                </tr>
+                <tr>
+                  <td>Creator Email</td>
+                  <td>{ project.creator_email }</td>
+                </tr>
+                <tr>
+                  <td>Creator ID</td>
+                  <td>{ project.creator_id }</td>
+                </tr>    
+                {
+                  canUpdate && 
+                  <tr>
+                    <td>Danger Zone</td>
+                    <td>
+                      <DeleteModal
+                        name={"Delete Project"}
+                        text={"Are you sure you want to delete the project? This process cannot be undone."}
+                        id={"delete-project"}
+                        onDelete={() => onDeleteProject(project)}
+                      />
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div> 
       </div>
     );
   }

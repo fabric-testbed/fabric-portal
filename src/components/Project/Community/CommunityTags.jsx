@@ -105,7 +105,7 @@ class Community extends React.Component {
     const { domain_options, subdomain_options, selected_domain, selected_subdomain } = this.state;
     const { communities } = this.props;
     return (
-      <div className="border-top mt-2">
+      <div className="border-top mt-4">
         <h5 className="mt-2">Community</h5>
         <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-4">
@@ -153,7 +153,7 @@ class Community extends React.Component {
               Add
             </button>
           </div>
-          <div>
+          <div className="ml-1">
             <ul className="input-tag__tags">
               {
                 communities.length > 0 &&

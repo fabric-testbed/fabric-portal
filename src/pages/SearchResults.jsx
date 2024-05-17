@@ -206,7 +206,10 @@ class SearchResults extends Component {
             }
             {
               projectCount > 0 && <div>
-                <ProjectsTable projects={projects} />
+                <ProjectsTable
+                  projects={projects}
+                  isPublic={false}
+                />
                 <Pagination
                   itemsCount={projectCount}
                   pageSize={pageSize}
