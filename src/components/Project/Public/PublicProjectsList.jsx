@@ -1,10 +1,9 @@
 import React from "react";
-import SpinnerWithText from "../common/SpinnerWithText";
-import Pagination from "../common/Pagination";
-import ProjectsTable from "../Project/ProjectsTable";
-import { getProjects } from "../../services/projectService.js";
-import { default as portalData } from "../../services/portalData.json";
-import toLocaleTime from "../../utils/toLocaleTime";
+import SpinnerWithText from "../../common/SpinnerWithText.jsx";
+import Pagination from "../../common/Pagination.jsx";
+import ProjectsTable from "../ProjectsTable.jsx";
+import { getProjects } from "../../../services/projectService.js";
+import { default as portalData } from "../../../services/portalData.json";
 import { toast } from "react-toastify";
 
 class PublicProjectsList extends React.Component {
@@ -120,7 +119,7 @@ class PublicProjectsList extends React.Component {
             type="text"
             name="query"
             className="form-control"
-            placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
+            placeholder={"Search by project name or science domain..."}
             value={searchQuery}
             onChange={this.handleInputChange}
             onKeyDown={this.raiseInputKeyDown}

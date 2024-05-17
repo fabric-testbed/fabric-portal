@@ -12,7 +12,8 @@ import AUP from "./pages/static/AUP";
 import CookiePolicy from "./pages/static/CookiePolicy";
 import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
-import PublicProjectsList from "./components/Experiment/PublicProjectsList.jsx";
+import PublicProjectsList from "./components/Project/Public/PublicProjectsList.jsx";
+import PublicProjectProfile from "./components/Project/Public/PublicProjectProfile.jsx";
 import SliceViewer from "./pages/SliceViewer";
 import SliceEditor from "./pages/SliceEditor";
 import NewSliceForm from "./pages/NewSliceForm";
@@ -187,7 +188,8 @@ class App extends React.Component {
             <Route path="/help" element={<Help />} />
             <Route path="/check-cookie" element={<CheckCookie />} />
             <Route path="/slice-editor" element={<SliceEditor />} />
-            <Route path="/public-projects" element={<PublicProjectsList />} />
+            <Route path="/experiments/public-projects" element={<PublicProjectsList />} />
+            <Route path="/experiments/public-projects/:id" element={<PublicProjectProfile />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />

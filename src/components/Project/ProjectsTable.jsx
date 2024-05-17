@@ -45,7 +45,7 @@ class ProjectsTable extends Component {
         path: "name",
         label: "Project Name",
         content: (project) => (
-          <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+          <Link to={`/experiments/public-projects/${project.uuid}`}>{project.name}</Link>
         ),
       },
       { 
@@ -61,9 +61,25 @@ class ProjectsTable extends Component {
         )
       },
       {
+        path: "communities",
+        label: "Community",
         content: (project) => (
-          <Link to={`/projects/${project.uuid}`}>
-            <button className="btn btn-sm btn-primary">
+          <span>
+            {project.communities.map((community, index) => {
+              return <span
+                className="badge badge-pill badge-primary mr-1"
+                key={`project-community-${index}`}
+              >
+                {community}
+              </span>
+            })}
+          </span>
+        )
+      },
+      {
+        content: (project) => (
+          <Link to={`/experiments/public-projects/${project.uuid}`}>
+            <button className="btn btn-sm btn-outline-primary">
               View
             </button>
           </Link>

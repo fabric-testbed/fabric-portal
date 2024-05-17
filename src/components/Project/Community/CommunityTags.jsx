@@ -4,7 +4,7 @@ class Community extends React.Component {
   state = {
     domain_options: ["Networks", "Computer systems organization", "Information systems",
     "Security and privacy", "Human-centered computing", "Applied computing", "Hardware", "Software", "Theory of computation",
-    "Mathematics of computing", "Computing methodologies", "HPC", "RNE", "Other"],
+    "Mathematics of computing", "Computing methodologies", "Additional Communities:HPC", "Additional Communities:RNE", "Additional Communities:Other"],
     subdomains_mapping: {
       "Networks": [
         "Network architectures",
@@ -80,7 +80,6 @@ class Community extends React.Component {
 
   handleDomainChange = (e) => {
     let subdomain_options = [];
-    console.log("community tag domain selected" + e.target.value);
     if (Object.keys(this.state.subdomains_mapping).includes(e.target.value)) {
       subdomain_options = this.state.subdomains_mapping[e.target.value];
     }

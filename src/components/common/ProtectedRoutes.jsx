@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 const ProtectedRoutes = () => {
   const location = useLocation();
   if (location.pathname === "/experiments") {
-    return (<Navigate to='/public-projects'/>)
+    return (<Navigate to='/experiments/public-projects'/>)
   } else {
     return (
       localStorage.getItem("userStatus") === "active" ? <Outlet/> : <Navigate to='/login-required'/>
