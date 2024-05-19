@@ -46,6 +46,7 @@
     "react-scripts": "^5.0.0",
     "react-select": "^5.7.4",
     "react-simple-maps": "^2.3.0",
+    "react-simple-wysiwyg": "^3.0.2",
     "react-toastify": "^6.2.0",
     "reactstrap": "^8.6.0",
     "sass": "^1.32.13",

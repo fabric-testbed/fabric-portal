@@ -5,6 +5,7 @@ import ProjectsTable from "../ProjectsTable.jsx";
 import { getProjects } from "../../../services/projectService.js";
 import { default as portalData } from "../../../services/portalData.json";
 import { toast } from "react-toastify";
+import withRouter from "../../common/withRouter.jsx";
 
 class PublicProjectsList extends React.Component {
   state = {
@@ -19,16 +20,21 @@ class PublicProjectsList extends React.Component {
   async componentDidMount() {
     const { pageSize: limit } = this.state;
     this.setState({ showSpinner: true });
+    let query = "";
+    if (this.props.location.search) {
+      query = this.props.location.search.split('=')[1];
+    }
 
     try {
-      const { data: res } = await getProjects("allProjects", 0, limit);
+      const { data: res } = await getProjects("allProjects", 0, limit, query);
       const projectsCount = res.total;
       let projects = res.results;
 
       this.setState({
         projects,
         projectsCount,
-        showSpinner: false
+        showSpinner: false,
+        searchQuery: query
       });
     } catch (err) {
       this.setState({ showSpinner: false });
@@ -161,4 +167,4 @@ class PublicProjectsList extends React.Component {
   }
 }
 
-export default PublicProjectsList;
+export default withRouter(PublicProjectsList);

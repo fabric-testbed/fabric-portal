@@ -34,9 +34,9 @@ class PublicProjectProfile extends Component {
         <div className="card">
           <h5 className="card-header">Project Details</h5>
           <div className="card-body">
-            <h5 className="card-title pb-2 border-bottom">Description</h5>
+            <h5 className="card-title pb-2 border-bottom text-primary">Description</h5>
             <p className="card-text mb-4"> {project.description} </p>
-            <h5 className="card-title pb-2 border-bottom">Funding Information</h5>
+            <h5 className="card-title pb-2 border-bottom text-primary">Funding Information</h5>
             <p className="card-text mb-4">
               {
                 project.project_funding && project.project_funding.length > 0 && 
@@ -61,16 +61,18 @@ class PublicProjectProfile extends Component {
                 </span>
               }
             </p>
-            <h5 className="card-title pb-2 border-bottom">Community</h5>
+            <h5 className="card-title pb-2 border-bottom text-primary">Community</h5>
             <p className="card-text mb-4">
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
-                  return <span
+                  return <Link to={`/experiments/public-projects?community=${community}`}>
+                    <span
                       className="badge badge-pill badge-primary mr-1"
                       key={`project-community-${index}`}
                     >
                       {community}
                     </span>
+                </Link>
                 })
               }
               {
@@ -82,7 +84,7 @@ class PublicProjectProfile extends Component {
           </div>
         </div>
         <Link to="/experiments/public-projects">
-          <button href="#" className="btn btn-sm btn-outline-primary my-4">
+          <button className="btn btn-sm btn-outline-primary my-4">
             <i className="fa fa-sign-in mr-2"></i> Back to Project List
           </button>
         </Link>
