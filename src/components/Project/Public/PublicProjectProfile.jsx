@@ -29,7 +29,7 @@ class PublicProjectProfile extends Component {
     return (
       <div className="public-project-profile">
         <div className="public-project-profile-upper">
-          <h1><i className="fa fa-tag mr-2" aria-hidden="true"></i> {project.name}</h1>
+          <h1><i className="fa fa-hand-o-right mr-2" aria-hidden="true"></i> {project.name}</h1>
         </div>
         <div className="card">
           <h5 className="card-header">Project Details</h5>

@@ -123,7 +123,7 @@ class Form extends Component {
     return (
       <Wysiwyg
         name={name}
-        value={data[name]}
+        content={data[name]}
         label={label}
         onChange={this.handleChange}
         error={errors[name]}

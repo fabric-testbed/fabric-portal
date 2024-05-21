@@ -25,19 +25,28 @@ class ProjectsTable extends Component {
           </span>
         )
       },
-      { path: "facility", label: "Facility" },
       {
-        path: "created_time",
-        label: "Created At",
+        path: "communities",
+        label: "Community",
+        content: (project) => (
+          <span>
+            {project.communities.map((community, index) => {
+              return <span
+                className="badge badge-pill badge-primary mr-1"
+                key={`project-community-${index}`}
+              >
+                {community}
+              </span>
+            })}
+          </span>
+        )
       },
       {
-        content: (project) => (
-          <Link to={`/projects/${project.uuid}`}>
-            <button className="btn btn-sm btn-primary">
-              View
-            </button>
-          </Link>
-        ),
+        path: "expires_on",
+        label: "Expiration",
+        content: (time) => (
+          <span>{time.substring(11)}</span>
+        )
       }
     ],
     "public":   [

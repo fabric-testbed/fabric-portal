@@ -15,6 +15,10 @@ class PublicProjectsList extends React.Component {
     currentPage: 1,
     searchQuery: "",
     showSpinner: false,
+    selectedCommunity: "All",
+    selectCommunities: ["Networks", "Computer systems organization", "Information systems", "Security and privacy",
+  "Human-centered computing", "Applied computing", "Hardware", "Software", "Mathematics of computing", "Computing methodologies",
+  "HPC", "RNE"]
   };
 
   async componentDidMount() {
@@ -43,7 +47,7 @@ class PublicProjectsList extends React.Component {
   }
 
   reloadProjectsData = async () => {
-    const { pageSize: limit, currentPage, searchQuery } = this.state;
+    const { pageSize: limit, currentPage, searchQuery, selectedCommunity } = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
     let projectsCount = 0;
@@ -68,6 +72,21 @@ class PublicProjectsList extends React.Component {
       this.setState({ searchQuery: e.target.value});
     }
   };
+
+  handleFilter = (e) => {
+    // if input gets cleared, trigger data reload and reset the search query
+    if (e.target.value === "All") {
+      this.setState({ currentPage: 1, selectedCommunity: "All" }, () => {
+        this.reloadProjectsData();
+      });
+    } else {
+      this.setState({ selectedCommunity: e.target.value});
+      this.setState({ currentPage: 1 }, () => {
+        this.reloadProjectsData();
+      });
+    }
+  };
+
 
   handlePaginationClick = (page, pagesCount) => {
       const currentPage = this.state.currentPage;
@@ -102,7 +121,7 @@ class PublicProjectsList extends React.Component {
 
   render() {
     const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery } = this.state;
+      projectsCount, searchQuery, selectCommunities, selectedCommunity } = this.state;
 
     return (
       <div className="container">
@@ -119,6 +138,12 @@ class PublicProjectsList extends React.Component {
               User Guide
             </a>
           </div>
+        </div>
+        <div
+          className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
+          role="alert"
+        >
+          This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
         </div>
         <div className="w-100 input-group my-3">
           <input
@@ -144,22 +169,44 @@ class PublicProjectsList extends React.Component {
           showSpinner && <SpinnerWithText text={"Loading projects..."} />
         }
         {
-          !showSpinner && projectsCount > 0
-          && 
+          !showSpinner && 
           <div>
             <div className="d-flex flex-row justify-content-between mb-3">
-              {projectsCount} results.
+            <div className="input-group input-group-sm w-25">
+              <div className="input-group-prepend">
+                <label className="input-group-text" for="inputGroupSelect01">Community</label>
+              </div>
+              <select
+                className="form-control form-control-sm"
+                id="fundingAgencySelect"
+                value={selectedCommunity}
+                onChange={this.handleFilter}
+              >
+                <option value="All">All</option>
+                { 
+                  selectCommunities.map((domain, index) => 
+                    <option value={domain} key={`domain-${index}`}>{domain}</option>
+                  )
+                }
+              </select>
             </div>
-            <ProjectsTable
-              projects={projects}
-              isPublic={true}
-            />
-            <Pagination
-              itemsCount={projectsCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={this.handlePaginationClick}
-            />
+              <span>{projectsCount} results.</span>
+            </div>
+            {
+             projectsCount > 0 && 
+             <div>
+              <ProjectsTable
+                projects={projects}
+                isPublic={true}
+              />
+              <Pagination
+                itemsCount={projectsCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={this.handlePaginationClick}
+              />
+             </div>
+            }
           </div>
         } 
       </div>

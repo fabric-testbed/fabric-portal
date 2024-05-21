@@ -71,7 +71,9 @@ class ProjectBasicInfoTable extends Component {
 
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
-      communities, fabricMatrix, fabricMatrixTooltip } = this.props;
+      communities, fabricMatrix } = this.props;
+    const { fabricMatrixTooltip } = this.state;
+    
     return (
       <div>
         <div className="form-group">
