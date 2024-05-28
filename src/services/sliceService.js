@@ -17,20 +17,14 @@ export function getSliceById(id) {
 }
 
 export function createSlice(slice) {
-  let query = "";
+  const query = new URLSearchParams({
+    name: slice.name,
+    lease_end_time: slice.leaseEndTime,
+    lease_start_time: slice.leaseStartTime
+  }).toString();
 
-  // lease end time is optional.
-  if (slice.leaseEndTime) {
-    query = new URLSearchParams({
-      name: slice.name,
-      lease_end_time: slice.leaseEndTime
-    }).toString();
-  } else {
-    query = new URLSearchParams({
-      name: slice.name
-    }).toString();
-  }
-
+  console.log("create slice query str: " + query);
+ 
   const requestBody = {
     "graph_model": slice.json,
     "ssh_keys": slice.sshKeys,

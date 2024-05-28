@@ -34,6 +34,7 @@ class NewSliceForm extends React.Component {
     sshKey: "",
     selectedKeyIDs: [],
     leaseEndTime: "",
+    leaseStartTime: "",
     showResourceSpinner: false,
     showKeySpinner: false,
     showSliceSpinner: false,
@@ -108,16 +109,23 @@ class NewSliceForm extends React.Component {
   }
 
   handleLeaseEndChange = (value) => {
-    const inputTime = moment(value).format();
+    console.log("date from Calendar component");
+    const startDate = value.split("|")[0];
+    const endDate = value.split("|")[1];
+    const startTime = moment(startDate).format();
+    const endTime = moment(endDate).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
     // output format should be 2022-05-25 10:49:03 -0400
-    const date = inputTime.substring(0, 10);
-    const time = inputTime.substring(11, 19);
-    const offset = inputTime.substring(19).replace(":", "");
+    const date1 = startTime.substring(0, 10);
+    const time1 = startTime.substring(11, 19);
+    const offset1 = startTime.substring(19).replace(":", "");
+    const outputTime1 = [date1, time1, offset1].join(" ");
+    const date2 = endTime.substring(0, 10);
+    const time2 = endTime.substring(11, 19);
+    const offset2 = endTime.substring(19).replace(":", "");
+    const outputTime2 = [date2, time2, offset2].join(" ");
 
-    const outputTime = [date, time, offset].join(" ");
-
-    this.setState({ leaseEndTime: outputTime });
+    this.setState({ leaseStartTime: outputTime1, leaseEndTime: outputTime2 });
   }
 
   generateSliceJSON = () => {
@@ -363,28 +371,21 @@ class NewSliceForm extends React.Component {
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
 
-    const { sliceName, leaseEndTime } = this.state;
+    const { sliceName, leaseEndTime, leaseStartTime } = this.state;
     const that = this;
 
     that.setState({ showSliceSpinner: true });
 
     let requestData = {};
     const pubKeys = this.generatePublicKeys();
-    if (leaseEndTime !== "") {
-      requestData = {
-        name: sliceName,
-        sshKeys: pubKeys.keys,
-        leaseEndTime: leaseEndTime,
-        json: this.generateSliceJSON(),
-        sshKeyNames: pubKeys.keyNames
-      }
-    } else {
-      requestData = {
-        name: sliceName,
-        sshKeys: pubKeys.keys,
-        json: this.generateSliceJSON(),
-        sshKeyNames: pubKeys.keyNames
-      }
+    
+    requestData = {
+      name: sliceName,
+      sshKeys: pubKeys.keys,
+      leaseEndTime: leaseEndTime,
+      leaseStartTime: leaseStartTime,
+      json: this.generateSliceJSON(),
+      sshKeyNames: pubKeys.keyNames
     }
 
     try {

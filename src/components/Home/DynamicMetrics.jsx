@@ -68,8 +68,8 @@ class DynamicMetrics extends React.Component {
 
     return (
       <div className="w-100 home-metrix">
-        <div className="d-flex flex-row px-5 mb-2">
-          <div className="mr-5">
+        <div className="d-flex flex-column align-item-center justify-content-center px-5 mb-2">
+          <div className="mr-5 align-self-center">
             <img
               src={FABRICLogo}
               height="100"
@@ -78,7 +78,7 @@ class DynamicMetrics extends React.Component {
             />
           </div>
           <div>
-            <h2 className="text-center mb-5">
+            <h2 className="text-center my-5">
               <b>FABRIC</b>’s mission is to be an infrastructure to explore impactful new ideas that are impossible or impractical with the current Internet.
             </h2>
           </div>

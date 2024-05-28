@@ -750,8 +750,8 @@ class ProjectForm extends Form {
             >  
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
-                  {this.renderTextarea("description", "Description", canUpdate)}
-                  {/* {this.renderWysiwyg("description", "Description", canUpdate)} */}
+                  {/* {this.renderTextarea("description", "Description", canUpdate)} */}
+                  {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
                   {
