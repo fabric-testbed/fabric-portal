@@ -45,7 +45,7 @@ class ProjectsTable extends Component {
         path: "expires_on",
         label: "Expiration",
         content: (project) => (
-          <span>{project.expires_on ? project.expires_on.substring(11) : ""}</span>
+          <span>{project.expires_on ? project.expires_on.split(" ")[0] : ""}</span>
         )
       }
     ],

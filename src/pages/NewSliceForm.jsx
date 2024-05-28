@@ -12,7 +12,7 @@ import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
-import Calendar from "../components/common/Calendar";
+import CalendarDateTime from "../components/common/CalendarDateTime.jsx";
 import SliverKeyMultiSelect from "../components/SliceViewer/SliverKeyMultiSelect";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sliceParser from "../services/parser/sliceParser.js";
@@ -108,24 +108,28 @@ class NewSliceForm extends React.Component {
     }
   }
 
-  handleLeaseEndChange = (value) => {
-    console.log("date from Calendar component");
-    const startDate = value.split("|")[0];
-    const endDate = value.split("|")[1];
-    const startTime = moment(startDate).format();
-    const endTime = moment(endDate).format();
+  handleLeaseStartChange = (value) => {
+    const inputTime = moment(value).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
     // output format should be 2022-05-25 10:49:03 -0400
-    const date1 = startTime.substring(0, 10);
-    const time1 = startTime.substring(11, 19);
-    const offset1 = startTime.substring(19).replace(":", "");
-    const outputTime1 = [date1, time1, offset1].join(" ");
-    const date2 = endTime.substring(0, 10);
-    const time2 = endTime.substring(11, 19);
-    const offset2 = endTime.substring(19).replace(":", "");
-    const outputTime2 = [date2, time2, offset2].join(" ");
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
 
-    this.setState({ leaseStartTime: outputTime1, leaseEndTime: outputTime2 });
+    this.setState({ leaseStartTime: outputTime });
+  }
+
+  handleLeaseEndChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ leaseEndTime: outputTime });
   }
 
   generateSliceJSON = () => {
@@ -378,7 +382,7 @@ class NewSliceForm extends React.Component {
 
     let requestData = {};
     const pubKeys = this.generatePublicKeys();
-    
+
     requestData = {
       name: sliceName,
       sshKeys: pubKeys.keys,
@@ -553,7 +557,7 @@ class NewSliceForm extends React.Component {
                         <div className="d-flex flex-column">
                           <form>
                             <div className="form-row">
-                              <div className="form-group col-md-6">
+                              <div className="form-group col-md-12">
                                 <label htmlFor="inputSliceName" className="slice-form-label">
                                   <span>Slice Name</span>
                                 </label>
@@ -564,14 +568,29 @@ class NewSliceForm extends React.Component {
                                   onChange={this.handleSliceNameChange}
                                 />
                               </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="form-group col-md-6">
+                                <label htmlFor="inputLeaseStartTime" className="slice-form-label">
+                                  <span>Lease Start Time</span>
+                                </label>
+                                <CalendarDateTime
+                                  id="sliceBuilderCalendar1"
+                                  name="sliceBuilderCalendar"
+                                  parent={"newSliceForm"}
+                                  time={moment()}
+                                  onTimeChange={this.handleLeaseStartChange}
+                                />
+                              </div>
                               <div className="form-group col-md-6">
                                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">
                                   <span>Lease End Time</span>
                                 </label>
-                                <Calendar
-                                  id="sliceBuilderCalendar"
+                                <CalendarDateTime
+                                  id="sliceBuilderCalendar2"
                                   name="sliceBuilderCalendar"
                                   parent={"newSliceForm"}
+                                  time={moment().add(1, 'days')}
                                   onTimeChange={this.handleLeaseEndChange}
                                 />
                               </div>

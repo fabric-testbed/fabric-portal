@@ -4,7 +4,7 @@ import DeleteModal from "../common/DeleteModal";
 import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
-import Calendar from "../../components/common/Calendar";
+import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import Funding from "./Community/Funding.jsx";
 import CommunityTags from "./Community/CommunityTags.jsx";
 import { toast } from "react-toastify";
@@ -148,12 +148,12 @@ class ProjectBasicInfoTable extends Component {
                     {
                       isFO ? 
                       <div className="d-flex justify-content-between align-items-center">
-                        <Calendar
+                        <CalendarDateTime
                           id="projectExpirationCalendar"
                           name="projectExpirationCalendar"
                           onTimeChange={this.handleExpirationTimeChange}
                           parent={"ProjectForm"}
-                          currentTime={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
+                          time={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
                         />
                         <button
                           className="btn btn-sm btn-outline-primary"

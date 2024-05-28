@@ -7,7 +7,7 @@ import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
 import { deleteSlice} from "../../services/sliceService.js";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import Calendar from "../../components/common/Calendar";
+import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 
 export default class SliceViewerErrorBoundary extends Component {
@@ -188,12 +188,12 @@ export default class SliceViewerErrorBoundary extends Component {
                             leaseEndTime && slice.state ==="StableOK" &&
                             <div>
                               <div className="slice-form-element mb-1">
-                                <Calendar
+                                <CalendarDateTime
                                   id="sliceViewerCalendar"
                                   name="sliceViewerCalendar"
                                   onTimeChange={this.props.onLeaseEndChange}
                                   parent={"sliceDetailForm"}
-                                  currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
+                                  time={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                                 />
                               </div>
                               <button

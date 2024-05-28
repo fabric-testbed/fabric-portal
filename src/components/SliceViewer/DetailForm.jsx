@@ -3,7 +3,7 @@ import CopyButton from "../common/CopyButton";
 import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
-import Calendar from "../../components/common/Calendar";
+import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
@@ -69,12 +69,12 @@ export default class DetailForm extends Component {
                       leaseEndTime && slice.state ==="StableOK" &&
                       <div>
                         <div className="slice-form-element mb-1">
-                          <Calendar
+                          <CalendarDateTime
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
                             onTimeChange={this.props.onLeaseEndChange}
                             parent={"sliceDetailForm"}
-                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
+                            time ={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                           />
                         </div>
                         <button
