@@ -63,6 +63,10 @@ class NewSliceForm extends React.Component {
       const { data: keys } = await getActiveKeys();
       const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+      const leaseStartTime = new Date();  
+      const leaseEndTime = new Date(leaseStartTime);
+      leaseEndTime.setDate(leaseEndTime.getDate() + 1);
+
       this.setState({
         parsedResources: parsedObj,
         showResourceSpinner: false,
@@ -70,7 +74,9 @@ class NewSliceForm extends React.Component {
         project: projectRes.results[0],
         projectTags: projectRes.results[0].tags,
         showKeySpinner: false,
-        showProjectSpinner: false
+        showProjectSpinner: false,
+        leaseStartTime: leaseStartTime,
+        leaseEndTime: leaseEndTime
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -415,7 +421,8 @@ class NewSliceForm extends React.Component {
   render() {
     const { sliceName, selectedKeyIDs, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner }
+      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner,
+      leaseStartTime, leaseEndTime }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, selectedKeyIDs, sliceNodes);
@@ -578,7 +585,7 @@ class NewSliceForm extends React.Component {
                                   id="sliceBuilderCalendar1"
                                   name="sliceBuilderCalendar"
                                   parent={"newSliceForm"}
-                                  time={moment()}
+                                  time={leaseStartTime.replace(/-/g, "/")}
                                   onTimeChange={this.handleLeaseStartChange}
                                 />
                               </div>
@@ -590,7 +597,7 @@ class NewSliceForm extends React.Component {
                                   id="sliceBuilderCalendar2"
                                   name="sliceBuilderCalendar"
                                   parent={"newSliceForm"}
-                                  time={moment().add(1, 'days')}
+                                  time={leaseEndTime.replace(/-/g, "/")}
                                   onTimeChange={this.handleLeaseEndChange}
                                 />
                               </div>

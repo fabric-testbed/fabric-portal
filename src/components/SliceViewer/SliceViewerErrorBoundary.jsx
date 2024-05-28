@@ -53,6 +53,8 @@ export default class SliceViewerErrorBoundary extends Component {
     const stateColors = {
       "Nascent": "primary-dark",
       "StableOK": "success",
+      "AllocatedOK": "success",
+      "AllocatedError": "warning",
       "StableError": "warning",
       "Closing": "secondary",
       "Dead": "secondary",

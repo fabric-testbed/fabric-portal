@@ -142,6 +142,8 @@ class SliceViewer extends Component {
       "Nascent": "primary-dark",
       "StableOK": "success",
       "StableError": "warning",
+      "AllocatedOK": "success",
+      "AllocatedError": "warning",
       "Closing": "secondary",
       "Dead": "secondary",
       "Configuring": "primary",
@@ -203,7 +205,7 @@ class SliceViewer extends Component {
                       </button>
                     </Link> */}
                   {
-                    ["StableOK", "ModifyOK", "StableError", "ModifyError"].includes(slice.state) &&
+                    ["StableOK", "ModifyOK", "StableError", "ModifyError", "AllocatedOK", " AllocatedError"].includes(slice.state) &&
                     <DeleteModal
                       name={"Delete Slice"}
                       text={'Are you sure you want to delete this slice? This process cannot be undone but you can find deleted slices by checking the "Include Dead Slices" radio button on Experiments -> Slices page.'}
