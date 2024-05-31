@@ -86,6 +86,7 @@ export default function parseSites(data, acronymToShortName) {
         site[`total${type}`] = 0;
         site[`allocated${type}`] = 0;
         site[`free${type}`] = 0;
+        site[type] = []; // models for a type of component
       }
 
       // find site components.
@@ -100,6 +101,11 @@ export default function parseSites(data, acronymToShortName) {
             if (component.Type === type) {
               site[`total${type}`] += component.capacities.unit || 0;
               site[`allocated${type}`] += component.allocatedCapacities.unit || 0;
+              site[type].push({
+                "model": component.Model,
+                "unit": component.capacities.unit || 0, 
+                "allocatedUnit": component.allocatedCapacities.unit || 0
+              })
             } 
           }
         }
@@ -129,6 +135,8 @@ export default function parseSites(data, acronymToShortName) {
     "siteColorMapping": siteColorMapping,
     "siteAcronyms": siteAcronyms
   };
+
+  console.log(parsedObj);
 
   return parsedObj;
 }

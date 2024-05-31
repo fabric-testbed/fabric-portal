@@ -1235,3 +1235,8 @@ ul,
 .tool-link-block p {
   line-height: 200%;
 }
+
+.site-detail-table td, .site-detail-table tr, .site-detail-table thead th {
+  text-align: center;
+  vertical-align: middle !important;
+}

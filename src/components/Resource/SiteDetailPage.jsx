@@ -4,34 +4,54 @@ import { sitesNameMapping }  from "../../data/sites";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import { default as portalData } from "../../services/portalData.json";
 import { Link, useLocation } from "react-router-dom";
+import ProgressBar from '../common/ProgressBar';
+
+const generateProgressBar = (total, free, color, labelColor) => {
+  return (
+    <ProgressBar
+      now={total > 0 ? Math.round(free * 100/ total) : 0}
+      label={`${free}/${total}`}
+      color={color}
+      labelColor={labelColor}
+    />
+  )
+}
 
 const SiteDetailPage = props => {
   const statusMapping = {
     "Maint": {
       state: "Maintenance",
-      color: "warning",
-      explanation: "no requests would be accepted"
+      colorName: "danger",
+      colorHex: "#b00020",
+      labelColorHex: "#fff"
     },
     "PreMaint": {
       state: "Pre-Maintenance",
-      color: "warning",
-      explanation: "requests will be expected until the deadline"
+      colorName: "warning",
+      colorHex: "#ffb670",
+      labelColorHex: "#212529"
     },
     "PartMaint": {
       state: "Partial Maintenance",
-      colorHex: "warning",
-      explanation: "requests may fail due to some equipment being off-line"
+      colorName: "warning",
+      colorHex: "#ffb670",
+      labelColorHex: "#212529"
     },
     "Active": {
       state: "Active",
-      color: "primary",
-      explanation: ""
+      colorName: "primary",
+      colorHex: "#68b3d1",
+      labelColorHex: "#212529"
     }
   }
+
+  const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
 
   const location = useLocation();
 
   const data = location.state.data;
+
+  console.log(data);
 
   return (
     <div className="container">
@@ -148,6 +168,89 @@ const SiteDetailPage = props => {
        resource={ data }
        parent="sitepage"
      />
+     <table className="table table-hover table-bordered site-detail-table">
+      <thead>
+        <tr>
+          <th scope="col" rowSpan={2}>Component</th>
+          <th colSpan="3" className="border-bottom">Avalability</th>
+          <th scope="col" rowSpan={2}>Available / Total</th>
+        </tr>
+        <tr>
+          <td><b>Model</b></td>
+          <td><b>Total Units</b></td>
+          <td><b>Allocated Units</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          componentTypes.map((type, index) =>  (
+          data[type] && data[type].length > 1 ?
+            <React.Fragment>
+              <tr key={`site-resource-${index}`}>
+                <th scope="col" rowSpan={data[type] && data[type].length}>{type}</th>
+                <td>
+                  {data[type][0].model}
+                </td>
+                <td>
+                  {data[type][0].unit}
+                </td>
+                <td>
+                  {data[type][0].allocatedUnit}
+                </td>
+                <td rowSpan={data[type] && data[type].length}>
+                  {
+                    generateProgressBar(
+                      data[`free${type}`],
+                      data[`total${type}`],
+                      statusMapping[data.status.state].colorHex,
+                      statusMapping[data.status.state].labelColorHex
+                    )
+                  }
+                </td>
+              </tr>
+              {
+                data[type].slice(1).map((row, index) =>
+                <tr key={`site-resource-${index}`}>
+                  <td>
+                    {row.model}
+                  </td>
+                  <td>
+                    {row.unit}
+                  </td>
+                  <td>
+                    {row.allocatedUnit}
+                  </td>
+                </tr>)
+              }
+            </React.Fragment>
+            :
+            <tr key={`site-resource-${index}`}>
+              <th scope="col">{type}</th>
+              <td>
+                {data[type][0].model}
+              </td>
+              <td>
+                {data[type][0].unit}
+              </td>
+              <td>
+                {data[type][0].allocatedUnit}
+              </td>
+              <td rowSpan={data[type] && data[type].length}>
+                {
+                  generateProgressBar(
+                    data[`free${type}`],
+                    data[`total${type}`],
+                    statusMapping[data.status.state].colorHex,
+                    statusMapping[data.status.state].labelColorHex
+                  )
+                }
+              </td>
+            </tr>
+            )
+          )
+        }
+      </tbody>
+     </table>
    </div>
  </div>
   )

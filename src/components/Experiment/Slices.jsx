@@ -32,7 +32,11 @@ class Slices extends React.Component {
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
-    spinnerText: ""
+    spinnerText: "",
+    radioBtnValues: [
+      { display: "My Slices", value: "mySlices", isActive: true },
+      { display: "Project Slices", value: "projectSlices", isActive: false },
+    ],
   };
 
   async componentDidMount() {
@@ -43,12 +47,12 @@ class Slices extends React.Component {
         if(!localStorage.getItem("idToken")) {
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-            const { data: res } = await getMySlices();
+            const { data: res } = await getMySlices("mySlices");
             const slices = res.data.filter(s => s.project_id === this.props.projectId);
             this.setState({ slices, showSpinner: false, spinnerText: "" });
           });
         } else {
-            const { data: res } = await getMySlices();
+            const { data: res } = await getMySlices("mySlices");
             const slices = res.data.filter(s => s.project_id === this.props.projectId);
             this.setState({ slices, showSpinner: false, spinnerText: "" });
         }
@@ -60,12 +64,12 @@ class Slices extends React.Component {
         } else if(!localStorage.getItem("idToken")) {
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-              const { data: res } = await getMySlices();
+              const { data: res } = await getMySlices("allSlices");
               this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
             });
           }
         else {
-          const { data: res } = await getMySlices();
+          const { data: res } = await getMySlices("allSlices");
           this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
         }
       }
