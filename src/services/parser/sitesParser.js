@@ -136,7 +136,5 @@ export default function parseSites(data, acronymToShortName) {
     "siteAcronyms": siteAcronyms
   };
 
-  console.log(parsedObj);
-
   return parsedObj;
 }

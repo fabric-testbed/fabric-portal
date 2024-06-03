@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
 import _ from "lodash";
+import Parser from 'html-react-parser';
 
 class ProjectsTable extends Component {
   columns = {
@@ -62,7 +63,7 @@ class ProjectsTable extends Component {
         label: "Description",
         content: (project) => (
           <span>
-            {_.truncate(project.description, {
+            {_.truncate(Parser(project.description), {
               'length': 250,
               'separator': ' '
             })}

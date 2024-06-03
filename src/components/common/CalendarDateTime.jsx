@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from "moment";
 import DateTimePicker from 'react-datetime-picker';
 
 function CalendarDateTime({ id, name, parent, onTimeChange, time }) {
@@ -11,7 +10,7 @@ function CalendarDateTime({ id, name, parent, onTimeChange, time }) {
         onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
-        minDate={moment().format('MMMM Do YYYY, h:mm:ss')}
+        minDate={new Date()}
         required={true}
         format="yyyy-MM-dd HH:mm:ss"
       />

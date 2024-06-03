@@ -585,7 +585,7 @@ class NewSliceForm extends React.Component {
                                   id="sliceBuilderCalendar1"
                                   name="sliceBuilderCalendar"
                                   parent={"newSliceForm"}
-                                  time={leaseStartTime.replace(/-/g, "/")}
+                                  time={leaseStartTime && leaseStartTime.toString().replace(/-/g, "/")}
                                   onTimeChange={this.handleLeaseStartChange}
                                 />
                               </div>
@@ -597,7 +597,7 @@ class NewSliceForm extends React.Component {
                                   id="sliceBuilderCalendar2"
                                   name="sliceBuilderCalendar"
                                   parent={"newSliceForm"}
-                                  time={leaseEndTime.replace(/-/g, "/")}
+                                  time={leaseEndTime.toString().replace(/-/g, "/")}
                                   onTimeChange={this.handleLeaseEndChange}
                                 />
                               </div>

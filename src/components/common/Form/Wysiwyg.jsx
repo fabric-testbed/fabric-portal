@@ -20,16 +20,16 @@ const renderTooltip = (id, content) => (
   </Tooltip>
 );
 
-export default function Wysiwyg({ name, content, label, error, disabled, tooltip, ...rest }) {
-  const [value, setValue] = useState(content);
+export default function Wysiwyg({ name, content, label, error, disabled, tooltip, onChange, ...rest }) {
+  // const [value, setValue] = useState(content);
 
-  React.useEffect(() => {
-    setValue(content);
-}, [content])
+  // React.useEffect(() => {
+  //     setValue(content);
+  // }, [content])
 
-  function onChange(e) {
-    setValue(e.target.value);
-  }
+  // function onChange(e) {
+  //   setValue(e.target.value);
+  // }
 
   return (
     <div className="form-group">
@@ -47,7 +47,7 @@ export default function Wysiwyg({ name, content, label, error, disabled, tooltip
         <label htmlFor={name}>{label}</label>
       }
       <EditorProvider>
-        <Editor value={value} onChange={onChange}>
+        <Editor value={content} onChange={onChange} {...rest} id={name} name={name}>
           <Toolbar>
             <BtnBold />
             <BtnItalic />

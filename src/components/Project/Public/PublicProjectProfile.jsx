@@ -3,6 +3,7 @@ import { getProjectById } from "../../../services/projectService";
 import { toast } from "react-toastify";
 import withRouter from "../../common/withRouter.jsx";
 import { Link } from "react-router-dom";
+import Parser from 'html-react-parser';
 
 class PublicProjectProfile extends Component {
   state = {
@@ -35,7 +36,7 @@ class PublicProjectProfile extends Component {
           <h5 className="card-header">Project Details</h5>
           <div className="card-body">
             <h5 className="card-title pb-2 border-bottom text-primary">Description</h5>
-            <p className="card-text mb-4"> {project.description} </p>
+            <p className="card-text mb-4"> {Parser(project.description)} </p>
             <h5 className="card-title pb-2 border-bottom text-primary">Funding Information</h5>
             <p className="card-text mb-4">
               {

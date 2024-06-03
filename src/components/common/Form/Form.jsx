@@ -92,6 +92,12 @@ class Form extends Component {
     this.setState({ data: updatedData})
   }
 
+  handleWysiwygChange = (Obj) => {
+    const data = { ...this.state.data };
+    data[Obj.target.name] = Obj.target.value;
+    this.setState({ data });
+  }
+
   renderButton(label) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">
@@ -125,7 +131,7 @@ class Form extends Component {
         name={name}
         content={data[name]}
         label={label}
-        onChange={this.handleChange}
+        onChange={this.handleWysiwygChange}
         error={errors[name]}
         disabled={!notDisabled}
       />
