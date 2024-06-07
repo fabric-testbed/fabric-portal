@@ -30,13 +30,13 @@ class PublicProjectProfile extends Component {
     return (
       <div className="public-project-profile">
         <div className="public-project-profile-upper">
-          <h1><i className="fa fa-hand-o-right mr-2" aria-hidden="true"></i> {project.name}</h1>
+          <h1>{project.name}</h1>
         </div>
         <div className="card">
           <h5 className="card-header">Project Details</h5>
           <div className="card-body">
             <h5 className="card-title pb-2 border-bottom text-primary">Description</h5>
-            <p className="card-text mb-4"> {Parser(project.description)} </p>
+            <p className="card-text mb-4"> {project.description ? Parser(project.description) : ""} </p>
             <h5 className="card-title pb-2 border-bottom text-primary">Funding Information</h5>
             <p className="card-text mb-4">
               {

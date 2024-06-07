@@ -63,7 +63,7 @@ class ProjectsTable extends Component {
         label: "Description",
         content: (project) => (
           <span>
-            {_.truncate(Parser(project.description), {
+            {Parser(project.description, {
               'length': 250,
               'separator': ' '
             })}

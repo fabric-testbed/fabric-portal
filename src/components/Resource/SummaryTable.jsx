@@ -8,8 +8,7 @@ class SummaryTable extends Component {
       content: (resource) => (
         <div>
           <Link
-            to={`/sites/${resource.id}`}
-            state={{ data: resource }}
+            to={`/sites/${resource.name}`}
           >
             {resource.name}
           </Link>

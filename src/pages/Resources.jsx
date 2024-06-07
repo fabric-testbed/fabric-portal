@@ -29,8 +29,8 @@ class Resources extends Component {
 
   async componentDidMount() {
     try {
-      const { data: res } = await getResources();
-      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
+      const { data: res } = await getResources(1);
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
       this.setState({
         resources: parsedObj.parsedSites,
         siteNames: parsedObj.siteNames,
