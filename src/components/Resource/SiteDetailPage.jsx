@@ -1,5 +1,4 @@
 import React from "react";
-import DetailTable from "./DetailTable";
 import { sitesNameMapping }  from "../../data/sites";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import { default as portalData } from "../../services/portalData.json";
@@ -23,51 +22,47 @@ const generateProgressBar = (total, free, color, labelColor) => {
 }
 
 class SiteDetailPage extends React.Component {
-  state= {
-    "statusMapping": {
-      "Maint": {
-        state: "Maintenance",
-        colorName: "danger",
-        colorHex: "#b00020",
-        labelColorHex: "#fff"
+  constructor(props) {
+    super(props);
+    this.state= {
+      "statusMapping": {
+        "Maint": {
+          state: "Maintenance",
+          colorName: "danger",
+          colorHex: "#b00020",
+          labelColorHex: "#fff"
+        },
+        "PreMaint": {
+          state: "Pre-Maintenance",
+          colorName: "warning",
+          colorHex: "#ffb670",
+          labelColorHex: "#212529"
+        },
+        "PartMaint": {
+          state: "Partial Maintenance",
+          colorName: "warning",
+          colorHex: "#ffb670",
+          labelColorHex: "#212529"
+        },
+        "Active": {
+          state: "Active",
+          colorName: "primary",
+          colorHex: "#68b3d1",
+          labelColorHex: "#212529"
+        }
       },
-      "PreMaint": {
-        state: "Pre-Maintenance",
-        colorName: "warning",
-        colorHex: "#ffb670",
-        labelColorHex: "#212529"
-      },
-      "PartMaint": {
-        state: "Partial Maintenance",
-        colorName: "warning",
-        colorHex: "#ffb670",
-        labelColorHex: "#212529"
-      },
-      "Active": {
-        state: "Active",
-        colorName: "primary",
-        colorHex: "#68b3d1",
-        labelColorHex: "#212529"
-      }
-    },
-    "componentTypes": ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"],
-    data: {
-      status: "Active",
-      name: ""
-    },
-    hosts: []
+      "componentTypes": ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"],
+      data: this.props.location.state.data,
+      hosts: []
+    }
   }
 
   async componentDidMount() {
     try {
       const { data: res2 } = await getResources(2);
       const siteName = this.props.location.pathname.split("s/")[1];
-      console.log(siteName)
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
-      this.setState({
-        hosts: parsedObj2.hosts
-      });
-
+      this.setState({ hosts: parsedObj2.hosts });
     
       // if(resourceName && resourceName !== "all" && parsedObj.siteAcronyms.includes(resourceName)) {
       //   this.setState({
@@ -83,6 +78,7 @@ class SiteDetailPage extends React.Component {
   render () {
     const { data, hosts, statusMapping, componentTypes } = this.state;
     return (
+      data.status &&
       <div className="container">
       <div className="d-flex flex-row justify-content-between">
        <h1>Site - {data.name}</h1>
@@ -94,7 +90,7 @@ class SiteDetailPage extends React.Component {
            Back to Resources Overview
          </button>
        </Link>
-     </div>
+      </div>
      {
       ["Maint", "PreMaint", "PartMaint"].includes(data.status["state"]) &&
       <div className="alert alert-primary mb-2" role="alert">
@@ -107,61 +103,61 @@ class SiteDetailPage extends React.Component {
      }
      <div className="mt-4">
        <h3>Basic Information</h3>
-       <table className="table table-sm table-striped table-bordered mb-4">
-         <tbody>
-          {
-            sitesNameMapping.acronymToShortName[data.name] && 
-            <tr>
-              <th>Name</th>
-              <td>{ sitesNameMapping.acronymToShortName[data.name] }</td>
-            </tr>
-          }
-          <tr>
-            <th>Acronym</th>
-            <td>{ data.name }</td>
-          </tr>
-          <tr>
-            <th>Status</th>
-            <td>
-              {
-                data.status["state"] !== "Active" ? 
-                `${statusMapping[data.status].state} (${statusMapping[data.status].explanation})` : 
-                statusMapping[data.status].state
-              }
-            </td>
-          </tr>
-          {
-            data.status["state"] === "Maint" && 
-            <tr>
-              <th>Expected End Time</th>
-              <td>
-                {
-                  data.status["expected_end"] ?
-                  utcToLocalTimeParser(data.status["expected_end"]) : "Unknown"
-                }
-              </td>
-            </tr>
-          }
-          {
-            data.status["state"] === "PreMaint" && 
-            <tr>
-              <th>Deadline</th>
-              <td>
-                {
-                  data.status["deadline"] ? data.status["deadline"] : "Unknown"
-                }
-              </td>
-            </tr>
-          }
-          {
-            data.location && 
-            <tr>
-              <th>Rack Location</th>
-              <td>{ JSON.parse(data.location).postal }</td>
-            </tr>
-          }
-         </tbody>
-       </table>
+        <table className="table table-sm table-striped table-bordered mb-4">
+        <tbody>
+         {
+           sitesNameMapping.acronymToShortName[data.name] && 
+           <tr>
+             <th>Name</th>
+             <td>{ sitesNameMapping.acronymToShortName[data.name] }</td>
+           </tr>
+         }
+         <tr>
+           <th>Acronym</th>
+           <td>{ data.name }</td>
+         </tr>
+         <tr>
+           <th>Status</th>
+           <td>
+             {
+               data.status["state"] !== "Active" ? 
+               `${statusMapping[data.status.state].state} (${statusMapping[data.status.state].explanation})` : 
+               statusMapping[data.status.state].state
+             }
+           </td>
+         </tr>
+         {
+           data.status["state"] === "Maint" && 
+           <tr>
+             <th>Expected End Time</th>
+             <td>
+               {
+                 data.status["expected_end"] ?
+                 utcToLocalTimeParser(data.status["expected_end"]) : "Unknown"
+               }
+             </td>
+           </tr>
+         }
+         {
+           data.status["state"] === "PreMaint" && 
+           <tr>
+             <th>Deadline</th>
+             <td>
+               {
+                 data.status["deadline"] ? data.status["deadline"] : "Unknown"
+               }
+             </td>
+           </tr>
+         }
+         {
+           data.location && 
+           <tr>
+             <th>Rack Location</th>
+             <td>{ JSON.parse(data.location).postal }</td>
+           </tr>
+         }
+        </tbody>
+      </table>
      </div>
      {
       data.workers && data.workers.length > 0 && <div className="mt-4">
@@ -190,18 +186,29 @@ class SiteDetailPage extends React.Component {
         </table>
       </div>
      }
-     <div className="mt-4">
-       <h3>Resource Availabilities</h3>
-       {/* <DetailTable
-         name={ data.name }
-         resource={ data }
-         parent="sitepage"
-       /> */}
+     <div className="my-5">
+       <h3>Site Resource Summary</h3>
        <table className="table table-hover table-bordered site-detail-table">
+       <thead>
+                  <tr>
+                    <th scope="col">Resources</th>
+                    <th scope="col">Core</th>
+                    <th scope="col">Disk (GB)</th>
+                    <th scope="col">RAM (GB)</th>
+                    <th scope="col">CPU</th>
+                  </tr>
+                  <tr>
+                    <td><b>Available/ Total</b></td>
+                    <td>{ generateProgressBar(data[`freeCore`],data[`totalCore`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(data[`freeDisk`],data[`totalDisk`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(data[`freeRAM`],data[`totalRAM`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(data[`freeCPU`],data[`totalCPU`],"#68b3d1","fff")}</td>
+                  </tr>
+                </thead>
         <thead>
           <tr>
             <th scope="col" rowSpan={2}>Component</th>
-            <th colSpan="3" className="border-bottom">Avalability</th>
+            <th colSpan="3" className="border-bottom">Availability</th>
             <th scope="col" rowSpan={2}>Available / Total</th>
           </tr>
           <tr>
@@ -212,7 +219,7 @@ class SiteDetailPage extends React.Component {
         </thead>
         <tbody>
          {
-          data.type && 
+          data && 
             (
               componentTypes.map((type, index) =>  (
               data[type] && data[type].length > 1 ?
@@ -233,8 +240,8 @@ class SiteDetailPage extends React.Component {
                         generateProgressBar(
                           data[`free${type}`],
                           data[`total${type}`],
-                          statusMapping[data.status].colorHex,
-                          statusMapping[data.status].labelColorHex
+                          statusMapping[data.status.state].colorHex,
+                          statusMapping[data.status.state].labelColorHex
                         )
                       }
                     </td>
@@ -271,8 +278,8 @@ class SiteDetailPage extends React.Component {
                       generateProgressBar(
                         data[`free${type}`],
                         data[`total${type}`],
-                        statusMapping[data.status].colorHex,
-                        statusMapping[data.status].labelColorHex
+                        statusMapping[data.status.state].colorHex,
+                        statusMapping[data.status.state].labelColorHex
                       )
                     }
                   </td>
@@ -283,15 +290,32 @@ class SiteDetailPage extends React.Component {
           }
         </tbody>
        </table>
+       <h3 className="mt-5">Host Resources</h3>
        {
           hosts && hosts.map((host, index) =>
             <div key={`site-detial-host-${index}`}>
-              <h5 className="text-primary">{host.Name}</h5>
+              <h5 className="text-primary mt-4">{host.Name}</h5>
               <table className="table table-hover table-bordered site-detail-table">
                 <thead>
                   <tr>
+                    <th scope="col">Resources</th>
+                    <th scope="col">Core</th>
+                    <th scope="col">Disk (GB)</th>
+                    <th scope="col">RAM (GB)</th>
+                    <th scope="col">CPU</th>
+                  </tr>
+                  <tr>
+                    <td><b>Available/ Total</b></td>
+                    <td>{ generateProgressBar(host[`freeCore`],host[`totalCore`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(host[`freeDisk`],host[`totalDisk`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(host[`freeRAM`],host[`totalRAM`],"#68b3d1","fff")}</td>
+                    <td>{ generateProgressBar(host[`freeCPU`],host[`totalCPU`],"#68b3d1","fff")}</td>
+                  </tr>
+                </thead>
+                <thead>
+                  <tr>
                     <th scope="col" rowSpan={2}>Component</th>
-                    <th colSpan="3" className="border-bottom">Avalability</th>
+                    <th colSpan="3" className="border-bottom">Availability</th>
                     <th scope="col" rowSpan={2}>Available / Total</th>
                   </tr>
                   <tr>
@@ -379,7 +403,7 @@ class SiteDetailPage extends React.Component {
           )
        }
      </div>
-   </div>
+    </div>
     )
   }
 }

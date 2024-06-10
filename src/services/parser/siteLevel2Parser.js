@@ -1,35 +1,33 @@
-const getSiteColor = (status) => {
-  if (status === "Active") {
-    // Color: "primary" for "active" sites
-    return "#5798bc";
-  } else if (status === "Maint") {
-    // Color: "warning" for "maintenance" sites
-    return "#e94948";
-  } else if (status === "PreMaint" || status === "PartMaint") {
-    return "#ff8542";
-  } else {
-    // Color: "secondary" for "down" sites
-    return "#838385";
-  }
-}
-
 export default function siteParserLevel2(data, siteName, acronymToShortName) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const links = abqm_elements.links;
-  console.log(nodes)
   const site = nodes.filter(n => n.Class === "CompositeNode" && n.Name === siteName);
-  console.log("------Site------");
-  console.log(site)
   const hosts = nodes.filter(n => n.Class === "NetworkNode");
-  console.log("------Hosts------");
-  console.log(hosts);
 
-  /************ retrieve site component capacity by links. ************/ 
+  const hostCapacityTypes = {
+    "CPU": "cpu",
+    "Core": "core",
+    "Disk": "disk",
+    "RAM": "ram",
+    "Unit": "unit",
+  }
+
   const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
 
-  // find components of each host.
+  // Component and Model level.
   hosts.forEach((host, index) => {
+    // Host level.
+    host.capacities = host.Capacities ? JSON.parse(host.Capacities) : {};
+    host.allocatedCapacities = host.CapacityAllocations ? JSON.parse(host.CapacityAllocations) : {};
+
+    for (const property in hostCapacityTypes) {
+      host[`total${property}`] = host.capacities[hostCapacityTypes[property]] || 0;
+      host[`allocated${property}`] = host.allocatedCapacities[hostCapacityTypes[property]] || 0;
+      host[`free${property}`] = host[`total${property}`] - host[`allocated${property}`];
+    }
+
+    // find components of each host.
     // initiate component properties to prevent undefined error.
     for (const type of componentTypes) {
       hosts[index][`total${type}`] = 0;
@@ -70,8 +68,6 @@ export default function siteParserLevel2(data, siteName, acronymToShortName) {
     "parsedSite": site,
     "hosts": hosts
   };
-  console.log("parsed site")
-  console.log(parsedObj);
 
   return parsedObj;
 }
