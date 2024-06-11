@@ -3,7 +3,7 @@ import { default as configData } from "../config.json";
 
 const apiEndpoint = `${configData.fabricCoreApiUrl}/projects`;
 
-export function getProjects(type, offset, limit, searchQuery) {
+export function getProjects(type, offset, limit, searchQuery, searchSet) {
   const userID = localStorage.getItem("userID");
   if (type === "myProjects") {
     if (!searchQuery) {
@@ -15,7 +15,7 @@ export function getProjects(type, offset, limit, searchQuery) {
     if (!searchQuery) {
       return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc`);
     } else {
-      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc`);
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&search_set=${searchSet}`);
     }
   }
 }

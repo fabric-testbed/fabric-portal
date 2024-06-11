@@ -59,7 +59,7 @@ class NewSliceForm extends React.Component {
     });
 
     try {
-      const { data: resources } = await getResources();
+      const { data: resources } = await getResources(1);
       const { data: keys } = await getActiveKeys();
       const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);

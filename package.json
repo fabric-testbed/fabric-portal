@@ -29,6 +29,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-range": "^4.0.2",
+    "multiselect-react-dropdown": "^2.0.25",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",

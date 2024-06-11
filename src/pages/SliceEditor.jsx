@@ -59,7 +59,7 @@ class SliceEditor extends React.Component {
             spinnerText: ""
           });
         });
-        const { data: resources } = await getResources();
+        const { data: resources } = await getResources(1);
         const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
         const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
         this.setState({

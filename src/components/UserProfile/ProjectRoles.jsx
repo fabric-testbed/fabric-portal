@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../common/Pagination";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
+import Parser from 'html-react-parser';
 
 class ProjectRoles extends React.Component {
   state = {
@@ -41,10 +42,11 @@ class ProjectRoles extends React.Component {
           <i className="fa fa-ban text-danger"></i>
         );
       case "string":
-        return _.truncate(param, {
-          'length': 100,
-          'separator': ' '
-        });
+        // return _.truncate(param, {
+        //   'length': 100,
+        //   'separator': ' '
+        // });
+        return Parser(param);
       default:
         return param;
     }

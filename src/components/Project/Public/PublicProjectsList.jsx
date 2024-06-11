@@ -6,6 +6,7 @@ import { getProjects } from "../../../services/projectService.js";
 import { default as portalData } from "../../../services/portalData.json";
 import { toast } from "react-toastify";
 import withRouter from "../../common/withRouter.jsx";
+import Multiselect from 'multiselect-react-dropdown';
 
 class PublicProjectsList extends React.Component {
   state = {
@@ -15,10 +16,11 @@ class PublicProjectsList extends React.Component {
     currentPage: 1,
     searchQuery: "",
     showSpinner: false,
-    selectedCommunity: "All",
-    selectCommunities: ["Networks", "Computer systems organization", "Information systems", "Security and privacy",
-  "Human-centered computing", "Applied computing", "Hardware", "Software", "Mathematics of computing", "Computing methodologies",
-  "HPC", "RNE"]
+    options: [{ name: "Software", id: 1 }, { name: "Hardware", id: 2 }, { name: "Networks", id: 3 },
+  { name: "Computer systems organization", id: 4 }, { name: "Information systems", id: 5 }, 
+  { name: "Security and privacy", id: 6 }, { name: "Human-centered computing", id: 7 }, { name: "Applied computing", id: 8 },
+  { name:  "Mathematics of computing", id: 9 }, { name: "Computing methodologies", id: 10 }, { name: "HPC", id: 11 }, { name: "RNE", id: 12} ],
+    selectedValue: []
   };
 
   async componentDidMount() {
@@ -46,19 +48,39 @@ class PublicProjectsList extends React.Component {
     }
   }
 
-  reloadProjectsData = async () => {
-    const { pageSize: limit, currentPage, searchQuery, selectedCommunity } = this.state;
+  reloadProjectsData = async (type, searchQuery) => {
+    const { pageSize: limit, currentPage} = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
     let projectsCount = 0;
-    try {
-      const { data } = await getProjects("allProjects", offset, limit, searchQuery);
-      projects = data.results;
-      projectsCount = data.total;
-
-      this.setState({ projects, projectsCount })
-    } catch (err) {
-      toast.error("Failed to load projects. Please re-try.");
+    if (type === "description") {
+      try {
+        const { data } = await getProjects("allProjects", offset, limit, searchQuery);
+        projects = data.results;
+        projectsCount = data.total;
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
+    } else if (type === "community") {
+      try {
+        const { data } =  await getProjects("allProjects", offset, limit, searchQuery, "communities");
+        projects = data.results;
+        projectsCount = data.total;
+  
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
+    } else {
+      try {
+        const { data } = await getProjects("allProjects", offset, limit);
+        projects = data.results;
+        projectsCount = data.total;
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
     }
   }
 
@@ -73,20 +95,27 @@ class PublicProjectsList extends React.Component {
     }
   };
 
-  handleFilter = (e) => {
-    // if input gets cleared, trigger data reload and reset the search query
-    if (e.target.value === "All") {
-      this.setState({ currentPage: 1, selectedCommunity: "All" }, () => {
-        this.reloadProjectsData();
-      });
-    } else {
-      this.setState({ selectedCommunity: e.target.value});
-      this.setState({ currentPage: 1 }, () => {
-        this.reloadProjectsData();
-      });
-    }
-  };
+  onSelect = async (selectedList, selectedItem) => {
+    const searchQuery = selectedList.map(community => community.name).toString();
+    this.reloadProjectsData("community", searchQuery);
+  }
 
+  onRemove = async (selectedList, removedItem) => {
+    const { pageSize: limit, currentPage } = this.state;
+    const offset = (currentPage - 1) * limit;
+    let projects = [];
+    let projectsCount = 0;
+    const searchQuery = selectedList.map(community => community.name).toString();
+    try {
+      const { data } =  await getProjects("allProjects", offset, limit, searchQuery, "communities");
+      projects = data.results;
+      projectsCount = data.total;
+
+      this.setState({ projects, projectsCount })
+    } catch (err) {
+      toast.error("Failed to load projects. Please re-try.");
+    }
+  }
 
   handlePaginationClick = (page, pagesCount) => {
       const currentPage = this.state.currentPage;
@@ -120,8 +149,8 @@ class PublicProjectsList extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery, selectCommunities, selectedCommunity } = this.state;
+    const { pageSize, currentPage, projects, showSpinner, selectedValue,
+      projectsCount, searchQuery, selectCommunities, selectedCommunity, options } = this.state;
 
     return (
       <div className="container">
@@ -172,24 +201,17 @@ class PublicProjectsList extends React.Component {
           !showSpinner && 
           <div>
             <div className="d-flex flex-row justify-content-between mb-3">
-            <div className="input-group input-group-sm w-25">
-              <div className="input-group-prepend">
-                <label className="input-group-text" for="inputGroupSelect01">Community</label>
-              </div>
-              <select
-                className="form-control form-control-sm"
-                id="fundingAgencySelect"
-                value={selectedCommunity}
-                onChange={this.handleFilter}
-              >
-                <option value="All">All</option>
-                { 
-                  selectCommunities.map((domain, index) => 
-                    <option value={domain} key={`domain-${index}`}>{domain}</option>
-                  )
-                }
-              </select>
-            </div>
+              <Multiselect
+                options={options}
+                selectedValues={selectedValue}
+                onSelect={this.onSelect} 
+                onRemove={this.onRemove} 
+                displayValue="name" 
+                showCheckbox={true}
+                placeholder={"🔍  Filter Community"}
+                avoidHighlightFirstOption={true}
+                hideSelectedList={true}
+              />
               <span>{projectsCount} results.</span>
             </div>
             {
