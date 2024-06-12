@@ -17,10 +17,11 @@ class PublicProjectsList extends React.Component {
     searchQuery: "",
     showSpinner: false,
     options: [{ name: "Software", id: 1 }, { name: "Hardware", id: 2 }, { name: "Networks", id: 3 },
-  { name: "Computer systems organization", id: 4 }, { name: "Information systems", id: 5 }, 
-  { name: "Security and privacy", id: 6 }, { name: "Human-centered computing", id: 7 }, { name: "Applied computing", id: 8 },
-  { name:  "Mathematics of computing", id: 9 }, { name: "Computing methodologies", id: 10 }, { name: "HPC", id: 11 }, { name: "RNE", id: 12} ],
-    selectedValue: []
+      { name: "Computer systems organization", id: 4 }, { name: "Information systems", id: 5 }, 
+      { name: "Security and privacy", id: 6 }, { name: "Human-centered computing", id: 7 }, { name: "Applied computing", id: 8 },
+      { name:  "Mathematics of computing", id: 9 }, { name: "Computing methodologies", id: 10 }, { name: "HPC", id: 11 }, { name: "RNE", id: 12} ],
+    filterOption: "description",
+    selectedList: []
   };
 
   async componentDidMount() {
@@ -48,22 +49,24 @@ class PublicProjectsList extends React.Component {
     }
   }
 
-  reloadProjectsData = async (type, searchQuery) => {
-    const { pageSize: limit, currentPage} = this.state;
+  reloadProjectsData = async (selectedList) => {
+    const { pageSize: limit, currentPage, filterOption, searchQuery} = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
     let projectsCount = 0;
-    if (type === "description") {
+    if (filterOption === "description") {
       try {
-        const { data } = await getProjects("allProjects", offset, limit, searchQuery);
+        const { data } = await getProjects("allProjects", offset, limit, searchQuery, "description");
         projects = data.results;
         projectsCount = data.total;
         this.setState({ projects, projectsCount })
       } catch (err) {
         toast.error("Failed to load projects. Please re-try.");
       }
-    } else if (type === "community") {
+    } else if (filterOption === "community") {
       try {
+        const searchQuery = selectedList && selectedList.map(community => community.name).toString();
+        console.log(searchQuery)
         const { data } =  await getProjects("allProjects", offset, limit, searchQuery, "communities");
         projects = data.results;
         projectsCount = data.total;
@@ -91,30 +94,16 @@ class PublicProjectsList extends React.Component {
         this.reloadProjectsData();
       });
     } else {
-      this.setState({ searchQuery: e.target.value});
+      this.setState({ searchQuery: e.target.value });
     }
   };
 
-  onSelect = async (selectedList, selectedItem) => {
-    const searchQuery = selectedList.map(community => community.name).toString();
-    this.reloadProjectsData("community", searchQuery);
+  onSelect = (selectedList, selectedItem) => {
+    this.reloadProjectsData(selectedList);
   }
 
-  onRemove = async (selectedList, removedItem) => {
-    const { pageSize: limit, currentPage } = this.state;
-    const offset = (currentPage - 1) * limit;
-    let projects = [];
-    let projectsCount = 0;
-    const searchQuery = selectedList.map(community => community.name).toString();
-    try {
-      const { data } =  await getProjects("allProjects", offset, limit, searchQuery, "communities");
-      projects = data.results;
-      projectsCount = data.total;
-
-      this.setState({ projects, projectsCount })
-    } catch (err) {
-      toast.error("Failed to load projects. Please re-try.");
-    }
+  onRemove = (selectedList, removedItem) => {
+    this.reloadProjectsData(selectedList);
   }
 
   handlePaginationClick = (page, pagesCount) => {
@@ -148,9 +137,13 @@ class PublicProjectsList extends React.Component {
     }
   };
 
+  handleChangeFilter = (option) =>{
+    this.setState({ filterOption: option, searchQuery: ""})
+  }
+
   render() {
-    const { pageSize, currentPage, projects, showSpinner, selectedValue,
-      projectsCount, searchQuery, selectCommunities, selectedCommunity, options } = this.state;
+    const { pageSize, currentPage, projects, showSpinner, projectsCount, searchQuery, 
+      options, filterOption, selectedList } = this.state;
 
     return (
       <div className="container">
@@ -174,25 +167,62 @@ class PublicProjectsList extends React.Component {
         >
           This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
         </div>
-        <div className="w-100 input-group my-3">
-          <input
-            type="text"
-            name="query"
-            className="form-control"
-            placeholder={"Search by project name or science domain..."}
-            value={searchQuery}
-            onChange={this.handleInputChange}
-            onKeyDown={this.raiseInputKeyDown}
-          />
-          <div className="input-group-append">
+        <div className="w-100 input-group mt-3">
+        <div className="input-group mb-3 project-search-toolbar">
+          <div className="input-group-prepend">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary dropdown-toggle"
               type="button"
-              onClick={this.handleProjectsSearch}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
-              Search
+              <i className="fa fa-search"></i>
             </button>
+            <div className="dropdown-menu">
+              <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
+              <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
+            </div>
           </div>
+          {
+            filterOption === "description" &&
+              <input
+                type="text"
+                name="query"
+                className="form-control"
+                placeholder={"Search by project name and description..."}
+                value={searchQuery}
+                onChange={this.handleInputChange}
+                onKeyDown={this.raiseInputKeyDown}
+              />
+          }
+          {
+            filterOption === "description" &&
+              <div className="input-group-append">
+                <button
+                  className="btn btn-outline-primary"
+                  type="button"
+                  onClick={this.handleProjectsSearch}
+                >
+                  Search
+                </button>
+              </div>
+          }
+          {
+            filterOption === "community" &&  
+            <Multiselect
+              options={options}
+              selectedValues={selectedList}
+              onSelect={this.onSelect} 
+              onRemove={this.onRemove} 
+              displayValue="name" 
+              showCheckbox={true}
+              placeholder={"Search by community"}
+              avoidHighlightFirstOption={true}
+              hideSelectedList={true}
+            />
+          }
+        </div>
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."} />
@@ -200,18 +230,7 @@ class PublicProjectsList extends React.Component {
         {
           !showSpinner && 
           <div>
-            <div className="d-flex flex-row justify-content-between mb-3">
-              <Multiselect
-                options={options}
-                selectedValues={selectedValue}
-                onSelect={this.onSelect} 
-                onRemove={this.onRemove} 
-                displayValue="name" 
-                showCheckbox={true}
-                placeholder={"🔍  Filter Community"}
-                avoidHighlightFirstOption={true}
-                hideSelectedList={true}
-              />
+            <div className="d-flex flex-row justify-content-end mb-3">
               <span>{projectsCount} results.</span>
             </div>
             {

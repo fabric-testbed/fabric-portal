@@ -1242,17 +1242,34 @@ ul,
 }
 
 .searchWrapper {
-  min-height: 2rem !important;
-  max-height: 2rem !important;
+  min-height: 2.3rem !important;
+  max-height: 2.3rem !important;
   padding: 3px !important;
   padding-left: 6px !important;
-  width: 11rem !important;
-}
-
-.optionListContainer {
-  width: 18rem !important;
+  width: 100% !important;
 }
 
 .multiSelectContainer input {
   margin-top: 0 !important;
+}
+
+div:has(> #multiselectContainerReact) {
+ width: 95%;
+}
+
+.project-search-toolbar .input-group-prepend {
+  width: 5% !important;
+}
+
+.project-search-toolbar .input-group-prepend .dropdown-toggle {
+  width: 100% !important;
+}
+
+.multiSelectContainer ul {
+  max-height: 50vh !important;
+}
+
+.optionListContainer {
+  height: 50vh !important;
+  width: 100% !important;
 }
