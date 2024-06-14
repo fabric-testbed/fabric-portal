@@ -1,4 +1,5 @@
 import React from "react";
+import SiteDetailTable  from "./SiteDetailTable.jsx";
 import { sitesNameMapping }  from "../../data/sites";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import { default as portalData } from "../../services/portalData.json";
@@ -63,7 +64,6 @@ class SiteDetailPage extends React.Component {
       const siteName = this.props.location.pathname.split("s/")[1];
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
       this.setState({ hosts: parsedObj2.hosts });
-    
       // if(resourceName && resourceName !== "all" && parsedObj.siteAcronyms.includes(resourceName)) {
       //   this.setState({
       //     searchQuery: resourceName,
@@ -76,7 +76,7 @@ class SiteDetailPage extends React.Component {
   }
   
   render () {
-    const { data, hosts, statusMapping, componentTypes } = this.state;
+    const { data, hosts, statusMapping } = this.state;
     return (
       data.status &&
       <div className="container">
@@ -188,217 +188,13 @@ class SiteDetailPage extends React.Component {
      }
      <div className="my-5">
        <h3>Site Resource Summary</h3>
-       <table className="table table-hover table-bordered site-detail-table">
-       <thead>
-                  <tr>
-                    <th scope="col">Resources</th>
-                    <th scope="col">Core</th>
-                    <th scope="col">Disk (GB)</th>
-                    <th scope="col">RAM (GB)</th>
-                    <th scope="col">CPU</th>
-                  </tr>
-                  <tr>
-                    <td><b>Available/ Total</b></td>
-                    <td>{ generateProgressBar(data[`freeCore`],data[`totalCore`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(data[`freeDisk`],data[`totalDisk`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(data[`freeRAM`],data[`totalRAM`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(data[`freeCPU`],data[`totalCPU`],"#68b3d1","fff")}</td>
-                  </tr>
-                </thead>
-        <thead>
-          <tr>
-            <th scope="col" rowSpan={2}>Component</th>
-            <th colSpan="3" className="border-bottom">Availability</th>
-            <th scope="col" rowSpan={2}>Available / Total</th>
-          </tr>
-          <tr>
-            <td><b>Model</b></td>
-            <td><b>Total Units</b></td>
-            <td><b>Allocated Units</b></td>
-          </tr>
-        </thead>
-        <tbody>
-         {
-          data && 
-            (
-              componentTypes.map((type, index) =>  (
-              data[type] && data[type].length > 1 ?
-                <React.Fragment>
-                  <tr key={`site-resource-${index}`}>
-                    <th scope="col" rowSpan={data[type] && data[type].length}>{type}</th>
-                    <td>
-                      {data[type][0].model}
-                    </td>
-                    <td>
-                      {data[type][0].unit}
-                    </td>
-                    <td>
-                      {data[type][0].allocatedUnit}
-                    </td>
-                    <td rowSpan={data[type] && data[type].length}>
-                      {
-                        generateProgressBar(
-                          data[`free${type}`],
-                          data[`total${type}`],
-                          statusMapping[data.status.state].colorHex,
-                          statusMapping[data.status.state].labelColorHex
-                        )
-                      }
-                    </td>
-                  </tr>
-                  {
-                    data[type].slice(1).map((row, index) =>
-                    <tr key={`site-resource-${index}`}>
-                      <td>
-                        {row.model}
-                      </td>
-                      <td>
-                        {row.unit}
-                      </td>
-                      <td>
-                        {row.allocatedUnit}
-                      </td>
-                    </tr>)
-                  }
-                </React.Fragment>
-                :
-                <tr key={`site-resource-${index}`}>
-                  <th scope="col">{type}</th>
-                  <td>
-                    {data[type][0].model}
-                  </td>
-                  <td>
-                    {data[type][0].unit}
-                  </td>
-                  <td>
-                    {data[type][0].allocatedUnit}
-                  </td>
-                  <td rowSpan={data[type] && data[type].length}>
-                    {
-                      generateProgressBar(
-                        data[`free${type}`],
-                        data[`total${type}`],
-                        statusMapping[data.status.state].colorHex,
-                        statusMapping[data.status.state].labelColorHex
-                      )
-                    }
-                  </td>
-                </tr>
-                )
-              )
-            )
-          }
-        </tbody>
-       </table>
+       <SiteDetailTable data={data} status={data.status}/>
        <h3 className="mt-5">Host Resources</h3>
        {
           hosts && hosts.map((host, index) =>
             <div key={`site-detial-host-${index}`}>
               <h5 className="text-primary mt-4">{host.Name}</h5>
-              <table className="table table-hover table-bordered site-detail-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Resources</th>
-                    <th scope="col">Core</th>
-                    <th scope="col">Disk (GB)</th>
-                    <th scope="col">RAM (GB)</th>
-                    <th scope="col">CPU</th>
-                  </tr>
-                  <tr>
-                    <td><b>Available/ Total</b></td>
-                    <td>{ generateProgressBar(host[`freeCore`],host[`totalCore`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(host[`freeDisk`],host[`totalDisk`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(host[`freeRAM`],host[`totalRAM`],"#68b3d1","fff")}</td>
-                    <td>{ generateProgressBar(host[`freeCPU`],host[`totalCPU`],"#68b3d1","fff")}</td>
-                  </tr>
-                </thead>
-                <thead>
-                  <tr>
-                    <th scope="col" rowSpan={2}>Component</th>
-                    <th colSpan="3" className="border-bottom">Availability</th>
-                    <th scope="col" rowSpan={2}>Available / Total</th>
-                  </tr>
-                  <tr>
-                    <td><b>Model</b></td>
-                    <td><b>Total Units</b></td>
-                    <td><b>Allocated Units</b></td>
-                  </tr>
-                </thead>
-                <tbody>
-                {
-                  (
-                    componentTypes.map((type, index) =>  host[type] && (
-                       host[type].length > 1 ?
-                        <React.Fragment>
-                          <tr key={`site-resource-${index}`}>
-                            <th scope="col" rowSpan={host[type] && host[type].length}>{type}</th>
-                            <td>
-                              {host[type][0].model}
-                            </td>
-                            <td>
-                              {host[type][0].unit}
-                            </td>
-                            <td>
-                              {host[type][0].allocatedUnit}
-                            </td>
-                            <td rowSpan={host[type] && host[type].length}>
-                              {
-                                generateProgressBar(
-                                  host[`free${type}`],
-                                  host[`total${type}`],
-                                  statusMapping[host.status].colorHex,
-                                  statusMapping[host.status].labelColorHex
-                                )
-                              }
-                            </td>
-                          </tr>
-                          {
-                            host[type].slice(1).map((row, index) =>
-                            <tr key={`site-resource-${index}`}>
-                              <td>
-                                {row.model}
-                              </td>
-                              <td>
-                                {row.unit}
-                              </td>
-                              <td>
-                                {row.allocatedUnit}
-                              </td>
-                            </tr>)
-                          }
-                        </React.Fragment>
-                        :
-                        (
-                          host[type].length === 1 && 
-                          <tr key={`site-resource-${index}`}>
-                          <th scope="col">{type}</th>
-                          <td>
-                            {host[type][0].model}
-                          </td>
-                          <td>
-                            {host[type][0].unit}
-                          </td>
-                          <td>
-                            {host[type][0].allocatedUnit}
-                          </td>
-                          <td rowSpan={host[type] && host[type].length}>
-                            {
-                              generateProgressBar(
-                                host[`free${type}`],
-                                host[`total${type}`],
-                                "#68b3d1",
-                                "fff"
-                              )
-                            }
-                          </td>
-                        </tr>
-                        )
-                        )
-                      )
-                    )
-                  }
-                </tbody>
-              </table>
+              <SiteDetailTable data={host} status={data.status} />
             </div>
           )
        }
