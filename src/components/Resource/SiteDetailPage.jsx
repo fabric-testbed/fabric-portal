@@ -4,23 +4,12 @@ import { sitesNameMapping }  from "../../data/sites";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
-import ProgressBar from '../common/ProgressBar';
 import { getResources } from "../../services/resourceService.js";
 import { toast } from "react-toastify";
 import siteParserLevel2 from "../../services/parser/siteLevel2Parser";
 import withRouter from "../common/withRouter.jsx";
-
-
-const generateProgressBar = (total, free, color, labelColor) => {
-  return (
-    <ProgressBar
-      now={total > 0 ? Math.round(free * 100/ total) : 0}
-      label={`${free}/${total}`}
-      color={color}
-      labelColor={labelColor}
-    />
-  )
-}
+import * as Accordion from '@radix-ui/react-accordion';
+// import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 class SiteDetailPage extends React.Component {
   constructor(props) {
@@ -188,16 +177,26 @@ class SiteDetailPage extends React.Component {
      }
      <div className="my-5">
        <h3>Site Resource Summary</h3>
-       <SiteDetailTable data={data} status={data.status}/>
+       <SiteDetailTable
+         data={data}
+         status={data.status}
+         hostCount={hosts.length}
+        />
        <h3 className="mt-5">Host Resources</h3>
+       <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
        {
           hosts && hosts.map((host, index) =>
-            <div key={`site-detial-host-${index}`}>
-              <h5 className="text-primary mt-4">{host.Name}</h5>
-              <SiteDetailTable data={host} status={data.status} />
-            </div>
+          <Accordion.Item
+          key={`site-detial-host-${index}`} 
+          className="AccordionItem"
+          value={`host-${index}`}
+          >
+          <Accordion.Trigger>{host.Name}</Accordion.Trigger>
+          <Accordion.Content><SiteDetailTable data={host} status={data.status} /></Accordion.Content>
+        </Accordion.Item>
           )
        }
+         </Accordion.Root>
      </div>
     </div>
     )

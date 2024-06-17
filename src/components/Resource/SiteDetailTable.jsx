@@ -46,7 +46,7 @@ const SiteDetailTable = props => {
   const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
 
   return (
-    <div>
+    <div className="my-3">
       <table className="table table-hover table-bordered site-detail-table">
        <thead>
           <tr>
@@ -62,6 +62,8 @@ const SiteDetailTable = props => {
             <td>{ generateProgressBar(data[`freeRAM`],data[`totalRAM`],"#68b3d1","fff")}</td>
           </tr>
         </thead>
+      </table>
+      <table className="table table-hover table-bordered site-detail-table">
         <thead>
           <tr>
             <th scope="col" rowSpan={2}>Component</th>
