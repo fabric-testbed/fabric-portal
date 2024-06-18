@@ -182,7 +182,12 @@ class SiteDetailPage extends React.Component {
          status={data.status}
          hostCount={hosts.length}
         />
-       <h3 className="mt-5">Host Resources</h3>
+        <div className="d-flex flex-row align-items-center mt-5">
+          <h3>
+            Host Resources 
+          </h3>
+          <span className="badge badge-primary ml-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
+        </div>
        <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
        {
           hosts && hosts.map((host, index) =>

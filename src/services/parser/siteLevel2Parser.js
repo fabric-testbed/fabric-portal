@@ -64,12 +64,18 @@ export default function siteParserLevel2(data, siteName, acronymToShortName) {
   })
   }
 
+  hosts.sort((a, b) => {
+    const nameA = a.Name.toUpperCase();
+    const nameB = b.Name.toUpperCase();
+    if(nameA > nameB) { return 1; }
+    if(nameA < nameB) { return -1; }
+    return 0;
+  });
+
   const parsedObj = {
     "parsedSite": site,
-    "hosts": hosts.sort((a, b) => a.Name - b.Name)
+    "hosts": hosts
   };
-
-  console.log(parsedObj);
 
   return parsedObj;
 }
