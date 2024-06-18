@@ -190,7 +190,11 @@ class Resources extends Component {
               </div>
             </div>
           </div>
-          <div label="Measuring and Monitoring Tools">
+          <div 
+            label="Measuring and Monitoring Tools"
+            badge={"NEW"}
+            color={"success"}
+          >
             <ToolLinks />
           </div>
         </Tabs>

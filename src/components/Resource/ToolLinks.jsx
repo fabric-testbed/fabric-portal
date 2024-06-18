@@ -1,6 +1,7 @@
 import InfrastructureMetrics from '../../imgs/toolLinks/InfrastructureMetrics.png';
 import PublicMetrics from '../../imgs/toolLinks/PublicMetrics.png';
 import OpticalData from '../../imgs/toolLinks/OpticalData.png';
+import LatencyMonitor from '../../imgs/toolLinks/LatencyMonitor.png';
 import Parser from 'html-react-parser';
 
 const ToolLinks = ()=> {
@@ -22,6 +23,13 @@ const ToolLinks = ()=> {
       "image": OpticalData,
       "content": "This is a space where ESnet shares public Grafana dashboards of targeted data sets. It complements the data found at the <a href='https://my.es.net/'target='_blank' rel='noreferrer'>my.es.net portal</a>. The data comes primarily from ESnet's Stardust system and provides a flexible way to show interesting views of the data.",
       "link": "https://public.stardust.es.net/dashboards/f/fdhq1z6q5smwwb/?orgId=2"
+    },
+    {
+      "title": "FABRIC Latency Monitor",
+      "image": LatencyMonitor,
+      "content": "",
+      "link": "https://public-metrics.fabric-testbed.net/latency/"
+
     }
   ]
   return (
