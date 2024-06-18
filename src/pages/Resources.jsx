@@ -24,17 +24,25 @@ class Resources extends Component {
     searchQuery: "",
     activeDetailName: "StarLight",
     siteNames: [],
-    siteColorMapping: {}
+    siteColorMapping: {},
+    activeTab: "Testbed Resources"
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     try {
+      const hash = this.props.location.hash;
+      if (hash && hash === "#tools") {
+        this.setState({
+          activeTab: "Measuring and Monitoring Tools"
+        });
+      } 
       const { data: res } = await getResources(1);
       const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
       this.setState({
         resources: parsedObj.parsedSites,
         siteNames: parsedObj.siteNames,
-        siteColorMapping: parsedObj.siteColorMapping
+        siteColorMapping: parsedObj.siteColorMapping,
+        activeTab: "Testbed Resources"
       });
 
       const resourceId = this.props.match.params.id;
@@ -141,13 +149,13 @@ class Resources extends Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName, activeTab } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="container">
         <h1>Resources</h1>
-        <Tabs activeTab={"Testbed Resources"}>
+        <Tabs activeTab={activeTab} navigate={this.props.navigate}>
           <div label="Testbed Resources">
             <div className="row my-2 px-3">
               <TestbedTable sum={this.getResourcesSum(this.state.resources)} />

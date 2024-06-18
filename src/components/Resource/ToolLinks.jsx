@@ -36,7 +36,7 @@ const ToolLinks = ()=> {
     <div className="mt-3">
       {
         toolsData.map((tool, index) =>
-        <div className="tool-link-block px-3 mb-5">
+        <div className="tool-link-block px-3 mb-5" key={`tool-link-${index}`}>
           <h3 className="text-primary">
             {tool.title}
           </h3>

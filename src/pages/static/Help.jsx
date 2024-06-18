@@ -76,7 +76,6 @@ export default class Help extends React.Component{
               <div className="card-body d-flex flex-column align-items-center">
                 <h5>
                   Office Hours
-                  <span className="ml-1 badge badge-pill badge-success">beta</span>
                 </h5>
                 <p>
                 Haven't found an answer to your question on the Forums or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.

@@ -6,10 +6,10 @@ import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
 import { getResources } from "../../services/resourceService.js";
 import { toast } from "react-toastify";
+import sitesParser from "../../services/parser/sitesParser";
 import siteParserLevel2 from "../../services/parser/siteLevel2Parser";
 import withRouter from "../common/withRouter.jsx";
 import * as Accordion from '@radix-ui/react-accordion';
-// import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 class SiteDetailPage extends React.Component {
   constructor(props) {
@@ -42,17 +42,26 @@ class SiteDetailPage extends React.Component {
         }
       },
       "componentTypes": ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"],
-      data: this.props.location.state.data,
+      data: {
+        status: {
+          "state": "Active",
+          "deadline": null,
+          "expected_end": null
+        }
+      },
       hosts: []
     }
   }
 
   async componentDidMount() {
     try {
+      const { data: res1 } = await getResources(1);
       const { data: res2 } = await getResources(2);
+      const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName, "level1");
       const siteName = this.props.location.pathname.split("s/")[1];
+      console.log(parsedObj1.parsedSites.filter(s => s.name === siteName)[0])
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
-      this.setState({ hosts: parsedObj2.hosts });
+      this.setState({ hosts: parsedObj2.hosts, data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0] });
       // if(resourceName && resourceName !== "all" && parsedObj.siteAcronyms.includes(resourceName)) {
       //   this.setState({
       //     searchQuery: resourceName,
@@ -177,11 +186,14 @@ class SiteDetailPage extends React.Component {
      }
      <div className="my-5">
        <h3>Site Resource Summary</h3>
-       <SiteDetailTable
-         data={data}
-         status={data.status}
-         hostCount={hosts.length}
-        />
+       {
+          data.name && 
+          <SiteDetailTable
+            data={data}
+            status={data.status}
+            hostCount={hosts.length}
+         />
+       }
         <div className="d-flex flex-row align-items-center mt-5">
           <h3>
             Host Resources 
