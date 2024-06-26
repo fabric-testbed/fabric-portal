@@ -1,12 +1,13 @@
-import React from "react";
-import Tabs from "../components/common/Tabs";
+import React, { Component } from "react";
+import Tabs from "../../common/Tabs";
 import ProjectPersonnel from "./ProjectPersonnel";
 import ProjectTokenHolders from "./ProjectTokenHolders.jsx";
 
-class ProjectMemberships {
+class ProjectMemberships extends Component {
   state = {
     activeTab: "Project Owners"
   }
+  
   render() {
     const { activeTab } = this.state;
     const { canUpdate, owners, members, token_holders, urlSuffix, isTokenHolder, isFO, 
@@ -14,7 +15,7 @@ class ProjectMemberships {
 
     return (
       <Tabs activeTab={activeTab}>
-          <div label="Project Owners">
+          <div label="Project Owners" className="px-2 pb-4">
             <ProjectPersonnel
               personnelType={"Project Owners"}
               canUpdate={canUpdate}
@@ -22,15 +23,15 @@ class ProjectMemberships {
               onUpdateUsers={onUpdateUsers}
             />
           </div>
-          <div label="Project Members">
+          <div label="Project Members" className="px-2 pb-4">
             <ProjectPersonnel
               personnelType={"Project Members"}
               canUpdate={canUpdate}
-              users={owners}
+              users={members}
               onUpdateUsers={onUpdateUsers}
             />
           </div>
-          <div label="Long-lived Token Holders">
+          <div label="Long-lived Token Holders" className="px-2 pb-4">
             <ProjectTokenHolders
               personnelType={"Token Holders"}
               token_holders={token_holders}
@@ -38,7 +39,7 @@ class ProjectMemberships {
               urlSuffix={urlSuffix}
               isTokenHolder={isTokenHolder}
               isFO={isFO}
-              projectExpired={this.checkProjectExpiration(projectExpired)}
+              projectExpired={projectExpired}
               onUpdateTokenHolders={onUpdateTokenHolders}
             />
           </div>

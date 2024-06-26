@@ -29,6 +29,7 @@ export default function parseSites(data, acronymToShortName) {
       site.nodeId = node.NodeID;
       site.name = node.Name;
       site.location = node.Location;
+      site.ptp = node.Flags && JSON.parse(node.Flags).ptp;
       // site.location = JSON.parse(node.Location)["postal"];
       /************ retrieve site status in site node. ************/
       const maintenance = JSON.parse(node.MaintenanceInfo);

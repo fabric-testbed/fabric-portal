@@ -90,10 +90,8 @@ class ProjectForm extends Form {
     activeIndex: 0,
     SideNavItems: [
       { name: "BASIC INFORMATION", active: true },
-      { name: "PROJECT OWNERS", active: false },
-      { name: "PROJECT MEMBERS", active: false },
-      { name: "LONG-LIVED TOKEN", active: false },
-      { name: "SLICES", active: false },
+      { name: "PROJECT MEMBERSHIPS", active: false },
+      { name: "PROJECT SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
     owners: [],
@@ -221,7 +219,7 @@ class ProjectForm extends Form {
        this.setState({ SideNavItems: [
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT MEMBERSHIPS", active: hash === "#memberships" },
-         { name: "SLICES", active: hash === "#slices" },
+         { name: "PROJECT SLICES", active: hash === "#slices" },
          { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
      }

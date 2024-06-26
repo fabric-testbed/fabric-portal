@@ -154,6 +154,13 @@ class SiteDetailPage extends React.Component {
              <td>{ JSON.parse(data.location).postal }</td>
            </tr>
          }
+         {
+          data.ptp && 
+          <tr>
+          <th>PTP Support</th>
+          <td>{ data.ptp ? "Yes" : "No" }</td>
+        </tr>
+         }
         </tbody>
       </table>
      </div>
