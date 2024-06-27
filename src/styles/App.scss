@@ -1277,7 +1277,7 @@ div:has(> #multiselectContainerReact) {
 }
 
 .AccordionItem {
-  margin: 2rem 0 !important;
+  margin: 0 0 2rem 0 !important;
 }
 
 .AccordionItem[data-state='closed'] button::before {

@@ -46,7 +46,7 @@ const SiteDetailTable = props => {
   const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
 
   return (
-    <div className="my-3">
+    <div className="mb-3">
       <table className="table table-hover table-bordered site-detail-table">
        <thead>
           <tr>

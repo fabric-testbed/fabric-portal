@@ -15,7 +15,7 @@ class ProjectMemberships extends Component {
 
     return (
       <Tabs activeTab={activeTab}>
-          <div label="Project Owners" className="px-2 pb-4">
+          <div label="Project Owners">
             <ProjectPersonnel
               personnelType={"Project Owners"}
               canUpdate={canUpdate}
@@ -23,7 +23,7 @@ class ProjectMemberships extends Component {
               onUpdateUsers={onUpdateUsers}
             />
           </div>
-          <div label="Project Members" className="px-2 pb-4">
+          <div label="Project Members">
             <ProjectPersonnel
               personnelType={"Project Members"}
               canUpdate={canUpdate}
@@ -31,7 +31,7 @@ class ProjectMemberships extends Component {
               onUpdateUsers={onUpdateUsers}
             />
           </div>
-          <div label="Long-lived Token Holders" className="px-2 pb-4">
+          <div label="Long-lived Token Holders">
             <ProjectTokenHolders
               personnelType={"Token Holders"}
               token_holders={token_holders}

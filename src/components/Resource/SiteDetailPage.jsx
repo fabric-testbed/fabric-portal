@@ -9,7 +9,9 @@ import { toast } from "react-toastify";
 import sitesParser from "../../services/parser/sitesParser";
 import siteParserLevel2 from "../../services/parser/siteLevel2Parser";
 import withRouter from "../common/withRouter.jsx";
+import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import * as Accordion from '@radix-ui/react-accordion';
+import moment from 'moment';
 
 class SiteDetailPage extends React.Component {
   constructor(props) {
@@ -49,7 +51,9 @@ class SiteDetailPage extends React.Component {
           "expected_end": null
         }
       },
-      hosts: []
+      hosts: [],
+      startTime: "",
+      endTime: ""
     }
   }
 
@@ -57,9 +61,8 @@ class SiteDetailPage extends React.Component {
     try {
       const { data: res1 } = await getResources(1);
       const { data: res2 } = await getResources(2);
-      const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName, "level1");
+      const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = this.props.location.pathname.split("s/")[1];
-      console.log(parsedObj1.parsedSites.filter(s => s.name === siteName)[0])
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
       this.setState({ hosts: parsedObj2.hosts, data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0] });
       // if(resourceName && resourceName !== "all" && parsedObj.siteAcronyms.includes(resourceName)) {
@@ -72,9 +75,38 @@ class SiteDetailPage extends React.Component {
       toast.error("Failed to load resource information. Please reload this page.");
     }
   }
+
+  handleStartChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ startTime: outputTime });
+  }
+
+  handleEndChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ endTime: outputTime });
+  }
+
+  handleRefreshTime = () => {
+    const { startTime, endTime } = this.state;
+
+  }
   
   render () {
-    const { data, hosts, statusMapping } = this.state;
+    const { data, hosts, statusMapping, startTime, endTime } = this.state;
     return (
       data.status &&
       <div className="container">
@@ -191,8 +223,29 @@ class SiteDetailPage extends React.Component {
         </table>
       </div>
      }
+
      <div className="my-5">
-       <h3>Site Resource Summary</h3>
+       <h3>Resource Information</h3>
+        <div className="d-flex flex-row justify-content-center align-items-center">
+          <span className="mr-2">From</span>
+          <CalendarDateTime
+            id="siteDetailCalendar1"
+            name="siteDetailCalendar"
+            parent={"siteDetailPage"}
+            time={startTime && startTime.toString().replace(/-/g, "/")}
+            onTimeChange={this.handleStartChange}
+          />
+          <span className="ml-4 mr-2">To</span>
+          <CalendarDateTime
+            id="siteDetailCalendar2"
+            name="siteDetailCalendar"
+            parent={"siteDetailPage"}
+            time={endTime && endTime.toString().replace(/-/g, "/")}
+            onTimeChange={this.handleEndChange}
+          />
+          <button className="btn btn-sm btn-primary ml-4">Refresh</button>
+        </div>
+       <h5 className="mt-3">Site Resource Summary</h5>
        {
           data.name && 
           <SiteDetailTable
@@ -201,10 +254,10 @@ class SiteDetailPage extends React.Component {
             hostCount={hosts.length}
          />
        }
-        <div className="d-flex flex-row align-items-center mt-5">
-          <h3>
+        <div className="d-flex flex-row align-items-center mt-4">
+          <h5>
             Host Resources 
-          </h3>
+          </h5>
           <span className="badge badge-primary ml-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
         </div>
        <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
