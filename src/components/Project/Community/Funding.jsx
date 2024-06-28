@@ -47,7 +47,7 @@ class Funding extends React.Component {
   }
 
   handleFundingAdd = () => {
-    const { agency, directorate, award_number, award_amount } = this.state;
+    const { agency, directorate, award_number, award_amount, agency_other } = this.state;
     const newFunding = {
       "agency": agency, 
       "directorate": directorate,

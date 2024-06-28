@@ -113,5 +113,76 @@
   },
   "marketingWebsiteLinks": {
     "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
+  },
+  "communityOptions": ["Networks", "Computer systems organization", "Information systems",
+  "Security and privacy", "Human-centered computing", "Applied computing", "Hardware", "Software", "Theory of computation",
+  "Mathematics of computing", "Computing methodologies", "Additional Communities:HPC", "Additional Communities:RNE", "Additional Communities:Other"],
+  "communityMapping": {
+    "Networks": [
+      "Network architectures",
+      "Network protocols",
+      "Network algorithms",
+      "Network performance evaluation",
+      "Network services",
+      "Datacenter networks",
+      "Mobile networks",
+      "Overlay and other logical network structures",
+      "Wireless access networks",
+      "Public Internet",
+      "Wired access networks",
+      "Packet-switching networks",
+      "Network security"
+    ], 
+    "Computer systems organization": [
+      "Dependable and fault-tolerant systems and networks",
+      "Real-time systems",
+      "Embedded and cyber-physical systems",
+      "Architectures",
+      "Cloud Computing",
+      "Peer-to-peer architectures"
+    ], 
+    "Information systems": [
+      "Data management systems",
+      "Information storage systems",
+      "World Wide Web",
+      "Information retrieval"
+    ],
+    "Security and privacy": [
+      "Cryptography",
+      "Security services",
+      "Intrusion/anomaly detection and malware mitigation",
+      "Systems security",
+      "Network security"
+    ], 
+    "Applied computing" : [
+      "Arts and humanities",
+      "Computer forensics",
+      "Education",
+      "Electronic commerce",
+      "Enterprise computing",
+      "Life and medical sciences",
+      "Physical sciences and engineering"
+    ],
+    "Hardware": [
+      "Quantum technologies",
+      "Integrated Circuits - Reconfigurable logic and FPGAs",
+      "Sensor devices and platforms",
+      "Networking hardware"
+    ], 
+    "Theory of computation": [
+      "Design and analysis of algorithms",
+      "Theory and algorithms for application domains",
+      "Semantics and reasoning",
+      "Formal languages and automata theory",
+      "Models of computation"
+    ],
+    "Computing methodologies": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Parallel computing methodologies",
+      "Modeling and simulation",
+      "Distributed computing methodologies",
+      "Computer graphics/Graphics systems and interfaces/Graphics processors"
+    ]    
   }
 }

@@ -49,6 +49,15 @@ class PublicProjectsList extends React.Component {
     }
   }
 
+  generateCommunityFilterQuery = (selectedList) => {
+    const communities = [];
+    for (const s of selectedList) {
+      communities.push(s.name);
+      communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+    }
+    return communities.toString();
+  }
+
   reloadProjectsData = async (selectedList) => {
     const { pageSize: limit, currentPage, filterOption, searchQuery} = this.state;
     const offset = (currentPage - 1) * limit;
@@ -65,12 +74,10 @@ class PublicProjectsList extends React.Component {
       }
     } else if (filterOption === "community") {
       try {
-        const searchQuery = selectedList && selectedList.map(community => community.name).toString();
-        console.log(searchQuery)
+        const searchQuery = selectedList && this.generateCommunityFilterQuery(selectedList);
         const { data } =  await getProjects("allProjects", offset, limit, searchQuery, "communities");
         projects = data.results;
         projectsCount = data.total;
-  
         this.setState({ projects, projectsCount })
       } catch (err) {
         toast.error("Failed to load projects. Please re-try.");
@@ -138,7 +145,9 @@ class PublicProjectsList extends React.Component {
   };
 
   handleChangeFilter = (option) =>{
-    this.setState({ filterOption: option, searchQuery: ""})
+    this.setState({ filterOption: option, searchQuery: ""}, () => {
+      this.reloadProjectsData();
+    });
   }
 
   render() {
@@ -217,7 +226,7 @@ class PublicProjectsList extends React.Component {
               onRemove={this.onRemove} 
               displayValue="name" 
               showCheckbox={true}
-              placeholder={"Search by community"}
+              placeholder={"Filter by community"}
               avoidHighlightFirstOption={true}
               hideSelectedList={true}
             />
