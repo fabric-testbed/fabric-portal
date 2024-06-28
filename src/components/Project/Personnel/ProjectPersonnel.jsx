@@ -13,7 +13,6 @@ class ProjectPersonnel extends Component {
 
     return (
       <div className="px-3 pb-4">
-        <h4>{personnelType}</h4>
         {
           canUpdate &&
           <AddPersonnel

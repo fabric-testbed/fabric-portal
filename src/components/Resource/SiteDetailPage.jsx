@@ -100,9 +100,14 @@ class SiteDetailPage extends React.Component {
     this.setState({ endTime: outputTime });
   }
 
-  handleRefreshTime = () => {
+  handleRefreshTime = async () => {
     const { startTime, endTime } = this.state;
-
+    const { data: res1 } = await getResources(1, startTime, endTime);
+    const { data: res2 } = await getResources(2, startTime, endTime);
+    const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
+    const siteName = this.props.location.pathname.split("s/")[1];
+    const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
+    this.setState({ hosts: parsedObj2.hosts, data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0] });
   }
   
   render () {
@@ -243,7 +248,12 @@ class SiteDetailPage extends React.Component {
             time={endTime && endTime.toString().replace(/-/g, "/")}
             onTimeChange={this.handleEndChange}
           />
-          <button className="btn btn-sm btn-primary ml-4">Refresh</button>
+          <button
+            className="btn btn-sm btn-primary ml-4"
+            onClick={this.handleRefreshTime}
+          >
+            Refresh
+          </button>
         </div>
        <h5 className="mt-3">Site Resource Summary</h5>
        {
