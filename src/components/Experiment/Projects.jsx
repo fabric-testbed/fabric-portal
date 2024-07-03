@@ -143,8 +143,12 @@ class Projects extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, globalRoles, projects, showSpinner,
+    const { pageSize, currentPage, projects, showSpinner,
       projectsCount, searchQuery } = this.state;
+    const { globalRoles } = this.props;
+
+    console.log("Projects");
+    console.log(globalRoles);
 
     return (
       <div className="col-9">

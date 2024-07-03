@@ -11,8 +11,8 @@ import alphaLogo from "../imgs/logos/fabric-brand-alpha.png";
 import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
 
-const Header = (props) => {  
-  const navItems = [
+const Header = (props) => {
+  const navItems = props.globalRoles && props.globalRoles.isJupterhubUser ? [
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",
@@ -30,6 +30,77 @@ const Header = (props) => {
       href: portalData.jupyterHubLinks[checkPortalType(window.location.href)],
       child: [],
       path: ""
+    },
+    { name: "Contact Us", path: "/help", child: [] },
+    {
+      name: "About",
+      child: [
+        {
+          name: "Overview",
+          path: "/about/about-fabric"
+        },
+        {
+          name: "SAC",
+          path: "/about/sac"
+        },
+        {
+          name: "Leadership",
+          path: "/about/leadership"
+        }
+      ],
+      path: "/about"
+    },
+    {
+      name: "Community",
+      child: [
+        {
+          name: "News",
+          href: portalData.knowledgeBaseNewsLink,
+        },
+        {
+          name: "Events",
+          href: portalData.knowledgeBaseEventsLink,
+        },
+        {
+          name: "Newsletter Signup",
+          path: "/community/newsletter-signup"
+        },
+        {
+          name: "Funding Opportunities",
+          path: "/community/funding-opportunities"
+        },
+        {
+          name: "Testbeds and Facilities",
+          path: "/community/testbeds-and-facilities"
+        },
+        {
+          name: "Cite FABRIC",
+          path: "/community/publications"
+        },
+        {
+          name: "Blogs",
+          href: portalData.knowledgeBaseBlogsLink,
+        }
+      ],
+      path: "/community"
+    }
+  ] : [
+    { name: "Resources", path: "/resources/all", child: [] },
+    {
+      name: "Experiments",
+      path: "/experiments",
+      child: []
+    },
+    {
+      name: "Knowledge Base",
+      href: portalData.knowledgeBaseLink,
+      child: [],
+      path: ""
+    },
+    {
+      name: "JupyterHub",
+      child: [],
+      path: "/jupyter-no-access"
     },
     { name: "Contact Us", path: "/help", child: [] },
     {

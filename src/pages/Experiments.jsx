@@ -61,7 +61,9 @@ class Experiments extends React.Component {
   
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-    
+    const { globalRoles } = this.props;
+    console.log("Experiments");
+    console.log(globalRoles);
     return (
       <div className="container">
         <div className="row">
@@ -72,6 +74,7 @@ class Experiments extends React.Component {
           <TagName
             user={this.state.user}
             people={this.state.people}
+            globalRoles={globalRoles}
             styleProp={"col-9"}
             parent={"Experiments"}
             handleChange={this.handleChange}
