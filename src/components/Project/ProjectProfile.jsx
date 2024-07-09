@@ -4,6 +4,7 @@ import Table from "../common/Table";
 import toLocaleTime from "../../utils/toLocaleTime";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import Parser from 'html-react-parser';
 
 class ProjectProfile extends Component {
   state = {
@@ -70,7 +71,7 @@ class ProjectProfile extends Component {
                       {
                         ["Modified Time", "Created At"].includes(row.label) ? 
                           toLocaleTime(_.get(project, row.path)) :
-                          _.get(project, row.path) 
+                          Parser(_.get(project, row.path))
                       }
                     </td>
                   </tr>

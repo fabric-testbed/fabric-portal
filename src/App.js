@@ -143,8 +143,6 @@ class App extends React.Component {
   render() {
     const { userName, userEmail, userStatus, searchQuery, globalRoles,
       showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
-    console.log("App.js");
-    console.log(globalRoles);
     return (
       <div className="App">
         <Router>

@@ -60,11 +60,14 @@ class Funding extends React.Component {
       agency: "",
       directorate: "",
       award_number: "",
-      award_amount: ""
+      award_amount: "",
+      agency_other: ""
     })
   }
 
   parseFundingStr = (funding) => {
+    console.log("funding parser");
+    console.log(funding);
     if (funding.agency === "Other") {
       return `${funding.other_agency} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
     } else if (funding.agency === "NSF") {
@@ -79,6 +82,8 @@ class Funding extends React.Component {
     const { agency, directorate, award_number, 
       award_amount, agency_options, directorate_options, agency_other } = this.state;
     const { fundings } = this.props;
+    console.log("Funding.jsx");
+    console.log(fundings);
     return (
       <div className="border-top mt-4 pt-2">
         <h5 className="mt-2">Funding Information</h5>
@@ -155,7 +160,8 @@ class Funding extends React.Component {
               Add
             </button>
           </div>
-          <div className="ml-1">
+        </div>
+        <div className="ml-1">
             <ul className="input-tag__tags">
               {
                 fundings.length > 0 &&
@@ -173,7 +179,6 @@ class Funding extends React.Component {
               }
             </ul>
           </div>
-        </div>
       </div>
     )
   }

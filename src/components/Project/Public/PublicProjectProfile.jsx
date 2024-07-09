@@ -66,14 +66,12 @@ class PublicProjectProfile extends Component {
             <p className="card-text mb-4">
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
-                  return <Link to={`/experiments/public-projects?community=${community}`}>
-                    <span
+                  return (<span
                       className="badge badge-pill badge-primary mr-1"
                       key={`project-community-${index}`}
                     >
                       {community}
-                    </span>
-                </Link>
+                    </span>)
                 })
               }
               {

@@ -338,9 +338,12 @@ class ProjectForm extends Form {
   }
 
   handleUpdateFunding = (operation, funding) => {
+    console.log("Project Form");
+    console.log(funding);
     if (operation === "add") {
       const fundings = this.state.projectFunding;
       fundings.push(funding);
+      console.log(fundings);
       this.setState({ projectFunding: fundings });
     } else if (operation === "remove") {
       const newFundings = [];
