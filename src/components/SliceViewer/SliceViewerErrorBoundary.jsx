@@ -48,7 +48,7 @@ export default class SliceViewerErrorBoundary extends Component {
 
   render() {
     const { hasError } = this.state;
-    const { slice, leaseEndTime } = this.props;
+    const { slice, leaseStartTime, leaseEndTime } = this.props;
  
     const stateColors = {
       "Nascent": "primary-dark",
@@ -165,6 +165,14 @@ export default class SliceViewerErrorBoundary extends Component {
                           <div className="slice-form-element">
                             <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
                           </div>
+                        </div>
+                        <div className="row d-flex flex-column mb-2">
+                          <label>
+                            Lease Start at
+                          </label>
+                            <div className="slice-form-element">
+                              {utcToLocalTimeParser(leaseStartTime)}
+                            </div>
                         </div>
                         <div className="row d-flex flex-column mb-2">
                           <label>

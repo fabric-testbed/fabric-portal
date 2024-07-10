@@ -60,23 +60,25 @@ class ProjectProfile extends Component {
                 />
               </td>
             </tr>
-            {basicInfoRows.map((row, index) => {
-                return (
-                  project[row.path] &&
-                  <tr key={`project-basic-info-${index}`}>
-                    <td>
-                      {row.label}
-                    </td>
-                    <td className="project-detail-form-td">
-                      {
-                        ["Modified Time", "Created At"].includes(row.label) ? 
-                          toLocaleTime(_.get(project, row.path)) :
-                          Parser(_.get(project, row.path))
-                      }
-                    </td>
-                  </tr>
-                );
-              })}
+            {
+              basicInfoRows.map((row, index) => {
+                  return (
+                    project[row.path] &&
+                    <tr key={`project-basic-info-${index}`}>
+                      <td>
+                        {row.label}
+                      </td>
+                      <td className="project-detail-form-td">
+                        {
+                          ["Modified Time", "Created At"].includes(row.label) ? 
+                            toLocaleTime(_.get(project, row.path)) :
+                            Parser(_.get(project, row.path))
+                        }
+                      </td>
+                    </tr>
+                  );
+                })
+              }
           </tbody>
         </table>
         <div className="mt-4">
@@ -112,7 +114,7 @@ class ProjectProfile extends Component {
               This project doesn't have Project Member.
             </div>
           }
-           {
+          {
              project.project_members && project.project_members.length > 0 && 
              <Table
                 columns={projectPersonnelColumns}
@@ -121,6 +123,51 @@ class ProjectProfile extends Component {
               />
           }
         </div>
+        <div className="mt-4">
+          <h2 className="pb-2 border-bottom">Funding Information</h2>
+            <p className="mb-4">
+              {
+                project.project_funding && project.project_funding.length > 0 && 
+                <ul>
+                  {
+                    project.project_funding.map((funding, index) => {
+                      return <li
+                          className="my-2"
+                          key={`project-funding-${index}`}
+                        >
+                          {
+                            `${funding.agency} | ${funding.directorate} | ${funding.award_number} | ${funding.award_amount}`
+                          }
+                        </li>
+                    })
+                  }
+                </ul>
+              }
+              {
+                project.project_funding && project.project_funding.length === 0 && <span className="font-italic">
+                  This project has no funding added yet.
+                </span>
+              }
+            </p>
+            </div>
+            <h2 className="pb-2 border-bottom">Community</h2>
+            <p>
+              {
+                project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
+                  return (<span
+                      className="badge badge-pill badge-primary mr-1"
+                      key={`project-community-${index}`}
+                    >
+                      {community}
+                    </span>)
+                })
+              }
+              {
+                project.communities && project.communities.length === 0 && <span className="font-italic">
+                  This project has no community tag added yet.
+                </span>
+              }
+            </p>
       </div>
     );
   }

@@ -13,7 +13,7 @@ export default class DetailForm extends Component {
   }
 
   render() {
-    const { slice, data, leaseEndTime } = this.props;
+    const { slice, data, leaseStartTime, leaseEndTime } = this.props;
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -45,6 +45,14 @@ export default class DetailForm extends Component {
                       </div>
                     </div>
                   }
+                  <div className="row d-flex flex-column mb-2">
+                    <label>
+                      Lease Start at
+                    </label>
+                    <div className="slice-form-element">
+                      {utcToLocalTimeParser(leaseStartTime)}
+                    </div>
+                  </div>
                   <div className="row d-flex flex-column mb-2">
                     <label>
                       Lease End at

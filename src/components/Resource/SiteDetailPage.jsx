@@ -61,14 +61,21 @@ class SiteDetailPage extends React.Component {
   }
 
   async componentDidMount() {
+    this.setState({ showSpinner: true, spinnerMessage: "Loading resources..." });
     try {
       const { data: res1 } = await getResources(1);
       const { data: res2 } = await getResources(2);
       const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = this.props.location.pathname.split("s/")[1];
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
-      this.setState({ hosts: parsedObj2.hosts, data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0] });
+      this.setState({ 
+        hosts: parsedObj2.hosts,
+        data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0],
+        showSpinner: false,
+        spinnerMessage: ""
+      });
     } catch (err) {
+      this.setState({ showSpinner: false, spinnerMessage: "" });
       toast.error("Failed to load resource information. Please reload this page.");
     }
   }
@@ -99,7 +106,7 @@ class SiteDetailPage extends React.Component {
 
   handleRefreshTime = async () => {
     const { startTime, endTime } = this.state;
-    this.setState({ showSpinner: true, spinnerMessage: "Refreshing resources..." });
+    this.setState({ showSpinner: true, spinnerMessage: "Loading resources..." });
     try {
       const { data: res1 } = await getResources(1, startTime, endTime);
       const { data: res2 } = await getResources(2, startTime, endTime);
@@ -112,13 +119,17 @@ class SiteDetailPage extends React.Component {
         showSpinner: false,
         spinnerMessage: ""
       });
-      toast.success("Resources have been refreshed successfully.");
+      toast.success("Resources have been loaded successfully.");
     } catch (err) {
       this.setState({ showSpinner: false, spinnerMessage: "" });
-      toast.error("The resources cannot be refreshed at the moment. Please try again later.");
+      toast.error("The resources cannot be loaded at the moment. Please try again later.");
     }
   }
   
+  handleResetTime = async () => {
+    window.location.reload();
+  }
+
   render () {
     const { data, hosts, statusMapping, startTime, endTime, showSpinner, spinnerMessage } = this.state;
       return (

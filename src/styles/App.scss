@@ -1309,3 +1309,7 @@ div:has(> #multiselectContainerReact) {
   height: 20px;
   content: '';
 }
+
+.react-datetime-picker__inputGroup__input:invalid {
+  background: rgba(255, 255, 255) !important;
+}

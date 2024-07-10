@@ -34,6 +34,7 @@ class SliceViewer extends Component {
     errors: [],
     selectedData: null,
     positionAddNode: { x: 100, y: 600 },
+    leaseStartTime: "",
     leaseEndTime: "",
     hasProject: true,
     showSpinner: false,
@@ -50,6 +51,7 @@ class SliceViewer extends Component {
           this.setState({ 
             elements: sliceParser(res.data[0]["model"]),
             slice: res.data[0],
+            leaseStartTime: res.data[0].lease_start_time,
             leaseEndTime: res.data[0].lease_end_time,
             errors: sliceErrorParser(res.data[0]["model"]),
             showSpinner: false,
@@ -152,13 +154,14 @@ class SliceViewer extends Component {
       "ModifyOK": "success"
     }
 
-    const { slice, elements, selectedData, hasProject, 
+    const { slice, elements, selectedData, hasProject, leaseStartTime,
       showSpinner, spinnerText, errors, leaseEndTime, ephemeralKey } = this.state;
     let showSlice = !showSpinner && hasProject;
 
     return(
       <SliceViewerErrorBoundary 
         slice={slice}
+        leaseStartTime={leaseStartTime}
         leaseEndTime={leaseEndTime}
         onLeaseEndChange={this.handleLeaseEndChange}
         onSliceExtend={this.handleSliceExtend}
@@ -256,6 +259,7 @@ class SliceViewer extends Component {
                   elements.length > 0 &&
                   <DetailForm
                     slice={slice}
+                    leaseStartTime={leaseStartTime}
                     leaseEndTime={leaseEndTime}
                     data={selectedData}
                     key={selectedData && selectedData.properties && 

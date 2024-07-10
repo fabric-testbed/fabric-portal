@@ -166,10 +166,7 @@ class Slices extends React.Component {
 
     return (
       <div className={this.props.styleProp}>
-        {
-          this.props.parent === "Projects" ?
-            <h4>Project Slices</h4> : <h1>Slices</h1>
-        }
+        <h1>Slices</h1>
         {
           this.props.parent === "Projects" &&
           this.props.isProjectExpired && 

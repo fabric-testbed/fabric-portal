@@ -91,7 +91,7 @@ class ProjectForm extends Form {
     SideNavItems: [
       { name: "BASIC INFORMATION", active: true },
       { name: "PROJECT MEMBERSHIPS", active: false },
-      { name: "PROJECT SLICES", active: false },
+      { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
     owners: [],
@@ -180,7 +180,7 @@ class ProjectForm extends Form {
         // user is po/pm/pc or Facility Operator.
         this.setState({ 
           data: this.mapToViewModel(project),
-          fabricMatrix: project.profile.references[0].url ?? "",
+          fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
           projectFunding: project.project_funding,
           communities: project.communities,
           owners: project.project_owners, 
@@ -219,7 +219,7 @@ class ProjectForm extends Form {
        this.setState({ SideNavItems: [
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT MEMBERSHIPS", active: hash === "#memberships" },
-         { name: "PROJECT SLICES", active: hash === "#slices" },
+         { name: "SLICES", active: hash === "#slices" },
          { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
      }
