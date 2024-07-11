@@ -12,7 +12,8 @@ import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
 
 const Header = (props) => {
-  const navItems = props.globalRoles && props.globalRoles.isJupterhubUser ? [
+  const navItems = (props.globalRoles && props.globalRoles.isJupterhubUser) ||
+    props.userStatus !== "active" ? [
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",

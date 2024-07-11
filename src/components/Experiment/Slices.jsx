@@ -129,7 +129,7 @@ class Slices extends React.Component {
       filterQuery,
       searchQuery,
       includeDeadSlices,
-      slices: allSlices,
+      slices: allSlices
     } = this.state;
 
     // filter -> sort -> paginate
@@ -160,7 +160,7 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
