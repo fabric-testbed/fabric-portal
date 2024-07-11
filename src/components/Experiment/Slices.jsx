@@ -33,10 +33,7 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
     spinnerText: "",
-    radioBtnValues: [
-      { display: "My Slices", value: "mySlices", isActive: true },
-      { display: "Project Slices", value: "projectSlices", isActive: false },
-    ],
+    showAllSlices: false
   };
 
   async componentDidMount() {
@@ -44,33 +41,23 @@ class Slices extends React.Component {
     this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
     try {
       if (window.location.href.includes("/projects")) {
-        if(!localStorage.getItem("idToken")) {
-          // call credential manager to generate tokens
-          autoCreateTokens("all").then(async () => {
-            const { data: res } = await getMySlices("mySlices");
-            const slices = res.data.filter(s => s.project_id === this.props.projectId);
-            this.setState({ slices, showSpinner: false, spinnerText: "" });
-          });
-        } else {
-            const { data: res } = await getMySlices("mySlices");
-            const slices = res.data.filter(s => s.project_id === this.props.projectId);
-            this.setState({ slices, showSpinner: false, spinnerText: "" });
-        }
+        // call credential manager to generate project based tokens
+        autoCreateTokens(this.props.projectId).then(async () => {
+          // as_self: true
+          const { data: res } = await getMySlices("mySlices", true);
+          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+        });
       } else {
         // call PR first to check if the user has project.
         const { data: res } = await getProjects("myProjects", 0, 200);
         if (res.results.length === 0) {
           this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
-        } else if(!localStorage.getItem("idToken")) {
+        } else{
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-              const { data: res } = await getMySlices("allSlices");
-              this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-            });
-          }
-        else {
-          const { data: res } = await getMySlices("allSlices");
-          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+            const { data: res } = await getMySlices("allSlices");
+            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+          });
         }
       }
     } catch (err) {
@@ -105,6 +92,18 @@ class Slices extends React.Component {
   handleIncludeDeadSlices = () => {
     const currentChoice = this.state.includeDeadSlices;
     this.setState( { includeDeadSlices: !currentChoice });
+  }
+
+  handleShowAllSlices = async () => {
+    const currentChoice = this.state.showAllSlices;
+    this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
+
+    try {
+      const { data: res } = await getMySlices("mySlices", currentChoice);
+      this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+    } catch(err) {
+      toast.error("Failed to load slices. Please try again.")
+    }
   }
 
   handleDeleteAllSlices = async () => {
@@ -303,6 +302,14 @@ class Slices extends React.Component {
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
+              {
+                this.props.parent === "Projects" && <Checkbox
+                  label={"Show All Project Slices"}
+                  id={"checkbox-show-all-slices"}
+                  isChecked={showAllSlices}
+                  onCheck={this.handleShowAllSlices}
+                />
+              }
               {/* {
                 this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
                 <DeleteModal

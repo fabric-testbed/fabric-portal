@@ -65,7 +65,6 @@ class ProjectUserTable extends Component {
     ];
 
   // handleCheckAll = () => {
-  //   console.log("the checked all is clicked");
   //   if (this.state.checkedAll) {
   //     this.setState({ checkedAll: false, checkedUserIDs: [] });
   //   } else {

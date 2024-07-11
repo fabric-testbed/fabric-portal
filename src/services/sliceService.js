@@ -4,11 +4,16 @@ import { default as config } from "../config.json";
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
 const poasEndpoint = `${config.orchestratorApiUrl}/poas`;
 
-export function getMySlices(type) {
-  if (type === "projectSlices") {}
-  return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", {
-    headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
-  });
+export function getMySlices(type, as_self) {
+  if (type === "projectSlices") {
+    return http.get(`${apiEndpoint}?as_self=${as_self}&states=All&limit=200&offset=0`, {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+    });
+  } else {
+    return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+    });
+  }
 }
 
 export function getSliceById(id) {
@@ -23,8 +28,6 @@ export function createSlice(slice) {
     lease_end_time: slice.leaseEndTime,
     lease_start_time: slice.leaseStartTime
   }).toString();
-
-  console.log("create slice query str: " + query);
  
   const requestBody = {
     "graph_model": slice.json,

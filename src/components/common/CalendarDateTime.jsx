@@ -10,7 +10,7 @@ function CalendarDateTime({ id, name, parent, onTimeChange, time }) {
         onChange={(value) => {onChange(value); onTimeChange(value);}}
         value={value}
         disableClock={true}
-        minDate={new Date()}
+        // minDate={new Date()}
         required={true}
         format="yyyy-MM-dd HH:mm:ss"
       />

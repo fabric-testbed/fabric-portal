@@ -147,9 +147,6 @@ class Projects extends React.Component {
       projectsCount, searchQuery } = this.state;
     const { globalRoles } = this.props;
 
-    console.log("Projects");
-    console.log(globalRoles);
-
     return (
       <div className="col-9">
         <div className="d-flex flex-row justify-content-between">
