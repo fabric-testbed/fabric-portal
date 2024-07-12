@@ -4,7 +4,7 @@ import { default as config } from "../config.json";
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
 const poasEndpoint = `${config.orchestratorApiUrl}/poas`;
 
-export function getMySlices(type, as_self) {
+export function getSlices(type, as_self) {
   if (type === "projectSlices") {
     return http.get(`${apiEndpoint}?as_self=${as_self}&states=All&limit=200&offset=0`, {
       headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}

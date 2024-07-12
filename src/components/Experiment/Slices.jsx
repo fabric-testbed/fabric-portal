@@ -7,7 +7,7 @@ import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
-import { getMySlices, deleteSlice } from "../../services/sliceService.js";
+import { getSlices, deleteSlice } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import sleep from "../../utils/sleep";
@@ -44,7 +44,7 @@ class Slices extends React.Component {
         // call credential manager to generate project based tokens
         autoCreateTokens(this.props.projectId).then(async () => {
           // as_self: true
-          const { data: res } = await getMySlices("mySlices", true);
+          const { data: res } = await getSlices("projectSlices", true);
           this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
         });
       } else {
@@ -55,7 +55,7 @@ class Slices extends React.Component {
         } else{
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-            const { data: res } = await getMySlices("allSlices");
+            const { data: res } = await getSlices("allSlices");
             this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
           });
         }
@@ -97,9 +97,8 @@ class Slices extends React.Component {
   handleShowAllSlices = async () => {
     const currentChoice = this.state.showAllSlices;
     this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
-
     try {
-      const { data: res } = await getMySlices("mySlices", currentChoice);
+      const { data: res } = await getSlices("projectSlices", currentChoice);
       this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
     } catch(err) {
       toast.error("Failed to load slices. Please try again.")
@@ -296,12 +295,6 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
-              <Checkbox
-                label={"Include Dead/ Closing Slices"}
-                id={"checkbox-include-dead-slices"}
-                isChecked={includeDeadSlices}
-                onCheck={this.handleIncludeDeadSlices}
-              />
               {
                 this.props.parent === "Projects" && <Checkbox
                   label={"Show All Project Slices"}
@@ -310,6 +303,12 @@ class Slices extends React.Component {
                   onCheck={this.handleShowAllSlices}
                 />
               }
+              <Checkbox
+                label={"Include Dead/ Closing Slices"}
+                id={"checkbox-include-dead-slices"}
+                isChecked={includeDeadSlices}
+                onCheck={this.handleIncludeDeadSlices}
+              />
               {/* {
                 this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
                 <DeleteModal

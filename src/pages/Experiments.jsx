@@ -14,7 +14,7 @@ class Experiments extends React.Component {
       { name: "MY SLICES", active: false },
       { name: "MANAGE TOKENS", active: false },
       { name: "MANAGE SSH KEYS", active: false },
-      { name: "Artifact Manager", active: false },
+      { name: "ARTIFACT MANAGER", active: false },
     ],
     user: {},
     people: {},
@@ -40,7 +40,7 @@ class Experiments extends React.Component {
         { name: "MY SLICES", active: hash === "#slices" },
         { name: "MANAGE TOKENS", active: hash === "#tokens" },
         { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
-        { name: "Artifact Manager", active: hash === "#artifacts" },
+        { name: "ARTIFACT MANAGER", active: hash === "#artifacts" },
       ]})
     }
   }
@@ -59,7 +59,7 @@ class Experiments extends React.Component {
         { name: "MY SLICES", active: newIndex === 1 },
         { name: "MANAGE TOKENS", active: newIndex === 2 },
         { name: "MANAGE SSH KEYS", active: newIndex === 3 },
-        { name: "Artifact Manager", active: newIndex === 4 },
+        { name: "ARTIFACT MANAGER", active: newIndex === 4 },
       ]
     });
     this.props.navigate(`/experiments${indexToHash[newIndex]}`);

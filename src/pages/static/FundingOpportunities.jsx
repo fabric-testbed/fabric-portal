@@ -3,6 +3,18 @@ import BackgroundImage from "../../imgs/network-bg.svg";
 
 const solicitations = [
   {
+    "name": "NSF 24-530",
+    "url": "https://new.nsf.gov/funding/opportunities/campus-cyberinfrastructure-cc",
+    "sortDate": "2024-10-15",
+    "displayDate": "October 15, 2024"
+  },
+  {
+    "name": "NSF 24-536",
+    "url": "https://new.nsf.gov/funding/opportunities/computer-information-science-engineering-research-0",
+    "sortDate": "2025-02-07",
+    "displayDate": "February 7, 2025"
+  },
+  {
     "name": "NAIRR Pilot",
     "url": "https://idaorg.gov1.qualtrics.com/jfe/form/SV_cRMnkUFJoXs7UfI?utm_medium=email&_hsmi=293777879&_hsenc=p2ANqtz-8gCHxFAq6pzEEOUbzQtu5DjeJN1XcGeiTT8HCy-OHDwJKJtYZ24lViNDFoFe8krDf5GGJZJoJ_qJrhh6PKwRg9Ah1IzA&utm_content=293777879&utm_source=hs_email",
     "sortDate": "2024-03-08",
