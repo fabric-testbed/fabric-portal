@@ -9,6 +9,7 @@ import { getProjects } from "../../services/projectService.js";
 import { default as portalData } from "../../services/portalData.json";
 import checkGlobalRoles from "../../utils/checkGlobalRoles"; 
 import toLocaleTime from "../../utils/toLocaleTime";
+import Multiselect from 'multiselect-react-dropdown';
 import { toast } from "react-toastify";
 
 class Projects extends React.Component {
@@ -28,7 +29,13 @@ class Projects extends React.Component {
       isActiveUser: false,
       isJupterhubUser: false,
     },
-    showSpinner: false,
+    options: [{ name: "Software", id: 1 }, { name: "Hardware", id: 2 }, { name: "Networks", id: 3 },
+    { name: "Computer systems organization", id: 4 }, { name: "Information systems", id: 5 }, 
+    { name: "Security and privacy", id: 6 }, { name: "Human-centered computing", id: 7 }, { name: "Applied computing", id: 8 },
+    { name:  "Mathematics of computing", id: 9 }, { name: "Computing methodologies", id: 10 }, { name: "HPC", id: 11 }, { name: "RNE", id: 12} ],
+    filterOption: "description",
+    selectedList: [],
+    showSpinner: false
   };
 
   async componentDidMount() {
@@ -64,25 +71,48 @@ class Projects extends React.Component {
     return this.state.radioBtnValues.filter(btn => btn.isActive)[0].value;
   }
 
-  reloadProjectsData = async () => {
-    const { pageSize: limit, currentPage, searchQuery } = this.state;
+  generateCommunityFilterQuery = (selectedList) => {
+    const communities = [];
+    for (const s of selectedList) {
+      communities.push(s.name);
+      communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+    }
+    return communities.toString();
+  }
+
+  reloadProjectsData = async (selectedList) => {
+    const { pageSize: limit, currentPage, filterOption, searchQuery } = this.state;
     const offset = (currentPage - 1) * limit;
     let projects = [];
     let projectsCount = 0;
-    try {
-      const { data } = await getProjects(this.getProjectType(), offset, limit, searchQuery);
-      projects = data.results;
-      projectsCount = data.total;
-    
-      // parse create time field to user's local time.
-      projects = projects.map((p) => {
-        p.created_time  = toLocaleTime(p.created);
-        return p;
-      });
-
-      this.setState({ projects, projectsCount })
-    } catch (err) {
-      toast.error("Failed to load projects. Please re-try.");
+    if (filterOption === "description") {
+      try {
+        const { data } = await getProjects(this.getProjectType(), offset, limit, searchQuery, "description");
+        projects = data.results;
+        projectsCount = data.total;
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
+    } else if (filterOption === "community") {
+      try {
+        const searchQuery = selectedList && this.generateCommunityFilterQuery(selectedList);
+        const { data } =  await getProjects(this.getProjectType(), offset, limit, searchQuery, "communities");
+        projects = data.results;
+        projectsCount = data.total;
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
+    } else {
+      try {
+        const { data } = await getProjects(this.getProjectType(), offset, limit);
+        projects = data.results;
+        projectsCount = data.total;
+        this.setState({ projects, projectsCount })
+      } catch (err) {
+        toast.error("Failed to load projects. Please re-try.");
+      }
     }
   }
 
@@ -96,6 +126,14 @@ class Projects extends React.Component {
       this.setState({ searchQuery: e.target.value});
     }
   };
+
+  onSelect = (selectedList, selectedItem) => {
+    this.reloadProjectsData(selectedList);
+  }
+
+  onRemove = (selectedList, removedItem) => {
+    this.reloadProjectsData(selectedList);
+  }
 
   handlePaginationClick = (page, pagesCount) => {
       const currentPage = this.state.currentPage;
@@ -142,9 +180,15 @@ class Projects extends React.Component {
     }
   };
 
+  handleChangeFilter = (option) =>{
+    this.setState({ filterOption: option, searchQuery: ""}, () => {
+      this.reloadProjectsData();
+    });
+  }
+
   render() {
     const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery } = this.state;
+      projectsCount, searchQuery, filterOption, selectedList, options } = this.state;
     const { globalRoles } = this.props;
 
     return (
@@ -169,25 +213,62 @@ class Projects extends React.Component {
             </Link>
           }
         </div>
-        <div className="w-100 input-group my-3">
-          <input
-            type="text"
-            name="query"
-            className="form-control"
-            placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
-            value={searchQuery}
-            onChange={this.handleInputChange}
-            onKeyDown={this.raiseInputKeyDown}
-          />
-          <div className="input-group-append">
+        <div className="w-100 input-group mt-3">
+        <div className="input-group mb-3 project-search-toolbar">
+          <div className="input-group-prepend">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary dropdown-toggle"
               type="button"
-              onClick={this.handleProjectsSearch}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
-              Search
+              <i className="fa fa-search"></i>
             </button>
+            <div className="dropdown-menu">
+              <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
+              <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
+            </div>
           </div>
+          {
+            filterOption === "description" &&
+              <input
+                type="text"
+                name="query"
+                className="form-control"
+                placeholder={"Search by project name and description..."}
+                value={searchQuery}
+                onChange={this.handleInputChange}
+                onKeyDown={this.raiseInputKeyDown}
+              />
+          }
+          {
+            filterOption === "description" &&
+              <div className="input-group-append">
+                <button
+                  className="btn btn-outline-primary"
+                  type="button"
+                  onClick={this.handleProjectsSearch}
+                >
+                  Search
+                </button>
+              </div>
+          }
+          {
+            filterOption === "community" &&  
+            <Multiselect
+              options={options}
+              selectedValues={selectedList}
+              onSelect={this.onSelect} 
+              onRemove={this.onRemove} 
+              displayValue="name" 
+              showCheckbox={true}
+              placeholder={"Filter by community"}
+              avoidHighlightFirstOption={true}
+              hideSelectedList={true}
+            />
+          }
+        </div>
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."} />

@@ -193,9 +193,9 @@ class ProjectBasicInfoTable extends Component {
                     <td>Danger Zone</td>
                     <td>
                       <DeleteModal
-                        name={"Delete Project"}
-                        text={"Are you sure you want to delete the project? This process cannot be undone."}
-                        id={"delete-project"}
+                        name={"Retire Project"}
+                        text={"Are you sure you want to retire this project? The project status will be inactive."}
+                        id={"retire-project"}
                         onDelete={() => onDeleteProject(project)}
                       />
                     </td>
