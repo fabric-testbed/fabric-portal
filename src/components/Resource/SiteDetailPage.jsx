@@ -68,8 +68,9 @@ class SiteDetailPage extends React.Component {
       const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = this.props.location.pathname.split("s/")[1];
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
+      console.log(parsedObj2.hosts)
       this.setState({ 
-        hosts: parsedObj2.hosts,
+        hosts: parsedObj2.hosts.filter(host => host.Site === siteName),
         data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0],
         showSpinner: false,
         spinnerMessage: ""

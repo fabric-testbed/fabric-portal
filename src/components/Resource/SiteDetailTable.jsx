@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ProgressBar from '../common/ProgressBar';
 
-const generateProgressBar = (total, free, color, labelColor) => {
+const generateProgressBar = (free, total, color, labelColor) => {
   return (
     <ProgressBar
       now={total > 0 ? Math.round(free * 100/ total) : 0}

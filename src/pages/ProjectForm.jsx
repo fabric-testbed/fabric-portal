@@ -168,7 +168,7 @@ class ProjectForm extends Form {
         !this.state.globalRoles.isFacilityOperator) {
           this.setState({ 
             data: project,
-            fabricMatrix: project.profile.references["fabric_matrix"] ?? "",
+            fabricMatrix: project.profile.references.length > 0 ? project.profile.references["fabric_matrix"] : "",
             showSpinner: false,
             spinner: {
               text: "",
@@ -296,11 +296,14 @@ class ProjectForm extends Form {
     });
 
     const { data: project, projectFunding, communities, fabricMatrix } = this.state;
+    const originalMatrix = project.profile.references.length > 0 ? project.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
       await updateProjectCommunity(project.uuid, communities);
-      await updateMatrix(project.uuid, fabricMatrix);
+      if (fabricMatrix !== originalMatrix) {
+        await updateMatrix(project.uuid, fabricMatrix);
+      }
       window.location.reload();
       toast.success("Project updated successfully!");
     }
