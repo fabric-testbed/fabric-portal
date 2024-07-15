@@ -75,7 +75,9 @@ class Projects extends React.Component {
     const communities = [];
     for (const s of selectedList) {
       communities.push(s.name);
-      communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+      if (portalData.communityMapping[s.name]) {
+        communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+      }
     }
     return communities.toString();
   }
@@ -161,7 +163,8 @@ class Projects extends React.Component {
           ? { ...el, isActive: true }
           : { ...el, isActive: false }
       ),
-      currentPage: 1
+      currentPage: 1,
+      selectedList: []
     }), () => {
       this.reloadProjectsData();
     });

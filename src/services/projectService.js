@@ -9,7 +9,7 @@ export function getProjects(type, offset, limit, searchQuery, searchSet) {
     if (!searchQuery) {
       return http.get(`${apiEndpoint}?offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&person_uuid=${userID}`);
     } else {
-      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&person_uuid=${userID}`);
+      return http.get(`${apiEndpoint}?search=${searchQuery}&offset=${offset}&limit=${limit}&sort_by=created_time&order_by=desc&person_uuid=${userID}&search_set=${searchSet}`);
     }
   } else if (type === "allProjects") {
     if (!searchQuery) {

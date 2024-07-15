@@ -44,6 +44,7 @@ const ToastMessageWithLink = ({projectId, message}) => (
 
 class ProjectForm extends Form {
   state = {
+    originalProject: { name: "", profile: { references: [] }},
     data: {
       uuid: "",
       name: "",
@@ -166,7 +167,7 @@ class ProjectForm extends Form {
       if(project.memberships && !project.memberships.is_creator && 
         !project.memberships.is_member && !project.memberships.is_owner &&
         !this.state.globalRoles.isFacilityOperator) {
-          this.setState({ 
+          this.setState({
             data: project,
             fabricMatrix: project.profile.references.length > 0 ? project.profile.references["fabric_matrix"] : "",
             showSpinner: false,
@@ -178,7 +179,8 @@ class ProjectForm extends Form {
           });
       } else {
         // user is po/pm/pc or Facility Operator.
-        this.setState({ 
+        this.setState({
+          originalProject: project,
           data: this.mapToViewModel(project),
           fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
           projectFunding: project.project_funding,
@@ -295,8 +297,8 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix } = this.state;
-    const originalMatrix = project.profile.references.length > 0 ? project.profile.references[0].url : "";
+    const { data: project, projectFunding, communities, fabricMatrix, originalProject } = this.state;
+    const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
@@ -574,7 +576,8 @@ class ProjectForm extends Form {
       volumes,
       projectFunding,
       communities,
-      fabricMatrix
+      fabricMatrix,
+      originalProject
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -629,7 +632,7 @@ class ProjectForm extends Form {
       return (
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
-            <h1>{data.name}</h1>
+            <h1>{originalProject.name}</h1>
             {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">
