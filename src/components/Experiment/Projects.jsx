@@ -163,8 +163,7 @@ class Projects extends React.Component {
           ? { ...el, isActive: true }
           : { ...el, isActive: false }
       ),
-      currentPage: 1,
-      selectedList: []
+      currentPage: 1
     }), () => {
       this.reloadProjectsData();
     });

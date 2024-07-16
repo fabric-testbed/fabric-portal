@@ -151,8 +151,8 @@ class ProjectBasicInfoTable extends Component {
                         <CalendarDateTime
                           id="projectExpirationCalendar"
                           name="projectExpirationCalendar"
+                          offset={-1}
                           onTimeChange={this.handleExpirationTimeChange}
-                          parent={"ProjectForm"}
                           time={new Date(utcToLocalTimeParser(project.expired).replace(/-/g, "/"))}
                         />
                         <button

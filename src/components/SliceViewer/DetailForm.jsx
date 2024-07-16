@@ -80,8 +80,8 @@ export default class DetailForm extends Component {
                           <CalendarDateTime
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
+                            offset={-1}
                             onTimeChange={this.props.onLeaseEndChange}
-                            parent={"sliceDetailForm"}
                             time ={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                           />
                         </div>

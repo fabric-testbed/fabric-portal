@@ -9,7 +9,7 @@ class ProjectsTable extends Component {
     "private":   [
       {
         path: "name",
-        label: "Project Name",
+        label: "Name",
         content: (project) => (
           <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
         ),
@@ -50,7 +50,7 @@ class ProjectsTable extends Component {
     "public":   [
       {
         path: "name",
-        label: "Project Name",
+        label: "Name",
         content: (project) => (
           <Link to={`/experiments/public-projects/${project.uuid}`}>{project.name}</Link>
         ),

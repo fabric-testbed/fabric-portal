@@ -165,7 +165,7 @@ class ProjectRoles extends React.Component {
             <table className="table table-striped table-bordered mt-1 mb-4 text-center">
               <tbody>
                 <tr>
-                  <th>Project Name</th>
+                  <th>Name</th>
                   <th>Description</th>
                   <th>Facility</th>
                   <th>Project Member</th>

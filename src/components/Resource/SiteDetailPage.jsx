@@ -114,7 +114,7 @@ class SiteDetailPage extends React.Component {
       const siteName = this.props.location.pathname.split("s/")[1];
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
       this.setState({ 
-        hosts: parsedObj2.hosts,
+        hosts: parsedObj2.hosts.filter(host => host.Site === siteName),
         data: parsedObj1.parsedSites.filter(s => s.name === siteName)[0],
         showSpinner: false,
         spinnerMessage: ""
@@ -255,7 +255,7 @@ class SiteDetailPage extends React.Component {
             <CalendarDateTime
               id="siteDetailCalendar1"
               name="siteDetailCalendar"
-              parent={"siteDetailPage"}
+              offset={0}
               time={startTime && startTime.toString().replace(/-/g, "/")}
               onTimeChange={this.handleStartChange}
             />
@@ -263,7 +263,7 @@ class SiteDetailPage extends React.Component {
             <CalendarDateTime
               id="siteDetailCalendar2"
               name="siteDetailCalendar"
-              parent={"siteDetailPage"}
+              offset={-1}
               time={endTime && endTime.toString().replace(/-/g, "/")}
               onTimeChange={this.handleEndChange}
             />
