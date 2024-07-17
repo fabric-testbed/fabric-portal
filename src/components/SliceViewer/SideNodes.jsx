@@ -316,7 +316,7 @@ class SideNodes extends React.Component {
               <div>
                 <div className="mb-1">
                   <Link
-                    to={`/resources/${selectedSiteOption.value}`}
+                    to={`/sites/${selectedSiteOption.value}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -389,7 +389,7 @@ class SideNodes extends React.Component {
                   >
                     <option value="VM">VM</option>
                     <option value="Facility">Facility Port</option>
-                    <option value="Switch">P4 Switch</option>
+                    {/* <option value="Switch">P4 Switch</option> */}
                   </select>
                 </div>
                 {

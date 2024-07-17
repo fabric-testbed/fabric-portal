@@ -52,8 +52,16 @@ class PublicProjectsList extends React.Component {
   generateCommunityFilterQuery = (selectedList) => {
     const communities = [];
     for (const s of selectedList) {
-      communities.push(s.name);
-      communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+      if (s.name === "HPC" || s.name === "RNE") {
+        communities.push(`Additional Communities:${s.name}`);
+      } else {
+        communities.push(s.name);
+        if (portalData.communityMapping[s.name]) {
+          for (const sub of portalData.communityMapping[s.name]) {
+            communities.push(`${s.name}:${sub}`);
+          }
+        }
+      }
     }
     return communities.toString();
   }
@@ -218,18 +226,18 @@ class PublicProjectsList extends React.Component {
               </div>
           }
           {
-            filterOption === "community" &&  
-            <Multiselect
-              options={options}
-              selectedValues={selectedList}
-              onSelect={this.onSelect} 
-              onRemove={this.onRemove} 
-              displayValue="name" 
-              showCheckbox={true}
-              placeholder={"Filter by community"}
-              avoidHighlightFirstOption={true}
-              hideSelectedList={true}
-            />
+            filterOption === "community" &&
+              <Multiselect
+                options={options}
+                selectedValues={selectedList}
+                onSelect={this.onSelect} 
+                onRemove={this.onRemove} 
+                displayValue="name" 
+                showCheckbox={true}
+                placeholder={"Filter by community"}
+                avoidHighlightFirstOption={true}
+                hideSelectedList={true}
+              />
           }
         </div>
         </div>
@@ -239,9 +247,25 @@ class PublicProjectsList extends React.Component {
         {
           !showSpinner && 
           <div>
-            <div className="d-flex flex-row justify-content-end mb-3">
-              <span>{projectsCount} results.</span>
-            </div>
+            {
+                filterOption === "description" ?
+                <div className="d-flex flex-row justify-content-end mb-3">
+                  <span>{projectsCount} results.</span>
+                </div> :
+                <div className="d-flex flex-row justify-content-between mb-3">
+                  <a
+                    href={portalData.learnArticles.guideToCommunityList}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <i className="fa fa-question-circle mx-2"></i>
+                    Project Community List
+                  </a>
+                  <span>{projectsCount} results.</span>
+                </div>
+            }
+
+  
             {
              projectsCount > 0 && 
              <div>

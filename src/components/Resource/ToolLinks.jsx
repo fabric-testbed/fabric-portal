@@ -27,7 +27,7 @@ const ToolLinks = ()=> {
     {
       "title": "FABRIC Latency Monitor",
       "image": LatencyMonitor,
-      "content": "",
+      "content": "Use FABRIC’s OWL (One Way Latency) Service to view graphs of the current (and past) one way latency measurements between pairs of FABRIC racks.   OWL’s highly precise latency measurements are calculated using FABRIC’s GPS-based timestamp capabilities.",
       "link": "https://public-metrics.fabric-testbed.net/latency/"
 
     }

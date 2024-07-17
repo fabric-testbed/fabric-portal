@@ -24,9 +24,9 @@ export function getSliceById(id) {
 
 export function createSlice(slice) {
   const query = new URLSearchParams({
-    name: slice.name,
-    lease_end_time: slice.leaseEndTime,
-    lease_start_time: slice.leaseStartTime
+    ...(slice.leaseEndTime) && {lease_end_time: slice.leaseEndTime},
+    ...(slice.leaseStartTime) && {lease_start_time: slice.leaseStartTime},
+    name: slice.name
   }).toString();
  
   const requestBody = {

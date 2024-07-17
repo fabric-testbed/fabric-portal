@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 
-function CalendarDateTime({ id, name, offset, onTimeChange, inputTime }) {
+function CalendarDateTime({ id, name, offset, onTimeChange, time }) {
   // offset: -1, use time passed in 
   // offset: 0, use current time
   // offset: 1, use a day after
   const today = new Date();
-  const time = new Date(today);
-  if (offset > 0) {
-    time.setDate(time.getDate() + offset);
-  } else if (offset === 0) {
-    time.setDate(time.getDate());
+  const adjustedTime = new Date(today);
+  if (offset >= 0) {
+    adjustedTime.setDate(adjustedTime.getDate() + offset);
   }
 
-  const [value, onChange] = useState(offset < 0 ? inputTime : time );
+  const [value, onChange] = useState(offset < 0 ? time : adjustedTime );
 
   return (
     <div key={`${id}-${name}`}>

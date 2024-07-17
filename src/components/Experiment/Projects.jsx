@@ -283,7 +283,17 @@ class Projects extends React.Component {
                 values={this.state.radioBtnValues}
                 onChange={this.handleProjectTypeChange}
               />
-              {projectsCount} results.
+              {
+                filterOption === "community" &&  <a
+                href={portalData.learnArticles.guideToCommunityList}
+                target="_blank"
+                rel="noreferrer"
+                >
+                  <i className="fa fa-question-circle mx-2"></i>
+                  Project Community List
+                </a>
+              }
+              <span>{projectsCount} results.</span>
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
               <p className="mt-2">We could not find your project:</p>

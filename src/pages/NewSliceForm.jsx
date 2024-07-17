@@ -63,9 +63,6 @@ class NewSliceForm extends React.Component {
       const { data: keys } = await getActiveKeys();
       const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
-      const leaseStartTime = new Date();  
-      const leaseEndTime = new Date(leaseStartTime);
-      leaseEndTime.setDate(leaseEndTime.getDate() + 1);
 
       this.setState({
         parsedResources: parsedObj,
@@ -74,9 +71,7 @@ class NewSliceForm extends React.Component {
         project: projectRes.results[0],
         projectTags: projectRes.results[0].tags,
         showKeySpinner: false,
-        showProjectSpinner: false,
-        leaseStartTime: leaseStartTime,
-        leaseEndTime: leaseEndTime
+        showProjectSpinner: false
       });
     } catch (ex) {
       toast.error("Failed to load resource/ sliver key information. Please reload this page.");
@@ -388,12 +383,11 @@ class NewSliceForm extends React.Component {
 
     let requestData = {};
     const pubKeys = this.generatePublicKeys();
-
     requestData = {
       name: sliceName,
       sshKeys: pubKeys.keys,
-      leaseEndTime: leaseEndTime,
-      leaseStartTime: leaseStartTime,
+      ...(leaseEndTime) && {leaseEndTime: leaseEndTime},
+      ...(leaseStartTime) && {leaseStartTime: leaseStartTime},
       json: this.generateSliceJSON(),
       sshKeyNames: pubKeys.keyNames
     }
