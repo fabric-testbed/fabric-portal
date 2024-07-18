@@ -26,7 +26,7 @@ class SearchResults extends Component {
     if (query !== "") {
       this.setState({ showSpinner: true });
       try {
-        const { data: res1 } = await getProjects("allProjects", 0, limit, query);
+        const { data: res1 } = await getProjects("allProjects", 0, limit, query, "description");
         const projectCount = res1.total;
         let projects = res1.results;
         const { data: res2 } = await getFullPeopleByName(0, limit, query);

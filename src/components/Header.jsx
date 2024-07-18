@@ -12,8 +12,7 @@ import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
 
 const Header = (props) => {
-  const navItems = ((props.globalRoles && props.globalRoles.isJupterhubUser) ||
-    props.userStatus !== "active") ? [
+  const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
     { name: "Resources", path: "/resources/all", child: [] },
     {
       name: "Experiments",
@@ -28,9 +27,8 @@ const Header = (props) => {
     },
     {
       name: "JupyterHub",
-      href: portalData.jupyterHubLinks[checkPortalType(window.location.href)],
       child: [],
-      path: ""
+      path: "/jupyter-no-access"
     },
     { name: "Contact Us", path: "/help", child: [] },
     {
@@ -100,8 +98,9 @@ const Header = (props) => {
     },
     {
       name: "JupyterHub",
+      href: portalData.jupyterHubLinks[checkPortalType(window.location.href)],
       child: [],
-      path: "/jupyter-no-access"
+      path: ""
     },
     { name: "Contact Us", path: "/help", child: [] },
     {

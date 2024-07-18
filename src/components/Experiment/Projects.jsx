@@ -74,9 +74,15 @@ class Projects extends React.Component {
   generateCommunityFilterQuery = (selectedList) => {
     const communities = [];
     for (const s of selectedList) {
-      communities.push(s.name);
-      if (portalData.communityMapping[s.name]) {
-        communities.push(`${s.name}:${portalData.communityMapping[s.name]}`);
+      if (s.name === "HPC" || s.name === "RNE") {
+        communities.push(`Additional Communities:${s.name}`);
+      } else {
+        communities.push(s.name);
+        if (portalData.communityMapping[s.name]) {
+          for (const sub of portalData.communityMapping[s.name]) {
+            communities.push(`${s.name}:${sub}`);
+          }
+        }
       }
     }
     return communities.toString();
