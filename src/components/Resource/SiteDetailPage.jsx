@@ -298,7 +298,7 @@ class SiteDetailPage extends React.Component {
           </div>
           {
             showSpinner &&
-            <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+            <div className="d-flex flex-column justify-content-center align-items-center mt-5">
               <Spinner animation="border" role="status" variant="primary" />
               <span className="text-primary">{spinnerMessage}</span>
             </div>

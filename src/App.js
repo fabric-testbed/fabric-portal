@@ -57,7 +57,7 @@ class App extends React.Component {
       isProjectLead: false,
       isFacilityOperator: false,
       isActiveUser: false,
-      isJupterhubUser: false
+      isJupterhubUser: true
     },
   };
 

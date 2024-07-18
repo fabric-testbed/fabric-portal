@@ -95,7 +95,7 @@ class SearchResults extends Component {
     let projects = [];
     let projectCount = 0;
     try {
-      const { data } = await getProjects("allProjects", offset, limit, query);
+      const { data } = await getProjects("allProjects", offset, limit, query, "description");
       projects = data.results;
       projectCount = data.total;
     
