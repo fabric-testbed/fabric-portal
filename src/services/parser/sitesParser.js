@@ -29,6 +29,7 @@ export default function parseSites(data, acronymToShortName) {
       site.nodeId = node.NodeID;
       site.name = node.Name;
       site.location = node.Location;
+      site.ptp = node.Flags && JSON.parse(node.Flags).ptp;
       // site.location = JSON.parse(node.Location)["postal"];
       /************ retrieve site status in site node. ************/
       const maintenance = JSON.parse(node.MaintenanceInfo);
@@ -86,6 +87,7 @@ export default function parseSites(data, acronymToShortName) {
         site[`total${type}`] = 0;
         site[`allocated${type}`] = 0;
         site[`free${type}`] = 0;
+        site[type] = []; // models for a type of component
       }
 
       // find site components.
@@ -100,6 +102,11 @@ export default function parseSites(data, acronymToShortName) {
             if (component.Type === type) {
               site[`total${type}`] += component.capacities.unit || 0;
               site[`allocated${type}`] += component.allocatedCapacities.unit || 0;
+              site[type].push({
+                "model": component.Model,
+                "unit": component.capacities.unit || 0, 
+                "allocatedUnit": component.allocatedCapacities.unit || 0
+              })
             } 
           }
         }

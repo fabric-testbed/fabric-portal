@@ -4,10 +4,16 @@ import { default as config } from "../config.json";
 const apiEndpoint = `${config.orchestratorApiUrl}/slices`;
 const poasEndpoint = `${config.orchestratorApiUrl}/poas`;
 
-export function getMySlices() {
-  return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", {
-    headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
-  });
+export function getSlices(type, as_self) {
+  if (type === "projectSlices") {
+    return http.get(`${apiEndpoint}?as_self=${as_self}&states=All&limit=200&offset=0`, {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+    });
+  } else {
+    return http.get(apiEndpoint + "?as_self=true&states=All&limit=200&offset=0", {
+      headers: {'Authorization': `Bearer ${localStorage.getItem("idToken")}`}
+    });
+  }
 }
 
 export function getSliceById(id) {
@@ -17,20 +23,12 @@ export function getSliceById(id) {
 }
 
 export function createSlice(slice) {
-  let query = "";
-
-  // lease end time is optional.
-  if (slice.leaseEndTime) {
-    query = new URLSearchParams({
-      name: slice.name,
-      lease_end_time: slice.leaseEndTime
-    }).toString();
-  } else {
-    query = new URLSearchParams({
-      name: slice.name
-    }).toString();
-  }
-
+  const query = new URLSearchParams({
+    ...(slice.leaseEndTime) && {lease_end_time: slice.leaseEndTime},
+    ...(slice.leaseStartTime) && {lease_start_time: slice.leaseStartTime},
+    name: slice.name
+  }).toString();
+ 
   const requestBody = {
     "graph_model": slice.json,
     "ssh_keys": slice.sshKeys,

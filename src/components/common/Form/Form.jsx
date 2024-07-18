@@ -8,6 +8,7 @@ import TimePicker from "./TimePicker.jsx";
 import Switch from "./Switch.jsx";
 import ProjectTags from "../../Project/ProjectTags";
 import InputCheckboxes from "../InputCheckboxes.jsx";
+import Wysiwyg from "./Wysiwyg.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class Form extends Component {
@@ -91,6 +92,12 @@ class Form extends Component {
     this.setState({ data: updatedData})
   }
 
+  handleWysiwygChange = (Obj) => {
+    const data = { ...this.state.data };
+    data[Obj.target.name] = Obj.target.value;
+    this.setState({ data });
+  }
+
   renderButton(label) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">
@@ -114,6 +121,21 @@ class Form extends Component {
         tooltip={tooltip}
       />
     );
+  }
+
+  renderWysiwyg(name, label, notDisabled) {
+    const { data, errors } = this.state;
+
+    return (
+      <Wysiwyg
+        name={name}
+        content={data[name]}
+        label={label}
+        onChange={this.handleWysiwygChange}
+        error={errors[name]}
+        disabled={!notDisabled}
+      />
+    )
   }
 
   renderTextarea(name, label, notDisabled, tooltip, type = "text") {

@@ -48,7 +48,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
         />
       </div>
       <Tabs activeTab={localStorage.getItem("sshKeyType") === "Bastion" ? "Bastion" : "Sliver"}>
-        <div label="Sliver" number={sliverKeys? sliverKeys.length : 0}>
+        <div label="Sliver" badge={sliverKeys? sliverKeys.length : 0} color={"primary"}>
           <div className="alert alert-primary" role="alert">
             Currently the sliver keys here are only used when you build a slice via the Portal. JupyterHub uses locally-generated sliver keys.
           </div>
@@ -83,7 +83,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
             </div>
           }
         </div>
-        <div label="Bastion" number={bastionKeys? bastionKeys.length : 0}>
+        <div label="Bastion" badge={bastionKeys? bastionKeys.length : 0} color={"primary"}>
             <div>
               {
                 bastionKeys.length > 0 &&

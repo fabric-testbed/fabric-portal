@@ -3,7 +3,7 @@ import CopyButton from "../common/CopyButton";
 import { Link } from "react-router-dom";
 import { default as portalData } from "../../services/portalData.json";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
-import Calendar from "../../components/common/Calendar";
+import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
@@ -13,7 +13,7 @@ export default class DetailForm extends Component {
   }
 
   render() {
-    const { slice, data, leaseEndTime } = this.props;
+    const { slice, data, leaseStartTime, leaseEndTime } = this.props;
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -47,6 +47,14 @@ export default class DetailForm extends Component {
                   }
                   <div className="row d-flex flex-column mb-2">
                     <label>
+                      Lease Start at
+                    </label>
+                    <div className="slice-form-element">
+                      {utcToLocalTimeParser(leaseStartTime)}
+                    </div>
+                  </div>
+                  <div className="row d-flex flex-column mb-2">
+                    <label>
                       Lease End at
                       {
                         slice.state === "StableOK" &&
@@ -69,12 +77,12 @@ export default class DetailForm extends Component {
                       leaseEndTime && slice.state ==="StableOK" &&
                       <div>
                         <div className="slice-form-element mb-1">
-                          <Calendar
+                          <CalendarDateTime
                             id="sliceViewerCalendar"
                             name="sliceViewerCalendar"
+                            offset={-1}
                             onTimeChange={this.props.onLeaseEndChange}
-                            parent={"sliceDetailForm"}
-                            currentTime={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
+                            time ={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
                           />
                         </div>
                         <button

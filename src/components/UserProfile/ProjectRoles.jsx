@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../common/Pagination";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
+import Parser from 'html-react-parser';
 
 class ProjectRoles extends React.Component {
   state = {
@@ -41,10 +42,11 @@ class ProjectRoles extends React.Component {
           <i className="fa fa-ban text-danger"></i>
         );
       case "string":
-        return _.truncate(param, {
-          'length': 100,
-          'separator': ' '
-        });
+        // return _.truncate(param, {
+        //   'length': 100,
+        //   'separator': ' '
+        // });
+        return Parser(param);
       default:
         return param;
     }
@@ -76,10 +78,22 @@ class ProjectRoles extends React.Component {
     }
   };
 
-  handlePaginationClick = (page) => {
-    this.setState({ currentPage: page }, () => {
-      this.reloadProjectsData();
-    });
+  handlePaginationClick = (page, pagesCount) => {
+    const currentPage = this.state.currentPage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPage: currentPage - 1 }, () => {
+        this.reloadProjectsData();
+      });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPage: currentPage + 1 }, () => {
+        this.reloadProjectsData();
+      });
+    } else {
+      this.setState({ currentPage: page }, () => {
+        this.reloadProjectsData();
+      });
+    }
   };
 
   handleProjectsSearch = () =>{
@@ -151,7 +165,7 @@ class ProjectRoles extends React.Component {
             <table className="table table-striped table-bordered mt-1 mb-4 text-center">
               <tbody>
                 <tr>
-                  <th>Project Name</th>
+                  <th>Name</th>
                   <th>Description</th>
                   <th>Facility</th>
                   <th>Project Member</th>

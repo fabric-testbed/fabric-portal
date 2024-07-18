@@ -17,16 +17,25 @@ const generateProgressBar = (total, free, color, labelColor) => {
 const DetailTable = props => {
   const {name, resource, parent} = props;
 
-  const rows = [
-    ["Cores", "totalCore", "freeCore"],
-    ["Disk (GB)", "totalDisk", "freeDisk"],
-    ["RAM (GB)", "totalRAM", "freeRAM"],
-    ["GPU", "totalGPU", "freeGPU"],
-    ["NVME", "totalNVME", "freeNVME"],
-    ["SmartNIC", "totalSmartNIC", "freeSmartNIC"],
-    ["SharedNIC", "totalSharedNIC", "freeSharedNIC"],
-    ["FPGA", "totalFPGA", "freeFPGA"],
-  ]
+  const rowsOptions = {
+    "short" : [
+      ["Cores", "totalCore", "freeCore"],
+      ["Disk (GB)", "totalDisk", "freeDisk"],
+      ["RAM (GB)", "totalRAM", "freeRAM"]
+    ],
+    "long": [
+      ["Cores", "totalCore", "freeCore"],
+      ["Disk (GB)", "totalDisk", "freeDisk"],
+      ["RAM (GB)", "totalRAM", "freeRAM"],
+      ["GPU", "totalGPU", "freeGPU"],
+      ["NVME", "totalNVME", "freeNVME"],
+      ["SmartNIC", "totalSmartNIC", "freeSmartNIC"],
+      ["SharedNIC", "totalSharedNIC", "freeSharedNIC"],
+      ["FPGA", "totalFPGA", "freeFPGA"],
+    ]
+  }
+
+  const rows = parent === "sitepage" ? rowsOptions["short"] : rowsOptions["long"];
 
   const statusMapping = {
     "Maint": {
@@ -57,7 +66,7 @@ const DetailTable = props => {
 
   return (
     <div>
-      <table className="table resource-detail-table">
+      <table className={`table resource-detail-table`}>
         <thead>
           <tr>
             <th scope="col" colSpan="2" className="text-center">
@@ -72,7 +81,7 @@ const DetailTable = props => {
               {
                 resource && parent !== "sitepage" && 
                 <Link
-                  to={`/sites/${resource.id}`}
+                  to={`/sites/${resource.name}`}
                   state={{ data: resource }}
                 >
                   {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}

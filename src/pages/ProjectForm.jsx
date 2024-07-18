@@ -5,16 +5,14 @@ import withRouter from "../components/common/withRouter.jsx";
 import Form from "../components/common/Form/Form";
 import InputCheckboxes from "../components/common/InputCheckboxes";
 import SideNav from "../components/common/SideNav";
-import ProjectPersonnel from "../components/Project/Personnel/ProjectPersonnel";
+import ProjectMemberships from "../components/Project/Personnel/ProjectMemberships";
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
-import ProjectTokenHolders from "../components/Project/Personnel/ProjectTokenHolders.jsx";
 import PersistentStorage from "../components/Project/Storage/PersistentStorage.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import { updateProjectPersonnel, updateProjectTokenHolders } from "../services/projectService";
 import checkGlobalRoles from "../utils/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
@@ -26,6 +24,11 @@ import {
   deleteProject,
   updateProject,
   updateTags,
+  updateProjectPersonnel,
+  updateProjectTokenHolders,
+  updateProjectCommunity,
+  updateProjectFunding,
+  updateMatrix
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -41,6 +44,7 @@ const ToastMessageWithLink = ({projectId, message}) => (
 
 class ProjectForm extends Form {
   state = {
+    originalProject: { name: "", profile: { references: [] }},
     data: {
       uuid: "",
       name: "",
@@ -63,7 +67,9 @@ class ProjectForm extends Form {
         "show_project_owners",
         "show_project_members",
       ],
-      selectedOptions: []
+      selectedOptions: [],
+      project_funding: [],
+      communities: []
     },
     allOptions: [
       "show_project_owners",
@@ -85,13 +91,10 @@ class ProjectForm extends Form {
     activeIndex: 0,
     SideNavItems: [
       { name: "BASIC INFORMATION", active: true },
-      { name: "PROJECT OWNERS", active: false },
-      { name: "PROJECT MEMBERS", active: false },
-      { name: "LONG-LIVED TOKEN", active: false },
+      { name: "PROJECT MEMBERSHIPS", active: false },
       { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
     ],
-    originalProjectName: "",
     owners: [],
     members: [],
     token_holders: [],
@@ -103,7 +106,10 @@ class ProjectForm extends Form {
       btnPath: ""
     },
     selectedTags: [],
-    originalTags: []
+    originalTags: [],
+    projectFunding: [],
+    communities: [],
+    fabricMatrix: ""
   };
 
   schema = {
@@ -125,7 +131,9 @@ class ProjectForm extends Form {
     is_public: Joi.string().required().label("Public"),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
-    selectedOptions: Joi.array()
+    selectedOptions: Joi.array(),
+    project_funding: Joi.array(),
+    communities: Joi.array()
   };
 
   async populateProject() {
@@ -154,15 +162,14 @@ class ProjectForm extends Form {
 
       const { data } = await getProjectById(projectId);
       const project = data.results[0];
-      // keep a shallow copy of project name for project form header
-      this.state.originalProjectName = project.name;
 
       // check if view as public profile (user is not PC/PO/PM/FO)
       if(project.memberships && !project.memberships.is_creator && 
         !project.memberships.is_member && !project.memberships.is_owner &&
         !this.state.globalRoles.isFacilityOperator) {
-          this.setState({ 
+          this.setState({
             data: project,
+            fabricMatrix: project.profile.references.length > 0 ? project.profile.references["fabric_matrix"] : "",
             showSpinner: false,
             spinner: {
               text: "",
@@ -172,8 +179,12 @@ class ProjectForm extends Form {
           });
       } else {
         // user is po/pm/pc or Facility Operator.
-        this.setState({ 
-          data: this.mapToViewModel(project), 
+        this.setState({
+          originalProject: project,
+          data: this.mapToViewModel(project),
+          fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
+          projectFunding: project.project_funding,
+          communities: project.communities,
           owners: project.project_owners, 
           members: project.project_members,
           token_holders: project.token_holders,
@@ -200,20 +211,16 @@ class ProjectForm extends Form {
      const hash = this.props.location.hash;
      const activeMap = {
        "#info": 0,
-       "#owners": 1,
-       "#members": 2,
-       "#token": 3,
-       "#slices": 4,
-       "#volumes": 5
+       "#memberships": 1,
+       "#slices": 2,
+       "#volumes": 3
      }
  
      if (hash) {
        this.setState({ activeIndex: activeMap[hash] });
        this.setState({ SideNavItems: [
          { name: "BASIC INFORMATION", active: hash === "#info" },
-         { name: "PROJECT OWNERS", active: hash === "#owners" },
-         { name: "PROJECT MEMBERS", active: hash === "#members" },
-         { name: "LONG-LIVED TOKEN", active: hash === "#token"},
+         { name: "PROJECT MEMBERSHIPS", active: hash === "#memberships" },
          { name: "SLICES", active: hash === "#slices" },
          { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
        ]})
@@ -264,7 +271,9 @@ class ProjectForm extends Form {
         "show_project_members",
       ],
       selectedOptions: Object.keys(project.preferences).filter(key => 
-        project.preferences[key] && this.state.allOptions.includes(key))
+        project.preferences[key] && this.state.allOptions.includes(key)),
+      project_funding: project.project_funding,
+      communities: project.communities
     };
   }
 
@@ -278,7 +287,7 @@ class ProjectForm extends Form {
     return preferences;
   }
 
-  doSubmit = async () => {
+  handleUpdateProject= async () => {
     this.setState({
       showSpinner: true,
       spinner: {
@@ -288,18 +297,16 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix, originalProject } = this.state;
+    const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
-      this.setState({
-        showSpinner: false,
-        spinner: {
-          text: "",
-          btnText: "",
-          btnPath: ""
-        },
-        originalProjectName: project.name
-      });
+      await updateProjectFunding(project.uuid, projectFunding);
+      await updateProjectCommunity(project.uuid, communities);
+      if (fabricMatrix !== originalMatrix) {
+        await updateMatrix(project.uuid, fabricMatrix);
+      }
+      window.location.reload();
       toast.success("Project updated successfully!");
     }
     catch (err) {
@@ -335,6 +342,42 @@ class ProjectForm extends Form {
     }
   }
 
+  handleUpdateFunding = (operation, funding) => {
+    if (operation === "add") {
+      const fundings = this.state.projectFunding;
+      fundings.push(funding);
+      this.setState({ projectFunding: fundings });
+    } else if (operation === "remove") {
+      const newFundings = [];
+      for (const f of this.state.projectFunding) {
+        if (JSON.stringify(f) !== JSON.stringify(funding)) {
+          newFundings.push(f);
+        }
+      }
+      this.setState({ projectFunding: newFundings });
+    }
+  }
+
+  handleUpdateCommunity = (operation, community) => {
+    if (operation === "add") {
+      const communities = this.state.communities;
+      communities.push(community);
+      this.setState({ communities: communities });
+    } else if (operation === "remove") {
+      const newCommunities = [];
+      for (const c of this.state.communities) {
+        if (c !== community) {
+          newCommunities.push(c);
+        }
+      }
+      this.setState({ communities: newCommunities });
+    }
+  }
+
+  handleUpdateMatrix = (e) => {
+    this.setState({ fabricMatrix:  e.target.value });
+  }
+
   handlePermissionUpdate = async () => {
     const {  data: project , selectedTags } = this.state;
     this.setState({
@@ -367,11 +410,9 @@ class ProjectForm extends Form {
     // change the display of main content of right side accordingly.
     const indexToHash = {
       0: "#info",
-      1: "#owners",
-      2: "#members",
-      3: "#token",
-      4: "#slices",
-      5: "#volumes",
+      1: "#memberships",
+      2: "#slices",
+      3: "#volumes",
     }
     this.setState({ activeIndex: newIndex });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -523,7 +564,6 @@ class ProjectForm extends Form {
       optionsDisplayMapping,
       user,
       globalRoles,
-      originalProjectName,
       SideNavItems,
       activeIndex,
       owners,
@@ -533,7 +573,11 @@ class ProjectForm extends Form {
       tagVocabulary,
       selectedTags,
       originalTags,
-      volumes
+      volumes,
+      projectFunding,
+      communities,
+      fabricMatrix,
+      originalProject
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -588,7 +632,7 @@ class ProjectForm extends Form {
       return (
         <div className="container">
           <div className="d-flex flex-row justify-content-between">
-            <h1>{originalProjectName}</h1>
+            <h1>{originalProject.name}</h1>
             {
               canUpdate ?
               <div className="d-flex flex-row justify-content-end">
@@ -668,8 +712,8 @@ class ProjectForm extends Form {
                 <i className="fa fa-exclamation-triangle mr-2"></i>
                 This project is going to expire in a month on {utcToLocalTimeParser(data.expired)}. 
                 {
-                  canUpdate ? <span>Please submit a ticket to renew the project.</span> : 
-                  <span>Please contact your project owner to request project renewal.</span>
+                  canUpdate ? <span> Please submit a ticket to renew the project.</span> : 
+                  <span> Please contact your project owner to request project renewal.</span>
                 }
               </div>
               {
@@ -694,40 +738,47 @@ class ProjectForm extends Form {
             />
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
-            >
+            >  
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("name", "Name", canUpdate)}
-                {this.renderTextarea("description", "Description", canUpdate)}
-                {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
-                {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
-                {
-                  data.is_public === "Yes" && 
-                  this.renderInputCheckBoxes("preferences", "Privacy Preferences",
-                    canUpdate, optionsDisplayMapping,
-                    portalData.helperText.privacyPreferencesDescription
-                  )}
-                {canUpdate && this.renderButton("Save")}
+                  {this.renderInput("name", "Name", canUpdate)}
+                  {/* {this.renderTextarea("description", "Description", canUpdate)} */}
+                  {this.renderWysiwyg("description", "Description", canUpdate)}
+                  {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
+                  {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                  {
+                    data.is_public === "Yes" && 
+                    this.renderInputCheckBoxes("preferences", "Privacy Preferences",
+                      canUpdate, optionsDisplayMapping,
+                      portalData.helperText.privacyPreferencesDescription
+                    )}
               </form>
               <ProjectBasicInfoTable
                 project={data}
                 projectTags={originalTags}
+                projectFunding={projectFunding}
+                fabricMatrix={fabricMatrix}
+                communities={communities}
                 canUpdate={canUpdate}
                 isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
+                onFundingUpdate={this.handleUpdateFunding}
+                onMatrixUpdate={this.handleUpdateMatrix}
+                onCommunityUpdate={this.handleUpdateCommunity}
+                onUpdateProject={this.handleUpdateProject}
               />
               {
-                globalRoles.isFacilityOperator && <div className="mt-2">
-                  <h4>Project Permissions</h4>
+                globalRoles.isFacilityOperator && <div className="border-top my-2">
+                  <h5 className="my-2">Project Permissions</h5>
                   <InputCheckboxes
                     allOptions={tagVocabulary}
                     selectedOptions={selectedTags}
                     showSelectAll={true}
-                    optionDirection={"column"}
+                    optionDirection={"row"}
                     onCheck={this.handleTagCheck}
                     key={`project-permissions-${selectedTags.length}`}
                   />
                   <button
-                    className="btn btn-primary mt-2"
+                    className="btn btn-outline-primary mt-2"
                     onClick={this.handlePermissionUpdate}
                   >
                     Update Permissions
@@ -742,10 +793,16 @@ class ProjectForm extends Form {
               }`}
             >
               <div className="w-100">
-                <ProjectPersonnel
-                  personnelType={"Project Owners"}
+                <ProjectMemberships
                   canUpdate={canUpdate}
-                  users={owners}
+                  owners={owners}
+                  members={members}
+                  token_holders={this.state.token_holders}
+                  urlSuffix={urlSuffix}
+                  isTokenHolder={data.is_token_holder}
+                  isFO={globalRoles.isFacilityOperator}
+                  projectExpired={this.checkProjectExpiration(data.expired)}
+                  onUpdateTokenHolders={this.handleUpdateTokenHolders}
                   onUpdateUsers={this.handlePersonnelUpdate}
                 />
               </div>
@@ -757,43 +814,8 @@ class ProjectForm extends Form {
               }`}
             >
               <div className="w-100">
-                <ProjectPersonnel
-                  personnelType={"Project Members"}
-                  canUpdate={canUpdate}
-                  isFO={globalRoles.isFacilityOperator}
-                  users={members}
-                  onUpdateUsers={this.handlePersonnelUpdate}
-                />
-              </div>
-            </div>
-            <div
-              className={`${
-                activeIndex === 3
-                  ? "col-9 d-flex flex-row" : "d-none"
-              }`}
-            >
-              <div className="w-100">
-                <ProjectTokenHolders
-                  personnelType={"Token Holders"}
-                  token_holders={this.state.token_holders}
-                  project_members={members}
-                  urlSuffix={urlSuffix}
-                  isTokenHolder={data.is_token_holder}
-                  isFO={globalRoles.isFacilityOperator}
-                  projectExpired={this.checkProjectExpiration(data.expired)}
-                  onUpdateTokenHolders={this.handleUpdateTokenHolders}
-                />
-              </div>
-            </div>
-            <div
-              className={`${
-                activeIndex === 4
-                  ? "col-9 d-flex flex-row" : "d-none"
-              }`}
-            >
-              <div className="w-100">
                 {
-                  activeIndex === 4 && <Slices
+                  activeIndex === 2 && <Slices
                     parent="Projects"
                     projectId={data.uuid}
                     isProjectExpired={this.checkProjectExpiration(data.expired)}
@@ -803,13 +825,13 @@ class ProjectForm extends Form {
             </div>
             <div
               className={`${
-                activeIndex === 5
+                activeIndex === 3
                   ? "col-9 d-flex flex-row" : "d-none"
               }`}
             >
               <div className="w-100">
                 {
-                  activeIndex === 5 && <PersistentStorage
+                  activeIndex === 3 && <PersistentStorage
                     parent="Projects"
                     projectId={data.uuid}
                     volumes={volumes}

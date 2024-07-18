@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveMaintenanceNotice } from "./services/announcementService.js";
+import checkGlobalRoles from "./utils/checkGlobalRoles"; 
 import { default as portalData } from "./services/portalData.json";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
@@ -12,6 +13,8 @@ import AUP from "./pages/static/AUP";
 import CookiePolicy from "./pages/static/CookiePolicy";
 import PrivacyPolicy from "./pages/static/PrivacyPolicy";
 import Experiments from "./pages/Experiments";
+import PublicProjectsList from "./components/Project/Public/PublicProjectsList.jsx";
+import PublicProjectProfile from "./components/Project/Public/PublicProjectProfile.jsx";
 import SliceViewer from "./pages/SliceViewer";
 import SliceEditor from "./pages/SliceEditor";
 import NewSliceForm from "./pages/NewSliceForm";
@@ -20,6 +23,7 @@ import User from "./pages/User";
 import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
 import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
 import NotFound from "./pages/static/NotFound";
+import JupyterHubAccess from "./pages/static/JupyterHubAccess";
 import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
 import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
@@ -48,7 +52,13 @@ class App extends React.Component {
     activeNotices: [],
     showSessionTimeoutModal1: false,
     showSessionTimeoutModal2: false,
-    searchQuery: ""
+    searchQuery: "",
+    globalRoles: {
+      isProjectLead: false,
+      isFacilityOperator: false,
+      isActiveUser: false,
+      isJupterhubUser: true
+    },
   };
 
   checkNotExpired = (start, end) => {
@@ -82,6 +92,7 @@ class App extends React.Component {
           localStorage.setItem("userEmail", user.email);
           try {
             const { data: res } = await getCurrentUser();
+            this.setState({globalRoles: checkGlobalRoles(res.results[0])});
             localStorage.setItem("bastionLogin", res.results[0].bastion_login);
             // after user logs in for 3hr55min, pop up first session time-out modal
             const sessionTimeoutInterval1 = setInterval(() => 
@@ -130,7 +141,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { userName, userEmail, userStatus, searchQuery, 
+    const { userName, userEmail, userStatus, searchQuery, globalRoles,
       showSessionTimeoutModal1, showSessionTimeoutModal2 } = this.state;
     return (
       <div className="App">
@@ -139,6 +150,7 @@ class App extends React.Component {
             userName={userName}
             userEmail={userEmail}
             userStatus={userStatus}
+            globalRoles={globalRoles}
             searchQuery={searchQuery}
             onQueryChange={this.handleQueryChange}
           />
@@ -170,6 +182,7 @@ class App extends React.Component {
             <Route path="/logout" element={<Home />} />
             <Route path="/login-required" element={<LoginRequired />} />
             <Route path="/aup" element={<AUP />} />
+            <Route path="/jupyter-no-access" element={<JupyterHubAccess />} />
             <Route path="/sites/:id" element={<SiteDetailPage />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -186,11 +199,13 @@ class App extends React.Component {
             <Route path="/help" element={<Help />} />
             <Route path="/check-cookie" element={<CheckCookie />} />
             <Route path="/slice-editor" element={<SliceEditor />} />
+            <Route path="/experiments/public-projects" element={<PublicProjectsList />} />
+            <Route path="/experiments/public-projects/:id" element={<PublicProjectProfile />} />
             <Route element={<ProtectedRoutes />}>
                 <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
                 <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />
-                <Route path="/experiments" element={<Experiments  userStatus={userStatus}/>} />
+                <Route path="/experiments" element={<Experiments  userStatus={userStatus} globalRoles={globalRoles} />} />
                 <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />
                 <Route path="/user" element={<User userStatus={userStatus}/>} />
                 <Route

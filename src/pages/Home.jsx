@@ -2,6 +2,7 @@ import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
 import Carousel from "../components/Home/Carousel";
+import DynamicMetrics from "../components/Home/DynamicMetrics";
 import CapabilityIcons from "../components/Home/CapabilityIcons";
 import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
@@ -27,7 +28,7 @@ class Home extends React.Component {
 
   async componentDidMount() {
     try {
-      const { data: res } = await getResources();
+      const { data: res } = await getResources(1);
       const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
       this.setState({
         resources: parsedObj.parsedSites,
@@ -63,9 +64,12 @@ class Home extends React.Component {
           </div>
         }
         <Carousel />
-        <div className="home-lower row">
+        <div className="home-colored-bg">
+          <DynamicMetrics />
+        </div>
+        <div className="home-lower row my-5">
           <div className="col-xl-9 col-lg-12">
-            <div className="card homepage-card mb-4">
+            <div className="card homepage-card my-4">
               <div className="card-header text-center">
                 <b>Resources</b>
               </div>
@@ -93,7 +97,9 @@ class Home extends React.Component {
             <FacilityUpdates />
           </div>
         </div>
-        <CapabilityIcons />
+        <div className="home-colored-bg">
+          <CapabilityIcons />
+        </div>
         <div className="home-lower row mt-2">
           <div className="col-xl-12 col-lg-12">
             <Partners />

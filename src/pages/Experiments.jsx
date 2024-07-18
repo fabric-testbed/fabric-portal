@@ -5,6 +5,7 @@ import Slices from "../components/Experiment/Slices";
 import Projects from "../components/Experiment/Projects";
 import Tokens from "../components/Experiment/Tokens";
 import Keys from "../components/Experiment/Keys";
+import ArtifactManager from "../components/Experiment/ArtifactManager";
 
 class Experiments extends React.Component {
   state = {
@@ -13,11 +14,12 @@ class Experiments extends React.Component {
       { name: "MY SLICES", active: false },
       { name: "MANAGE TOKENS", active: false },
       { name: "MANAGE SSH KEYS", active: false },
+      { name: "ARTIFACT MANAGER", active: false },
     ],
     user: {},
     people: {},
     activeIndex: 0,
-    componentNames: [Projects, Slices, Tokens, Keys],
+    componentNames: [Projects, Slices, Tokens, Keys, ArtifactManager],
   };
 
   async componentDidMount() {
@@ -28,6 +30,7 @@ class Experiments extends React.Component {
       "#slices": 1,
       "#tokens": 2,
       "#sshKeys": 3,
+      "#artifacts": 4
     }
 
     if (hash) {
@@ -37,6 +40,7 @@ class Experiments extends React.Component {
         { name: "MY SLICES", active: hash === "#slices" },
         { name: "MANAGE TOKENS", active: hash === "#tokens" },
         { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
+        { name: "ARTIFACT MANAGER", active: hash === "#artifacts" },
       ]})
     }
   }
@@ -47,6 +51,7 @@ class Experiments extends React.Component {
       1: "#slices",
       2: "#tokens",
       3: "#sshKeys",
+      4: "#artifacts"
     }
     this.setState({ activeIndex: newIndex,
       SideNavItems: [
@@ -54,6 +59,7 @@ class Experiments extends React.Component {
         { name: "MY SLICES", active: newIndex === 1 },
         { name: "MANAGE TOKENS", active: newIndex === 2 },
         { name: "MANAGE SSH KEYS", active: newIndex === 3 },
+        { name: "ARTIFACT MANAGER", active: newIndex === 4 },
       ]
     });
     this.props.navigate(`/experiments${indexToHash[newIndex]}`);
@@ -61,7 +67,7 @@ class Experiments extends React.Component {
   
   render() {
     const TagName = this.state.componentNames[this.state.activeIndex];
-    
+    const { globalRoles } = this.props;
     return (
       <div className="container">
         <div className="row">
@@ -72,6 +78,7 @@ class Experiments extends React.Component {
           <TagName
             user={this.state.user}
             people={this.state.people}
+            globalRoles={globalRoles}
             styleProp={"col-9"}
             parent={"Experiments"}
             handleChange={this.handleChange}

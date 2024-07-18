@@ -4,7 +4,7 @@ import SpinnerWithText from "../common/SpinnerWithText";
 
 const FacilityUpdateCard = ({ showSpinner, updates }) => {
   return (
-    <div className="homepage-card card">
+    <div className="homepage-card card my-4">
       <div className="card-header text-center">
         <b>Facility Updates</b>
       </div>

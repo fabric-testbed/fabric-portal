@@ -137,7 +137,7 @@ const Branding = () => {
             className="col-sm d-flex flex-column align-items-center"
             key={`dark-bg-logo-${index}`}
           >
-            <div className="branding-logo-container" style={{"background-color": "#666677"}}>
+            <div className="branding-logo-container" style={{"backgroundColor": "#666677"}}>
               <img src={logo.url} className="branding-logo" alt={logo.altText} />
             </div>
             <u><a href={ logo.url } target="_blank" rel="noopener noreferrer">Download</a></u>
@@ -171,7 +171,7 @@ const Branding = () => {
             className="col-sm d-flex flex-column align-items-center mb-3"
             key={`fab-dark-bg-logo-${index}`}
           >
-            <div className="branding-logo-container" style={{"background-color": "#666677"}}>
+            <div className="branding-logo-container" style={{"backgroundColor": "#666677"}}>
               <img src={logo.url} className="branding-logo" alt={logo.altText} />
             </div>
             <u><a href={ logo.url } target="_blank" rel="noopener noreferrer">Download</a></u>
@@ -226,7 +226,7 @@ const Branding = () => {
           <div className="card-header w-100 bg-light">
             { color.name }
           </div>
-          <div className="card-body w-100" style={{"background-color": `${color.hex}`}}>
+          <div className="card-body w-100" style={{"backgroundColor": `${color.hex}`}}>
             <div>{ color.hex }</div>
           </div>
         </div>)
