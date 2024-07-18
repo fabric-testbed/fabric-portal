@@ -130,6 +130,22 @@ class SiteDetailPage extends React.Component {
     window.location.reload();
   }
 
+  checkWorkerStatus = (workerName) => {
+    for (const worker of this.state.data.workers) {
+      if (workerName === Object.keys(worker)[0]) {
+        return { state: Object.values(worker)[0].state };
+      }
+    }
+    return { state: "Active" };
+  }
+
+  generateAccordionHeaderStyle = (workerName) => {
+    const status = this.checkWorkerStatus(workerName);
+    if (status.state === "Maint") return "text-danger";
+    if (["PreMaint", "PartMaint"].includes(status.state)) return "text-warning";
+    return "text-dark";
+  }
+
   render () {
     const { data, hosts, statusMapping, startTime, endTime, showSpinner, spinnerMessage } = this.state;
       return (
@@ -312,8 +328,10 @@ class SiteDetailPage extends React.Component {
                     className="AccordionItem"
                     value={`host-${index}`}
                   >
-                  <Accordion.Trigger>{host.Name}</Accordion.Trigger>
-                  <Accordion.Content><SiteDetailTable data={host} status={data.status} /></Accordion.Content>
+                  <Accordion.Trigger><span className={this.generateAccordionHeaderStyle(host.Name)}>{host.Name}</span></Accordion.Trigger>
+                  <Accordion.Content>
+                    <SiteDetailTable data={host} status={this.checkWorkerStatus(host.Name)} />
+                  </Accordion.Content>
                 </Accordion.Item>
                   )
               }

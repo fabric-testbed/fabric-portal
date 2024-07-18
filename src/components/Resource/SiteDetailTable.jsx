@@ -57,9 +57,12 @@ const SiteDetailTable = props => {
           </tr>
           <tr>
             <td><b>Available/ Total</b></td>
-            <td>{ generateProgressBar(data[`freeCore`],data[`totalCore`],"#68b3d1","fff")}</td>
-            <td>{ generateProgressBar(data[`freeDisk`],data[`totalDisk`],"#68b3d1","fff")}</td>
-            <td>{ generateProgressBar(data[`freeRAM`],data[`totalRAM`],"#68b3d1","fff")}</td>
+            <td>{ generateProgressBar(data[`freeCore`],data[`totalCore`], statusMapping[state].colorHex,
+                          statusMapping[state].labelColorHex)}</td>
+            <td>{ generateProgressBar(data[`freeDisk`],data[`totalDisk`], statusMapping[state].colorHex,
+                          statusMapping[state].labelColorHex)}</td>
+            <td>{ generateProgressBar(data[`freeRAM`],data[`totalRAM`], statusMapping[state].colorHex,
+                          statusMapping[state].labelColorHex)}</td>
           </tr>
         </thead>
       </table>

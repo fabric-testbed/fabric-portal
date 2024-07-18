@@ -163,7 +163,8 @@ class Projects extends React.Component {
           ? { ...el, isActive: true }
           : { ...el, isActive: false }
       ),
-      currentPage: 1
+      currentPage: 1,
+      selectedList: []
     }), () => {
       this.reloadProjectsData();
     });
@@ -215,63 +216,89 @@ class Projects extends React.Component {
             </Link>
           }
         </div>
-        <div className="w-100 input-group mt-3">
-        <div className="input-group mb-3 project-search-toolbar">
-          <div className="input-group-prepend">
-            <button
-              className="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i className="fa fa-search"></i>
-            </button>
-            <div className="dropdown-menu">
-              <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
-              <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
+        {
+          this.state.radioBtnValues[0].isActive &&  
+          <div className="w-100 input-group my-3">
+            <input
+              type="text"
+              name="query"
+              className="form-control"
+              placeholder={"Search by Project Name (at least 3 letters) or Project UUID..."}
+              value={searchQuery}
+              onChange={this.handleInputChange}
+              onKeyDown={this.raiseInputKeyDown}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={this.handleProjectsSearch}
+              >
+                Search
+              </button>
             </div>
           </div>
-          {
-            filterOption === "description" &&
-              <input
-                type="text"
-                name="query"
-                className="form-control"
-                placeholder={"Search by project name and description..."}
-                value={searchQuery}
-                onChange={this.handleInputChange}
-                onKeyDown={this.raiseInputKeyDown}
-              />
-          }
-          {
-            filterOption === "description" &&
-              <div className="input-group-append">
+        } 
+        {
+          this.state.radioBtnValues[1].isActive &&  
+          <div className="w-100 input-group mt-3">
+            <div className="input-group mb-3 project-search-toolbar">
+              <div className="input-group-prepend">
                 <button
-                  className="btn btn-outline-primary"
+                  className="btn btn-outline-secondary dropdown-toggle"
                   type="button"
-                  onClick={this.handleProjectsSearch}
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                  Search
+                  <i className="fa fa-search"></i>
                 </button>
+                <div className="dropdown-menu">
+                  <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
+                  <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
+                </div>
               </div>
-          }
-          {
-            filterOption === "community" &&  
-            <Multiselect
-              options={options}
-              selectedValues={selectedList}
-              onSelect={this.onSelect} 
-              onRemove={this.onRemove} 
-              displayValue="name" 
-              showCheckbox={true}
-              placeholder={"Filter by community"}
-              avoidHighlightFirstOption={true}
-              hideSelectedList={true}
-            />
-          }
-        </div>
-        </div>
+              {
+                filterOption === "description" &&
+                  <input
+                    type="text"
+                    name="query"
+                    className="form-control"
+                    placeholder={"Search by project name and description..."}
+                    value={searchQuery}
+                    onChange={this.handleInputChange}
+                    onKeyDown={this.raiseInputKeyDown}
+                  />
+              }
+              {
+                filterOption === "description" &&
+                  <div className="input-group-append">
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={this.handleProjectsSearch}
+                    >
+                      Search
+                    </button>
+                  </div>
+              }
+              {
+                filterOption === "community" &&  
+                <Multiselect
+                  options={options}
+                  selectedValues={selectedList}
+                  onSelect={this.onSelect} 
+                  onRemove={this.onRemove} 
+                  displayValue="name" 
+                  showCheckbox={true}
+                  placeholder={"Filter by community"}
+                  avoidHighlightFirstOption={true}
+                  hideSelectedList={true}
+                />
+              }
+            </div>
+          </div>
+        }
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."} />
         }
@@ -283,16 +310,6 @@ class Projects extends React.Component {
                 values={this.state.radioBtnValues}
                 onChange={this.handleProjectTypeChange}
               />
-              {
-                filterOption === "community" &&  <a
-                href={portalData.learnArticles.guideToCommunityList}
-                target="_blank"
-                rel="noreferrer"
-                >
-                  <i className="fa fa-question-circle mx-2"></i>
-                  Project Community List
-                </a>
-              }
               <span>{projectsCount} results.</span>
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
@@ -322,6 +339,16 @@ class Projects extends React.Component {
                 values={this.state.radioBtnValues}
                 onChange={this.handleProjectTypeChange}
               />
+              {
+                filterOption === "community" &&  <a
+                href={portalData.learnArticles.guideToCommunityList}
+                target="_blank"
+                rel="noreferrer"
+                >
+                  <i className="fa fa-question-circle mx-2"></i>
+                  Project Community List
+                </a>
+              }
               {projectsCount} results.
             </div>
             <ProjectsTable
