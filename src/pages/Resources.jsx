@@ -24,17 +24,25 @@ class Resources extends Component {
     searchQuery: "",
     activeDetailName: "StarLight",
     siteNames: [],
-    siteColorMapping: {}
+    siteColorMapping: {},
+    activeTab: "Testbed Resources"
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     try {
-      const { data: res } = await getResources();
-      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
+      const hash = this.props.location.hash;
+      if (hash && hash === "#tools") {
+        this.setState({
+          activeTab: "Measuring and Monitoring Tools"
+        });
+      } 
+      const { data: res } = await getResources(1);
+      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
       this.setState({
         resources: parsedObj.parsedSites,
         siteNames: parsedObj.siteNames,
-        siteColorMapping: parsedObj.siteColorMapping
+        siteColorMapping: parsedObj.siteColorMapping,
+        activeTab: "Testbed Resources"
       });
 
       const resourceId = this.props.match.params.id;
@@ -86,9 +94,17 @@ class Resources extends Component {
     return resource ? resource : null;
   }
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
+  handlePageChange = (page, pagesCount) => {
+    const currentPage = this.state.currentPage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPage: currentPage - 1 });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPage: currentPage + 1 });
+    } else {
+      this.setState({ currentPage: page });
+    }
+  }
 
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
@@ -133,13 +149,13 @@ class Resources extends Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName, activeTab } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="container">
         <h1>Resources</h1>
-        <Tabs activeTab={"Testbed Resources"}>
+        <Tabs activeTab={activeTab} navigate={this.props.navigate}>
           <div label="Testbed Resources">
             <div className="row my-2 px-3">
               <TestbedTable sum={this.getResourcesSum(this.state.resources)} />
@@ -182,7 +198,11 @@ class Resources extends Component {
               </div>
             </div>
           </div>
-          <div label="Measuring and Monitoring Tools">
+          <div 
+            label="Measuring and Monitoring Tools"
+            badge={"NEW"}
+            color={"success"}
+          >
             <ToolLinks />
           </div>
         </Tabs>

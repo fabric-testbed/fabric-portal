@@ -12,7 +12,7 @@ import SideLinks from '../components/SliceViewer/SideLinks';
 import Graph from '../components/SliceViewer/Graph';
 import NewSliceDetailForm from '../components/SliceViewer/NewSliceDetailForm';
 import SpinnerWithText from "../components/common/SpinnerWithText";
-import Calendar from "../components/common/Calendar";
+import CalendarDateTime from "../components/common/CalendarDateTime.jsx";
 import SliverKeyMultiSelect from "../components/SliceViewer/SliverKeyMultiSelect";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sliceParser from "../services/parser/sliceParser.js";
@@ -34,6 +34,7 @@ class NewSliceForm extends React.Component {
     sshKey: "",
     selectedKeyIDs: [],
     leaseEndTime: "",
+    leaseStartTime: "",
     showResourceSpinner: false,
     showKeySpinner: false,
     showSliceSpinner: false,
@@ -58,10 +59,11 @@ class NewSliceForm extends React.Component {
     });
 
     try {
-      const { data: resources } = await getResources();
+      const { data: resources } = await getResources(1);
       const { data: keys } = await getActiveKeys();
       const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
       const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+
       this.setState({
         parsedResources: parsedObj,
         showResourceSpinner: false,
@@ -107,6 +109,18 @@ class NewSliceForm extends React.Component {
     }
   }
 
+  handleLeaseStartChange = (value) => {
+    const inputTime = moment(value).format();
+    // input format e.g. 2022-05-25T10:49:03-04:00
+    // output format should be 2022-05-25 10:49:03 -0400
+    const date = inputTime.substring(0, 10);
+    const time = inputTime.substring(11, 19);
+    const offset = inputTime.substring(19).replace(":", "");
+    const outputTime = [date, time, offset].join(" ");
+
+    this.setState({ leaseStartTime: outputTime });
+  }
+
   handleLeaseEndChange = (value) => {
     const inputTime = moment(value).format();
     // input format e.g. 2022-05-25T10:49:03-04:00
@@ -114,7 +128,6 @@ class NewSliceForm extends React.Component {
     const date = inputTime.substring(0, 10);
     const time = inputTime.substring(11, 19);
     const offset = inputTime.substring(19).replace(":", "");
-
     const outputTime = [date, time, offset].join(" ");
 
     this.setState({ leaseEndTime: outputTime });
@@ -289,6 +302,17 @@ class NewSliceForm extends React.Component {
     this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
   }
 
+  handleSwitchAdd = (site, name) => {
+    const { graphID, sliceNodes, sliceLinks } =  this.state;
+    const node = {
+      "type": "Switch",
+      "site": site,
+      "name": name
+    };
+    const { newSliceNodes, newSliceLinks } = builder.addSwitch(node, graphID, sliceNodes, sliceLinks);
+    this.setState({ sliceNodes: newSliceNodes, sliceLinks: newSliceLinks});
+  }
+
   handleLinkAdd = (type, name) => {
     const { selectedCPs, graphID, sliceNodes, sliceLinks } =  this.state;
     const { newSliceNodes, newSliceLinks} = builder.addLink(type, name, selectedCPs, graphID, sliceNodes, sliceLinks);
@@ -352,28 +376,20 @@ class NewSliceForm extends React.Component {
   handleCreateSlice = async () => {
     this.handleSaveDraft("noMessage");
 
-    const { sliceName, leaseEndTime } = this.state;
+    const { sliceName, leaseEndTime, leaseStartTime } = this.state;
     const that = this;
 
     that.setState({ showSliceSpinner: true });
 
     let requestData = {};
     const pubKeys = this.generatePublicKeys();
-    if (leaseEndTime !== "") {
-      requestData = {
-        name: sliceName,
-        sshKeys: pubKeys.keys,
-        leaseEndTime: leaseEndTime,
-        json: this.generateSliceJSON(),
-        sshKeyNames: pubKeys.keyNames
-      }
-    } else {
-      requestData = {
-        name: sliceName,
-        sshKeys: pubKeys.keys,
-        json: this.generateSliceJSON(),
-        sshKeyNames: pubKeys.keyNames
-      }
+    requestData = {
+      name: sliceName,
+      sshKeys: pubKeys.keys,
+      ...(leaseEndTime) && {leaseEndTime: leaseEndTime},
+      ...(leaseStartTime) && {leaseStartTime: leaseStartTime},
+      json: this.generateSliceJSON(),
+      sshKeyNames: pubKeys.keyNames
     }
 
     try {
@@ -399,7 +415,8 @@ class NewSliceForm extends React.Component {
   render() {
     const { sliceName, selectedKeyIDs, sliverKeys, selectedData,
       showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner }
+      sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner,
+      leaseStartTime, leaseEndTime }
     = this.state;
 
     const validationResult = validator.validateSlice(sliceName, selectedKeyIDs, sliceNodes);
@@ -494,6 +511,7 @@ class NewSliceForm extends React.Component {
                             nodes={sliceNodes}
                             onVMAdd={this.handleVMAdd}
                             onFacilityAdd={this.handleFacilityAdd}
+                            onSwitchAdd={this.handleSwitchAdd}
                             projectTags={projectTags}
                           />
                         }
@@ -540,7 +558,7 @@ class NewSliceForm extends React.Component {
                         <div className="d-flex flex-column">
                           <form>
                             <div className="form-row">
-                              <div className="form-group col-md-6">
+                              <div className="form-group col-md-12">
                                 <label htmlFor="inputSliceName" className="slice-form-label">
                                   <span>Slice Name</span>
                                 </label>
@@ -551,14 +569,29 @@ class NewSliceForm extends React.Component {
                                   onChange={this.handleSliceNameChange}
                                 />
                               </div>
+                            </div>
+                            <div className="form-row">
+                              <div className="form-group col-md-6">
+                                <label htmlFor="inputLeaseStartTime" className="slice-form-label">
+                                  <span>Lease Start Time</span>
+                                </label>
+                                <CalendarDateTime
+                                  id="sliceBuilderCalendar1"
+                                  name="sliceBuilderCalendar"
+                                  offset={0}
+                                  time={leaseStartTime && leaseStartTime.toString().replace(/-/g, "/")}
+                                  onTimeChange={this.handleLeaseStartChange}
+                                />
+                              </div>
                               <div className="form-group col-md-6">
                                 <label htmlFor="inputLeaseEndTime" className="slice-form-label">
                                   <span>Lease End Time</span>
                                 </label>
-                                <Calendar
-                                  id="sliceBuilderCalendar"
+                                <CalendarDateTime
+                                  id="sliceBuilderCalendar2"
                                   name="sliceBuilderCalendar"
-                                  parent={"newSliceForm"}
+                                  offset={1}
+                                  time={leaseEndTime.toString().replace(/-/g, "/")}
                                   onTimeChange={this.handleLeaseEndChange}
                                 />
                               </div>

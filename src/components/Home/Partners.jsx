@@ -53,7 +53,7 @@ const Partners = () => {
 
   return (
     <div className="my-3 d-flex flex-column justify-content-center align-items-center">
-      <div className="mb-2">
+      <div className="my-2">
         <span className="homepage-partner-header">Our Partners</span>
       </div>
       <span className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</span>

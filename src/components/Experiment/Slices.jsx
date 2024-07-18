@@ -5,10 +5,9 @@ import Pagination from "../common/Pagination";
 import SearchBoxWithDropdown from "../../components/common/SearchBoxWithDropdown";
 import SlicesTable from "../Slice/SlicesTable";
 import SpinnerWithText from "../../components/common/SpinnerWithText";
-import DeleteModal from "../../components/common/DeleteModal";
 import { getProjects } from "../../services/projectService.js";
 import { autoCreateTokens } from "../../utils/manageTokens";
-import { getMySlices, deleteSlice } from "../../services/sliceService.js";
+import { getSlices, deleteSlice } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
 import sleep from "../../utils/sleep";
@@ -33,7 +32,8 @@ class Slices extends React.Component {
     searchQuery: "",
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
-    spinnerText: ""
+    spinnerText: "",
+    showAllSlices: false
   };
 
   async componentDidMount() {
@@ -41,33 +41,23 @@ class Slices extends React.Component {
     this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
     try {
       if (window.location.href.includes("/projects")) {
-        if(!localStorage.getItem("idToken")) {
-          // call credential manager to generate tokens
-          autoCreateTokens("all").then(async () => {
-            const { data: res } = await getMySlices();
-            const slices = res.data.filter(s => s.project_id === this.props.projectId);
-            this.setState({ slices, showSpinner: false, spinnerText: "" });
-          });
-        } else {
-            const { data: res } = await getMySlices();
-            const slices = res.data.filter(s => s.project_id === this.props.projectId);
-            this.setState({ slices, showSpinner: false, spinnerText: "" });
-        }
+        // call credential manager to generate project based tokens
+        autoCreateTokens(this.props.projectId).then(async () => {
+          // as_self: true
+          const { data: res } = await getSlices("projectSlices", true);
+          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+        });
       } else {
         // call PR first to check if the user has project.
         const { data: res } = await getProjects("myProjects", 0, 200);
         if (res.results.length === 0) {
           this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
-        } else if(!localStorage.getItem("idToken")) {
+        } else{
           // call credential manager to generate tokens
           autoCreateTokens("all").then(async () => {
-              const { data: res } = await getMySlices();
-              this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-            });
-          }
-        else {
-          const { data: res } = await getMySlices();
-          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+            const { data: res } = await getSlices("allSlices");
+            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+          });
         }
       }
     } catch (err) {
@@ -75,9 +65,17 @@ class Slices extends React.Component {
     }
   }
 
-  handlePageChange = (page) => {
-    this.setState({ currentPage: page });
-  };
+  handlePageChange = (page, pagesCount) => {
+    const currentPage = this.state.currentPage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPage: currentPage - 1 });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPage: currentPage + 1 });
+    } else {
+      this.setState({ currentPage: page });
+    }
+  }
 
   handleFilter = (query) => {
     this.setState({ filterQuery: query, currentPage: 1 });
@@ -94,6 +92,17 @@ class Slices extends React.Component {
   handleIncludeDeadSlices = () => {
     const currentChoice = this.state.includeDeadSlices;
     this.setState( { includeDeadSlices: !currentChoice });
+  }
+
+  handleShowAllSlices = async () => {
+    const currentChoice = this.state.showAllSlices;
+    this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
+    try {
+      const { data: res } = await getSlices("projectSlices", currentChoice);
+      this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+    } catch(err) {
+      toast.error("Failed to load slices. Please try again.")
+    }
   }
 
   handleDeleteAllSlices = async () => {
@@ -119,7 +128,7 @@ class Slices extends React.Component {
       filterQuery,
       searchQuery,
       includeDeadSlices,
-      slices: allSlices,
+      slices: allSlices
     } = this.state;
 
     // filter -> sort -> paginate
@@ -150,15 +159,12 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className={this.props.styleProp}>
-        {
-          this.props.parent === "Projects" ?
-            <h4>Project Slices</h4> : <h1>Slices</h1>
-        }
+        <h1>Slices</h1>
         {
           this.props.parent === "Projects" &&
           this.props.isProjectExpired && 
@@ -289,6 +295,14 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
+              {/* {
+                this.props.parent === "Projects" && <Checkbox
+                  label={"Show All Project Slices"}
+                  id={"checkbox-show-all-slices"}
+                  isChecked={showAllSlices}
+                  onCheck={this.handleShowAllSlices}
+                />
+              } */}
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}

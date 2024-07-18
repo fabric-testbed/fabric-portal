@@ -12,8 +12,7 @@ class ProjectPersonnel extends Component {
     const { canUpdate, personnelType, users, isFO } = this.props;
 
     return (
-      <div>
-        <h4>{personnelType}</h4>
+      <div className="px-3 pb-4">
         {
           canUpdate &&
           <AddPersonnel

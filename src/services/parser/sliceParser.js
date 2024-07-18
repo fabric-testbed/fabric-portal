@@ -163,9 +163,10 @@ export default function parseSlice(slice, sliceType) {
   const findParentNode = (id) => {
     let parentId = -1;
     for (let i = 0; i < links.length; i++) {
-      // EXCEPTION status: OVS has SmartNIC (usually SmartNIC has OVS)
-      if (links[i].label === "has" && ["SmartNIC", "SharedNIC"].includes(objNodes[links[i].target].Type) && 
-      objNodes[links[i].source].Type === "OVS" && links[i].source === id) {
+      // EXCEPTION status: OVS has NIC (usually NIC has OVS)
+      // EXCEPTION status: P4 network service has FPGA (usually FPGA has P4)
+      if (links[i].label === "has" && ["SmartNIC", "SharedNIC", "FPGA"].includes(objNodes[links[i].target].Type) && 
+      ["OVS", "P4"].includes(objNodes[links[i].source].Type) && links[i].source === id) {
         parentId = parseInt(objNodes[links[i].target].id);
         break;
       }
@@ -205,7 +206,7 @@ export default function parseSlice(slice, sliceType) {
         properties: { class: "NetworkService", name: node.Name, type: node.Type }
       }
       elements.push(data);
-    } else if (node.Class === "NetworkService" && node.Type !== "OVS" && node.Type !== "VLAN") {
+    } else if (node.Class === "NetworkService" && !["OVS", "P4"].includes(node.Type) && node.Type !== "VLAN") {
       data = {
         id: parseInt(node.id),
         label: node.Name,
@@ -218,7 +219,7 @@ export default function parseSlice(slice, sliceType) {
       const data = {};
       generateDataElement(data, node.id);
       elements.push(data);
-    } else if (node.Type === "Facility") {
+    } else if (["Facility", "Switch"].includes(node.Type)) {
       data = {
         id: parseInt(node.id),
         label: node.Name,
@@ -239,7 +240,7 @@ export default function parseSlice(slice, sliceType) {
     if (link.label === "has") {
       // Three main categories for "has"
       // 1. VM node has NIC/ GPU/ NVME/ Storage or vice versa
-      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.target].Type) && 
+      if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage", "FPGA"].includes(objNodes[link.target].Type) && 
         objNodes[link.source].Type === "VM") {
         if (!parentNodeIds.includes(link.source)) {
           parentNodeIds.push(link.source);
@@ -247,7 +248,7 @@ export default function parseSlice(slice, sliceType) {
         data.parent = link.source;
         generateDataElement(data, link.target);
         elements.push(data);
-      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage"].includes(objNodes[link.source].Type) && 
+      } else if (["SmartNIC", "SharedNIC", "GPU", "NVME", "Storage", "FPGA"].includes(objNodes[link.source].Type) && 
       objNodes[link.target].Type === "VM") {
         // EXCEPTION: NIC/ GPU/ NVME/ Storage has VM
         if (!parentNodeIds.includes(link.target)) {
@@ -310,12 +311,12 @@ export default function parseSlice(slice, sliceType) {
         elements.push(fp_data);
       } else if ((objNodes[link.source].Class === "NetworkService"
         && objNodes[link.target].Class === "ConnectionPoint"
-        && objNodes[link.source].Type === "OVS")) {
+        && ["OVS", "P4"].includes(objNodes[link.source].Type))) {
           generateConnectionPoint(data, link, "normal");
           elements.push(data);
       } else if ((objNodes[link.target].Class === "NetworkService"
       && objNodes[link.source].Class === "ConnectionPoint"
-      && objNodes[link.target].Type === "OVS")) {
+      && ["OVS", "P4"].includes(objNodes[link.target].Type))) {
         // EXCEPTION: Connection Point (source) has OVS (target)
         generateConnectionPoint(data, link, "reverse");
         elements.push(data);

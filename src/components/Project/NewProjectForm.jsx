@@ -35,7 +35,7 @@ class NewProjectForm extends Form {
     searchResults: [],
     ownersToAdd: [],
     membersToAdd: [],
-    warningMessage: "",
+    warningMessage: ""
   };
 
   schema = {
@@ -46,7 +46,7 @@ class NewProjectForm extends Form {
     is_public: Joi.string().required().label("Public")
   };
 
-  doSubmit = async () => {
+  handleCreateProject = async () => {
     const { membersToAdd, ownersToAdd, data } = this.state;
     try {
       let ownerIDs = ownersToAdd.map((user) => user.uuid);
@@ -173,97 +173,107 @@ class NewProjectForm extends Form {
           {this.renderTextarea("description", "Description", true)}
           {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
           {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
-          {this.renderButton("Create")}
         </form>
-        <div className="mt-4">
-          <ul className="nav nav-tabs mb-4">
-            <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
-              <span
-                className={`nav-link ${
-                  activeTabIndex === 0 ? "active" : ""
-                }`}
+        <div className="border px-2 py-2">
+          <div className="mt-2">
+            <h3>
+              Project Membership
+            </h3>
+            <ul className="nav nav-tabs mb-4">
+              <li className="nav-item" onClick={() => this.handleToggleTab(0)}>
+                <span
+                  className={`nav-link ${
+                    activeTabIndex === 0 ? "active" : ""
+                  }`}
+                >
+                  Add Project Owners
+                </span>
+              </li>
+              <li className="nav-item" onClick={() => this.handleToggleTab(1)}>
+                <span
+                  className={`nav-link ${
+                    activeTabIndex === 1 ? "active" : ""
+                  }`}
+                >
+                  Add Project Members
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div className="d-flex flex-column my-2">
+            <div className="d-flex flex-row">
+              <input
+                className="form-control search-owner-input"
+                value={searchInput}
+                placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
+                onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                onKeyDown={this.raiseInputKeyDown}
+              />
+              <button
+                className="btn btn-outline-primary"
+                onClick={() => this.handleSearch(searchInput)}
               >
-                Add Project Owners
-              </span>
-            </li>
-            <li className="nav-item" onClick={() => this.handleToggleTab(1)}>
-              <span
-                className={`nav-link ${
-                  activeTabIndex === 1 ? "active" : ""
-                }`}
+                <i className="fa fa-search"></i>
+              </button>
+            </div>
+            {
+              warningMessage !== "" && 
+              <div className="alert alert-warning" role="alert">
+                {warningMessage}
+              </div>
+            }
+            {
+              searchResults.length > 0 &&
+              <ul className="list-group mb-2 search-box-list-group">
+                {
+                  searchResults.map((user, index) => {
+                    return (
+                      <li
+                        key={`search-user-result-${index}`}
+                        className="list-group-item d-flex flex-row justify-content-between"
+                      >
+                        {
+                          user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
+                          <div className="mt-1">{user.name}</div>
+                        }
+                        <button
+                          className="btn btn-sm btn-outline-primary ml-2"
+                          onClick={() => this.handleAddUser(user)}
+                        >
+                          <i className="fa fa-plus"></i>
+                        </button>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            }
+          </div>
+          <ul className="input-tag__tags">
+            {
+              usersToAdd.length > 0 &&
+              usersToAdd.map((user, index) => 
+              <li
+                key={`user-to-add-${index}`}
+                className="mr-2 my-2"
               >
-                Add Project Members
-              </span>
-            </li>
+                {user.email ? `${user.name}(${user.email})` : user.name}
+              <i
+                className="fa fa-times ml-2"
+                onClick={() => {
+                  this.handleDeleteUser(user.name);
+                }}
+              ></i>
+            </li>)
+            }
           </ul>
         </div>
-        <div className="d-flex flex-column my-2">
-          <div className="d-flex flex-row">
-            <input
-              className="form-control search-owner-input"
-              value={searchInput}
-              placeholder={`Search by name/email (at least 4 letters) or UUID to add ${personnelType}...`}
-              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-              onKeyDown={this.raiseInputKeyDown}
-            />
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => this.handleSearch(searchInput)}
-            >
-              <i className="fa fa-search"></i>
-            </button>
-          </div>
-          {
-            warningMessage !== "" && 
-            <div className="alert alert-warning" role="alert">
-              {warningMessage}
-            </div>
-          }
-          {
-            searchResults.length > 0 &&
-            <ul className="list-group mb-2 search-box-list-group">
-              {
-                searchResults.map((user, index) => {
-                  return (
-                    <li
-                      key={`search-user-result-${index}`}
-                      className="list-group-item d-flex flex-row justify-content-between"
-                    >
-                      {
-                        user.email ? <div className="mt-1">{`${user.name} (${user.email})`}</div> :
-                        <div className="mt-1">{user.name}</div>
-                      }
-                      <button
-                        className="btn btn-sm btn-outline-primary ml-2"
-                        onClick={() => this.handleAddUser(user)}
-                      >
-                        <i className="fa fa-plus"></i>
-                      </button>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          }
-        </div>
-        <ul className="input-tag__tags">
-          {
-            usersToAdd.length > 0 &&
-            usersToAdd.map((user, index) => 
-            <li
-              key={`user-to-add-${index}`}
-              className="mr-2 my-2"
-            >
-              {user.email ? `${user.name}(${user.email})` : user.name}
-            <i
-              className="fa fa-times ml-2"
-              onClick={() => {
-                this.handleDeleteUser(user.name);
-              }}
-            ></i>
-          </li>)
-          }
-        </ul>
+        <button
+          className="btn btn-primary mt-2"
+          onClick={this.handleCreateProject}
+        >
+          Create Project
+        </button>
         <div className="alert alert-primary mt-4" role="alert">
           <p>
             There are more features on the project detail page after project creation. 

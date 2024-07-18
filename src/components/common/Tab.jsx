@@ -5,7 +5,8 @@ class Tab extends Component {
   static propTypes = {
     activeTab: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    badge: PropTypes.string,
+    color: PropTypes.string,
     onClick: PropTypes.func.isRequired,
   };
 
@@ -20,7 +21,8 @@ class Tab extends Component {
       props: {
         activeTab,
         label,
-        number
+        badge,
+        color
       },
     } = this;
 
@@ -31,15 +33,17 @@ class Tab extends Component {
     }
 
     return (
-      <li
-        className={className}
+      <div
+        className={`${className}`}
         onClick={onClick}
       >
-        <span>{label}</span>
-        {
-          Number.isInteger(number) && <span className="tab-label-number">{number}</span>
-        }
-      </li>
+        <div className="d-flex">
+          <span>{label}</span>
+          {
+            badge && <span className={`badge badge-${color} ml-2 align-self-center`}>{badge}</span>
+          }
+        </div>
+      </div>
     );
   }
 }

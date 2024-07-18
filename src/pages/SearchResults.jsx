@@ -26,7 +26,7 @@ class SearchResults extends Component {
     if (query !== "") {
       this.setState({ showSpinner: true });
       try {
-        const { data: res1 } = await getProjects("allProjects", 0, limit, query);
+        const { data: res1 } = await getProjects("allProjects", 0, limit, query, "description");
         const projectCount = res1.total;
         let projects = res1.results;
         const { data: res2 } = await getFullPeopleByName(0, limit, query);
@@ -52,16 +52,40 @@ class SearchResults extends Component {
     }
   }
 
-  handleProjectPaginationClick = (page) => {
-    this.setState({ currentProjectPage: page }, () => {
-      this.reloadProjectsData();
-    });
+  handleProjectPaginationClick = (page, pagesCount) => {
+      const currentPage = this.state.currentProjectPage;
+      // page: -1 -> prev page; page: -2 -> next page
+      if(page === -1 && currentPage > 1) {
+        this.setState({ currentProjectPage: currentPage - 1 }, () => {
+          this.reloadProjectsData();
+        });
+      } else if (page === -2 && currentPage < pagesCount) {
+        this.setState({ currentProjectPage: currentPage + 1 }, () => {
+          this.reloadProjectsData();
+        });
+      } else {
+        this.setState({ currentProjectPage: page }, () => {
+          this.reloadProjectsData();
+        });
+      }
   };
 
-  handlePeoplePaginationClick = (page) => {
-    this.setState({ currentPeoplePage: page }, () => {
-      this.reloadPeopleData();
-    });
+  handlePeoplePaginationClick = (page, pagesCount) => {
+    const currentPage = this.state.currentPeoplePage;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage > 1) {
+      this.setState({ currentPeoplePage: currentPage - 1 }, () => {
+        this.reloadPeopleData();
+      });
+    } else if (page === -2 && currentPage < pagesCount) {
+      this.setState({ currentPeoplePage: currentPage + 1 }, () => {
+        this.reloadPeoplesData();
+      });
+    } else {
+      this.setState({ currentPeoplePage: page }, () => {
+        this.reloadPeopleData();
+      });
+    }
   };
 
   reloadProjectsData = async () => {
@@ -71,7 +95,7 @@ class SearchResults extends Component {
     let projects = [];
     let projectCount = 0;
     try {
-      const { data } = await getProjects("allProjects", offset, limit, query);
+      const { data } = await getProjects("allProjects", offset, limit, query, "description");
       projects = data.results;
       projectCount = data.total;
     
@@ -182,7 +206,10 @@ class SearchResults extends Component {
             }
             {
               projectCount > 0 && <div>
-                <ProjectsTable projects={projects} />
+                <ProjectsTable
+                  projects={projects}
+                  isPublic={false}
+                />
                 <Pagination
                   itemsCount={projectCount}
                   pageSize={pageSize}

@@ -62,10 +62,10 @@ const validateVMNodeComponents = (selectedSite, nodeName, nodes, core, ram, disk
     return validationResult;
   } else {
     // check id node name is unique.
-    const vm_nodes = nodes.filter(node => node.Class === "NetworkNode" && node.Type === "VM");
-    if (vm_nodes.length > 0) {
-      for (const vm of vm_nodes) {
-        if (nodeName === vm.Name) {
+    const site_nodes = nodes.filter(node => node.Class === "NetworkNode" && ["VM", "Facility", "Switch"].includes(node.Type));
+    if (site_nodes.length > 0) {
+      for (const node of site_nodes) {
+        if (nodeName === node.Name) {
           validationResult.isValid = false;
           validationResult.message = "Node name should be unique in the slice.";
           return validationResult;

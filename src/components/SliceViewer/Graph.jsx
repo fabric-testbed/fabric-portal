@@ -10,7 +10,7 @@ import IconSmartNIC from '../../imgs/SliceComponentIcons/SmartNIC.png';
 import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconStorage from '../../imgs/SliceComponentIcons/RotatingStorage.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
-import IconFPGA from '../../imgs/SliceComponentIcons/NetworkService.png';
+import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
