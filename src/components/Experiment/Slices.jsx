@@ -295,14 +295,14 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
-              {/* {
+              {
                 this.props.parent === "Projects" && <Checkbox
                   label={"Show All Project Slices"}
                   id={"checkbox-show-all-slices"}
                   isChecked={showAllSlices}
                   onCheck={this.handleShowAllSlices}
                 />
-              } */}
+              }
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
