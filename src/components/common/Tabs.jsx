@@ -22,7 +22,7 @@ class Tabs extends Component {
       "Measuring and Monitoring Tools": "#tools",
     }
     this.setState({ activeTab: tab });
-    this.props.navigate(`/resources/all${tabMapping[tab]}`);
+    this.props.navigate(`/resources${tabMapping[tab]}`);
   }
 
   render() {

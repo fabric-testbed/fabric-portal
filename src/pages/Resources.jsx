@@ -44,14 +44,6 @@ class Resources extends Component {
         siteColorMapping: parsedObj.siteColorMapping,
         activeTab: "Testbed Resources"
       });
-
-      const resourceId = this.props.match.params.id;
-      if(resourceId && resourceId !== "all" && parsedObj.siteAcronyms.includes(resourceId)) {
-        this.setState({
-          searchQuery: resourceId,
-          activeDetailName: sitesNameMapping.acronymToShortName[resourceId]
-        })
-      }
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }

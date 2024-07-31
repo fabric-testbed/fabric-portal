@@ -13,7 +13,20 @@ import ProfileModal from './ProfileModal';
 
 const Header = (props) => {
   const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
-    { name: "Resources", path: "/resources/all", child: [] },
+    { 
+      name: "Resources",
+      path: "/resources",
+      child: [
+        {
+          name: "Testbed Resources",
+          path: "/resources#resources"
+        },
+        {
+          name: "Measurement Metrics",
+          path: "/resources#tools"
+        }
+      ]
+    },
     {
       name: "Experiments",
       path: "/experiments",
@@ -84,7 +97,20 @@ const Header = (props) => {
       path: "/community"
     }
   ] : [
-    { name: "Resources", path: "/resources/all", child: [] },
+    { 
+      name: "Resources",
+      path: "/resources",
+      child: [
+        {
+          name: "Testbed Resources",
+          path: "/resources#resources"
+        },
+        {
+          name: "Measurement Metrics",
+          path: "/resources#tools"
+        }
+      ]
+    },
     {
       name: "Experiments",
       path: "/experiments",

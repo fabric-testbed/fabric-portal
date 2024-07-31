@@ -220,7 +220,7 @@ class SiteDetailPage extends React.Component {
              </tr>
            }
            {
-             data.location && 
+             data.location && localStorage.getItem("userStatus") === "active" &&
              <tr>
                <th>Rack Location</th>
                <td>{ JSON.parse(data.location).postal }</td>
@@ -266,6 +266,8 @@ class SiteDetailPage extends React.Component {
   
        <div className="my-5">
          <h3>Resource Information</h3>
+         {
+          localStorage.getItem("userStatus") === "active" && 
           <div className="d-flex flex-row justify-content-center align-items-center">
             <span className="mr-2">From</span>
             <CalendarDateTime
@@ -296,6 +298,7 @@ class SiteDetailPage extends React.Component {
               Reset
             </button>
           </div>
+         }
           {
             showSpinner &&
             <div className="d-flex flex-column justify-content-center align-items-center mt-5">

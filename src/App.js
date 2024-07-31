@@ -195,7 +195,7 @@ class App extends React.Component {
             <Route path="/community/publications" element={<Publications />} />
             <Route path="/branding" element={<Branding />} />
             <Route path="/signup/:id" element={<Signup />} />
-            <Route path="/resources/:id" element={<Resources />} />
+            <Route path="/resources" element={<Resources />} />
             <Route path="/help" element={<Help />} />
             <Route path="/check-cookie" element={<CheckCookie />} />
             <Route path="/slice-editor" element={<SliceEditor />} />
