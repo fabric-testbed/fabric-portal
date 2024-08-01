@@ -106,7 +106,7 @@ class ProjectBasicInfoTable extends Component {
         {
           canUpdate && 
           <button
-            className="btn btn-md btn-outline-primary mt-3"
+            className="btn btn-md btn-primary mt-3"
             onClick={this.props.onUpdateProject}
           >
             Save
