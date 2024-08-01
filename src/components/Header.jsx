@@ -19,11 +19,11 @@ const Header = (props) => {
       child: [
         {
           name: "Testbed Resources",
-          path: "/resources#resources"
+          path: "/resources/overview"
         },
         {
           name: "Measurement Metrics",
-          path: "/resources#tools"
+          path: "/resources/tools"
         }
       ]
     },
@@ -103,11 +103,11 @@ const Header = (props) => {
       child: [
         {
           name: "Testbed Resources",
-          path: "/resources#resources"
+          path: "/resources/overview"
         },
         {
           name: "Measurement Metrics",
-          path: "/resources#tools"
+          path: "/resources/tools"
         }
       ]
     },

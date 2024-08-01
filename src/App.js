@@ -7,6 +7,7 @@ import checkGlobalRoles from "./utils/checkGlobalRoles";
 import { default as portalData } from "./services/portalData.json";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
+import MeasurementMetrics from "./pages/static/MeasurementMetrics.jsx";
 import ProjectForm from "./pages/ProjectForm";
 import Signup from "./pages/static/Signup";
 import AUP from "./pages/static/AUP";
@@ -196,6 +197,8 @@ class App extends React.Component {
             <Route path="/branding" element={<Branding />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/overview" element={<Resources />} />
+            <Route path="/resources/tools" element={<MeasurementMetrics />} />
             <Route path="/help" element={<Help />} />
             <Route path="/check-cookie" element={<CheckCookie />} />
             <Route path="/slice-editor" element={<SliceEditor />} />

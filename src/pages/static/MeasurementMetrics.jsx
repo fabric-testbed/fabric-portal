@@ -1,10 +1,12 @@
+import React from "react";
+import BackgroundImage from "../../imgs/network-bg.svg";
 import InfrastructureMetrics from '../../imgs/toolLinks/InfrastructureMetrics.png';
 import PublicMetrics from '../../imgs/toolLinks/PublicMetrics.png';
 import OpticalData from '../../imgs/toolLinks/OpticalData.png';
 import LatencyMonitor from '../../imgs/toolLinks/LatencyMonitor.png';
 import Parser from 'html-react-parser';
 
-const ToolLinks = ()=> {
+const MeasurementMetrics = ()=> {
   const toolsData = [
     {
       "title": "Public Metrics",
@@ -33,10 +35,12 @@ const ToolLinks = ()=> {
     }
   ]
   return (
-    <div className="mt-3">
+    <div className="container static-page pb-5">
+      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
+      <h1 className="mb-4">Measuring and Monitoring Tools</h1>
       {
         toolsData.map((tool, index) =>
-        <div className="tool-link-block px-3 mb-5" key={`tool-link-${index}`}>
+        <div className="tool-link-block mb-5" key={`tool-link-${index}`}>
           <h3 className="text-primary">
             {tool.title}
           </h3>
@@ -62,4 +66,4 @@ const ToolLinks = ()=> {
   )
 }
 
-export default ToolLinks;
+export default MeasurementMetrics;

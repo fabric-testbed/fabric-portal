@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tab from './Tab';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 class Tabs extends Component {
   static propTypes = {
@@ -16,18 +15,9 @@ class Tabs extends Component {
     };
   }
 
-  onClickTabItem = (tab) => {
-    const tabMapping={
-      "Testbed Resources": "#resources",
-      "Measuring and Monitoring Tools": "#tools",
-    }
-    this.setState({ activeTab: tab });
-    this.props.navigate(`/resources${tabMapping[tab]}`);
-  }
 
   render() {
     const {
-      onClickTabItem,
       props: {
         children,
       },
@@ -48,7 +38,6 @@ class Tabs extends Component {
                 label={label}
                 badge={badge}
                 color={color}
-                onClick={onClickTabItem}
               />
             );
           })}
