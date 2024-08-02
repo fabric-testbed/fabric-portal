@@ -3,12 +3,9 @@ import React from "react";
 class AccountInfo extends React.Component {
   state = {
     visibleRows: [
-      { display: "CILogon Name", field: "cilogon_name" },
-      { display: "CILogon Email", field: "cilogon_email" },
       { display: "Affiliation", field: "affiliation" },
       { display: "FABRIC ID", field: "fabric_id" },
       { display: "Bastion Login", field: "bastion_login" },
-      { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" },
       { display: "CILogon ID", field: "cilogon_id"}
     ]

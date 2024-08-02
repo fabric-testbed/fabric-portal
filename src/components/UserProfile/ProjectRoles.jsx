@@ -39,7 +39,7 @@ class ProjectRoles extends React.Component {
     .parseFromString(htmlStr, "text/html")
     .documentElement.textContent;
   }
-  
+
   renderRoleTableFields(param) {
     switch (typeof param) {
       case "boolean":
@@ -49,7 +49,7 @@ class ProjectRoles extends React.Component {
           <i className="fa fa-ban text-danger"></i>
         );
       case "string":
-        return shortenStr(this.getTextfromHTML(project.description), 200);
+        return shortenStr(this.getTextfromHTML(param), 200);
       default:
         return param;
     }

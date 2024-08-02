@@ -52,12 +52,9 @@ class MyProfile extends Form {
     errors: {},
     showSpinner: false,
     staticInfoRows: [
-      { display: "Name", field: "cilogon_name" },
-      { display: "Email", field: "email" },
       { display: "Affiliation", field: "affiliation" },
       { display: "FABRIC ID", field: "fabric_id" },
       { display: "Bastion Login", field: "bastion_login" },
-      { display: "EPPN", field: "eppn" },
       { display: "UUID", field: "uuid" },
       { display: "CILogon ID", field: "cilogon_id"},
     ],
@@ -110,7 +107,7 @@ class MyProfile extends Form {
     // from array of ["show_bio", "show_website", ...]
     // to object { "show_bio": true, "show_website": true } 
     // true for the existing items in array, others false.
-    const preferenceType1 = ["show_email", "show_eppn", "show_roles", "show_sshkeys"];
+    const preferenceType1 = ["show_email","show_roles", "show_sshkeys"];
     const preferenceType2 = ["show_bio", "show_pronouns", "show_job", "show_website"];
 
     const preferences1 = {};
