@@ -267,6 +267,15 @@ class SiteDetailPage extends React.Component {
        <div className="my-5">
          <h3>Resource Information</h3>
          {
+          localStorage.getItem("userStatus") !== "active" &&
+          <div
+            className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
+            role="alert"
+          >
+            Please log in to access resources filtering by time frame.
+          </div>
+         }
+         {
           localStorage.getItem("userStatus") === "active" && 
           <div className="d-flex flex-row justify-content-center align-items-center">
             <span className="mr-2">From</span>
