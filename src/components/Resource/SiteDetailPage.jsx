@@ -152,7 +152,7 @@ class SiteDetailPage extends React.Component {
         data.status && <div className="container">
         <div className="d-flex flex-row justify-content-between">
          <h1>Site - {data.name}</h1>
-         <Link to="/resources/all">
+         <Link to="/resources/overview">
            <button
              className="btn btn-sm btn-outline-primary my-3"
            >

@@ -8,7 +8,7 @@ class ArtifactManager extends React.Component {
       <div className="col-9">
         <div>
           <h1 className="mb-4">Artifact Manager</h1>
-          <div className="alert alert-primary mb-2" role="alert">
+          <div className="alert alert-primary mb-4" role="alert">
             Artifact Manager is a platform for sharing and reproducing FABRIC research artifacts. It also provides a REST API for use by various clients.&nbsp;
             An artifact consists of one or more files organized into a single directory in TGZ format (.tgz or .tar.gz).&nbsp;
             Please consult &nbsp;
