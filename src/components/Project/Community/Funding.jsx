@@ -79,11 +79,12 @@ class Funding extends React.Component {
   render() {
     const { agency, directorate, award_number, 
       award_amount, agency_options, directorate_options, agency_other } = this.state;
-    const { fundings } = this.props;
+    const { fundings, canUpdate } = this.props;
     return (
       <div className="mt-4 pt-2">
         <h5 className="mt-2">Funding Information</h5>
-        <div className="form-row">
+        {
+          canUpdate &&         <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-2">
             <label htmlFor="inputFundingAgency" className="slice-builder-label">
               Funding Agency*
@@ -157,6 +158,7 @@ class Funding extends React.Component {
             </button>
           </div>
         </div>
+        }
         <div className="ml-1">
             <ul className="input-tag__tags">
               {
@@ -167,14 +169,26 @@ class Funding extends React.Component {
                   className="mr-2 my-2"
                 >
                   { this.parseFundingStr(funding) }
-                <i
-                  className="fa fa-times ml-2"
-                  onClick={() => {this.props.onFundingUpdate("remove", funding);}}
-                ></i>
+                  {
+                    canUpdate && 
+                    <i
+                      className="fa fa-times ml-2"
+                      onClick={() => {this.props.onFundingUpdate("remove", funding);}}
+                    ></i>
+                  }
               </li>)
               }
             </ul>
+        </div>
+        {
+          fundings.length === 0 && !canUpdate &&
+          <div
+            className="alert alert-primary mb-2" 
+            role="alert"
+          >
+            This project has no funding added yet.
           </div>
+        }
       </div>
     )
   }

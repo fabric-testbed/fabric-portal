@@ -16,7 +16,7 @@ class MyProfile extends Form {
       pronouns: "",
       job: "",
       website: "",
-      receive_promotional_email: true,
+      receive_promotional_email: "Yes",
       allOptions: [
         "show_email",
         "show_roles",
@@ -101,7 +101,7 @@ class MyProfile extends Form {
     pronouns: Joi.string().allow("").label("Pronouns"),
     job: Joi.string().allow("").label("Job Title"),
     website: Joi.string().allow("").label("Website"),
-    receive_promotional_email: Joi.string().required().label("Receive Promotion Emails"),
+    receive_promotional_email: Joi.string().required().label("Receive Promotional Email"),
     allOptions: Joi.array(),
     selectedOptions: Joi.array()
   };
@@ -139,7 +139,7 @@ class MyProfile extends Form {
       const profile = {
         name: updatedUser.name,
         email: updatedUser.email,
-        receive_promotional_email: updatedUser.receive_promotional_email === "Yes",
+        receive_promotional_email: updatedUser.receive_promotional_email ? "Yes" : "No",
         bio: updatedUser.profile.bio,
         pronouns: updatedUser.profile.pronouns,
         job: updatedUser.profile.job,
@@ -193,7 +193,7 @@ class MyProfile extends Form {
               )
             }
             {
-              this.renderSelect("receive_promotional_email", "Receive Promotion Emails", 
+              this.renderSelect("receive_promotional_email", "Receive Promotional Email", 
                 true, "Yes", ["Yes", "No"])
             }
             {this.renderButton("Save")}

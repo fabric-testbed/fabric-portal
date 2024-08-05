@@ -91,6 +91,7 @@ class ProjectBasicInfoTable extends Component {
             className="form-control"
             value={fabricMatrix}
             onChange={this.props.onMatrixUpdate}
+            disabled={!canUpdate}
           />
         </div>
         <Funding

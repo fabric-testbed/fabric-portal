@@ -21,16 +21,6 @@ const renderTooltip = (id, content) => (
 );
 
 export default function Wysiwyg({ name, content, label, error, disabled, tooltip, onChange, ...rest }) {
-  // const [value, setValue] = useState(content);
-
-  // React.useEffect(() => {
-  //     setValue(content);
-  // }, [content])
-
-  // function onChange(e) {
-  //   setValue(e.target.value);
-  // }
-
   return (
     <div className="form-group">
       {

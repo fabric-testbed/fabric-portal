@@ -70,6 +70,10 @@ const Header = (props) => {
           href: portalData.knowledgeBaseNewsLink,
         },
         {
+          name: "KNIT",
+          href: portalData.KNITWebsiteLink,
+        },
+        {
           name: "Events",
           href: portalData.knowledgeBaseEventsLink,
         },
@@ -153,6 +157,10 @@ const Header = (props) => {
         {
           name: "News",
           href: portalData.knowledgeBaseNewsLink,
+        },
+        {
+          name: "KNIT",
+          href: portalData.KNITWebsiteLink,
         },
         {
           name: "Events",
