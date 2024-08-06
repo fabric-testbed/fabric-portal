@@ -39,7 +39,8 @@ export function updatePeoplePreference(userId, data, preferences) {
   return http.patch(`${apiEndpoint}/${userId}`, {
     "name": data.name,
     "email": data.email,
-    "preferences": preferences
+    "preferences": preferences,
+    "receive_promotional_email": data.receive_promotional_email === "Yes"
   })
 }
 

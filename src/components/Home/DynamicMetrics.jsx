@@ -16,7 +16,7 @@ class DynamicMetrics extends React.Component {
         count: 0
       },
       {
-        name: "Active Users",
+        name: "Total Users",
         count: 0
       },
       {
@@ -52,7 +52,7 @@ class DynamicMetrics extends React.Component {
 
     // active users' count and total project
     metricsItems.push({
-      name: "Active Users",
+      name: "Total Users",
       count: coreMetrics.users.active_cumulative
     });
     metricsItems.push({

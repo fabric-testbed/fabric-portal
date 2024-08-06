@@ -13,7 +13,20 @@ import ProfileModal from './ProfileModal';
 
 const Header = (props) => {
   const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
-    { name: "Resources", path: "/resources/all", child: [] },
+    { 
+      name: "Resources",
+      path: "/resources",
+      child: [
+        {
+          name: "Testbed Resources",
+          path: "/resources/overview"
+        },
+        {
+          name: "Measurement Metrics",
+          path: "/resources/tools"
+        }
+      ]
+    },
     {
       name: "Experiments",
       path: "/experiments",
@@ -57,6 +70,10 @@ const Header = (props) => {
           href: portalData.knowledgeBaseNewsLink,
         },
         {
+          name: "KNIT",
+          href: portalData.KNITWebsiteLink,
+        },
+        {
           name: "Events",
           href: portalData.knowledgeBaseEventsLink,
         },
@@ -84,7 +101,20 @@ const Header = (props) => {
       path: "/community"
     }
   ] : [
-    { name: "Resources", path: "/resources/all", child: [] },
+    { 
+      name: "Resources",
+      path: "/resources",
+      child: [
+        {
+          name: "Resources Overview",
+          path: "/resources/overview"
+        },
+        {
+          name: "Measuring and Monitoring Tools",
+          path: "/resources/tools"
+        }
+      ]
+    },
     {
       name: "Experiments",
       path: "/experiments",
@@ -127,6 +157,10 @@ const Header = (props) => {
         {
           name: "News",
           href: portalData.knowledgeBaseNewsLink,
+        },
+        {
+          name: "KNIT",
+          href: portalData.KNITWebsiteLink,
         },
         {
           name: "Events",

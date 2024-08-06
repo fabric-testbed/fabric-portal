@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
 import _ from "lodash";
-import Parser from 'html-react-parser';
+import shortenStr from "../../utils/shortenStr";
 
 class ProjectsTable extends Component {
   columns = {
@@ -19,7 +19,7 @@ class ProjectsTable extends Component {
         label: "Description",
         content: (project) => (
           <span>
-            {Parser(project.description)}
+            {shortenStr(this.getTextfromHTML(project.description), 200)}
           </span>
         )
       },
@@ -60,7 +60,7 @@ class ProjectsTable extends Component {
         label: "Description",
         content: (project) => (
           <span>
-            {Parser(project.description)}
+          {shortenStr(this.getTextfromHTML(project.description), 200)}
           </span>
         )
       },
@@ -90,6 +90,12 @@ class ProjectsTable extends Component {
         ),
       }
     ]
+  }
+
+  getTextfromHTML = (htmlStr) => {
+    return new DOMParser()
+    .parseFromString(htmlStr, "text/html")
+    .documentElement.textContent;
   }
 
   render() {

@@ -32,12 +32,11 @@ class ProjectProfile extends Component {
 
   parseFundingStr = (funding) => {
     if (funding.agency === "Other") {
-      return `${funding.agency_other} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency_other} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else if (funding.agency === "NSF") {
-      return `${funding.agency} | ${funding.directorate ? funding.directorate : ""} |
-      ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.directorate ? `| ${funding.directorate}` : ""} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else {
-      return `${funding.agency} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     }
   }
 

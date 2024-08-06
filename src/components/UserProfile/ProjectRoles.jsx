@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../common/Pagination";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
+import shortenStr from "../../utils/shortenStr.js";
 import Parser from 'html-react-parser';
 
 class ProjectRoles extends React.Component {
@@ -33,6 +34,12 @@ class ProjectRoles extends React.Component {
     }
   }
 
+  getTextfromHTML = (htmlStr) => {
+    return new DOMParser()
+    .parseFromString(htmlStr, "text/html")
+    .documentElement.textContent;
+  }
+
   renderRoleTableFields(param) {
     switch (typeof param) {
       case "boolean":
@@ -42,11 +49,7 @@ class ProjectRoles extends React.Component {
           <i className="fa fa-ban text-danger"></i>
         );
       case "string":
-        // return _.truncate(param, {
-        //   'length': 100,
-        //   'separator': ' '
-        // });
-        return Parser(param);
+        return shortenStr(this.getTextfromHTML(param), 200);
       default:
         return param;
     }

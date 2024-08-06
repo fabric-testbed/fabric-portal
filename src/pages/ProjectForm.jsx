@@ -741,7 +741,6 @@ class ProjectForm extends Form {
             >  
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
-                  {/* {this.renderTextarea("description", "Description", canUpdate)} */}
                   {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
@@ -778,7 +777,7 @@ class ProjectForm extends Form {
                     key={`project-permissions-${selectedTags.length}`}
                   />
                   <button
-                    className="btn btn-outline-primary mt-2"
+                    className="btn btn-primary mt-2"
                     onClick={this.handlePermissionUpdate}
                   >
                     Update Permissions
