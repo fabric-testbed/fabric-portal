@@ -34,11 +34,12 @@ class Community extends React.Component {
 
   render() {
     const { domain_options, subdomain_options, selected_domain, selected_subdomain } = this.state;
-    const { communities } = this.props;
+    const { communities, canUpdate } = this.props;
     return (
-      <div className="border-top mt-4">
+      <div>
         <h5 className="mt-2">Community</h5>
-        <div className="form-row">
+        {
+          canUpdate &&         <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-4">
             <label htmlFor="inputCommunityAgency" className="slice-builder-label">
               Science Domain
@@ -84,7 +85,9 @@ class Community extends React.Component {
               Add
             </button>
           </div>
-          <div className="ml-1">
+        </div>
+        }
+        <div className="ml-1">
             <ul className="input-tag__tags">
               {
                 communities.length > 0 &&
@@ -94,17 +97,27 @@ class Community extends React.Component {
                   className="mr-2 my-2"
                 >
                   {community}
-                <i
-                  className="fa fa-times ml-2"
-                  onClick={() => {
-                    this.props.onCommunityUpdate("remove", community);
-                  }}
-                ></i>
+                  {
+                    canUpdate &&          <i
+                    className="fa fa-times ml-2"
+                    onClick={() => {
+                      this.props.onCommunityUpdate("remove", community);
+                    }}
+                  ></i>
+                  }
               </li>)
               }
             </ul>
-          </div>
         </div>
+        {
+          communities.length === 0 && !canUpdate &&
+          <div
+            className="alert alert-primary mb-2" 
+            role="alert"
+          >
+            This project has no community tag added yet.
+          </div>
+        }
       </div>
     )
   }

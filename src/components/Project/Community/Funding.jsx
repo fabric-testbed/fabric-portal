@@ -67,23 +67,23 @@ class Funding extends React.Component {
 
   parseFundingStr = (funding) => {
     if (funding.agency === "Other") {
-      return `${funding.agency_other} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency_other} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else if (funding.agency === "NSF") {
-      return `${funding.agency} | ${funding.directorate ? funding.directorate : ""} |
-      ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.directorate ? `| ${funding.directorate}` : ""} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else {
-      return `${funding.agency} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     }
   }
 
   render() {
     const { agency, directorate, award_number, 
       award_amount, agency_options, directorate_options, agency_other } = this.state;
-    const { fundings } = this.props;
+    const { fundings, canUpdate } = this.props;
     return (
-      <div className="border-top mt-4 pt-2">
+      <div className="pt-2">
         <h5 className="mt-2">Funding Information</h5>
-        <div className="form-row">
+        {
+          canUpdate &&         <div className="form-row">
           <div className="form-group slice-builder-form-group col-md-2">
             <label htmlFor="inputFundingAgency" className="slice-builder-label">
               Funding Agency*
@@ -157,6 +157,7 @@ class Funding extends React.Component {
             </button>
           </div>
         </div>
+        }
         <div className="ml-1">
             <ul className="input-tag__tags">
               {
@@ -167,14 +168,26 @@ class Funding extends React.Component {
                   className="mr-2 my-2"
                 >
                   { this.parseFundingStr(funding) }
-                <i
-                  className="fa fa-times ml-2"
-                  onClick={() => {this.props.onFundingUpdate("remove", funding);}}
-                ></i>
+                  {
+                    canUpdate && 
+                    <i
+                      className="fa fa-times ml-2"
+                      onClick={() => {this.props.onFundingUpdate("remove", funding);}}
+                    ></i>
+                  }
               </li>)
               }
             </ul>
+        </div>
+        {
+          fundings.length === 0 && !canUpdate &&
+          <div
+            className="alert alert-primary mb-2" 
+            role="alert"
+          >
+            This project has no funding added yet.
           </div>
+        }
       </div>
     )
   }

@@ -10,6 +10,7 @@ import ProjectTags from "../../Project/ProjectTags";
 import InputCheckboxes from "../InputCheckboxes.jsx";
 import Wysiwyg from "./Wysiwyg.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Parser from 'html-react-parser';
 
 class Form extends Component {
   state = {
@@ -125,17 +126,27 @@ class Form extends Component {
 
   renderWysiwyg(name, label, notDisabled) {
     const { data, errors } = this.state;
-
-    return (
-      <Wysiwyg
-        name={name}
-        content={data[name]}
-        label={label}
-        onChange={this.handleWysiwygChange}
-        error={errors[name]}
-        disabled={!notDisabled}
-      />
-    )
+    if (notDisabled) {
+      return (
+        <Wysiwyg
+          name={name}
+          content={data[name]}
+          label={label}
+          onChange={this.handleWysiwygChange}
+          error={errors[name]}
+          disabled={!notDisabled}
+        />
+      )
+    } else {
+      return (
+        <div class="form-group">
+        <label for="projectDescription">{label}</label>
+        <div className="disabled-project-description">
+          {Parser(data[name])}
+        </div>
+      </div>
+      )
+    }
   }
 
   renderTextarea(name, label, notDisabled, tooltip, type = "text") {

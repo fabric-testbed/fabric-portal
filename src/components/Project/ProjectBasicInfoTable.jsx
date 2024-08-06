@@ -91,6 +91,7 @@ class ProjectBasicInfoTable extends Component {
             className="form-control"
             value={fabricMatrix}
             onChange={this.props.onMatrixUpdate}
+            disabled={!canUpdate}
           />
         </div>
         <Funding
@@ -106,7 +107,7 @@ class ProjectBasicInfoTable extends Component {
         {
           canUpdate && 
           <button
-            className="btn btn-md btn-outline-primary mt-3"
+            className="btn btn-md btn-primary mt-3"
             onClick={this.props.onUpdateProject}
           >
             Save

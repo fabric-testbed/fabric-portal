@@ -386,7 +386,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown-menu {
-  min-width: 12.5rem !important;
+  min-width: 16rem !important;
+  font-size: 0.9rem !important;
 }
 
 /* Side Navbar */
@@ -1311,4 +1312,18 @@ div:has(> #multiselectContainerReact) {
 
 .react-datetime-picker__inputGroup__input:invalid {
   background: rgba(255, 255, 255) !important;
+}
+
+.disabled-project-description {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  color: #495057;
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: .375rem .75rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  width: 100%;
 }

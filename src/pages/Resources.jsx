@@ -5,9 +5,7 @@ import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
 import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
-import ToolLinks from "../components/Resource/ToolLinks.jsx";
 import withRouter from "../components/common/withRouter.jsx";
-import Tabs from "../components/common/Tabs";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
@@ -24,34 +22,18 @@ class Resources extends Component {
     searchQuery: "",
     activeDetailName: "StarLight",
     siteNames: [],
-    siteColorMapping: {},
-    activeTab: "Testbed Resources"
+    siteColorMapping: {}
   }
 
   async componentWillMount() {
     try {
-      const hash = this.props.location.hash;
-      if (hash && hash === "#tools") {
-        this.setState({
-          activeTab: "Measuring and Monitoring Tools"
-        });
-      } 
       const { data: res } = await getResources(1);
       const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
       this.setState({
         resources: parsedObj.parsedSites,
         siteNames: parsedObj.siteNames,
-        siteColorMapping: parsedObj.siteColorMapping,
-        activeTab: "Testbed Resources"
+        siteColorMapping: parsedObj.siteColorMapping
       });
-
-      const resourceId = this.props.match.params.id;
-      if(resourceId && resourceId !== "all" && parsedObj.siteAcronyms.includes(resourceId)) {
-        this.setState({
-          searchQuery: resourceId,
-          activeDetailName: sitesNameMapping.acronymToShortName[resourceId]
-        })
-      }
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
     }
@@ -149,18 +131,17 @@ class Resources extends Component {
   };
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName, activeTab } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
       <div className="container">
         <h1>Resources</h1>
-        <Tabs activeTab={activeTab} navigate={this.props.navigate}>
-          <div label="Testbed Resources">
-            <div className="row my-2 px-3">
+        <div label="Testbed Resources">
+            <div className="row my-2">
               <TestbedTable sum={this.getResourcesSum(this.state.resources)} />
             </div>
-            <div className="row my-2 px-3">
+            <div className="row my-2">
               <div className="col-9">
                 <Topomap
                   onChange={this.handleActiveDetailChange}
@@ -175,7 +156,7 @@ class Resources extends Component {
                 />
               </div>
             </div>
-            <div className="row my-2 px-3">
+            <div className="row my-2">
               <div className="col-12">
                 <SearchBox
                   value={searchQuery}
@@ -198,14 +179,6 @@ class Resources extends Component {
               </div>
             </div>
           </div>
-          <div 
-            label="Measuring and Monitoring Tools"
-            badge={"NEW"}
-            color={"success"}
-          >
-            <ToolLinks />
-          </div>
-        </Tabs>
       </div>
     );
   }
