@@ -15,9 +15,13 @@ class Tabs extends Component {
     };
   }
 
+  onClickTabItem = (tab) => {
+    this.setState({ activeTab: tab });
+  }
 
   render() {
     const {
+      onClickTabItem,
       props: {
         children,
       },
@@ -38,6 +42,7 @@ class Tabs extends Component {
                 label={label}
                 badge={badge}
                 color={color}
+                onClick={onClickTabItem}
               />
             );
           })}

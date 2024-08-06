@@ -36,7 +36,7 @@ class Community extends React.Component {
     const { domain_options, subdomain_options, selected_domain, selected_subdomain } = this.state;
     const { communities, canUpdate } = this.props;
     return (
-      <div className="mt-4">
+      <div>
         <h5 className="mt-2">Community</h5>
         {
           canUpdate &&         <div className="form-row">

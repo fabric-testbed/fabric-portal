@@ -67,12 +67,11 @@ class Funding extends React.Component {
 
   parseFundingStr = (funding) => {
     if (funding.agency === "Other") {
-      return `${funding.agency_other} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency_other} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else if (funding.agency === "NSF") {
-      return `${funding.agency} | ${funding.directorate ? funding.directorate : ""} |
-      ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.directorate ? `| ${funding.directorate}` : ""} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     } else {
-      return `${funding.agency} | ${funding.award_number ? funding.award_number : ""} | ${funding.award_amount ? funding.award_amount : ""}`;
+      return `${funding.agency} ${funding.award_number ? `| ${funding.award_number}` : ""} ${funding.award_amount ? `| ${funding.award_amount}` : ""}`;
     }
   }
 
@@ -81,7 +80,7 @@ class Funding extends React.Component {
       award_amount, agency_options, directorate_options, agency_other } = this.state;
     const { fundings, canUpdate } = this.props;
     return (
-      <div className="mt-4 pt-2">
+      <div className="pt-2">
         <h5 className="mt-2">Funding Information</h5>
         {
           canUpdate &&         <div className="form-row">
