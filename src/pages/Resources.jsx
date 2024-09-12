@@ -3,7 +3,6 @@ import Topomap from "../components/Resource/Topomap";
 import TestbedTable from "../components/Resource/TestbedTable";
 import DetailTable from "../components/Resource/DetailTable";
 import Pagination from "../components/common/Pagination";
-import SearchBox from "../components/common/SearchBox";
 import SummaryTable from "../components/Resource/SummaryTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
@@ -11,18 +10,20 @@ import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
-import _ from "lodash";
+import _, { filter } from "lodash";
 
 class Resources extends Component {
   state = {
     resources: [],
-    sortColumn: { path: "name", order: "asc" },
+    sortColumn: { path: "name", order: "desc" },
     pageSize: 5,
     currentPage: 1,
     searchQuery: "",
     activeDetailName: "StarLight",
     siteNames: [],
-    siteColorMapping: {}
+    siteColorMapping: {},
+    availableComponents: [],
+    filterQuery: []
   }
 
   async componentWillMount() {
@@ -96,6 +97,20 @@ class Resources extends Component {
     this.setState({ sortColumn });
   };
 
+  handleFilterChange = (e) => {
+    const component = e.target.value;
+    const filterQuery = this.state.filterQuery;
+    const index = filterQuery.indexOf(component);
+
+    if (index > -1) {
+      filterQuery.splice(index, 1);
+    } else {
+      filterQuery.push(component);
+    }
+
+    this.setState({ filterQuery, currentPage: 1 });
+  }
+
   handleActiveDetailChange = (name) => {
     this.setState({ activeDetailName: name });
   }
@@ -107,6 +122,7 @@ class Resources extends Component {
       sortColumn,
       searchQuery,
       resources: allResources,
+      filterQuery
     } = this.state;
 
     // filter -> sort -> paginate
@@ -115,6 +131,14 @@ class Resources extends Component {
       filtered = allResources.filter((p) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+    }
+
+    if (filterQuery.length > 0) {
+      for (const query of filterQuery) {
+        filtered = filtered.filter((p) => {
+          if (p[`free${query}`] > 0) return p;
+        })
+      }
     }
 
     let sorted = [];
@@ -157,18 +181,15 @@ class Resources extends Component {
               </div>
             </div>
             <div className="row my-2">
-              <div className="col-12">
-                <SearchBox
-                  value={searchQuery}
-                  placeholder={"Search Resources by Site Name..."}
-                  onChange={this.handleSearch}
-                  className="my-0"
-                />
-                <p>Showing resource availability of <b>{totalCount}</b> sites.</p> 
+              <div className="col-12 bg-info rounded">
                 <SummaryTable
+                  totalCount={totalCount}
                   resources={data}
                   sortColumn={sortColumn}
                   onSort={this.handleSort}
+                  onFilter={this.handleFilterChange}
+                  value={searchQuery}
+                  onChange={this.handleSearch}
                 />
                 <Pagination
                   itemsCount={totalCount}

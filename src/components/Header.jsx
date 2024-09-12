@@ -94,6 +94,10 @@ const Header = (props) => {
           path: "/community/publications"
         },
         {
+          name: "FABRIC User Publications",
+          path: "/community/fabric-user-publications"
+        },
+        {
           name: "Blogs",
           href: portalData.knowledgeBaseBlogsLink,
         }
@@ -181,6 +185,10 @@ const Header = (props) => {
         {
           name: "Cite FABRIC",
           path: "/community/publications"
+        },
+        {
+          name: "FABRIC User Publications",
+          path: "/community/fabric-user-publications"
         },
         {
           name: "Blogs",

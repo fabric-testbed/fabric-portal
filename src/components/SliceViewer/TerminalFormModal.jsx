@@ -95,7 +95,7 @@ class TerminalFormModal extends Form {
     );
 
     return (
-    <div className="modal fade" id="TerminalFormModalCenter" tabindex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
+    <div className="modal fade" id="TerminalFormModalCenter" tabIndex="-1" role="dialog" aria-labelledby="TerminalFormModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">

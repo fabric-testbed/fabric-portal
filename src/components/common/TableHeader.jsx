@@ -27,20 +27,18 @@ class TableHeader extends Component {
   renderSortIcon = (column) => {
     const { sortColumn } = this.props;
     if (column.path !== this.props.sortColumn.path) return null;
-
     // render different icons depending on the sort order.
     if (sortColumn.order === "asc") return <i className="fa fa-sort-asc" />;
     if (sortColumn.order === "desc") return <i className="fa fa-sort-desc" />;
   };
 
   render() {
-    const { sortColumn } = this.props;
+    const { sortColumn, style } = this.props;
     return (
-      <thead>
+      <thead className={style}>
         <tr>
           {sortColumn && this.props.columns.map((column) => (
             <th
-              className="clickable"
               key={column.path || column.key || "table-header"}
               onClick={() => this.raiseSort(column.path)}
               scope="col"
@@ -50,7 +48,6 @@ class TableHeader extends Component {
           ))}
           {!sortColumn && this.props.columns.map((column) => (
             <th
-              className="clickable"
               key={column.path || column.key || "table-header"}
             >
               {column.label}
