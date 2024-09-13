@@ -101,7 +101,7 @@ class DynamicMetrics extends React.Component {
             items.map((i, index) => {
               return (
                 <div
-                  className="col d-flex flex-column align-items-center w-25"
+                  className="col d-flex flex-column align-items-center"
                   key={`homepage-metrics-${index}`}
                 >
                   <div className="hp-metrics-number">
