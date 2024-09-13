@@ -1,6 +1,6 @@
 const publications = [
   {
-    title: " FabFed: Tool-Based Network Federation for Testbed of Testbeds-Paradigm and Practice",
+    title: "FabFed: Tool-Based Network Federation for Testbed of Testbeds-Paradigm and Practice",
     year: "2024",
     authors: "Xi Yang, Ezra Kissel, Abdelilah Essiari, Liang Zhang, Tom Lehman, Inder Monga, Paul Ruth, Komal Thareja, Ilya Baldin",
     link: "https://ieeexplore.ieee.org/document/10620897",
@@ -20,8 +20,16 @@ const publications = [
     year: "2024",
     authors: "Krishnan Raghavan, George Papadimitriou, Hongwei Jin, Anirban Mandal, Mariam Kiran, Prasanna Balaprakash, Ewa Deelman",
     link: "https://arxiv.org/abs/2405.06133",
-    project_name: "DOE PoSeiDon Project",
+    project_name: "DOE PoSeiDon",
     project_uuid: "1a0f06eb-75ea-4258-9b92-ff4d8cf999b0"
+  },
+  {
+    title: "Multi-Domain Secure DDS Networks for Aerial and Ground Vehicle Communications",
+    year: "2024",
+    authors: "Daniel Pendleton",
+    link: "https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=5326&context=all_theses",
+    project_name: "FABRIC Clemson",
+    project_uuid: "7bc05490-ba40-45ba-99dc-b011680825d2"
   },
   {
     title: "Hydra: A Scalable Decentralized P2P Storage Federation for Large Scientific Datasets",
@@ -90,7 +98,7 @@ const publications = [
   {
     title: "Network Traffic as a Federated Service",
     year: "2023",
-    authors: "J. Brassil",
+    authors: "Jack Brassil",
     link: "https://www.cs.princeton.edu/~jbrassil/public/projects/staas/IEEE-FNWF2022-STAAS.pdf",
     project_name: "staas",
     project_uuid: "17f7e488-e1b7-4ea9-b657-e69cdbb27a38"
@@ -122,7 +130,7 @@ const publications = [
   {
     title: "GNSGA: A Decentralized Data Replication Algorithm for Big Science Data",
     year: "2023",
-    authors: "Wang, Xi and Ai, Xusheng and Feltus, F. Alex and Shanni",
+    authors: "Xi Wang, Xusheng Ai, F. Alex Feltus, Susmit Shannigrahi",
     link: "https://ieeexplore.ieee.org/document/10186357",
     project_name: "The Genome Lake",
     project_uuid: "b3cffedd-ddb4-43ee-b57d-459b768e14ca"
