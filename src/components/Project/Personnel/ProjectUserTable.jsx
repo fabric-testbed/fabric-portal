@@ -187,7 +187,7 @@ class ProjectUserTable extends Component {
           data={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
-          size={canUpdate ? "sm" : "md"}
+          style={canUpdate ? "table-sm" : "table-md"}
           onCheck={this.props.onCheckUser}
         />
         <Pagination

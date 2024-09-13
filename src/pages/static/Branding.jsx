@@ -96,7 +96,7 @@ const colors = [
   },
   {
     name: "info",
-    hex: "#b481a4"
+    hex: "#a8c9dc"
   },
   {
     name: "dark",

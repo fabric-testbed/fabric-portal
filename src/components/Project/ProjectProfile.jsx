@@ -108,7 +108,7 @@ class ProjectProfile extends Component {
              <Table
                 columns={projectPersonnelColumns}
                 data={project.project_owners}
-                size={"sm"}
+                style={"table-sm"}
               />
           }
         </div>
@@ -129,7 +129,7 @@ class ProjectProfile extends Component {
              <Table
                 columns={projectPersonnelColumns}
                 data={project.project_members}
-                size={"sm"}
+                style={"table-sm"}
               />
           }
         </div>

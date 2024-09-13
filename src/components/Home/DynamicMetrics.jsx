@@ -3,6 +3,7 @@ import AnimatedNumber from "react-animated-number";
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
 import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 class DynamicMetrics extends React.Component {
   state = {
@@ -21,7 +22,13 @@ class DynamicMetrics extends React.Component {
       },
       {
         name: "Total Projects",
-        count: 0
+        count: 0,
+        link: "/experiments/public-projects"
+      },
+      {
+        name: "Publications Using FABRIC",
+        count: 33,
+        link: "/community/fabric-user-publications"
       }
     ]
   };
@@ -57,7 +64,13 @@ class DynamicMetrics extends React.Component {
     });
     metricsItems.push({
       name: "Total Projects",
-      count: coreMetrics.projects.active_cumulative + coreMetrics.projects.non_active_cumulative
+      count: coreMetrics.projects.active_cumulative + coreMetrics.projects.non_active_cumulative,
+      link: "/experiments/public-projects"
+    });
+    metricsItems.push({
+      name: "FABRIC User Publications",
+      count: 33,
+      link: "/community/fabric-user-publications"
     });
 
     return metricsItems;
@@ -88,7 +101,7 @@ class DynamicMetrics extends React.Component {
             items.map((i, index) => {
               return (
                 <div
-                  className="col d-flex flex-column align-items-center w-25"
+                  className="col d-flex flex-column align-items-center"
                   key={`homepage-metrics-${index}`}
                 >
                   <div className="hp-metrics-number">
@@ -108,6 +121,11 @@ class DynamicMetrics extends React.Component {
                   </div>
                   <div className="home-metrics-text">
                     {i.name}
+                    {
+                      i.link && <Link to={i.link}>
+                        <i className="fa fa-sign-in ml-2"></i>
+                      </Link>
+                    }
                   </div>
               </div>
               )

@@ -105,7 +105,7 @@ class ProjectsTable extends Component {
       <Table
         columns={isPublic ? this.columns["public"] : this.columns["private"]}
         data={projects}
-        size={"md"}
+        style={"table-md"}
       />
     );
   }
