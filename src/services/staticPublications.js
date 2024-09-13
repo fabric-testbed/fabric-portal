@@ -1,5 +1,13 @@
 const publications = [
   {
+    title: " FabFed: Tool-Based Network Federation for Testbed of Testbeds-Paradigm and Practice",
+    year: "2024",
+    authors: "Xi Yang, Ezra Kissel, Abdelilah Essiari, Liang Zhang, Tom Lehman, Inder Monga, Paul Ruth, Komal Thareja, Ilya Baldin",
+    link: "https://ieeexplore.ieee.org/document/10620897",
+    project_name: "FABRIC Staff",
+    project_uuid: "990d8a8b-7e50-4d13-a3be-0f133ffa8653"
+  },
+  {
     title: "Sliced WANs for Data-Intensive Science: Deployment Experiences and Performance Analysis",
     year: "2024",
     authors: "Edgard C. Pontes, Vitor Zanotelli, Magnos Martinello, Jordi Ros-Giralt, Everson S. Borges, Moisés R. N. Ribeiro and Harvey Newman",
@@ -230,6 +238,22 @@ const publications = [
     link: "https://arxiv.org/abs/2211.00919",
     project_name: "The Genome Lake",
     project_uuid: "b3cffedd-ddb4-43ee-b57d-459b768e14ca"
+  },
+  {
+    title: "FABRIC network service model",
+    year: "2022",
+    authors: "Paul Ruth, Ilya Baldin, Komal Thareja, Tom Lehman, Xi Yang, Ezra Kissel",
+    link: "https://ieeexplore.ieee.org/abstract/document/9829810",
+    project_name: "FABRIC Staff",
+    project_uuid: "990d8a8b-7e50-4d13-a3be-0f133ffa8653"
+  },
+  {
+    title: "Fabric: A national-scale programmable experimental network infrastructure",
+    year: "2019",
+    authors: "Ilya Baldin, Anita Nikolich, James Griffioen, Indermohan Inder S Monga, Kuang-Ching Wang, Tom Lehman, Paul Ruth",
+    link: "https://ieeexplore.ieee.org/abstract/document/8972790/",
+    project_name: "FABRIC Staff",
+    project_uuid: "990d8a8b-7e50-4d13-a3be-0f133ffa8653"
   }
 ]
 
