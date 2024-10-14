@@ -34,7 +34,7 @@ import FundingOpportunities from "./pages/static/FundingOpportunities";
 import NewsletterSignup from "./pages/static/NewsletterSignup";
 import Testbeds from "./pages/static/Testbeds.jsx";
 import Publications from "./pages/static/Publications.jsx";
-import PublicationTracker from "./pages/static/PublicationTracker.jsx";
+import PublicationTracker from "./pages/PublicationTracker.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Branding from "./pages/static/Branding.jsx";
 import Header from "./components/Header";
