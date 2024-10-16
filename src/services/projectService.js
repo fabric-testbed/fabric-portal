@@ -52,7 +52,8 @@ export function updateProject(project, preferences) {
     "is_public": project.is_public === "Yes",
     "facility": "FABRIC",
     "name": project.name,
-    "preferences": preferences
+    "preferences": preferences,
+    "project_type": project.project_type
   });
 }
 
@@ -94,6 +95,12 @@ export function updateMatrix(projectId, matrix) {
         "url": matrix
       }
     ]
+  })
+}
+
+export function updateProjectTopics(projectId, topics) {
+  return http.patch(`${apiEndpoint}/${projectId}/topics`, {
+    "topics": topics
   })
 }
 

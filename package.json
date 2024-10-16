@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.6.5",
+  "version": "1.7.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -51,6 +51,7 @@
     "react-select": "^5.7.4",
     "react-simple-maps": "^2.3.0",
     "react-simple-wysiwyg": "^3.0.2",
+    "react-tag-input-component-2": "^2.3.0",
     "react-toastify": "^6.2.0",
     "reactstrap": "^8.6.0",
     "sass": "^1.32.13",

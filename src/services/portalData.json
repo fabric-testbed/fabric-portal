@@ -2,6 +2,13 @@
   "version": "1.7.3",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
+  "projectTypeOptions": [
+    "educational",
+    "industry",
+    "maintenance",
+    "research",
+    "tutorial"
+  ],
   "keyLimit": 10,
   "autoRefreshTokenInterval": 3300000,
   "5minBeforeCookieExpires": 14100000,

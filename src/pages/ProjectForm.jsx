@@ -28,7 +28,8 @@ import {
   updateProjectTokenHolders,
   updateProjectCommunity,
   updateProjectFunding,
-  updateMatrix
+  updateMatrix,
+  updateProjectTopics
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -62,6 +63,7 @@ class ProjectForm extends Form {
       is_owner: false,
       is_token_holder: false,
       is_public: false,
+      project_type: "research",
       is_locked: false,
       allOptions: [
         "show_project_owners",
@@ -109,6 +111,7 @@ class ProjectForm extends Form {
     originalTags: [],
     projectFunding: [],
     communities: [],
+    topics: [],
     fabricMatrix: ""
   };
 
@@ -129,11 +132,13 @@ class ProjectForm extends Form {
     is_owner: Joi.boolean(),
     is_token_holder: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
+    project_type: Joi.string(),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
     selectedOptions: Joi.array(),
     project_funding: Joi.array(),
-    communities: Joi.array()
+    communities: Joi.array(),
+    topics: Joi.array()
   };
 
   async populateProject() {
@@ -185,6 +190,7 @@ class ProjectForm extends Form {
           fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
           projectFunding: project.project_funding,
           communities: project.communities,
+          topics: project.topics,
           owners: project.project_owners, 
           members: project.project_members,
           token_holders: project.token_holders,
@@ -265,6 +271,7 @@ class ProjectForm extends Form {
       is_owner: project.memberships.is_owner,
       is_token_holder: project.memberships.is_token_holder,
       is_public: project.is_public ? "Yes" : "No",
+      project_type: project.project_type,
       is_locked: project.is_locked,
       allOptions: [
         "show_project_owners",
@@ -273,7 +280,8 @@ class ProjectForm extends Form {
       selectedOptions: Object.keys(project.preferences).filter(key => 
         project.preferences[key] && this.state.allOptions.includes(key)),
       project_funding: project.project_funding,
-      communities: project.communities
+      communities: project.communities,
+      topics: project.topics
     };
   }
 
@@ -297,12 +305,13 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix, originalProject } = this.state;
+    const { data: project, projectFunding, communities, topics, fabricMatrix, originalProject } = this.state;
     const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
       await updateProjectCommunity(project.uuid, communities);
+      await updateProjectTopics(project.uuid, topics);
       if (fabricMatrix !== originalMatrix) {
         await updateMatrix(project.uuid, fabricMatrix);
       }
@@ -372,6 +381,10 @@ class ProjectForm extends Form {
       }
       this.setState({ communities: newCommunities });
     }
+  }
+
+  handleUpdateTopic = (selected) => {
+    this.setState({ topics: selected });
   }
 
   handleUpdateMatrix = (e) => {
@@ -576,6 +589,7 @@ class ProjectForm extends Form {
       volumes,
       projectFunding,
       communities,
+      topics,
       fabricMatrix,
       originalProject
     } = this.state;
@@ -749,7 +763,8 @@ class ProjectForm extends Form {
                     this.renderInputCheckBoxes("preferences", "Privacy Preferences",
                       canUpdate, optionsDisplayMapping,
                       portalData.helperText.privacyPreferencesDescription
-                    )}
+                  )}
+                  {this.renderSelect("project_type", "Project Type", canUpdate, data.project_type, portalData.projectTypeOptions)}
               </form>
               <ProjectBasicInfoTable
                 project={data}
@@ -763,6 +778,7 @@ class ProjectForm extends Form {
                 onFundingUpdate={this.handleUpdateFunding}
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
+                onTopicUpdate={this.handleUpdateTopic}
                 onUpdateProject={this.handleUpdateProject}
               />
               {

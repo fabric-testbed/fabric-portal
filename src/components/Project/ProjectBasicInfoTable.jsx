@@ -7,6 +7,7 @@ import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import Funding from "./Community/Funding.jsx";
 import CommunityTags from "./Community/CommunityTags.jsx";
+import ProjectTopics from "./Community/ProjectTopics.jsx";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
@@ -71,7 +72,7 @@ class ProjectBasicInfoTable extends Component {
 
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
-      communities, fabricMatrix } = this.props;
+      communities, fabricMatrix, topics } = this.props;
     const { fabricMatrixTooltip } = this.state;
     
     return (
@@ -103,6 +104,11 @@ class ProjectBasicInfoTable extends Component {
           communities={communities}
           canUpdate={canUpdate}
           onCommunityUpdate={this.props.onCommunityUpdate}
+        />
+        <ProjectTopics
+          topics={topics}
+          canUpdate={canUpdate}
+          onTopicUpdate={this.props.onTopicUpdate}
         />
         {
           canUpdate && 
