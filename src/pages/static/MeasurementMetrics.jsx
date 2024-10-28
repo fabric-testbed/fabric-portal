@@ -12,13 +12,13 @@ const MeasurementMetrics = ()=> {
       "title": "Public Metrics",
       "image": PublicMetrics,
       "content": "This site contains basic metrics concerning FABRIC network. These metrics are available to anyone. Anyone is allowed anonymous access to Grafana.",
-      "link": "https://public-metrics.fabric-testbed.net/grafana/"
+      "link": "https://public-metrics.fabric-testbed.net/"
     },
     {
       "title": "Infrastructure Metrics",
       "image": InfrastructureMetrics,
       "content": "This site contains enhanced metrics concerning FABRIC site usage and availability. These metrics are available to any FABRIC user. Logon is available as an anonymous Grafana user to anyone with a FABRIC account.",
-      "link": "https://infrastructure-metrics.fabric-testbed.net/grafana/"
+      "link": "https://infrastructure-metrics.fabric-testbed.net/"
     },
     {
       "title": "Optical Data",
