@@ -1,7 +1,7 @@
 import React from "react";
 import ReactModal from "../components/common/ReactModal";
 import FacilityUpdates from "../components/Home/FacilityUpdates";
-import Carousel from "../components/Home/Carousel";
+import HomepageCarousel from "../components/Home/HomepageCarousel.jsx";
 import DynamicMetrics from "../components/Home/DynamicMetrics";
 import CapabilityIcons from "../components/Home/CapabilityIcons";
 import Partners from "../components/Home/Partners";
@@ -63,7 +63,7 @@ class Home extends React.Component {
             />
           </div>
         }
-        <Carousel />
+        <HomepageCarousel />
         <div className="home-colored-bg">
           <DynamicMetrics />
         </div>
