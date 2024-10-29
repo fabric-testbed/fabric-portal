@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NameInitialsAvatar } from 'react-name-initials-avatar';
+import {NameInitialsAvatar} from 'react-name-initials-avatar';
 import clearLocalStorage from "../utils/clearLocalStorage";
 import { NavLink } from "react-router-dom";
 

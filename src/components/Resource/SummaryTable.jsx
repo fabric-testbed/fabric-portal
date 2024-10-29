@@ -110,7 +110,7 @@ class SummaryTable extends Component {
             data={resources}
             sortColumn={sortColumn}
             onSort={onSort}
-            style={"table-md"}
+            tStyle={"table-md"}
           />
         </div>
       </div>

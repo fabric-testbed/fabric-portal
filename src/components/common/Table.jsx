@@ -2,9 +2,9 @@ import React from "react";
 import TableBody from "./TableBody";
 import TableHeader from "./TableHeader";
 
-const Table = ({ columns, onSort, sortColumn, data, style, tHeadStyle, onCheck }) => {
+const Table = ({ columns, onSort, sortColumn, data, tStyle, tHeadStyle, onCheck }) => {
   return (
-    <table className={`table table-hover bg-white ${style}`}>
+    <table className={`table table-hover bg-white ${tStyle}`}>
       <TableHeader
         columns={columns}
         sortColumn={sortColumn}

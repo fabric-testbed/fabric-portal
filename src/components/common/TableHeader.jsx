@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import _ from "lodash";
-
 // interface
 // columns: array
 // sortColumn: obj

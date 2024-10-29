@@ -22,7 +22,7 @@ class UsersTable extends Component {
       <Table
         columns={this.columns}
         data={users}
-        style={"table-md"}
+        tStyle={"table-md"}
       />
     );
   }

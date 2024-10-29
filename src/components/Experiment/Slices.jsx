@@ -33,7 +33,7 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
     spinnerText: "",
-    showAllSlices: false
+    // showAllSlices: false
   };
 
   async componentDidMount() {
@@ -159,7 +159,7 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (

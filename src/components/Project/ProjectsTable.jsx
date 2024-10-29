@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
-import _ from "lodash";
 import shortenStr from "../../utils/shortenStr";
 
 class ProjectsTable extends Component {
@@ -105,7 +104,7 @@ class ProjectsTable extends Component {
       <Table
         columns={isPublic ? this.columns["public"] : this.columns["private"]}
         data={projects}
-        style={"table-md"}
+        tStyle={"table-md"}
       />
     );
   }

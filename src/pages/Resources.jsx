@@ -10,7 +10,7 @@ import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
-import _, { filter } from "lodash";
+import _ from "lodash";
 
 class Resources extends Component {
   state = {

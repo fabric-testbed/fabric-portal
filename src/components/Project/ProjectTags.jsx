@@ -1,6 +1,5 @@
 import React from "react";
 import SelectGroup from "../common/SelectGroup";
-import _ from "lodash";
 
 class ProjectTags extends React.Component {
   handleTagAdd = (newTag) => {

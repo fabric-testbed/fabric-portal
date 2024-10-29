@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import { toast } from "react-toastify";
 import { getProjects } from "../../services/projectService.js";
 import { Link } from "react-router-dom";
@@ -7,7 +6,6 @@ import Pagination from "../common/Pagination";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";
 import shortenStr from "../../utils/shortenStr.js";
-import Parser from 'html-react-parser';
 
 class ProjectRoles extends React.Component {
   state = {

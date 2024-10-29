@@ -77,7 +77,7 @@ class SlicesTable extends Component {
         data={slices}
         sortColumn={sortColumn}
         onSort={onSort}
-        style={"table-md"}
+        tStyle={"table-md"}
       />
     );
   }

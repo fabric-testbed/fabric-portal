@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
@@ -43,7 +44,6 @@ import Footer from "./components/Footer";
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
-import "./styles/App.scss";
 import moment from 'moment';
 
 class App extends React.Component {

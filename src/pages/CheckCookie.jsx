@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCookie } from "../services/cookieService";
 import { toast } from "react-toastify";
-import CopyButton from "../components/common/CopyButton";
 import { default as portalData } from "../services/portalData.json";
 import { NavLink } from "react-router-dom";
 import { getCookieConsentValue } from "react-cookie-consent";

@@ -9,7 +9,8 @@ const ProjectTopics = (topics, onTopicsUpdate) => {
       <h1>Project Topics</h1>
       <TagsInput
         value={selected}
-        onChange={setSelected.then(selected => onTopicsUpdate(selected))}
+        // onChange={setSelected(selected, () => onTopicsUpdate(selected))}
+        onChange={setSelected}
         name="topics"
         placeHolder="enter topics"
       />

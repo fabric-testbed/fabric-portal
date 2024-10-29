@@ -1,4 +1,5 @@
 import React from "react";
+import Alert from 'react-bootstrap/Alert';
 import SpinnerWithText from "../../common/SpinnerWithText.jsx";
 import Pagination from "../../common/Pagination.jsx";
 import ProjectsTable from "../ProjectsTable.jsx";
@@ -178,12 +179,9 @@ class PublicProjectsList extends React.Component {
             </a>
           </div>
         </div>
-        <div
-          className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
-          role="alert"
-        >
-          This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
-        </div>
+        <Alert show={true} variant="primary">
+        This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
+        </Alert>
         <div className="w-100 input-group mt-3">
         <div className="input-group mb-3 project-search-toolbar">
           <div className="input-group-prepend">

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 import "font-awesome/css/font-awesome.css";
 import "./styles/index.scss";
 import "./styles/custom.scss";

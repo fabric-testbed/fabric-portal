@@ -15,7 +15,7 @@ import Parser from 'html-react-parser';
 class Form extends Component {
   state = {
     data: {},
-    errors: {},
+    errors: {}
   };
 
   validate = () => {
@@ -139,7 +139,7 @@ class Form extends Component {
       )
     } else {
       return (
-        <div class="form-group">
+        <div className="form-group">
         <label for="projectDescription">{label}</label>
         <div className="disabled-project-description">
           {Parser(data[name])}
@@ -250,8 +250,6 @@ class Form extends Component {
   }
 
   renderTimePicker(name, label) {
-    const { data, errors } = this.state;
-
     return (
       <TimePicker
         name={name}

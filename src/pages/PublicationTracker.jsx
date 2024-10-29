@@ -59,11 +59,11 @@ class PublicationTracker extends Component {
     }
   ];
 
-  async componentWillMount() {
+  async componentDidMount() {
     try {
       this.setState({ showSpinner: true });
-      const { results } = await getPublications();
-      this.setState({ publications: results, showSpinner: false});
+      const { data } = await getPublications();
+      this.setState({ publications: data.results, showSpinner: false});
     } catch (err) {
       toast.error("Failed to load publications. Please reload this page.");
     }
@@ -85,7 +85,8 @@ class PublicationTracker extends Component {
     } = this.state;
 
     // filter -> sort -> paginate
-    let filtered = allPublications;
+    let filtered = allPublications.map(p => { return {...p, authors: p.authors.join(", ")}});
+
     if (searchQuery) {
       filtered = allPublications.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -142,7 +143,7 @@ class PublicationTracker extends Component {
               sortColumn={sortColumn}
               onSort={this.handleSort}
               size={"md"} 
-              style={"table-striped table-md"}
+              tStyle={"table-striped table-md"}
               tHeadStyle={"bg-primary-light"}
             />
           </div>
