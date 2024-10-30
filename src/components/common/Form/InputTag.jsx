@@ -44,7 +44,7 @@ class InputTag extends React.Component {
               <li key={tag}>
                 {tag}
                 <i
-                  className="fa fa-times ml-2"
+                  className="fa fa-times ms-2"
                   onClick={() => {
                     this.raiseRemoveTag(i);
                   }}

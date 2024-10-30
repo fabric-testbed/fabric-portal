@@ -87,19 +87,19 @@ class Community extends React.Component {
           </div>
         </div>
         }
-        <div className="ml-1">
+        <div className="ms-1">
             <ul className="input-tag__tags">
               {
                 communities.length > 0 &&
                 communities.map((community, index) => 
                 <li
                   key={`community-to-add-${index}`}
-                  className="mr-2 my-2"
+                  className="me-2 my-2"
                 >
                   {community}
                   {
                     canUpdate &&          <i
-                    className="fa fa-times ml-2"
+                    className="fa fa-times ms-2"
                     onClick={() => {
                       this.props.onCommunityUpdate("remove", community);
                     }}

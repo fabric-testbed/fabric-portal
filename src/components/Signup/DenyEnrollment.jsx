@@ -13,7 +13,7 @@ const DenyEnrollment = () => {
       </div>
       <div className="text-center">
       <div className="alert alert-warning" role="alert">
-        <i className="fa fa-exclamation-triangle mr-2"></i> Please note that the FABRIC team works standard business hours in US Eastern timezone. We generally do not handle requests on weekends or during holidays.
+        <i className="fa fa-exclamation-triangle me-2"></i> Please note that the FABRIC team works standard business hours in US Eastern timezone. We generally do not handle requests on weekends or during holidays.
       </div>
         <a href={portalData.jiraLinks["initiateAccountPetition"]}>
           <button

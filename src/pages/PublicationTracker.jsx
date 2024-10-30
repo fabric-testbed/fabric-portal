@@ -35,7 +35,7 @@ class PublicationTracker extends Component {
       content: (publication) => (
       <div>
          {
-            <span className="mr-3">{publication.year}</span>
+            <span className="me-3">{publication.year}</span>
          }
       </div>
       ), 

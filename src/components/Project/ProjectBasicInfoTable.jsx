@@ -85,7 +85,7 @@ class ProjectBasicInfoTable extends Component {
                 delay={{ show: 100, hide: 300 }}
                 overlay={this.renderTooltip("fabrix-matrix", fabricMatrixTooltip)}
               >
-                <i className="fa fa-question-circle text-secondary ml-2"></i>
+                <i className="fa fa-question-circle text-secondary ms-2"></i>
               </OverlayTrigger>
           </label>
           <input
@@ -128,7 +128,7 @@ class ProjectBasicInfoTable extends Component {
                 <tr>
                   <td>Project ID</td>
                   <td>
-                    <span className="mr-2">{ project.uuid }</span>
+                    <span className="me-2">{ project.uuid }</span>
                     <CopyButton
                       id={project.uuid}
                       text=""
@@ -141,7 +141,7 @@ class ProjectBasicInfoTable extends Component {
                   <td>
                     Project Permissions <a
                     href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                    target="_blank" rel="noreferrer" className="ml-1">
+                    target="_blank" rel="noreferrer" className="ms-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
                   </td>

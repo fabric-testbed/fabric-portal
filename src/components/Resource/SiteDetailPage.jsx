@@ -156,7 +156,7 @@ class SiteDetailPage extends React.Component {
            <button
              className="btn btn-sm btn-outline-primary my-3"
            >
-             <i className="fa fa-sign-in mr-2"></i>
+             <i className="fa fa-sign-in me-2"></i>
              Back to Resources Overview
            </button>
          </Link>
@@ -164,8 +164,8 @@ class SiteDetailPage extends React.Component {
        {
         ["Maint", "PreMaint", "PartMaint"].includes(data.status["state"]) &&
         <div className="alert alert-primary mb-2" role="alert">
-          <i className="fa fa-exclamation-triangle mr-2"></i> 
-          Please check the <i className="fa fa-sign-in ml-1 mr-2"></i> 
+          <i className="fa fa-exclamation-triangle me-2"></i> 
+          Please check the <i className="fa fa-sign-in ms-1 me-2"></i> 
           <a href={portalData.fabricAnnouncementsForumLink} target="_blank" rel="noopener noreferrer">
            FABRIC Announcements Forum
           </a> for more detailed site maintenance information.
@@ -278,7 +278,7 @@ class SiteDetailPage extends React.Component {
          {
           localStorage.getItem("userStatus") === "active" && 
           <div className="d-flex flex-row justify-content-center align-items-center">
-            <span className="mr-2">From</span>
+            <span className="me-2">From</span>
             <CalendarDateTime
               id="siteDetailCalendar1"
               name="siteDetailCalendar"
@@ -286,7 +286,7 @@ class SiteDetailPage extends React.Component {
               time={startTime && startTime.toString().replace(/-/g, "/")}
               onTimeChange={this.handleStartChange}
             />
-            <span className="ml-4 mr-2">To</span>
+            <span className="ms-4 me-2">To</span>
             <CalendarDateTime
               id="siteDetailCalendar2"
               name="siteDetailCalendar"
@@ -295,13 +295,13 @@ class SiteDetailPage extends React.Component {
               onTimeChange={this.handleEndChange}
             />
             <button
-              className="btn btn-sm btn-success ml-4"
+              className="btn btn-sm btn-success ms-4"
               onClick={this.handleRefreshTime}
             >
               Refresh
             </button>
             <button
-              className="btn btn-sm btn-primary ml-3"
+              className="btn btn-sm btn-primary ms-3"
               onClick={this.handleResetTime}
             >
               Reset
@@ -330,7 +330,7 @@ class SiteDetailPage extends React.Component {
                   <h5>
                     Host Resources 
                   </h5>
-                  <span className="badge badge-primary ml-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
+                  <span className="badge badge-primary ms-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
                 </div>
               <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
               {

@@ -158,20 +158,20 @@ class Funding extends React.Component {
           </div>
         </div>
         }
-        <div className="ml-1">
+        <div className="ms-1">
             <ul className="input-tag__tags">
               {
                 fundings.length > 0 &&
                 fundings.map((funding, index) => 
                 <li
                   key={`funding-to-add-${index}`}
-                  className="mr-2 my-2"
+                  className="me-2 my-2"
                 >
                   { this.parseFundingStr(funding) }
                   {
                     canUpdate && 
                     <i
-                      className="fa fa-times ml-2"
+                      className="fa fa-times ms-2"
                       onClick={() => {this.props.onFundingUpdate("remove", funding);}}
                     ></i>
                   }

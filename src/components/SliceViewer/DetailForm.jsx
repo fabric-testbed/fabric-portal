@@ -21,7 +21,7 @@ export default class DetailForm extends Component {
       </Tooltip>
     );
     return (
-      <div className="w-100 card ml-4">
+      <div className="w-100 card ms-4">
         <form>
           <div className="card-header">
             Details
@@ -63,7 +63,7 @@ export default class DetailForm extends Component {
                           delay={{ show: 100, hide: 300 }}
                           overlay={renderTooltip("lease-end-tooltip", "You can extend up to 15 days as of now.")}
                         >
-                          <i className="fa fa-question-circle text-secondary ml-2"></i>
+                          <i className="fa fa-question-circle text-secondary ms-2"></i>
                         </OverlayTrigger>
                       }
                     </label>
@@ -86,7 +86,7 @@ export default class DetailForm extends Component {
                           />
                         </div>
                         <button
-                          className="btn btn-sm btn-outline-primary mt-2 mr-3"
+                          className="btn btn-sm btn-outline-primary mt-2 me-3"
                           onClick={this.props.onSliceExtend}
                         >
                           Extend
@@ -125,14 +125,14 @@ export default class DetailForm extends Component {
                   <div className="row mb-2">
                   <label>SSH Command <a
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
-                    target="_blank" rel="noreferrer" className="ml-1">
+                    target="_blank" rel="noreferrer" className="ms-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
                     {
                       slice.state === "StableOK" &&
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-primary ml-2"
+                        className="btn btn-sm btn-outline-primary ms-2"
                         data-toggle="modal"
                         data-target="#TerminalFormModalCenter"
                       >
@@ -144,7 +144,7 @@ export default class DetailForm extends Component {
                     {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
                     <CopyButton
                       id={this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
-                      btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
+                      btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
                       showCopiedValue={false}
                       text=""
                     />

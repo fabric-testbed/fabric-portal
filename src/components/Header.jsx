@@ -287,7 +287,7 @@ const Header = (props) => {
         </Nav>
         {
         props.userStatus === "active" && !window.location.href.includes("/search-results") &&
-        <form className="form-inline my-2 mr-2 my-lg-0">
+        <form className="form-inline d-flex flex-row align-items-center">
           <input
             className="form-control"
             type="search"
@@ -298,7 +298,7 @@ const Header = (props) => {
           />
            <div className="input-group-append">
               <button
-                className="btn btn-outline-secondary"
+                className="btn btn-sm btn-outline-secondary"
                 type="button"
                 onClick={handleSearch}
               >
@@ -308,24 +308,24 @@ const Header = (props) => {
          </form>
       }
       { props.userStatus !== "active" ? 
-        <form className="form-inline my-2 my-lg-0">
+        <form className="form-inline">
           <NavLink to="/login">
             <button
               onClick={handleLogin}
-              className="btn btn-outline-success my-2 my-sm-0 mr-2"
+              className="btn btn-outline-success"
             >
               Log in
             </button>
           </NavLink>
           <NavLink to="/signup/1">
             <button
-              className="btn btn-outline-primary my-2 my-sm-0"
+              className="btn btn-outline-primary"
             >
               Sign up
             </button>
           </NavLink>
         </form> :
-        <form className="form-inline my-2 my-lg-0">
+        <form className="form-inline">
           <ProfileModal userName={props.userName} userEmail={props.userEmail} />
         </form>
       }

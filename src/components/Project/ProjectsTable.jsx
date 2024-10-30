@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Table from "../common/Table";
 import shortenStr from "../../utils/shortenStr";
+import Badge from 'react-bootstrap/Badge';
 
 class ProjectsTable extends Component {
   columns = {
@@ -28,12 +29,7 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {project.communities.map((community, index) => {
-              return <span
-                className="badge badge-pill badge-primary mr-1"
-                key={`project-community-${index}`}
-              >
-                {community}
-              </span>
+              return <Badge bg="primary"  key={`project-community-${index}`}>{community}</Badge>
             })}
           </span>
         )
@@ -69,12 +65,7 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {project.communities.map((community, index) => {
-              return <span
-                className="badge badge-pill badge-primary mr-1"
-                key={`project-community-${index}`}
-              >
-                {community}
-              </span>
+              return <Badge bg="primary" className="me-1" key={`project-community-${index}`}>{community}</Badge>
             })}
           </span>
         )

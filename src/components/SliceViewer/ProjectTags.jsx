@@ -56,7 +56,7 @@ export default class SideLinks extends Component {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <b>Permissions</b><i className="fa fa-question-circle ml-1"></i>
+                  <b>Permissions</b><i className="fa fa-question-circle ms-1"></i>
                 </a>
               </td>
               <td>
@@ -67,7 +67,7 @@ export default class SideLinks extends Component {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <i className="fa fa-question-circle mr-2"></i>
+                    <i className="fa fa-question-circle me-2"></i>
                     permission tags 
                   </a>. Please use only SharedNICs and L2Bridge for this slice.
                 </span> : 
@@ -78,7 +78,7 @@ export default class SideLinks extends Component {
                       overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
                       key={`project-tag-${tag}`}
                     >
-                      <span className="badge badge-primary mr-2 project-tag">{tag}</span>
+                      <span className="badge badge-primary me-2 project-tag">{tag}</span>
                     </OverlayTrigger>
                 )
               }

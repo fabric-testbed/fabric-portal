@@ -25,7 +25,7 @@ const Switch = ({ name, label, error, disabled, tooltip, ...rest }) => {
             delay={{ show: 100, hide: 300 }}
             overlay={renderTooltip(tooltip.id, tooltip.content)}
           >
-            <i className="fa fa-question-circle text-secondary ml-2"></i>
+            <i className="fa fa-question-circle text-secondary ms-2"></i>
           </OverlayTrigger>
         }
       </label>

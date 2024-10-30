@@ -100,13 +100,13 @@ class ProjectTokenHolders extends Component {
           </div>
         {
           !isTokenHolder && !isFO && !projectExpired && <button
-            className="btn btn-sm btn-outline-success mr-2 my-3"
+            className="btn btn-sm btn-outline-success me-2 my-3"
             onClick={() => window.open(
               `${portalData.jiraLinks.longlivedTokenRequest}?${urlSuffix}`,
               "_blank")
             }
           >
-            <i className="fa fa-sign-in mr-2"></i>
+            <i className="fa fa-sign-in me-2"></i>
             Request Long-lived Token Access
           </button>
         }

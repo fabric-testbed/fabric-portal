@@ -70,7 +70,7 @@ class Footer extends React.Component {
               src={trustedciBadge}
               width="175"
               height="175"
-              className="d-inline-block align-top mr-2"
+              className="d-inline-block align-top me-2"
               alt=""
             />
           </Col>
@@ -87,7 +87,7 @@ class Footer extends React.Component {
                 src={nsfLogo}
                 width="45"
                 height="45"
-                className="d-inline-block align-top mr-2"
+                className="d-inline-block align-top me-2"
                 alt=""
               />
               <u className="text-sm-size">FABRIC is funded by NSF grants CNS-1935966, CNS-2029176, CNS-2029200, CNS-2029235, CNS-2029260, CNS-2029261 and CNS-2330891.</u>

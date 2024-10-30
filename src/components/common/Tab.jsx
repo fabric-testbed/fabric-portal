@@ -40,7 +40,7 @@ class Tab extends Component {
         <div className="d-flex">
           <span>{label}</span>
           {
-            badge && <span className={`badge badge-${color} ml-2 align-self-center`}>{badge}</span>
+            badge && <span className={`badge badge-${color} ms-2 align-self-center`}>{badge}</span>
           }
         </div>
       </div>

@@ -81,7 +81,7 @@ export default class SingleComponent extends Component {
                     delay={{ show: 100, hide: 300 }}
                     overlay={renderTooltip("component-tooltip", portalData.helperText.componentDescription)}
                   >
-                    <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    <i className="fa fa-question-circle text-secondary ms-2"></i>
                   </OverlayTrigger>
                 </label>
                 <select

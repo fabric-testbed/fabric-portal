@@ -363,7 +363,7 @@ class SideNodes extends React.Component {
                       delay={{ show: 100, hide: 300 }}
                       overlay={renderTooltip("site-tooltip", portalData.helperText.sitesDescription)}
                     >
-                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      <i className="fa fa-question-circle text-secondary ms-2"></i>
                     </OverlayTrigger>
                   </label>
                   <Select
@@ -381,7 +381,7 @@ class SideNodes extends React.Component {
                       delay={{ show: 100, hide: 300 }}
                       overlay={renderTooltip("node-tooltip", portalData.helperText.nodeDescription)}
                     >
-                      <i className="fa fa-question-circle text-secondary ml-2"></i>
+                      <i className="fa fa-question-circle text-secondary ms-2"></i>
                     </OverlayTrigger>
                   </label>
                   <select
@@ -404,7 +404,7 @@ class SideNodes extends React.Component {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip("site-tooltip", portalData.helperText.nodeNameDescription)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                     </label>
                     <input
@@ -449,7 +449,7 @@ class SideNodes extends React.Component {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip("node-tooltip", portalData.helperText.bandwidthDescription)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                     </label>
                     <input type="number" className="form-control form-control-sm" id="inputBandwidth"
@@ -490,7 +490,7 @@ class SideNodes extends React.Component {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip("node-tooltip", portalData.helperText.customImagesDescription)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                     </label>
                     <select
@@ -534,7 +534,7 @@ class SideNodes extends React.Component {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip("boot-script-tooltip", portalData.helperText.bootScriptDescription)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                     </label>
                     <textarea

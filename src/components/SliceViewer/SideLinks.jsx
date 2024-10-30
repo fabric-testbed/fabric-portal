@@ -86,7 +86,7 @@ export default class SideLinks extends Component {
                   delay={{ show: 100, hide: 300 }}
                   overlay={renderTooltip("network-service-tooltip", portalData.helperText.networkServiceDescription)}
                 >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  <i className="fa fa-question-circle text-secondary ms-2"></i>
                 </OverlayTrigger>
               </label>
               <select
@@ -129,7 +129,7 @@ export default class SideLinks extends Component {
                   this.props.selectedCPs.map(cp => <li key={`selectedCP${cp.id}`}>
                     {cp.properties.name}
                   <i
-                    className="fa fa-times ml-2"
+                    className="fa fa-times ms-2"
                     onClick={() => {
                       this.raiseRemoveCP(cp.id);
                     }}
@@ -146,7 +146,7 @@ export default class SideLinks extends Component {
           </div>
         }
         <div className="my-2 d-flex flex-row">
-          <div className="d-flex flex-column text-center mr-2">
+          <div className="d-flex flex-column text-center me-2">
             <button
               className="btn btn-sm btn-success mb-2"
               disabled={!validationResult.isValid}

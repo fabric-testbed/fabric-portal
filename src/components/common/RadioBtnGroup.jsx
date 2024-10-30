@@ -11,7 +11,7 @@ const RadioBtnGroup = ({ values, onChange, ...rest }) => {
       {values.map((item, index) => {
         return (
           <div
-            className="form-check-inline mr-4"
+            className="form-check-inline me-4"
             key={`radio-btn-${index}`}
             onClick={() => onChange(item.value)}
           >

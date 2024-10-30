@@ -82,7 +82,7 @@ class DynamicMetrics extends React.Component {
     return (
       <div className="w-100 home-metrix">
         <div className="d-flex flex-column align-item-center justify-content-center px-5 mb-2">
-          <div className="mr-5 align-self-center">
+          <div className="me-5 align-self-center">
             <img
               src={FABRICLogo}
               height="100"
@@ -123,7 +123,7 @@ class DynamicMetrics extends React.Component {
                     {i.name}
                     {
                       i.link && <Link to={i.link}>
-                        <i className="fa fa-sign-in ml-2"></i>
+                        <i className="fa fa-sign-in ms-2"></i>
                       </Link>
                     }
                   </div>

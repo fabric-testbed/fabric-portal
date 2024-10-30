@@ -74,7 +74,7 @@ class SummaryTable extends Component {
                 <i className="fa fa-search"></i>
               </button> */}
             </div>
-            {/* <button className="btn btn-sm btn-secondary ml-2">
+            {/* <button className="btn btn-sm btn-secondary ms-2">
               <i className="fa fa-filter"></i>
             </button> */}
           </div>

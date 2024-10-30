@@ -97,7 +97,7 @@ const DetailTable = props => {
               {
                 resource &&
                 <span
-                  className={`badge badge-pill badge-${statusMapping[resource.status.state].colorName} px-2 ml-2`}
+                  className={`badge badge-pill badge-${statusMapping[resource.status.state].colorName} px-2 ms-2`}
                 >
                   { statusMapping[resource.status.state].state }
                 </span>

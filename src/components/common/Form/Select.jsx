@@ -18,7 +18,7 @@ const Select = ({ name, label, currentOption, options, error, disabled, tooltip,
             delay={{ show: 100, hide: 300 }}
             overlay={renderTooltip("select-tooltip", tooltip)}
           >
-            <i className="fa fa-question-circle text-secondary ml-2"></i>
+            <i className="fa fa-question-circle text-secondary ms-2"></i>
           </OverlayTrigger>
         </label> :
         <label htmlFor={name}>{label}</label>

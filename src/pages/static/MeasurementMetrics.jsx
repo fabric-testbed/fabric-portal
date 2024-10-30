@@ -54,7 +54,7 @@ const MeasurementMetrics = ()=> {
                 <button
                   className="btn btn-sm btn-outline-primary mt-2"
                 >
-                  <i className="fa fa-sign-in mr-2"></i> Open Tool
+                  <i className="fa fa-sign-in me-2"></i> Open Tool
                 </button>
               </a>
             </div>

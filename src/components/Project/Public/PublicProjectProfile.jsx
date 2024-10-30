@@ -75,7 +75,7 @@ class PublicProjectProfile extends Component {
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
                   return (<span
-                      className="badge badge-pill badge-primary mr-1"
+                      className="badge badge-pill badge-primary me-1"
                       key={`project-community-${index}`}
                     >
                       {community}
@@ -92,7 +92,7 @@ class PublicProjectProfile extends Component {
         </div>
         <Link to="/experiments/public-projects">
           <button className="btn btn-sm btn-outline-primary my-4">
-            <i className="fa fa-sign-in mr-2"></i> Back to Project List
+            <i className="fa fa-sign-in me-2"></i> Back to Project List
           </button>
         </Link>
       </div>

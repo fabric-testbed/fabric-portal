@@ -121,7 +121,7 @@ const Topomap = props => {
         </ZoomableGroup>
       </ComposableMap>
       <div className="controls mt-1 d-flex justify-content-center">
-        <button className="btn btn-sm btn-outline-primary mr-1" onClick={handleZoomIn}>
+        <button className="btn btn-sm btn-outline-primary me-1" onClick={handleZoomIn}>
           <i className="fa fa-plus"></i>
         </button>
         <button className="btn btn-sm btn-outline-primary" onClick={handleZoomOut}>

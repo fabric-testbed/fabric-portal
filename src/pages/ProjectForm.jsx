@@ -33,7 +33,7 @@ import {
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
-  <div className="ml-2">
+  <div className="ms-2">
     <p className="text-white">{ message }</p>
     <Link to={`/projects/${projectId}`}>
       <button className="btn btn-sm btn-outline-light">
@@ -652,31 +652,31 @@ class ProjectForm extends Form {
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Permissions
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.storageRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Storage
                 </button>
                 <Link to="/experiments#projects">
                   <button
                     className="btn btn-sm btn-outline-primary my-3"
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Back to Project List
                   </button>
                 </Link>
@@ -686,7 +686,7 @@ class ProjectForm extends Form {
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Back to Project List
                 </button>
               </Link>
@@ -699,7 +699,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <span>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is expired and no operations are allowed. Please submit a ticket to renew the project.
               </span>
               <button
@@ -710,7 +710,7 @@ class ProjectForm extends Form {
                   "_blank")
                 }
               >
-                <i className="fa fa-sign-in mr-2"></i>
+                <i className="fa fa-sign-in me-2"></i>
                 Renew Project
               </button>
             </div>
@@ -723,7 +723,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <div>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is going to expire in a month on {utcToLocalTimeParser(data.expired)}. 
                 {
                   canUpdate ? <span> Please submit a ticket to renew the project.</span> : 
@@ -739,7 +739,7 @@ class ProjectForm extends Form {
                       "_blank")
                     }
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Renew Project
                   </button> : <div></div>
               }

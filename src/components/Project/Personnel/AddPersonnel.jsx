@@ -193,7 +193,7 @@ class AddPersonnel extends Component {
                             <div className="mt-1">{user.name}</div>
                           }
                           <button
-                            className="btn btn-sm btn-outline-primary ml-2"
+                            className="btn btn-sm btn-outline-primary ms-2"
                             onClick={() => this.handleAddUser(user)}
                           >
                             <i className="fa fa-plus"></i>
@@ -246,7 +246,7 @@ class AddPersonnel extends Component {
                               <div className="mt-1">{user.name}</div>
                             }
                             <button
-                              className="btn btn-sm btn-outline-primary ml-2"
+                              className="btn btn-sm btn-outline-primary ms-2"
                               onClick={() => this.handleAddUser(user)}
                             >
                               <i className="fa fa-plus"></i>
@@ -276,10 +276,10 @@ class AddPersonnel extends Component {
                   {
                     usersFailedToFind.length > 0 &&
                     <div className="alert alert-warning max-height-overflow-scroll">
-                      <i className="fa fa-exclamation-triangle mr-2"></i>
+                      <i className="fa fa-exclamation-triangle me-2"></i>
                       We couldn't find the users below. Please make sure:  1. email is the first column of the CSV file; 2. name and email information 
                       are correct; 3. users have sucessfully enrolled as active FABRIC users.
-                      <ul className="list-group mt-2 ml-4">
+                      <ul className="list-group mt-2 ms-4">
                         {
                           usersFailedToFind.map((memberStr, index) => {
                             return (
@@ -300,7 +300,7 @@ class AddPersonnel extends Component {
             {
               searchCompleted && !showSpinner &&
               <div className="alert alert-success my-2" role="alert">
-                <i className="fa fa-check mr-2"></i>
+                <i className="fa fa-check me-2"></i>
                 Users below are uploaded successfully! Please click the <b>Add</b> button to complete adding to project members.
               </div>
             }
@@ -310,11 +310,11 @@ class AddPersonnel extends Component {
                 usersToAdd.map((user, index) => 
                 <li
                   key={`user-to-add-${index}`}
-                  className="mr-2 my-2"
+                  className="me-2 my-2"
                 >
                   {user.email ? `${user.name}(${user.email})` : user.name}
                 <i
-                  className="fa fa-times ml-2"
+                  className="fa fa-times ms-2"
                   onClick={() => {
                     this.handleDeleteUser(user.name);
                   }}
@@ -323,7 +323,7 @@ class AddPersonnel extends Component {
               }
             </ul>
             <button
-              className="btn btn-sm btn-outline-primary mr-3 mt-1"
+              className="btn btn-sm btn-outline-primary me-3 mt-1"
               onClick={() => this.props.onUpdateUsers(personnelType, this.getIDs(usersToAdd), "add")}
               disabled={ usersToAdd.length === 0}
             >

@@ -110,7 +110,7 @@ class SliceEditor extends React.Component {
           <div>
             <div className="d-flex flex-row justify-content-between mt-2">
               <div className="align-self-start d-flex flex-row">
-                <h2 className="ml-5 my-2">
+                <h2 className="ms-5 my-2">
                   { originalSlice.name }
                 </h2>
                 <a
@@ -123,11 +123,11 @@ class SliceEditor extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end mr-5">
+              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end me-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-exchange mr-2"></i>
+                  <i className="fa fa-exchange me-2"></i>
                   View Mode
                 </button>
               </Link>
