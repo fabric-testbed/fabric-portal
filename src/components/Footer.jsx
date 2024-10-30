@@ -15,20 +15,19 @@ import trustedciBadge from "../imgs/trustedci.png";
 class Footer extends React.Component {
   render() {
     return (
-      <Container bsclass="app-footer bg-light">
-        <Row bsclass="py-4">
-          <Col sm={12} md={3}>
+      <Container className="app-footer bg-light">
+        <Row>
+          <Col>
             <ul>
               <li><b>Useful Links</b></li>
               <li>
                 <Link to="/aup">Acceptable Use Policy</Link>
               </li>
               <li><Link to="/cookie-policy">Cookie Policy</Link></li>
-              {/* <li><Link to="/privacy-policy">Privacy Policy</Link></li> */}
               <li><Link to="/branding">Branding Resources</Link></li>
             </ul>
           </Col>
-          <Col sm={12} md={3}>
+          <Col>
             <ul>
               <li><b>Help &amp; Support</b></li>
               <li><a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
@@ -43,7 +42,7 @@ class Footer extends React.Component {
               </li>
           </ul>
           </Col>
-          <Col sm={12} md={3}>
+          <Col>
             <div>
               <ul>
                 <li><b>Social</b></li>
@@ -66,7 +65,7 @@ class Footer extends React.Component {
               </ul>
             </div>
           </Col>
-          <Col sm={12} md={3}>
+          <Col>
             <img
               src={trustedciBadge}
               width="175"
@@ -76,14 +75,14 @@ class Footer extends React.Component {
             />
           </Col>
         </Row>
-        <Row>
-          <Col sm={12} md={3}>
+        <Row className="mt-3">
+          <Col>
             <ul>
               <li><u><b>© FABRIC {new Date().getFullYear()}</b></u></li>
             </ul>
           </Col>
-          <Col sm={12} md={9} bsclass="d-flex flex-column align-items-center">
-            <div className="d-flex align-items-center mb-4">
+          <Col className="d-flex flex-column align-items-center">
+            <div className="d-flex align-items-center my-4">
               <img
                 src={nsfLogo}
                 width="45"

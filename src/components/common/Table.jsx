@@ -9,7 +9,7 @@ const Table = ({ columns, onSort, sortColumn, data, tStyle, tHeadStyle, onCheck 
         columns={columns}
         sortColumn={sortColumn}
         onSort={onSort}
-        style={tHeadStyle}
+        tHeadStyle={tHeadStyle}
       />
       <TableBody
         columns={columns}

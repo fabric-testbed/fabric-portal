@@ -48,7 +48,7 @@ class HomepageCarousel extends React.Component {
           items && items.length > 0 && items.map((item, index) =>
             <Carousel.Item key={`homepage-carousel-${index}`}>
               <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
-              <Carousel.Caption style={{"paddingTop": "4.5rem"}}>
+              <Carousel.Caption style={{"paddingTop": "3rem"}}>
                 <h3>{item.title}</h3>
                 <div className="homepage-carousel-content">
                   {Parser(item.content)}

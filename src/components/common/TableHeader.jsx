@@ -31,9 +31,9 @@ class TableHeader extends Component {
   };
 
   render() {
-    const { sortColumn, style } = this.props;
+    const { sortColumn, tHeadStyle } = this.props;
     return (
-      <thead className={style}>
+      <thead className={tHeadStyle}>
         <tr>
           {sortColumn && this.props.columns.map((column) => (
             <th

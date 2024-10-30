@@ -1,5 +1,6 @@
 import React from "react";
 import withRouter from "./common/withRouter.jsx";
+import { Link, NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
@@ -9,7 +10,6 @@ import productionLogo from "../imgs/logos/fabric-brand.png";
 import alphaLogo from "../imgs/logos/fabric-brand-alpha.png";
 import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -18,51 +18,52 @@ const Header = (props) => {
   const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
     { 
       name: "Resources",
-      href: "/resources",
+      path: "/resources",
       child: [
         {
           name: "Testbed Resources",
-          href: "/resources/overview"
+          path: "/resources/overview"
         },
         {
           name: "Measurement Metrics",
-          href: "/resources/tools"
+          path: "/resources/tools"
         }
       ]
     },
     {
       name: "Experiments",
-      href: "/experiments",
+      path: "/experiments",
       child: []
     },
     {
       name: "Knowledge Base",
       href: portalData.knowledgeBaseLink,
-      child: []
+      child: [],
+      path: ""
     },
     {
       name: "JupyterHub",
       child: [],
-      href: "/jupyter-no-access"
+      path: "/jupyter-no-access"
     },
-    { name: "Contact Us", href: "/help", child: [] },
+    { name: "Contact Us", path: "/help", child: [] },
     {
       name: "About",
       child: [
         {
           name: "Overview",
-          href: "/about/about-fabric"
+          path: "/about/about-fabric"
         },
         {
           name: "SAC",
-          href: "/about/sac"
+          path: "/about/sac"
         },
         {
           name: "Leadership",
-          href: "/about/leadership"
+          path: "/about/leadership"
         }
       ],
-      href: "/about"
+      path: "/about"
     },
     {
       name: "Community",
@@ -81,79 +82,81 @@ const Header = (props) => {
         },
         {
           name: "Newsletter Signup",
-          href: "/community/newsletter-signup"
+          path: "/community/newsletter-signup"
         },
         {
           name: "Funding Opportunities",
-          href: "/community/funding-opportunities"
+          path: "/community/funding-opportunities"
         },
         {
           name: "Testbeds and Facilities",
-          href: "/community/testbeds-and-facilities"
+          path: "/community/testbeds-and-facilities"
         },
         {
           name: "Cite FABRIC",
-          href: "/community/publications"
+          path: "/community/publications"
         },
         {
           name: "FABRIC User Publications",
-          href: "/community/fabric-user-publications"
+          path: "/community/fabric-user-publications"
         },
         {
           name: "Blogs",
           href: portalData.knowledgeBaseBlogsLink,
         }
       ],
-      href: "/community"
+      path: "/community"
     }
   ] : [
     { 
       name: "Resources",
-      href: "/resources",
+      path: "/resources",
       child: [
         {
           name: "Resources Overview",
-          href: "/resources/overview"
+          path: "/resources/overview"
         },
         {
           name: "Measuring and Monitoring Tools",
-          href: "/resources/tools"
+          path: "/resources/tools"
         }
       ]
     },
     {
       name: "Experiments",
-      href: "/experiments",
+      path: "/experiments",
       child: []
     },
     {
       name: "Knowledge Base",
       href: portalData.knowledgeBaseLink,
-      child: []
+      child: [],
+      path: ""
     },
     {
       name: "JupyterHub",
       href: portalData.jupyterHubLinks[checkPortalType(window.location.href)],
-      child: []
+      child: [],
+      path: ""
     },
-    { name: "Contact Us", href: "/help", child: [] },
+    { name: "Contact Us", path: "/help", child: [] },
     {
       name: "About",
       child: [
         {
           name: "Overview",
-          href: "/about/about-fabric"
+          path: "/about/about-fabric"
         },
         {
           name: "SAC",
-          href: "/about/sac"
+          path: "/about/sac"
         },
         {
           name: "Leadership",
-          href: "/about/leadership"
+          path: "/about/leadership"
         }
       ],
-      href: "/about"
+      path: "/about"
     },
     {
       name: "Community",
@@ -172,30 +175,30 @@ const Header = (props) => {
         },
         {
           name: "Newsletter Signup",
-          href: "/community/newsletter-signup"
+          path: "/community/newsletter-signup"
         },
         {
           name: "Funding Opportunities",
-          href: "/community/funding-opportunities"
+          path: "/community/funding-opportunities"
         },
         {
           name: "Testbeds and Facilities",
-          href: "/community/testbeds-and-facilities"
+          path: "/community/testbeds-and-facilities"
         },
         {
           name: "Cite FABRIC",
-          href: "/community/publications"
+          path: "/community/publications"
         },
         {
           name: "FABRIC User Publications",
-          href: "/community/fabric-user-publications"
+          path: "/community/fabric-user-publications"
         },
         {
           name: "Blogs",
           href: portalData.knowledgeBaseBlogsLink,
         }
       ],
-      href: "/community"
+      path: "/community"
     }
   ]
   
@@ -238,8 +241,7 @@ const Header = (props) => {
   };
 
   return (
-    <Navbar expand="lg" className="navbar">
-      <Container>
+    <Navbar expand="lg" className="bg-light">
       <Navbar.Brand href="/">
         <img
           src={getLogoSrc()}
@@ -254,24 +256,80 @@ const Header = (props) => {
           { 
             navItems.map((item, index) => {
               if (item.child.length === 0) {
-                return <Nav.Link href={item.href}>{item.name}</Nav.Link>
+                if (item.path) {
+                  return <Nav.Link as={Link} to={item.path}>{item.name}</Nav.Link>
+                } else {
+                  return <Nav.Link href={item.href}>{item.name}</Nav.Link>
+                }
               } else {
                 return <NavDropdown title={item.name} id={`nav-dropdown-${index}`}>
                 {
                   item.child.map((sub_item, sub_index) => {
-                    return <NavDropdown.Item
+                    if (sub_item.path) {
+                      return <NavDropdown.Item
+                      key={`sub-nav-${sub_index}`}
+                      as={Link}
+                      to={sub_item.path}>
+                        {sub_item.name}
+                      </NavDropdown.Item>
+                    } else {
+                      return <NavDropdown.Item
                       key={`sub-nav-${sub_index}`}
                       href={sub_item.href}>
                         {sub_item.name}
-                      </NavDropdown.Item> }
-                  )}
+                      </NavDropdown.Item> 
+                    }
+                   })}
               </NavDropdown>
               }
             })
           }
         </Nav>
+        {
+        props.userStatus === "active" && !window.location.href.includes("/search-results") &&
+        <form className="form-inline my-2 mr-2 my-lg-0">
+          <input
+            className="form-control"
+            type="search"
+            placeholder="Search People/Projects"
+            aria-label="Search"
+            onChange={props.onQueryChange}
+            onKeyDown={raiseInputKeyDown}
+          />
+           <div className="input-group-append">
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={handleSearch}
+              >
+                  <i className="fa fa-search"></i>
+              </button>
+            </div>
+         </form>
+      }
+      { props.userStatus !== "active" ? 
+        <form className="form-inline my-2 my-lg-0">
+          <NavLink to="/login">
+            <button
+              onClick={handleLogin}
+              className="btn btn-outline-success my-2 my-sm-0 mr-2"
+            >
+              Log in
+            </button>
+          </NavLink>
+          <NavLink to="/signup/1">
+            <button
+              className="btn btn-outline-primary my-2 my-sm-0"
+            >
+              Sign up
+            </button>
+          </NavLink>
+        </form> :
+        <form className="form-inline my-2 my-lg-0">
+          <ProfileModal userName={props.userName} userEmail={props.userEmail} />
+        </form>
+      }
       </Navbar.Collapse>
-    </Container>
   </Navbar>
   )
 }

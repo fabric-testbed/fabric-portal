@@ -3,7 +3,6 @@ import BackgroundImage from "../imgs/network-bg.svg";
 import Table from "../components/common/Table";
 import { getPublications } from "../services/publicationService.js";
 import SpinnerWithText from "../components/common/SpinnerWithText";
-// import publications from "../services/staticPublications";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
@@ -90,8 +89,8 @@ class PublicationTracker extends Component {
     if (searchQuery) {
       filtered = allPublications.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
-        || p.authors.toLowerCase().includes(searchQuery.toLowerCase())
-        || p.project_name.toLowerCase().includes(searchQuery.toLowerCase())
+        || p.authors.join().toLowerCase().includes(searchQuery.toLowerCase())
+        || (p.project_name && p.project_name.toLowerCase().includes(searchQuery.toLowerCase()))
         || p.year.includes(searchQuery.toLowerCase())
       );
     }
