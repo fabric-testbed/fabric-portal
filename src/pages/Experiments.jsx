@@ -10,11 +10,11 @@ import ArtifactManager from "../components/Experiment/ArtifactManager";
 class Experiments extends React.Component {
   state = {
     SideNavItems: [
-      { name: "PROJECTS & SLICES", active: true },
-      { name: "MY SLICES", active: false },
-      { name: "MANAGE TOKENS", active: false },
-      { name: "MANAGE SSH KEYS", active: false },
-      { name: "ARTIFACT MANAGER", active: false },
+      { name: "PROJECTS & SLICES", hash: "#projects", active: true },
+      { name: "MY SLICES", hash: "#slices", active: false },
+      { name: "MANAGE TOKENS", hash: "tokens", active: false },
+      { name: "MANAGE SSH KEYS", hash: "sshKeys", active: false },
+      { name: "ARTIFACT MANAGER", hash: "artifacts", active: false },
     ],
     user: {},
     people: {},
