@@ -63,6 +63,7 @@ class ProjectForm extends Form {
       is_token_holder: false,
       is_public: false,
       is_locked: false,
+      project_type: "research",
       allOptions: [
         "show_project_owners",
         "show_project_members",
@@ -129,6 +130,7 @@ class ProjectForm extends Form {
     is_owner: Joi.boolean(),
     is_token_holder: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
+    project_type: Joi.string().required().label("Project Type"),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
     selectedOptions: Joi.array(),
@@ -265,6 +267,7 @@ class ProjectForm extends Form {
       is_owner: project.memberships.is_owner,
       is_token_holder: project.memberships.is_token_holder,
       is_public: project.is_public ? "Yes" : "No",
+      project_type: project.project_type,
       is_locked: project.is_locked,
       allOptions: [
         "show_project_owners",
@@ -744,12 +747,14 @@ class ProjectForm extends Form {
                   {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                  {this.renderSelect("project_type", "Project Type", canUpdate, data.project_type, portalData.projectTypeOptions)}
                   {
                     data.is_public === "Yes" && 
                     this.renderInputCheckBoxes("preferences", "Privacy Preferences",
                       canUpdate, optionsDisplayMapping,
                       portalData.helperText.privacyPreferencesDescription
-                    )}
+                    )
+                  }
               </form>
               <ProjectBasicInfoTable
                 project={data}

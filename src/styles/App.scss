@@ -1325,3 +1325,11 @@ div:has(> #multiselectContainerReact) {
   --bs-alert-bg: #ddeaf2 !important;
   --bs-alert-border-color: #d0e2ec !important;
 }
+
+.btn-primary, .btn-secondary {
+  --bs-btn-color: #fff !important;
+}
+
+.btn-outline-primary, .btn-outline-secondary {
+  --bs-btn-hover-color: #fff !important;
+}
