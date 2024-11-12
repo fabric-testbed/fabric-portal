@@ -11,6 +11,7 @@ import checkGlobalRoles from "../../utils/checkGlobalRoles";
 import toLocaleTime from "../../utils/toLocaleTime";
 import Multiselect from 'multiselect-react-dropdown';
 import { toast } from "react-toastify";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class Projects extends React.Component {
   state = {
@@ -247,23 +248,17 @@ class Projects extends React.Component {
         } 
         {
           this.state.radioBtnValues[1].isActive &&  
-          <div className="w-100 input-group mt-3">
+          <div className="w-100 mt-3 d-flex flex-row">
+            <Dropdown>
+              <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
+                <i className="fa fa-search"></i>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => this.handleChangeFilter("description")}>Description</Dropdown.Item>
+                <Dropdown.Item onClick={() => this.handleChangeFilter("community")}>Community</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <div className="input-group mb-3 project-search-toolbar">
-              <div className="input-group-prepend">
-                <button
-                  className="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i className="fa fa-search"></i>
-                </button>
-                <div className="dropdown-menu">
-                  <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
-                  <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
-                </div>
-              </div>
               {
                 filterOption === "description" &&
                   <input
