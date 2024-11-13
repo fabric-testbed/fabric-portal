@@ -28,7 +28,8 @@ import {
   updateProjectTokenHolders,
   updateProjectCommunity,
   updateProjectFunding,
-  updateMatrix
+  updateMatrix,
+  updateProjectTopics
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -70,7 +71,8 @@ class ProjectForm extends Form {
       ],
       selectedOptions: [],
       project_funding: [],
-      communities: []
+      communities: [],
+      topics: []
     },
     allOptions: [
       "show_project_owners",
@@ -300,12 +302,13 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix, originalProject } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject } = this.state;
     const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
       await updateProjectCommunity(project.uuid, communities);
+      await updateProjectTopics(project.uuid, topics);
       if (fabricMatrix !== originalMatrix) {
         await updateMatrix(project.uuid, fabricMatrix);
       }
@@ -379,6 +382,10 @@ class ProjectForm extends Form {
 
   handleUpdateMatrix = (e) => {
     this.setState({ fabricMatrix:  e.target.value });
+  }
+
+  handleTopicsUpdate = (topics) => {
+    this.setState({ topics })
   }
 
   handlePermissionUpdate = async () => {
@@ -580,7 +587,8 @@ class ProjectForm extends Form {
       projectFunding,
       communities,
       fabricMatrix,
-      originalProject
+      originalProject,
+      topics
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -762,12 +770,14 @@ class ProjectForm extends Form {
                 projectFunding={projectFunding}
                 fabricMatrix={fabricMatrix}
                 communities={communities}
+                topics={topics}
                 canUpdate={canUpdate}
                 isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
                 onFundingUpdate={this.handleUpdateFunding}
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
+                onTopicsUpdate={this.handleTopicsUpdate}
                 onUpdateProject={this.handleUpdateProject}
               />
               {
