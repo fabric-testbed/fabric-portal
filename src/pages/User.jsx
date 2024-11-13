@@ -8,6 +8,9 @@ import Slices from "../components/Experiment/Slices";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class User extends React.Component {
   state = {
@@ -68,24 +71,27 @@ class User extends React.Component {
     const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
-      <div className="container">
-        <div className="row">
-          <SideNav
-            items={this.state.SideNavItems}
-            handleChange={this.handleChange}
-          />
-          <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showFullPageSpinner}/>
-          <TagName
-            user={user}
-            onRoleRefresh={this.handleRoleRefresh}
-            sliverKeys={sliverKeys}
-            bastionKeys={bastionKeys}
-            disableKeyDelete={true}
-            styleProp={"col-9"}
-            parent={"UserProfile"}
-          />
-        </div>
-      </div>
+      <Container>
+        <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showFullPageSpinner}/>
+        <Row>
+          <Col xs={3}>
+            <SideNav
+              items={this.state.SideNavItems}
+              handleChange={this.handleChange}
+            />
+          </Col>
+          <Col xs={9}>
+            <TagName
+              user={user}
+              onRoleRefresh={this.handleRoleRefresh}
+              sliverKeys={sliverKeys}
+              bastionKeys={bastionKeys}
+              disableKeyDelete={true}
+              parent={"UserProfile"}
+            />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

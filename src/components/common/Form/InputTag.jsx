@@ -34,9 +34,9 @@ class InputTag extends React.Component {
   };
 
   render() {
-    const { name, label, tags } = this.props;
+    const { name, label, tags, disabled } = this.props;
     return (
-      <div className="form-group">
+       !disabled ? <div className="form-group">
         <label htmlFor={name}>{label}</label>
         <div className="input-tag form-control">
           <ul className="input-tag__tags">
@@ -61,7 +61,20 @@ class InputTag extends React.Component {
             </li>
           </ul>
         </div>
-      </div>
+      </div> :
+      <ul className="input-tag__tags">
+      {tags.map((tag, i) => (
+        <li key={tag}>
+          {tag}
+          <i
+            className="fa fa-times ms-2"
+            onClick={() => {
+              this.raiseRemoveTag(i);
+            }}
+          ></i>
+        </li>
+      ))}
+      </ul>
     );
   }
 }

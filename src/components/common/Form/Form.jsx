@@ -166,13 +166,13 @@ class Form extends Component {
     );
   }
 
-  renderInputTag(name, label) {
-    const { data } = this.state;
+  renderInputTag(name, label, tags, notDisabled) {
     return (
       <InputTag
         name={name}
-        tags={data.tags}
+        tags={tags}
         label={label}
+        disabled={!notDisabled}
         onTagChange={this.handleTagChange}
       />
     );

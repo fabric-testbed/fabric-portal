@@ -7,7 +7,7 @@ import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import Funding from "./Community/Funding.jsx";
 import CommunityTags from "./Community/CommunityTags.jsx";
-import ProjectTopics from "./Community/ProjectTopics.jsx";
+// import ProjectTopics from "./Community/ProjectTopics.jsx";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
@@ -105,11 +105,11 @@ class ProjectBasicInfoTable extends Component {
           canUpdate={canUpdate}
           onCommunityUpdate={this.props.onCommunityUpdate}
         />
-        <ProjectTopics
+        {/* <ProjectTopics
           topics={topics}
           canUpdate={canUpdate}
           onTopicsUpdate={this.props.onTopicsUpdate}
-        />
+        /> */}
         {
           canUpdate && 
           <button

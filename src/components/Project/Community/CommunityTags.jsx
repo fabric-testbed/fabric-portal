@@ -1,5 +1,10 @@
 import React from 'react';
 import { default as portalData } from "../../../services/portalData.json";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class Community extends React.Component {
   state = {
@@ -38,54 +43,56 @@ class Community extends React.Component {
     return (
       <div>
         <h5 className="mt-2">Community</h5>
+        <Form>
         {
-          canUpdate &&         <div className="form-row">
-          <div className="form-group slice-builder-form-group col-md-4">
-            <label htmlFor="inputCommunityAgency" className="slice-builder-label">
-              Science Domain
-            </label>
-            <select
-              className="form-control form-control-sm"
-              id="communityAgencySelect"
-              value={selected_domain}
-              onChange={this.handleDomainChange}
-            >
-              <option value="">Choose...</option>
-              { 
-                domain_options.map((domain, index) => 
-                  <option value={domain} key={`community-domain-${index}`}>{domain}</option>
-                )
-              }
-            </select>
-          </div>
-          <div className="form-group slice-builder-form-group col-md-7">
-            <label htmlFor="inputComponent" className="slice-builder-label">Subdomain</label>
-            <select
-              className="form-control form-control-sm"
-              id="directorateSelect"
-              value={selected_subdomain}
-              onChange={this.handleSubdomainChange}
-              disabled={subdomain_options.length === 0}
-            >
-              <option value="">Choose...</option>
-              { 
-                subdomain_options.length > 0 &&
-                subdomain_options.map((directorate, index) => 
-                  <option value={directorate} key={`community-directorate-${index}`}>{directorate}</option>
-                )
-              }
-            </select>
-          </div>
-          <div className="form-group slice-builder-form-group col-md-1">
-            <button
-              className="btn btn-sm btn-outline-success mt-4"
-              type="button"
-              onClick={this.handleCommunityAdd}
-            >
-              Add
-            </button>
-          </div>
-        </div>
+          canUpdate &&         
+          <Container>
+            <Row>
+              <Col xs={4}>
+                <Form.Group className="mb-3" controlId="communityAgencySelect">
+                  <Form.Label>Science Domain</Form.Label>
+                  <Form.Select
+                    aria-label="Community agency select"
+                    id="communityAgencySelect"
+                    value={selected_domain}
+                    onChange={this.handleDomainChange}
+                  >
+                    <option value="">Choose...</option>
+                    { 
+                      domain_options.map((domain, index) => 
+                        <option value={domain} key={`community-domain-${index}`}>{domain}</option>
+                      )
+                    }
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col xs={7}>
+                <Form.Group className="mb-3" controlId="subdomainSelect">
+                  <Form.Label>Science Domain</Form.Label>
+                  <Form.Select
+                    aria-label="Community subdomain select"
+                    id="directorateSelect"
+                    value={selected_subdomain}
+                    onChange={this.handleSubdomainChange}
+                    disabled={subdomain_options.length === 0}
+                  >
+                    <option value="">Choose...</option>
+                    { 
+                      subdomain_options.length > 0 &&
+                      subdomain_options.map((directorate, index) => 
+                        <option value={directorate} key={`community-directorate-${index}`}>{directorate}</option>
+                      )
+                    }
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col xs={1}>
+                <Button variant="primary" type="button" onClick={this.handleCommunityAdd}>
+                Add
+                </Button>
+              </Col>
+            </Row>
+          </Container>
         }
         <div className="ms-1">
             <ul className="input-tag__tags">
@@ -118,6 +125,7 @@ class Community extends React.Component {
             This project has no community tag added yet.
           </div>
         }
+      </Form>
       </div>
     )
   }
