@@ -2,6 +2,7 @@ import React from "react";
 import AnimatedNumber from "react-animated-number";
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
 import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
+import { getPublications } from "../../services/publicationService.js";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
@@ -27,7 +28,7 @@ class DynamicMetrics extends React.Component {
       },
       {
         name: "Publications Using FABRIC",
-        count: 33,
+        count: 0,
         link: "/community/fabric-user-publications"
       }
     ]
@@ -37,15 +38,19 @@ class DynamicMetrics extends React.Component {
     try {
       const { data: resCoreMetrics } = await getCoreApiMetrics();
       const { data: resOrchestratorMetrics } = await getOrchestratorMetrics();
+      const { data: resPublications } = await getPublications();
       this.setState({
-        metricsItems: this.generateMetricsItems(resCoreMetrics.results[0], resOrchestratorMetrics.results[0])
-      });
+        metricsItems: this.generateMetricsItems(
+          resCoreMetrics.results[0], 
+          resOrchestratorMetrics.results[0],
+          resPublications.results
+        )});
     } catch (err) {
       toast.error("Failed to load FABRIC metrics data.")
     }
   }
 
-  generateMetricsItems = (coreMetrics, sliceMetrics) => {
+  generateMetricsItems = (coreMetrics, sliceMetrics, publicationMetrics) => {
     const metricsItems = [];
     // total slices' count and active slices' count
     metricsItems.push({
@@ -69,7 +74,7 @@ class DynamicMetrics extends React.Component {
     });
     metricsItems.push({
       name: "FABRIC User Publications",
-      count: 33,
+      count: publicationMetrics.length,
       link: "/community/fabric-user-publications"
     });
 
