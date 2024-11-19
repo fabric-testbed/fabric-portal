@@ -33,7 +33,7 @@ import {
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
-  <div className="ml-2">
+  <div className="ms-2">
     <p className="text-white">{ message }</p>
     <Link to={`/projects/${projectId}`}>
       <button className="btn btn-sm btn-outline-light">

@@ -141,7 +141,7 @@ class ProjectBasicInfoTable extends Component {
                   <td>
                     Project Permissions <a
                     href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                    target="_blank" rel="noreferrer" className="ml-1">
+                    target="_blank" rel="noreferrer" className="ms-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
                   </td>

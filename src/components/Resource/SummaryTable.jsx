@@ -16,7 +16,7 @@ class SummaryTable extends Component {
           {
             resource.status && resource.status.state === "Maint" &&
             <div>
-              <span className="badge badge-pill badge-danger px-2">
+              <span className="badge badge-pill bg-danger px-2">
                 Maintenance
               </span>
             </div>
@@ -24,7 +24,7 @@ class SummaryTable extends Component {
           {
             resource.status && resource.status.state === "PreMaint" &&
             <div>
-              <span className="badge badge-pill badge-warning px-2">
+              <span className="badge badge-pill bg-warning px-2">
                 Pre-Maintenance
               </span>
             </div>
@@ -32,7 +32,7 @@ class SummaryTable extends Component {
           {
             resource.status && resource.status.state === "PartMaint" &&
             <div>
-              <span className="badge badge-pill badge-warning px-2">
+              <span className="badge badge-pill bg-warning px-2">
                 Partial Maintenance
               </span>
             </div>

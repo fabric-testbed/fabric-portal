@@ -97,7 +97,7 @@ const DetailTable = props => {
               {
                 resource &&
                 <span
-                  className={`badge badge-pill badge-${statusMapping[resource.status.state].colorName} px-2 ms-2`}
+                  className={`badge badge-pill bg-${statusMapping[resource.status.state].colorName} px-2 ms-2`}
                 >
                   { statusMapping[resource.status.state].state }
                 </span>
@@ -113,14 +113,14 @@ const DetailTable = props => {
             <td className="align-middle text-center">
               {
                 !resource &&
-                <span className="badge badge-pill badge-secondary px-2">
+                <span className="badge badge-pill bg-secondary px-2">
                   Down
                 </span>
               }
               {
                 resource &&
                 <span
-                  className={`badge badge-pill badge-${statusMapping[resource.status.state].colorName} px-2`}
+                  className={`badge badge-pill bg-${statusMapping[resource.status.state].colorName} px-2`}
                 >
                   { statusMapping[resource.status.state].state }
                 </span>

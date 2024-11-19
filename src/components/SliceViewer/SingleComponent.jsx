@@ -139,7 +139,7 @@ export default class SingleComponent extends Component {
             </div>
             {
               componentModel !== "" && componentModel !== "" && 
-              <span className="text-sm-size mb-2 badge badge-secondary">
+              <span className="text-sm-size mb-2 badge bg-secondary">
                 {
                   'Model Details: ' + modelDetails[componentModel]
                 }

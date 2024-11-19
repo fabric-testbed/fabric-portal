@@ -143,7 +143,7 @@ class PublicationTracker extends Component {
               onSort={this.handleSort}
               size={"md"} 
               tStyle={"table-striped table-md"}
-              tHeadStyle={"bg-primary-light"}
+              tHeadStyle={"table-primary"}
             />
           </div>
         }

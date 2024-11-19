@@ -79,7 +79,7 @@ export default class SliceViewerErrorBoundary extends Component {
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="me-3">
                   <b>{slice.name}</b>
-                  <span className={`badge badge-${stateColors[slice.state]} ms-2`}>
+                  <span className={`badge bg-${stateColors[slice.state]} ms-2`}>
                     {slice.state}
                   </span>
                   <a

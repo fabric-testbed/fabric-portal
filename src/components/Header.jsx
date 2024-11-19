@@ -319,7 +319,7 @@ const Header = (props) => {
           </NavLink>
           <NavLink to="/signup/1">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary ms-2"
             >
               Sign up
             </button>

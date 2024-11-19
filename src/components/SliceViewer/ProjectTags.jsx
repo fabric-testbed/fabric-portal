@@ -78,7 +78,7 @@ export default class SideLinks extends Component {
                       overlay={renderTooltip("pl-tooltip", tagKeyValuePairs[tag])}
                       key={`project-tag-${tag}`}
                     >
-                      <span className="badge badge-primary me-2 project-tag">{tag}</span>
+                      <span className="badge bg-primary me-2 project-tag">{tag}</span>
                     </OverlayTrigger>
                 )
               }

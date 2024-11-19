@@ -330,7 +330,7 @@ class SiteDetailPage extends React.Component {
                   <h5>
                     Host Resources 
                   </h5>
-                  <span className="badge badge-primary ms-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
+                  <span className="badge bg-primary ms-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
                 </div>
               <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
               {
