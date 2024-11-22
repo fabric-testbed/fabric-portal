@@ -18,7 +18,7 @@ const RadioBtnGroup = ({ values, onChange, ...rest }) => {
             <label className="form-check-label">
               <input
                 type="radio"
-                className="form-check-input"
+                className="form-check-input me-1"
                 name="radio"
                 value={item.value}
                 checked={item.isActive}

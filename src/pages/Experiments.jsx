@@ -6,6 +6,9 @@ import Projects from "../components/Experiment/Projects";
 import Tokens from "../components/Experiment/Tokens";
 import Keys from "../components/Experiment/Keys";
 import ArtifactManager from "../components/Experiment/ArtifactManager";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class Experiments extends React.Component {
   state = {
@@ -69,22 +72,26 @@ class Experiments extends React.Component {
     const TagName = this.state.componentNames[this.state.activeIndex];
     const { globalRoles } = this.props;
     return (
-      <div className="container">
-        <div className="row">
-          <SideNav
-            items={this.state.SideNavItems}
-            handleChange={this.handleChange}
-          />
-          <TagName
-            user={this.state.user}
-            people={this.state.people}
-            globalRoles={globalRoles}
-            styleProp={"col-9"}
-            parent={"Experiments"}
-            handleChange={this.handleChange}
-          />
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col xs={3}>
+            <SideNav
+              items={this.state.SideNavItems}
+              handleChange={this.handleChange}
+            />
+          </Col>
+          <Col xs={9}>
+            <TagName
+              user={this.state.user}
+              people={this.state.people}
+              globalRoles={globalRoles}
+              styleProp={"col-9"}
+              parent={"Experiments"}
+              handleChange={this.handleChange}
+            />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

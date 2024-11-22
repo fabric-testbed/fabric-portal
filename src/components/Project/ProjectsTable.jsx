@@ -29,7 +29,13 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {project.communities.map((community, index) => {
-              return <Badge bg="primary"  key={`project-community-${index}`}>{community}</Badge>
+              return (<Badge
+                bg="primary"  
+                key={`project-community-${index}`}
+                className="me-1"
+              >
+                {community}
+              </Badge>)
             })}
           </span>
         )
@@ -65,7 +71,12 @@ class ProjectsTable extends Component {
         content: (project) => (
           <span>
             {project.communities.map((community, index) => {
-              return <Badge bg="primary" className="me-1" key={`project-community-${index}`}>{community}</Badge>
+              return (<Badge
+                bg="primary"
+                className="me-1"
+                key={`project-community-${index}`}>
+                  {community}
+                </Badge>)
             })}
           </span>
         )

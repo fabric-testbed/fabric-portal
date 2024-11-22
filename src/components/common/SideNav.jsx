@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 class SideNav extends React.Component {
   render() {
     return (
-      <div className="col-3 mt-4">
+      <div className="mt-4 side-nav">
         <Nav defaultActiveKey={this.props.items[0].hash} className="flex-column">
           {this.props.items.map((item, index) => {
             return (

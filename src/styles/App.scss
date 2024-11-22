@@ -373,20 +373,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Side Navbar */
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.side-nav .nav-link.active,
+.side-nav .show > .nav-link {
   color: $primary-color;
   background-color: #fff;
   border-left: 3px $primary-color solid;
 }
 
-.nav-pills .nav-link {
+.side-nav .nav-link {
   border-radius: 0;
   padding: 0.25rem 0.75rem;
   margin: 0.5rem 0;
 }
 
-.nav-pills .nav-link {
+.side-nav .nav-link {
   color: $grey-darken-2;
 }
 
@@ -1341,4 +1341,30 @@ div:has(> #multiselectContainerReact) {
 
 .carousel-control-prev, .carousel-control-next {
   width: 5% !important;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-inline .form-control {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.form-row > .col {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+label {
+  margin-bottom: 0.5rem;
 }
