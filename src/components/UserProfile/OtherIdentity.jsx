@@ -22,8 +22,11 @@ class OtherIdentity extends React.Component {
         case "orcid":
           regex = /^(\d{4}-){3}\d{3}[\dX]$/;
           break;
-        default:
+        case "other":
           regex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})(\/[^\s]*)?$/;
+          break;
+        default: 
+          regex = /.*/;
       }
       this.setState({ is_valid: regex.test(value) });
     } else if (field === "type") {
@@ -34,8 +37,11 @@ class OtherIdentity extends React.Component {
         case "orcid":
           regex = /^(\d{4}-){3}\d{3}[\dX]$/;
           break;
-        default:
+        case "other":
           regex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})(\/[^\s]*)?$/;
+          break;
+        default: 
+          regex = /.*/;
       }
       this.setState({ is_valid: regex.test(this.state.identity) });
     }

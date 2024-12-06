@@ -25,7 +25,8 @@ class MyProfile extends Form {
         "show_bio",
         "show_pronouns",
         "show_job",
-        "show_website"
+        "show_website",
+        "show_other_identities"
       ],
       selectedOptions: []
     },
@@ -36,7 +37,8 @@ class MyProfile extends Form {
       "show_bio",
       "show_pronouns",
       "show_job",
-      "show_website"
+      "show_website",
+      "show_other_identities"
     ],
     optionsDisplayMapping: {
       "show_email": "Email",
@@ -45,7 +47,8 @@ class MyProfile extends Form {
       "show_bio": "Bio",
       "show_pronouns": "Pronouns",
       "show_job": "Job Title",
-      "show_website": "Website"
+      "show_website": "Website",
+      "show_other_identities": "Other Identities"
     },
     other_identities: [],
     user: {
@@ -82,7 +85,8 @@ class MyProfile extends Form {
           "show_bio",
           "show_pronouns",
           "show_job",
-          "show_website"
+          "show_website",
+          "show_other_identities"
         ],
         selectedOptions: Object.keys(user.profile.preferences).filter(key => 
           user.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
@@ -90,7 +94,7 @@ class MyProfile extends Form {
               user.preferences[key] && this.state.allOptions.includes(key))
           )
       }
-      this.setState({ data: profile, user });
+      this.setState({ data: profile, user, other_identities: user.profile.other_identities });
     } catch (err) { 
       toast.error("Failed to load user information. Please re-login.");
     }
@@ -113,7 +117,7 @@ class MyProfile extends Form {
     // to object { "show_bio": true, "show_website": true } 
     // true for the existing items in array, others false.
     const preferenceType1 = ["show_email","show_roles", "show_sshkeys"];
-    const preferenceType2 = ["show_bio", "show_pronouns", "show_job", "show_website"];
+    const preferenceType2 = ["show_bio", "show_pronouns", "show_job", "show_website", "show_other_identities"];
 
     const preferences1 = {};
     const preferences2 = {};
@@ -169,7 +173,8 @@ class MyProfile extends Form {
           "show_bio",
           "show_pronouns",
           "show_job",
-          "show_website"
+          "show_website",
+          "show_other_identities"
         ],
         selectedOptions: Object.keys(updatedUser.profile.preferences).filter(key => 
           updatedUser.profile.preferences[key] && this.state.allOptions.includes(key)).concat(
@@ -222,7 +227,7 @@ class MyProfile extends Form {
         />
         <button
           className="btn btn-md btn-primary mt-3"
-          onClick={() => this.handleUpdateUser}
+          onClick={this.handleUpdateUser}
         >
           Save
         </button>
