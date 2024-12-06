@@ -51,3 +51,7 @@ export function getUserPreferences() {
 export function getUserProfilePreferences() {
   return http.get(`${apiEndpoint}/profile/preferences`);
 }
+
+export function getOtherIdentityTypes() {
+  return http.get(`${apiEndpoint}/profile/otheridentity-types`);
+}

@@ -4,6 +4,7 @@ import { default as portalData } from "../../services/portalData.json";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import AccountInfo from "./AccountInfo";
+import OtherIdentity from "./OtherIdentity.jsx";
 import { getCurrentUser, updatePeopleProfile, updatePeoplePreference } from "../../services/peopleService.js";
 import { toast } from "react-toastify";
 
@@ -46,6 +47,7 @@ class MyProfile extends Form {
       "show_job": "Job Title",
       "show_website": "Website"
     },
+    other_identities: [],
     user: {
       email: "",
       email_addresses: []
@@ -58,7 +60,7 @@ class MyProfile extends Form {
       { display: "Bastion Login", field: "bastion_login" },
       { display: "UUID", field: "uuid" },
       { display: "CILogon ID", field: "cilogon_id"},
-    ],
+    ]
   }
 
   async componentDidMount () {
@@ -127,7 +129,23 @@ class MyProfile extends Form {
     return [preferences1, preferences2];
   }
 
-  doSubmit = async () => {
+  handleIdentityUpdate = (operation, identity) => {
+    const identities = this.state.added_identities;
+    if (operation === "add") {
+      identities.push(identity);
+      this.setState({ other_identities: identities })
+    } else if (operation === "remove") {
+      const new_identities = [];
+      for (const i of this.state.other_identities) {
+        if (JSON.stringify(i) !== JSON.stringify(identity)) {
+          new_identities.push(i);
+        }
+      }
+      this.setState({ other_identities: new_identities })
+    }
+  }
+
+  handleUpdateUser = async () => {
     this.setState({ showSpinner: true });
     const { data, user } = this.state;
     try {
@@ -168,7 +186,7 @@ class MyProfile extends Form {
   };
 
   render() {
-    const { showSpinner, user, optionsDisplayMapping } = this.state;
+    const { showSpinner, user, optionsDisplayMapping, other_identities } = this.state;
     
     return (
       <div className="col-9">
@@ -199,6 +217,16 @@ class MyProfile extends Form {
             {this.renderButton("Save")}
           </form>
         }
+        <OtherIdentity
+          other_identities={other_identities}
+          onIdentityUpdate={this.handleIdentityUpdate}
+        />
+        <button
+          className="btn btn-md btn-primary mt-3"
+          onClick={() => this.handleUpdateUser}
+        >
+          Save
+        </button>
         <AccountInfo user={user} />
       </div>
     );
