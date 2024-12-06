@@ -110,10 +110,10 @@ class OtherIdentity extends React.Component {
     const { identity_options, type, identity, is_valid } = this.state;
     const { other_identities } = this.props;
     return (
-      <div className="pt-2 p-4 mt-5">
+      <div>
         <h5 className="mt-2">Other Identities</h5>
         <div className="form-row ps-1">
-          <div className="form-group slice-builder-form-group col-md-2 me-2">
+          <div className="form-group slice-builder-form-group w-25 me-2">
             <label htmlFor="inputtype" className="slice-builder-label">
               Type
             </label>
@@ -131,7 +131,7 @@ class OtherIdentity extends React.Component {
               }
             </select>
           </div>
-          <div className="form-group slice-builder-form-group col-md-3 me-2">
+          <div className="form-group slice-builder-form-group w-50 me-2">
               <label htmlFor="inputIdentity" className="slice-builder-label">Identity</label>
               <input
                 type="text" className="form-control form-control-sm" id="inputIdentity"

@@ -24,14 +24,15 @@ export function getCurrentUser() {
   return http.get(`${apiEndpoint}/${uuid}?as_self=true`);
 }
 
-export function updatePeopleProfile(userId, data, preferences) {
+export function updatePeopleProfile(userId, data, preferences, other_identities) {
   return http.patch(`${apiEndpoint}/${userId}/profile`, {
     "bio": data.bio,
     "job": data.job,
     "pronouns": data.pronouns,
     "website": data.website,
     "email": data.email,
-    "preferences": preferences
+    "preferences": preferences,
+    "other_identities": other_identities
   })
 }
 

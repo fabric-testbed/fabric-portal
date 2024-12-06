@@ -130,7 +130,7 @@ class MyProfile extends Form {
   }
 
   handleIdentityUpdate = (operation, identity) => {
-    const identities = this.state.added_identities;
+    const identities = this.state.other_identities;
     if (operation === "add") {
       identities.push(identity);
       this.setState({ other_identities: identities })
@@ -147,11 +147,11 @@ class MyProfile extends Form {
 
   handleUpdateUser = async () => {
     this.setState({ showSpinner: true });
-    const { data, user } = this.state;
+    const { data, user, other_identities } = this.state;
     try {
       const parsedPreferences = this.parsePreferences();
       await updatePeoplePreference(user.uuid, data, parsedPreferences[0]);
-      await updatePeopleProfile(user.uuid, data, parsedPreferences[1]);
+      await updatePeopleProfile(user.uuid, data, parsedPreferences[1], other_identities);
       const { data: res } = await getCurrentUser();
       const updatedUser = res.results[0];
       const profile = {
@@ -214,7 +214,6 @@ class MyProfile extends Form {
               this.renderSelect("receive_promotional_email", "Receive Promotional Email", 
                 true, "Yes", ["Yes", "No"])
             }
-            {this.renderButton("Save")}
           </form>
         }
         <OtherIdentity
