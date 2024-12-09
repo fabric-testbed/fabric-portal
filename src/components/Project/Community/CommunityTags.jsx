@@ -46,7 +46,6 @@ class Community extends React.Component {
         <Form>
         {
           canUpdate &&         
-          <Container>
             <Row>
               <Col xs={4}>
                 <Form.Group className="mb-3" controlId="communityAgencySelect">
@@ -92,7 +91,6 @@ class Community extends React.Component {
                 </Button>
               </Col>
             </Row>
-          </Container>
         }
         <div className="ms-1">
             <ul className="input-tag__tags">

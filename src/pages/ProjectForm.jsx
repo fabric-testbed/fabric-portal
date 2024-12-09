@@ -649,31 +649,31 @@ class ProjectForm extends Form {
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Permissions
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.storageRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Storage
                 </button>
                 <Link to="/experiments#projects">
                   <button
                     className="btn btn-sm btn-outline-primary my-3"
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Back to Project List
                   </button>
                 </Link>
@@ -683,7 +683,7 @@ class ProjectForm extends Form {
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Back to Project List
                 </button>
               </Link>
@@ -696,7 +696,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <span>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is expired and no operations are allowed. Please submit a ticket to renew the project.
               </span>
               <button
@@ -707,7 +707,7 @@ class ProjectForm extends Form {
                   "_blank")
                 }
               >
-                <i className="fa fa-sign-in mr-2"></i>
+                <i className="fa fa-sign-in me-2"></i>
                 Renew Project
               </button>
             </div>
@@ -720,7 +720,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <div>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is going to expire in a month on {utcToLocalTimeParser(data.expired)}. 
                 {
                   canUpdate ? <span> Please submit a ticket to renew the project.</span> : 
@@ -736,17 +736,19 @@ class ProjectForm extends Form {
                       "_blank")
                     }
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Renew Project
                   </button> : <div></div>
               }
             </div>
           }
           <div className="row mt-4">
-            <SideNav
-              items={SideNavItems}
-              handleChange={this.handleSideNavChange}
-            />
+            <div className="col-3">
+              <SideNav
+                items={SideNavItems}
+                handleChange={this.handleSideNavChange}
+              />
+            </div>
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             >  
@@ -763,9 +765,9 @@ class ProjectForm extends Form {
                       portalData.helperText.privacyPreferencesDescription
                     )
                   }
-                  {
+                  {/* {
                     this.renderInputTag("topics", "Project Topics", topics, canUpdate)
-                  }
+                  } */}
               </form>
               <ProjectBasicInfoTable
                 project={data}
