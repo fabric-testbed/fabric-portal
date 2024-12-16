@@ -57,7 +57,7 @@ class SummaryTable extends Component {
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
-          <div className="font-weight-bold text-monospace d-flex align-items-center">
+          <div className="fw-bold font-monospace d-flex align-items-center">
             Sites ({totalCount})
           </div>
           <div className="d-flex flex-row w-50 justify-content-end">
@@ -79,7 +79,7 @@ class SummaryTable extends Component {
             </button> */}
           </div>
         </div>
-        <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded text-monospace">
+        <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded font-monospace">
           <div className="w-50">Component Available:</div>
           <div className="w-75 d-flex flex-row justify-content-between">
             <div className="form-check form-check-inline">

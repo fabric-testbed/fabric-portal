@@ -134,7 +134,7 @@ class PublicationTracker extends Component {
           !showSpinner &&
           <div>
             <div className="d-flex flex-row justify-content-end w-100 my-2">
-              <span className="text-monospace">Displaying <b>{totalCount}</b> publications.</span>
+              <span className="font-monospace">Displaying <b>{totalCount}</b> publications.</span>
             </div>
             <Table
               columns={this.columns}

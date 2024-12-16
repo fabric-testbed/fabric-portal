@@ -7,10 +7,12 @@ import SummaryTable from "../components/Resource/SummaryTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
+import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
+import FacilityPortTable from "../components/Resource/FacilityPortTable.jsx";
 
 class Resources extends Component {
   state = {
@@ -23,17 +25,20 @@ class Resources extends Component {
     siteNames: [],
     siteColorMapping: {},
     availableComponents: [],
-    filterQuery: []
+    filterQuery: [],
+    facilityPorts: []
   }
 
   async componentWillMount() {
     try {
       const { data: res } = await getResources(1);
-      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
+      const parsedSites = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
+      const parsedFacilityPorts = facilityPortsParser(res.data[0]);
       this.setState({
-        resources: parsedObj.parsedSites,
-        siteNames: parsedObj.siteNames,
-        siteColorMapping: parsedObj.siteColorMapping
+        resources: parsedSites.parsedSites,
+        siteNames: parsedSites.siteNames,
+        siteColorMapping: parsedSites.siteColorMapping,
+        facilityPorts: parsedFacilityPorts
       });
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
@@ -115,7 +120,7 @@ class Resources extends Component {
     this.setState({ activeDetailName: name });
   }
 
-  getPageData = () => {
+  getSiteData = () => {
     const {
       pageSize,
       currentPage,
@@ -154,9 +159,18 @@ class Resources extends Component {
     return { totalCount: filtered.length, data: resources };
   };
 
+  getFPData = () => {
+    const { facilityPorts } = this.state;
+    return { totalCount: facilityPorts.length, facilityPorts: facilityPorts };
+  }
+
+
+
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { pageSize, currentPage, sortColumn, searchQuery, 
+      activeDetailName, facilityPorts } = this.state;
+    const { totalCount, data } = this.getSiteData();
+    const { totalFPCount } = this.getFPData();
 
     return (
       <div className="container">
@@ -196,6 +210,14 @@ class Resources extends Component {
                   pageSize={pageSize}
                   currentPage={currentPage}
                   onPageChange={this.handlePageChange}
+                />
+              </div>
+            </div>
+            <div className="row mt-4">
+              <div className="col-12 bg-info rounded">
+                <FacilityPortTable
+                  facilityPorts={facilityPorts}
+                  totalCount={facilityPorts.length}
                 />
               </div>
             </div>
