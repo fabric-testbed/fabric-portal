@@ -178,20 +178,6 @@ class Form extends Component {
     );
   }
 
-  renderProjectTags(name, label, baseOptions, optionsMapping) {
-    const { data } = this.state;
-    return (
-      <ProjectTags
-        name={name}
-        label={label}
-        tags={data.tags}
-        baseOptions={baseOptions}
-        optionsMapping={optionsMapping}
-        onTagChange={this.handleTagChange}
-      />
-    );
-  }
-
   renderInputCheckBoxes(name, label, notDisabled, optionsDisplayMapping, tooltip) {
     const { data } = this.state;
     const renderTooltip = (id, content) => (

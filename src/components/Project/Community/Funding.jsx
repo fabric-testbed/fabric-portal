@@ -1,6 +1,10 @@
 import React from 'react';
 import { getFundingAgencies, getFundingDirectorates } from "../../../services/projectService";
 import { toast } from "react-toastify";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class Funding extends React.Component {
   state = {
@@ -82,82 +86,94 @@ class Funding extends React.Component {
     return (
       <div className="pt-2">
         <h5 className="mt-2">Funding Information</h5>
+        <Form>
         {
-          canUpdate &&         <div className="form-row">
-          <div className="form-group slice-builder-form-group col-md-2">
-            <label htmlFor="inputFundingAgency" className="slice-builder-label">
-              Funding Agency*
-            </label>
-            <select
-              className="form-control form-control-sm"
-              id="fundingAgencySelect"
-              value={agency}
-              onChange={this.handleAgencyChange}
-            >
-              <option value="">Choose...</option>
-              { 
-                agency_options.map((agency, index) => 
-                  <option value={agency} key={`funding-agency-${index}`}>{agency}</option>
-                )
-              }
-            </select>
-          </div>
-          {
-            agency === "NSF" &&
-            <div className="form-group slice-builder-form-group col-md-3">
-              <label htmlFor="inputComponent" className="slice-builder-label">NSF Directorate</label>
-              <select
-                className="form-control form-control-sm"
-                id="directorateSelect"
-                value={directorate}
-                onChange={this.handleDirectorateChange}
+          canUpdate &&         
+          <Row>
+            <Col xs={2}>
+              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                <Form.Label>Funding Agency*</Form.Label>
+                <Form.Select
+                  className="form-control form-control-sm"
+                  id="fundingAgencySelect"
+                  value={agency}
+                  onChange={this.handleAgencyChange}
+                >
+                  <option value="">Choose...</option>
+                  { 
+                    agency_options.map((agency, index) => 
+                      <option value={agency} key={`funding-agency-${index}`}>{agency}</option>
+                    )
+                  }
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            {
+              agency === "NSF" &&
+              <Col xs={3}>
+                <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                  <Form.Label>NSF Directorate</Form.Label>
+                  <Form.Select
+                    className="form-control form-control-sm"
+                    id="directorateSelect"
+                    value={directorate}
+                    onChange={this.handleDirectorateChange}
+                  >
+                    <option value="">Choose...</option>
+                    { 
+                      directorate_options.map((directorate, index) => 
+                        <option value={directorate} key={`funding-directorate-${index}`}>{directorate}</option>
+                      )
+                    }
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            }
+            {
+              agency === "Other" &&
+              <Col xs={3}>
+                <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                  <Form.Label>Agency Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={agency_other}
+                    onChange={this.handleAgencyOtherChange}
+                  />
+                </Form.Group>
+              </Col>
+            }
+            <Col xs={3}>
+              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                <Form.Label>Award Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={award_number}
+                  onChange={this.handleAwardNumberChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={3}>
+              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={award_amount}
+                  onChange={this.handleAwardAmountChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={1} className="d-flex align-items-end">
+              <Button
+                variant="outline-success"
+                type="button" 
+                onClick={this.handleFundingAdd}
               >
-                <option value="">Choose...</option>
-                { 
-                  directorate_options.map((directorate, index) => 
-                    <option value={directorate} key={`funding-directorate-${index}`}>{directorate}</option>
-                  )
-                }
-              </select>
-            </div>
-          }
-          {
-            agency === "Other" && <div className="form-group slice-builder-form-group col-md-3">
-              <label htmlFor="inputAgencyName" className="slice-builder-label">Agency Name</label>
-              <input
-                type="text" className="form-control form-control-sm" id="inputAgencyName"
-                value={agency_other}
-                onChange={this.handleAgencyOtherChange}
-              />
-            </div>
-          }
-          <div className="form-group slice-builder-form-group col-md-3">
-            <label htmlFor="inputAwardNumber" className="slice-builder-label">Award Number</label>
-            <input
-              type="text" className="form-control form-control-sm" id="inputAwardNumber"
-              value={award_number}
-              onChange={this.handleAwardNumberChange}
-            />
-          </div>
-          <div className="form-group slice-builder-form-group col-md-3">
-            <label htmlFor="inputAwardAmount" className="slice-builder-label">Amount</label>
-            <input
-              type="text" className="form-control form-control-sm" id="inputAwardAmount"
-              value={award_amount}
-              onChange={this.handleAwardAmountChange}
-            />
-          </div>
-          <div className="form-group slice-builder-form-group col-md-1">
-            <button
-              className="btn btn-sm btn-outline-success mt-4"
-              type="button"
-              onClick={this.handleFundingAdd}
-            >
-              Add
-            </button>
-          </div>
-        </div>
+                Add
+              </Button>
+            </Col>
+          </Row>
         }
+        </Form>
         <div className="ms-1">
             <ul className="input-tag__tags">
               {

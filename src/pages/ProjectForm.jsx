@@ -112,6 +112,7 @@ class ProjectForm extends Form {
     originalTags: [],
     projectFunding: [],
     communities: [],
+    topics: [],
     fabricMatrix: ""
   };
 
@@ -137,7 +138,8 @@ class ProjectForm extends Form {
     allOptions: Joi.array(),
     selectedOptions: Joi.array(),
     project_funding: Joi.array(),
-    communities: Joi.array()
+    communities: Joi.array(),
+    topics: Joi.array(),
   };
 
   async populateProject() {
@@ -188,6 +190,7 @@ class ProjectForm extends Form {
           data: this.mapToViewModel(project),
           fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
           projectFunding: project.project_funding,
+          topics: project.topics,
           communities: project.communities,
           owners: project.project_owners, 
           members: project.project_members,
@@ -278,6 +281,7 @@ class ProjectForm extends Form {
       selectedOptions: Object.keys(project.preferences).filter(key => 
         project.preferences[key] && this.state.allOptions.includes(key)),
       project_funding: project.project_funding,
+      topics: project.topics,
       communities: project.communities
     };
   }
@@ -382,10 +386,6 @@ class ProjectForm extends Form {
 
   handleUpdateMatrix = (e) => {
     this.setState({ fabricMatrix:  e.target.value });
-  }
-
-  handleTopicsUpdate = (topics) => {
-    this.setState({ topics })
   }
 
   handlePermissionUpdate = async () => {
@@ -563,6 +563,12 @@ class ProjectForm extends Form {
       const stillUtc = moment.utc(utcDateTime).toDate();
       return stillUtc < moment(new Date()).add(1, 'M');
     }
+  }
+
+  handleUpdateTopics = (newTopics) =>{
+    console.log("Project Form - handle update topics.");
+    console.log(newTopics);
+    this.setState({ topics: newTopics });
   }
 
   render() {
@@ -782,8 +788,8 @@ class ProjectForm extends Form {
                 onFundingUpdate={this.handleUpdateFunding}
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
-                onTopicsUpdate={this.handleTopicsUpdate}
                 onUpdateProject={this.handleUpdateProject}
+                onTagChange={this.handleUpdateTopics}
               />
               {
                 globalRoles.isFacilityOperator && <div className="border-top my-2">

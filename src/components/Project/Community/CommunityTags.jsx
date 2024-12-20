@@ -1,6 +1,5 @@
 import React from 'react';
 import { default as portalData } from "../../../services/portalData.json";
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -85,9 +84,9 @@ class Community extends React.Component {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col xs={1}>
-                <Button variant="primary" type="button" onClick={this.handleCommunityAdd}>
-                Add
+              <Col xs={1} className="d-flex align-items-end">
+                <Button variant="outline-success" type="button" onClick={this.handleCommunityAdd}>
+                  Add
                 </Button>
               </Col>
             </Row>
