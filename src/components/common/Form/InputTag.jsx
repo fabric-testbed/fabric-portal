@@ -36,8 +36,8 @@ class InputTag extends React.Component {
   render() {
     const { name, label, tags, disabled } = this.props;
     return (
-       !disabled ? <div className="form-group mt-5">
-        <label htmlFor={name}>{label}</label>
+       !disabled ? <div className="form-group">
+        <h5 className="mt-2" htmlFor={name}>{label}</h5>
         <div className="input-tag form-control">
           <ul className="input-tag__tags">
             { 

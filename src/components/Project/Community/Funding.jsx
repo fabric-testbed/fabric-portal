@@ -91,7 +91,7 @@ class Funding extends React.Component {
           canUpdate &&         
           <Row>
             <Col xs={2}>
-              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+              <Form.Group controlId="fundingAgencySelect">
                 <Form.Label>Funding Agency*</Form.Label>
                 <Form.Select
                   className="form-control form-control-sm"
@@ -111,7 +111,7 @@ class Funding extends React.Component {
             {
               agency === "NSF" &&
               <Col xs={3}>
-                <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                <Form.Group controlId="fundingAgencySelect">
                   <Form.Label>NSF Directorate</Form.Label>
                   <Form.Select
                     className="form-control form-control-sm"
@@ -132,7 +132,7 @@ class Funding extends React.Component {
             {
               agency === "Other" &&
               <Col xs={3}>
-                <Form.Group className="mb-3" controlId="fundingAgencySelect">
+                <Form.Group controlId="fundingAgencySelect">
                   <Form.Label>Agency Name</Form.Label>
                   <Form.Control
                     type="text"
@@ -143,7 +143,7 @@ class Funding extends React.Component {
               </Col>
             }
             <Col xs={3}>
-              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+              <Form.Group controlId="fundingAgencySelect">
                 <Form.Label>Award Number</Form.Label>
                 <Form.Control
                   type="text"
@@ -153,7 +153,7 @@ class Funding extends React.Component {
               </Form.Group>
             </Col>
             <Col xs={3}>
-              <Form.Group className="mb-3" controlId="fundingAgencySelect">
+              <Form.Group controlId="fundingAgencySelect">
                 <Form.Label>Amount</Form.Label>
                 <Form.Control
                   type="text"
@@ -174,7 +174,7 @@ class Funding extends React.Component {
           </Row>
         }
         </Form>
-        <div className="ms-1">
+        <div className="mt-2">
             <ul className="input-tag__tags">
               {
                 fundings.length > 0 &&

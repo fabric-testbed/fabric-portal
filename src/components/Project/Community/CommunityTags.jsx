@@ -47,7 +47,7 @@ class Community extends React.Component {
           canUpdate &&         
             <Row>
               <Col xs={4}>
-                <Form.Group className="mb-3" controlId="communityAgencySelect">
+                <Form.Group controlId="communityAgencySelect">
                   <Form.Label>Science Domain</Form.Label>
                   <Form.Select
                     aria-label="Community agency select"
@@ -65,7 +65,7 @@ class Community extends React.Component {
                 </Form.Group>
               </Col>
               <Col xs={7}>
-                <Form.Group className="mb-3" controlId="subdomainSelect">
+                <Form.Group controlId="subdomainSelect">
                   <Form.Label>Science Domain</Form.Label>
                   <Form.Select
                     aria-label="Community subdomain select"
@@ -91,7 +91,7 @@ class Community extends React.Component {
               </Col>
             </Row>
         }
-        <div className="ms-1">
+        <div className="mt-2">
             <ul className="input-tag__tags">
               {
                 communities.length > 0 &&
