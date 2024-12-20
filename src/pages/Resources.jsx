@@ -17,10 +17,12 @@ import FacilityPortTable from "../components/Resource/FacilityPortTable.jsx";
 class Resources extends Component {
   state = {
     resources: [],
-    sortColumn: { path: "name", order: "desc" },
-    pageSize: 5,
-    currentPage: 1,
+    sortColumn1: { path: "name", order: "desc" },
+    sortColumn2: { path: "site", order: "desc" },
+    currentPage1: 1,
+    currentPage2: 1,
     searchQuery: "",
+    searchQuery2: "",
     activeDetailName: "StarLight",
     siteNames: [],
     siteColorMapping: {},
@@ -82,24 +84,40 @@ class Resources extends Component {
     return resource ? resource : null;
   }
 
-  handlePageChange = (page, pagesCount) => {
-    const currentPage = this.state.currentPage;
+  handleSitePageChange = (page, pagesCount) => {
+    const currentPage1 = this.state.currentPage1;
     // page: -1 -> prev page; page: -2 -> next page
-    if(page === -1 && currentPage > 1) {
-      this.setState({ currentPage: currentPage - 1 });
-    } else if (page === -2 && currentPage < pagesCount) {
-      this.setState({ currentPage: currentPage + 1 });
+    if(page === -1 && currentPage1 > 1) {
+      this.setState({ currentPage1: currentPage1 - 1 });
+    } else if (page === -2 && currentPage1 < pagesCount) {
+      this.setState({ currentPage1: currentPage1 + 1 });
     } else {
-      this.setState({ currentPage: page });
+      this.setState({ currentPage1: page });
+    }
+  }
+
+  handleFacilityPageChange = (page, pagesCount) => {
+    const currentPage2 = this.state.currentPage2;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage2 > 1) {
+      this.setState({ currentPage2: currentPage2 - 1 });
+    } else if (page === -2 && currentPage2 < pagesCount) {
+      this.setState({ currentPage2: currentPage2 + 1 });
+    } else {
+      this.setState({ currentPage2: page });
     }
   }
 
   handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
+    this.setState({ searchQuery: query, currentPage1: 1 });
   };
 
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
+  handleFacilitySearch = (query) => {
+    this.setState({ searchQuery2: query, currentPage2: 1 });
+  };
+
+  handleSort = (sortColumn1) => {
+    this.setState({ sortColumn1 });
   };
 
   handleFilterChange = (e) => {
@@ -113,7 +131,7 @@ class Resources extends Component {
       filterQuery.push(component);
     }
 
-    this.setState({ filterQuery, currentPage: 1 });
+    this.setState({ filterQuery, currentPage1: 1 });
   }
 
   handleActiveDetailChange = (name) => {
@@ -122,9 +140,8 @@ class Resources extends Component {
 
   getSiteData = () => {
     const {
-      pageSize,
-      currentPage,
-      sortColumn,
+      currentPage1,
+      sortColumn1,
       searchQuery,
       resources: allResources,
       filterQuery
@@ -148,29 +165,53 @@ class Resources extends Component {
 
     let sorted = [];
 
-    if (Array.isArray(sortColumn.path)) {
-      sorted = _.orderBy(filtered, [sortColumn.path[0]], [sortColumn.order]);
+    if (Array.isArray(sortColumn1.path)) {
+      sorted = _.orderBy(filtered, [sortColumn1.path[0]], [sortColumn1.order]);
     } else {
-      sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+      sorted = _.orderBy(filtered, [sortColumn1.path], [sortColumn1.order]);
     }
 
-    const resources = paginate(sorted, currentPage, pageSize);
+    const resources = paginate(sorted, currentPage1, 5);
 
-    return { totalCount: filtered.length, data: resources };
+    return { totalCount: filtered.length, siteData: resources };
   };
 
   getFPData = () => {
-    const { facilityPorts } = this.state;
-    return { totalCount: facilityPorts.length, facilityPorts: facilityPorts };
+    const {
+      currentPage2,
+      sortColumn2,
+      searchQuery2,
+      facilityPorts: allFacilityPorts,
+    } = this.state;
+
+    // filter -> sort -> paginate
+    let filtered = allFacilityPorts;
+    if (searchQuery2) {
+      filtered = allFacilityPorts.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery2.toLowerCase())
+      );
+    }
+
+    let sorted = [];
+
+    if (Array.isArray(sortColumn2.path)) {
+      sorted = _.orderBy(filtered, [sortColumn2.path[0]], [sortColumn2.order]);
+    } else {
+      sorted = _.orderBy(filtered, [sortColumn2.path], [sortColumn2.order]);
+    }
+
+    const facilityPorts = paginate(sorted, currentPage2, 10);
+
+    return { totalFPCount: filtered.length, facilityPortData: facilityPorts };
   }
 
 
 
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, 
-      activeDetailName, facilityPorts } = this.state;
-    const { totalCount, data } = this.getSiteData();
-    const { totalFPCount } = this.getFPData();
+    const { currentPage1, sortColumn1, searchQuery, 
+      activeDetailName, sortColumn2, currentPage2, searchQuery2 } = this.state;
+    const { totalCount, siteData } = this.getSiteData();
+    const { totalFPCount, facilityPortData } = this.getFPData();
 
     return (
       <div className="container">
@@ -198,8 +239,8 @@ class Resources extends Component {
               <div className="col-12 bg-info rounded">
                 <SummaryTable
                   totalCount={totalCount}
-                  resources={data}
-                  sortColumn={sortColumn}
+                  resources={siteData}
+                  sortColumn={sortColumn1}
                   onSort={this.handleSort}
                   onFilter={this.handleFilterChange}
                   value={searchQuery}
@@ -207,17 +248,26 @@ class Resources extends Component {
                 />
                 <Pagination
                   itemsCount={totalCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  onPageChange={this.handlePageChange}
+                  pageSize={5}
+                  currentPage={currentPage1}
+                  onPageChange={this.handleSitePageChange}
                 />
               </div>
             </div>
             <div className="row mt-4">
               <div className="col-12 bg-info rounded">
                 <FacilityPortTable
-                  facilityPorts={facilityPorts}
-                  totalCount={facilityPorts.length}
+                  facilityPorts={facilityPortData}
+                  totalCount={totalFPCount}
+                  sortColumn={sortColumn2}
+                  value={searchQuery2}
+                  onChange={this.handleFacilitySearch}
+                />
+                 <Pagination
+                  itemsCount={totalFPCount}
+                  pageSize={10}
+                  currentPage={currentPage2}
+                  onPageChange={this.handleFacilityPageChange}
                 />
               </div>
             </div>

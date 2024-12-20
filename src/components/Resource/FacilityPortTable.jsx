@@ -8,6 +8,11 @@ class FacilityPortTable extends Component {
       path: "name",
       label: "Name",
     },
+    {
+      content: (fp) => (<span className="font-monospace">{fp.site}</span>),
+      path: "site",
+      label: "Site",
+    },
     { 
       content: (fp) => (
         <div className="w-50">
@@ -49,12 +54,24 @@ class FacilityPortTable extends Component {
   ];
 
   render() {
-    const { facilityPorts, totalCount } = this.props;
+    const { facilityPorts, totalCount, onChange, value } = this.props;
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
-          <div className="fw-bold font-monospace d-flex align-items-center">
+        <div className="fw-bold font-monospace d-flex align-items-center">
             Facility Ports ({totalCount})
+          </div>
+          <div className="d-flex flex-row w-50 justify-content-end">
+            <div className="d-flex flex-row w-50">
+              <input
+                type="text"
+                name="query"
+                className="form-control form-control form-control-sm align-self-end"
+                placeholder={"Search by name or site"}
+                value={value}
+                onChange={(e) => onChange(e.currentTarget.value)}
+              />
+            </div>
           </div>
         </div>
         <div className="px-2 pb-1">

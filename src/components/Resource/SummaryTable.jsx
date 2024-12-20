@@ -11,7 +11,7 @@ class SummaryTable extends Component {
             to={`/sites/${resource.name}`}
             state={{ data: resource }}
           >
-            {resource.name}
+            <span className="font-monospace">{resource.name}</span>
           </Link>
           {
             resource.status && resource.status.state === "Maint" &&
