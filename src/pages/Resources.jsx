@@ -116,8 +116,12 @@ class Resources extends Component {
     this.setState({ searchQuery2: query, currentPage2: 1 });
   };
 
-  handleSort = (sortColumn1) => {
+  handleSortSite = (sortColumn1) => {
     this.setState({ sortColumn1 });
+  };
+
+  handleSortFP = (sortColumn2) => {
+    this.setState({ sortColumn2 });
   };
 
   handleFilterChange = (e) => {
@@ -241,7 +245,7 @@ class Resources extends Component {
                   totalCount={totalCount}
                   resources={siteData}
                   sortColumn={sortColumn1}
-                  onSort={this.handleSort}
+                  onSort={this.handleSortSite}
                   onFilter={this.handleFilterChange}
                   value={searchQuery}
                   onChange={this.handleSearch}
@@ -262,6 +266,7 @@ class Resources extends Component {
                   sortColumn={sortColumn2}
                   value={searchQuery2}
                   onChange={this.handleFacilitySearch}
+                  onSort={this.handleSortFP}
                 />
                  <Pagination
                   itemsCount={totalFPCount}

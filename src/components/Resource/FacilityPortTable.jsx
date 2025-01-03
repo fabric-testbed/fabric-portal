@@ -54,7 +54,7 @@ class FacilityPortTable extends Component {
   ];
 
   render() {
-    const { facilityPorts, totalCount, onChange, value } = this.props;
+    const { facilityPorts, totalCount, onChange, value, sortColumn, onSort } = this.props;
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
@@ -79,6 +79,8 @@ class FacilityPortTable extends Component {
             columns={this.columns}
             data={facilityPorts}
             tStyle={"table-sm"}
+            sortColumn={sortColumn}
+            onSort={onSort}
           />
         </div>
       </div>
