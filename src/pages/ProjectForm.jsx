@@ -424,7 +424,15 @@ class ProjectForm extends Form {
       2: "#slices",
       3: "#volumes",
     }
-    this.setState({ activeIndex: newIndex });
+    this.setState({ 
+      activeIndex: newIndex,
+      SideNavItems: [
+        { name: "BASIC INFORMATION", active: newIndex === 0 },
+        { name: "PROJECT MEMBERSHIPS", active: newIndex === 1 },
+        { name: "SLICES", active: newIndex === 2 },
+        { name: "PERSISTENT STORAGE", active: newIndex === 3 }
+      ]
+     });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 

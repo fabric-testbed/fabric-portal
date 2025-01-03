@@ -1,5 +1,5 @@
 {
-  "version": "1.7.3",
+  "version": "1.8.0",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "projectTypeOptions": [
@@ -94,7 +94,8 @@
     "guideToSliceManager": "https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/",
     "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/",
     "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
-    "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/"
+    "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
+    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/"
   },
   "usernameOnImageMapping": {
     "default_centos8_stream": "centos",

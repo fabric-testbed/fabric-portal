@@ -9,7 +9,7 @@ class SideNav extends React.Component {
           {this.props.items.map((item, index) => {
             return (
               item.active ? 
-              <Nav.Link href={item.hash} key={`sidenav-${index}`} onClick={() => this.props.handleChange(index)}>{item.name}</Nav.Link> :
+              <Nav.Link href={item.hash} key={`sidenav-${index}`} onClick={() => this.props.handleChange(index)} className="active">{item.name}</Nav.Link> :
               <Nav.Link eventKey={item.hash} key={`sidenav-${index}`} onClick={() => this.props.handleChange(index)}>{item.name}</Nav.Link>
             );
           })}

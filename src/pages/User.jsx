@@ -15,10 +15,10 @@ import Col from 'react-bootstrap/Col';
 class User extends React.Component {
   state = {
     SideNavItems: [
-      { name: "MY PROFILE", active: true },
-      { name: "MY ROLES & PROJECTS", active: false },
-      { name: "MY SSH KEYS", active: false },
-      { name: "MY SLICES", active: false },
+      { name: "MY PROFILE", hash: "#profile", active: true },
+      { name: "MY ROLES & PROJECTS", hash: "#roles", active: false },
+      { name: "MY SSH KEYS", hash: "#sshKeys", active: false },
+      { name: "MY SLICES", hash: "#slices", active: false },
     ],
     user: {},
     activeIndex: 0,
@@ -41,6 +41,21 @@ class User extends React.Component {
 
   handleChange = (newIndex) => {
     this.setState({ activeIndex: newIndex });
+    const indexToHash = {
+      0: "#profile",
+      1: "#roles",
+      2: "#sshKeys",
+      3: "#slices",
+    }
+    this.setState({ activeIndex: newIndex,
+      SideNavItems: [
+        { name: "MY PROFILE", active: newIndex === 0  },
+        { name: "MY ROLES & PROJECTS", active: newIndex === 1 },
+        { name: "MY SSH KEYS", active: newIndex === 2 },
+        { name: "MY SLICES", active: newIndex === 3 }
+      ]
+    });
+    this.props.navigate(`/user${indexToHash[newIndex]}`);
   };
 
   handleRoleRefresh = async () => {

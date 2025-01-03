@@ -1,4 +1,5 @@
 import React from 'react';
+import { default as portalData } from "../../services/portalData.json";
 
 class OtherIdentity extends React.Component {
   state = {
@@ -117,7 +118,17 @@ class OtherIdentity extends React.Component {
     const { other_identities } = this.props;
     return (
       <div>
-        <h5 className="mt-2">Other Identities</h5>
+        <h5 className="mt-2">
+          Other Identities
+          <a
+            href={portalData.learnArticles.guideToOtherIdentities}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <i className="fa fa-question-circle mx-2"></i>
+            User Guide
+          </a>
+        </h5>
         <div className="form-row ps-1">
           <div className="form-group slice-builder-form-group w-25 me-2">
             <label htmlFor="inputtype" className="slice-builder-label">
