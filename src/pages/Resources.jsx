@@ -189,7 +189,9 @@ class Resources extends Component {
     } = this.state;
 
     // filter -> sort -> paginate
+    // remove `-int` suffix in name if there is any
     let filtered = allFacilityPorts;
+
     if (searchQuery2) {
       filtered = allFacilityPorts.filter((p) =>
         p.name.toLowerCase().includes(searchQuery2.toLowerCase())
@@ -206,7 +208,7 @@ class Resources extends Component {
 
     const facilityPorts = paginate(sorted, currentPage2, 10);
 
-    return { totalFPCount: filtered.length, facilityPortData: facilityPorts };
+    return { totalFPCount: filtered.length, facilityPortData: facilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
   }
 
 

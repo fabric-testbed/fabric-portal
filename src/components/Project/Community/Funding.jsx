@@ -92,7 +92,7 @@ class Funding extends React.Component {
           <Row>
             <Col xs={2}>
               <Form.Group controlId="fundingAgencySelect">
-                <Form.Label>Funding Agency*</Form.Label>
+                <Form.Label>Agency*</Form.Label>
                 <Form.Select
                   className="form-control form-control-sm"
                   id="fundingAgencySelect"
