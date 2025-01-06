@@ -35,6 +35,11 @@ class PublicProjectProfile extends Component {
     }
   }
 
+  capitalizeFirstLetter = (str) => {
+    if (!str) return str; // Handle empty strings
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   render() {
     const { project } = this.state;
     return (
@@ -87,6 +92,10 @@ class PublicProjectProfile extends Component {
                   This project has no community tag added yet.
                 </span>
               }
+            </p>
+            <h5 className="card-title pb-2 border-bottom text-primary">Project Type</h5>
+            <p className="card-text mb-4">
+              { this.capitalizeFirstLetter(project.project_type) }
             </p>
           </div>
         </div>

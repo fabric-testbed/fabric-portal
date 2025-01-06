@@ -1,10 +1,19 @@
 import React, { Component } from "react";
 import Table from "../common/Table";
+import CopyButton from "../common/CopyButton";
 
 class FacilityPortTable extends Component {
   columns = [
     {
-      content: (fp) => (<span className="font-monospace">{fp.name}</span>),
+      content: (fp) => (<span className="font-monospace">
+        <CopyButton
+          id={fp.name}
+          text=""
+          showCopiedValue={true}
+          btnStyle={"btn btn-sm me-2 btn-outline-primary"}
+        />
+        {fp.name}
+      </span>),
       path: "name",
       label: "Name",
     },
