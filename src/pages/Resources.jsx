@@ -208,7 +208,7 @@ class Resources extends Component {
 
     const facilityPorts = paginate(sorted, currentPage2, 10);
 
-    return { totalFPCount: filtered.length, facilityPortData: facilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
+    return { totalFPCount: filtered.length, facilityPortData: facilityPorts};
   }
 
 

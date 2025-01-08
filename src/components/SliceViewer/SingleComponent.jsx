@@ -72,7 +72,7 @@ export default class SingleComponent extends Component {
         {
           !this.props.component ?
           <div>
-            <div className="form-row">
+            <div className="form-row mx-1">
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputComponent" className="slice-builder-label">
                   Component Type
@@ -146,14 +146,14 @@ export default class SingleComponent extends Component {
               </span>
             }
             {!validationResult.isValid && validationResult.message !== "" &&
-              <div className="my-2 sm-alert">
+              <div className="my-2 mx-1 sm-alert">
                 {validationResult.message}
               </div>
             }
           </div> 
           : 
           <div>
-            <div className="form-row">
+            <div className="form-row mx-1">
               <div className="form-group slice-builder-form-group col-md-3">
                 <select
                   className="form-control form-control-sm"

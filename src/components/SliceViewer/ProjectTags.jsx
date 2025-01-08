@@ -40,7 +40,7 @@ export default class SideLinks extends Component {
       </Tooltip>
     ); 
     return(
-      <div className="slice-viewer-project-tags-card-body">
+      <div>
         {
         showSpinner ? <SpinnerWithText text={"Loading project permissions..."} /> :
         <table className="table table-sm">

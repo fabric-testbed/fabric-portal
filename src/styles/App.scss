@@ -345,13 +345,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-item a.active,
-.nav-item a:hover {
+.nav-item a:hover,
+a.nav-link.active
+.nav-item.dropdown.active .nav-link {
   border-bottom: 3px $primary-color solid;
   color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .nav-item .dropdown-menu a.active,
-.nav-item .dropdown-menu a:hover {
+.nav-item .dropdown-menu a:hover,
+a.nav-link:hover {
   border-bottom: $primary-color solid;;
 }
 
@@ -604,11 +607,6 @@ ul,
   min-height: 82vh;
 }
 
-.slice-viewer-project-tags-card-body {
-  max-height: 7.75rem;
-  overflow: scroll;
-}
-
 .tab-content {
   border-bottom: 1px solid #dee2e6;
   border-left: 1px solid #dee2e6;
@@ -736,11 +734,6 @@ ul,
 .notice-banner {
   margin-top: 2.5rem;
   margin-bottom: -3rem !important;
-}
-
-.node-components-panel {
-  max-height: 12em;
-  overflow: scroll;
 }
 
 .form-label-danger {
@@ -1331,11 +1324,11 @@ div:has(> #multiselectContainerReact) {
   --bs-alert-border-color: #d0e2ec !important;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-success {
   --bs-btn-color: #fff !important;
 }
 
-.btn-outline-primary, .btn-outline-secondary {
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-success {
   --bs-btn-hover-color: #fff !important;
 }
 
@@ -1367,4 +1360,10 @@ div:has(> #multiselectContainerReact) {
 
 label {
   margin-bottom: 0.5rem;
+}
+
+.btn-link {
+  color: #5798bc;
+  font-weight: 400;
+  text-decoration: none;
 }

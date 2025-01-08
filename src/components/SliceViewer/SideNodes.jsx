@@ -354,7 +354,7 @@ class SideNodes extends React.Component {
             }
           <form>
             <div className="bg-light">
-              <div className="form-row">
+              <div className="form-row mx-1">
                 <div className="form-group slice-builder-form-group col-md-3">
                   <label htmlFor="inputState" className="slice-builder-label">
                     Site
@@ -440,7 +440,7 @@ class SideNodes extends React.Component {
               </div>
               { 
                 nodeType === "Facility" && nodeName &&
-                <div className="form-row">
+                <div className="form-row mx-1">
                   <div className="form-group slice-builder-form-group col-md-4">
                     <label htmlFor="inputCore" className="slice-builder-label">
                       Bandwidth
@@ -466,7 +466,7 @@ class SideNodes extends React.Component {
               }
               {
                 nodeType === "VM" && 
-                <div className="form-row">
+                <div className="form-row mx-1">
                   <div className="form-group slice-builder-form-group col-md-2">
                     <label htmlFor="inputCore" className="slice-builder-label">Cores</label>
                     <input type="number" className="form-control form-control-sm" id="inputCore"
@@ -519,13 +519,13 @@ class SideNodes extends React.Component {
                 </div>
               }
               {!validationResult.isValid && validationResult.message !== "" &&
-                <div className="my-2 sm-alert">
+                <div className="my-2 mx-1 sm-alert">
                   {validationResult.message}
                 </div>
               }
               {
                 nodeType === "VM" && 
-                <div className="form-row">
+                <div className="form-row mx-1">
                   <div className="form-group slice-builder-form-group col-md-12">
                     <label for="BootScript" className="slice-builder-label">
                       Boot Script (optional)
@@ -550,7 +550,7 @@ class SideNodes extends React.Component {
             </div>
             {
               nodeType === "VM" &&
-              <div className="mt-2 bg-light node-components-panel">
+              <div className="mt-2 bg-light">
                 <SingleComponent
                   addedComponents={nodeComponents}
                   onSliceComponentAdd={this.handleSliceComponentAdd}
@@ -558,7 +558,7 @@ class SideNodes extends React.Component {
                 <div className="text-sm-size"><b>Added Components:</b></div>
                 {
                   nodeComponents.length === 0 &&
-                  <div className="my-2 sm-alert">
+                  <div className="my-2 mx-1 sm-alert">
                     No component added. Please click the <b>+</b> button to add a component.
                   </div>
                 }
