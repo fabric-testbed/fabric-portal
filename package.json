@@ -17,7 +17,7 @@
     "buffer": "^6.0.3",
     "create-react-app": "^5.0.1",
     "csv": "^6.2.8",
-    "cytoscape": "^3.19.0",
+    "cytoscape": "^3.30.4",
     "cytoscape-compound-drag-and-drop": "^1.0.0",
     "cytoscape-cose-bilkent": "^4.1.0",
     "cytoscape-fcose": "^2.2.0",

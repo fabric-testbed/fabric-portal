@@ -2,8 +2,6 @@ export default function parseSites(data) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const facility_ports = nodes.filter(n => n.Type === "FacilityPort");
-  console.log("Number of facility ports: " + facility_ports.length);
-  console.log(facility_ports[0])
   const facilities = nodes.filter(n => n.Type === "Facility");
   const parsedFacilityPorts = [];
   for (const fp of facility_ports) {

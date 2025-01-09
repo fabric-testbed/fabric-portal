@@ -131,7 +131,7 @@ export default class SliceViewerErrorBoundary extends Component {
                   If you believe you encountered a bug in the way the Portal visualizes or manages your slice, please <b>report this issue</b> in the <b>
                       <a href="https://learn.fabric-testbed.net/forums/forum/fabric-general-questions-and-discussion/" target="_blank" rel="noreferrer">
                       <i className="fa fa-sign-in me-1"></i> FABRIC forum</a></b> and the FABRIC 
-                    development team will debug it soon. (Remember to include the <b>Slice ID: <i>{this.props.sliceID}</i></b> in the post.).
+                    development team will debug it soon. (Remember to include the <b>Slice ID <i>{this.props.sliceID}</i></b> in the post.).
                   </li>
                   </ul>
                   <div className="my-2 d-flex justify-content-center align-items-center">
