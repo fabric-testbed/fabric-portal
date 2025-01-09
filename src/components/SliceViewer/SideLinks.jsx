@@ -77,7 +77,7 @@ export default class SideLinks extends Component {
           </div>
         }
         <form>
-          <div className="form-row">
+          <div className="form-row mx-1">
             <div className="form-group slice-builder-form-group col-md-6">
               <label htmlFor="inputComponent" className="slice-builder-label">
                 Service Type
@@ -121,7 +121,7 @@ export default class SideLinks extends Component {
                 Click connection points (shown as grey squares) on the topology canvas, then click <b>Select</b> button from the canvas top to add service ports.
               </div>
             }
-            <div className="form-row">
+            <div className="form-row mx-1">
             <div className="form-group slice-builder-form-group mt-2 col-md-12">
               <ul className="input-tag__tags">
                 {

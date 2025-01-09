@@ -20,7 +20,7 @@
     "cytoscape": "^3.19.0",
     "cytoscape-compound-drag-and-drop": "^1.0.0",
     "cytoscape-cose-bilkent": "^4.1.0",
-    "cytoscape-fcose": "^2.1.0",
+    "cytoscape-fcose": "^2.2.0",
     "d3-color": "^3.1.0",
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",

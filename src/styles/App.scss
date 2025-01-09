@@ -346,7 +346,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-item a.active,
 .nav-item a:hover,
-a.nav-link.active
+.navbar-nav a.active,
 .nav-item.dropdown.active .nav-link {
   border-bottom: 3px $primary-color solid;
   color: rgba(0, 0, 0, 0.5) !important;
@@ -354,7 +354,7 @@ a.nav-link.active
 
 .nav-item .dropdown-menu a.active,
 .nav-item .dropdown-menu a:hover,
-a.nav-link:hover {
+.navbar-nav a.nav-link:hover {
   border-bottom: $primary-color solid;;
 }
 

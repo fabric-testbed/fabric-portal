@@ -84,7 +84,7 @@ class App extends React.Component {
 
     // if no user status info is stored, call UIS getWhoAmI.
     if (!localStorage.getItem("userStatus")) {
-      // try {
+      try {
         const { data } = await getWhoAmI();
         const user = data.results[0];
         if (user.enrolled) {
@@ -115,20 +115,20 @@ class App extends React.Component {
             console.log("Failed to get current user's information.");
           }
         }
-      // } catch (err) {
-      //   const errors = err.response.data.errors;
+      } catch (err) {
+        const errors = err.response.data.errors;
 
-      //   if (errors && errors[0].details.includes("Login required")) {
-      //     localStorage.setItem("userStatus", "unauthorized");
-      //     localStorage.removeItem("userID");
-      //     localStorage.removeItem("userName");
-      //     localStorage.removeItem("userEmail");
-      //   }
+        if (errors && errors[0].details.includes("Login required")) {
+          localStorage.setItem("userStatus", "unauthorized");
+          localStorage.removeItem("userID");
+          localStorage.removeItem("userName");
+          localStorage.removeItem("userEmail");
+        }
   
-      //   if (errors && errors[0].details.includes("Enrollment required")) {
-      //     localStorage.setItem("userStatus", "inactive");
-      //   } 
-      // }
+        if (errors && errors[0].details.includes("Enrollment required")) {
+          localStorage.setItem("userStatus", "inactive");
+        } 
+      }
     }
 
     this.setState({ 
