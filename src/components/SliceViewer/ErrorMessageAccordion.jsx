@@ -9,7 +9,6 @@ const ErrorMessageAccordion = props => {
               className="panel-title mb-0"
               data-toggle="collapse"
               data-target="#errorTableCollapse"
-              aria-expanded="true"
             >
              This slice is in <b>{state}</b> state due to the following errors. 
             </h6>

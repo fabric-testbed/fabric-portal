@@ -7,33 +7,40 @@ import SummaryTable from "../components/Resource/SummaryTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
+import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
-import _, { filter } from "lodash";
+import _ from "lodash";
+import FacilityPortTable from "../components/Resource/FacilityPortTable.jsx";
 
 class Resources extends Component {
   state = {
     resources: [],
-    sortColumn: { path: "name", order: "desc" },
-    pageSize: 5,
-    currentPage: 1,
+    sortColumn1: { path: "name", order: "desc" },
+    sortColumn2: { path: "site", order: "desc" },
+    currentPage1: 1,
+    currentPage2: 1,
     searchQuery: "",
+    searchQuery2: "",
     activeDetailName: "StarLight",
     siteNames: [],
     siteColorMapping: {},
     availableComponents: [],
-    filterQuery: []
+    filterQuery: [],
+    facilityPorts: []
   }
 
   async componentWillMount() {
     try {
       const { data: res } = await getResources(1);
-      const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
+      const parsedSites = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
+      const parsedFacilityPorts = facilityPortsParser(res.data[0]);
       this.setState({
-        resources: parsedObj.parsedSites,
-        siteNames: parsedObj.siteNames,
-        siteColorMapping: parsedObj.siteColorMapping
+        resources: parsedSites.parsedSites,
+        siteNames: parsedSites.siteNames,
+        siteColorMapping: parsedSites.siteColorMapping,
+        facilityPorts: parsedFacilityPorts
       });
     } catch (err) {
       toast.error("Failed to load resource information. Please reload this page.");
@@ -77,24 +84,44 @@ class Resources extends Component {
     return resource ? resource : null;
   }
 
-  handlePageChange = (page, pagesCount) => {
-    const currentPage = this.state.currentPage;
+  handleSitePageChange = (page, pagesCount) => {
+    const currentPage1 = this.state.currentPage1;
     // page: -1 -> prev page; page: -2 -> next page
-    if(page === -1 && currentPage > 1) {
-      this.setState({ currentPage: currentPage - 1 });
-    } else if (page === -2 && currentPage < pagesCount) {
-      this.setState({ currentPage: currentPage + 1 });
+    if(page === -1 && currentPage1 > 1) {
+      this.setState({ currentPage1: currentPage1 - 1 });
+    } else if (page === -2 && currentPage1 < pagesCount) {
+      this.setState({ currentPage1: currentPage1 + 1 });
     } else {
-      this.setState({ currentPage: page });
+      this.setState({ currentPage1: page });
+    }
+  }
+
+  handleFacilityPageChange = (page, pagesCount) => {
+    const currentPage2 = this.state.currentPage2;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage2 > 1) {
+      this.setState({ currentPage2: currentPage2 - 1 });
+    } else if (page === -2 && currentPage2 < pagesCount) {
+      this.setState({ currentPage2: currentPage2 + 1 });
+    } else {
+      this.setState({ currentPage2: page });
     }
   }
 
   handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
+    this.setState({ searchQuery: query, currentPage1: 1 });
   };
 
-  handleSort = (sortColumn) => {
-    this.setState({ sortColumn });
+  handleFacilitySearch = (query) => {
+    this.setState({ searchQuery2: query, currentPage2: 1 });
+  };
+
+  handleSortSite = (sortColumn1) => {
+    this.setState({ sortColumn1 });
+  };
+
+  handleSortFP = (sortColumn2) => {
+    this.setState({ sortColumn2 });
   };
 
   handleFilterChange = (e) => {
@@ -108,18 +135,17 @@ class Resources extends Component {
       filterQuery.push(component);
     }
 
-    this.setState({ filterQuery, currentPage: 1 });
+    this.setState({ filterQuery, currentPage1: 1 });
   }
 
   handleActiveDetailChange = (name) => {
     this.setState({ activeDetailName: name });
   }
 
-  getPageData = () => {
+  getSiteData = () => {
     const {
-      pageSize,
-      currentPage,
-      sortColumn,
+      currentPage1,
+      sortColumn1,
       searchQuery,
       resources: allResources,
       filterQuery
@@ -143,20 +169,53 @@ class Resources extends Component {
 
     let sorted = [];
 
-    if (Array.isArray(sortColumn.path)) {
-      sorted = _.orderBy(filtered, [sortColumn.path[0]], [sortColumn.order]);
+    if (Array.isArray(sortColumn1.path)) {
+      sorted = _.orderBy(filtered, [sortColumn1.path[0]], [sortColumn1.order]);
     } else {
-      sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+      sorted = _.orderBy(filtered, [sortColumn1.path], [sortColumn1.order]);
     }
 
-    const resources = paginate(sorted, currentPage, pageSize);
+    const resources = paginate(sorted, currentPage1, 5);
 
-    return { totalCount: filtered.length, data: resources };
+    return { totalCount: filtered.length, siteData: resources };
   };
 
+  getFPData = () => {
+    const {
+      currentPage2,
+      sortColumn2,
+      searchQuery2,
+      facilityPorts: allFacilityPorts,
+    } = this.state;
+
+    // filter -> sort -> paginate
+    // remove `-int` suffix in name if there is any
+    let filtered = allFacilityPorts;
+
+    if (searchQuery2) {
+      filtered = allFacilityPorts.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery2.toLowerCase())
+      );
+    }
+
+    let sorted = [];
+
+    if (Array.isArray(sortColumn2.path)) {
+      sorted = _.orderBy(filtered, [sortColumn2.path[0]], [sortColumn2.order]);
+    } else {
+      sorted = _.orderBy(filtered, [sortColumn2.path], [sortColumn2.order]);
+    }
+
+    const facilityPorts = paginate(sorted, currentPage2, 10);
+
+    return { totalFPCount: filtered.length, facilityPortData: facilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
+  }
+
   render() {
-    const { pageSize, currentPage, sortColumn, searchQuery, activeDetailName } = this.state;
-    const { totalCount, data } = this.getPageData();
+    const { currentPage1, sortColumn1, searchQuery, 
+      activeDetailName, sortColumn2, currentPage2, searchQuery2 } = this.state;
+    const { totalCount, siteData } = this.getSiteData();
+    const { totalFPCount, facilityPortData } = this.getFPData();
 
     return (
       <div className="container">
@@ -184,18 +243,36 @@ class Resources extends Component {
               <div className="col-12 bg-info rounded">
                 <SummaryTable
                   totalCount={totalCount}
-                  resources={data}
-                  sortColumn={sortColumn}
-                  onSort={this.handleSort}
+                  resources={siteData}
+                  sortColumn={sortColumn1}
+                  onSort={this.handleSortSite}
                   onFilter={this.handleFilterChange}
                   value={searchQuery}
                   onChange={this.handleSearch}
                 />
                 <Pagination
                   itemsCount={totalCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  onPageChange={this.handlePageChange}
+                  pageSize={5}
+                  currentPage={currentPage1}
+                  onPageChange={this.handleSitePageChange}
+                />
+              </div>
+            </div>
+            <div className="row mt-4">
+              <div className="col-12 bg-info rounded">
+                <FacilityPortTable
+                  facilityPorts={facilityPortData}
+                  totalCount={totalFPCount}
+                  sortColumn={sortColumn2}
+                  value={searchQuery2}
+                  onChange={this.handleFacilitySearch}
+                  onSort={this.handleSortFP}
+                />
+                 <Pagination
+                  itemsCount={totalFPCount}
+                  pageSize={10}
+                  currentPage={currentPage2}
+                  onPageChange={this.handleFacilityPageChange}
                 />
               </div>
             </div>

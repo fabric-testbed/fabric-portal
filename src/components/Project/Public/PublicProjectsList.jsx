@@ -1,4 +1,5 @@
 import React from "react";
+import Alert from 'react-bootstrap/Alert';
 import SpinnerWithText from "../../common/SpinnerWithText.jsx";
 import Pagination from "../../common/Pagination.jsx";
 import ProjectsTable from "../ProjectsTable.jsx";
@@ -7,6 +8,7 @@ import { default as portalData } from "../../../services/portalData.json";
 import { toast } from "react-toastify";
 import withRouter from "../../common/withRouter.jsx";
 import Multiselect from 'multiselect-react-dropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class PublicProjectsList extends React.Component {
   state = {
@@ -178,68 +180,59 @@ class PublicProjectsList extends React.Component {
             </a>
           </div>
         </div>
-        <div
-          className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
-          role="alert"
-        >
-          This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
-        </div>
-        <div className="w-100 input-group mt-3">
-        <div className="input-group mb-3 project-search-toolbar">
-          <div className="input-group-prepend">
-            <button
-              className="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+        <Alert show={true} variant="primary">
+        This is the public project list. Please log in to get access to project/ slice/ token/ SSH keys management features.
+        </Alert>
+        <div className="w-100 mt-3 d-flex flex-row">
+          <Dropdown>
+            <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
               <i className="fa fa-search"></i>
-            </button>
-            <div className="dropdown-menu">
-              <span className="dropdown-item" onClick={() => this.handleChangeFilter("description")}>Description</span>
-              <span className="dropdown-item" onClick={() => this.handleChangeFilter("community")}>Community</span>
-            </div>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.handleChangeFilter("description")}>Description</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.handleChangeFilter("community")}>Community</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <div className="input-group mb-3 project-search-toolbar">
+            {
+              filterOption === "description" &&
+                <input
+                  type="text"
+                  name="query"
+                  className="form-control"
+                  placeholder={"Search by project name and description..."}
+                  value={searchQuery}
+                  onChange={this.handleInputChange}
+                  onKeyDown={this.raiseInputKeyDown}
+                />
+            }
+            {
+              filterOption === "description" &&
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-primary"
+                    type="button"
+                    onClick={this.handleProjectsSearch}
+                  >
+                    Search
+                  </button>
+                </div>
+            }
+            {
+              filterOption === "community" &&
+                <Multiselect
+                  options={options}
+                  selectedValues={selectedList}
+                  onSelect={this.onSelect} 
+                  onRemove={this.onRemove} 
+                  displayValue="name" 
+                  showCheckbox={true}
+                  placeholder={"Filter by community"}
+                  avoidHighlightFirstOption={true}
+                  hideSelectedList={true}
+                />
+            }
           </div>
-          {
-            filterOption === "description" &&
-              <input
-                type="text"
-                name="query"
-                className="form-control"
-                placeholder={"Search by project name and description..."}
-                value={searchQuery}
-                onChange={this.handleInputChange}
-                onKeyDown={this.raiseInputKeyDown}
-              />
-          }
-          {
-            filterOption === "description" &&
-              <div className="input-group-append">
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={this.handleProjectsSearch}
-                >
-                  Search
-                </button>
-              </div>
-          }
-          {
-            filterOption === "community" &&
-              <Multiselect
-                options={options}
-                selectedValues={selectedList}
-                onSelect={this.onSelect} 
-                onRemove={this.onRemove} 
-                displayValue="name" 
-                showCheckbox={true}
-                placeholder={"Filter by community"}
-                avoidHighlightFirstOption={true}
-                hideSelectedList={true}
-              />
-          }
-        </div>
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading projects..."} />

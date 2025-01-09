@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
@@ -34,7 +35,7 @@ import FundingOpportunities from "./pages/static/FundingOpportunities";
 import NewsletterSignup from "./pages/static/NewsletterSignup";
 import Testbeds from "./pages/static/Testbeds.jsx";
 import Publications from "./pages/static/Publications.jsx";
-import PublicationTracker from "./pages/static/PublicationTracker.jsx";
+import PublicationTracker from "./pages/PublicationTracker.jsx";
 import SearchResults from "./pages/SearchResults.jsx";
 import Branding from "./pages/static/Branding.jsx";
 import Header from "./components/Header";
@@ -43,7 +44,6 @@ import Footer from "./components/Footer";
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./components/common/ProtectedRoutes";
-import "./styles/App.scss";
 import moment from 'moment';
 
 class App extends React.Component {

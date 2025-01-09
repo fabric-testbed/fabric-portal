@@ -13,7 +13,7 @@ const SpinnerWithText = (props) => {
         variant="primary"
         className="mt-1"
       />
-      <span className="text-primary ml-2"><b>{props.text}</b></span>
+      <span className="text-primary ms-2"><b>{props.text}</b></span>
     </div>
   );
 };

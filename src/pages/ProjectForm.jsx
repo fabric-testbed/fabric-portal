@@ -28,11 +28,12 @@ import {
   updateProjectTokenHolders,
   updateProjectCommunity,
   updateProjectFunding,
-  updateMatrix
+  updateMatrix,
+  updateProjectTopics
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
-  <div className="ml-2">
+  <div className="ms-2">
     <p className="text-white">{ message }</p>
     <Link to={`/projects/${projectId}`}>
       <button className="btn btn-sm btn-outline-light">
@@ -63,13 +64,15 @@ class ProjectForm extends Form {
       is_token_holder: false,
       is_public: false,
       is_locked: false,
+      project_type: "research",
       allOptions: [
         "show_project_owners",
         "show_project_members",
       ],
       selectedOptions: [],
       project_funding: [],
-      communities: []
+      communities: [],
+      topics: []
     },
     allOptions: [
       "show_project_owners",
@@ -109,6 +112,7 @@ class ProjectForm extends Form {
     originalTags: [],
     projectFunding: [],
     communities: [],
+    topics: [],
     fabricMatrix: ""
   };
 
@@ -129,11 +133,13 @@ class ProjectForm extends Form {
     is_owner: Joi.boolean(),
     is_token_holder: Joi.boolean(),
     is_public: Joi.string().required().label("Public"),
+    project_type: Joi.string().required().label("Project Type"),
     is_locked: Joi.boolean(),
     allOptions: Joi.array(),
     selectedOptions: Joi.array(),
     project_funding: Joi.array(),
-    communities: Joi.array()
+    communities: Joi.array(),
+    topics: Joi.array(),
   };
 
   async populateProject() {
@@ -184,6 +190,7 @@ class ProjectForm extends Form {
           data: this.mapToViewModel(project),
           fabricMatrix: project.profile.references.length > 0 ? project.profile.references[0].url : "",
           projectFunding: project.project_funding,
+          topics: project.topics,
           communities: project.communities,
           owners: project.project_owners, 
           members: project.project_members,
@@ -265,6 +272,7 @@ class ProjectForm extends Form {
       is_owner: project.memberships.is_owner,
       is_token_holder: project.memberships.is_token_holder,
       is_public: project.is_public ? "Yes" : "No",
+      project_type: project.project_type,
       is_locked: project.is_locked,
       allOptions: [
         "show_project_owners",
@@ -273,6 +281,7 @@ class ProjectForm extends Form {
       selectedOptions: Object.keys(project.preferences).filter(key => 
         project.preferences[key] && this.state.allOptions.includes(key)),
       project_funding: project.project_funding,
+      topics: project.topics,
       communities: project.communities
     };
   }
@@ -297,12 +306,13 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix, originalProject } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject } = this.state;
     const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
       await updateProjectFunding(project.uuid, projectFunding);
       await updateProjectCommunity(project.uuid, communities);
+      await updateProjectTopics(project.uuid, topics);
       if (fabricMatrix !== originalMatrix) {
         await updateMatrix(project.uuid, fabricMatrix);
       }
@@ -414,7 +424,15 @@ class ProjectForm extends Form {
       2: "#slices",
       3: "#volumes",
     }
-    this.setState({ activeIndex: newIndex });
+    this.setState({ 
+      activeIndex: newIndex,
+      SideNavItems: [
+        { name: "BASIC INFORMATION", active: newIndex === 0 },
+        { name: "PROJECT MEMBERSHIPS", active: newIndex === 1 },
+        { name: "SLICES", active: newIndex === 2 },
+        { name: "PERSISTENT STORAGE", active: newIndex === 3 }
+      ]
+     });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
   };
 
@@ -555,6 +573,12 @@ class ProjectForm extends Form {
     }
   }
 
+  handleUpdateTopics = (newTopics) =>{
+    console.log("Project Form - handle update topics.");
+    console.log(newTopics);
+    this.setState({ topics: newTopics });
+  }
+
   render() {
     const projectId = this.props.match.params.id;
 
@@ -577,7 +601,8 @@ class ProjectForm extends Form {
       projectFunding,
       communities,
       fabricMatrix,
-      originalProject
+      originalProject,
+      topics
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -638,31 +663,31 @@ class ProjectForm extends Form {
               <div className="d-flex flex-row justify-content-end">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Permissions
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-success mr-2 my-3"
+                  className="btn btn-sm btn-outline-success me-2 my-3"
                   onClick={() => window.open(
                     `${portalData.jiraLinks.storageRequest}?${urlSuffix}`,
                     "_blank")
                   }
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Request Storage
                 </button>
                 <Link to="/experiments#projects">
                   <button
                     className="btn btn-sm btn-outline-primary my-3"
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Back to Project List
                   </button>
                 </Link>
@@ -672,7 +697,7 @@ class ProjectForm extends Form {
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Back to Project List
                 </button>
               </Link>
@@ -685,7 +710,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <span>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is expired and no operations are allowed. Please submit a ticket to renew the project.
               </span>
               <button
@@ -696,7 +721,7 @@ class ProjectForm extends Form {
                   "_blank")
                 }
               >
-                <i className="fa fa-sign-in mr-2"></i>
+                <i className="fa fa-sign-in me-2"></i>
                 Renew Project
               </button>
             </div>
@@ -709,7 +734,7 @@ class ProjectForm extends Form {
               role="alert"
             >
               <div>
-                <i className="fa fa-exclamation-triangle mr-2"></i>
+                <i className="fa fa-exclamation-triangle me-2"></i>
                 This project is going to expire in a month on {utcToLocalTimeParser(data.expired)}. 
                 {
                   canUpdate ? <span> Please submit a ticket to renew the project.</span> : 
@@ -725,17 +750,19 @@ class ProjectForm extends Form {
                       "_blank")
                     }
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Renew Project
                   </button> : <div></div>
               }
             </div>
           }
           <div className="row mt-4">
-            <SideNav
-              items={SideNavItems}
-              handleChange={this.handleSideNavChange}
-            />
+            <div className="col-3">
+              <SideNav
+                items={SideNavItems}
+                handleChange={this.handleSideNavChange}
+              />
+            </div>
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             >  
@@ -744,12 +771,17 @@ class ProjectForm extends Form {
                   {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                  {this.renderSelect("project_type", "Project Type", canUpdate, data.project_type, portalData.projectTypeOptions)}
                   {
                     data.is_public === "Yes" && 
                     this.renderInputCheckBoxes("preferences", "Privacy Preferences",
                       canUpdate, optionsDisplayMapping,
                       portalData.helperText.privacyPreferencesDescription
-                    )}
+                    )
+                  }
+                  {/* {
+                    this.renderInputTag("topics", "Project Topics", topics, canUpdate)
+                  } */}
               </form>
               <ProjectBasicInfoTable
                 project={data}
@@ -757,6 +789,7 @@ class ProjectForm extends Form {
                 projectFunding={projectFunding}
                 fabricMatrix={fabricMatrix}
                 communities={communities}
+                topics={topics}
                 canUpdate={canUpdate}
                 isFO={globalRoles.isFacilityOperator}
                 onDeleteProject={this.handleDeleteProject}
@@ -764,6 +797,7 @@ class ProjectForm extends Form {
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
                 onUpdateProject={this.handleUpdateProject}
+                onTagChange={this.handleUpdateTopics}
               />
               {
                 globalRoles.isFacilityOperator && <div className="border-top my-2">

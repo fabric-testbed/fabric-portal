@@ -23,7 +23,7 @@ const CountdownTimer = (props) => {
 
   return (
     <div className="alert alert-primary mb-2" role="alert">
-      <i className="fa fa-exclamation-triangle mr-2"></i> 
+      <i className="fa fa-exclamation-triangle me-2"></i> 
       {props.text} The page will automatically refresh in 
       <span className="countdown-timer">{timeLeft}</span> seconds, or 
       <span

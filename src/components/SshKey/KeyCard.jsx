@@ -31,7 +31,7 @@ const handleDelete = async (uuid, type) => {
 
 const KeyCard = ({ data, disableKeyDelete }) => {
   return (
-    <div className="card border-primary mr-1 mb-4 key-card">
+    <div className="card border-primary me-1 mb-4 key-card">
       <div className="card-body">
         {
           content.map((row, index) => {
@@ -44,7 +44,7 @@ const KeyCard = ({ data, disableKeyDelete }) => {
         }
         <div className="d-flex flex-row mt-2">
           <a
-            className="btn btn-sm btn-outline-primary mr-3"
+            className="btn btn-sm btn-outline-primary me-3"
             href={`data:text/json;charset=utf-8,${encodeURIComponent(
               generatePublicKey(data).replace(/^"(.*)"$/, '$1')
             )}`}

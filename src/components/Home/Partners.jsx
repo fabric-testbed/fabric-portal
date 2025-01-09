@@ -62,7 +62,7 @@ const Partners = () => {
           src={RENCI}
           key={`partners-logo-renci`}
           height="95"
-          className="d-inline-block align-top mr-4"
+          className="d-inline-block align-top me-4"
           alt=""
         />
         {

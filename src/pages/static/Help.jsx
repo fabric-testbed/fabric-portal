@@ -36,12 +36,12 @@ export default class Help extends React.Component{
                 own, please post a question in the appropriate section of our <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer">Forums</a>.
                 </p>
                 <div>
-                  <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary mr-4">
-                    <i className="fa fa-sign-in mr-2"></i>
+                  <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary me-4">
+                    <i className="fa fa-sign-in me-2"></i>
                     Knowledge Base
                   </a>
                   <a href={portalData.knowledgeBaseForumLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary">
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Forums
                   </a>
                 </div>
@@ -60,7 +60,7 @@ export default class Help extends React.Component{
                     or logging into your experiment's resources via bastion hosts, please use our <a href={portalData.jiraLinks.accountIssue} target="_blank" rel="noopener noreferrer">FABRIC Account Help Portal</a> or email us at <b>account-help@fabric-testbed.net</b>.
                   </p>
                   <Link to="/check-cookie" className="btn btn-outline-primary">
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Check Account Information
                   </Link>
               </div>
@@ -80,8 +80,8 @@ export default class Help extends React.Component{
                 <p>
                 Haven't found an answer to your question on the Forums or Knowledge Base? Set up time with members of the FABRIC Team during their Office Hours.
                 </p>
-                <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary mr-2">
-                  <i className="fa fa-sign-in mr-2"></i>
+                <a href={portalData.officeHourBookingLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary me-2">
+                  <i className="fa fa-sign-in me-2"></i>
                   Book Office Hours
                 </a>
               </div>
@@ -101,8 +101,8 @@ export default class Help extends React.Component{
                   href={portalData.educatorForumLink} target="_blank" rel="noopener noreferrer">educator forum</a> as a place to ask questions and 
                   share your experiences.
                 </p>
-                <a href={portalData.jiraLinks.educationProjectRequest} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary mr-2">
-                  <i className="fa fa-sign-in mr-2"></i>
+                <a href={portalData.jiraLinks.educationProjectRequest} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary me-2">
+                  <i className="fa fa-sign-in me-2"></i>
                   Tell us about your class
                 </a>
               </div>

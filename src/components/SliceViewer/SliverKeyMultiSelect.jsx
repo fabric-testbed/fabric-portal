@@ -7,7 +7,7 @@ export default class SliverKeyMultiSelect extends Component {
       <div className="mt-2">
         {
           keys.map(key =>
-          <div className="form-check mb-2 mr-3" key={`sliver-key-${key.uuid}`}>
+          <div className="form-check mb-2 me-3" key={`sliver-key-${key.uuid}`}>
             <input
               className="form-check-input"
               type="checkbox"

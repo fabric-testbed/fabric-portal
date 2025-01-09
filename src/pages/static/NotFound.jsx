@@ -13,7 +13,7 @@ const NotFound = () => {
         </p>
         <Link to="/">
           <button className="btn btn-outline-primary mt-4 btn-sm">
-            <i className="fa fa-sign-in mr-2"></i>
+            <i className="fa fa-sign-in me-2"></i>
             Homepage
           </button>
         </Link>

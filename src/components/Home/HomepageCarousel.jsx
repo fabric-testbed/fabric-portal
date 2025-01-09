@@ -1,9 +1,10 @@
 import React from "react";
 import { getActiveCarouselItems } from "../../services/announcementService";
-import bg1 from "../../imgs/homepage/bg1.jpeg";
+import Carousel from 'react-bootstrap/Carousel';
+import Button from 'react-bootstrap/Button';
 import Parser from 'html-react-parser';
 
-class Carousel extends React.Component {
+class HomepageCarousel extends React.Component {
   state = {
     items: [],
   };
@@ -42,37 +43,12 @@ class Carousel extends React.Component {
   render() {
     const items = this.parseItems();
     return (
-      <div
-        id="homepageCarouselIndicators"
-        className="carousel slide homepage-carousel"
-        data-ride="carousel"
-      >
-        <ol className="carousel-indicators">
-          {
-            items && items.length > 0 && items.map((item, index) =>
-              <li
-                key={`carousel-indicators-${index}`}
-                data-target="#homepageCarouselIndicators"
-                data-slide-to={index}
-                className={index === 0? "active" : ""}
-              />
-            )
-          }
-        </ol>
-        <div className="carousel-inner">
+      <Carousel style={{"marginTop": "3rem"}} fade>
         {
           items && items.length > 0 && items.map((item, index) =>
-          <div
-            className={`carousel-item ${index === 0? "active" : ""}`}
-            key={`carousel-item-${index}`}
-          >
-            {
-              index === 0 ? 
-              <img src={bg1} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/> :
+            <Carousel.Item key={`homepage-carousel-${index}`}>
               <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
-            }
-            <div className="carousel-caption d-md-block">
-              <div className="carousel-caption-content">
+              <Carousel.Caption>
                 <h3>{item.title}</h3>
                 <div className="homepage-carousel-content">
                   {Parser(item.content)}
@@ -81,28 +57,17 @@ class Carousel extends React.Component {
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="btn btn-warning"
+                  role="button"
                 >
-                  <button className="btn btn-sm btn-warning">
-                    {item.button}
-                  </button>
+                  {item.button}
                 </a>
-              </div>
-            </div>
-          </div>
-        )
-        }
-        </div>
-        <a className="carousel-control-prev" href="#homepageCarouselIndicators" role="button" data-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="sr-only">Previous</span>
-        </a>
-        <a className="carousel-control-next" href="#homepageCarouselIndicators" role="button" data-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="sr-only">Next</span>
-        </a>
-      </div>
+              </Carousel.Caption>
+            </Carousel.Item>
+        )}
+      </Carousel>
     );
   }
 }
 
-export default Carousel;
+export default HomepageCarousel;

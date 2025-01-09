@@ -15,7 +15,7 @@ import Parser from 'html-react-parser';
 class Form extends Component {
   state = {
     data: {},
-    errors: {},
+    errors: {}
   };
 
   validate = () => {
@@ -139,7 +139,7 @@ class Form extends Component {
       )
     } else {
       return (
-        <div class="form-group">
+        <div className="form-group">
         <label for="projectDescription">{label}</label>
         <div className="disabled-project-description">
           {Parser(data[name])}
@@ -166,27 +166,13 @@ class Form extends Component {
     );
   }
 
-  renderInputTag(name, label) {
-    const { data } = this.state;
+  renderInputTag(name, label, tags, notDisabled) {
     return (
       <InputTag
         name={name}
-        tags={data.tags}
+        tags={tags}
         label={label}
-        onTagChange={this.handleTagChange}
-      />
-    );
-  }
-
-  renderProjectTags(name, label, baseOptions, optionsMapping) {
-    const { data } = this.state;
-    return (
-      <ProjectTags
-        name={name}
-        label={label}
-        tags={data.tags}
-        baseOptions={baseOptions}
-        optionsMapping={optionsMapping}
+        disabled={!notDisabled}
         onTagChange={this.handleTagChange}
       />
     );
@@ -210,7 +196,7 @@ class Form extends Component {
               delay={{ show: 100, hide: 300 }}
               overlay={renderTooltip("select-tooltip", tooltip)}
             >
-              <i className="fa fa-question-circle text-secondary ml-2"></i>
+              <i className="fa fa-question-circle text-secondary ms-2"></i>
             </OverlayTrigger>
           </label> :
           <label htmlFor={name}>{label}</label>
@@ -250,8 +236,6 @@ class Form extends Component {
   }
 
   renderTimePicker(name, label) {
-    const { data, errors } = this.state;
-
     return (
       <TimePicker
         name={name}

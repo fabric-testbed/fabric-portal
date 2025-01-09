@@ -25,7 +25,7 @@ class Tokens extends React.Component {
             target="_blank"
             rel="noreferrer"
           >
-            <i className="fa fa-sign-in mr-2"></i>
+            <i className="fa fa-sign-in me-2"></i>
             Open FABRIC Credential Manager
           </a>
         </div>

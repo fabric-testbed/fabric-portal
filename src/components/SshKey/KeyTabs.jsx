@@ -21,7 +21,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
             <button
               className="btn btn-sm btn-outline-primary my-3"
             >
-              <i className="fa fa-sign-in mr-2"></i>
+              <i className="fa fa-sign-in me-2"></i>
               Manage SSH Keys
             </button>
           </Link>
@@ -39,7 +39,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
         to login to your VMs via bastion hosts.
       </div>
       <div className="alert alert-primary" role="alert">
-        <span className="mr-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
+        <span className="me-2"><b>Bastion login</b>: {localStorage.getItem("bastionLogin")}</span>
         <CopyButton
           id={localStorage.getItem("bastionLogin")}
           text=""
@@ -76,7 +76,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
                 parent === "Keys" &&
                 sliverKeys.length > portalData.keyLimit &&
                 <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  <i className="fa fa-exclamation-triangle me-2"></i>
                   You have reached the limit of {portalData.keyLimit} sliver keys.
                 </div>
               }
@@ -106,7 +106,7 @@ const KeyTabs = ({ sliverKeys, bastionKeys, disableKeyDelete, styleProp, parent 
                 parent === "Keys" &&
                 bastionKeys.length > portalData.keyLimit &&
                 <div className="alert alert-warning" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-2"></i>
+                  <i className="fa fa-exclamation-triangle me-2"></i>
                   You have reached the limit of {portalData.keyLimit} bastion keys.
                 </div>
               }

@@ -41,7 +41,7 @@ class StorageCard extends React.Component {
         <div className="mb-2"><b>Expiration Date</b>: {data.expires_on ? data.expires_on : "Unknown"}</div>
         <div className="mb-2">
           <b>
-            <span className="mr-2">Requested By:</span>
+            <span className="me-2">Requested By:</span>
             {
               data.requested_by_uuid && userName ?  
               <Link to={`/users/${data.requested_by_uuid}`}>

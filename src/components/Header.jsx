@@ -1,6 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import withRouter from "./common/withRouter.jsx";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
@@ -10,6 +10,9 @@ import productionLogo from "../imgs/logos/fabric-brand.png";
 import alphaLogo from "../imgs/logos/fabric-brand-alpha.png";
 import betaLogo from "../imgs/logos/fabric-brand-beta.png";
 import ProfileModal from './ProfileModal';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const Header = (props) => {
   const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
@@ -237,105 +240,60 @@ const Header = (props) => {
     }
   };
 
+  const location = useLocation();
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <NavLink className="navbar-brand" to="/">
-      <img
-        src={getLogoSrc()}
-        height="24"
-        className="d-inline-block align-top"
-        alt=""
-      />
-    </NavLink>
-    <button
-      className="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul className="navbar-nav mr-auto">
-      {
-        navItems.map((item, index) => {
-          return (
-            <li
-              className={
-                "nav-item" + (item.child.length > 0 ? " dropdown" : "")
-              }
-              key={`navitem-${index}`}
-            >
-              {
-                item.href && <a
-                  className="nav-link"
-                  key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
+    <Navbar expand="lg" className="bg-light">
+      <Navbar.Brand href="/">
+        <img
+          src={getLogoSrc()}
+          height="24"
+          className="d-inline-block align-top"
+          alt=""
+        />
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto">
+          { 
+            navItems.map((item, index) => {
+              if (item.child.length === 0) {
+                if (item.path) {
+                  return <Nav.Link as={Link} to={item.path} className={location.pathname.includes(item.path) ? "active" : ""}>{item.name}</Nav.Link>
+                } else {
+                  return <Nav.Link href={item.href}>{item.name}</Nav.Link>
+                }
+              } else {
+                return <NavDropdown
+                  title={item.name}
+                  id={`nav-dropdown-${index}`}
+                  className={location.pathname.includes(item.path) ? "active" : ""}
                 >
-                  {item.name}
-                </a>
-              }
-              {
-                !item.href && 
-                <NavLink
-                  className={
-                    "nav-link" +
-                    (item.child.length > 0 ? " dropdown-toggle" : "")
-                  }
-                  to={item.path}
-                  id={`navbarDropdownMenuLink-${index}`}
-                  data-toggle={item.child.length > 0 ? "dropdown" : ""}
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  {item.name}
-                </NavLink>
-              }
-              {item.child.length > 0 && (
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby={`navbarDropdownMenuLink-${index}`}
-                >
-                  {item.child.map((sub_item, sub_index) => {
-                    if(sub_item.path) {
-                      return (
-                        <NavLink
-                          className="nav-link"
-                          to={sub_item.path}
-                          id={`navbarSubDropdownMenuLink-${sub_index}`}
-                          key={`sub-navbar-${sub_index}`}
-                        >
-                          {sub_item.name}
-                        </NavLink>
-                      )
-                    } else if (sub_item.href) {
-                      return (
-                        <a
-                          className="nav-link"
-                          href={sub_item.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          key={`sub-navbar-${sub_index}`}
-                        >
-                          {sub_item.name}
-                        </a>
-                      )
+                {
+                  item.child.map((sub_item, sub_index) => {
+                    if (sub_item.path) {
+                      return <NavDropdown.Item
+                      key={`sub-nav-${sub_index}`}
+                      as={Link}
+                      to={sub_item.path}>
+                        {sub_item.name}
+                      </NavDropdown.Item>
+                    } else {
+                      return <NavDropdown.Item
+                      key={`sub-nav-${sub_index}`}
+                      href={sub_item.href}>
+                        {sub_item.name}
+                      </NavDropdown.Item> 
                     }
-                  })}
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      {
+                   })}
+              </NavDropdown>
+              }
+            })
+          }
+        </Nav>
+        {
         props.userStatus === "active" && !window.location.href.includes("/search-results") &&
-        <form className="form-inline my-2 mr-2 my-lg-0">
+        <form className="form-inline d-flex flex-row align-items-center">
           <input
             className="form-control"
             type="search"
@@ -346,7 +304,7 @@ const Header = (props) => {
           />
            <div className="input-group-append">
               <button
-                className="btn btn-outline-secondary"
+                className="btn btn-sm btn-outline-secondary"
                 type="button"
                 onClick={handleSearch}
               >
@@ -356,29 +314,29 @@ const Header = (props) => {
          </form>
       }
       { props.userStatus !== "active" ? 
-        <form className="form-inline my-2 my-lg-0">
+        <form className="form-inline">
           <NavLink to="/login">
             <button
               onClick={handleLogin}
-              className="btn btn-outline-success my-2 my-sm-0 mr-2"
+              className="btn btn-outline-success"
             >
               Log in
             </button>
           </NavLink>
           <NavLink to="/signup/1">
             <button
-              className="btn btn-outline-primary my-2 my-sm-0"
+              className="btn btn-outline-primary ms-2"
             >
               Sign up
             </button>
           </NavLink>
         </form> :
-        <form className="form-inline my-2 my-lg-0">
+        <form className="form-inline">
           <ProfileModal userName={props.userName} userEmail={props.userEmail} />
         </form>
       }
-    </div>
-  </nav>
+      </Navbar.Collapse>
+  </Navbar>
   )
 }
 

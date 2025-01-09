@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import { getCookie } from "../services/cookieService";
 import { toast } from "react-toastify";
-import CopyButton from "../components/common/CopyButton";
 import { default as portalData } from "../services/portalData.json";
 import { NavLink } from "react-router-dom";
 import { getCookieConsentValue } from "react-cookie-consent";
@@ -65,7 +64,7 @@ class CheckCookies extends Component {
                 className="btn btn-outline-primary mt-2"
                 onClick={this.handleLogin}
               >
-                <i className="fa fa-sign-in mr-2"></i>
+                <i className="fa fa-sign-in me-2"></i>
                 Log In
               </button>
             </NavLink>
@@ -83,7 +82,7 @@ class CheckCookies extends Component {
                 <tr>
                   <td>Cookie Name</td>
                   <td>
-                    <span className="mr-2">{ cookie.cookie_name }</span>
+                    <span className="me-2">{ cookie.cookie_name }</span>
                   </td>
                 </tr>
                 {
@@ -91,7 +90,7 @@ class CheckCookies extends Component {
                   <tr>
                     <td>User Name</td>
                     <td>
-                      <span className="mr-2">
+                      <span className="me-2">
                         {cookie.cookie_attributes.name}
                       </span>
                     </td>
@@ -102,7 +101,7 @@ class CheckCookies extends Component {
                   <tr>
                     <td>Email</td>
                     <td>
-                      <span className="mr-2">{ cookie.cookie_attributes.email }</span>
+                      <span className="me-2">{ cookie.cookie_attributes.email }</span>
                     </td>
                   </tr>
                 }
@@ -111,7 +110,7 @@ class CheckCookies extends Component {
                   <tr>
                     <td>CILogon ID</td>
                     <td>
-                      <span className="mr-2">{ cookie.cookie_attributes.sub }</span>
+                      <span className="me-2">{ cookie.cookie_attributes.sub }</span>
                     </td>
                   </tr>
                 }
@@ -120,7 +119,7 @@ class CheckCookies extends Component {
                   <tr>
                     <td>UUID</td>
                     <td>
-                      <span className="mr-2">{ cookie.fabric_attributes.uuid }</span>
+                      <span className="me-2">{ cookie.fabric_attributes.uuid }</span>
                     </td>
                   </tr>
                 }
@@ -140,9 +139,9 @@ class CheckCookies extends Component {
             }
             <button
               onClick={e => this.copyCookie(e)}
-              className="btn btn-sm btn-outline-primary mr-2 mt-2 mb-4"
+              className="btn btn-sm btn-outline-primary me-2 mt-2 mb-4"
             >
-              <i className="fa fa-copy mr-2"></i>
+              <i className="fa fa-copy me-2"></i>
               Copy Cookie
             </button>
             <a
@@ -150,7 +149,7 @@ class CheckCookies extends Component {
               target="_blank" rel="noopener noreferrer"
               className="btn btn-primary"
             >
-              <i className="fa fa-sign-in mr-2" />
+              <i className="fa fa-sign-in me-2" />
               FABRIC Account Help Portal
             </a>
           </div>

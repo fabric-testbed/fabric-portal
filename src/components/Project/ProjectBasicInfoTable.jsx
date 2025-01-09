@@ -5,6 +5,7 @@ import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import CalendarDateTime from "../common/CalendarDateTime.jsx";
+import InputTag from "../common/Form/InputTag.jsx";
 import Funding from "./Community/Funding.jsx";
 import CommunityTags from "./Community/CommunityTags.jsx";
 import { toast } from "react-toastify";
@@ -71,7 +72,7 @@ class ProjectBasicInfoTable extends Component {
 
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
-      communities, fabricMatrix } = this.props;
+      communities, fabricMatrix, topics } = this.props;
     const { fabricMatrixTooltip } = this.state;
     
     return (
@@ -84,7 +85,7 @@ class ProjectBasicInfoTable extends Component {
                 delay={{ show: 100, hide: 300 }}
                 overlay={this.renderTooltip("fabrix-matrix", fabricMatrixTooltip)}
               >
-                <i className="fa fa-question-circle text-secondary ml-2"></i>
+                <i className="fa fa-question-circle text-secondary ms-2"></i>
               </OverlayTrigger>
           </label>
           <input
@@ -104,6 +105,13 @@ class ProjectBasicInfoTable extends Component {
           canUpdate={canUpdate}
           onCommunityUpdate={this.props.onCommunityUpdate}
         />
+        <InputTag 
+          name={"topics"}
+          label={"Project Topics"}
+          tags={topics}
+          disabled={false}
+          onTagChange={this.props.onTagChange}
+        />
         {
           canUpdate && 
           <button
@@ -122,7 +130,7 @@ class ProjectBasicInfoTable extends Component {
                 <tr>
                   <td>Project ID</td>
                   <td>
-                    <span className="mr-2">{ project.uuid }</span>
+                    <span className="me-2">{ project.uuid }</span>
                     <CopyButton
                       id={project.uuid}
                       text=""
@@ -135,7 +143,7 @@ class ProjectBasicInfoTable extends Component {
                   <td>
                     Project Permissions <a
                     href={`${portalData.learnArticles.guideToProjectPermissions}#project-permissions`}
-                    target="_blank" rel="noreferrer" className="ml-1">
+                    target="_blank" rel="noreferrer" className="ms-1">
                       <i className="fa fa-question-circle mx-2"></i>
                     </a>
                   </td>

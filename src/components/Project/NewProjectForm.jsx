@@ -9,7 +9,7 @@ import { createProject } from "../../services/projectService";
 import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
-  <div className="ml-2">
+  <div className="ms-2">
     <p className="text-white">Project created successfully.</p>
     <Link to={`/projects/${newProject.uuid}`}>
       <button className="btn btn-sm btn-outline-light">
@@ -237,7 +237,7 @@ class NewProjectForm extends Form {
                           <div className="mt-1">{user.name}</div>
                         }
                         <button
-                          className="btn btn-sm btn-outline-primary ml-2"
+                          className="btn btn-sm btn-outline-primary ms-2"
                           onClick={() => this.handleAddUser(user)}
                         >
                           <i className="fa fa-plus"></i>
@@ -255,11 +255,11 @@ class NewProjectForm extends Form {
               usersToAdd.map((user, index) => 
               <li
                 key={`user-to-add-${index}`}
-                className="mr-2 my-2"
+                className="me-2 my-2"
               >
                 {user.email ? `${user.name}(${user.email})` : user.name}
               <i
-                className="fa fa-times ml-2"
+                className="fa fa-times ms-2"
                 onClick={() => {
                   this.handleDeleteUser(user.name);
                 }}

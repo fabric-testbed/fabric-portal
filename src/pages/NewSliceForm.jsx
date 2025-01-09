@@ -440,7 +440,7 @@ class NewSliceForm extends React.Component {
           <div>
             <div className="d-flex flex-row justify-content-between mt-2">
               <div className="align-self-start d-flex flex-row">
-                <h2 className="ml-5 my-2">
+                <h2 className="ms-5 my-2">
                   Slice Builder
                 </h2>
                 <a
@@ -453,11 +453,11 @@ class NewSliceForm extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end mr-5">
+              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end me-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Back to Project
                 </button>
               </Link>
@@ -628,11 +628,11 @@ class NewSliceForm extends React.Component {
                                     </Link>first. Then click the refresh button.
                                   </span>
                                   <button
-                                    className="btn btn-sm btn-outline-primary ml-auto"
+                                    className="btn btn-sm btn-outline-primary ms-auto"
                                     type="button"
                                     onClick={() => this.refreshSSHKey()}
                                   >
-                                    <i className="fa fa-refresh mr-2"></i>
+                                    <i className="fa fa-refresh me-2"></i>
                                     Refresh Keys
                                   </button>
                                 </div>
@@ -646,7 +646,7 @@ class NewSliceForm extends React.Component {
                                   "The slice graph will be automatically saved to Draft when creating slice.")}
                               >
                                 <button
-                                  className="btn btn-sm btn-success ml-auto"
+                                  className="btn btn-sm btn-success ms-auto"
                                   type="button"
                                   disabled={!validationResult.isValid}
                                   onClick={() => this.handleCreateSlice()}

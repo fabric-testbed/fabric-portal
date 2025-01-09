@@ -32,7 +32,7 @@ class RecentNews extends React.Component {
     return (
       <div>
         {
-          news.length === 0 ? <div className="mt-3 ml-4">No recent news available.</div> : 
+          news.length === 0 ? <div className="mt-3 ms-4">No recent news available.</div> : 
           <NewsCard showSpinner={showSpinner} news={news} />
         }
       </div>

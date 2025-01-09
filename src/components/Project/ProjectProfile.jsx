@@ -51,7 +51,7 @@ class ProjectProfile extends Component {
             <button
               className="btn btn-sm btn-outline-primary my-3"
             >
-              <i className="fa fa-sign-in mr-2"></i>
+              <i className="fa fa-sign-in me-2"></i>
               Back to Project List
             </button>
           </Link>
@@ -61,7 +61,7 @@ class ProjectProfile extends Component {
             <tr>
               <td>Project ID</td>
               <td>
-                <span className="mr-2">{ project.uuid }</span>
+                <span className="me-2">{ project.uuid }</span>
                 <CopyButton
                   id={project.uuid}
                   text=""
@@ -108,7 +108,7 @@ class ProjectProfile extends Component {
              <Table
                 columns={projectPersonnelColumns}
                 data={project.project_owners}
-                style={"table-sm"}
+                tStyle={"table-sm"}
               />
           }
         </div>
@@ -129,7 +129,7 @@ class ProjectProfile extends Component {
              <Table
                 columns={projectPersonnelColumns}
                 data={project.project_members}
-                style={"table-sm"}
+                tStyle={"table-sm"}
               />
           }
         </div>
@@ -163,7 +163,7 @@ class ProjectProfile extends Component {
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
                   return (<span
-                      className="badge badge-pill badge-primary mr-1"
+                      className="badge badge-pill bg-primary me-1"
                       key={`project-community-${index}`}
                     >
                       {community}

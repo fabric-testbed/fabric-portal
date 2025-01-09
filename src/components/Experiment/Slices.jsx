@@ -33,7 +33,7 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
     spinnerText: "",
-    showAllSlices: false
+    // showAllSlices: false
   };
 
   async componentDidMount() {
@@ -159,7 +159,7 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -169,7 +169,7 @@ class Slices extends React.Component {
           this.props.parent === "Projects" &&
           this.props.isProjectExpired && 
           <div className="alert alert-warning mt-3" role="alert">
-            <i className="fa fa-exclamation-triangle mr-2"></i>
+            <i className="fa fa-exclamation-triangle me-2"></i>
             This project is expired and no operations are allowed. Please renew the project if you need create slice.
           </div>
         }
@@ -218,7 +218,7 @@ class Slices extends React.Component {
           !this.props.isProjectExpired &&
             <div>
               <div className="d-flex flex-row">
-                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary mr-4">
+                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary me-4">
                   Create Slice in Portal
                 </Link>
                 <a

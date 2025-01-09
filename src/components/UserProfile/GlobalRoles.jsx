@@ -47,7 +47,7 @@ class GlobalRoles extends React.Component {
                   delay={{ show: 100, hide: 300 }}
                   overlay={renderTooltip("pl-tooltip", portalData.helperText.projectLeadDescription)}
                 >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  <i className="fa fa-question-circle text-secondary ms-2"></i>
                 </OverlayTrigger>
               </td>
               <td className="text-center">
@@ -62,7 +62,7 @@ class GlobalRoles extends React.Component {
                   delay={{ show: 100, hide: 300 }}
                   overlay={renderTooltip("fo-tooltip", portalData.helperText.facilityOperatorDescription)}
                 >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  <i className="fa fa-question-circle text-secondary ms-2"></i>
                 </OverlayTrigger>
               </td>
               <td className="text-center">
@@ -77,7 +77,7 @@ class GlobalRoles extends React.Component {
                   delay={{ show: 100, hide: 300 }}
                   overlay={renderTooltip("fo-tooltip", portalData.helperText.activeUserDescription)}
                 >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  <i className="fa fa-question-circle text-secondary ms-2"></i>
                 </OverlayTrigger>
               </td>
               <td className="text-center">
@@ -92,7 +92,7 @@ class GlobalRoles extends React.Component {
                   delay={{ show: 100, hide: 300 }}
                   overlay={renderTooltip("fo-tooltip", portalData.helperText.jupyterhubDescription)}
                 >
-                  <i className="fa fa-question-circle text-secondary ml-2"></i>
+                  <i className="fa fa-question-circle text-secondary ms-2"></i>
                 </OverlayTrigger>
               </td>
               <td className="text-center">
@@ -111,7 +111,7 @@ class GlobalRoles extends React.Component {
               "_blank")
             }
           >
-            <i className="fa fa-sign-in mr-2"></i>
+            <i className="fa fa-sign-in me-2"></i>
             Request to be Project Lead
           </button>
          }
