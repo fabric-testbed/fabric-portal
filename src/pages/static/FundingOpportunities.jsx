@@ -83,7 +83,7 @@ const FundingOpportunities = () => {
         filling out the <a href="https://forms.gle/MKV5SfpdSS24XbFD7" target="_blank" rel="noopener noreferrer"><b>LoC Request Form</b></a>.
       </p>
       <table className="table table-striped mb-5">
-        <thead className="bg-primary-light">
+        <thead className="table-primary">
           <tr>
             <th>Solicitation</th>
             <th>Link</th>

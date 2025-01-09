@@ -2,6 +2,7 @@ import React from "react";
 import AnimatedNumber from "react-animated-number";
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
 import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
+import { getPublications } from "../../services/publicationService.js";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
@@ -27,7 +28,7 @@ class DynamicMetrics extends React.Component {
       },
       {
         name: "Publications Using FABRIC",
-        count: 33,
+        count: 0,
         link: "/community/fabric-user-publications"
       }
     ]
@@ -37,15 +38,19 @@ class DynamicMetrics extends React.Component {
     try {
       const { data: resCoreMetrics } = await getCoreApiMetrics();
       const { data: resOrchestratorMetrics } = await getOrchestratorMetrics();
+      const { data: resPublications } = await getPublications();
       this.setState({
-        metricsItems: this.generateMetricsItems(resCoreMetrics.results[0], resOrchestratorMetrics.results[0])
-      });
+        metricsItems: this.generateMetricsItems(
+          resCoreMetrics.results[0], 
+          resOrchestratorMetrics.results[0],
+          resPublications.results
+        )});
     } catch (err) {
       toast.error("Failed to load FABRIC metrics data.")
     }
   }
 
-  generateMetricsItems = (coreMetrics, sliceMetrics) => {
+  generateMetricsItems = (coreMetrics, sliceMetrics, publicationMetrics) => {
     const metricsItems = [];
     // total slices' count and active slices' count
     metricsItems.push({
@@ -69,7 +74,7 @@ class DynamicMetrics extends React.Component {
     });
     metricsItems.push({
       name: "FABRIC User Publications",
-      count: 33,
+      count: publicationMetrics.length,
       link: "/community/fabric-user-publications"
     });
 
@@ -82,7 +87,7 @@ class DynamicMetrics extends React.Component {
     return (
       <div className="w-100 home-metrix">
         <div className="d-flex flex-column align-item-center justify-content-center px-5 mb-2">
-          <div className="mr-5 align-self-center">
+          <div className="me-5 align-self-center">
             <img
               src={FABRICLogo}
               height="100"
@@ -123,7 +128,7 @@ class DynamicMetrics extends React.Component {
                     {i.name}
                     {
                       i.link && <Link to={i.link}>
-                        <i className="fa fa-sign-in ml-2"></i>
+                        <i className="fa fa-sign-in ms-2"></i>
                       </Link>
                     }
                   </div>

@@ -11,12 +11,12 @@ class SummaryTable extends Component {
             to={`/sites/${resource.name}`}
             state={{ data: resource }}
           >
-            {resource.name}
+            <span className="font-monospace">{resource.name}</span>
           </Link>
           {
             resource.status && resource.status.state === "Maint" &&
             <div>
-              <span className="badge badge-pill badge-danger px-2">
+              <span className="badge badge-pill bg-danger px-2">
                 Maintenance
               </span>
             </div>
@@ -24,7 +24,7 @@ class SummaryTable extends Component {
           {
             resource.status && resource.status.state === "PreMaint" &&
             <div>
-              <span className="badge badge-pill badge-warning px-2">
+              <span className="badge badge-pill bg-warning px-2">
                 Pre-Maintenance
               </span>
             </div>
@@ -32,7 +32,7 @@ class SummaryTable extends Component {
           {
             resource.status && resource.status.state === "PartMaint" &&
             <div>
-              <span className="badge badge-pill badge-warning px-2">
+              <span className="badge badge-pill bg-warning px-2">
                 Partial Maintenance
               </span>
             </div>
@@ -57,7 +57,7 @@ class SummaryTable extends Component {
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
-          <div className="font-weight-bold text-monospace d-flex align-items-center">
+          <div className="fw-bold font-monospace d-flex align-items-center">
             Sites ({totalCount})
           </div>
           <div className="d-flex flex-row w-50 justify-content-end">
@@ -74,12 +74,12 @@ class SummaryTable extends Component {
                 <i className="fa fa-search"></i>
               </button> */}
             </div>
-            {/* <button className="btn btn-sm btn-secondary ml-2">
+            {/* <button className="btn btn-sm btn-secondary ms-2">
               <i className="fa fa-filter"></i>
             </button> */}
           </div>
         </div>
-        <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded text-monospace">
+        <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded font-monospace">
           <div className="w-50">Component Available:</div>
           <div className="w-75 d-flex flex-row justify-content-between">
             <div className="form-check form-check-inline">
@@ -110,7 +110,7 @@ class SummaryTable extends Component {
             data={resources}
             sortColumn={sortColumn}
             onSort={onSort}
-            style={"table-md"}
+            tStyle={"table-md"}
           />
         </div>
       </div>

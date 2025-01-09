@@ -1,7 +1,5 @@
-import { text } from '@fortawesome/fontawesome-svg-core';
 import React, {useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
-// import { parse } from 'csv';
 
 const DropFile = props => {
   const { onFileDrop, acceptFormat, accept, textStr } = props;

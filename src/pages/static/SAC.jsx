@@ -3,7 +3,6 @@ import Sujata from "../../imgs/sac/banerjee-sujata.jpg";
 import TerryBenzel from "../../imgs/sac/benzel-terry.jpg";
 import CeesdeLaat from "../../imgs/sac/de-laat-cees.jpg";
 import PhillipaGill from "../../imgs/sac/gill-jennifer.jpg";
-import AbrahamMatta from "../../imgs/sac/matta-abraham.jpg";
 import CraigPartridge from "../../imgs/sac/partridge-chris.jpg";
 import ScottShenker from "../../imgs/sac/shenker-scott.jpg";
 import FrankWuerthwein from "../../imgs/sac/wuerthwien-frank.jpg";
@@ -37,13 +36,6 @@ const sacMembers = [
     "organization": "University of Massachusetts, Amherst",
     "url": "https://people.cs.umass.edu/~phillipa/",
     "description": "Phillipa Gill is an associate professor of Computer Science at the University of Massachusetts -- Amherst. Prior to joining the University of Massachusetts, she spent three years as an assistant professor at Stony Brook University. Before joining Stony Brook, she spent a year as a postdoctoral fellow at The Citizen Lab in the Munk School of Global Affairs at the University of Toronto. Prior to her postdoc, she completed a PhD in Computer Science at the University of Toronto. While working on her PhD, she spent time in the eXtreme Computing Group (XCG) at Microsoft Research, Boston University Security Group, and AT&T Labs--Research."
-  },
-  {
-    "name": "Abraham Matta",
-    "photo": AbrahamMatta,
-    "organization": "Boston University",
-    "url": "http://sites.bu.edu/matta/short-biography/",
-    "description": "Abraham Matta is a professor and chair of Computer Science at Boston University. He received his PhD in Computer Science from the University of Maryland at College Park in 1995. He works on the design of network protocols and architectures based on a range of computer science principles, mathematical techniques, and performance evaluation tools. Application domains include the Internet, wireless, mobile, sensor, and disruption-tolerant networks, cloud and distributed systems. Matta has published over 100 peer-reviewed technical papers. He received the National Science Foundation CAREER award (1997). He won a patent (2011) and two best-paper awards (2008 and 2010) for his work on wireless ad hoc and sensor networks. He has been involved with the GENI (Global Environment for Network Innovations) project since 2013 as an experimenter and in outreach and education activities, including national and international collaboration meetings on cyberinfrastructure."
   },
   {
     "name": "Craig Partridge",

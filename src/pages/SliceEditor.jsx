@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
-import _ from "lodash";
+// import { v4 as uuidv4 } from 'uuid';
+// import _ from "lodash";
 import { toast } from "react-toastify";
-import { saveAs } from "file-saver";
+// import { saveAs } from "file-saver";
 import withRouter from "../components/common/withRouter.jsx";
 import SpinnerWithText from "../components/common/SpinnerWithText";
 import ProjectTags from "../components/SliceViewer/ProjectTags";
@@ -13,13 +13,13 @@ import Graph from '../components/SliceViewer/Graph';
 import SliceEditorDetailForm from '../components/SliceViewer/SliceEditorDetailForm';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sliceParser from "../services/parser/sliceParser.js";
-import builder from "../utils/sliceBuilder.js";
-import editor from "../utils/sliceEditor.js";
+// import builder from "../utils/sliceBuilder.js";
+// import editor from "../utils/sliceEditor.js";
 import validator from "../utils/sliceValidator.js";
 import { sitesNameMapping }  from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import { getResources } from "../services/resourceService.js";
-import { getSliceById, deleteSlice, extendSlice } from "../services/sliceService.js";
+import { getSliceById } from "../services/sliceService.js";
 import { getProjectById } from "../services/projectService.js";
 import { autoCreateTokens } from "../utils/manageTokens";
 import { default as portalData } from "../services/portalData.json";
@@ -110,7 +110,7 @@ class SliceEditor extends React.Component {
           <div>
             <div className="d-flex flex-row justify-content-between mt-2">
               <div className="align-self-start d-flex flex-row">
-                <h2 className="ml-5 my-2">
+                <h2 className="ms-5 my-2">
                   { originalSlice.name }
                 </h2>
                 <a
@@ -123,11 +123,11 @@ class SliceEditor extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end mr-5">
+              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end me-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >
-                  <i className="fa fa-exchange mr-2"></i>
+                  <i className="fa fa-exchange me-2"></i>
                   View Mode
                 </button>
               </Link>

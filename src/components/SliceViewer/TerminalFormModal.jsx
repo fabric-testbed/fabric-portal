@@ -125,7 +125,7 @@ class TerminalFormModal extends Form {
                   aria-label="Close"
                   onClick={this.clickCloseModalBtn}
                 >
-                  <i className="fa fa-sign-in mr-2"></i>
+                  <i className="fa fa-sign-in me-2"></i>
                   Open Terminal
                 </button>
               </a>
@@ -154,7 +154,7 @@ class TerminalFormModal extends Form {
                   <input type="text" className="form-control" defaultValue={localStorage.getItem("bastionLogin")} disabled/>
                 </div>
                 <div className="alert alert-primary mt-2 mb-1" role="alert">
-                  <i className="fa fa-exclamation-triangle mr-1"></i> 
+                  <i className="fa fa-exclamation-triangle me-1"></i> 
                   Your private keys will only be used to establish connection and will not be stored.
                 </div>
                 <div className="row mx-1 mt-2">
@@ -198,7 +198,7 @@ class TerminalFormModal extends Form {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip(sliverTooltip.id, sliverTooltip.content)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                     </label> 
                     <textarea
@@ -224,7 +224,7 @@ class TerminalFormModal extends Form {
                         delay={{ show: 100, hide: 300 }}
                         overlay={renderTooltip(bastionTooltip.id, bastionTooltip.content)}
                       >
-                        <i className="fa fa-question-circle text-secondary ml-2"></i>
+                        <i className="fa fa-question-circle text-secondary ms-2"></i>
                       </OverlayTrigger>
                   </label>
                   <textarea

@@ -72,7 +72,7 @@ export default class SingleComponent extends Component {
         {
           !this.props.component ?
           <div>
-            <div className="form-row">
+            <div className="form-row mx-1">
               <div className="form-group slice-builder-form-group col-md-4">
                 <label htmlFor="inputComponent" className="slice-builder-label">
                   Component Type
@@ -81,7 +81,7 @@ export default class SingleComponent extends Component {
                     delay={{ show: 100, hide: 300 }}
                     overlay={renderTooltip("component-tooltip", portalData.helperText.componentDescription)}
                   >
-                    <i className="fa fa-question-circle text-secondary ml-2"></i>
+                    <i className="fa fa-question-circle text-secondary ms-2"></i>
                   </OverlayTrigger>
                 </label>
                 <select
@@ -139,21 +139,21 @@ export default class SingleComponent extends Component {
             </div>
             {
               componentModel !== "" && componentModel !== "" && 
-              <span className="text-sm-size mb-2 badge badge-secondary">
+              <span className="text-sm-size mb-2 badge bg-secondary">
                 {
                   'Model Details: ' + modelDetails[componentModel]
                 }
               </span>
             }
             {!validationResult.isValid && validationResult.message !== "" &&
-              <div className="my-2 sm-alert">
+              <div className="my-2 mx-1 sm-alert">
                 {validationResult.message}
               </div>
             }
           </div> 
           : 
           <div>
-            <div className="form-row">
+            <div className="form-row mx-1">
               <div className="form-group slice-builder-form-group col-md-3">
                 <select
                   className="form-control form-control-sm"

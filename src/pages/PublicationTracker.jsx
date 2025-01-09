@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import BackgroundImage from "../../imgs/network-bg.svg";
-import Table from "../../components/common/Table";
-import publications from "../../services/staticPublications";
+import BackgroundImage from "../imgs/network-bg.svg";
+import Table from "../components/common/Table";
+import { getPublications } from "../services/publicationService.js";
+import SpinnerWithText from "../components/common/SpinnerWithText";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class PublicationTracker extends Component {
   state = {
@@ -10,7 +12,9 @@ class PublicationTracker extends Component {
       path: "year",
       order: "desc"
     },
-    searchQuery: ""
+    searchQuery: "",
+    publications: [],
+    showSpinner: false
   }
 
   columns = [
@@ -31,7 +35,7 @@ class PublicationTracker extends Component {
       content: (publication) => (
       <div>
          {
-            <span className="mr-3">{publication.year}</span>
+            <span className="me-3">{publication.year}</span>
          }
       </div>
       ), 
@@ -54,6 +58,16 @@ class PublicationTracker extends Component {
     }
   ];
 
+  async componentDidMount() {
+    try {
+      this.setState({ showSpinner: true });
+      const { data } = await getPublications();
+      this.setState({ publications: data.results, showSpinner: false});
+    } catch (err) {
+      toast.error("Failed to load publications. Please reload this page.");
+    }
+  }
+
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
@@ -66,16 +80,17 @@ class PublicationTracker extends Component {
     const {
       sortColumn,
       searchQuery,
+      publications: allPublications
     } = this.state;
 
-    const allPublications = publications;
     // filter -> sort -> paginate
-    let filtered = allPublications;
+    let filtered = allPublications.map(p => { return {...p, authors: p.authors.join(", ")}});
+
     if (searchQuery) {
       filtered = allPublications.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
-        || p.authors.toLowerCase().includes(searchQuery.toLowerCase())
-        || p.project_name.toLowerCase().includes(searchQuery.toLowerCase())
+        || p.authors.join().toLowerCase().includes(searchQuery.toLowerCase())
+        || (p.project_name && p.project_name.toLowerCase().includes(searchQuery.toLowerCase()))
         || p.year.includes(searchQuery.toLowerCase())
       );
     }
@@ -92,7 +107,7 @@ class PublicationTracker extends Component {
   };
 
   render() {
-    const { sortColumn, searchQuery } = this.state;
+    const { sortColumn, searchQuery, showSpinner } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -112,18 +127,26 @@ class PublicationTracker extends Component {
             <i className="fa fa-search"></i>
           </button>
         </div>
-        <div className="d-flex flex-row justify-content-end w-100 my-2">
-          <span className="text-monospace">Displaying <b>{totalCount}</b> publications.</span>
-        </div>
-        <Table
-          columns={this.columns}
-          data={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-          size={"md"}
-          style={"table-striped table-md"}
-          tHeadStyle={"bg-primary-light"}
-        />
+        {
+          showSpinner && <SpinnerWithText text={"Loading user publications..."} />
+        }
+        {
+          !showSpinner &&
+          <div>
+            <div className="d-flex flex-row justify-content-end w-100 my-2">
+              <span className="font-monospace">Displaying <b>{totalCount}</b> publications.</span>
+            </div>
+            <Table
+              columns={this.columns}
+              data={data}
+              sortColumn={sortColumn}
+              onSort={this.handleSort}
+              size={"md"} 
+              tStyle={"table-striped table-md"}
+              tHeadStyle={"table-primary"}
+            />
+          </div>
+        }
       </div>
     );
   }

@@ -11,10 +11,10 @@ class MyRoles extends React.Component {
           <h1>My Roles</h1>
           <button
             type="button"
-            className="btn btn-sm btn-outline-primary h-50 ml-3"
+            className="btn btn-sm btn-outline-primary h-50 ms-3"
             onClick={() => this.props.onRoleRefresh()}
           >
-            <i className="fa fa-refresh mr-2"></i>
+            <i className="fa fa-refresh me-2"></i>
             Refresh Roles
           </button>
         </div>

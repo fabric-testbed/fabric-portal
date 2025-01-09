@@ -8,14 +8,17 @@ import Slices from "../components/Experiment/Slices";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class User extends React.Component {
   state = {
     SideNavItems: [
-      { name: "MY PROFILE", active: true },
-      { name: "MY ROLES & PROJECTS", active: false },
-      { name: "MY SSH KEYS", active: false },
-      { name: "MY SLICES", active: false },
+      { name: "MY PROFILE", hash: "#profile", active: true },
+      { name: "MY ROLES & PROJECTS", hash: "#roles", active: false },
+      { name: "MY SSH KEYS", hash: "#sshKeys", active: false },
+      { name: "MY SLICES", hash: "#slices", active: false },
     ],
     user: {},
     activeIndex: 0,
@@ -38,6 +41,21 @@ class User extends React.Component {
 
   handleChange = (newIndex) => {
     this.setState({ activeIndex: newIndex });
+    const indexToHash = {
+      0: "#profile",
+      1: "#roles",
+      2: "#sshKeys",
+      3: "#slices",
+    }
+    this.setState({ activeIndex: newIndex,
+      SideNavItems: [
+        { name: "MY PROFILE", active: newIndex === 0  },
+        { name: "MY ROLES & PROJECTS", active: newIndex === 1 },
+        { name: "MY SSH KEYS", active: newIndex === 2 },
+        { name: "MY SLICES", active: newIndex === 3 }
+      ]
+    });
+    this.props.navigate(`/user${indexToHash[newIndex]}`);
   };
 
   handleRoleRefresh = async () => {
@@ -68,24 +86,27 @@ class User extends React.Component {
     const { sliverKeys, bastionKeys } = this.getKeysData();
 
     return (
-      <div className="container">
-        <div className="row">
-          <SideNav
-            items={this.state.SideNavItems}
-            handleChange={this.handleChange}
-          />
-          <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showFullPageSpinner}/>
-          <TagName
-            user={user}
-            onRoleRefresh={this.handleRoleRefresh}
-            sliverKeys={sliverKeys}
-            bastionKeys={bastionKeys}
-            disableKeyDelete={true}
-            styleProp={"col-9"}
-            parent={"UserProfile"}
-          />
-        </div>
-      </div>
+      <Container>
+        <SpinnerFullPage text={"Refreshing user roles..."} showSpinner={showFullPageSpinner}/>
+        <Row>
+          <Col xs={3}>
+            <SideNav
+              items={this.state.SideNavItems}
+              handleChange={this.handleChange}
+            />
+          </Col>
+          <Col xs={9}>
+            <TagName
+              user={user}
+              onRoleRefresh={this.handleRoleRefresh}
+              sliverKeys={sliverKeys}
+              bastionKeys={bastionKeys}
+              disableKeyDelete={true}
+              parent={"UserProfile"}
+            />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

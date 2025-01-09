@@ -5,7 +5,7 @@ const TimePicker = ({ name, label, error, ...rest }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}:</label>
-      <CalendarDateTime id={name} className="ml-2"/>
+      <CalendarDateTime id={name} className="ms-2"/>
     </div>
   );
 };

@@ -183,16 +183,16 @@ class SliceViewer extends Component {
             <div className="mx-5 mb-4 slice-viewer-container">
               <div className="d-flex flex-row justify-content-between align-items-center mt-2">
                 <div className="d-flex flex-row justify-content-between align-items-center">
-                  <h2 className="mr-3">
+                  <h2 className="me-3">
                     <b>{slice.name}</b>
-                    <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
+                    <span className={`badge bg-${stateColors[slice.state]} ms-2`}>
                       {slice.state}
                     </span>
                     <a
                       href={portalData.learnArticles.guideToSliceBuilderSections["states"]}
                       target="_blank"
                       rel="noreferrer"
-                      className="ml-1"
+                      className="ms-1"
                     >
                       <i className="fa fa-question-circle mx-2" />
                     </a>
@@ -201,9 +201,9 @@ class SliceViewer extends Component {
                 <div className="d-flex flex-row justify-content-between align-items-center">
                     {/* <Link to={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
                       <button
-                        className="btn btn-sm btn-outline-primary my-3 mr-3"
+                        className="btn btn-sm btn-outline-primary my-3 me-3"
                       >
-                        <i className="fa fa-exchange mr-2"></i>
+                        <i className="fa fa-exchange me-2"></i>
                         Edit Mode
                       </button>
                     </Link> */}
@@ -218,9 +218,9 @@ class SliceViewer extends Component {
                   }
                   <Link to="/experiments#slices">
                     <button
-                      className="btn btn-sm btn-outline-primary my-3 ml-3"
+                      className="btn btn-sm btn-outline-primary my-3 ms-3"
                     >
-                      <i className="fa fa-sign-in mr-2"></i>
+                      <i className="fa fa-sign-in me-2"></i>
                       Back to Slice List
                     </button>
                   </Link>

@@ -308,7 +308,7 @@ export default class SliceEditorDetailForm extends Component {
                   </div>
                   <div className="col-1 pt-4 pb-2 d-flex flex-row">
                     <button
-                      className="btn btn-sm btn-danger ml-auto"
+                      className="btn btn-sm btn-danger ms-auto"
                       type="button"
                       onClick={this.handleNodeDelete}
                     >
@@ -333,7 +333,7 @@ export default class SliceEditorDetailForm extends Component {
                   {
                     data.properties.type !== "ServicePort" && this.isCPAvailable() &&
                     <button
-                      className="btn btn-sm btn-success ml-auto"
+                      className="btn btn-sm btn-success ms-auto"
                       type="button"
                       onClick={this.handleSelect}
                     >
@@ -343,7 +343,7 @@ export default class SliceEditorDetailForm extends Component {
                    {
                     data.properties.type === "ServicePort" && 
                     <button
-                      className="btn btn-sm btn-danger ml-auto"
+                      className="btn btn-sm btn-danger ms-auto"
                       type="button"
                       onClick={this.handleNodeDelete}
                     >
@@ -368,7 +368,7 @@ export default class SliceEditorDetailForm extends Component {
                 </div>
                 <div className="col-2 pt-4 pb-2 d-flex flex-row">
                   <button
-                    className="btn btn-sm btn-danger ml-auto"
+                    className="btn btn-sm btn-danger ms-auto"
                     type="button"
                     onClick={this.handleNodeDelete}
                   >

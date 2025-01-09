@@ -27,7 +27,7 @@ const LoginRequired = () => {
             className="btn btn-outline-primary mt-5"
             onClick={handleLogin}
           >
-            <i className="fa fa-sign-in mr-2"></i>
+            <i className="fa fa-sign-in me-2"></i>
             Log In
           </button>
         </NavLink>

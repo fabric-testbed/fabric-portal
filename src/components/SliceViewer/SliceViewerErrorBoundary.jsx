@@ -77,16 +77,16 @@ export default class SliceViewerErrorBoundary extends Component {
           <div className="mx-5 mb-4 slice-viewer-container">
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row justify-content-between align-items-center">
-                <h2 className="mr-3">
+                <h2 className="me-3">
                   <b>{slice.name}</b>
-                  <span className={`badge badge-${stateColors[slice.state]} ml-2`}>
+                  <span className={`badge bg-${stateColors[slice.state]} ms-2`}>
                     {slice.state}
                   </span>
                   <a
                     href={portalData.learnArticles.guideToSliceBuilderSections["states"]}
                     target="_blank"
                     rel="noreferrer"
-                    className="ml-1"
+                    className="ms-1"
                   >
                     <i className="fa fa-question-circle mx-2" />
                   </a>
@@ -104,9 +104,9 @@ export default class SliceViewerErrorBoundary extends Component {
                 }
                 <Link to="/experiments#slices">
                   <button
-                    className="btn btn-sm btn-outline-primary my-3 ml-3"
+                    className="btn btn-sm btn-outline-primary my-3 ms-3"
                   >
-                    <i className="fa fa-sign-in mr-2"></i>
+                    <i className="fa fa-sign-in me-2"></i>
                     Back to Slice List
                   </button>
                 </Link>
@@ -130,29 +130,29 @@ export default class SliceViewerErrorBoundary extends Component {
                   <li className="my-3">
                   If you believe you encountered a bug in the way the Portal visualizes or manages your slice, please <b>report this issue</b> in the <b>
                       <a href="https://learn.fabric-testbed.net/forums/forum/fabric-general-questions-and-discussion/" target="_blank" rel="noreferrer">
-                      <i className="fa fa-sign-in mr-1"></i> FABRIC forum</a></b> and the FABRIC 
-                    development team will debug it soon. (Remember to include the <b>Slice ID: <i>{this.props.sliceID}</i></b> in the post.).
+                      <i className="fa fa-sign-in me-1"></i> FABRIC forum</a></b> and the FABRIC 
+                    development team will debug it soon. (Remember to include the <b>Slice ID <i>{this.props.sliceID}</i></b> in the post.).
                   </li>
                   </ul>
                   <div className="my-2 d-flex justify-content-center align-items-center">
                     <CopyButton
                       id={this.props.sliceID}
                       text={"Copy Slice ID"}
-                      btnStyle={"btn btn-sm btn-primary ml-2"}
+                      btnStyle={"btn btn-sm btn-primary ms-2"}
                       showCopiedValue={true}
                     />
                     <Link to="/experiments#slices">
                       <button
-                        className="btn btn-sm btn-primary my-3 ml-3"
+                        className="btn btn-sm btn-primary my-3 ms-3"
                       >
-                        <i className="fa fa-sign-in mr-2"></i>
+                        <i className="fa fa-sign-in me-2"></i>
                         Back to Slice List
                       </button>
                     </Link>
                   </div>
                 </div>
               </div>
-              <div className="w-100 card ml-4">
+              <div className="w-100 card ms-4">
                 <form>
                   <div className="card-header">
                     Details
@@ -184,7 +184,7 @@ export default class SliceViewerErrorBoundary extends Component {
                                 delay={{ show: 100, hide: 300 }}
                                 overlay={renderTooltip("lease-end-tooltip", "You can extend up to 15 days as of now.")}
                               >
-                                <i className="fa fa-question-circle text-secondary ml-2"></i>
+                                <i className="fa fa-question-circle text-secondary ms-2"></i>
                               </OverlayTrigger>
                             }
                           </label>
@@ -207,7 +207,7 @@ export default class SliceViewerErrorBoundary extends Component {
                                 />
                               </div>
                               <button
-                                className="btn btn-sm btn-outline-primary mt-2 mr-3"
+                                className="btn btn-sm btn-outline-primary mt-2 me-3"
                                 onClick={this.props.onSliceExtend}
                               >
                                 Extend

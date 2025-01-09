@@ -108,12 +108,12 @@ export default class Graph extends Component {
                 delay={{ show: 100, hide: 300 }}
                 overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
               >
-                <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ml-2">
+                <button onClick={this.props.onSaveJSON} className="btn btn-sm btn-outline-primary ms-2">
                   Download JSON
                 </button>
               </OverlayTrigger>
             }
-            <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ml-2">Download PNG</button>
+            <button onClick={this.savePNG} className="btn btn-sm btn-outline-primary ms-2">Download PNG</button>
             {
               this.props.isNewSlice && 
               <OverlayTrigger
@@ -124,7 +124,7 @@ export default class Graph extends Component {
                 <button
                   onClick={this.props.onUseDraft}
                   disabled={!localStorage.getItem("sliceDraft")}
-                  className="btn btn-sm btn-outline-success ml-2"
+                  className="btn btn-sm btn-outline-success ms-2"
                 >
                   Use Draft
                 </button>
@@ -138,7 +138,7 @@ export default class Graph extends Component {
                 overlay={renderTooltip("slice-save-draft-tooltip",
                   "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
               >
-                <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ml-2">
+                <button onClick={this.props.onSaveDraft} className="btn btn-sm btn-outline-success ms-2">
                   Save Draft
                 </button>
               </OverlayTrigger>

@@ -1,6 +1,5 @@
 import React from "react";
 import SelectGroup from "../common/SelectGroup";
-import _ from "lodash";
 
 class ProjectTags extends React.Component {
   handleTagAdd = (newTag) => {
@@ -38,7 +37,7 @@ class ProjectTags extends React.Component {
             tags.map(tag => <li key={`project-tag-${tag}`}>
               {tag}
             <i
-              className="fa fa-times ml-2"
+              className="fa fa-times ms-2"
               onClick={() => {
                 this.handleTagDelete(tag);
               }}

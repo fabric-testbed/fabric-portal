@@ -28,6 +28,6 @@ export default function checkGlobalRoles(user) {
       globalRoles.isJupterhubUser = true;
     }
   }
-
+  
   return globalRoles;
 }

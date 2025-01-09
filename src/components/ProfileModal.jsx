@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NameInitialsAvatar } from 'react-name-initials-avatar';
+import {NameInitialsAvatar} from 'react-name-initials-avatar';
 import clearLocalStorage from "../utils/clearLocalStorage";
 import { NavLink } from "react-router-dom";
 
@@ -52,7 +52,7 @@ function ProfileModal(props) {
           <div className="divider div-transparent"></div>
           <div className="d-flex justify-content-center">
               <button
-                className="btn btn-sm btn-outline-primary mr-3"
+                className="btn btn-sm btn-outline-primary me-3"
                 onClick={toggleModal}
               >
                 <NavLink to="/user">

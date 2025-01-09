@@ -16,7 +16,8 @@ class PublicUserProfile extends React.Component {
         "bio": "",
         "job": "",
         "pronouns": "",
-        "website": ""
+        "website": "",
+        "other_identities": []
       },
       "roles": [],
       "sshkeys": []
@@ -93,9 +94,41 @@ class PublicUserProfile extends React.Component {
     return { projectRoles, globalRoles }
   }
 
+  parseIdentityStr = (id) => {
+    if (id.type === "google_scholar") {
+      return (<a
+        href={`https://scholar.google.com/citations?user=${id.identity}`}
+        target="_blank"
+        rel="noreferrer"
+        className="me-2"
+      >
+        <span className="font-monospace">{`Google Scholar [ID: ${id.identity}]`} </span>
+        <i className="fa fa-link"></i>
+      </a>);
+    } else if (id.type === "orcid"){
+      return (<a
+        href={`https://orcid.org/${id.identity}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span className="font-monospace">{`ORCID [ID: ${id.identity}]`}</span>
+        <i className="fa fa-link"></i>
+      </a>)
+    } else {
+      return <a
+       href={id.identity}
+       target="_blank"
+       rel="noreferrer">
+        <span className="font-monospace">{`Other [Link: ${id.identity}]`}</span>
+        <i className="fa fa-link"></i>
+      </a>;
+    }
+  }
+
   render() {
     const { user } = this.state;
     const roles = user.roles ? this.parseRoles(user.roles) : [];
+    console.log(user);
 
     return (
       <div className="container">
@@ -123,6 +156,24 @@ class PublicUserProfile extends React.Component {
                       </tr>
                   );
                 })
+              }
+              {
+                user.profile && user.profile["other_identities"] && 
+                <tr>
+                  <th scope="row">Other Identities</th>
+                  <td>
+                    {
+                      user.profile["other_identities"].length === 0 ?
+                      "" :
+                      user.profile["other_identities"].map((id, index) => 
+                      <span 
+                        key={`other-identity-${index}`}
+                        className="badge rounded-pill text-bg-light me-2">
+                          {this.parseIdentityStr(id)}
+                      </span>)
+                    }
+                  </td>
+                </tr>
               }
             </tbody>
           </table>

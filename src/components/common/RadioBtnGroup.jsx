@@ -11,14 +11,14 @@ const RadioBtnGroup = ({ values, onChange, ...rest }) => {
       {values.map((item, index) => {
         return (
           <div
-            className="form-check-inline mr-4"
+            className="form-check-inline me-4"
             key={`radio-btn-${index}`}
             onClick={() => onChange(item.value)}
           >
             <label className="form-check-label">
               <input
                 type="radio"
-                className="form-check-input"
+                className="form-check-input me-1"
                 name="radio"
                 value={item.value}
                 checked={item.isActive}

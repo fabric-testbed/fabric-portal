@@ -7,7 +7,7 @@ const InputCheckboxes = props => {
   return ( 
     <div className={`w-100 mt-2 d-flex flex-${optionDirection} flex-wrap`}>
       {
-        showSelectAll &&  <div className="form-check mb-2 mr-2">
+        showSelectAll &&  <div className="form-check mb-2 me-2">
           <input
             className="form-check-input"
             type="checkbox"
@@ -24,7 +24,7 @@ const InputCheckboxes = props => {
       }
       {
         allOptions.map(option =>
-        <div className="form-check mb-2 mr-3" key={option}>
+        <div className="form-check mb-2 me-3" key={option}>
           <input
             className="form-check-input"
             type="checkbox"

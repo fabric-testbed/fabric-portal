@@ -20,7 +20,7 @@ const Publications = () => {
           id={
             `Baldin, Ilya, Anita Nikolich, James Griffioen, Indermohan Inder S. Monga, Kuang-Ching Wang, Tom Lehman, and Paul Ruth. “FABRIC: A national-scale programmable experimental network infrastructure.” IEEE Internet Computing 23, no. 6 (2019): 38-47.`
           }
-          btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
+          btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
           showCopiedValue={false}
           text=""
         />
@@ -53,7 +53,7 @@ const Publications = () => {
               publisher={IEEE}
             }`
           }
-          btnStyle={"btn btn-sm btn-secondary ml-2 py-0 px-1"}
+          btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
           showCopiedValue={false}
           text=""
         />

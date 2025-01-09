@@ -35,6 +35,11 @@ class PublicProjectProfile extends Component {
     }
   }
 
+  capitalizeFirstLetter = (str) => {
+    if (!str) return str; // Handle empty strings
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   render() {
     const { project } = this.state;
     return (
@@ -75,7 +80,7 @@ class PublicProjectProfile extends Component {
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
                   return (<span
-                      className="badge badge-pill badge-primary mr-1"
+                      className="badge badge-pill bg-primary me-1"
                       key={`project-community-${index}`}
                     >
                       {community}
@@ -88,11 +93,15 @@ class PublicProjectProfile extends Component {
                 </span>
               }
             </p>
+            <h5 className="card-title pb-2 border-bottom text-primary">Project Type</h5>
+            <p className="card-text mb-4">
+              { this.capitalizeFirstLetter(project.project_type) }
+            </p>
           </div>
         </div>
         <Link to="/experiments/public-projects">
           <button className="btn btn-sm btn-outline-primary my-4">
-            <i className="fa fa-sign-in mr-2"></i> Back to Project List
+            <i className="fa fa-sign-in me-2"></i> Back to Project List
           </button>
         </Link>
       </div>
