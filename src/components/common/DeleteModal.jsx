@@ -8,8 +8,8 @@ class DeleteModal extends React.Component {
         <button
           type="button"
           className="btn btn-sm btn-outline-danger"
-          data-toggle="modal"
-          data-target={`#delete-modal-${id}`}
+          data-bs-toggle="modal"
+          data-bs-target={`#delete-modal-${id}`}
         >
           <i className="fa fa-trash"></i> {name}
         </button>
@@ -31,14 +31,14 @@ class DeleteModal extends React.Component {
                   onClick={onDelete}
                   type="button"
                   className="btn btn-sm btn-danger"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                 >
                   Confirm
                 </button>
                 <button
                   type="button"
                   className="btn btn-sm btn-secondary"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                 >
                   Cancel
                 </button>

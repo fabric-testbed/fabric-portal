@@ -133,8 +133,8 @@ export default class DetailForm extends Component {
                       <button
                         type="button"
                         className="btn btn-sm btn-outline-primary ms-2"
-                        data-toggle="modal"
-                        data-target="#TerminalFormModalCenter"
+                        data-bs-toggle="modal"
+                        data-bs-target="#TerminalFormModalCenter"
                       >
                         Connect to VM
                       </button>

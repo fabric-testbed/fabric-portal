@@ -7,7 +7,7 @@ const SearchBoxWithDropdown = ({ activeDropdownVal, dropdownValues, value, place
         <button
           className="btn btn-outline-primary project-search-dropdown dropdown-toggle"
           type="button"
-          data-toggle="dropdown"
+          data-bs-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
