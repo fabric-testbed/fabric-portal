@@ -1,7 +1,6 @@
 import React from "react";
 import { getActiveCarouselItems } from "../../services/announcementService";
 import Carousel from 'react-bootstrap/Carousel';
-import Button from 'react-bootstrap/Button';
 import Parser from 'html-react-parser';
 
 class HomepageCarousel extends React.Component {

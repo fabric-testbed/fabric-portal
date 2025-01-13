@@ -90,8 +90,8 @@ class SliceEditor extends React.Component {
 
   render() {
     const { sliceName, sshKey, selectedData,
-      showKeySpinner, showResourceSpinner, showSliceSpinner, parsedResources,
-      sliceNodes, sliceLinks, selectedCPs, originalSlice, elements,
+       showResourceSpinner,  parsedResources,
+      sliceNodes, sliceLinks, selectedCPs, originalSlice,
       project, projectTags, showProjectSpinner  }
     = this.state;
 

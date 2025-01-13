@@ -109,7 +109,7 @@ class ProjectBasicInfoTable extends Component {
           name={"topics"}
           label={"Project Topics"}
           tags={topics}
-          disabled={false}
+          disabled={!canUpdate}
           onTagChange={this.props.onTagChange}
         />
         {

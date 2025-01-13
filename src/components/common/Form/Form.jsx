@@ -6,7 +6,6 @@ import Select from "./Select.jsx";
 import InputTag from "./InputTag.jsx";
 import TimePicker from "./TimePicker.jsx";
 import Switch from "./Switch.jsx";
-import ProjectTags from "../../Project/ProjectTags";
 import InputCheckboxes from "../InputCheckboxes.jsx";
 import Wysiwyg from "./Wysiwyg.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';

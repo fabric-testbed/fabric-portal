@@ -69,12 +69,6 @@ class InputTag extends React.Component {
         tags.length > 0 && tags.map((tag, i) => (
           <li key={tag}>
             {tag}
-            <i
-              className="fa fa-times ms-2"
-              onClick={() => {
-                this.raiseRemoveTag(i);
-              }}
-            ></i>
           </li>
         ))
       }
