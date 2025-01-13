@@ -37,7 +37,7 @@ class ProjectTopics extends React.Component {
     const { name, label, tags, disabled } = this.props;
     return (
       <div className="form-group">
-        <h5 className="mt-2" htmlFor={name}>{label}</h5>
+        <h5 htmlFor={name}>{label}</h5>
          { !disabled ?
           <div className="input-tag form-control">
             <ul className="input-tag__tags">

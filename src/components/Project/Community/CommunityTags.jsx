@@ -41,7 +41,7 @@ class Community extends React.Component {
     const { communities, canUpdate } = this.props;
     return (
       <div>
-        <h5 className="mt-2">Community</h5>
+        <h5>Community</h5>
         <Form>
         {
           canUpdate &&         

@@ -85,10 +85,10 @@ class Funding extends React.Component {
     const { fundings, canUpdate } = this.props;
     return (
       <div className="pt-2">
-        <h5 className="mt-2">Funding Information</h5>
+        <h5>Funding Information</h5>
         <Form>
         {
-          canUpdate &&         
+          canUpdate &&
           <Row>
             <Col xs={2}>
               <Form.Group controlId="fundingAgencySelect">
