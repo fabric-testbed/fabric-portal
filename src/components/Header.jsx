@@ -302,7 +302,7 @@ const Header = (props) => {
             onChange={props.onQueryChange}
             onKeyDown={raiseInputKeyDown}
           />
-           <div className="input-group-append">
+           <div className="input-group-text">
               <button
                 className="btn btn-sm btn-outline-secondary"
                 type="button"

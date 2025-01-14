@@ -208,7 +208,7 @@ class PublicProjectsList extends React.Component {
             }
             {
               filterOption === "description" &&
-                <div className="input-group-append">
+                <div className="input-group-text">
                   <button
                     className="btn btn-outline-primary"
                     type="button"

@@ -152,7 +152,7 @@ class ProjectProfile extends Component {
                 </ul>
               }
               {
-                project.project_funding && project.project_funding.length === 0 && <span className="font-italic">
+                project.project_funding && project.project_funding.length === 0 && <span className="fst-italic">
                   This project has no funding added yet.
                 </span>
               }
@@ -163,7 +163,7 @@ class ProjectProfile extends Component {
               {
                 project.communities && project.communities.length > 0 && project.communities.map((community, index) => {
                   return (<span
-                      className="badge badge-pill bg-primary me-1"
+                      className="badge bg-primary me-1"
                       key={`project-community-${index}`}
                     >
                       {community}
@@ -171,7 +171,7 @@ class ProjectProfile extends Component {
                 })
               }
               {
-                project.communities && project.communities.length === 0 && <span className="font-italic">
+                project.communities && project.communities.length === 0 && <span className="fst-italic">
                   This project has no community tag added yet.
                 </span>
               }

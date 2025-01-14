@@ -84,7 +84,7 @@ class Funding extends React.Component {
       award_amount, agency_options, directorate_options, agency_other } = this.state;
     const { fundings, canUpdate } = this.props;
     return (
-      <div className="pt-2">
+      <div className="mt-2 mb-3">
         <h5>Funding Information</h5>
         <Form>
         {
@@ -181,7 +181,7 @@ class Funding extends React.Component {
                 fundings.map((funding, index) => 
                 <li
                   key={`funding-to-add-${index}`}
-                  className="me-2 my-2"
+                  className="me-2"
                 >
                   { this.parseFundingStr(funding) }
                   {

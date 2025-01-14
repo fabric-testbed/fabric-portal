@@ -150,7 +150,7 @@ class ProjectRoles extends React.Component {
                 onChange={this.handleInputChange}
                 onKeyDown={this.raiseInputKeyDown}
               />
-              <div className="input-group-append">
+              <div className="input-group-text">
                 <button
                   className="btn btn-outline-primary"
                   type="button"
