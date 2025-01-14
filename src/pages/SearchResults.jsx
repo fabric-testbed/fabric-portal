@@ -155,16 +155,14 @@ class SearchResults extends Component {
             onChange={this.props.onQueryChange}
             onKeyDown={this.raiseInputKeyDown}
           />
-          <div className="input-group-text">
-            <button
-              className="btn btn-outline-primary"
-              type="button"
-              onClick={this.handleSearch}
-              disabled={query.length < 3}
-            >
-              Search
-            </button>
-          </div>
+          <button
+            className="btn btn-outline-primary"
+            type="button"
+            onClick={this.handleSearch}
+            disabled={query.length < 3}
+          >
+            Search
+          </button>
         </div>
         {
           showSpinner && <SpinnerWithText text={"Loading search results..."} />

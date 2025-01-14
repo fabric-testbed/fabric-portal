@@ -235,15 +235,13 @@ class Projects extends React.Component {
               onChange={this.handleInputChange}
               onKeyDown={this.raiseInputKeyDown}
             />
-            <div className="input-group-text">
-              <button
-                className="btn btn-outline-primary"
-                type="button"
-                onClick={this.handleProjectsSearch}
-              >
-                Search
-              </button>
-            </div>
+            <button
+              className="btn btn-outline-primary"
+              type="button"
+              onClick={this.handleProjectsSearch}
+            >
+              Search
+            </button>
           </div>
         } 
         {
@@ -273,15 +271,13 @@ class Projects extends React.Component {
               }
               {
                 filterOption === "description" &&
-                  <div className="input-group-text">
-                    <button
-                      className="btn btn-outline-primary"
-                      type="button"
-                      onClick={this.handleProjectsSearch}
-                    >
-                      Search
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-outline-primary"
+                    type="button"
+                    onClick={this.handleProjectsSearch}
+                  >
+                    Search
+                  </button>
               }
               {
                 filterOption === "community" &&  

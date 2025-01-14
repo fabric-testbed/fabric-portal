@@ -7,8 +7,8 @@ const ErrorMessageAccordion = props => {
           <div className="panel-heading">
             <h6
               className="panel-title mb-0"
-              data-bs-toggle="collapse"
-              data-bs-target="#errorTableCollapse"
+              data-toggle="collapse"
+              data-target="#errorTableCollapse"
             >
              This slice is in <b>{state}</b> state due to the following errors. 
             </h6>
