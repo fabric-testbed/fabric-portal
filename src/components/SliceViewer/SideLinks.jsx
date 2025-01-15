@@ -71,7 +71,7 @@ export default class SideLinks extends Component {
           this.state.linkType !== "" &&
           <div>
             <div className="mb-1">
-              Guide for <span className="font-weight-bold">{linkType}</span> type Network Service
+              Guide for <span className="fw-bold">{linkType}</span> type Network Service
             </div>
             <ServiceTypeTable service={intro[linkType]} />
           </div>

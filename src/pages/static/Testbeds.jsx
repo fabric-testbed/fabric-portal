@@ -95,7 +95,6 @@ const testbeds = [
 ]
  
 const Testbeds = () => {
-  const allTestbeds = testbeds;
   const [query, setQuery] = useState('')
 
   const filteredTestbeds = useMemo(() => {
@@ -108,7 +107,7 @@ const Testbeds = () => {
       .filter(testbed => (
         testbed.name.toLowerCase().includes(reducedQuery) || testbed.description.toLowerCase().includes(reducedQuery))
       )
-  }, [query, allTestbeds])
+  }, [query])
 
   const handleChangeQuery = event => setQuery(event.target.value)
 

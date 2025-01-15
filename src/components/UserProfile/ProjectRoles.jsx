@@ -150,15 +150,13 @@ class ProjectRoles extends React.Component {
                 onChange={this.handleInputChange}
                 onKeyDown={this.raiseInputKeyDown}
               />
-              <div className="input-group-append">
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={this.handleProjectsSearch}
-                >
-                  Search
-                </button>
-              </div>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={this.handleProjectsSearch}
+              >
+                Search
+              </button>
             </div>
             <div className="d-flex flex-row-reverse">
               {projectsCount} results.

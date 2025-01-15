@@ -38,23 +38,23 @@ export default class DetailForm extends Component {
               !data && (
                 <div>
                   {
-                    slice.project_name && <div className="row mb-2">
-                      <label>Project</label>
+                    slice.project_name && <div className="mb-2">
+                      <label className="form-label">Project</label>
                       <div className="slice-form-element">
                         <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
                       </div>
                     </div>
                   }
-                  <div className="row d-flex flex-column mb-2">
-                    <label>
+                  <div className="d-flex flex-column mb-2">
+                    <label className="form-label">
                       Lease Start at
                     </label>
                     <div className="slice-form-element">
                       {utcToLocalTimeParser(leaseStartTime)}
                     </div>
                   </div>
-                  <div className="row d-flex flex-column mb-2">
-                    <label>
+                  <div className="d-flex flex-column mb-2">
+                    <label className="form-label">
                       Lease End at
                       {
                         slice.state === "StableOK" &&
@@ -100,8 +100,8 @@ export default class DetailForm extends Component {
 
             {
               data && data.properties && data.properties.class === "CompositeNode" &&
-                <div className="row mb-2">
-                  <label>Site Name</label>
+                <div className="mb-2">
+                  <label className="form-label">Site Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
             }
@@ -109,21 +109,21 @@ export default class DetailForm extends Component {
             {
               data && data.properties && data.properties.type === "VM" &&
               <div>
-                <div className="row mb-2">
-                  <label>VM Name</label>
+                <div className="mb-2">
+                  <label className="form-label">VM Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
                 {
                   data.properties.MgmtIp &&
-                  <div className="row mb-2">
-                    <label>Management IP Address</label>
+                  <div className="mb-2">
+                    <label className="form-label">Management IP Address</label>
                     <input type="text" className="form-control" defaultValue={data.properties.MgmtIp} disabled/>
                   </div>
                 }
                 {
                   data.properties.MgmtIp && data.properties.ImageRef &&
-                  <div className="row mb-2">
-                  <label>SSH Command <a
+                  <div className="mb-2">
+                  <label className="form-label">SSH Command <a
                     href={`${portalData.learnArticles.guideToLoginToFabricVMs}#project-permissions`} 
                     target="_blank" rel="noreferrer" className="ms-1">
                       <i className="fa fa-question-circle mx-2"></i>
@@ -133,8 +133,8 @@ export default class DetailForm extends Component {
                       <button
                         type="button"
                         className="btn btn-sm btn-outline-primary ms-2"
-                        data-toggle="modal"
-                        data-target="#TerminalFormModalCenter"
+                        data-bs-toggle="modal"
+                        data-bs-target="#TerminalFormModalCenter"
                       >
                         Connect to VM
                       </button>
@@ -151,8 +151,8 @@ export default class DetailForm extends Component {
                   </div>
                 </div>
                 }
-                <div className="row mb-2">
-                  <label>Cores</label>
+                <div className="mb-2">
+                  <label className="form-label">Cores</label>
                   <input
                     type="text"
                     className="form-control"
@@ -160,8 +160,8 @@ export default class DetailForm extends Component {
                     disabled
                   />
                 </div>
-                <div className="row mb-2">
-                  <label>RAM(GB)</label>
+                <div className="mb-2">
+                  <label className="form-label">RAM(GB)</label>
                   <input
                     type="text"
                     className="form-control"
@@ -169,8 +169,8 @@ export default class DetailForm extends Component {
                     disabled
                   />
                 </div>
-                <div className="row mb-2">
-                  <label>Disk(GB)</label>
+                <div className="mb-2">
+                  <label className="form-label">Disk(GB)</label>
                   <input
                     type="text"
                     className="form-control"
@@ -184,12 +184,12 @@ export default class DetailForm extends Component {
             {
               data && data.properties && data.properties.type === "Facility" &&
               <div>
-                <div className="row mb-2">
-                  <label>Facility Name</label>
+                <div className="mb-2">
+                  <label className="form-label">Facility Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label>Type</label>
+                <div className="mb-2">
+                  <label className="form-label">Type</label>
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
               </div>
@@ -198,20 +198,20 @@ export default class DetailForm extends Component {
             {
               data && data.properties && data.properties.class === "Component" &&
               <div>
-                <div className="row mb-2">
-                  <label >Component Name</label>
+                <div className="mb-2">
+                  <label className="form-label" >Component Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label >Type</label>
+                <div className="mb-2">
+                  <label className="form-label" >Type</label>
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label >Model</label>
+                <div className="mb-2">
+                  <label className="form-label" >Model</label>
                   <input type="text" className="form-control" defaultValue={data.properties.model} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label >Detail</label>
+                <div className="mb-2">
+                  <label className="form-label" >Detail</label>
                   <textarea disabled type="text" className="form-control" placeholder={data.properties.detail} />
                 </div>
               </div>
@@ -220,18 +220,18 @@ export default class DetailForm extends Component {
             {
              data && data.properties && data.properties.class === "ConnectionPoint" && data.properties.type && data.properties.type !== "FacilityPort" &&
               <div>
-                <div className="row mb-2">
-                  <label>Connection Point Name</label>
+                <div className="mb-2">
+                  <label className="form-label">Connection Point Name</label>
                   <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label>Type</label>
+                <div className="mb-2">
+                  <label className="form-label">Type</label>
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
                 {
                   data.properties.mac &&
-                  <div className="row mb-2">
-                  <label>MAC Address</label>
+                  <div className="mb-2">
+                  <label className="form-label">MAC Address</label>
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
                   </div>
                 }
@@ -240,25 +240,25 @@ export default class DetailForm extends Component {
             {
             data && data.properties && data.properties.type && data.properties.type === "FacilityPort" &&
             <div>
-              <div className="row mb-2">
-                <label>Facility Port Name</label>
+              <div className="mb-2">
+                <label className="form-label">Facility Port Name</label>
                 <input type="text" className="form-control" defaultValue={ data.properties.name} disabled/>
               </div>
-              <div className="row mb-2">
-                <label>Type</label>
+              <div className="mb-2">
+                <label className="form-label">Type</label>
                 <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
               </div>
               {
                 data.capacities.bw &&
-                <div className="row mb-2">
-                <label>Bandwidth</label>
+                <div className="mb-2">
+                <label className="form-label">Bandwidth</label>
                 <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
                 </div>
               }
               {
                 data.labels && data.labels.vlan && 
-                <div className="row mb-2">
-                  <label>VLAN</label>
+                <div className="mb-2">
+                  <label className="form-label">VLAN</label>
                   <input type="number" className="form-control" defaultValue={data.labels.vlan} disabled/>
                 </div>
               }
@@ -267,12 +267,12 @@ export default class DetailForm extends Component {
             {
               data && data.properties && data.properties.class === "NetworkService" &&
               <div>
-                <div className="row mb-2">
-                  <label>Network Service Name</label>
+                <div className="mb-2">
+                  <label className="form-label">Network Service Name</label>
                   <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
                 </div>
-                <div className="row mb-2">
-                  <label>Type</label>
+                <div className="mb-2">
+                  <label className="form-label">Type</label>
                   <input type="text" className="form-control" defaultValue={data.properties.type} disabled/>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export default class DetailForm extends Component {
             {
               data &&
               <button
-                className="btn btn-sm btn-outline-primary mt-2"
+                className="btn btn-sm btn-outline-primary mt-2 ms-3"
                 onClick={() => this.props.clearSelectedData()}
               >
                 View Slice Details

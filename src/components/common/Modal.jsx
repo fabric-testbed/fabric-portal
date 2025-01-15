@@ -33,14 +33,14 @@ class Modal extends React.Component {
                   type="button"
                   className="btn btn-primary"
                   onClick={handleSignup}
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                 >
                   Request
                 </button>
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  data-dismiss="modal"
+                  data-bs-dismiss="modal"
                 >
                   Cancel
                 </button>

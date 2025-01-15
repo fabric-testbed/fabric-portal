@@ -5,7 +5,7 @@ import CopyButton from "../common/CopyButton";
 import toLocaleTime from "../../utils/toLocaleTime";
 import utcToLocalTimeParser from "../../utils/utcToLocalTimeParser.js";
 import CalendarDateTime from "../common/CalendarDateTime.jsx";
-import InputTag from "../common/Form/InputTag.jsx";
+import ProjectTopics from "./Community/ProjectTopics.jsx";
 import Funding from "./Community/Funding.jsx";
 import CommunityTags from "./Community/CommunityTags.jsx";
 import { toast } from "react-toastify";
@@ -105,11 +105,11 @@ class ProjectBasicInfoTable extends Component {
           canUpdate={canUpdate}
           onCommunityUpdate={this.props.onCommunityUpdate}
         />
-        <InputTag 
+        <ProjectTopics
           name={"topics"}
           label={"Project Topics"}
           tags={topics}
-          disabled={false}
+          disabled={!canUpdate}
           onTagChange={this.props.onTagChange}
         />
         {

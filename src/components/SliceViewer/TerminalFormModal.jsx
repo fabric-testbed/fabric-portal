@@ -104,7 +104,7 @@ class TerminalFormModal extends Form {
               type="button"
               className="close"
               id="closeModalBtn"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close"
               onClick={this.closeModal}
             >

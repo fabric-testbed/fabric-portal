@@ -40,8 +40,8 @@ class Community extends React.Component {
     const { domain_options, subdomain_options, selected_domain, selected_subdomain } = this.state;
     const { communities, canUpdate } = this.props;
     return (
-      <div>
-        <h5 className="mt-2">Community</h5>
+      <div className="mt-2 mb-3">
+        <h5>Community</h5>
         <Form>
         {
           canUpdate &&         
@@ -98,7 +98,7 @@ class Community extends React.Component {
                 communities.map((community, index) => 
                 <li
                   key={`community-to-add-${index}`}
-                  className="me-2 my-2"
+                  className="me-2"
                 >
                   {community}
                   {

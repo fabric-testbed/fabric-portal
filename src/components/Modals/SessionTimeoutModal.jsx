@@ -78,7 +78,7 @@ class SessionTimeoutModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <p id="countdownTimerModal">
-              The current session is about to expire in <span className="text-danger font-weight-bold">
+              The current session is about to expire in <span className="text-danger fw-bold">
               {this.parseTimeStr(minutes, seconds)}</span>.
               Please save your work to prevent loss of data.
             </p>

@@ -622,7 +622,7 @@ class NewSliceForm extends React.Component {
                                       to="/experiments#sshKeys"
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="mx-1 font-weight-bold"
+                                      className="mx-1 fw-bold"
                                     >
                                       Manage SSH Keys
                                     </Link>first. Then click the refresh button.

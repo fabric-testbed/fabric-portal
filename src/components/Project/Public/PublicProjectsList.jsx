@@ -208,15 +208,13 @@ class PublicProjectsList extends React.Component {
             }
             {
               filterOption === "description" &&
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-outline-primary"
-                    type="button"
-                    onClick={this.handleProjectsSearch}
-                  >
-                    Search
-                  </button>
-                </div>
+                <button
+                  className="btn btn-outline-primary"
+                  type="button"
+                  onClick={this.handleProjectsSearch}
+                >
+                  Search
+                </button>
             }
             {
               filterOption === "community" &&

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const CountdownTimer = (props) => {
   const [timeLeft, setTimeLeft] = useState(props.interval);
 
-  useEffect(() => {
+  useEffect((props) => {
     // exit early when we reach 0
     if (timeLeft <= 0) {
       props.onDataReload();
