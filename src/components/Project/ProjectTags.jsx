@@ -23,7 +23,7 @@ class ProjectTags extends React.Component {
 
     return (
       <div htmlFor={`project-tags-${name}`} className="my-3 py-2 border-top border-bottom">
-        <div className="font-weight-bold mb-2">{label}</div>
+        <div className="fw-bold mb-2">{label}</div>
         <SelectGroup
           name={"Project Permissions"}
           tags={tags}

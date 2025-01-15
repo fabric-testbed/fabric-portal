@@ -3,10 +3,8 @@ import Joi from "joi-browser";
 import Input from "./Input.jsx";
 import Textarea from "./Textarea.jsx";
 import Select from "./Select.jsx";
-import InputTag from "./InputTag.jsx";
 import TimePicker from "./TimePicker.jsx";
 import Switch from "./Switch.jsx";
-import ProjectTags from "../../Project/ProjectTags";
 import InputCheckboxes from "../InputCheckboxes.jsx";
 import Wysiwyg from "./Wysiwyg.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -162,18 +160,6 @@ class Form extends Component {
         error={errors[name]}
         disabled={!notDisabled}
         tooltip={tooltip}
-      />
-    );
-  }
-
-  renderInputTag(name, label, tags, notDisabled) {
-    return (
-      <InputTag
-        name={name}
-        tags={tags}
-        label={label}
-        disabled={!notDisabled}
-        onTagChange={this.handleTagChange}
       />
     );
   }

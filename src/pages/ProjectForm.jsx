@@ -779,9 +779,6 @@ class ProjectForm extends Form {
                       portalData.helperText.privacyPreferencesDescription
                     )
                   }
-                  {/* {
-                    this.renderInputTag("topics", "Project Topics", topics, canUpdate)
-                  } */}
               </form>
               <ProjectBasicInfoTable
                 project={data}

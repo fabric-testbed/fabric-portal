@@ -772,22 +772,9 @@ ul,
   max-width: 160px;
 }
 
-// Slice Error Messages Accordion with Up/ Down Arrows
+// Slice Error Messages
 .panel-title {
   position: relative;
-}
-  
-.panel-title::after {
-  content: "Show Details \f107";
-  color: #333;
-  top: -2px;
-  right: 0px;
-  position: absolute;
-  font-family: "FontAwesome"
-}
-
-.panel-title[aria-expanded="true"]::after {
-  content: "Hide Details \f106";
 }
 
 .panel-heading-full.panel-heading {

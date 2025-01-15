@@ -163,6 +163,7 @@ class Resources extends Component {
       for (const query of filterQuery) {
         filtered = filtered.filter((p) => {
           if (p[`free${query}`] > 0) return p;
+          return "";
         })
       }
     }

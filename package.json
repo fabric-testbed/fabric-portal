@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.8.0",
+  "version": "1.8.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -42,7 +42,7 @@
     "react-bootstrap": "^2.10.5",
     "react-cookie-consent": "^6.2.1",
     "react-copy-to-clipboard": "^5.0.4",
-    "react-cytoscapejs": "^1.2.1",
+    "react-cytoscapejs": "^2.0.0",
     "react-daterange-picker": "^2.0.1",
     "react-datetime-picker": "^3.5.0",
     "react-dom": "^18.3.1",

@@ -1,10 +1,10 @@
-const getSite = (cp) => {
-  if (cp.properties && cp.properties.site) {
-    return cp.properties.site;
-  }
+// const getSite = (cp) => {
+//   if (cp.properties && cp.properties.site) {
+//     return cp.properties.site;
+//   }
 
-  return "";
-}
+//   return "";
+// }
 
 const isPositiveInteger = (input) => {
   const num = Number(input);

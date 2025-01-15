@@ -302,15 +302,13 @@ const Header = (props) => {
             onChange={props.onQueryChange}
             onKeyDown={raiseInputKeyDown}
           />
-           <div className="input-group-append">
-              <button
-                className="btn btn-sm btn-outline-secondary"
-                type="button"
-                onClick={handleSearch}
-              >
-                  <i className="fa fa-search"></i>
-              </button>
-            </div>
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            type="button"
+            onClick={handleSearch}
+          >
+              <i className="fa fa-search"></i>
+          </button>
          </form>
       }
       { props.userStatus !== "active" ? 

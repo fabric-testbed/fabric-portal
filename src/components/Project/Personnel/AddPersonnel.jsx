@@ -148,7 +148,7 @@ class AddPersonnel extends Component {
 
     return (
       <div className="card mt-3">
-        <div className="card-header" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
+        <div className="card-header" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne" id="headingOne">
           <h6 className="mb-0">
             Add {personnelType}
           </h6>
