@@ -231,7 +231,6 @@ class SliceViewer extends Component {
                 <CountdownTimer
                   text={"This slice is provisioning now."}
                   interval={30}
-                  onDataReload={() => window.location.reload()}
                 />
               }
               {

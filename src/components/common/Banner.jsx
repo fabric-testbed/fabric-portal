@@ -4,9 +4,16 @@ import Parser from 'html-react-parser';
 const Banner = (props) => {
   return (
     <div className="alert alert-warning alert-dismissible fade show notice-banner" role="alert">
-      <strong>{props.notice.title}:</strong> {Parser(props.notice.content)} &nbsp;
-      { props.notice.link && <a href={props.notice.link} target="_blank" rel="noreferrer">&nbsp;&gt;&gt;&gt;More details...</a> }
-      <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      <div>
+        <span className="me-2">{Parser(props.notice.content)} </span>
+        { 
+          props.notice.link && 
+          <a href={props.notice.link} target="_blank" rel="noreferrer">
+            &gt;&gt;&gt;{props.notice.title}
+          </a>
+        }
+      </div>
+      <button type="button" className="btn-close banner-close-btn" data-bs-dismiss="alert" aria-label="Close">
       </button>
     </div>
   );
