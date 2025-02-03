@@ -43,6 +43,7 @@ class PublicationTracker extends Component {
       label: "Year" 
     },
     { path: "authors", label: "Researchers" },
+    { path: "venue", label: "Venue" },
     {
       content: (publication) => (
         <div>
@@ -91,7 +92,8 @@ class PublicationTracker extends Component {
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
         || p.authors.join().toLowerCase().includes(searchQuery.toLowerCase())
         || (p.project_name && p.project_name.toLowerCase().includes(searchQuery.toLowerCase()))
-        || p.year.includes(searchQuery.toLowerCase())
+        || p.year.includes(searchQuery.toLowerCase()) 
+        || p.venue.includes(searchQuery.toLowerCase()) 
       );
     }
 
