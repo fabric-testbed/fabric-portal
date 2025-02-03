@@ -713,6 +713,11 @@ ul,
   border-radius: 0.25rem;
 }
 
+.banner-close-btn {
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+}
+
 .slice-form-label {
   font-size: 0.95rem;
   font-weight: 500;
@@ -732,8 +737,25 @@ ul,
 }
 
 .notice-banner {
+  font-size: 0.875rem;
+  color: #854522;
+  background-color: #ffe7d9;
+  border-color: #ffddca;
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
   margin-top: 2.5rem;
   margin-bottom: -3rem !important;
+  border: 2px solid #f4eded;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notice-banner div {
+  width: 97%;
 }
 
 .form-label-danger {

@@ -93,7 +93,7 @@ class PublicationTracker extends Component {
         || p.authors.join().toLowerCase().includes(searchQuery.toLowerCase())
         || (p.project_name && p.project_name.toLowerCase().includes(searchQuery.toLowerCase()))
         || p.year.includes(searchQuery.toLowerCase()) 
-        || p.venue.includes(searchQuery.toLowerCase()) 
+        || p.venue.toLowerCase().includes(searchQuery.toLowerCase()) 
       );
     }
 
