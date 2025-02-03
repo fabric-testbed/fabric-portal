@@ -55,7 +55,7 @@ const leadershipMembers = [
   {
     "name": "Bryttany Todd",
     "photo": BryttanyTodd,
-    "description": "Bryttany Todd is the Acting Assistant Director of Research at RENCI, UNC-Chapel Hill. Her interests include developing and executing project and program management strategy and operational needs . She currently manages various research projects and RENCI programs including FABRIC, MERIF, and RENCI's internship program."
+    "description": "Bryttany Todd is the Deputy Director of Research Operations at RENCI, UNC-Chapel Hill. Her interests include developing and executing project and program management strategy and operational needs . She currently manages various research projects and RENCI programs including FABRIC, MERIF, and RENCI's internship program."
   }  
 ]
 
