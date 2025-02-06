@@ -1,18 +1,21 @@
 import React, {Component} from "react";
 import Topomap from "../components/Resource/Topomap";
 import TestbedTable from "../components/Resource/TestbedTable";
-import DetailTable from "../components/Resource/DetailTable";
+import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import Pagination from "../components/common/Pagination";
 import SummaryTable from "../components/Resource/SummaryTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
+import linksParser from "../services/parser/linksParser";
 import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
+import { getLinksData } from "../services/mockLinkData.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
 import FacilityPortTable from "../components/Resource/FacilityPortTable.jsx";
+import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";
 
 class Resources extends Component {
   state = {
@@ -24,6 +27,9 @@ class Resources extends Component {
     searchQuery: "",
     searchQuery2: "",
     activeDetailName: "StarLight",
+    activeFrom: "",
+    activeTO: "",
+    linkData: {},
     siteNames: [],
     siteColorMapping: {},
     availableComponents: [],
@@ -139,7 +145,12 @@ class Resources extends Component {
   }
 
   handleActiveDetailChange = (name) => {
-    this.setState({ activeDetailName: name });
+    this.setState({ activeDetailName: name, activeFrom: "", activeTO: "" });
+  }
+
+  handleLinkDetailChange = (from, to) => {
+    const linkData = linksParser(getLinksData(), from, to);
+    this.setState({ activeDetailName: "", activeFrom: from, activeTO: to, linkData });
   }
 
   getSiteData = () => {
@@ -213,7 +224,7 @@ class Resources extends Component {
   }
 
   render() {
-    const { currentPage1, sortColumn1, searchQuery, 
+    const { currentPage1, sortColumn1, searchQuery, activeFrom, activeTO, linkData,
       activeDetailName, sortColumn2, currentPage2, searchQuery2 } = this.state;
     const { totalCount, siteData } = this.getSiteData();
     const { totalFPCount, facilityPortData } = this.getFPData();
@@ -228,16 +239,28 @@ class Resources extends Component {
             <div className="row my-2">
               <div className="col-9">
                 <Topomap
-                  onChange={this.handleActiveDetailChange}
+                  onNodeChange={this.handleActiveDetailChange}
+                  onLinkChange={this.handleLinkDetailChange}
                   siteColorMapping={this.state.siteColorMapping}
                 />
               </div>
               <div className="col-3">
-                <DetailTable
-                  name={activeDetailName}
-                  resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
-                  parent="resources"
-                />
+                {
+                  activeDetailName !== "" &&  
+                  <NodeDetailTable
+                    name={activeDetailName}
+                    resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
+                    parent="resources"
+                  />
+                }
+                {
+                  activeFrom !== "" && activeTO !== "" &&
+                  <LinkDetailTable
+                    from={activeFrom}
+                    to={activeTO}
+                    data={linkData}
+                  />
+                }
               </div>
             </div>
             <div className="row my-2">

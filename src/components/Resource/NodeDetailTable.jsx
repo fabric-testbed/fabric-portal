@@ -14,7 +14,7 @@ const generateProgressBar = (total, free, color, labelColor) => {
   )
 }
 
-const DetailTable = props => {
+const NodeDetailTable = props => {
   const {name, resource, parent} = props;
 
   const rowsOptions = {
@@ -160,4 +160,4 @@ const DetailTable = props => {
   )
 }
 
-export default DetailTable;
+export default NodeDetailTable;

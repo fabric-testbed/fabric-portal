@@ -11,7 +11,7 @@ import sitesParser from "../services/parser/sitesParser";
 import { NavLink } from "react-router-dom";
 import CookieConsent from "react-cookie-consent";
 import Topomap from "../components/Resource/Topomap";
-import DetailTable from "../components/Resource/DetailTable";
+import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
@@ -77,13 +77,13 @@ class Home extends React.Component {
                 <div className="row my-2">
                   <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
                     <Topomap
-                      onChange={this.handleActiveDetailChange}
+                      onNodeChange={this.handleActiveDetailChange}
                       sites={this.state.siteNames}
                       siteColorMapping={this.state.siteColorMapping}
                     />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-12">
-                    <DetailTable
+                    <NodeDetailTable
                       name={this.state.activeDetailName}
                       resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
                       parent="homepage"
