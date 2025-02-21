@@ -244,32 +244,32 @@ class Resources extends Component {
     return { totalFPCount: filtered.length, facilityPortData: facilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
   }
 
-  // getLinkData = () => {
-  //   const {
-  //     currentPage3,
-  //     sortColumn3,
-  //     searchQuery3,
-  //   } = this.state;
+  getLinkData = () => {
+    const {
+      currentPage3,
+      sortColumn3,
+      searchQuery3,
+    } = this.state;
 
-  //   const allLinks =  getLinksData();
-  //   // filter -> sort -> paginate
-  //   // remove `-int` suffix in name if there is any
-  //   let filtered = allLinks;
+    const allLinks =  getLinksData();
+    // filter -> sort -> paginate
+    // remove `-int` suffix in name if there is any
+    let filtered = allLinks;
 
-  //   if (searchQuery3) {
-  //     filtered = allLinks.filter((p) =>
-  //       p.name.toLowerCase().includes(searchQuery3.toLowerCase())
-  //     );
-  //   }
+    if (searchQuery3) {
+      filtered = allLinks.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery3.toLowerCase())
+      );
+    }
 
-  //   let sorted = [];
+    let sorted = [];
 
-  //   sorted = _.orderBy(filtered, [sortColumn3.path], [sortColumn3.order]);
+    sorted = _.orderBy(filtered, [sortColumn3.path], [sortColumn3.order]);
 
-  //   const links = paginate(sorted, currentPage3, 10);
+    const links = paginate(sorted, currentPage3, 10);
 
-  //   return { totalLinkCount: filtered.length, links };
-  // }
+    return { totalLinkCount: filtered.length, links };
+  }
 
   render() {
     const { currentPage1, sortColumn1, searchQuery, activeFrom, activeTo, linkData,
@@ -277,7 +277,7 @@ class Resources extends Component {
       searchQuery3, currentPage3 } = this.state;
     const { totalCount, siteData } = this.getSiteData();
     const { totalFPCount, facilityPortData } = this.getFPData();
-    // const { totalLinkCount, links } = this.getLinkData();
+    const { totalLinkCount, links } = this.getLinkData();
 
     return (
       <div className="container">
@@ -332,7 +332,7 @@ class Resources extends Component {
                 />
               </div>
             </div>
-            {/* <div className="row my-2">
+            <div className="row my-2">
               <div className="col-12 bg-info rounded">
                 <LinkTable
                   totalCount={totalLinkCount}
@@ -350,7 +350,7 @@ class Resources extends Component {
                   onPageChange={this.handleLinkPageChange}
                 />
               </div>
-            </div> */}
+            </div>
             <div className="row mt-4">
               <div className="col-12 bg-info rounded">
                 <FacilityPortTable
