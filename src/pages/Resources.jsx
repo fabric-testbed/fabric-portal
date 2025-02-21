@@ -9,6 +9,7 @@ import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import linksParser from "../services/parser/linksParser";
+import linksTableParser from "../services/parser/linksTableParser";
 import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
 import { getLinksData } from "../services/mockLinkData.js";
@@ -23,7 +24,7 @@ class Resources extends Component {
     resources: [],
     sortColumn1: { path: "name", order: "desc" },
     sortColumn2: { path: "site", order: "desc" },
-    sortColumn3: { path: "total", order: "desc" },
+    sortColumn3: { path: "in_now_value", order: "desc" },
     currentPage1: 1,
     currentPage2: 1,
     currentPage3: 1,
@@ -136,6 +137,10 @@ class Resources extends Component {
 
   handleFacilitySearch = (query) => {
     this.setState({ searchQuery2: query, currentPage2: 1 });
+  }
+
+  handleLinkSearch = (query) => {
+    this.setState({ searchQuery3: query, currentPage3: 1 });
   }
 
   handleSortSite = (sortColumn1) => {
@@ -251,14 +256,17 @@ class Resources extends Component {
       searchQuery3,
     } = this.state;
 
-    const allLinks =  getLinksData();
+    const allLinks =  linksTableParser(getLinksData());
+    console.log(allLinks);
+    
     // filter -> sort -> paginate
     // remove `-int` suffix in name if there is any
     let filtered = allLinks;
 
     if (searchQuery3) {
-      filtered = allLinks.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery3.toLowerCase())
+      filtered = allLinks.filter((l) =>
+        l.src_rack.toLowerCase().includes(searchQuery3.toLowerCase()) ||
+        l.dst_rack.toLowerCase().includes(searchQuery3.toLowerCase())
       );
     }
 
@@ -332,7 +340,7 @@ class Resources extends Component {
                 />
               </div>
             </div>
-            <div className="row my-2">
+            <div className="row mt-4 mb-2">
               <div className="col-12 bg-info rounded">
                 <LinkTable
                   totalCount={totalLinkCount}
@@ -345,7 +353,7 @@ class Resources extends Component {
                 />
                 <Pagination
                   itemsCount={totalLinkCount}
-                  pageSize={5}
+                  pageSize={10}
                   currentPage={currentPage3}
                   onPageChange={this.handleLinkPageChange}
                 />
