@@ -79,6 +79,9 @@ const Topomap = props => {
                 stroke="#ffde17"
                 strokeWidth={2.5}
                 strokeLinecap="round"
+                onMouseEnter={() => {
+                  props.onLinkChange(from, to)
+                }}
               />
           ))}
 
@@ -91,6 +94,7 @@ const Topomap = props => {
               strokeWidth={1}
               strokeLinecap="round"
               onMouseEnter={() => {
+                props.onLinkChange(from, to)
               }}
             />
           ))}

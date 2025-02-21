@@ -15,6 +15,9 @@ import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
+import { getLinksData } from "../services/mockLinkData.js";
+import linksParser from "../services/parser/linksParser";
+import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";
 
 class Home extends React.Component {
   state = {
@@ -22,6 +25,9 @@ class Home extends React.Component {
     isActiveUser: true,
     resources: [],
     activeDetailName: "StarLight",
+    activeFrom: "",
+    activeTo: "",
+    linkData: {},
     siteNames: [],
     siteColorMapping: {}
   }
@@ -49,7 +55,13 @@ class Home extends React.Component {
     this.setState({ activeDetailName: name });
   }
 
+  handleLinkDetailChange = (from, to) => {
+    const linkData = linksParser(getLinksData(), from, to);
+    this.setState({ activeDetailName: "", activeFrom: from, activeTo: to, linkData });
+  }
+
   render() {
+    const { activeFrom, activeTo, linkData } = this.state;
     return (
       <div className="home-container">
         {
@@ -78,16 +90,28 @@ class Home extends React.Component {
                   <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
                     <Topomap
                       onNodeChange={this.handleActiveDetailChange}
+                      onLinkChange={this.handleLinkDetailChange}
                       sites={this.state.siteNames}
                       siteColorMapping={this.state.siteColorMapping}
                     />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-sm-12">
-                    <NodeDetailTable
-                      name={this.state.activeDetailName}
-                      resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
-                      parent="homepage"
-                    />
+                    {
+                      this.state.activeDetailName !== "" && 
+                        <NodeDetailTable
+                          name={this.state.activeDetailName}
+                          resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[this.state.activeDetailName])}
+                          parent="homepage"
+                        />
+                    }
+                   {
+                      activeFrom !== "" && activeTo !== "" &&
+                      <LinkDetailTable
+                        from={activeFrom}
+                        to={activeTo}
+                        data={linkData}
+                      />
+                    }
                   </div>
                 </div>
               </div>
