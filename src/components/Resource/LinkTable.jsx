@@ -2,16 +2,56 @@ import React from 'react';
 import Table from "../common/Table";
 
 const columns = [
-  { label: "From", path: "src_rack"},
-  { label: "To", path: "dst_rack"},
-  { label: "In Now", path: "in_now_value"},
-  { label: "Out Now", path: "out_now_value"},
-  { label: "In Hour Avg.", path: "in_hr_avg_value"},
-  { label: "Out Hour Avg.", path: "out_hr_avg_value"},
-  { label: "In Hour Max", path: "in_hr_max_value"},
-  { label: "Out Hour Max", path: "out_hr_max_value"},
-  { label: "In Day Avg", path: "in_day_avg_value"},
-  { label: "Out Day Avg", path: "out_day_avg_value"},
+  {
+    content: (link) => (<span className="font-monospace">{link.src_rack.toUpperCase()}</span>),
+    path: "src_rack",
+    label: "From"
+  },
+  {
+    content: (link) => (<span className="font-monospace">{link.dst_rack.toUpperCase()}</span>),
+    path: "dst_rack",
+    label: "To"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.in_now_value}</span>),
+    path: "in_now_value",
+    label: "In Now"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.out_now_value}</span>),
+    path: "out_now_value",
+    label: "Out Now"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.in_hr_avg_value}</span>),
+    path: "in_hr_avg_value",
+    label: "In Hour Avg."
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.out_hr_avg_value}</span>),
+    path: "out_hr_avg_value",
+    label: "Out Hour Avg."
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.in_hr_max_value}</span>),
+    path: "in_hr_max_value",
+    label: "In Hour Max"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.out_hr_max_value}</span>),
+    path: "out_hr_max_value",
+    label: "Out Hour Max"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.in_day_avg_value}</span>),
+    path: "in_day_avg_value",
+    label: "In Day Avg"
+  },
+  {
+    content: (link) => (<span className="font-monospace text-sm-size">{link.out_day_avg_value}</span>),
+    path: "out_day_avg_value",
+    label: "Out Day Avg"
+  },
   {
     content: (link) => (<span className="font-monospace text-sm-size">
       {link.out_day_max_value}
