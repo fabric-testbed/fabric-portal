@@ -44,8 +44,8 @@ class LinkDetailTable extends Component {
   render() {
     const {from, to, data} = this.props;
     const { currentOption, timeOptions, rows } = this.state;
-    const link1 = data.link1.metric;
-    const link2 = data.link2.metric;
+    const link1 = data.link1 ? data.link1.metric : null;
+    const link2 = data.link2 ? data.link2.metric : null;
     return (
       <div className="d-flex flex-column align-items-center">
         <div>
@@ -71,25 +71,34 @@ class LinkDetailTable extends Component {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {
-              rows[currentOption].map((row, index) =>
+          {
+            !link1 ? 
+            <tbody>
+              <tr colSpan="2" className="font-monospace text-center">
+                No Available Data.
+              </tr> 
+            </tbody>
+              : 
+            <tbody>
+              {
+                rows[currentOption].map((row, index) =>
+                <tr>
+                  <td><span className='font-monospace'>{row.label}</span></td>
+                  <td>
+                    <span className='font-monospace badge bg-primary'>{link1.values[row.path]}</span>
+                    <span className='font-monospace ms-1 text-sm-size'>bps</span>
+                  </td>
+                </tr>)
+              }
               <tr>
-                <td><span className='font-monospace'>{row.label}</span></td>
+                <td><span className='font-monospace'>capacity</span></td>
                 <td>
-                  <span className='font-monospace badge bg-primary'>{link1.values[row.path]}</span>
-                  <span className='font-monospace ms-1 text-sm-size'>bps</span>
+                  <span className='font-monospace badge bg-primary'>{link1.max / 1000000000 || "N/A"}</span> 
+                  <span className='font-monospace ms-1 text-sm-size'>{link1.max / 1000000000 ? "Gb" : "" }</span>
                 </td>
-              </tr>)
-            }
-            <tr>
-              <td><span className='font-monospace'>capacity</span></td>
-              <td>
-                <span className='font-monospace badge bg-primary'>{link1.max / 1000000000 || "N/A"}</span> 
-                <span className='font-monospace ms-1 text-sm-size'>{link1.max / 1000000000 ? "Gb" : "" }</span>
-              </td>
-            </tr>
-          </tbody>
+              </tr>
+            </tbody>
+          }
         </table>
         <table className={`table resource-detail-table table-striped`}>
           <thead>
@@ -99,6 +108,13 @@ class LinkDetailTable extends Component {
               </th>
             </tr>
           </thead>
+          {
+            !link2 ? 
+            <tbody>
+            <tr colSpan="2" className="font-monospace text-center">
+              No Available Data.
+            </tr> 
+          </tbody> :
           <tbody>
             {
               rows[currentOption].map((row, index) =>
@@ -118,6 +134,7 @@ class LinkDetailTable extends Component {
               </td>
             </tr>
           </tbody>
+          }
         </table>
       </div>
     )

@@ -182,6 +182,7 @@ export const sitesNameMapping = {
     "University of Tokyo": "TOKY",
     "University of Hawai'i": "HAWI",
     "EDC": "EDC",
-    "EDUKY": "EDUKY"
+    "EDUKY": "EDUKY",
+    "FIU": "FIU"
   }
 }

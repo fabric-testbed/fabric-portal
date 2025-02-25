@@ -13,54 +13,54 @@ const columns = [
     label: "To"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.in_now_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.in_now_value}</span>),
     path: "in_now_value",
     label: "In Now"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.out_now_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.out_now_value}</span>),
     path: "out_now_value",
     label: "Out Now"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.in_hr_avg_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.in_hr_avg_value}</span>),
     path: "in_hr_avg_value",
     label: "In Hour Avg."
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.out_hr_avg_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.out_hr_avg_value}</span>),
     path: "out_hr_avg_value",
     label: "Out Hour Avg."
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.in_hr_max_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.in_hr_max_value}</span>),
     path: "in_hr_max_value",
     label: "In Hour Max"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.out_hr_max_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.out_hr_max_value}</span>),
     path: "out_hr_max_value",
     label: "Out Hour Max"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.in_day_avg_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.in_day_avg_value}</span>),
     path: "in_day_avg_value",
     label: "In Day Avg"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">{link.out_day_avg_value}</span>),
+    content: (link) => (<span className="font-monospace">{link.out_day_avg_value}</span>),
     path: "out_day_avg_value",
     label: "Out Day Avg"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">
+    content: (link) => (<span className="font-monospace">
       {link.out_day_max_value}
     </span>),
     path: "out_day_max_value",
     label: "Out Day Max"
   },
   {
-    content: (link) => (<span className="font-monospace text-sm-size">
+    content: (link) => (<span className="font-monospace">
       {link.max / 1000000000 || "N/A"}
     </span>),
     path: "max",
@@ -83,7 +83,7 @@ const LinkTable = props => {
               type="text"
               name="query"
               className="form-control form-control form-control-sm align-self-end"
-              placeholder={"Search by source or destination site"}
+              placeholder={"Search by source-destination site"}
               value={value}
               onChange={(e) => onChange(e.currentTarget.value)}
             />
@@ -96,6 +96,7 @@ const LinkTable = props => {
         tStyle={"table-sm"}
         sortColumn={sortColumn}
         onSort={onSort}
+        caption="Unit: bits / second"
       />
     </div>
   )

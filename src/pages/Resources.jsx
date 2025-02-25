@@ -175,7 +175,6 @@ class Resources extends Component {
 
   handleLinkDetailChange = (from, to) => {
     const linkData = linksParser(getLinksData(), from, to);
-    console.log(linkData);
     this.setState({ activeDetailName: "", activeFrom: from, activeTo: to, linkData });
   }
 
@@ -257,16 +256,21 @@ class Resources extends Component {
     } = this.state;
 
     const allLinks =  linksTableParser(getLinksData());
-    console.log(allLinks);
     
     // filter -> sort -> paginate
     // remove `-int` suffix in name if there is any
     let filtered = allLinks;
 
-    if (searchQuery3) {
+    if (searchQuery3 && !searchQuery3.includes("-")) {
       filtered = allLinks.filter((l) =>
         l.src_rack.toLowerCase().includes(searchQuery3.toLowerCase()) ||
         l.dst_rack.toLowerCase().includes(searchQuery3.toLowerCase())
+      );
+    } else if (searchQuery3.includes("-")){
+      const res = searchQuery3.split("-");
+      filtered = allLinks.filter((l) =>
+        l.src_rack.toLowerCase() === res[0].toLowerCase() &&
+        l.dst_rack.toLowerCase() === res[1].toLowerCase()
       );
     }
 

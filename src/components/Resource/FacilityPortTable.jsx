@@ -67,7 +67,7 @@ class FacilityPortTable extends Component {
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
-        <div className="fw-bold font-monospace d-flex align-items-center">
+          <div className="fw-bold font-monospace d-flex align-items-center">
             Facility Ports ({totalCount})
           </div>
           <div className="d-flex flex-row w-50 justify-content-end">
