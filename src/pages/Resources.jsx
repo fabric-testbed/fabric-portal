@@ -1,29 +1,40 @@
 import React, {Component} from "react";
 import Topomap from "../components/Resource/Topomap";
 import TestbedTable from "../components/Resource/TestbedTable";
-import DetailTable from "../components/Resource/DetailTable";
+import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import Pagination from "../components/common/Pagination";
 import SummaryTable from "../components/Resource/SummaryTable";
+import LinkTable from "../components/Resource/LinkTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
+import linksParser from "../services/parser/linksParser";
+import linksTableParser from "../services/parser/linksTableParser";
 import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
+import { getLinksData } from "../services/mockLinkData.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
 import FacilityPortTable from "../components/Resource/FacilityPortTable.jsx";
+import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";
 
 class Resources extends Component {
   state = {
     resources: [],
     sortColumn1: { path: "name", order: "desc" },
     sortColumn2: { path: "site", order: "desc" },
+    sortColumn3: { path: "in_now_value", order: "desc" },
     currentPage1: 1,
     currentPage2: 1,
+    currentPage3: 1,
     searchQuery: "",
     searchQuery2: "",
+    searchQuery3: "",
     activeDetailName: "StarLight",
+    activeFrom: "",
+    activeTo: "",
+    linkData: {},
     siteNames: [],
     siteColorMapping: {},
     availableComponents: [],
@@ -84,6 +95,18 @@ class Resources extends Component {
     return resource ? resource : null;
   }
 
+  handleLinkPageChange = (page, pagesCount) => {
+    const currentPage3 = this.state.currentPage3;
+    // page: -1 -> prev page; page: -2 -> next page
+    if(page === -1 && currentPage3 > 1) {
+      this.setState({ currentPage3: currentPage3 - 1 });
+    } else if (page === -2 && currentPage3 < pagesCount) {
+      this.setState({ currentPage3: currentPage3 + 1 });
+    } else {
+      this.setState({ currentPage3: page });
+    }
+  }
+
   handleSitePageChange = (page, pagesCount) => {
     const currentPage1 = this.state.currentPage1;
     // page: -1 -> prev page; page: -2 -> next page
@@ -110,19 +133,27 @@ class Resources extends Component {
 
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage1: 1 });
-  };
+  }
 
   handleFacilitySearch = (query) => {
     this.setState({ searchQuery2: query, currentPage2: 1 });
-  };
+  }
+
+  handleLinkSearch = (query) => {
+    this.setState({ searchQuery3: query, currentPage3: 1 });
+  }
 
   handleSortSite = (sortColumn1) => {
     this.setState({ sortColumn1 });
-  };
+  }
 
   handleSortFP = (sortColumn2) => {
     this.setState({ sortColumn2 });
-  };
+  }
+
+  handleSortLink = (sortColumn3) => {
+    this.setState({ sortColumn3 });
+  }
 
   handleFilterChange = (e) => {
     const component = e.target.value;
@@ -139,7 +170,12 @@ class Resources extends Component {
   }
 
   handleActiveDetailChange = (name) => {
-    this.setState({ activeDetailName: name });
+    this.setState({ activeDetailName: name, activeFrom: "", activeTo: "" });
+  }
+
+  handleLinkDetailChange = (from, to) => {
+    const linkData = linksParser(getLinksData(), from, to);
+    this.setState({ activeDetailName: "", activeFrom: from, activeTo: to, linkData });
   }
 
   getSiteData = () => {
@@ -179,7 +215,7 @@ class Resources extends Component {
     const resources = paginate(sorted, currentPage1, 5);
 
     return { totalCount: filtered.length, siteData: resources };
-  };
+  }
 
   getFPData = () => {
     const {
@@ -212,11 +248,48 @@ class Resources extends Component {
     return { totalFPCount: filtered.length, facilityPortData: facilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
   }
 
+  getLinkData = () => {
+    const {
+      currentPage3,
+      sortColumn3,
+      searchQuery3,
+    } = this.state;
+
+    const allLinks =  linksTableParser(getLinksData());
+    
+    // filter -> sort -> paginate
+    // remove `-int` suffix in name if there is any
+    let filtered = allLinks;
+
+    if (searchQuery3 && !searchQuery3.includes("-")) {
+      filtered = allLinks.filter((l) =>
+        l.src_rack.toLowerCase().includes(searchQuery3.toLowerCase()) ||
+        l.dst_rack.toLowerCase().includes(searchQuery3.toLowerCase())
+      );
+    } else if (searchQuery3.includes("-")){
+      const res = searchQuery3.split("-");
+      filtered = allLinks.filter((l) =>
+        l.src_rack.toLowerCase() === res[0].toLowerCase() &&
+        l.dst_rack.toLowerCase() === res[1].toLowerCase()
+      );
+    }
+
+    let sorted = [];
+
+    sorted = _.orderBy(filtered, [sortColumn3.path], [sortColumn3.order]);
+
+    const links = paginate(sorted, currentPage3, 10);
+
+    return { totalLinkCount: filtered.length, links };
+  }
+
   render() {
-    const { currentPage1, sortColumn1, searchQuery, 
-      activeDetailName, sortColumn2, currentPage2, searchQuery2 } = this.state;
+    const { currentPage1, sortColumn1, searchQuery, activeFrom, activeTo, linkData,
+      activeDetailName, sortColumn2, currentPage2, searchQuery2, sortColumn3, 
+      searchQuery3, currentPage3 } = this.state;
     const { totalCount, siteData } = this.getSiteData();
     const { totalFPCount, facilityPortData } = this.getFPData();
+    const { totalLinkCount, links } = this.getLinkData();
 
     return (
       <div className="container">
@@ -228,16 +301,28 @@ class Resources extends Component {
             <div className="row my-2">
               <div className="col-9">
                 <Topomap
-                  onChange={this.handleActiveDetailChange}
+                  onNodeChange={this.handleActiveDetailChange}
+                  onLinkChange={this.handleLinkDetailChange}
                   siteColorMapping={this.state.siteColorMapping}
                 />
               </div>
               <div className="col-3">
-                <DetailTable
-                  name={activeDetailName}
-                  resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
-                  parent="resources"
-                />
+                {
+                  activeDetailName !== "" && 
+                  <NodeDetailTable
+                    name={activeDetailName}
+                    resource={this.getResourceByName(this.state.resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
+                    parent="resources"
+                  />
+                }
+                {
+                  activeFrom !== "" && activeTo !== "" &&
+                  <LinkDetailTable
+                    from={activeFrom}
+                    to={activeTo}
+                    data={linkData}
+                  />
+                }
               </div>
             </div>
             <div className="row my-2">
@@ -256,6 +341,25 @@ class Resources extends Component {
                   pageSize={5}
                   currentPage={currentPage1}
                   onPageChange={this.handleSitePageChange}
+                />
+              </div>
+            </div>
+            <div className="row mt-4 mb-2">
+              <div className="col-12 bg-info rounded">
+                <LinkTable
+                  totalCount={totalLinkCount}
+                  links={links}
+                  sortColumn={sortColumn3}
+                  onSort={this.handleSortLink}
+                  onFilter={this.handleLinkFilterChange}
+                  value={searchQuery3}
+                  onChange={this.handleLinkSearch}
+                />
+                <Pagination
+                  itemsCount={totalLinkCount}
+                  pageSize={10}
+                  currentPage={currentPage3}
+                  onPageChange={this.handleLinkPageChange}
                 />
               </div>
             </div>
