@@ -33,7 +33,7 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
     spinnerText: "",
-    // showAllSlices: false
+    showAllSlices: false
   };
 
   async componentDidMount() {
@@ -98,7 +98,8 @@ class Slices extends React.Component {
     const currentChoice = this.state.showAllSlices;
     this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
     try {
-      const { data: res } = await getSlices("projectSlices", currentChoice);
+      // if current choice is to show all slices, pass as-self='false' as param
+      const { data: res } = await getSlices("projectSlices", !currentChoice);
       this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
     } catch(err) {
       toast.error("Failed to load slices. Please try again.")
@@ -159,7 +160,7 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -295,14 +296,14 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
-              {/* {
+              {
                 this.props.parent === "Projects" && <Checkbox
                   label={"Show All Project Slices"}
                   id={"checkbox-show-all-slices"}
                   isChecked={showAllSlices}
                   onCheck={this.handleShowAllSlices}
                 />
-              } */}
+              }
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
