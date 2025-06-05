@@ -5,7 +5,7 @@ import { default as portalData } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 import withRouter from "../common/withRouter.jsx";
 import { Eye, Download, Copy } from 'lucide-react';
-import { getArtifacts } from "../../services/artifactService.js";
+import { getArtifacts, getArtifactsByUserID } from "../../services/artifactService.js";
 import toLocaleTime from "../../utils/toLocaleTime.js";
 import { default as config } from "../../config.json";
 
@@ -18,19 +18,22 @@ class ArtifactListPage extends React.Component {
     artifacts: []
   };
 
-  async componentDidMount() {
-    this.setState({ showSpinner: true });
-    try {
-      const { data: artifacts } = await getArtifacts();
-      this.setState({
-        showSpinner: false,
-        artifacts: artifacts.results
-      });
-    } catch (err) {
-      this.setState({ showSpinner: false });
-      toast.error("Failed to load artifacts. Please reload this page.");
+    async componentDidMount() {
+      this.setState({ showSpinner: true });
+      const { parent, user } = this.props;
+      if (parent === "UserProfile" && !user) {
+        toast.error("User information is required to fetch artifacts.");
+        this.setState({ showSpinner: false });
+        return;
+      }
+      try {   
+        const { data: artifacts } = parent === "UserProfile" ? await getArtifactsByUserID(user.uuid) : await getArtifacts();
+        this.setState({ artifacts, showSpinner: false });
+      } catch (error) {
+        this.setState({ showSpinner: false });
+        toast.error("Error fetching artifacts");
+      }
     }
-  }
 
    reloadArtifactssData = async () => {
       const { currentPage, searchQuery} = this.state;
@@ -107,25 +110,28 @@ class ArtifactListPage extends React.Component {
         {
           !showSpinner && artifacts.length > 0 && (
             <div>
-              <div className="input-group mb-3 project-search-toolbar">
-                <input
-                  type="text"
-                  name="query"
-                  className="form-control"
-                  placeholder={"Search artifacts by title, tag, or project name..."}
-                  value={searchQuery}
-                  onChange={this.handleInputChange}
-                  onKeyDown={this.raiseInputKeyDown}
-                />
+              {
+                this.props.parent !== "UserProfile" && 
+                <div className="input-group mb-3 project-search-toolbar">
+                  <input
+                    type="text"
+                    name="query"
+                    className="form-control"
+                    placeholder={"Search artifacts by title, tag, or project name..."}
+                    value={searchQuery}
+                    onChange={this.handleInputChange}
+                    onKeyDown={this.raiseInputKeyDown}
+                  />
 
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={this.handleArtifactsSearch}
-                >
-                  Search
-                </button>
-              </div>
+                  <button
+                    className="btn btn-outline-primary"
+                    type="button"
+                    onClick={this.handleArtifactsSearch}
+                  >
+                    Search
+                  </button>
+                </div>
+              }
               <table className="table table-striped">
                 <tbody>
                   {this.state.artifacts.map((item, idx) => (
@@ -171,7 +177,7 @@ class ArtifactListPage extends React.Component {
                 </tbody>
               </table>
               <Pagination
-                pageSize={pageSize}
+                pageSize={20}
                 currentPage={currentPage}
                 totalCount={artifactsCount}
                 onPageClick={this.handlePaginationClick}
