@@ -117,7 +117,7 @@ class Slices extends React.Component {
       window.location.reload();
     }
     catch (err) {
-      toast.error("Failed to delete all slices of this project.")
+      toast.error("Failed to delete   of this project.")
     }
   }
 
@@ -301,7 +301,10 @@ class Slices extends React.Component {
                   label={"Show All Project Slices"}
                   id={"checkbox-show-all-slices"}
                   isChecked={showAllSlices}
-                  onCheck={this.handleShowAllSlices}
+                  onCheck={(e) => {
+                    e.preventDefault();
+                    this.handleShowAllSlices();
+                  }}
                 />
               }
               <Checkbox

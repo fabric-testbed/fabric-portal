@@ -24,7 +24,7 @@ class DynamicMetrics extends React.Component {
       {
         name: "Total Projects",
         count: 0,
-        link: "/experiments/public-projects"
+        link: "/experiments/experiments-public"
       },
       {
         name: "Publications Using FABRIC",
@@ -70,7 +70,7 @@ class DynamicMetrics extends React.Component {
     metricsItems.push({
       name: "Total Projects",
       count: coreMetrics.projects.active_cumulative + coreMetrics.projects.non_active_cumulative,
-      link: "/experiments/public-projects"
+      link: "/experiments/experiments-public"
     });
     metricsItems.push({
       name: "FABRIC User Publications",
