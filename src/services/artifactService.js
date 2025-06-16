@@ -1,13 +1,13 @@
 import http from './httpService';
 import { default as config } from "../config.json";
 
-const artifactsEndpoint = `${config.artifactsManagerApiUrl}`;
+const artifactsEndpoint = `${config.artifactManagerApiUrl}`;
 
 export function getArtifacts(page, searchQuery) {
   if (page === undefined) {
     page = 1;
   }
-  if (searchQuery === undefined) {
+  if (searchQuery === undefined) { 
     searchQuery = "";
   }
   if (searchQuery === "") {

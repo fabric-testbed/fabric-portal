@@ -1,7 +1,6 @@
 import React from "react";
 import SpinnerWithText from "../common/SpinnerWithText.jsx";
 import Pagination from "../common/Pagination.jsx";
-import { default as portalData } from "../../services/portalData.json";
 import { toast } from "react-toastify";
 import withRouter from "../common/withRouter.jsx";
 import { Eye, Download, Copy } from 'lucide-react';
@@ -18,42 +17,38 @@ class ArtifactListPage extends React.Component {
     artifacts: []
   };
 
-    async componentDidMount() {
-      this.setState({ showSpinner: true });
-      const { parent, user } = this.props;
-      if (parent === "UserProfile" && !user) {
-        toast.error("User information is required to fetch artifacts.");
-        this.setState({ showSpinner: false });
-        return;
-      }
-      try {   
-        const { data: artifacts } = parent === "UserProfile" ? await getArtifactsByUserID(user.uuid) : await getArtifacts();
-        this.setState({ artifacts, showSpinner: false });
-      } catch (error) {
-        this.setState({ showSpinner: false });
-        toast.error("Error fetching artifacts");
-      }
+  async componentDidMount() {
+    this.setState({ showSpinner: true });
+    const { parent, user } = this.props;
+    if (parent === "UserProfile" && !user) {
+      toast.error("User information is required to fetch artifacts.");
+      this.setState({ showSpinner: false });
+      return;
     }
+    try {   
+      const { data } = parent === "UserProfile" ? await getArtifactsByUserID(user.uuid) : await getArtifacts();
+      this.setState({ artifacts: data.results, artifactsCount: data.count, showSpinner: false });
+    } catch (error) {
+      this.setState({ showSpinner: false });
+      toast.error("Error fetching artifacts");
+    }
+  }
 
-   reloadArtifactssData = async () => {
-      const { currentPage, searchQuery} = this.state;
-      let artifacts = [];
-      let artifactsCount = 0;
-      try {
-        const { data } = await getArtifacts(currentPage, searchQuery);
-        artifacts = data.results;
-        artifactsCount = data.total;
-        this.setState({ artifacts, artifactsCount })
-      } catch (err) {
-        toast.error("Failed to load artifacts. Please re-try.");
-      }
+  reloadArtifactsData = async () => {
+    const { currentPage, searchQuery} = this.state;
+    try {
+      const { data } = await getArtifacts(currentPage, searchQuery);
+      this.setState({ artifacts: data.results, artifactsCount: data.count })
+    } catch (err) {
+      toast.error("Failed to load artifacts. Please re-try.");
     }
+  }
 
   handleInputChange = (e) => {
     // if input gets cleared, trigger data reload and reset the search query
     if (this.state.searchQuery !== "" && e.target.value === "") {
       this.setState({ currentPage: 1, searchQuery: "" }, () => {
-        this.reloadArtifactssData();
+        this.reloadArtifactsData();
       });
     } else {
       this.setState({ searchQuery: e.target.value });
@@ -65,22 +60,22 @@ class ArtifactListPage extends React.Component {
       // page: -1 -> prev page; page: -2 -> next page
       if(page === -1 && currentPage > 1) {
         this.setState({ currentPage: currentPage - 1 }, () => {
-          this.reloadArtifactssData();
+          this.reloadArtifactsData();
         });
       } else if (page === -2 && currentPage < pagesCount) {
         this.setState({ currentPage: currentPage + 1 }, () => {
-          this.reloadArtifactssData();
+          this.reloadArtifactsData();
         });
       } else {
         this.setState({ currentPage: page }, () => {
-          this.reloadArtifactssData();
+          this.reloadArtifactsData();
         });
       }
   };
 
   handleArtifactsSearch = () =>{
     this.setState({ currentPage: 1 }, () => {
-      this.reloadArtifactssData();
+      this.reloadArtifactsData();
     });
   }
 
@@ -92,11 +87,14 @@ class ArtifactListPage extends React.Component {
   };
 
   render() {
-    const { pageSize, currentPage, artifacts, showSpinner, artifactsCount, searchQuery } = this.state;
-
+    const { currentPage, artifacts, showSpinner, artifactsCount, searchQuery } = this.state;
+    const artifactLinkPrefix = `${config.artifactManagerAppUrl}/artifacts`;
+    const { parent } = this.props;
     return (
       <div className="mt-4">
-        <h1>Artifacts</h1>
+        {
+          ["UserProfile", "PublicExperiments"].includes(parent) && <h1>Artifacts</h1>
+        }
         {
           showSpinner && <SpinnerWithText text={"Loading artifacts..."} />
         }
@@ -111,7 +109,7 @@ class ArtifactListPage extends React.Component {
           !showSpinner && artifacts.length > 0 && (
             <div>
               {
-                this.props.parent !== "UserProfile" && 
+                parent !== "UserProfile" &&
                 <div className="input-group mb-3 project-search-toolbar">
                   <input
                     type="text"
@@ -132,14 +130,18 @@ class ArtifactListPage extends React.Component {
                   </button>
                 </div>
               }
+              <div className="d-flex flex-row-reverse">
+                <span>{artifactsCount} results.</span>
+              </div>  
               <table className="table table-striped">
                 <tbody>
-                  {this.state.artifacts.map((item, idx) => (
+                  {
+                   artifacts.map((item, idx) => (
                     <tr key={idx} className="border rounded bg-light align-middle">
                       <td className="px-3 py-2">
                         <div className="mb-1 fw-semibold text-primary">
                           <a
-                            href={`${config.artifactManagerAppUrl}/artifacts/${item.uuid}`}
+                            href={`${artifactLinkPrefix}/${item.uuid}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-decoration-none text-primary"
@@ -177,10 +179,10 @@ class ArtifactListPage extends React.Component {
                 </tbody>
               </table>
               <Pagination
+                itemsCount={artifactsCount}
                 pageSize={20}
                 currentPage={currentPage}
-                totalCount={artifactsCount}
-                onPageClick={this.handlePaginationClick}
+                onPageChange={this.handlePaginationClick}
               />
             </div>
           )}

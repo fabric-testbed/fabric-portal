@@ -12,6 +12,7 @@ import { getActiveKeys } from "../services/sshKeyService";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import withRouter from "../components/common/withRouter.jsx";
 
 class User extends React.Component {
   state = {
@@ -115,4 +116,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export default withRouter(User);

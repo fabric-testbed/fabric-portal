@@ -180,6 +180,15 @@ export default class DetailForm extends Component {
                 </div>
               </div>
             }
+        {
+              data && data.properties && data.properties.type === "Switch" &&
+              <div>
+                <div className="mb-2">
+                  <label className="form-label">Switch Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+              </div>
+            }
 
             {
               data && data.properties && data.properties.type === "Facility" &&
