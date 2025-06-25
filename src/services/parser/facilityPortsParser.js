@@ -15,6 +15,7 @@ export default function parseSites(data) {
       "id": fp["id"],
       "name": fp["Name"],
       "vlan_range": JSON.parse(fp["Labels"]).vlan_range,
+      "vlan": JSON.parse(fp["Labels"]).vlan,
       "allocated_vlan_range": fp["LabelAllocations"] ? JSON.parse(fp["LabelAllocations"]).vlan : [],
       "site": site ? site : fp["Name"].split('-')[0]
     });

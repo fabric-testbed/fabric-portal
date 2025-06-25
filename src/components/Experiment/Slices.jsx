@@ -96,7 +96,7 @@ class Slices extends React.Component {
 
   handleShowAllSlices = async () => {
     const currentChoice = this.state.showAllSlices;
-    this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
+    this.setState( { showAllSlices: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
     try {
       // if current choice is to show all slices, pass as-self='false' as param
       const { data: res } = await getSlices("projectSlices", !currentChoice);
@@ -301,10 +301,7 @@ class Slices extends React.Component {
                   label={"Show All Project Slices"}
                   id={"checkbox-show-all-slices"}
                   isChecked={showAllSlices}
-                  onCheck={(e) => {
-                    e.preventDefault();
-                    this.handleShowAllSlices();
-                  }}
+                  onCheck={this.handleShowAllSlices}
                 />
               }
               <Checkbox

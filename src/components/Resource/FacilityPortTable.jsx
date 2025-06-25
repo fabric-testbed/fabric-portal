@@ -36,6 +36,14 @@ class FacilityPortTable extends Component {
               </span>
             )
           }
+          {
+            !fp.vlan_range && fp.vlan && 
+            <span
+              className="font-monospace badge bg-primary me-1"
+            >
+              {fp.vlan}
+            </span>
+          }
         </div>
       ), 
       path: "vlan_range", 
