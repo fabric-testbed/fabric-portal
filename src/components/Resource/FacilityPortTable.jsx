@@ -67,6 +67,13 @@ class FacilityPortTable extends Component {
       ),
       path: "allocated_vlan_range", 
       label: "Allocated VLAN Range"
+    },
+    {
+      content: (fp) => (
+        <span className="font-monospace">{fp.description}</span>
+      ),
+      path: "description",
+      label: "Description"
     }
   ];
 

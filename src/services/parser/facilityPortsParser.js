@@ -1,4 +1,4 @@
-export default function parseSites(data) {
+export default function parseSites(data, descriptions) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
   const facility_ports = nodes.filter(n => n.Type === "FacilityPort");
@@ -17,7 +17,8 @@ export default function parseSites(data) {
       "vlan_range": JSON.parse(fp["Labels"]).vlan_range,
       "vlan": JSON.parse(fp["Labels"]).vlan,
       "allocated_vlan_range": fp["LabelAllocations"] ? JSON.parse(fp["LabelAllocations"]).vlan : [],
-      "site": site ? site : fp["Name"].split('-')[0]
+      "site": site ? site : fp["Name"].split('-')[0],
+      "description": descriptions[fp["Name"].replace(/-int$/, '')] ? descriptions[fp["Name"].replace(/-int$/, '')].description : ""
     });
   }
 

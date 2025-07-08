@@ -50,32 +50,38 @@ class NewSliceForm extends React.Component {
     projectTags: []
   }
 
-  async componentDidMount() {
-    // Show spinner in SideNodes when loading resources
-    this.setState({
-      showResourceSpinner: true,
-      showKeySpinner: true,
-      showProjectSpinner: true
-    });
+  // async componentDidMount() {
+  //   // Show spinner in SideNodes when loading resources
+  //   this.setState({
+  //     showResourceSpinner: true,
+  //     showKeySpinner: true,
+  //     showProjectSpinner: true
+  //   });
 
-    try {
-      const { data: resources } = await getResources(1);
-      const { data: keys } = await getActiveKeys();
-      const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
-      const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+  //   try {
+  //     const { data: resources } = await getResources(1);
+  //     const { data: keys } = await getActiveKeys();
+  //     const { data: projectRes } = await getProjectById(this.props.match.params.project_id);
+  //     const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
 
-      this.setState({
-        parsedResources: parsedObj,
-        showResourceSpinner: false,
-        sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
-        project: projectRes.results[0],
-        projectTags: projectRes.results[0].tags,
-        showKeySpinner: false,
-        showProjectSpinner: false
-      });
-    } catch (ex) {
-      toast.error("Failed to load resource/ sliver key information. Please reload this page.");
-    }
+  //     this.setState({
+  //       parsedResources: parsedObj,
+  //       showResourceSpinner: false,
+  //       sliverKeys: keys.results.filter(k => k.fabric_key_type === "sliver"),
+  //       project: projectRes.results[0],
+  //       projectTags: projectRes.results[0].tags,
+  //       showKeySpinner: false,
+  //       showProjectSpinner: false
+  //     });
+  //   } catch (ex) {
+  //     toast.error("Failed to load resource/ sliver key information. Please reload this page.");
+  //   }
+  //   // generate a graph uuid for the new slice
+  //   this.setState({ graphID: uuidv4() });
+  // }
+
+  componentDidMount() {
+
     // generate a graph uuid for the new slice
     this.setState({ graphID: uuidv4() });
   }

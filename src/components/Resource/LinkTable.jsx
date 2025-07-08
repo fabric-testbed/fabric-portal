@@ -70,7 +70,6 @@ const columns = [
 
 const LinkTable = props => {
   const { links, totalCount, onChange, value, sortColumn, onSort } = props;
-  console.log(links)
   return (
     <div className="mb-3">
       <div className="d-flex flex-row justify-content-between p-2">

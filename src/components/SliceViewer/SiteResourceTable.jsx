@@ -11,6 +11,7 @@ const SiteResourceTable = props => {
           <th scope="col">SharedNIC</th>
           <th scope="col">NVME</th>
           <th scope="col">FPGA</th>
+          <th scope="col">Switch</th>
         </tr>
       </thead>
       <tbody>
@@ -23,6 +24,7 @@ const SiteResourceTable = props => {
           <td>{props.site.freeSharedNIC}</td>
           <td>{props.site.freeNVME}</td>
           <td>{props.site.freeFPGA}</td>
+          <td>{props.site.freeSwitch}</td>
         </tr>
       </tbody>
     </table>

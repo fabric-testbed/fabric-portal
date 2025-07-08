@@ -32,6 +32,7 @@ const NodeDetailTable = props => {
       ["SmartNIC", "totalSmartNIC", "freeSmartNIC"],
       ["SharedNIC", "totalSharedNIC", "freeSharedNIC"],
       ["FPGA", "totalFPGA", "freeFPGA"],
+      ["Switch", "totalSwitch", "freeSwitch"]
     ]
   }
 

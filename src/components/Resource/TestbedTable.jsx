@@ -10,6 +10,7 @@ class TestbedTable extends Component {
     { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },
     { path: ["freeSharedNIC", "totalSharedNIC"], label: "SharedNIC" },
     { path: ["freeFPGA", "totalFPGA"], label: "FPGA" },
+    { path: ["freeSwitch", "totalSwitch"], label: "Switch" }
   ];
 
   render() {

@@ -13,6 +13,7 @@ import linksTableParser from "../services/parser/linksTableParser";
 import facilityPortsParser from "../services/parser/facilityPortsParser";
 import { getResources } from "../services/resourceService.js";
 import { getLinksData } from "../services/mockLinkData.js";
+import { facilityPortDescription } from "../data/facility-ports-description.js";
 import { toast } from "react-toastify";
 import paginate from "../utils/paginate";
 import _ from "lodash";
@@ -46,7 +47,7 @@ class Resources extends Component {
     try {
       const { data: res } = await getResources(1);
       const parsedSites = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
-      const parsedFacilityPorts = facilityPortsParser(res.data[0]);
+      const parsedFacilityPorts = facilityPortsParser(res.data[0], facilityPortDescription);
       this.setState({
         resources: parsedSites.parsedSites,
         siteNames: parsedSites.siteNames,

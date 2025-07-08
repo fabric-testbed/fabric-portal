@@ -198,5 +198,6 @@
       "Distributed computing methodologies",
       "Computer graphics/Graphics systems and interfaces/Graphics processors"
     ]    
-  }
+  },
+  "facilityPortDescription": "https://raw.githubusercontent.com/fabric-testbed/fabric-global-metadata/refs/heads/main/metadata/facility_ports.json"
 }

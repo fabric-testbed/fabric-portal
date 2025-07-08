@@ -387,12 +387,11 @@ class SideNodes extends React.Component {
                   <select
                     className="form-control form-control-sm"
                     id="nodeTypeSelect"
-                    disabled={availableFPs.length === 0}
                     onChange={this.handleNodeTypeChange}
                   >
                     <option value="VM">VM</option>
-                    <option value="Facility">Facility Port</option>
-                    {/* <option value="Switch">P4 Switch</option> */}
+                    {availableFPs.length > 0 && <option value="Facility">Facility Port</option>}
+                    <option value="Switch">P4 Switch</option>
                   </select>
                 </div>
                 {
