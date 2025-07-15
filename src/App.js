@@ -199,18 +199,18 @@ class App extends React.Component {
             <Route path="/branding" element={<Branding />} />
             <Route path="/signup/:id" element={<Signup />} />
             <Route path="/resources" element={<Resources />} />
-            <Route path="/resources/overview" element={<Resources />} />
+            <Route path="/resources/overview" element={<Resources />} />/
             <Route path="/resources/tools" element={<MeasurementMetrics />} />
             <Route path="/help" element={<Help />} />
             <Route path="/check-cookie" element={<CheckCookie />} />
             <Route path="/slice-editor" element={<SliceEditor />} />
             <Route path="/experiments/experiments-public" element={<PublicExperiments/>} />
             <Route path="/experiments/public-projects/:id" element={<PublicProjectProfile />} />
-            <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
-            <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
+            {/* <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+            <Route path="/new-slice/:project_id" element={<NewSliceForm />} /> */}
             <Route element={<ProtectedRoutes />}>
-                {/* <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} /> */}
-                {/* <Route path="/new-slice/:project_id" element={<NewSliceForm />} /> */}
+                <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+                <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
                 <Route path="/projects/:id" element={<ProjectForm />} />
                 <Route path="/experiments" element={<Experiments  userStatus={userStatus} globalRoles={globalRoles} />} />
                 <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />

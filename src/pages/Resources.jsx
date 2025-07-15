@@ -77,6 +77,8 @@ class Resources extends Component {
       "freeSharedNIC",
       "totalFPGA",
       "freeFPGA",
+      "totalSwitch",
+      "freeSwitch"
    ]
  
    const sum = {

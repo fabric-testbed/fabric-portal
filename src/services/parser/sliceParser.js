@@ -331,6 +331,7 @@ export default function parseSlice(slice, sliceType) {
             label: "",
             type: "roundrectangle",
             properties: { class: "ConnectionPoint", name: objNodes[link.target].Name, type: objNodes[link.target].Type },
+            capacities: objNodes[link.target].Capacities ? JSON.parse(objNodes[link.target].Capacities) : null,
           };
           elements.push(cp_data);
         } else if (objNodes[link.target].Class === "NetworkService"

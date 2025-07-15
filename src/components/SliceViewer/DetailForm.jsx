@@ -244,6 +244,13 @@ export default class DetailForm extends Component {
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
                   </div>
                 }
+                {
+                  data.capacities && data.capacities.bw &&
+                  <div className="mb-2">
+                    <label className="form-label">Bandwidth</label>
+                    <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
+                  </div>
+                }
               </div> 
             }
             {

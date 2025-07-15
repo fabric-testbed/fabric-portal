@@ -156,6 +156,45 @@ const validateFPNode = (selectedSite, nodeName, bandwidth, vlan, vlanRange) => {
   return validationResult;
 }
 
+const validateSwitchNode = (selectedSite, nodeName, nodes) => {
+  const validationResult = {
+    isValid: false,
+    message: "",
+  };
+
+  // Site is required.
+  if (selectedSite === "") {
+    validationResult.isValid = false;
+    validationResult.message = "Please select a site or choose the random option.";
+    return validationResult;
+  }
+
+  // Node name must be unique in the graph.
+  if (nodeName.length < 2) {
+    validationResult.isValid = false;
+    validationResult.message = "Please enter a node name at least 2 characters.";
+    return validationResult;
+  } else {
+    // check id node name is unique.
+    const site_nodes = nodes.filter(node => node.Class === "NetworkNode" && ["VM", "Facility", "Switch"].includes(node.Type));
+    if (site_nodes.length > 0) {
+      for (const node of site_nodes) {
+        if (nodeName === node.Name) {
+          validationResult.isValid = false;
+          validationResult.message = "Node name should be unique in the slice.";
+          return validationResult;
+        }
+      }
+    } 
+  }
+
+  // all validation above are passed.
+  validationResult.isValid = true;
+  validationResult.message = "";
+
+  return validationResult;
+}
+
 const validateSingleComponent = (type, name, model, addedComponents) => {
   const validationResult = {
     isValid: false,
@@ -366,6 +405,7 @@ const validator = {
   validateSlice,
   validateVMNodeComponents,
   validateFPNode,
+  validateSwitchNode,
   validateSingleComponent,
   validateNetworkService,
   validateDetailForm,

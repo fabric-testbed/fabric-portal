@@ -4,8 +4,8 @@ export default function parseSites(data, descriptions) {
   const facility_ports = nodes.filter(n => n.Type === "FacilityPort");
   const facilities = nodes.filter(n => n.Type === "Facility");
   const parsedFacilityPorts = [];
+  let site = "";
   for (const fp of facility_ports) {
-    let site = "";
     for (const f of facilities) {
       if (f["NodeID"].concat("-int") === fp["NodeID"]) {
         site = f.Site;

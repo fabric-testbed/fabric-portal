@@ -483,72 +483,106 @@ const addFacility = (node, graphID, nodes, links) => {
   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
 }
 
-// const addSwitch = (node, graphID, nodes, links) => {
-//   let clonedNodes = _.clone(nodes);
-//   let clonedLinks = _.clone(links);
+const addSwitch = (node, graphID, nodes, links) => {
+  let clonedNodes = _.clone(nodes);
+  let clonedLinks = _.clone(links);
 
-//   const switch_id = generateID(nodes);
-//   let switch_link_id = generateID(links);
-//   // 1. add Switch node
-//   // 2. add 8 port node and 'connects' link
-//   const relevantNodeIDs = [];
-//   const relevantLinkIDs = [];
-//   for (let i = 1; i < 9; i++) {
-//     relevantNodeIDs.push(switch_id + i);
-//     relevantLinkIDs.push(switch_link_id, switch_link_id + i)
-//   }
+  const switch_id = generateID(nodes);
+  let switch_link_id = generateID(links);
+  // 1. add Switch node
+  // 2. add network node
+  // 3. add 8 port node and 'connects' link
+  // Switch -> has -> Network Service (P4) -> connects -> Connection Point
+  const relevantNodeIDs = [];
+  const relevantLinkIDs = [];
+  for (let i = 1; i <= 9; i++) {
+    relevantNodeIDs.push(switch_id + i);
+    relevantLinkIDs.push(switch_link_id + i)
+  }
 
-//   const p4switch = {
-//     "id": switch_id,
-//     "GraphID": graphID,
-//     "NodeID": uuidv4(),
-//     "Class": "NetworkNode",
-//     "Name": node.name,
-//     "Type": "Switch",
-//     "Site": node.site,
-//     "StitchNode": "false",
-//     "layout": JSON.stringify({
-//       "relevantNodeIDs": relevantNodeIDs,
-//       "relevantLinkIDs": relevantLinkIDs
-//     })
-//   }
+  // generate switch node
+  const p4switch = {
+    "id": switch_id,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkNode",
+    "Name": node.name,
+    "Type": "Switch",
+    "Site": node.site,
+    "StitchNode": "false",
+    "layout": JSON.stringify({
+      "relevantNodeIDs": relevantNodeIDs,
+      "relevantLinkIDs": relevantLinkIDs
+    })
+  }
 
-//   clonedNodes.push(p4switch);
+  clonedNodes.push(p4switch);
 
-//   for (let i = 1; i < 9; i++) { 
-//     const switch_port = {
-//       "id": switch_id + i,
-//       "GraphID": graphID,
-//       "NodeID": uuidv4(),
-//       "Class": "ConnectionPoint",
-//       "Name": `${node.name}-int`,
-//       "Type": "FacilityPort",
-//       "Capacities": JSON.stringify(node.capacities),
-//       "Labels": JSON.stringify({
-//         "vlan": node.labels ? node.labels.vlan : 0
-//       }),
-//       "StitchNode": "false",
-//       "layout": JSON.stringify({
-//         "site": node.site,
-//         "connectFrom": switch_id,
-//         "connectLinkIdAsTarget": switch_id + i
-//       })
-//     }
+  // generate P4 network node 
+  const p4ns = {
+    "id": switch_id + 1,
+    "GraphID": graphID,
+    "NodeID": uuidv4(),
+    "Class": "NetworkService",
+    "Name": `${node.name}-ns`,
+    "Type": "P4",
+    "StitchNode": "false",
+    "Layer": "L2",
+    "layout": JSON.stringify({
+      "relevantNodeIDs": relevantNodeIDs,
+      "relevantLinkIDs": relevantLinkIDs
+    })
+  }
 
-//     const switch_connects_port = {
-//       "label": "connects",
-//       "Class": "connects",
-//       "id": switch_link_id + i - 1,
-//       "source": switch_id,
-//       "target": switch_id + i,
-//     }
+  clonedNodes.push(p4ns);
 
-//     clonedNodes.push(switch_port);
-//     clonedLinks.push(switch_connects_port)
-//   }
-//   // return sliceNodes and sliceLinks.
-//   return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
-// }
+  // generate port nodes
+  for (let i = 1; i < 9; i++) { 
+    const switch_port = {
+      "id": switch_id + 1 + i,
+      "GraphID": graphID,
+      "NodeID": uuidv4(),
+      "Class": "ConnectionPoint",
+      "Name": `p${i}`,
+      "Type": "DedicatedPort",
+      "Capacities": JSON.stringify(node.capacities),
+      "Labels": JSON.stringify({ "local_name": `p${i}` }),
+      "StitchNode": "false",
+      "layout": JSON.stringify({
+        "site": node.site,
+        "connectFrom": switch_id + 1,
+        "connectLinkIdAsTarget": switch_id + 1 + i
+      })
+    }
+    clonedNodes.push(switch_port);
+  }
+
+  // then generate link for switch and its p4 network service (has)
+  const switch_has_ns = {
+    "label": "has",
+    "Class": "has",
+    "id": switch_link_id,
+    "source": switch_id,
+    "target": switch_id + 1,
+  }
+
+  clonedLinks.push(switch_has_ns);
+
+  // then generate links for ns and its 8 ports (connects)
+  for (let i = 1; i < 9; i++) { 
+    const switch_connects_port = {
+      "label": "connects",
+      "Class": "connects",
+      "id": switch_link_id + i,
+      "source": switch_id + 1,
+      "target": switch_id + 1 + i,
+    }
+    clonedLinks.push(switch_connects_port);
+  }
+  
+  // return sliceNodes and sliceLinks.
+  return { newSliceNodes: clonedNodes, newSliceLinks: clonedLinks }
+}
 
 // async, await for adding network service
 // 1. add a Network Service Node and its Connection Points
@@ -695,6 +729,7 @@ const builder = {
   generateID,
   addVM,
   addFacility,
+  addSwitch,
   addLink,
   addComponent,
 }
