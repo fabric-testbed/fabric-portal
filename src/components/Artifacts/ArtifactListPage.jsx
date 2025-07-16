@@ -4,7 +4,7 @@ import Pagination from "../common/Pagination.jsx";
 import { toast } from "react-toastify";
 import withRouter from "../common/withRouter.jsx";
 import { Eye, Download, Copy } from 'lucide-react';
-import { getArtifacts, getArtifactsByUserID } from "../../services/artifactService.js";
+import { getArtifacts, getArtifactsByUserID, getArtifactsByProject } from "../../services/artifactService.js";
 import toLocaleTime from "../../utils/toLocaleTime.js";
 import { default as config } from "../../config.json";
 
@@ -19,14 +19,26 @@ class ArtifactListPage extends React.Component {
 
   async componentDidMount() {
     this.setState({ showSpinner: true });
-    const { parent, user } = this.props;
+    const { parent, user, projectId } = this.props;
     if (parent === "UserProfile" && !user) {
       toast.error("User information is required to fetch artifacts.");
       this.setState({ showSpinner: false });
       return;
     }
     try {   
-      const { data } = parent === "UserProfile" ? await getArtifactsByUserID(user.uuid) : await getArtifacts();
+      switch (parent) {
+        case "UserProfile": {
+          const { data } = await getArtifactsByUserID(user.uuid);
+          break;
+        }
+        case "Projects": {
+          const { data } = await getArtifactsByProject(projectId);
+          break;
+        }
+        default:
+          const { data } = await getArtifacts();
+          break;
+      }      
       this.setState({ artifacts: data.results, artifactsCount: data.count, showSpinner: false });
     } catch (error) {
       this.setState({ showSpinner: false });

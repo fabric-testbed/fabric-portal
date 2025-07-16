@@ -20,5 +20,9 @@ export function getArtifacts(page, searchQuery) {
 }
 
 export function getArtifactsByUserID(userID) {
-    return http.get(artifactsEndpoint + `/by-author/${userID}`);
-  }
+  return http.get(artifactsEndpoint + `/by-author/${userID}`);
+}
+
+export function getArtifactsByProject(projectID) {
+  return http.get(artifactsEndpoint + `/by-project/${projectID}`);
+}
