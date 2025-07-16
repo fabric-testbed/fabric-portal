@@ -9,6 +9,7 @@ import ProjectMemberships from "../components/Project/Personnel/ProjectMembershi
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import PersistentStorage from "../components/Project/Storage/PersistentStorage.jsx";
+import ArtifactListPage from "../components/Artifacts/ArtifactListPage.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";

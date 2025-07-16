@@ -25,18 +25,19 @@ class ArtifactListPage extends React.Component {
       this.setState({ showSpinner: false });
       return;
     }
-    try {   
+    try {
+      let data;
       switch (parent) {
         case "UserProfile": {
-          const { data } = await getArtifactsByUserID(user.uuid);
+          ({ data } = await getArtifactsByUserID(user.uuid));
           break;
         }
         case "Projects": {
-          const { data } = await getArtifactsByProject(projectId);
+          ({ data } = await getArtifactsByProject(projectId));
           break;
         }
         default:
-          const { data } = await getArtifacts();
+          ({ data } = await getArtifacts());
           break;
       }      
       this.setState({ artifacts: data.results, artifactsCount: data.count, showSpinner: false });
