@@ -99,7 +99,7 @@ class TerminalFormModal extends Form {
     <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLongTitle">Connect to {this.props.data.properties.ImageRef ? "VM" : "Switch"}</h5>
+            <h5 className="modal-title" id="exampleModalLongTitle">Connect to Web SSH App</h5>
             <button
               type="button"
               className="btn-close"

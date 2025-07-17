@@ -18,7 +18,6 @@ class PublicExperiments extends React.Component {
   };
 
   async componentDidMount() {
-    // url anchor: #slices, #tokens, #sshKeys
     const hash = this.props.location.hash;
     const activeMap = {
       "#public-projects": 0,

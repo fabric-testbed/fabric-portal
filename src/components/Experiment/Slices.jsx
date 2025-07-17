@@ -106,21 +106,6 @@ class Slices extends React.Component {
     }
   }
 
-  handleDeleteAllSlices = async () => {
-    try {
-      this.setState({
-        showSpinner: true,
-        spinnerText: "Deleting all active slices..."
-      })
-      await deleteSlice();
-      await sleep(5000);
-      window.location.reload();
-    }
-    catch (err) {
-      toast.error("Failed to delete   of this project.")
-    }
-  }
-
   getPageData = () => {
     const {
       pageSize,
@@ -310,21 +295,12 @@ class Slices extends React.Component {
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
-              {/* {
-                this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
-                <DeleteModal
-                  name={"Delete All"}
-                  text={"Are you sure you want to delete all the active slices? This process cannot be undone."}
-                  id={"delete-all-slices"}
-                  onDelete={() => this.handleDeleteAllSlices()}
-                />
-              } */}
             </div>
             <SlicesTable
               slices={data}
               sortColumn={sortColumn}
               onSort={this.handleSort}
-              parent={this.props.parent}
+              parent={showAllSlices ? "allProjectSlices" : this.props.parent}
             />
             <Pagination
               itemsCount={totalCount}

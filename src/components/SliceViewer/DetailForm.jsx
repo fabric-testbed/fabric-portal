@@ -199,7 +199,7 @@ export default class DetailForm extends Component {
                   </div>
                 }
                 {
-                  data.properties.MgmtIp && data.properties.ImageRef &&
+                  data.properties.MgmtIp &&
                   <div className="mb-2">
                   <label className="form-label">SSH Command
                     {
@@ -215,9 +215,9 @@ export default class DetailForm extends Component {
                     }
                   </label>
                   <div className="ssh-command">
-                    {this.sshCommandforVM(data.properties.MgmtIp, data.properties.ImageRef)}
+                    {this.sshCommandforSwitch(data.properties.MgmtIp)}
                     <CopyButton
-                      id={this.sshCommandforVM(data.properties.MgmtIp, data.properties.ImageRef)}
+                      id={this.sshCommandforSwitch(data.properties.MgmtIp)}
                       btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
                       showCopiedValue={false}
                       text=""
