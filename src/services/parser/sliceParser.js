@@ -125,6 +125,9 @@ export default function parseSlice(slice, sliceType) {
         data.BootScript = originalNode.BootScript || "";
         data.properties.sliverId = originalNode.ReservationInfo ? JSON.parse(originalNode.ReservationInfo).reservation_id : "";
       }
+      if (originalNode.Type === "Switch") {
+        data.properties.MgmtIp = originalNode.MgmtIp || "";
+      }
     }
   }
 

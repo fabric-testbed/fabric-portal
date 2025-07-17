@@ -510,6 +510,7 @@ const addSwitch = (node, graphID, nodes, links) => {
     "Type": "Switch",
     "Site": node.site,
     "StitchNode": "false",
+    "Capacities": JSON.stringify({"unit": 1,}),
     "layout": JSON.stringify({
       "relevantNodeIDs": relevantNodeIDs,
       "relevantLinkIDs": relevantLinkIDs
