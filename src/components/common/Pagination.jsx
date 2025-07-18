@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 
-const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange, hidePageNumberSelection }) => {
+const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);
   const boundaryCount = 6;
 
@@ -39,7 +39,7 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange, hidePageN
             </button>
           </li>
           {
-           !hidePageNumberSelection && pages.map((page) => (
+           pages.map((page) => (
             page > 0 ?
             <li
               key={page}

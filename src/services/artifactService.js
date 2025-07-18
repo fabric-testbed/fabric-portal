@@ -19,10 +19,16 @@ export function getArtifacts(page, searchQuery) {
   return http.get(`${artifactsEndpoint}?page=${page}&search=${searchQuery}`);
 }
 
-export function getArtifactsByUserID(userID) {
-  return http.get(artifactsEndpoint + `/by-author/${userID}`);
+export function getArtifactsByUserID(userID, page) {
+  if (page === undefined) {
+    page = 1;
+  }
+  return http.get(artifactsEndpoint + `/by-author/${userID}?page=${page}`);
 }
 
-export function getArtifactsByProject(projectID) {
-  return http.get(artifactsEndpoint + `/by-project/${projectID}`);
+export function getArtifactsByProject(projectID, page) {
+  if (page === undefined) {
+    page = 1;
+  }
+  return http.get(artifactsEndpoint + `/by-project/${projectID}?page=${page}`);
 }

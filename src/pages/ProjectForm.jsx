@@ -222,7 +222,8 @@ class ProjectForm extends Form {
        "#info": 0,
        "#memberships": 1,
        "#slices": 2,
-       "#volumes": 3
+       "#volumes": 3,
+       "#artifacts": 4
      }
  
      if (hash) {
@@ -426,6 +427,7 @@ class ProjectForm extends Form {
       1: "#memberships",
       2: "#slices",
       3: "#volumes",
+      4: "#artifacts"
     }
     this.setState({ 
       activeIndex: newIndex,

@@ -49,15 +49,16 @@ class ArtifactListPage extends React.Component {
 
   reloadArtifactsData = async () => {
     const { currentPage, searchQuery} = this.state;
+    const { parent, user, projectId } = this.props;
     try {
       let data;
       switch (parent) {
         case "UserProfile": {
-          ({ data } = await getArtifactsByUserID(user.uuid));
+          ({ data } = await getArtifactsByUserID(user.uuid, currentPage));
           break;
         }
         case "Projects": {
-          ({ data } = await getArtifactsByProject(projectId));
+          ({ data } = await getArtifactsByProject(projectId, currentPage));
           break;
         }
         default:
@@ -209,7 +210,6 @@ class ArtifactListPage extends React.Component {
                 pageSize={20}
                 currentPage={currentPage}
                 onPageChange={this.handlePaginationClick}
-                hidePageNumberSelection={parent !== "Experiments" ?  true : false}
               />
             </div>
           )}
