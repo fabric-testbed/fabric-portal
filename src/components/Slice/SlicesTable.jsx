@@ -112,7 +112,7 @@ class SlicesTable extends Component {
     }
     return (
       <Table
-        columns={parent === "Projects" ? this.columns["projectSlices"] : this.columns["allSlices"]}
+        columns={this.columns[columnOptions]}
         data={slices}
         sortColumn={sortColumn}
         onSort={onSort}

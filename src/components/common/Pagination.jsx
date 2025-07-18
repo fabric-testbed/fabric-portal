@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 
-const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
+const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange, hidePageNumberSelection }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);
   const boundaryCount = 6;
 
@@ -38,7 +38,8 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
               <i className="fa fa-chevron-left"></i>
             </button>
           </li>
-          {pages.map((page) => (
+          {
+           !hidePageNumberSelection && pages.map((page) => (
             page > 0 ?
             <li
               key={page}

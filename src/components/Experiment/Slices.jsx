@@ -98,8 +98,7 @@ class Slices extends React.Component {
     const currentChoice = this.state.showAllSlices;
     this.setState( { showAllSlices: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
     try {
-      // if current choice is to show all slices, pass as-self='false' as param
-      const { data: res } = await getSlices("projectSlices", !currentChoice);
+      const { data: res } = await getSlices("projectSlices", currentChoice);
       this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
     } catch(err) {
       toast.error("Failed to load slices. Please try again.")

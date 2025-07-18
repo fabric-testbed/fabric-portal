@@ -50,7 +50,20 @@ class ArtifactListPage extends React.Component {
   reloadArtifactsData = async () => {
     const { currentPage, searchQuery} = this.state;
     try {
-      const { data } = await getArtifacts(currentPage, searchQuery);
+      let data;
+      switch (parent) {
+        case "UserProfile": {
+          ({ data } = await getArtifactsByUserID(user.uuid));
+          break;
+        }
+        case "Projects": {
+          ({ data } = await getArtifactsByProject(projectId));
+          break;
+        }
+        default:
+          ({ data } = await getArtifacts(currentPage, searchQuery));
+          break;
+      }
       this.setState({ artifacts: data.results, artifactsCount: data.count })
     } catch (err) {
       toast.error("Failed to load artifacts. Please re-try.");
@@ -122,7 +135,7 @@ class ArtifactListPage extends React.Component {
           !showSpinner && artifacts.length > 0 && (
             <div>
               {
-                parent !== "UserProfile" &&
+                parent === "Experiments" &&
                 <div className="input-group mb-3 project-search-toolbar">
                   <input
                     type="text"
@@ -196,6 +209,7 @@ class ArtifactListPage extends React.Component {
                 pageSize={20}
                 currentPage={currentPage}
                 onPageChange={this.handlePaginationClick}
+                hidePageNumberSelection={parent !== "Experiments" ?  true : false}
               />
             </div>
           )}
