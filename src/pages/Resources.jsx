@@ -4,7 +4,7 @@ import TestbedTable from "../components/Resource/TestbedTable";
 import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import Pagination from "../components/common/Pagination";
 import SummaryTable from "../components/Resource/SummaryTable";
-import LinkTable from "../components/Resource/LinkTable";
+// import LinkTable from "../components/Resource/LinkTable";
 import withRouter from "../components/common/withRouter.jsx";
 import { sitesNameMapping } from "../data/sites";
 import sitesParser from "../services/parser/sitesParser";
@@ -305,7 +305,7 @@ class Resources extends Component {
               <div className="col-9">
                 <Topomap
                   onNodeChange={this.handleActiveDetailChange}
-                  onLinkChange={this.handleLinkDetailChange}
+                  // onLinkChange={this.handleLinkDetailChange}
                   siteColorMapping={this.state.siteColorMapping}
                 />
               </div>
@@ -347,7 +347,7 @@ class Resources extends Component {
                 />
               </div>
             </div>
-            <div className="row mt-4 mb-2">
+            {/* <div className="row mt-4 mb-2">
               <div className="col-12 bg-info rounded">
                 <LinkTable
                   totalCount={totalLinkCount}
@@ -365,7 +365,7 @@ class Resources extends Component {
                   onPageChange={this.handleLinkPageChange}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="row mt-4">
               <div className="col-12 bg-info rounded">
                 <FacilityPortTable

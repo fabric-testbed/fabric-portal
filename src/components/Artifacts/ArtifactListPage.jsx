@@ -136,7 +136,7 @@ class ArtifactListPage extends React.Component {
           !showSpinner && artifacts.length > 0 && (
             <div>
               {
-                parent === "Experiments" &&
+                ["Experiments", "PublicExperiments"].includes(parent) &&
                 <div className="input-group mb-3 project-search-toolbar">
                   <input
                     type="text"

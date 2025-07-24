@@ -102,14 +102,14 @@ class SlicesTable extends Component {
   };
 
   render() {
-    const { slices, onSort, sortColumn, parent, allProjectSlices } = this.props;
+    const { slices, onSort, sortColumn, parent } = this.props;
     let columnOptions = "allSlices";
     if (parent === "Projects") {
       columnOptions = "projectSlices";
-      if (allProjectSlices) {
-        columnOptions = "allProjectSlices";
-      }
+    } else if (parent === "allProjectSlices") {
+      columnOptions = "allProjectSlices";
     }
+    
     return (
       <Table
         columns={this.columns[columnOptions]}

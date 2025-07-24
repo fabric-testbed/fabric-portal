@@ -65,9 +65,9 @@ const Topomap = props => {
               stroke="#6edcff"
               strokeWidth={1}
               strokeLinecap="round"
-              onMouseEnter={() => {
-                props.onLinkChange(from, to)
-              }}
+              // onMouseEnter={() => {
+              //   props.onLinkChange(from, to)
+              // }}
             />
           ))}
 
@@ -79,9 +79,9 @@ const Topomap = props => {
                 stroke="#ffde17"
                 strokeWidth={2.5}
                 strokeLinecap="round"
-                onMouseEnter={() => {
-                  props.onLinkChange(from, to)
-                }}
+                // onMouseEnter={() => {
+                //   props.onLinkChange(from, to)
+                // }}
               />
           ))}
 
@@ -93,9 +93,9 @@ const Topomap = props => {
               stroke="#6edcff"
               strokeWidth={1}
               strokeLinecap="round"
-              onMouseEnter={() => {
-                props.onLinkChange(from, to)
-              }}
+              // onMouseEnter={() => {
+              //   props.onLinkChange(from, to)
+              // }}
             />
           ))}
 
