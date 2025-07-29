@@ -36,6 +36,14 @@ class FacilityPortTable extends Component {
               </span>
             )
           }
+          {
+            !fp.vlan_range && fp.vlan && 
+            <span
+              className="font-monospace badge bg-primary me-1"
+            >
+              {fp.vlan}
+            </span>
+          }
         </div>
       ), 
       path: "vlan_range", 
@@ -59,6 +67,13 @@ class FacilityPortTable extends Component {
       ),
       path: "allocated_vlan_range", 
       label: "Allocated VLAN Range"
+    },
+    {
+      content: (fp) => (
+        <span className="font-monospace">{fp.description}</span>
+      ),
+      path: "description",
+      label: "Description"
     }
   ];
 
@@ -67,7 +82,7 @@ class FacilityPortTable extends Component {
     return (
       <div>
         <div className="d-flex flex-row justify-content-between p-2">
-        <div className="fw-bold font-monospace d-flex align-items-center">
+          <div className="fw-bold font-monospace d-flex align-items-center">
             Facility Ports ({totalCount})
           </div>
           <div className="d-flex flex-row w-50 justify-content-end">

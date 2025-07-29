@@ -5,12 +5,14 @@ import MyRoles from "../components/UserProfile/MyRoles";
 import MyProfile from "../components/UserProfile/MyProfile";
 import KeyTabs from "../components/SshKey/KeyTabs";
 import Slices from "../components/Experiment/Slices";
+import ArtifactListPage from "../components/Artifacts/ArtifactListPage.jsx";
 import { toast } from "react-toastify";
 import { getCurrentUser, getWhoAmI } from "../services/peopleService.js";
 import { getActiveKeys } from "../services/sshKeyService";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import withRouter from "../components/common/withRouter.jsx";
 
 class User extends React.Component {
   state = {
@@ -19,10 +21,11 @@ class User extends React.Component {
       { name: "MY ROLES & PROJECTS", hash: "#roles", active: false },
       { name: "MY SSH KEYS", hash: "#sshKeys", active: false },
       { name: "MY SLICES", hash: "#slices", active: false },
+      { name: "MY ARTIFACTS", hash: "#artifacts", active: false }
     ],
     user: {},
     activeIndex: 0,
-    componentNames: [MyProfile, MyRoles, KeyTabs, Slices],
+    componentNames: [MyProfile, MyRoles, KeyTabs, Slices, ArtifactListPage],
     keys: [],
     showFullPageSpinner: false,
   };
@@ -46,13 +49,15 @@ class User extends React.Component {
       1: "#roles",
       2: "#sshKeys",
       3: "#slices",
+      4: "#artifacts"
     }
     this.setState({ activeIndex: newIndex,
       SideNavItems: [
         { name: "MY PROFILE", active: newIndex === 0  },
         { name: "MY ROLES & PROJECTS", active: newIndex === 1 },
         { name: "MY SSH KEYS", active: newIndex === 2 },
-        { name: "MY SLICES", active: newIndex === 3 }
+        { name: "MY SLICES", active: newIndex === 3 },
+        { name: "MY ARTIFACTS", active: newIndex === 4 }
       ]
     });
     this.props.navigate(`/user${indexToHash[newIndex]}`);
@@ -111,4 +116,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export default withRouter(User);

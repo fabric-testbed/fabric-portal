@@ -168,7 +168,7 @@ class SliceViewer extends Component {
       >
         <div className="slice-page-container">
           <TerminalFormModal
-            vmData={selectedData}
+            data={selectedData}
             ephemeralKey={ephemeralKey}
             onGenerateEphemeralKey={this.generateEphemeralKey}
           />

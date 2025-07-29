@@ -80,7 +80,7 @@ export default function parseSites(data, acronymToShortName) {
       }
 
       /************ retrieve site component capacity by links. ************/ 
-      const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
+      const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA", "Switch"];
 
       // initiate site component properties to prevent undefined error.
       for (const type of componentTypes) {

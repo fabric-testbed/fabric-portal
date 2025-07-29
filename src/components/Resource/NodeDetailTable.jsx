@@ -14,7 +14,7 @@ const generateProgressBar = (total, free, color, labelColor) => {
   )
 }
 
-const DetailTable = props => {
+const NodeDetailTable = props => {
   const {name, resource, parent} = props;
 
   const rowsOptions = {
@@ -32,6 +32,7 @@ const DetailTable = props => {
       ["SmartNIC", "totalSmartNIC", "freeSmartNIC"],
       ["SharedNIC", "totalSharedNIC", "freeSharedNIC"],
       ["FPGA", "totalFPGA", "freeFPGA"],
+      ["Switch", "totalSwitch", "freeSwitch"]
     ]
   }
 
@@ -160,4 +161,4 @@ const DetailTable = props => {
   )
 }
 
-export default DetailTable;
+export default NodeDetailTable;

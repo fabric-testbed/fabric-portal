@@ -33,7 +33,7 @@ class Slices extends React.Component {
     sortColumn: { path: "name", order: "asc" },
     showSpinner: false,
     spinnerText: "",
-    // showAllSlices: false
+    showAllSlices: false
   };
 
   async componentDidMount() {
@@ -96,27 +96,12 @@ class Slices extends React.Component {
 
   handleShowAllSlices = async () => {
     const currentChoice = this.state.showAllSlices;
-    this.setState( { showAllSlice: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
+    this.setState( { showAllSlices: !currentChoice, showSpinner: true, spinnerText: "Loading Slices..." });
     try {
       const { data: res } = await getSlices("projectSlices", currentChoice);
       this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
     } catch(err) {
       toast.error("Failed to load slices. Please try again.")
-    }
-  }
-
-  handleDeleteAllSlices = async () => {
-    try {
-      this.setState({
-        showSpinner: true,
-        spinnerText: "Deleting all active slices..."
-      })
-      await deleteSlice();
-      await sleep(5000);
-      window.location.reload();
-    }
-    catch (err) {
-      toast.error("Failed to delete all slices of this project.")
     }
   }
 
@@ -159,7 +144,7 @@ class Slices extends React.Component {
 
   render() {
     const { hasProject, slices, pageSize, currentPage, sortColumn, searchQuery,
-      filterQuery, showSpinner, spinnerText, includeDeadSlices } = this.state;
+      filterQuery, showSpinner, spinnerText, includeDeadSlices, showAllSlices } = this.state;
     const { totalCount, data } = this.getPageData();
 
     return (
@@ -295,35 +280,26 @@ class Slices extends React.Component {
             </div>
             <div className="my-2 d-flex flex-row justify-content-between">
               <span>Showing {totalCount} slices.</span>
-              {/* {
+              {
                 this.props.parent === "Projects" && <Checkbox
                   label={"Show All Project Slices"}
                   id={"checkbox-show-all-slices"}
                   isChecked={showAllSlices}
                   onCheck={this.handleShowAllSlices}
                 />
-              } */}
+              }
               <Checkbox
                 label={"Include Dead/ Closing Slices"}
                 id={"checkbox-include-dead-slices"}
                 isChecked={includeDeadSlices}
                 onCheck={this.handleIncludeDeadSlices}
               />
-              {/* {
-                this.props.parent === "Projects" && totalCount > 0 && !includeDeadSlices &&
-                <DeleteModal
-                  name={"Delete All"}
-                  text={"Are you sure you want to delete all the active slices? This process cannot be undone."}
-                  id={"delete-all-slices"}
-                  onDelete={() => this.handleDeleteAllSlices()}
-                />
-              } */}
             </div>
             <SlicesTable
               slices={data}
               sortColumn={sortColumn}
               onSort={this.handleSort}
-              parent={this.props.parent}
+              parent={showAllSlices ? "allProjectSlices" : this.props.parent}
             />
             <Pagination
               itemsCount={totalCount}

@@ -38,7 +38,8 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
               <i className="fa fa-chevron-left"></i>
             </button>
           </li>
-          {pages.map((page) => (
+          {
+           pages.map((page) => (
             page > 0 ?
             <li
               key={page}

@@ -13,7 +13,7 @@ export default function siteParserLevel2(data, siteName, acronymToShortName) {
     "Unit": "unit",
   }
 
-  const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
+  const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA", "Switch"];
 
   // Component and Model level.
   hosts.forEach((host, index) => {

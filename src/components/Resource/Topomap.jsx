@@ -65,8 +65,9 @@ const Topomap = props => {
               stroke="#6edcff"
               strokeWidth={1}
               strokeLinecap="round"
-              onMouseEnter={() => {
-              }}
+              // onMouseEnter={() => {
+              //   props.onLinkChange(from, to)
+              // }}
             />
           ))}
 
@@ -78,6 +79,9 @@ const Topomap = props => {
                 stroke="#ffde17"
                 strokeWidth={2.5}
                 strokeLinecap="round"
+                // onMouseEnter={() => {
+                //   props.onLinkChange(from, to)
+                // }}
               />
           ))}
 
@@ -89,8 +93,9 @@ const Topomap = props => {
               stroke="#6edcff"
               strokeWidth={1}
               strokeLinecap="round"
-              onMouseEnter={() => {
-              }}
+              // onMouseEnter={() => {
+              //   props.onLinkChange(from, to)
+              // }}
             />
           ))}
 
@@ -98,7 +103,7 @@ const Topomap = props => {
             <Marker
               key={name}
               coordinates={topomap.coordinates[name]}
-              onMouseEnter={() => { props.onChange(name); }}
+              onMouseEnter={() => { props.onNodeChange(name); }}
             >
               <circle
                 r={type === "edge" ? 1.5 : 3} 
