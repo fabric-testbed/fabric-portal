@@ -10,6 +10,7 @@ class TestbedTable extends Component {
     { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },
     { path: ["freeSharedNIC", "totalSharedNIC"], label: "SharedNIC" },
     { path: ["freeFPGA", "totalFPGA"], label: "FPGA" },
+    { path: ["freeSwitch", "totalSwitch"], label: "Switch" }
   ];
 
   render() {
@@ -18,7 +19,7 @@ class TestbedTable extends Component {
       <table className="table table-sm table-bordered mx-3 mt-2 text-center">
       <thead className="thead-light">
         <tr>
-          <td colSpan="8"><b>Testbed Resource Summary</b></td>
+          <td colSpan="9"><b>Testbed Resource Summary</b></td>
         </tr>
         <tr>
           {

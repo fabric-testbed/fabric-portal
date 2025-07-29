@@ -43,7 +43,7 @@ const SiteDetailTable = props => {
     }
   }
 
-  const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
+  const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA", "Switch"];
 
   return (
     <div className="mb-3">

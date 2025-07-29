@@ -133,7 +133,7 @@ class SideNodes extends React.Component {
     } else if (this.state.nodeType === "Switch") {
       const { selectedSite, nodeName } = this.state;
       this.props.onSwitchAdd(selectedSite.name, nodeName);
-      this.setState({ nodeName: "" })
+      this.setState({ nodeName: ""})
     }
   }
 
@@ -268,6 +268,18 @@ class SideNodes extends React.Component {
     this.setState({ vlan: e.target.value });
   }
 
+  checkSwitchAccess = () => {
+    let access = false;
+    const tags = this.props.projectTags;
+    for (const tag of tags) {
+      if (tag === "Switch.P4") {
+        access = true;
+      }
+    }
+    
+    return access && this.state.selectedSite && this.state.selectedSite.freeSwitch;
+  }
+
   getResourcesSum = () => {
     const selectedLabels = [
       "freeCore",
@@ -302,6 +314,9 @@ class SideNodes extends React.Component {
     } else if (nodeType === "Facility") {
       validationResult = selectedSiteOption &&
       validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, this.facilityPortVlanRanges[nodeName])
+    } else if (nodeType === "Switch") {
+      validationResult = selectedSiteOption &&
+      validator.validateSwitchNode(selectedSiteOption.value, nodeName, this.props.nodes);
     }
 
     const availableFPs = this.getFacilityPortNames();
@@ -387,12 +402,11 @@ class SideNodes extends React.Component {
                   <select
                     className="form-control form-control-sm"
                     id="nodeTypeSelect"
-                    disabled={availableFPs.length === 0}
                     onChange={this.handleNodeTypeChange}
                   >
                     <option value="VM">VM</option>
-                    <option value="Facility">Facility Port</option>
-                    {/* <option value="Switch">P4 Switch</option> */}
+                    {availableFPs.length > 0 && <option value="Facility">Facility Port</option>}
+                    { this.checkSwitchAccess() && <option value="Switch">P4 Switch</option>}
                   </select>
                 </div>
                 {

@@ -165,7 +165,7 @@ class PublicProjectsList extends React.Component {
       options, filterOption, selectedList } = this.state;
 
     return (
-      <div className="container">
+      <div className="mt-4">
         <div className="d-flex flex-row justify-content-between">
           <div className="d-flex flex-row">
             <h1>Projects</h1>

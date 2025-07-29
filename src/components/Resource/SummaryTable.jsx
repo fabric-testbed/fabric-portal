@@ -50,6 +50,7 @@ class SummaryTable extends Component {
     { path: ["freeSmartNIC", "totalSmartNIC"], label: "SmartNIC" },
     { path: ["freeSharedNIC", "totalSharedNIC"], label: "SharedNIC" },
     { path: ["freeFPGA", "totalFPGA"], label: "FPGA" },
+    { path: ["freeSwitch", "totalSwitch"], label: "Switch" }
   ];
 
   render() {
@@ -70,13 +71,7 @@ class SummaryTable extends Component {
                 value={value}
                 onChange={(e) => onChange(e.currentTarget.value)}
               />
-              {/* <button className="btn btn-sm btn-secondary">
-                <i className="fa fa-search"></i>
-              </button> */}
             </div>
-            {/* <button className="btn btn-sm btn-secondary ms-2">
-              <i className="fa fa-filter"></i>
-            </button> */}
           </div>
         </div>
         <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded font-monospace">

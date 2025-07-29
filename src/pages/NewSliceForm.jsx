@@ -418,7 +418,6 @@ class NewSliceForm extends React.Component {
       sliceNodes, sliceLinks, selectedCPs, project, projectTags, showProjectSpinner,
       leaseStartTime, leaseEndTime }
     = this.state;
-
     const validationResult = validator.validateSlice(sliceName, selectedKeyIDs, sliceNodes);
 
     const renderTooltip = (id, content) => (

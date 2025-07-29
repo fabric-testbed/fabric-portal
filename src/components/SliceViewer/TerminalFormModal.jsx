@@ -25,12 +25,12 @@ class TerminalFormModal extends Form {
 
   doSubmit = () => {
     const { sliverPrivateKey, bastionPrivateKey } = this.state;
-    const { vmData, ephemeralKey  } = this.props;
+    const { data, ephemeralKey  } = this.props;
     const domain = "fabric-testbed.net";
     // set cookie first
     const credentials = { 
-      'hostname': vmData.properties.MgmtIp,
-      'username': portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]],
+      'hostname': data.properties.MgmtIp,
+      'username': data.properties.ImageRef ? portalData.usernameOnImageMapping[data.properties.ImageRef.split(",")[0]] : "fabric",
       'privatekey': sliverPrivateKey ? sliverPrivateKey : ephemeralKey.private_openssh
     };
     const bastion_credentials = { 
@@ -86,7 +86,7 @@ class TerminalFormModal extends Form {
 
   render() {
     const { showSpinner, keySelectStatus, sliverPrivateKey, bastionPrivateKey, sliverTooltip, bastionTooltip } =  this.state;
-    const { vmData, ephemeralKey } = this.props;
+    const { data, ephemeralKey } = this.props;
 
     const renderTooltip = (id, content) => (
       <Tooltip id={id}>
@@ -99,10 +99,10 @@ class TerminalFormModal extends Form {
     <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLongTitle">Connect to VM</h5>
+            <h5 className="modal-title" id="exampleModalLongTitle">Connect to Web SSH App</h5>
             <button
               type="button"
-              className="close"
+              className="btn-close"
               id="closeModalBtn"
               data-bs-dismiss="modal"
               aria-label="Close"
@@ -134,15 +134,15 @@ class TerminalFormModal extends Form {
           {
             !showSpinner && <div className="modal-body">
             {
-              vmData && vmData.properties && <form onSubmit={this.handleSubmit}>
+              data && data.properties && <form onSubmit={this.handleSubmit}>
                 <div className="row mb-2 mx-1">
                   <label>Hostname</label>
-                  <input type="text" className="form-control" defaultValue={vmData.properties.MgmtIp} disabled/>
+                  <input type="text" className="form-control" defaultValue={data.properties.MgmtIp} disabled/>
                 </div>
                 {
-                  vmData.properties.ImageRef && <div className="row mb-2 mx-1">
+                  data.properties.ImageRef && <div className="row mb-2 mx-1">
                     <label>Username</label>
-                    <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[vmData.properties.ImageRef.split(",")[0]]} disabled/>
+                    <input type="text" className="form-control" defaultValue={portalData.usernameOnImageMapping[data.properties.ImageRef.split(",")[0]]} disabled/>
                   </div>
                 }
                 <div className="row mb-2 mx-1">

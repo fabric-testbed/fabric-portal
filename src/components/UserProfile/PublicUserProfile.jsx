@@ -128,7 +128,6 @@ class PublicUserProfile extends React.Component {
   render() {
     const { user } = this.state;
     const roles = user.roles ? this.parseRoles(user.roles) : [];
-    console.log(user);
 
     return (
       <div className="container">

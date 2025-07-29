@@ -44,7 +44,7 @@ class SiteDetailPage extends React.Component {
           labelColorHex: "#212529"
         }
       },
-      "componentTypes": ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"],
+      "componentTypes": ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA", "Switch"],
       data: {
         status: {
           "state": "Active",

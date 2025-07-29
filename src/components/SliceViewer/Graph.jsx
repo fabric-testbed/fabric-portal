@@ -11,6 +11,7 @@ import IconNVME from '../../imgs/SliceComponentIcons/NVME.png';
 import IconStorage from '../../imgs/SliceComponentIcons/RotatingStorage.png';
 import IconNS from '../../imgs/SliceComponentIcons/NetworkService.png';
 import IconFPGA from '../../imgs/SliceComponentIcons/FPGA.png';
+import IconSwitch from '../../imgs/SliceComponentIcons/Switch.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -240,6 +241,16 @@ export default class Graph extends Component {
               "selector": ".graphStorage",
               "style": {
                 "background-image": `${IconStorage}`,
+                "background-fit": "contain",
+                "background-color": "#fff",
+                "height": 70,
+                "width": 100,
+              }
+            },
+            {
+              "selector": ".graphSwitch",
+              "style": {
+                "background-image": `${IconSwitch}`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,

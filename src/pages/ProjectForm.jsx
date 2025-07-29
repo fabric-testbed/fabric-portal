@@ -9,6 +9,7 @@ import ProjectMemberships from "../components/Project/Personnel/ProjectMembershi
 import ProjectProfile from "../components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "../components/Project/ProjectBasicInfoTable";
 import PersistentStorage from "../components/Project/Storage/PersistentStorage.jsx";
+import ArtifactListPage from "../components/Artifacts/ArtifactListPage.jsx";
 import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
@@ -97,6 +98,7 @@ class ProjectForm extends Form {
       { name: "PROJECT MEMBERSHIPS", active: false },
       { name: "SLICES", active: false },
       { name: "PERSISTENT STORAGE", active: false },
+      { name: "PROJECT ARTIFACTS", active: false },
     ],
     owners: [],
     members: [],
@@ -220,7 +222,8 @@ class ProjectForm extends Form {
        "#info": 0,
        "#memberships": 1,
        "#slices": 2,
-       "#volumes": 3
+       "#volumes": 3,
+       "#artifacts": 4
      }
  
      if (hash) {
@@ -229,7 +232,8 @@ class ProjectForm extends Form {
          { name: "BASIC INFORMATION", active: hash === "#info" },
          { name: "PROJECT MEMBERSHIPS", active: hash === "#memberships" },
          { name: "SLICES", active: hash === "#slices" },
-         { name: "PERSISTENT STORAGE", active: hash === "#volumes"}
+         { name: "PERSISTENT STORAGE", active: hash === "#volumes"},
+         { name: "PROJECT ARTIFACTS", active: hash === "#artifacts"}
        ]})
      }
      
@@ -423,6 +427,7 @@ class ProjectForm extends Form {
       1: "#memberships",
       2: "#slices",
       3: "#volumes",
+      4: "#artifacts"
     }
     this.setState({ 
       activeIndex: newIndex,
@@ -430,7 +435,8 @@ class ProjectForm extends Form {
         { name: "BASIC INFORMATION", active: newIndex === 0 },
         { name: "PROJECT MEMBERSHIPS", active: newIndex === 1 },
         { name: "SLICES", active: newIndex === 2 },
-        { name: "PERSISTENT STORAGE", active: newIndex === 3 }
+        { name: "PERSISTENT STORAGE", active: newIndex === 3 },
+        { name: "PROJECT ARTIFACTS", active: newIndex === 4 }
       ]
      });
     this.props.navigate(`/projects/${this.props.match.params.id}${indexToHash[newIndex]}`);
@@ -865,6 +871,21 @@ class ProjectForm extends Form {
                     parent="Projects"
                     projectId={data.uuid}
                     volumes={volumes}
+                  />
+                }
+              </div>
+            </div>
+            <div
+              className={`${
+                activeIndex === 4
+                  ? "col-9 d-flex flex-row" : "d-none"
+              }`}
+            >
+              <div className="w-100">
+                {
+                  activeIndex === 4 && <ArtifactListPage
+                    parent="Projects"
+                    projectId={data.uuid}
                   />
                 }
               </div>

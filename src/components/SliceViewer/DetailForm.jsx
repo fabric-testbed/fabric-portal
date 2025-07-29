@@ -7,9 +7,13 @@ import CalendarDateTime from "../common/CalendarDateTime.jsx";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default class DetailForm extends Component {
-  sshCommand = (managementIp, imageRef) => {
+  sshCommandforVM = ( managementIp, imageRef) => {
     const usernameBasedOnImage= portalData.usernameOnImageMapping[imageRef.split(",")[0]];
     return `ssh -F <path to SSH config file> -i <path to private sliver key> ${usernameBasedOnImage}@${managementIp}`
+  }
+
+  sshCommandforSwitch = (managementIp) => {
+    return `ssh -F <path to SSH config file> -i <path to private sliver key> fabric@${managementIp}`
   }
 
   render() {
@@ -141,9 +145,9 @@ export default class DetailForm extends Component {
                     }
                   </label>
                   <div className="ssh-command">
-                    {this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
+                    {this.sshCommandforVM(data.properties.MgmtIp, data.properties.ImageRef)}
                     <CopyButton
-                      id={this.sshCommand(data.properties.MgmtIp, data.properties.ImageRef)}
+                      id={this.sshCommandforVM(data.properties.MgmtIp, data.properties.ImageRef)}
                       btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
                       showCopiedValue={false}
                       text=""
@@ -178,6 +182,49 @@ export default class DetailForm extends Component {
                     disabled
                   />
                 </div>
+              </div>
+            }
+        {
+              data && data.properties && data.properties.type === "Switch" &&
+              <div>
+                <div className="mb-2">
+                  <label className="form-label">Switch Name</label>
+                  <input type="text" className="form-control" defaultValue={data.properties.name} disabled/>
+                </div>
+                {
+                  data.properties.MgmtIp &&
+                  <div className="mb-2">
+                    <label className="form-label">Management IP Address</label>
+                    <input type="text" className="form-control" defaultValue={data.properties.MgmtIp} disabled/>
+                  </div>
+                }
+                {
+                  data.properties.MgmtIp &&
+                  <div className="mb-2">
+                  <label className="form-label">SSH Command
+                    {
+                      slice.state === "StableOK" &&
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary ms-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#TerminalFormModalCenter"
+                      >
+                        Connect to Switch
+                      </button>
+                    }
+                  </label>
+                  <div className="ssh-command">
+                    {this.sshCommandforSwitch(data.properties.MgmtIp)}
+                    <CopyButton
+                      id={this.sshCommandforSwitch(data.properties.MgmtIp)}
+                      btnStyle={"btn btn-sm btn-secondary ms-2 py-0 px-1"}
+                      showCopiedValue={false}
+                      text=""
+                    />
+                  </div>
+                </div>
+                }
               </div>
             }
 
@@ -233,6 +280,13 @@ export default class DetailForm extends Component {
                   <div className="mb-2">
                   <label className="form-label">MAC Address</label>
                   <input type="text" className="form-control" defaultValue={data.properties.mac} disabled/>
+                  </div>
+                }
+                {
+                  data.capacities && data.capacities.bw &&
+                  <div className="mb-2">
+                    <label className="form-label">Bandwidth</label>
+                    <input type="number" className="form-control" defaultValue={data.capacities.bw} disabled/>
                   </div>
                 }
               </div> 

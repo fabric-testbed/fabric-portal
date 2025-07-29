@@ -65,15 +65,54 @@ class SlicesTable extends Component {
             showCopiedValue={true}
           />
         ),
+      }
+    ],
+    "allProjectSlices": [
+      {
+        path: "name",
+        label: "Slice Name",
+        content: (slice) => ( <span>{slice.name}</span> ),
       },
+      { path: "state", label: "Slice State" },
+      {
+        path: "lease_end_time",
+        label: "Lease End",
+        content: (slice) => (
+          <span>{utcToLocalTimeParser(slice.lease_end_time)}</span>
+        )
+      },
+      {
+        path: "owner_email",
+        label: "Owner",
+        content: (slice) => (
+          <Link to={`/users/${slice.owner_user_id}`}>{slice.owner_email}</Link>
+        )
+      },
+      {
+        content: (slice) => (
+          <CopyButton
+            id={slice.slice_id}
+            text={"Slice ID"}
+            btnStyle={"btn btn-sm btn-primary"}
+            showCopiedValue={true}
+          />
+        ),
+      }
     ]
   };
 
   render() {
     const { slices, onSort, sortColumn, parent } = this.props;
+    let columnOptions = "allSlices";
+    if (parent === "Projects") {
+      columnOptions = "projectSlices";
+    } else if (parent === "allProjectSlices") {
+      columnOptions = "allProjectSlices";
+    }
+    
     return (
       <Table
-        columns={parent === "Projects" ? this.columns["projectSlices"] : this.columns["allSlices"]}
+        columns={this.columns[columnOptions]}
         data={slices}
         sortColumn={sortColumn}
         onSort={onSort}

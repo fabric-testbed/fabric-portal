@@ -99,7 +99,7 @@ class PublicProjectProfile extends Component {
             </p>
           </div>
         </div>
-        <Link to="/experiments/public-projects">
+        <Link to="/experiments/experiments-public">
           <button className="btn btn-sm btn-outline-primary my-4">
             <i className="fa fa-sign-in me-2"></i> Back to Project List
           </button>
