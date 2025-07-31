@@ -259,15 +259,23 @@ const Header = (props) => {
             navItems.map((item, index) => {
               if (item.child.length === 0) {
                 if (item.path) {
-                  return <Nav.Link as={Link} to={item.path} className={location.pathname.includes(item.path) ? "active" : ""}>{item.name}</Nav.Link>
+                  return <Nav.Link 
+                    as={Link} 
+                    to={item.path}
+                    className={location.pathname.includes(item.path) ? "active" : ""}
+                    key={`nav-${index}`}
+                    >
+                      {item.name}
+                  </Nav.Link>
                 } else {
-                  return <Nav.Link href={item.href}>{item.name}</Nav.Link>
+                  return <Nav.Link href={item.href} key={`nav-${index}`}>{item.name}</Nav.Link>
                 }
               } else {
                 return <NavDropdown
                   title={item.name}
                   id={`nav-dropdown-${index}`}
                   className={location.pathname.includes(item.path) ? "active" : ""}
+                  key={`nav-${index}`}
                 >
                 {
                   item.child.map((sub_item, sub_index) => {

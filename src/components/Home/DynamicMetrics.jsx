@@ -11,7 +11,7 @@ class DynamicMetrics extends React.Component {
     metricsItems: [
       {
         name: "Total Slices",
-        count: 0
+        count: 300
       },
       {
         name: "Active Slices",
@@ -41,10 +41,10 @@ class DynamicMetrics extends React.Component {
       const { data: resPublications } = await getPublications();
       this.setState({
         metricsItems: this.generateMetricsItems(
-          resCoreMetrics.results[0], 
+          resCoreMetrics.results[0],
           resOrchestratorMetrics.results[0],
           resPublications.results
-        )});
+      )});
     } catch (err) {
       toast.error("Failed to load FABRIC metrics data.")
     }

@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { default as portalData } from "../../services/portalData.json";
 import { default as config } from "../../config.json";
-import _ from "lodash";
-import { toast } from "react-toastify";
 import ArtifactListPage from "../Artifacts/ArtifactListPage.jsx";
  
 class ArtifactManager extends React.Component {

@@ -29,7 +29,6 @@ import JupyterHubAccess from "./pages/static/JupyterHubAccess";
 import LoginRequired from "./pages/static/LoginRequired";
 import Help from "./pages/static/Help";
 import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
-import SAC from "./pages/static/SAC.jsx";
 import Leadership from "./pages/static/Leadership";
 import FundingOpportunities from "./pages/static/FundingOpportunities";
 import NewsletterSignup from "./pages/static/NewsletterSignup";
