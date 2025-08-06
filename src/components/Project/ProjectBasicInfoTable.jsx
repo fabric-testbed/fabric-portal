@@ -185,16 +185,16 @@ class ProjectBasicInfoTable extends Component {
                   <td>{ toLocaleTime(project.created) }</td>
                 </tr>
                 <tr>
-                  <td>Creator Name</td>
-                  <td>{ project.creator_name }</td>
+                  <td>Project Lead Name</td>
+                  <td>{ project.lead_name }</td>
                 </tr>
                 <tr>
-                  <td>Creator Email</td>
-                  <td>{ project.creator_email }</td>
+                  <td>Project Lead Email</td>
+                  <td>{ project.lead_email }</td>
                 </tr>
                 <tr>
-                  <td>Creator ID</td>
-                  <td>{ project.creator_id }</td>
+                  <td>Project Lead ID</td>
+                  <td>{ project.lead_id }</td>
                 </tr>    
                 {
                   canUpdate && 
