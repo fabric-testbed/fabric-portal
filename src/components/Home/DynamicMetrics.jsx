@@ -1,5 +1,5 @@
 import React from "react";
-import AnimatedNumber from "react-animated-number";
+import AnimatedNumber from "../common/AnimatedNumber.jsx";
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
 import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
 import { getPublications } from "../../services/publicationService.js";
@@ -111,17 +111,14 @@ class DynamicMetrics extends React.Component {
                 >
                   <div className="hp-metrics-number">
                     <AnimatedNumber
-                      component="text"
-                      initialValue={0}
                       value={i.count}
-                      stepPrecision={0}
+                      duration={1.5}
+                      formatValue={(n) => Intl.NumberFormat("en-US").format(n)}
                       style={{
                         transition: "0.8s ease-out",
                         fontSize: 48,
                         transitionProperty: "background-color, color, opacity"
                       }}
-                      duration={1500}
-                      formatValue={n => Intl.NumberFormat("en-US").format(n)}
                     />
                   </div>
                   <div className="home-metrics-text">
