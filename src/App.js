@@ -1,50 +1,55 @@
-import React from "react";
+import React, { Component, Suspense, lazy } from 'react';
 import "./styles/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import { getWhoAmI } from "./services/peopleService.js";
 import { getCurrentUser } from "./services/peopleService.js";
 import { getActiveMaintenanceNotice } from "./services/announcementService.js";
 import checkGlobalRoles from "./utils/checkGlobalRoles"; 
 import { default as portalData } from "./services/portalData.json";
-import Home from "./pages/Home";
-import Resources from "./pages/Resources";
-import MeasurementMetrics from "./pages/static/MeasurementMetrics.jsx";
-import ProjectForm from "./pages/ProjectForm";
-import Signup from "./pages/static/Signup";
-import AUP from "./pages/static/AUP";
-import CookiePolicy from "./pages/static/CookiePolicy";
-import PrivacyPolicy from "./pages/static/PrivacyPolicy";
-import Experiments from "./pages/Experiments";
-import PublicExperiments from "./pages/PublicExperiments.jsx";
-import PublicProjectProfile from "./components/Project/Public/PublicProjectProfile.jsx";
-import SliceViewer from "./pages/SliceViewer";
-import SliceEditor from "./pages/SliceEditor";
-import NewSliceForm from "./pages/NewSliceForm";
-import CheckCookie from "./pages/CheckCookie";
-import User from "./pages/User";
-import PublicUserProfile from "./components/UserProfile/PublicUserProfile.jsx";
-import SiteDetailPage from "./components/Resource/SiteDetailPage.jsx";
-import NotFound from "./pages/static/NotFound";
-import JupyterHubAccess from "./pages/static/JupyterHubAccess";
-import LoginRequired from "./pages/static/LoginRequired";
-import Help from "./pages/static/Help";
-import AboutFABRIC from "./pages/static/AboutFABRIC.jsx";
-import SAC from "./pages/static/SAC.jsx";
-import Leadership from "./pages/static/Leadership";
-import FundingOpportunities from "./pages/static/FundingOpportunities";
-import NewsletterSignup from "./pages/static/NewsletterSignup";
-import Testbeds from "./pages/static/Testbeds.jsx";
-import Publications from "./pages/static/Publications.jsx";
-import PublicationTracker from "./pages/PublicationTracker.jsx";
-import SearchResults from "./pages/SearchResults.jsx";
-import Branding from "./pages/static/Branding.jsx";
+
+// Regular components imported normally
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
-import ProtectedRoutes from "./components/common/ProtectedRoutes";
 import moment from 'moment';
+
+// Route components imported with lazy loading
+const Home = lazy(() => import("./pages/Home"));
+const Resources = lazy(() => import("./pages/Resources"));
+const MeasurementMetrics = lazy(() => import("./pages/static/MeasurementMetrics.jsx"));
+const ProjectForm = lazy(() => import("./pages/ProjectForm"));
+const Signup = lazy(() => import("./pages/static/Signup"));
+const AUP = lazy(() => import("./pages/static/AUP"));
+const CookiePolicy = lazy(() => import("./pages/static/CookiePolicy"));
+const PrivacyPolicy = lazy(() => import("./pages/static/PrivacyPolicy"));
+const Experiments = lazy(() => import("./pages/Experiments"));
+const PublicExperiments = lazy(() => import("./pages/PublicExperiments.jsx"));
+const PublicProjectProfile = lazy(() => import("./components/Project/Public/PublicProjectProfile.jsx"));
+const SliceViewer = lazy(() => import("./pages/SliceViewer"));
+const SliceEditor = lazy(() => import("./pages/SliceEditor"));
+const NewSliceForm = lazy(() => import("./pages/NewSliceForm"));
+const CheckCookie = lazy(() => import("./pages/CheckCookie"));
+const User = lazy(() => import("./pages/User"));
+const PublicUserProfile = lazy(() => import("./components/UserProfile/PublicUserProfile.jsx"));
+const SiteDetailPage = lazy(() => import("./components/Resource/SiteDetailPage.jsx"));
+const NotFound = lazy(() => import("./pages/static/NotFound"));
+const JupyterHubAccess = lazy(() => import("./pages/static/JupyterHubAccess"));
+const LoginRequired = lazy(() => import("./pages/static/LoginRequired"));
+const Help = lazy(() => import("./pages/static/Help"));
+const AboutFABRIC = lazy(() => import("./pages/static/AboutFABRIC.jsx"));
+// const SAC = lazy(() => import("./pages/static/SAC.jsx")); 
+const Leadership = lazy(() => import("./pages/static/Leadership"));
+const FundingOpportunities = lazy(() => import("./pages/static/FundingOpportunities"));
+const NewsletterSignup = lazy(() => import("./pages/static/NewsletterSignup"));
+const Testbeds = lazy(() => import("./pages/static/Testbeds.jsx"));
+const Publications = lazy(() => import("./pages/static/Publications.jsx"));
+const PublicationTracker = lazy(() => import("./pages/PublicationTracker.jsx"));
+const SearchResults = lazy(() => import("./pages/SearchResults.jsx"));
+const Branding = lazy(() => import("./pages/static/Branding.jsx"));
+const ProtectedRoutes = lazy(() => import("./components/common/ProtectedRoutes"));
 
 class App extends React.Component {
   state = {
@@ -178,52 +183,54 @@ class App extends React.Component {
               timeLeft={60000}
             />
           }
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Home />} />
-            <Route path="/logout" element={<Home />} />
-            <Route path="/login-required" element={<LoginRequired />} />
-            <Route path="/aup" element={<AUP />} />
-            <Route path="/jupyter-no-access" element={<JupyterHubAccess />} />
-            <Route path="/sites/:id" element={<SiteDetailPage />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/about/about-fabric" element={<AboutFABRIC />} />
-            {/* <Route path="/about/sac" element={<SAC />} /> */}
-            <Route path="/about/leadership" element={<Leadership />} />
-            <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
-            <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
-            <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
-            <Route path="/community/publications" element={<Publications />} />
-            <Route path="/community/fabric-user-publications" element={<PublicationTracker />} />
-            <Route path="/branding" element={<Branding />} />
-            <Route path="/signup/:id" element={<Signup />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/resources/overview" element={<Resources />} />/
-            <Route path="/resources/tools" element={<MeasurementMetrics />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/check-cookie" element={<CheckCookie />} />
-            <Route path="/slice-editor" element={<SliceEditor />} />
-            <Route path="/experiments/experiments-public" element={<PublicExperiments/>} />
-            <Route path="/experiments/public-projects/:id" element={<PublicProjectProfile />} />
-            {/* <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
-            <Route path="/new-slice/:project_id" element={<NewSliceForm />} /> */}
-            <Route element={<ProtectedRoutes />}>
-                <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
-                <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
-                <Route path="/projects/:id" element={<ProjectForm />} />
-                <Route path="/experiments" element={<Experiments  userStatus={userStatus} globalRoles={globalRoles} />} />
-                <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />
-                <Route path="/user" element={<User userStatus={userStatus}/>} />
-                <Route
-                  path="/search-results"
-                  element={
-                    <SearchResults searchQuery={searchQuery} onQueryChange={this.handleQueryChange}/>
-                  }
-                />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Home />} />
+              <Route path="/logout" element={<Home />} />
+              <Route path="/login-required" element={<LoginRequired />} />
+              <Route path="/aup" element={<AUP />} />
+              <Route path="/jupyter-no-access" element={<JupyterHubAccess />} />
+              <Route path="/sites/:id" element={<SiteDetailPage />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/about/about-fabric" element={<AboutFABRIC />} />
+              {/* <Route path="/about/sac" element={<SAC />} /> */}
+              <Route path="/about/leadership" element={<Leadership />} />
+              <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
+              <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
+              <Route path="/community/testbeds-and-facilities" element={<Testbeds />} />
+              <Route path="/community/publications" element={<Publications />} />
+              <Route path="/community/fabric-user-publications" element={<PublicationTracker />} />
+              <Route path="/branding" element={<Branding />} />
+              <Route path="/signup/:id" element={<Signup />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/resources/overview" element={<Resources />} />/
+              <Route path="/resources/tools" element={<MeasurementMetrics />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="/check-cookie" element={<CheckCookie />} />
+              <Route path="/slice-editor" element={<SliceEditor />} />
+              <Route path="/experiments/experiments-public" element={<PublicExperiments/>} />
+              <Route path="/experiments/public-projects/:id" element={<PublicProjectProfile />} />
+              {/* <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+              <Route path="/new-slice/:project_id" element={<NewSliceForm />} /> */}
+              <Route element={<ProtectedRoutes />}>
+                  <Route path="/slices/:slice_id/:project_id" element={<SliceViewer />} />
+                  <Route path="/new-slice/:project_id" element={<NewSliceForm />} />
+                  <Route path="/projects/:id" element={<ProjectForm />} />
+                  <Route path="/experiments" element={<Experiments  userStatus={userStatus} globalRoles={globalRoles} />} />
+                  <Route path="/users/:id" element={<PublicUserProfile userStatus={userStatus}/>} />
+                  <Route path="/user" element={<User userStatus={userStatus}/>} />
+                  <Route
+                    path="/search-results"
+                    element={
+                      <SearchResults searchQuery={searchQuery} onQueryChange={this.handleQueryChange}/>
+                    }
+                  />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <Footer />
           <ToastContainer />
         </Router>
