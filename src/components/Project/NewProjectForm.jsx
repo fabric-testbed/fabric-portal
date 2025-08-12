@@ -68,6 +68,9 @@ class NewProjectForm extends Form {
     return (
       <div>
         <h1>New Project</h1>
+        <div className="alert alert-warning mt-4" role="alert">
+          <p>New projects are <b>NOT</b> active when initially created. All new projects require review from FABRIC staff prior to activation.</p>
+        </div>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
@@ -82,19 +85,6 @@ class NewProjectForm extends Form {
         >
           Create Project
         </button>
-        <div className="alert alert-primary mt-4" role="alert">
-          <p>
-            There are more features on the project detail page after project creation. 
-            Please remember to customize your project after creation is completed. The 
-            full features include:
-          </p>
-          <ul>
-            <li>Set privacy preferences.</li>
-            <li>Add and manage project members.</li>
-            <li>Create and manage project slices.</li>
-            <li>Request permissions and storage.</li>
-          </ul>
-        </div>
       </div>
     );
   }
