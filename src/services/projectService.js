@@ -28,16 +28,15 @@ export function getProjectTags() {
   return http.get(`${apiEndpoint}/tags`);
 }
 
-export function createProject(project, project_owners, project_members) {
+export function createProject(project) {
   return http.post(`${apiEndpoint}`,
     {
       "name": project.name,
       "description": project.description,
       "is_public": project.is_public === "Yes",
       "facility": project.facility,
-      "tags": project.tags,
-      "project_owners": project_owners,
-      "project_members": project_members
+      "project_lead": project.project_lead,
+      "project_type": project.project_type
     }
   );
 }
