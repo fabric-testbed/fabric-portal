@@ -1381,3 +1381,26 @@ caption {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
+
+.skeleton-wrapper {
+  padding: 1rem;
+  height: 75%;
+}
+
+.skeleton-line {
+  height: 20rem;
+  margin: 5rem 10%;
+  background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+  background-size: 400% 100%;
+  animation: shimmer 3s ease infinite;
+  border-radius: 1rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
