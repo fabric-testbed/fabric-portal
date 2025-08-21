@@ -1,5 +1,5 @@
 import React from "react";
-import AnimatedNumber from "../common/AnimatedNumber.jsx";
+import CountUp from 'react-countup';
 import FABRICLogo from "../../imgs/logos/fabric-logo-without-text.png";
 import { getCoreApiMetrics, getOrchestratorMetrics } from "../../services/metricsService";
 import { getPublications } from "../../services/publicationService.js";
@@ -83,6 +83,7 @@ class DynamicMetrics extends React.Component {
 
   render() {
     const { metricsItems: items }  = this.state;
+    console.log(items);
 
     return (
       <div className="w-100 home-metrix">
@@ -110,8 +111,8 @@ class DynamicMetrics extends React.Component {
                   key={`homepage-metrics-${index}`}
                 >
                   <div className="hp-metrics-number">
-                    <AnimatedNumber
-                      value={i.count}
+                    <CountUp
+                      end={i.count}
                       duration={1.5}
                       formatValue={(n) => Intl.NumberFormat("en-US").format(n)}
                       style={{

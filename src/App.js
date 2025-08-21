@@ -1,4 +1,4 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import "./styles/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import { default as portalData } from "./services/portalData.json";
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
 import Footer from "./components/Footer";
+import Skeleton from './components/common/Skeleton.jsx';
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
 import { toast, ToastContainer } from "react-toastify";
 import moment from 'moment';
@@ -183,7 +184,7 @@ class App extends React.Component {
               timeLeft={60000}
             />
           }
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Skeleton />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Home />} />
@@ -195,7 +196,6 @@ class App extends React.Component {
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/about/about-fabric" element={<AboutFABRIC />} />
-              {/* <Route path="/about/sac" element={<SAC />} /> */}
               <Route path="/about/leadership" element={<Leadership />} />
               <Route path="/community/funding-opportunities" element={<FundingOpportunities />} />
               <Route path="/community/newsletter-signup" element={<NewsletterSignup />} />
