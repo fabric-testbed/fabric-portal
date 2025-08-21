@@ -83,7 +83,6 @@ class DynamicMetrics extends React.Component {
 
   render() {
     const { metricsItems: items }  = this.state;
-    console.log(items);
 
     return (
       <div className="w-100 home-metrix">

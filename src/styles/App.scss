@@ -1254,46 +1254,23 @@ div:has(> #multiselectContainerReact) {
 .AccordionItem button {
   width: 100% !important;
   background: #f0f2f5;
-  padding: 1em 1em 1em 45px;
+  padding: 1em 1.5em;
   font-weight: bolder;
+  font-size: 1.15rem;
   line-height: 1;
   color: #333;
   position: relative;
   border-radius: 5px;
+  box-shadow: none;
 }
 
-.AccordionItem {
-  margin: 0 0 2rem 0 !important;
+.accordion-button:not(.collapsed) {
+  background: #ddeaf2 !important;
+  box-shadow: none;
 }
 
-.AccordionItem[data-state='closed'] button::before {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  margin-top: -10px;
-  background-image: url("../imgs/plus-circle.svg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 20px;
-  display: block;
-  width: 20px;
-  height: 20px;
-  content: '';
-}
-
-.AccordionItem[data-state='open'] button::before {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  margin-top: -10px;
-  background-image: url("../imgs/dash-circle.svg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 20px;
-  display: block;
-  width: 20px;
-  height: 20px;
-  content: '';
+.accordion-button:focus{
+  box-shadow: none;
 }
 
 .react-datetime-picker__inputGroup__input:invalid {

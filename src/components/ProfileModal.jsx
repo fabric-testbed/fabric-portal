@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {NameInitialsAvatar} from 'react-name-initials-avatar';
+import Avatar from 'react-avatar';
 import clearLocalStorage from "../utils/clearLocalStorage";
 import { NavLink } from "react-router-dom";
 
@@ -25,7 +25,7 @@ function ProfileModal(props) {
         className="user-profile-nav-btn"
         onClick={toggleModal}
       >
-        <NameInitialsAvatar
+        <Avatar
           name={userName ? userName : "Anonymous User"}
           bgColor={"#5798bc"}
           borderColor={"#5798bc"}
@@ -36,7 +36,7 @@ function ProfileModal(props) {
         <div className="profile-modal">
           <div className="row my-2">
             <div className="col-3 mt-1">
-              <NameInitialsAvatar
+              <Avatar
                 name={userName ? userName : "Anonymous User"}
                 bgColor={"#5798bc"}
                 borderColor={"#5798bc"}

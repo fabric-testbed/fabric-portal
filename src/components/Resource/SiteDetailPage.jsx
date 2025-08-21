@@ -11,8 +11,8 @@ import sitesParser from "../../services/parser/sitesParser";
 import siteParserLevel2 from "../../services/parser/siteLevel2Parser";
 import withRouter from "../common/withRouter.jsx";
 import CalendarDateTime from "../common/CalendarDateTime.jsx";
-import * as Accordion from '@radix-ui/react-accordion';
 import moment from 'moment';
+import Accordion from 'react-bootstrap/Accordion';
 
 class SiteDetailPage extends React.Component {
   constructor(props) {
@@ -332,22 +332,23 @@ class SiteDetailPage extends React.Component {
                   </h5>
                   <span className="badge bg-primary ms-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
                 </div>
-              <Accordion.Root className="AccordionRoot" type="single" defaultValue="item-1" collapsible>
-              {
+                <Accordion defaultActiveKey="0">
+                {
                   hosts && hosts.map((host, index) =>
-                  <Accordion.Item
-                    key={`site-detial-host-${index}`} 
-                    className="AccordionItem"
-                    value={`host-${index}`}
-                  >
-                  <Accordion.Trigger><span className={this.generateAccordionHeaderStyle(host.Name)}>{host.Name}</span></Accordion.Trigger>
-                  <Accordion.Content>
-                    <SiteDetailTable data={host} status={this.checkWorkerStatus(host.Name)} />
-                  </Accordion.Content>
-                </Accordion.Item>
+                    <Accordion.Item
+                      key={`site-detial-host-${index}`} 
+                      eventKey={index}
+                      className="AccordionItem"
+                      value={`host-${index}`}
+                    >
+                      <Accordion.Header><span className={this.generateAccordionHeaderStyle(host.Name)}>{host.Name}</span></Accordion.Header>
+                      <Accordion.Body>
+                        <SiteDetailTable data={host} status={this.checkWorkerStatus(host.Name)} />
+                      </Accordion.Body>
+                    </Accordion.Item>
                   )
-              }
-              </Accordion.Root>
+                }
+              </Accordion>
             </div>
           }
        </div>
