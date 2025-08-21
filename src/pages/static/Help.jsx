@@ -2,7 +2,6 @@ import React from "react";
 import BackgroundImage from "../../imgs/network-bg.svg";
 import { default as portalData } from "../../services/portalData.json";
 import { Link } from "react-router-dom";
-import Skeleton from "../../components/common/Skeleton";
 
 export default class Help extends React.Component{
   render() {
