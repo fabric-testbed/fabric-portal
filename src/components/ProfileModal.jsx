@@ -27,9 +27,7 @@ function ProfileModal(props) {
       >
         <Avatar
           name={userName ? userName : "Anonymous User"}
-          bgColor={"#5798bc"}
-          borderColor={"#5798bc"}
-          textColor={"#FFF"}
+          color={"#5798bc"}
         />
       </div>
       {isVisible && (
@@ -38,9 +36,7 @@ function ProfileModal(props) {
             <div className="col-3 mt-1">
               <Avatar
                 name={userName ? userName : "Anonymous User"}
-                bgColor={"#5798bc"}
-                borderColor={"#5798bc"}
-                textColor={"#FFF"}
+                color={"#5798bc"}
               />
             </div>
             <div className="col-9">

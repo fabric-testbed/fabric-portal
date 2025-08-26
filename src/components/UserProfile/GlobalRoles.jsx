@@ -39,7 +39,7 @@ class GlobalRoles extends React.Component {
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
-            <tr>
+            {/* <tr>
               <td>
                 Project Administrator
                 <OverlayTrigger
@@ -53,7 +53,7 @@ class GlobalRoles extends React.Component {
               <td className="text-center">
                 {this.renderRoleTableFields(globalRoles.isProjectLead)}
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 Facility Operator
