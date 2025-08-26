@@ -28,6 +28,9 @@ function ProfileModal(props) {
         <Avatar
           name={userName ? userName : "Anonymous User"}
           color={"#5798bc"}
+          size={40}
+          round={true}
+          textMarginRatio={0.1}
         />
       </div>
       {isVisible && (
@@ -37,6 +40,9 @@ function ProfileModal(props) {
               <Avatar
                 name={userName ? userName : "Anonymous User"}
                 color={"#5798bc"}
+                size={40}
+                round={true}
+                textMarginRatio={0.1}
               />
             </div>
             <div className="col-9">
