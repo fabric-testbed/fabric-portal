@@ -25,13 +25,13 @@ class Resources extends Component {
     resources: [],
     sortColumn1: { path: "name", order: "desc" },
     sortColumn2: { path: "site", order: "desc" },
-    sortColumn3: { path: "in_now_value", order: "desc" },
+    // sortColumn3: { path: "in_now_value", order: "desc" },
     currentPage1: 1,
     currentPage2: 1,
-    currentPage3: 1,
+    // currentPage3: 1,
     searchQuery: "",
     searchQuery2: "",
-    searchQuery3: "",
+    // searchQuery3: "",
     activeDetailName: "StarLight",
     activeFrom: "",
     activeTo: "",
@@ -288,11 +288,10 @@ class Resources extends Component {
 
   render() {
     const { currentPage1, sortColumn1, searchQuery, activeFrom, activeTo, linkData,
-      activeDetailName, sortColumn2, currentPage2, searchQuery2, sortColumn3, 
-      searchQuery3, currentPage3 } = this.state;
+      activeDetailName, sortColumn2, currentPage2, searchQuery2 } = this.state;
     const { totalCount, siteData } = this.getSiteData();
     const { totalFPCount, facilityPortData } = this.getFPData();
-    const { totalLinkCount, links } = this.getLinkData();
+    // const { totalLinkCount, links } = this.getLinkData();
 
     return (
       <div className="container">

@@ -39,9 +39,9 @@ class GlobalRoles extends React.Component {
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
-            <tr>
+            {/* <tr>
               <td>
-                Project Lead
+                Project Administrator
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 100, hide: 300 }}
@@ -53,7 +53,7 @@ class GlobalRoles extends React.Component {
               <td className="text-center">
                 {this.renderRoleTableFields(globalRoles.isProjectLead)}
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 Facility Operator
@@ -101,20 +101,6 @@ class GlobalRoles extends React.Component {
             </tr>
           </tbody>
         </table>
-        { 
-          !globalRoles.isProjectLead &&
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-primary"
-            onClick={() => window.open(
-              `${portalData.jiraLinks.projectLeadRequest}?email=${user.email}`,
-              "_blank")
-            }
-          >
-            <i className="fa fa-sign-in me-2"></i>
-            Request to be Project Lead
-          </button>
-         }
       </div>
     )
   }

@@ -216,12 +216,23 @@ class Projects extends React.Component {
               User Guide
             </a>
           </div>
-          {
-            (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
-            <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
-              Create Project
-            </Link>
-          }
+          {/* <div className="d-flex flex-row">
+            <a
+              href={portalData.jiraLinks.projectLeadRequest}
+              className="btn btn-primary my-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i className="fa fa-sign-in me-2"></i>
+              Request a New Project
+            </a>
+            {
+              (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
+              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
+                Create Project
+              </Link>
+            }
+          </div> */}
         </div>
         {
           this.state.radioBtnValues[0].isActive &&  

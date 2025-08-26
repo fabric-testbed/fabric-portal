@@ -16,7 +16,7 @@ import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
 import checkPortalType from "../utils/checkPortalType";
 // import { getLinksData } from "../services/mockLinkData.js";
-import linksParser from "../services/parser/linksParser";
+// import linksParser from "../services/parser/linksParser";
 import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";
 
 class Home extends React.Component {
