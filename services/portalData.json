@@ -1,0 +1,203 @@
+{
+  "version": "1.9.1",
+  "defaultFacility": "FABRIC",
+  "facilityOptions": ["FABRIC"],
+  "projectTypeOptions": [
+    "educational",
+    "industry",
+    "maintenance",
+    "research",
+    "tutorial"
+  ],
+  "keyLimit": 10,
+  "autoRefreshTokenInterval": 3300000,
+  "5minBeforeCookieExpires": 14100000,
+  "1minBeforeCookieExpires": 14340000,
+  "selfEnrollRequest": {
+    "id": "self-enroll-modal",
+    "title": "FABRIC Self Signup",
+    "links": {
+      "alpha": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:558",
+      "beta": "https://registry-test.cilogon.org/registry/co_petitions/start/coef:848",
+      "production": "https://registry.cilogon.org/registry/co_petitions/start/coef:423"
+    },
+    "content": "<p>Dear Experimenter,</p><p>Welcome to FABRIC. We noticed you are not yet registered with FABRIC. In order for you to begin using FABRIC you must go through a 3-step guided enrollment workflow. <b>Clicking the Signup button below will take you to the first step of this process</b>.</p><p><b>If you have already started the enrollment process and are waiting for the approval, please continue to check your email for an approval message.</b> We aim to process enrollment requests within one business day. You will be able to login after receiving this approval.</p><p>Please note: you will <b>always</b> use your institutional credentials to login to FABRIC portal via your institution's Identity Provider - we <b>do not and will never store your password or login information</b>. Any password changes that you go through with your institutional account will also affect how you login to the FABRIC portal.</p>"
+  },
+  "helperText": {
+    "projectLeadDescription": "Project Lead can create new projects, designate Project Owner(s)  and invite regular members into a project. Faculty or senior staff at universities can request this role.",
+    "facilityOperatorDescription": "Facility Operator is a 'superuser' allowed to manipulate any project. This role is reserved for FABRIC staff.",
+    "activeUserDescription": "A fully enrolled FABRIC Testbed User with all the rights and privileges therein.",
+    "jupyterhubDescription" : "Provides access to the Jupyterhub cluster. User must be a member of at least one project to maintain this access.",
+    "componentDescription": "Component: Hardware that may be added to a virtual machine to expand its capabilities",
+    "networkServiceDescription": "Network Service: Virtualized hardware that links nodes in a topology so that information (e.g., packets) can be passed through the network.",
+    "sitesDescription": "Sites: Approximately 30 physical locations where FABRIC hardware exists.",
+    "nodeDescription": "Node: An individual element (e.g., virtual machine) in a topology that is connected to other nodes to represent the physical and logical structure of a network.",
+    "bandwidthDescription": "Bandwidth for the link in Gbps, range from 0-100.",
+    "preferredEmailDescription": "Please choose your preferred contact email among the addresses given to us by your Identity Provider.",
+    "privacyPreferencesDescription": "Please check the information you want to be available to other FABRIC users.",
+    "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators.",
+    "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned.",
+    "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop.",
+    "nodeNameDescription": "Sliver name regex allows strings consisting of alphanumeric characters, underscores, hyphens, and periods, with a length between 2 and 255 characters."
+  },
+  "jiraLinks": {
+    "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
+    "accountIssue": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/18",
+    "projectPermissionRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/39",
+    "storageRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/12/create/40",
+    "initiateAccountPetition": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/8/create/61",
+    "educationProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/64",
+    "longlivedTokenRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/65",
+    "renewProjectRequest": "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/66"
+  },
+  "fabricSocialLinks": {
+    "website": "https://fabric-testbed.net/",
+    "twitter": "https://twitter.com/FABRICtestbed",
+    "youtube": "http://bit.ly/FABRICYouTube",
+    "github": "https://github.com/fabric-testbed"
+  },
+  "jupyterHubLinks": {
+    "alpha": "https://jupyter-beta.fabric-testbed.net/",
+    "beta": "https://jupyter-beta.fabric-testbed.net/",
+    "production": "https://jupyter.fabric-testbed.net/"
+  },
+  "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
+  "knowledgeBaseNewsLink": "https://learn.fabric-testbed.net/article-categories/news-archive/",
+  "knowledgeBaseEventsLink": "https://learn.fabric-testbed.net/article-categories/events/",
+  "knowledgeBaseBlogsLink": "https://learn.fabric-testbed.net/article-categories/blogs/",
+  "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
+  "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
+  "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",
+  "officeHourBookingLink": "https://outlook.office365.com/owa/calendar/FABRICOfficeHours@admin.live.unc.edu/bookings/",
+  "KNITWebsiteLink": "https://knit.fabric-testbed.net/",
+  "learnArticles": {
+    "gettingStarted": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/",
+    "thingsToKnowForFirstTime": "https://learn.fabric-testbed.net/knowledge-base/things-to-know-when-using-fabric-for-the-first-time/",
+    "portalReleaseNotes": "https://learn.fabric-testbed.net/knowledge-base/fabric-portal-release-notes/",
+    "faq": "https://learn.fabric-testbed.net/knowledge-base/frequently-asked-starter-questions/",
+    "guideToUseTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/",
+    "guideToLongLivedTokens": "https://learn.fabric-testbed.net/knowledge-base/obtaining-and-using-fabric-api-tokens/#using-long-lived-api-tokens",
+    "guideToGenerateFabricCompliantKey": "https://learn.fabric-testbed.net/knowledge-base/generating-ssh-configuration-and-ssh-keys/",
+    "guideToProjectRoles": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/#managing-projects-in-the-real-world",
+    "guideToProjectPermissions": "https://learn.fabric-testbed.net/knowledge-base/fabric-user-roles-and-project-permissions/",
+    "guideToLoginToFabricVMs": "https://learn.fabric-testbed.net/knowledge-base/logging-into-fabric-vms/",
+    "guideToSliceBuilder": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/",
+    "guideToSliceBuilderSections": {
+      "step1": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-1-view-project-permissions",
+      "step2": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-2-add-nodes-and-components",
+      "step3": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-3-add-network-service",
+      "step4": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#step-4-create-slice",
+      "states": "https://learn.fabric-testbed.net/knowledge-base/portal-slice-builder-user-guide/#slice-states"
+    },
+    "guideToStartExperiment": "https://learn.fabric-testbed.net/knowledge-base/creating-your-first-experiment-in-jupyter-hub/",
+    "guideToInstallPythonAPI": "https://learn.fabric-testbed.net/knowledge-base/install-the-python-api/",
+    "guideToSliceManager": "https://learn.fabric-testbed.net/knowledge-base/fabrictestbed-slice_manager/",
+    "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/",
+    "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
+    "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
+    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/"
+  },
+  "usernameOnImageMapping": {
+    "default_centos8_stream": "centos",
+    "default_centos9_stream": "cloud-user",
+    "default_debian_11": "debian",
+    "default_debian_12": "debian",
+    "default_fedora_39": "fedora",
+    "default_fedora_40": "fedora",
+    "default_freebsd_13_zfs": "freebsd",
+    "default_freebsd_14_zfs": "freebsd",
+    "default_kali": "kali",
+    "default_openbsd_7": "openbsd",
+    "default_rocky_8": "rocky",
+    "default_rocky_9": "rocky",
+    "default_ubuntu_20": "ubuntu",
+    "default_ubuntu_22": "ubuntu",
+    "default_ubuntu_24": "ubuntu",
+    "docker_rocky_8": "rocky",
+    "docker_rocky_9": "rocky",
+    "docker_ubuntu_20": "ubuntu",
+    "docker_ubuntu_22": "ubuntu",
+    "attestable_bmv2_v2_ubuntu_20": "ubuntu"
+  },
+  "bastionHostname": "bastion.fabric-testbed.net",
+  "webSshAppLinks": {
+    "alpha": "https://beta-5.fabric-testbed.net/",
+    "beta": "https://beta-5.fabric-testbed.net/",
+    "production": "https://websession.fabric-testbed.net/"
+  },
+  "marketingWebsiteLinks": {
+    "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
+  },
+  "communityOptions": ["Networks", "Computer systems organization", "Information systems",
+  "Security and privacy", "Human-centered computing", "Applied computing", "Hardware", "Software", "Theory of computation",
+  "Mathematics of computing", "Computing methodologies", "Additional Communities:HPC", "Additional Communities:RNE", "Additional Communities:Other"],
+  "communityMapping": {
+    "Networks": [
+      "Network architectures",
+      "Network protocols",
+      "Network algorithms",
+      "Network performance evaluation",
+      "Network services",
+      "Datacenter networks",
+      "Mobile networks",
+      "Overlay and other logical network structures",
+      "Wireless access networks",
+      "Public Internet",
+      "Wired access networks",
+      "Packet-switching networks",
+      "Network security"
+    ], 
+    "Computer systems organization": [
+      "Dependable and fault-tolerant systems and networks",
+      "Real-time systems",
+      "Embedded and cyber-physical systems",
+      "Architectures",
+      "Cloud Computing",
+      "Peer-to-peer architectures"
+    ], 
+    "Information systems": [
+      "Data management systems",
+      "Information storage systems",
+      "World Wide Web",
+      "Information retrieval"
+    ],
+    "Security and privacy": [
+      "Cryptography",
+      "Security services",
+      "Intrusion/anomaly detection and malware mitigation",
+      "Systems security",
+      "Network security"
+    ], 
+    "Applied computing" : [
+      "Arts and humanities",
+      "Computer forensics",
+      "Education",
+      "Electronic commerce",
+      "Enterprise computing",
+      "Life and medical sciences",
+      "Physical sciences and engineering"
+    ],
+    "Hardware": [
+      "Quantum technologies",
+      "Integrated Circuits - Reconfigurable logic and FPGAs",
+      "Sensor devices and platforms",
+      "Networking hardware"
+    ], 
+    "Theory of computation": [
+      "Design and analysis of algorithms",
+      "Theory and algorithms for application domains",
+      "Semantics and reasoning",
+      "Formal languages and automata theory",
+      "Models of computation"
+    ],
+    "Computing methodologies": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Parallel computing methodologies",
+      "Modeling and simulation",
+      "Distributed computing methodologies",
+      "Computer graphics/Graphics systems and interfaces/Graphics processors"
+    ]    
+  },
+  "facilityPortDescription": "https://raw.githubusercontent.com/fabric-testbed/fabric-global-metadata/refs/heads/main/metadata/facility_ports.json"
+}
