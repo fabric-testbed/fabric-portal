@@ -1,0 +1,10 @@
+{
+  "fabricCoreApiUrl": "https://alpha-6.fabric-testbed.net",
+  "credentialManagerApiUrl": "https://alpha-2.fabric-testbed.net/credmgr/tokens",
+  "orchestratorApiUrl": "https://alpha-3.fabric-testbed.net",
+  "credentialManagerAppUrl": "https://alpha-2.fabric-testbed.net",
+  "artifactManagerAppUrl": "https://alpha-1.fabric-testbed.net",
+  "publicationsTrackerApiUrl": "https://publications.fabric-testbed.net/api/pubsimple",
+  "artifactManagerApiUrl": "https://alpha-1.fabric-testbed.net/api/artifacts",
+  "resourceLinkApiUrl": "https://infrastructure-metrics.fabric-testbed.net/link_status?status_token=g4vUflsLETqgHOmXRzt6JK4jWrjTlT9W"
+}
