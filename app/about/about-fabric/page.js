@@ -1,13 +1,5 @@
 import React from "react";
-import iconEducation from "../../assets/imgs/capabilities/education.png";
-import iconInternet from "../../assets/imgs/capabilities/internet.png";
-import iconIot from "../../assets/imgs/capabilities/iot.png";
-import iconMachineLearning from "../../assets/imgs/capabilities/machine-learning.png";
-import iconSecurity from "../../assets/imgs/capabilities/security.png";
-import BackgroundImage from "../../assets/imgs/network-bg.svg";
-import nsfLogo from "../../assets/imgs/nsf.png";
-import FABMap from "../../assets/imgs/fab-map.png";
-import { default as portalData } from "../../services/portalData.json";
+import { default as portalData } from "../../../services/portalData.json";
 
 const nsfAwardNumbers = [1935966, 2029176, 2029200, 2029235, 2029260, 2029261, 2330891];
 const teamMembers = [
@@ -45,7 +37,7 @@ const teamMembers = [
 const AboutFABRIC = () => {
   return (
     <div className="container pb-5 static-page">
-      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
+      <img src="/imgs/network-bg.svg" alt={`static page background`} className="static-page-bg"/>
       <h1 className="mb-4">About FABRIC</h1>
       <p>
       FABRIC (FABRIC is Adaptive ProgrammaBle Research Infrastructure for Computer Science and Science Applications) is an International infrastructure that enables cutting-edge experimentation and research at-scale in the areas of networking, cybersecurity, distributed computing, storage, virtual reality, 5G, machine learning, and science applications.
@@ -55,7 +47,7 @@ const AboutFABRIC = () => {
       <p>
       <div className="d-flex align-items-center mb-4 alert alert-primary">
         <img
-          src={nsfLogo}
+          src="/imgs/nsf.png"
           width="40"
           height="40"
           className="d-inline-block align-top me-3"
@@ -74,7 +66,7 @@ const AboutFABRIC = () => {
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
                 <img
-                  src={iconInternet}
+                  src="/imgs/capabilities/internet.png"
                   key={`about-fabric-internet`}
                   className="align-self-center"
                   height="40"
@@ -91,7 +83,7 @@ const AboutFABRIC = () => {
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
                 <img
-                  src={iconSecurity}
+                  src="/imgs/capabilities/security.png"
                   key={`about-fabric-security`}
                   className="align-self-center"
                   height="40"
@@ -110,7 +102,7 @@ const AboutFABRIC = () => {
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
                 <img
-                  src={iconMachineLearning}
+                  src="/imgs/capabilities/machine-learning.png"
                   key={`about-fabric-machine-learning`}
                   className="align-self-center"
                   height="40"
@@ -127,7 +119,7 @@ const AboutFABRIC = () => {
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
                 <img
-                  src={iconIot}
+                  src="/imgs/capabilities/iot.png"
                   key={`about-fabric-iot`}
                   className="align-self-center"
                   height="40"
@@ -146,7 +138,7 @@ const AboutFABRIC = () => {
             <div className="card contact-us-card">
               <div className="card-header bg-primary-light d-flex justify-content-center">
                 <img
-                  src={iconEducation}
+                  src="/imgs/capabilities/education.png"
                   key={`about-fabric-education`}
                   className="align-self-center"
                   height="40"
@@ -216,7 +208,7 @@ const AboutFABRIC = () => {
       </table>
       <h2 className="text-primary my-4">International Connections</h2>
       <div className="d-flex justify-content-center mt-3 px-4">
-        <img src={FABMap} alt={`FAB map`} className="w-100" />
+        <img src="/imgs/fab-map.png" alt={`FAB map`} className="w-100" />
       </div>
       <p>
         FAB will connect FABRIC to five global partners:
