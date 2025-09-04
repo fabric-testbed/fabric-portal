@@ -8,7 +8,7 @@ class SummaryTable extends Component {
       content: (resource) => (
         <div>
           <Link
-            to={`/sites/${resource.name}`}
+            href={`/sites/${resource.name}`}
             state={{ data: resource }}
           >
             <span className="font-monospace">{resource.name}</span>
@@ -79,23 +79,23 @@ class SummaryTable extends Component {
           <div className="w-75 d-flex flex-row justify-content-between">
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="checkbox" id="GPUCheckbox" value="GPU" onChange={(e) => this.props.onFilter(e)}/>
-              <label className="form-check-label" for="GPUCheckbox">GPU</label>
+              <label className="form-check-label" htmlFor="GPUCheckbox">GPU</label>
             </div>
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="checkbox" id="NVMECheckbox" value="NVME" onChange={(e) => this.props.onFilter(e)}/>
-              <label className="form-check-label" for="NVMECheckbox">NVME</label>
+              <label className="form-check-label" htmlFor="NVMECheckbox">NVME</label>
             </div>
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="checkbox" id="SmartNICCheckbox" value="SmartNIC" onChange={(e) => this.props.onFilter(e)}/>
-              <label className="form-check-label" for="SmartNICCheckbox">SmartNIC</label>
+              <label className="form-check-label" htmlFor="SmartNICCheckbox">SmartNIC</label>
             </div>
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="checkbox" id="SharedNICCheckbox" value="SharedNIC" onChange={(e) => this.props.onFilter(e)}/>
-              <label className="form-check-label" for="SharedNICCheckbox">SharedNIC</label>
+              <label className="form-check-label" htmlFor="SharedNICCheckbox">SharedNIC</label>
             </div>
             <div className="form-check form-check-inline">
               <input className="form-check-input" type="checkbox" id="FPGACheckbox" value="FPGA" onChange={(e) => this.props.onFilter(e)} />
-              <label className="form-check-label" for="FPGACheckbox">FPGA</label>
+              <label className="form-check-label" htmlFor="FPGACheckbox">FPGA</label>
             </div>
           </div>
         </div>

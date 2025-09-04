@@ -3,15 +3,6 @@ import Cytoscape from 'cytoscape';
 import FCose from 'cytoscape-fcose';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { saveAs } from "file-saver";
-import IconGPU from '../../assets/imgs/SliceComponentIcons/GPU.png';
-import IconLink from '../../assets/imgs/SliceComponentIcons/Link.png';
-import IconSharedNIC from '../../assets/imgs/SliceComponentIcons/SharedNIC.png';
-import IconSmartNIC from '../../assets/imgs/SliceComponentIcons/SmartNIC.png';
-import IconNVME from '../../assets/imgs/SliceComponentIcons/NVME.png';
-import IconStorage from '../../assets/imgs/SliceComponentIcons/RotatingStorage.png';
-import IconNS from '../../assets/imgs/SliceComponentIcons/NetworkService.png';
-import IconFPGA from '../../assets/imgs/SliceComponentIcons/FPGA.png';
-import IconSwitch from '../../assets/imgs/SliceComponentIcons/Switch.png';
 import _ from "lodash";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -174,7 +165,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphGPU",
               "style": {
-                "background-image": `${IconGPU}`,
+                "background-image": `/imgs/SliceComponentIcons/GPU.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -200,7 +191,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSmartNIC",
               "style": {
-                "background-image": `${IconSmartNIC}`,
+                "background-image": `/imgs/SliceComponentIcons/SmartNIC.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -210,7 +201,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSharedNIC",
               "style": {
-                "background-image": `${IconSharedNIC}`,
+                "background-image": `/imgs/SliceComponentIcons/SharedNIC.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -220,7 +211,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphFPGA",
               "style": {
-                "background-image": `${IconFPGA}`,
+                "background-image": `/imgs/SliceComponentIcons/FPGA.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -230,7 +221,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphNVME",
               "style": {
-                "background-image": `${IconNVME}`,
+                "background-image": `/imgs/SliceComponentIcons/NVME.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -240,7 +231,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphStorage",
               "style": {
-                "background-image": `${IconStorage}`,
+                "background-image": `/imgs/SliceComponentIcons/RotatingStorage.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -250,7 +241,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphSwitch",
               "style": {
-                "background-image": `${IconSwitch}`,
+                "background-image": `/imgs/SliceComponentIcons/Switch.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 70,
@@ -260,7 +251,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphLink",
               "style": {
-                "background-image": `${IconLink}`,
+                "background-image": `/imgs/SliceComponentIcons/Link.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 20,
@@ -270,7 +261,7 @@ export default class Graph extends Component {
             {
               "selector": ".graphNetworkService",
               "style": {
-                "background-image": `${IconNS}`,
+                "background-image": `/imgs/SliceComponentIcons/NetworkService.png`,
                 "background-fit": "contain",
                 "background-color": "#fff",
                 "height": 20,

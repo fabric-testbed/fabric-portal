@@ -199,7 +199,7 @@ class SliceViewer extends Component {
                   </h2>
                 </div>
                 <div className="d-flex flex-row justify-content-between align-items-center">
-                    {/* <Link to={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
+                    {/* <Link href={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
                       <button
                         className="btn btn-sm btn-outline-primary my-3 me-3"
                       >

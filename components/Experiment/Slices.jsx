@@ -202,7 +202,7 @@ class Slices extends React.Component {
           !this.props.isProjectExpired &&
             <div>
               <div className="d-flex flex-row">
-                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary me-4">
+                <Link href={`/new-slice/${this.props.projectId}`} className="btn btn-primary me-4">
                   Create Slice in Portal
                 </Link>
                 <a
@@ -272,7 +272,7 @@ class Slices extends React.Component {
               />
               {
                 this.props.parent === "Projects" && !this.props.isProjectExpired &&
-                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary create-project-btn">
+                <Link href={`/new-slice/${this.props.projectId}`} className="btn btn-primary create-project-btn">
                   Create Slice
                 </Link>
               }

@@ -163,7 +163,7 @@ export default class SliceViewerErrorBoundary extends Component {
                         <div className="row mb-2">
                           <label>Project</label>
                           <div className="slice-form-element">
-                            <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                            <Link href={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
                           </div>
                         </div>
                         <div className="row d-flex flex-column mb-2">

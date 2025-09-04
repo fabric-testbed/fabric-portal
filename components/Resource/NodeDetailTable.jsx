@@ -82,7 +82,7 @@ const NodeDetailTable = props => {
               {
                 resource && parent !== "sitepage" && 
                 <Link
-                  to={`/sites/${resource.name}`}
+                  href={`/sites/${resource.name}`}
                   state={{ data: resource }}
                 >
                   {`${sitesNameMapping.shortNameToAcronym[name]} (${sitesNameMapping.shortToLongName[name]})`}

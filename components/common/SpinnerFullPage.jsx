@@ -47,7 +47,7 @@ function SpinnerFullPage(props){
             </div>
             {
               btnText && btnText !== "" &&
-              <Link to={btnPath} className="btn btn-primary my-4">
+              <Link href={btnPath} className="btn btn-primary my-4">
                 { btnText }
               </Link>
             }

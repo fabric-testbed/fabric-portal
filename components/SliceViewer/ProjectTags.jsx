@@ -47,7 +47,7 @@ export default class SideLinks extends Component {
           <tbody>
             <tr>
               <td><b>Project</b></td>
-              <td><Link to={`/projects/${project.uuid}`}>{project.name}</Link></td>
+              <td><Link href={`/projects/${project.uuid}`}>{project.name}</Link></td>
             </tr>
             <tr>
               <td>
