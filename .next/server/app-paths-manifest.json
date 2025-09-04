@@ -1,6 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
-  "/about/leadership/page": "app/about/leadership/page.js",
-  "/about/about-fabric/page": "app/about/about-fabric/page.js"
+  "/resources/overview/page": "app/resources/overview/page.js",
+  "/community/newsletter-signup/page": "app/community/newsletter-signup/page.js"
 }

@@ -11,7 +11,7 @@ class ProjectsTable extends Component {
         path: "name",
         label: "Name",
         content: (project) => (
-          <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+          <Link href={`/projects/${project.uuid}`}>{project.name}</Link>
         ),
       },
       { 
@@ -53,7 +53,7 @@ class ProjectsTable extends Component {
         path: "name",
         label: "Name",
         content: (project) => (
-          <Link to={`/experiments/public-projects/${project.uuid}`}>{project.name}</Link>
+          <Link href={`/experiments/public-projects/${project.uuid}`}>{project.name}</Link>
         ),
       },
       { 
@@ -83,7 +83,7 @@ class ProjectsTable extends Component {
       },
       {
         content: (project) => (
-          <Link to={`/experiments/public-projects/${project.uuid}`}>
+          <Link href={`/experiments/public-projects/${project.uuid}`}>
             <button className="btn btn-sm btn-outline-primary">
               View
             </button>

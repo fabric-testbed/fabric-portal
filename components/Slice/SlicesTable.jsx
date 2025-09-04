@@ -11,7 +11,7 @@ class SlicesTable extends Component {
         path: "name",
         label: "Slice Name",
         content: (slice) => (
-          <Link to={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
+          <Link href={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
         ),
       },
       { path: "state", label: "Slice State" },
@@ -26,7 +26,7 @@ class SlicesTable extends Component {
         path: "project_name",
         label: "Project",
         content: (slice) => (
-          <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+          <Link href={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
         ),
       },
       {
@@ -45,7 +45,7 @@ class SlicesTable extends Component {
         path: "name",
         label: "Slice Name",
         content: (slice) => (
-          <Link to={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
+          <Link href={`/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
         ),
       },
       { path: "state", label: "Slice State" },
@@ -85,7 +85,7 @@ class SlicesTable extends Component {
         path: "owner_email",
         label: "Owner",
         content: (slice) => (
-          <Link to={`/users/${slice.owner_user_id}`}>{slice.owner_email}</Link>
+          <Link href={`/users/${slice.owner_user_id}`}>{slice.owner_email}</Link>
         )
       },
       {

@@ -46,7 +46,7 @@ class ProjectUserTable extends Component {
       path: "name",
       label: "Name",
       content: (user) => (
-        <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+        <Link href={`/users/${user.uuid}`}>{user.name}</Link>
       )
     },
     { path: "email", label: "Email" },
@@ -57,7 +57,7 @@ class ProjectUserTable extends Component {
         path: "name",
         label: "Name",
         content: (user) => (
-          <Link to={`/users/${user.uuid}`}>{user.name}</Link>
+          <Link href={`/users/${user.uuid}`}>{user.name}</Link>
         )
       },
       { path: "email", label: "Email" },

@@ -192,7 +192,7 @@ class PublicUserProfile extends React.Component {
                     return (
                       <tr key={`project-role-${index}`}>
                         <td>
-                          <Link to={`/projects/${projectID}`}>
+                          <Link href={`/projects/${projectID}`}>
                             {roles.projectRoles[projectID].projectName}
                           </Link>
                         </td>

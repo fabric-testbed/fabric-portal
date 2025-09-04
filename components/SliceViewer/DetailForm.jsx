@@ -45,7 +45,7 @@ export default class DetailForm extends Component {
                     slice.project_name && <div className="mb-2">
                       <label className="form-label">Project</label>
                       <div className="slice-form-element">
-                        <Link to={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
+                        <Link href={`/projects/${slice.project_id}`}>{slice.project_name}</Link>
                       </div>
                     </div>
                   }

@@ -452,7 +452,7 @@ class NewSliceForm extends React.Component {
                   User Guide
                 </a>
               </div>
-              <Link to={`/projects/${this.props.match.params.project_id}`} className="align-self-end me-5">
+              <Link href={`/projects/${this.props.match.params.project_id}`} className="align-self-end me-5">
                 <button
                   className="btn btn-sm btn-outline-primary my-3"
                 >

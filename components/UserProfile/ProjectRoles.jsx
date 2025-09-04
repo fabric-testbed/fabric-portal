@@ -176,7 +176,7 @@ class ProjectRoles extends React.Component {
                     return (
                       <tr>
                         <td>
-                          <Link to={`/projects/${project.uuid}`}>{project.name}</Link>
+                          <Link href={`/projects/${project.uuid}`}>{project.name}</Link>
                         </td>
                         <td>{this.renderRoleTableFields(project.description)}</td>
                         <td>{project.facility}</td>

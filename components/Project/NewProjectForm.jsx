@@ -10,7 +10,7 @@ import { default as portalData } from "../../services/portalData.json";
 const ToastMessageWithLink = ({newProject}) => (
   <div className="ms-2">
     <p className="text-white">Project created successfully.</p>
-    <Link to={`/projects/${newProject.uuid}`}>
+    <Link href={`/projects/${newProject.uuid}`}>
       <button className="btn btn-sm btn-outline-light">
         View New Project
       </button>
