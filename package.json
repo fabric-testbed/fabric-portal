@@ -25,9 +25,8 @@
     "prop-types": "^15.7.2",
     "react": "^18.3.1",
     "react-avatar": "^5.0.4",
-    "react-bootstrap": "^2.10.5",
+    "react-bootstrap": "^2.10.10",
     "react-cookie-consent": "^9.0.0",
-    "react-copy-to-clipboard": "^5.0.4",
     "react-countup": "^6.5.3",
     "react-cytoscapejs": "^2.0.0",
     "react-datetime-picker": "^3.5.0",
@@ -41,6 +40,7 @@
     "react-toastify": "^11.0.5",
     "sass": "^1.90.0",
     "styled-components": "^5.3.1",
+    "usehooks-ts": "^3.1.1",
     "uuid": "^8.3.2"
   },
   "scripts": {
