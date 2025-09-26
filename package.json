@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -8,6 +8,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
+    "@snf/access-qa-bot": "^2.7.0",
+    "@snf/qa-bot-core": "^0.1.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^7.2.1",
@@ -40,6 +42,7 @@
     "react": "^18.3.1",
     "react-avatar": "^5.0.4",
     "react-bootstrap": "^2.10.5",
+    "react-chatbotify": "^2.3.2",
     "react-cookie-consent": "^9.0.0",
     "react-copy-to-clipboard": "^5.0.4",
     "react-countup": "^6.5.3",
