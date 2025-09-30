@@ -142,7 +142,7 @@ class Home extends React.Component {
           </div>
         </CookieConsent>
         <ToastContainer />
-         <Chatbot />
+        <Chatbot />
       </div>
     );
   }

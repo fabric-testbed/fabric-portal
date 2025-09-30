@@ -8,7 +8,7 @@ function MyChatBot(){
       <QABot
         apiKey={configData.qaToolApiKey}
         qaEndpoint={configData.qaToolApiUrl}
-        welcomeMessage="Hello! How can I help you today?"
+        welcomeMessage="Hello! How can I help you with FABRIC today?"
         primaryColor="#1f6a8c"
         secondaryColor="#5798bc"
         botName="FABRIC Q&A Tool"
