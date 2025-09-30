@@ -214,9 +214,17 @@ class Slices extends React.Component {
                   Create Slice in JupyterHub
                 </a>
               </div>
+              <div className="d-flex flex-row align-items-start mt-3">
+                <Checkbox
+                  label={"View Project Slices"}
+                  id={"checkbox-show-all-slices"}
+                  isChecked={showAllSlices}
+                  onCheck={this.handleShowAllSlices}
+                />
+              </div>
               <div className="alert alert-warning mt-3" role="alert">
                 <p className="mt-2">
-                  You have no slices in this project. Please create slices in Portal or&nbsp;
+                You haven’t created any slices in this project. Please create slices in Portal or&nbsp;
                   <a
                   href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
                   target="_blank"
