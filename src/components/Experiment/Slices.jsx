@@ -220,7 +220,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          !showSpinner && hasProject && slices.length > 0 && <div>
+          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects") && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}
