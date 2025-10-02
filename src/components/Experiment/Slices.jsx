@@ -198,45 +198,6 @@ class Slices extends React.Component {
         }
         {
           !showSpinner && hasProject && slices.length === 0 &&
-          this.props.parent === "Projects" && 
-          !this.props.isProjectExpired &&
-            <div>
-              <div className="d-flex flex-row">
-                <Link to={`/new-slice/${this.props.projectId}`} className="btn btn-primary me-4">
-                  Create Slice in Portal
-                </Link>
-                <a
-                  href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
-                  className="btn btn-primary"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Create Slice in JupyterHub
-                </a>
-              </div>
-              <div className="alert alert-warning mt-3" role="alert">
-                <p className="mt-2">
-                  You have no slices in this project. Please create slices in Portal or&nbsp;
-                  <a
-                  href={this.jupyterLinkMap[checkPortalType(window.location.href)]}
-                  target="_blank"
-                  rel="noreferrer"
-                  >JupyterHub</a> first. Here are some guide articles you may find helpful:
-                </p>
-                <p>
-                  <ul>
-                    <li><a href={portalData.learnArticles.guideToSliceBuilder} target="_blank" rel="noreferrer">Portal Slice Builder User Guide</a></li>
-                    <li><a href={portalData.learnArticles.guideToStartExperiment} target="_blank" rel="noreferrer">Start Your First Experiment</a></li>
-                    <li><a href={portalData.learnArticles.guideToInstallPythonAPI} target="_blank" rel="noreferrer">Install the FABRIC Python API</a></li>
-                    <li><a href={portalData.learnArticles.guideToSliceManager} target="_blank" rel="noreferrer">Slice Manager</a></li>
-                    <li><a href={portalData.learnArticles.guideToSliceEditor} target="_blank" rel="noreferrer">Slice Editor</a></li>
-                  </ul>
-                </p>
-              </div>
-            </div>
-        }
-        {
-          !showSpinner && hasProject && slices.length === 0 &&
           this.props.parent !== "Projects" && 
           <div className="alert alert-warning mt-3" role="alert">
             <p className="mt-2">
@@ -259,7 +220,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          !showSpinner && hasProject && slices.length > 0 && <div>
+          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects") && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}
