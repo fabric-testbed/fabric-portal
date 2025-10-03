@@ -1,7 +1,7 @@
 
 export default function checkGlobalRoles(user) {
   const globalRoles = {
-    isProjectLead: false,
+    isProjectAdmin: false,
     isFacilityOperator: false,
     isActiveUser: false,
     isJupterhubUser: false,
@@ -12,8 +12,8 @@ export default function checkGlobalRoles(user) {
   }
   
   for (const role of user.roles){
-    if(role.name === "project-leads") {
-      globalRoles.isProjectLead = true;
+    if(role.name === "project-admins") {
+      globalRoles.isProjectAdmin = true;
     }
     
     if(role.name === "facility-operators") {

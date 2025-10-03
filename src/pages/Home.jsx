@@ -18,6 +18,7 @@ import checkPortalType from "../utils/checkPortalType";
 // import { getLinksData } from "../services/mockLinkData.js";
 // import linksParser from "../services/parser/linksParser";
 import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";
+import Chatbot from "../components/common/Chatbot";
 
 class Home extends React.Component {
   state = {
@@ -141,6 +142,7 @@ class Home extends React.Component {
           </div>
         </CookieConsent>
         <ToastContainer />
+        {/* <Chatbot /> */}
       </div>
     );
   }

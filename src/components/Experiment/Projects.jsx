@@ -25,7 +25,7 @@ class Projects extends React.Component {
       { display: "All Projects", value: "allProjects", isActive: false },
     ],
     globalRoles: {
-      isProjectLead: false,
+      isProjectAdmin: false,
       isFacilityOperator: false,
       isActiveUser: false,
       isJupterhubUser: false,
@@ -216,7 +216,7 @@ class Projects extends React.Component {
               User Guide
             </a>
           </div>
-          {/* <div className="d-flex flex-row">
+          <div className="d-flex flex-row">
             <a
               href={portalData.jiraLinks.projectLeadRequest}
               className="btn btn-primary my-2"
@@ -227,12 +227,12 @@ class Projects extends React.Component {
               Request a New Project
             </a>
             {
-              (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
+              globalRoles.isProjectAdmin &&
               <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
                 Create Project
               </Link>
             }
-          </div> */}
+          </div>
         </div>
         {
           this.state.radioBtnValues[0].isActive &&  

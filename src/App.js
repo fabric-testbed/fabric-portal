@@ -62,7 +62,7 @@ class App extends React.Component {
     showSessionTimeoutModal2: false,
     searchQuery: "",
     globalRoles: {
-      isProjectLead: false,
+      isProjectAdmin: false,
       isFacilityOperator: false,
       isActiveUser: false,
       isJupterhubUser: true

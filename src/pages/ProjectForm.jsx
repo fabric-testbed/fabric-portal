@@ -86,7 +86,7 @@ class ProjectForm extends Form {
     },
     user: {},
     globalRoles: {
-      isProjectLead: false,
+      isProjectAdmin: false,
       isFacilityOperator: false,
       isActiveUser: false,
       isJupterhubUser: false,
