@@ -34,7 +34,6 @@ export function createProject(project) {
       "name": project.name,
       "description": project.description,
       "is_public": project.is_public === "Yes",
-      "facility": project.facility,
       "project_lead": project.project_lead,
       "project_type": project.project_type
     }

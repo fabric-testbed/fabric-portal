@@ -80,6 +80,7 @@ class ProjectForm extends Form {
       "show_project_members",
     ],
     publicOptions: ["Yes", "No"],
+    reviewRequiredOptions: ["Yes", "No"],
     optionsDisplayMapping: {
       "show_project_owners": "Project Owners",
       "show_project_members": "Project Members"
@@ -591,6 +592,7 @@ class ProjectForm extends Form {
     const {
       data,
       publicOptions,
+      reviewRequiredOptions,
       optionsDisplayMapping,
       user,
       globalRoles,
@@ -777,6 +779,7 @@ class ProjectForm extends Form {
                   {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
+                  {this.renderSelect("review_required", "Review Required", canUpdate, data.review_required, reviewRequiredOptions, portalData.helperText.projectReviewDescription)}
                   {this.renderSelect("project_type", "Project Type", canUpdate, data.project_type, portalData.projectTypeOptions)}
                   {
                     data.is_public === "Yes" && 

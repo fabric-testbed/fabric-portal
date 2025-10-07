@@ -11,6 +11,7 @@ import { default as portalData } from "./services/portalData.json";
 // Regular components imported normally
 import Header from "./components/Header";
 import Banner from "./components/common/Banner";
+import Chatbot from "./components/common/Chatbot";
 import Footer from "./components/Footer";
 import Skeleton from './components/common/Skeleton.jsx';
 import SessionTimeoutModal from "./components/Modals/SessionTimeoutModal";
@@ -231,6 +232,7 @@ class App extends React.Component {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          { localStorage.getItem("userStatus") === "active" && <Chatbot />}
           <Footer />
           <ToastContainer />
         </Router>
