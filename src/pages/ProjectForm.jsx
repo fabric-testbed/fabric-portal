@@ -458,6 +458,10 @@ class ProjectForm extends Form {
     }
   };
 
+  handleReviewApprove = async () => {
+    
+  }
+
   handlePersonnelUpdate = (personnelType, userIDs, operation) => {
     const { data } = this.state;
     this.setState({
@@ -581,8 +585,6 @@ class ProjectForm extends Form {
   }
 
   handleUpdateTopics = (newTopics) =>{
-    console.log("Project Form - handle update topics.");
-    console.log(newTopics);
     this.setState({ topics: newTopics });
   }
 
@@ -803,6 +805,7 @@ class ProjectForm extends Form {
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
                 onUpdateProject={this.handleUpdateProject}
+                onReviewApprove={this.handleReviewApprove}
                 onTagChange={this.handleUpdateTopics}
               />
               {

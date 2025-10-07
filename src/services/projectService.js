@@ -33,9 +33,9 @@ export function createProject(project) {
     {
       "name": project.name,
       "description": project.description,
-      "is_public": project.is_public === "Yes",
+      "is_public": "Yes",
       "project_lead": project.project_lead,
-      "project_type": project.project_type
+      "project_type": "research"
     }
   );
 }

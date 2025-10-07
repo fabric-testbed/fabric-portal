@@ -39,21 +39,17 @@ class GlobalRoles extends React.Component {
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
-            <tr>
-              <td>
-                Project Administrator
-                {/* <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 100, hide: 300 }}
-                  overlay={renderTooltip("pl-tooltip", portalData.helperText.projectLeadDescription)}
-                >
-                  <i className="fa fa-question-circle text-secondary ms-2"></i>
-                </OverlayTrigger> */}
-              </td>
-              <td className="text-center">
-                {this.renderRoleTableFields(globalRoles.isProjectAdmin)}
-              </td>
-            </tr>
+            {
+              globalRoles.isProjectAdmin && 
+              <tr>
+                <td>
+                  Project Administrator
+                </td>
+                <td className="text-center">
+                  {this.renderRoleTableFields(globalRoles.isProjectAdmin)}
+                </td>
+              </tr>
+            }
             <tr>
               <td>
                 Facility Operator
