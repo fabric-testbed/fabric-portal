@@ -73,14 +73,14 @@ class ProjectForm extends Form {
       selectedOptions: [],
       project_funding: [],
       communities: [],
-      topics: []
+      topics: [],
+      active: false
     },
     allOptions: [
       "show_project_owners",
       "show_project_members",
     ],
     publicOptions: ["Yes", "No"],
-    reviewRequiredOptions: ["Yes", "No"],
     optionsDisplayMapping: {
       "show_project_owners": "Project Owners",
       "show_project_members": "Project Members"
@@ -205,7 +205,8 @@ class ProjectForm extends Form {
             btnPath: ""
           },
           selectedTags: project.tags,
-          originalTags: project.tags
+          originalTags: project.tags,
+          active: project.active
         });
       }
     } catch (err) {
@@ -458,10 +459,6 @@ class ProjectForm extends Form {
     }
   };
 
-  handleReviewApprove = async () => {
-    
-  }
-
   handlePersonnelUpdate = (personnelType, userIDs, operation) => {
     const { data } = this.state;
     this.setState({
@@ -594,7 +591,6 @@ class ProjectForm extends Form {
     const {
       data,
       publicOptions,
-      reviewRequiredOptions,
       optionsDisplayMapping,
       user,
       globalRoles,
@@ -639,6 +635,19 @@ class ProjectForm extends Form {
           <SpinnerFullPage
             showSpinner={true}
             text={"This project is locked because an update is in process. Please feel free to use other portal features while waiting. You will receive a message when the update is completed. "}
+            btnText={"Back to Project list"}
+            btnPath={"/experiments#projects"}
+          />
+        </div>
+      )
+    }
+
+    if (data.active === false && !globalRoles.isFacilityOperator) {
+      return (
+        <div className="container">
+          <SpinnerFullPage
+            showSpinner={true}
+            text={"This project is still under review. Please contact support if you have any questions."}
             btnText={"Back to Project list"}
             btnPath={"/experiments#projects"}
           />
@@ -781,7 +790,6 @@ class ProjectForm extends Form {
                   {this.renderWysiwyg("description", "Description", canUpdate)}
                   {this.renderSelect("facility", "Facility", canUpdate, data.facility, portalData.facilityOptions)}
                   {this.renderSelect("is_public", "Public", canUpdate, data.is_public, publicOptions, portalData.helperText.publicProjectDescription)}
-                  {this.renderSelect("review_required", "Review Required", canUpdate, data.review_required, reviewRequiredOptions, portalData.helperText.projectReviewDescription)}
                   {this.renderSelect("project_type", "Project Type", canUpdate, data.project_type, portalData.projectTypeOptions)}
                   {
                     data.is_public === "Yes" && 
@@ -805,7 +813,6 @@ class ProjectForm extends Form {
                 onMatrixUpdate={this.handleUpdateMatrix}
                 onCommunityUpdate={this.handleUpdateCommunity}
                 onUpdateProject={this.handleUpdateProject}
-                onReviewApprove={this.handleReviewApprove}
                 onTagChange={this.handleUpdateTopics}
               />
               {
