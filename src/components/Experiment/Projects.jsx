@@ -228,7 +228,7 @@ class Projects extends React.Component {
             </a>
             {
               globalRoles.isProjectAdmin &&
-              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2 ml-2">
+              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2 ms-2">
                 Create Project
               </Link>
             }

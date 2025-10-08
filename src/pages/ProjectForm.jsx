@@ -76,8 +76,7 @@ class ProjectForm extends Form {
       selectedOptions: [],
       project_funding: [],
       communities: [],
-      topics: [],
-      active: false
+      topics: []
     },
     allOptions: [
       "show_project_owners",
@@ -119,7 +118,8 @@ class ProjectForm extends Form {
     projectFunding: [],
     communities: [],
     topics: [],
-    fabricMatrix: ""
+    fabricMatrix: "",
+    isActive: true
   };
 
   schema = {
@@ -209,7 +209,7 @@ class ProjectForm extends Form {
           },
           selectedTags: project.tags,
           originalTags: project.tags,
-          active: project.active
+          isActive: project.active
         });
       }
     } catch (err) {
@@ -315,7 +315,7 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject, isActive } = this.state;
     const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
@@ -589,14 +589,14 @@ class ProjectForm extends Form {
   }
 
   handleToggleReviewSwitch = async () => {
-    const { data} = this.state;
-    const newStatus = !data.active;
+    const { data, isActive } = this.state;
+    const newStatus = !isActive;;
     this.setState({
       showSpinner: true,
       spinnerText: "Updating project review status..."
     })
     try {
-      await updateProjectReviewStatus(data.uuid, newStatus);
+      await updateProjectReviewStatus(data.uuid, !newStatus);
       // toast message to users when the api call is successfully done.
       toast.success("Project review status updated successfully.");
       await sleep(1000);
@@ -612,7 +612,6 @@ class ProjectForm extends Form {
 
   render() {
     const projectId = this.props.match.params.id;
-
     const {
       data,
       publicOptions,
@@ -633,7 +632,8 @@ class ProjectForm extends Form {
       communities,
       fabricMatrix,
       originalProject,
-      topics
+      topics,
+      isActive
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -667,7 +667,7 @@ class ProjectForm extends Form {
       )
     }
 
-    if (data.active === false && !globalRoles.isFacilityOperator) {
+    if (isActive === false && !globalRoles.isFacilityOperator) {
       return (
         <div className="container">
           <SpinnerFullPage
@@ -812,25 +812,26 @@ class ProjectForm extends Form {
             > 
               {
                 globalRoles.isFacilityOperator && 
-                <div className="form-check form-switch">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    id="ReviewSwitchCheck"
-                    checked={data.active}
-                    onChange={this.handleToggleReviewSwitch}
-                  />
-                  <label className="form-check-label" for="ReviewSwitchCheck" htmlFor={"toggle-active"}>
-                    Active 
-                    <OverlayTrigger
-                      placement="right"
-                      delay={{ show: 100, hide: 300 }}
-                      overlay={this.renderTooltip("toggle-active", portalData.helperText.projectActiveDescription)}
-                    >
-                      <i className="fa fa-question-circle text-secondary ms-2"></i>
-                    </OverlayTrigger>
-                  </label>
+                <div
+                  className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
+                  role="alert"
+                >
+                  <span>
+                    For Facility Operator Only: Toggle the switch to set the project as active or inactive for review.
+                  </span>
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="ReviewSwitchCheck"
+                      checked={isActive}
+                      onChange={this.handleToggleReviewSwitch}
+                    />
+                    <label className="form-check-label" for="ReviewSwitchCheck">
+                      Active 
+                    </label>
+                  </div>
                 </div>
               }
               <form onSubmit={this.handleSubmit}>

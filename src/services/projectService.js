@@ -122,8 +122,8 @@ export function getFundingDirectorates() {
   return http.get(`${apiEndpoint}/funding-directorates`);
 }
 
-export function updateProjectReviewStatus(projectId, status) {
+export function updateProjectReviewStatus(projectId, reviewRequired) {
   return http.patch(`${apiEndpoint}/${projectId}/review-required`, {
-    "review_required": status
+    "review_required": reviewRequired
   })
 }
