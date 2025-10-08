@@ -19,6 +19,8 @@ import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
 import moment from 'moment';
 import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import sleep from "../utils/sleep";
 import {
   getProjectById,
   getProjectTags,
@@ -30,7 +32,8 @@ import {
   updateProjectCommunity,
   updateProjectFunding,
   updateMatrix,
-  updateProjectTopics
+  updateProjectTopics,
+  updateProjectReviewStatus
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -585,6 +588,28 @@ class ProjectForm extends Form {
     this.setState({ topics: newTopics });
   }
 
+  handleToggleReviewSwitch = async () => {
+    const { data} = this.state;
+    const newStatus = !data.active;
+    this.setState({
+      showSpinner: true,
+      spinnerText: "Updating project review status..."
+    })
+    try {
+      await updateProjectReviewStatus(data.uuid, newStatus);
+      // toast message to users when the api call is successfully done.
+      toast.success("Project review status updated successfully.");
+      await sleep(1000);
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to update project review status.");
+      this.setState({
+        showSpinner: false,
+        spinnerText: ""
+      });
+    }
+  }
+
   render() {
     const projectId = this.props.match.params.id;
 
@@ -784,7 +809,30 @@ class ProjectForm extends Form {
             </div>
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
-            >  
+            > 
+              {
+                globalRoles.isFacilityOperator && 
+                <div className="form-check form-switch">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="ReviewSwitchCheck"
+                    checked={data.active}
+                    onChange={this.handleToggleReviewSwitch}
+                  />
+                  <label className="form-check-label" for="ReviewSwitchCheck" htmlFor={"toggle-active"}>
+                    Active 
+                    <OverlayTrigger
+                      placement="right"
+                      delay={{ show: 100, hide: 300 }}
+                      overlay={this.renderTooltip("toggle-active", portalData.helperText.projectActiveDescription)}
+                    >
+                      <i className="fa fa-question-circle text-secondary ms-2"></i>
+                    </OverlayTrigger>
+                  </label>
+                </div>
+              }
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
                   {this.renderWysiwyg("description", "Description", canUpdate)}

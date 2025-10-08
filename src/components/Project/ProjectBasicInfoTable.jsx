@@ -11,14 +11,13 @@ import CommunityTags from "./Community/CommunityTags.jsx";
 import { toast } from "react-toastify";
 import { default as portalData } from "../../services/portalData.json";
 import sleep from "../../utils/sleep";
-import { updateProjectExpirationTime, updateProjectReviewStatus } from "../../services/projectService";
+import { updateProjectExpirationTime } from "../../services/projectService";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 class ProjectBasicInfoTable extends Component {
   state = {
     expirationTime: this.props.project.expired,
-    fabricMatrixTooltip: "Insert the link of the FABRIC Matrix slide including the current state, approach, challenges and impact of this project.",
-    reviewRequiredTooltip: "New projects are NOT active when initially created. All new projects require review from FABRIC staff prior to activation"
+    fabricMatrixTooltip: "Insert the link of the FABRIC Matrix slide including the current state, approach, challenges and impact of this project."
   }
 
   renderTags(tags) {
@@ -65,28 +64,6 @@ class ProjectBasicInfoTable extends Component {
     }
   }
 
-  handleToggleReviewSwitch = async () => {
-    const { project, isActive } = this.props;
-    const newStatus = !isActive;
-    this.setState({
-      showSpinner: true,
-      spinnerText: "Updating project review status..."
-    })
-    try {
-      await updateProjectReviewStatus(project.uuid, newStatus);
-      // toast message to users when the api call is successfully done.
-      toast.success("Project review status updated successfully.");
-      await sleep(1000);
-      window.location.reload();
-    } catch (err) {
-      toast.error("Failed to update project review status.");
-      this.setState({
-        showSpinner: false,
-        spinnerText: ""
-      });
-    }
-  }
-
   renderTooltip = (id, content) => (
     <Tooltip id={id}>
       {content}
@@ -95,37 +72,11 @@ class ProjectBasicInfoTable extends Component {
 
   render() {
     const { project, projectTags, canUpdate, onDeleteProject, isFO, projectFunding, 
-      communities, fabricMatrix, topics, isActive } = this.props;
-    const { fabricMatrixTooltip, reviewRequiredTooltip } = this.state;
+      communities, fabricMatrix, topics } = this.props;
+    const { fabricMatrixTooltip } = this.state;
     
     return (
       <div>
-        {
-          isFO && 
-          <div className="form-group">
-            <label htmlFor={"fabrix-review-required"}>
-              Review Required
-              <OverlayTrigger
-                placement="right"
-                delay={{ show: 100, hide: 300 }}
-                overlay={this.renderTooltip("fabrix-review-required", reviewRequiredTooltip)}
-              >
-                <i className="fa fa-question-circle text-secondary ms-2"></i>
-              </OverlayTrigger>
-            </label>
-            <div className="form-check form-switch">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="ReviewSwitchCheck"
-                checked={isActive}
-                onChange={this.handleToggleReviewSwitch}
-              />
-              <label className="form-check-label" for="ReviewSwitchCheck">This project is reviewed and approved.</label>
-            </div>
-          </div>
-        }
         <div className="form-group">
           <label htmlFor={"fabrix-matrix"}>
             FABRIC Matrix
