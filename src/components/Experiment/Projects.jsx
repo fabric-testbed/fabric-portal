@@ -198,8 +198,7 @@ class Projects extends React.Component {
 
   render() {
     const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery, filterOption, selectedList, options } = this.state;
-    const { globalRoles } = this.props;
+      projectsCount, searchQuery, filterOption, selectedList, options, globalRoles } = this.state;
 
     return (
       <div className="col-9">
@@ -216,7 +215,7 @@ class Projects extends React.Component {
               User Guide
             </a>
           </div>
-          <div className="d-flex flex-row">
+          {/* <div className="d-flex flex-row">
             <a
               href={portalData.jiraLinks.projectLeadRequest}
               className="btn btn-primary my-2"
@@ -228,11 +227,11 @@ class Projects extends React.Component {
             </a>
             {
               globalRoles.isProjectAdmin &&
-              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2 ms-2">
+              <Link to="/projects/new" className="btn btn-primary my-2 ms-2">
                 Create Project
               </Link>
             }
-          </div>
+          </div> */}
         </div>
         {
           this.state.radioBtnValues[0].isActive &&  
