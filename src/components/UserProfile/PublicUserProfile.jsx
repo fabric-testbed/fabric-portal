@@ -56,7 +56,7 @@ class PublicUserProfile extends React.Component {
     const globalRolesMapping = {
       "fabric-active-users": "FABRIC Active User",
       "facility-operators": "Facility Operator",
-      "project-leads": "Project Lead",
+      // "project-admins": "Project Admin",
       "Jupyterhub": "Jupyterhub",
       "portal-admins": "Portal Admin",
     }
