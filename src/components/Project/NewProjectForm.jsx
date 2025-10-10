@@ -24,12 +24,8 @@ class NewProjectForm extends Form {
       name: "",
       uuid: "",
       description: "",
-      facility: portalData.defaultFacility,
-      is_public: "Yes",
-      project_lead: "",
-      project_type: "research"
+      project_lead: ""
     },
-    publicOptions: ["Yes", "No"],
     errors: {},
     warningMessage: ""
   };
@@ -38,10 +34,7 @@ class NewProjectForm extends Form {
     uuid: Joi.string().allow(""),
     name: Joi.string().required().label("Name"),
     description: Joi.string().required().label("Description"),
-    facility: Joi.string().required().label("Facility"),
-    is_public: Joi.string().required().label("Public"),
     project_lead: Joi.string().required().label("Project Lead"),
-    project_type: Joi.string().required().label("Project Type"),
   };
 
   handleCreateProject = async () => {
@@ -74,10 +67,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderSelect("facility", "Facility", true, portalData.defaultFacility, portalData.facilityOptions)}
-          {this.renderSelect("is_public", "Public", true, "Yes", publicOptions, portalData.helperText.publicProjectDescription)}
           {this.renderInput("project_lead", "Project Lead", true)}
-          {this.renderInput("project_type", "Project Type", false)}
         </form>
         <button
           className="btn btn-primary mt-2"

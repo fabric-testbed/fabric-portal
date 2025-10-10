@@ -19,6 +19,8 @@ import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
 import moment from 'moment';
 import utcToLocalTimeParser from "../utils/utcToLocalTimeParser.js";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import sleep from "../utils/sleep";
 import {
   getProjectById,
   getProjectTags,
@@ -30,7 +32,8 @@ import {
   updateProjectCommunity,
   updateProjectFunding,
   updateMatrix,
-  updateProjectTopics
+  updateProjectTopics,
+  updateProjectReviewStatus
 } from "../services/projectService";
 
 const ToastMessageWithLink = ({projectId, message}) => (
@@ -86,7 +89,7 @@ class ProjectForm extends Form {
     },
     user: {},
     globalRoles: {
-      isProjectLead: false,
+      isProjectAdmin: false,
       isFacilityOperator: false,
       isActiveUser: false,
       isJupterhubUser: false,
@@ -115,7 +118,8 @@ class ProjectForm extends Form {
     projectFunding: [],
     communities: [],
     topics: [],
-    fabricMatrix: ""
+    fabricMatrix: "",
+    isActive: true
   };
 
   schema = {
@@ -204,7 +208,8 @@ class ProjectForm extends Form {
             btnPath: ""
           },
           selectedTags: project.tags,
-          originalTags: project.tags
+          originalTags: project.tags,
+          isActive: project.active
         });
       }
     } catch (err) {
@@ -310,7 +315,7 @@ class ProjectForm extends Form {
       }
     });
 
-    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject } = this.state;
+    const { data: project, projectFunding, communities, fabricMatrix, topics, originalProject, isActive } = this.state;
     const originalMatrix = originalProject.profile.references.length > 0 ? originalProject.profile.references[0].url : "";
     try {
       await updateProject(project, this.parsePreferences());
@@ -580,14 +585,33 @@ class ProjectForm extends Form {
   }
 
   handleUpdateTopics = (newTopics) =>{
-    console.log("Project Form - handle update topics.");
-    console.log(newTopics);
     this.setState({ topics: newTopics });
+  }
+
+  handleToggleReviewSwitch = async () => {
+    const { data, isActive } = this.state;
+    const newStatus = !isActive;;
+    this.setState({
+      showSpinner: true,
+      spinnerText: "Updating project review status..."
+    })
+    try {
+      await updateProjectReviewStatus(data.uuid, !newStatus);
+      // toast message to users when the api call is successfully done.
+      toast.success("Project review status updated successfully.");
+      await sleep(1000);
+      window.location.reload();
+    } catch (err) {
+      toast.error("Failed to update project review status.");
+      this.setState({
+        showSpinner: false,
+        spinnerText: ""
+      });
+    }
   }
 
   render() {
     const projectId = this.props.match.params.id;
-
     const {
       data,
       publicOptions,
@@ -608,7 +632,8 @@ class ProjectForm extends Form {
       communities,
       fabricMatrix,
       originalProject,
-      topics
+      topics,
+      isActive
     } = this.state;
     
     let canUpdate = !this.checkProjectExpiration(data.expired) && 
@@ -641,6 +666,19 @@ class ProjectForm extends Form {
         </div>
       )
     }
+
+    // if (isActive === false && !globalRoles.isFacilityOperator) {
+    //   return (
+    //     <div className="container">
+    //       <SpinnerFullPage
+    //         showSpinner={true}
+    //         text={"This project is still under review. Please contact support if you have any questions."}
+    //         btnText={"Back to Project list"}
+    //         btnPath={"/experiments#projects"}
+    //       />
+    //     </div>
+    //   )
+    // }
 
     // 1. New project.
     if (projectId === "new") {
@@ -771,7 +809,31 @@ class ProjectForm extends Form {
             </div>
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
-            >  
+            > 
+              {/* {
+                globalRoles.isFacilityOperator && 
+                <div
+                  className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
+                  role="alert"
+                >
+                  <span>
+                    For Facility Operator Only: Toggle the switch to set the project as active or inactive for review.
+                  </span>
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="ReviewSwitchCheck"
+                      checked={isActive}
+                      onChange={this.handleToggleReviewSwitch}
+                    />
+                    <label className="form-check-label" for="ReviewSwitchCheck">
+                      Active 
+                    </label>
+                  </div>
+                </div>
+              } */}
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
                   {this.renderWysiwyg("description", "Description", canUpdate)}

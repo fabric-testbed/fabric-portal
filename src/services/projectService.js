@@ -33,10 +33,9 @@ export function createProject(project) {
     {
       "name": project.name,
       "description": project.description,
-      "is_public": project.is_public === "Yes",
-      "facility": project.facility,
+      "is_public": "Yes",
       "project_lead": project.project_lead,
-      "project_type": project.project_type
+      "project_type": "research"
     }
   );
 }
@@ -121,4 +120,10 @@ export function getFundingAgencies() {
 
 export function getFundingDirectorates() {
   return http.get(`${apiEndpoint}/funding-directorates`);
+}
+
+export function updateProjectReviewStatus(projectId, reviewRequired) {
+  return http.patch(`${apiEndpoint}/${projectId}/review-required`, {
+    "review_required": reviewRequired
+  })
 }

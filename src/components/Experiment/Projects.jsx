@@ -25,7 +25,7 @@ class Projects extends React.Component {
       { display: "All Projects", value: "allProjects", isActive: false },
     ],
     globalRoles: {
-      isProjectLead: false,
+      isProjectAdmin: false,
       isFacilityOperator: false,
       isActiveUser: false,
       isJupterhubUser: false,
@@ -198,8 +198,7 @@ class Projects extends React.Component {
 
   render() {
     const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery, filterOption, selectedList, options } = this.state;
-    const { globalRoles } = this.props;
+      projectsCount, searchQuery, filterOption, selectedList, options, globalRoles } = this.state;
 
     return (
       <div className="col-9">
@@ -227,8 +226,8 @@ class Projects extends React.Component {
               Request a New Project
             </a>
             {
-              (globalRoles.isFacilityOperator || globalRoles.isProjectLead) &&
-              <Link to="/projects/new" className="btn btn-primary create-project-btn my-2">
+              globalRoles.isProjectAdmin &&
+              <Link to="/projects/new" className="btn btn-primary my-2 ms-2">
                 Create Project
               </Link>
             }
