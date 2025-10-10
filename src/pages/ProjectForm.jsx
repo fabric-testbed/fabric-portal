@@ -667,18 +667,18 @@ class ProjectForm extends Form {
       )
     }
 
-    if (isActive === false && !globalRoles.isFacilityOperator) {
-      return (
-        <div className="container">
-          <SpinnerFullPage
-            showSpinner={true}
-            text={"This project is still under review. Please contact support if you have any questions."}
-            btnText={"Back to Project list"}
-            btnPath={"/experiments#projects"}
-          />
-        </div>
-      )
-    }
+    // if (isActive === false && !globalRoles.isFacilityOperator) {
+    //   return (
+    //     <div className="container">
+    //       <SpinnerFullPage
+    //         showSpinner={true}
+    //         text={"This project is still under review. Please contact support if you have any questions."}
+    //         btnText={"Back to Project list"}
+    //         btnPath={"/experiments#projects"}
+    //       />
+    //     </div>
+    //   )
+    // }
 
     // 1. New project.
     if (projectId === "new") {
@@ -810,7 +810,7 @@ class ProjectForm extends Form {
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             > 
-              {
+              {/* {
                 globalRoles.isFacilityOperator && 
                 <div
                   className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
@@ -833,7 +833,7 @@ class ProjectForm extends Form {
                     </label>
                   </div>
                 </div>
-              }
+              } */}
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
                   {this.renderWysiwyg("description", "Description", canUpdate)}
