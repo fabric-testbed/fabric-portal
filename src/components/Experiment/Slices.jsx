@@ -37,30 +37,32 @@ class Slices extends React.Component {
 
   async componentDidMount() {
     // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
-    try {
-      if (window.location.href.includes("/projects")) {
-        // call credential manager to generate project based tokens
-        autoCreateTokens(this.props.projectId).then(async () => {
-          // as_self: true
-          const { data: res } = await getSlices("projectSlices", true);
-          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-        });
-      } else {
-        // call PR first to check if the user has project.
-        const { data: res } = await getProjects("myProjects", 0, 200);
-        if (res.results.length === 0) {
-          this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
-        } else{
-          // call credential manager to generate tokens
-          autoCreateTokens("all").then(async () => {
-            const { data: res } = await getSlices("allSlices");
+    if (this.props.isActive) {
+      this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
+      try {
+        if (window.location.href.includes("/projects")) {
+          // call credential manager to generate project based tokens
+          autoCreateTokens(this.props.projectId).then(async () => {
+            // as_self: true
+            const { data: res } = await getSlices("projectSlices", true);
             this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
           });
+        } else {
+          // call PR first to check if the user has project.
+          const { data: res } = await getProjects("myProjects", 0, 200);
+          if (res.results.length === 0) {
+            this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
+          } else{
+            // call credential manager to generate tokens
+            autoCreateTokens("all").then(async () => {
+              const { data: res } = await getSlices("allSlices");
+              this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+            });
+          }
         }
+      } catch (err) {
+        toast.error("Failed to get slices. Please re-login and try again.");
       }
-    } catch (err) {
-      toast.error("Failed to get slices. Please re-login and try again.");
     }
   }
 
