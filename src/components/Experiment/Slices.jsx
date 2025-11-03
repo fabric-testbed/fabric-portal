@@ -158,6 +158,14 @@ class Slices extends React.Component {
           </div>
         }
         {
+          this.props.parent === "Projects" &&
+          !this.props.isActive && 
+          <div className="alert alert-warning mt-3" role="alert">
+            <i className="fa fa-exclamation-triangle me-2"></i>
+            This project is currently under review. You can create slices once the project is activated.
+          </div>
+        }
+        {
           this.props.parent === "Experiments" &&
           <div className="alert alert-primary alert-dismissible fade show" role="alert">
             To create slice in portal, please select a project first from 
@@ -220,7 +228,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects") && <div>
+          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects" && this.props.isActive) && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}

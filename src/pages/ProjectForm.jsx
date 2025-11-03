@@ -843,7 +843,8 @@ class ProjectForm extends Form {
                   role="alert"
                 >
                   <span>
-                  This project is currently under review. As the Project Lead, please update the project information to include more details for the review.
+                  This project is currently under review. As the Project Owner, please update the project information to include more details for the review. 
+                  You can also update project memberships to add more project members or owners if needed. 
                   </span>
                 </div>
               }
@@ -930,6 +931,7 @@ class ProjectForm extends Form {
                     parent="Projects"
                     projectId={data.uuid}
                     isProjectExpired={this.checkProjectExpiration(data.expired)}
+                    isActive={isActive}
                   />
                 }
               </div>
