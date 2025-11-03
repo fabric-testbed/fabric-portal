@@ -33,7 +33,7 @@ export function createProject(project) {
     {
       "name": project.name,
       "description": project.description,
-      "is_public": "Yes",
+      "is_public": true,
       "project_lead": project.project_lead,
       "project_type": "research"
     }

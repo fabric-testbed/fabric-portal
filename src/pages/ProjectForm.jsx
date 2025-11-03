@@ -823,17 +823,28 @@ class ProjectForm extends Form {
                   </span>
                   <div className="form-check form-switch">
                     <input
-                      className="form-check-input"
+                      className="form-check-input mt-2"
                       type="checkbox"
                       role="switch"
                       id="ReviewSwitchCheck"
                       checked={isActive}
                       onChange={this.handleToggleReviewSwitch}
                     />
-                    <label className="form-check-label" for="ReviewSwitchCheck">
+                    <label className="form-check-label mt-1" for="ReviewSwitchCheck">
                       Active 
                     </label>
                   </div>
+                </div>
+              }
+              {
+                data.is_owner && isActive === false &&
+                <div
+                  className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
+                  role="alert"
+                >
+                  <span>
+                  This project is currently under review. As the Project Lead, please update the project information to include more details for the review.
+                  </span>
                 </div>
               }
               <form onSubmit={this.handleSubmit}>
