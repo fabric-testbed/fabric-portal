@@ -215,7 +215,7 @@ class Projects extends React.Component {
               User Guide
             </a>
           </div>
-          {/* <div className="d-flex flex-row">
+          <div className="d-flex flex-row">
             <a
               href={portalData.jiraLinks.projectLeadRequest}
               className="btn btn-primary my-2"
@@ -231,7 +231,7 @@ class Projects extends React.Component {
                 Create Project
               </Link>
             }
-          </div> */}
+          </div>
         </div>
         {
           this.state.radioBtnValues[0].isActive &&  

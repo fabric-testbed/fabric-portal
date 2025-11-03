@@ -667,18 +667,20 @@ class ProjectForm extends Form {
       )
     }
 
-    // if (isActive === false && !globalRoles.isFacilityOperator) {
-    //   return (
-    //     <div className="container">
-    //       <SpinnerFullPage
-    //         showSpinner={true}
-    //         text={"This project is still under review. Please contact support if you have any questions."}
-    //         btnText={"Back to Project list"}
-    //         btnPath={"/experiments#projects"}
-    //       />
-    //     </div>
-    //   )
-    // }
+    if (isActive === false && !globalRoles.isFacilityOperator && !globalRoles.isProjectAdmin && !data.is_owner) {
+      // Facility Operator or Project Admin can see inactive projects and toggle its status.
+      // Project Owner can see inactive projects and modify the project info to provide more information for review.
+      return (
+        <div className="container">
+          <SpinnerFullPage
+            showSpinner={true}
+            text={"This project is still under review. Please contact support if you have any questions."}
+            btnText={"Back to Project list"}
+            btnPath={"/experiments#projects"}
+          />
+        </div>
+      )
+    }
 
     // 1. New project.
     if (projectId === "new") {
@@ -810,14 +812,14 @@ class ProjectForm extends Form {
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             > 
-              {/* {
-                globalRoles.isFacilityOperator && 
+              {
+                (globalRoles.isFacilityOperator || globalRoles.isProjectAdmin) && 
                 <div
                   className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
                   role="alert"
                 >
                   <span>
-                    For Facility Operator Only: Toggle the switch to set the project as active or inactive for review.
+                    For Facility Operator and Project Admin Only: Toggle the switch to set the project as active or inactive after review.
                   </span>
                   <div className="form-check form-switch">
                     <input
@@ -833,7 +835,7 @@ class ProjectForm extends Form {
                     </label>
                   </div>
                 </div>
-              } */}
+              }
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
                   {this.renderWysiwyg("description", "Description", canUpdate)}

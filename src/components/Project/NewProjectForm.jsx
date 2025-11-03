@@ -5,7 +5,6 @@ import Form from "../common/Form/Form";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { createProject } from "../../services/projectService";
-import { default as portalData } from "../../services/portalData.json";
 
 const ToastMessageWithLink = ({newProject}) => (
   <div className="ms-2">
@@ -56,8 +55,6 @@ class NewProjectForm extends Form {
   };
 
   render() {
-    const { publicOptions } = this.state;
-
     return (
       <div>
         <h1>New Project</h1>
