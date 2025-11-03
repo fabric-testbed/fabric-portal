@@ -64,7 +64,7 @@ class NewProjectForm extends Form {
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("name", "Name", true)}
           {this.renderTextarea("description", "Description", true)}
-          {this.renderInput("project_lead", "Project Lead", true)}
+          {this.renderInput("project_lead", "Project Lead (uuid)", true)}
         </form>
         <button
           className="btn btn-primary mt-2"
