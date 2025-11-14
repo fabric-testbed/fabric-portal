@@ -667,21 +667,6 @@ class ProjectForm extends Form {
       )
     }
 
-    if (isActive === false && !globalRoles.isFacilityOperator && !globalRoles.isProjectAdmin && !data.is_owner) {
-      // Facility Operator or Project Admin can see inactive projects and toggle its status.
-      // Project Owner can see inactive projects and modify the project info to provide more information for review.
-      return (
-        <div className="container">
-          <SpinnerFullPage
-            showSpinner={true}
-            text={"This project is still under review. Please contact support if you have any questions."}
-            btnText={"Back to Project list"}
-            btnPath={"/experiments#projects"}
-          />
-        </div>
-      )
-    }
-
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -837,14 +822,18 @@ class ProjectForm extends Form {
                 </div>
               }
               {
-                data.is_owner && isActive === false &&
+                !this.checkProjectExpiration(data.expired) && isActive === false &&
                 <div
                   className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
                   role="alert"
                 >
                   <span>
-                  This project is currently under review. As the Project Owner, please update the project information to include more details for the review. 
-                  You can also update project memberships to add more project members or owners if needed. 
+                    This project is currently under review <a
+                    href={`${portalData.learnArticles.guideForProjectReview}`}
+                    target="_blank" rel="noreferrer" className="ms-1">
+                      <i className="fa fa-question-circle mx-2"></i>
+                    </a>. If you are a Project Owner, please update the project information to include more details for the review. 
+                    You can also update project memberships to add more project members or owners if needed.
                   </span>
                 </div>
               }

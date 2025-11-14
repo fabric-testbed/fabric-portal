@@ -96,7 +96,8 @@
     "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/",
     "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
     "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
-    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/"
+    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/",
+    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/"
   },
   "usernameOnImageMapping": {
     "default_centos8_stream": "centos",
