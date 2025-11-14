@@ -40,7 +40,7 @@ class ProjectTokenHolders extends Component {
 
   render() {
     const { token_holders, urlSuffix, isTokenHolder, 
-      isFO, personnelType, project_members, projectActive } = this.props;
+      isFO, personnelType, project_members, projectActive, projectExpired } = this.props;
 
     return (
       <div className="px-3 pb-4">
