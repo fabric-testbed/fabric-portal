@@ -56,7 +56,7 @@ class ProjectTokenHolders extends Component {
           </a>.
         </div>
         {
-          isFO && !projecExpired &&
+          isFO && !projectExpired &&
           <div className="card mt-3">
             <div className="card-header" id="headingTwo">
               <h6 className="mb-0">
