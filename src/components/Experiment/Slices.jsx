@@ -37,30 +37,32 @@ class Slices extends React.Component {
 
   async componentDidMount() {
     // Show loading spinner and when waiting API response
-    this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
-    try {
-      if (window.location.href.includes("/projects")) {
-        // call credential manager to generate project based tokens
-        autoCreateTokens(this.props.projectId).then(async () => {
-          // as_self: true
-          const { data: res } = await getSlices("projectSlices", true);
-          this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-        });
-      } else {
-        // call PR first to check if the user has project.
-        const { data: res } = await getProjects("myProjects", 0, 200);
-        if (res.results.length === 0) {
-          this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
-        } else{
-          // call credential manager to generate tokens
-          autoCreateTokens("all").then(async () => {
-            const { data: res } = await getSlices("allSlices");
+    if (this.props.isActive) {
+      this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
+      try {
+        if (window.location.href.includes("/projects")) {
+          // call credential manager to generate project based tokens
+          autoCreateTokens(this.props.projectId).then(async () => {
+            // as_self: true
+            const { data: res } = await getSlices("projectSlices", true);
             this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
           });
+        } else {
+          // call PR first to check if the user has project.
+          const { data: res } = await getProjects("myProjects", 0, 200);
+          if (res.results.length === 0) {
+            this.setState({ hasProject: false, showSpinner: false, spinnerText: "" });
+          } else{
+            // call credential manager to generate tokens
+            autoCreateTokens("all").then(async () => {
+              const { data: res } = await getSlices("allSlices");
+              this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+            });
+          }
         }
+      } catch (err) {
+        toast.error("Failed to get slices. Please re-login and try again.");
       }
-    } catch (err) {
-      toast.error("Failed to get slices. Please re-login and try again.");
     }
   }
 
@@ -158,6 +160,14 @@ class Slices extends React.Component {
           </div>
         }
         {
+          this.props.parent === "Projects" &&
+          !this.props.isActive && 
+          <div className="alert alert-warning mt-3" role="alert">
+            <i className="fa fa-exclamation-triangle me-2"></i>
+            This project is currently under review. You can create slices once the project is activated.
+          </div>
+        }
+        {
           this.props.parent === "Experiments" &&
           <div className="alert alert-primary alert-dismissible fade show" role="alert">
             To create slice in portal, please select a project first from 
@@ -220,7 +230,7 @@ class Slices extends React.Component {
           </div>
         }
         {
-          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects") && <div>
+          !showSpinner && hasProject && (slices.length > 0 || this.props.parent === "Projects" && this.props.isActive) && <div>
              <div className="toolbar">
               <SearchBoxWithDropdown
                 activeDropdownVal={filterQuery}

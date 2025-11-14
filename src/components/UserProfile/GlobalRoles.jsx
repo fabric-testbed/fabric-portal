@@ -39,7 +39,7 @@ class GlobalRoles extends React.Component {
         </h4>
         <table className="table table-striped table-bordered my-4 w-50">
           <tbody>
-            {/* {
+            {
               globalRoles.isProjectAdmin && 
               <tr>
                 <td>
@@ -49,7 +49,7 @@ class GlobalRoles extends React.Component {
                   {this.renderRoleTableFields(globalRoles.isProjectAdmin)}
                 </td>
               </tr>
-            } */}
+            }
             <tr>
               <td>
                 Facility Operator

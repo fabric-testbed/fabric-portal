@@ -40,7 +40,7 @@ class ProjectTokenHolders extends Component {
 
   render() {
     const { token_holders, urlSuffix, isTokenHolder, 
-      isFO, personnelType, project_members, projectExpired } = this.props;
+      isFO, personnelType, project_members, projectActive, projectExpired } = this.props;
 
     return (
       <div className="px-3 pb-4">
@@ -99,7 +99,7 @@ class ProjectTokenHolders extends Component {
             </div>
           </div>
         {
-          !isTokenHolder && !isFO && !projectExpired && <button
+          !isTokenHolder && !isFO && projectActive && <button
             className="btn btn-sm btn-outline-success me-2 my-3"
             onClick={() => window.open(
               `${portalData.jiraLinks.longlivedTokenRequest}?${urlSuffix}`,

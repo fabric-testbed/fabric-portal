@@ -667,19 +667,6 @@ class ProjectForm extends Form {
       )
     }
 
-    // if (isActive === false && !globalRoles.isFacilityOperator) {
-    //   return (
-    //     <div className="container">
-    //       <SpinnerFullPage
-    //         showSpinner={true}
-    //         text={"This project is still under review. Please contact support if you have any questions."}
-    //         btnText={"Back to Project list"}
-    //         btnPath={"/experiments#projects"}
-    //       />
-    //     </div>
-    //   )
-    // }
-
     // 1. New project.
     if (projectId === "new") {
       return (
@@ -810,30 +797,46 @@ class ProjectForm extends Form {
             <div
               className={`${activeIndex === 0 ? "col-9" : "d-none"}`}
             > 
-              {/* {
-                globalRoles.isFacilityOperator && 
+              {
+                (globalRoles.isFacilityOperator || globalRoles.isProjectAdmin) && 
                 <div
                   className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
                   role="alert"
                 >
                   <span>
-                    For Facility Operator Only: Toggle the switch to set the project as active or inactive for review.
+                    For Facility Operator and Project Admin Only: Toggle the switch to set the project as active or inactive after review.
                   </span>
                   <div className="form-check form-switch">
                     <input
-                      className="form-check-input"
+                      className="form-check-input mt-2"
                       type="checkbox"
                       role="switch"
                       id="ReviewSwitchCheck"
                       checked={isActive}
                       onChange={this.handleToggleReviewSwitch}
                     />
-                    <label className="form-check-label" for="ReviewSwitchCheck">
+                    <label className="form-check-label mt-1" for="ReviewSwitchCheck">
                       Active 
                     </label>
                   </div>
                 </div>
-              } */}
+              }
+              {
+                !this.checkProjectExpiration(data.expired) && isActive === false &&
+                <div
+                  className="alert alert-warning mb-2 d-flex flex-row justify-content-between align-items-center" 
+                  role="alert"
+                >
+                  <span>
+                    This project is currently under review <a
+                    href={`${portalData.learnArticles.guideForProjectReview}`}
+                    target="_blank" rel="noreferrer" className="ms-1">
+                      <i className="fa fa-question-circle"></i>
+                    </a>. If you are a Project Owner, please update the project information to include more details for the review. 
+                    You can also update project memberships to add more project members or owners if needed.
+                  </span>
+                </div>
+              }
               <form onSubmit={this.handleSubmit}>
                   {this.renderInput("name", "Name", canUpdate)}
                   {this.renderWysiwyg("description", "Description", canUpdate)}
@@ -899,6 +902,7 @@ class ProjectForm extends Form {
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
                   isFO={globalRoles.isFacilityOperator}
+                  projectActive={isActive}
                   projectExpired={this.checkProjectExpiration(data.expired)}
                   onUpdateTokenHolders={this.handleUpdateTokenHolders}
                   onUpdateUsers={this.handlePersonnelUpdate}
@@ -917,6 +921,7 @@ class ProjectForm extends Form {
                     parent="Projects"
                     projectId={data.uuid}
                     isProjectExpired={this.checkProjectExpiration(data.expired)}
+                    isActive={isActive}
                   />
                 }
               </div>
