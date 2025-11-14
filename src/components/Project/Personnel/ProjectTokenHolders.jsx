@@ -99,7 +99,7 @@ class ProjectTokenHolders extends Component {
             </div>
           </div>
         {
-          !isTokenHolder && !isFO && !projectActive && <button
+          !isTokenHolder && !isFO && projectActive && <button
             className="btn btn-sm btn-outline-success me-2 my-3"
             onClick={() => window.open(
               `${portalData.jiraLinks.longlivedTokenRequest}?${urlSuffix}`,
