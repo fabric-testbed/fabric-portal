@@ -831,7 +831,7 @@ class ProjectForm extends Form {
                     This project is currently under review <a
                     href={`${portalData.learnArticles.guideForProjectReview}`}
                     target="_blank" rel="noreferrer" className="ms-1">
-                      <i className="fa fa-question-circle mx-2"></i>
+                      <i className="fa fa-question-circle"></i>
                     </a>. If you are a Project Owner, please update the project information to include more details for the review. 
                     You can also update project memberships to add more project members or owners if needed.
                   </span>
@@ -902,6 +902,7 @@ class ProjectForm extends Form {
                   urlSuffix={urlSuffix}
                   isTokenHolder={data.is_token_holder}
                   isFO={globalRoles.isFacilityOperator}
+                  projectActive={isActive}
                   projectExpired={this.checkProjectExpiration(data.expired)}
                   onUpdateTokenHolders={this.handleUpdateTokenHolders}
                   onUpdateUsers={this.handlePersonnelUpdate}

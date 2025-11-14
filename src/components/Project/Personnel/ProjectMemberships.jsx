@@ -11,7 +11,7 @@ class ProjectMemberships extends Component {
   render() {
     const { activeTab } = this.state;
     const { canUpdate, owners, members, token_holders, urlSuffix, isTokenHolder, isFO, 
-    projectExpired, onUpdateTokenHolders, onUpdateUsers } = this.props;
+    projectExpired, onUpdateTokenHolders, onUpdateUsers, projectActive } = this.props;
 
     return (
       <Tabs activeTab={activeTab}>
@@ -40,6 +40,7 @@ class ProjectMemberships extends Component {
               isTokenHolder={isTokenHolder}
               isFO={isFO}
               projectExpired={projectExpired}
+              projectActive={projectActive}
               onUpdateTokenHolders={onUpdateTokenHolders}
             />
           </div>
