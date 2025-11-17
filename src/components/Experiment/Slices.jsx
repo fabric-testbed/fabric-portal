@@ -37,7 +37,7 @@ class Slices extends React.Component {
 
   async componentDidMount() {
     // Show loading spinner and when waiting API response
-    if (this.props.isActive) {
+    if (this.props.isActive || this.props.parent !== "Projects") {
       this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
       try {
         if (window.location.href.includes("/projects")) {
