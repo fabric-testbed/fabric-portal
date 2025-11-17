@@ -36,18 +36,10 @@ class Slices extends React.Component {
   };
 
   async componentDidMount() {
-    // Show loading spinner and when waiting API response
-    if (this.props.isActive || this.props.parent !== "Projects") {
-      this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
-      try {
-        if (window.location.href.includes("/projects")) {
-          // call credential manager to generate project based tokens
-          autoCreateTokens(this.props.projectId).then(async () => {
-            // as_self: true
-            const { data: res } = await getSlices("projectSlices", true);
-            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
-          });
-        } else {
+    try {
+        if (this.props.parent !== "Projects") {
+          // All Slices view
+          this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
           // call PR first to check if the user has project.
           const { data: res } = await getProjects("myProjects", 0, 200);
           if (res.results.length === 0) {
@@ -59,11 +51,19 @@ class Slices extends React.Component {
               this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
             });
           }
+        } else if (this.props.isActive) {
+          // Project Slices view
+          this.setState({ showSpinner: true, spinnerText: "Loading slices..." });
+          // call credential manager to generate project based tokens
+          autoCreateTokens(this.props.projectId).then(async () => {
+            // as_self: true
+            const { data: res } = await getSlices("projectSlices", true);
+            this.setState({ slices: res.data, showSpinner: false, spinnerText: "" });
+          });
         }
       } catch (err) {
         toast.error("Failed to get slices. Please re-login and try again.");
       }
-    }
   }
 
   handlePageChange = (page, pagesCount) => {
@@ -161,7 +161,7 @@ class Slices extends React.Component {
         }
         {
           this.props.parent === "Projects" &&
-          !this.props.isActive && 
+          !this.props.isActive && !this.props.isProjectExpired && 
           <div className="alert alert-warning mt-3" role="alert">
             <i className="fa fa-exclamation-triangle me-2"></i>
             This project is currently under review. You can create slices once the project is activated.
