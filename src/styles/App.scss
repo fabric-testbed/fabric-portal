@@ -1382,3 +1382,175 @@ caption {
     background-position: -100% 0;
   }
 }
+
+/* mailchimp-embed.css
+   Styles a plain Mailchimp embed form to match the classic hosted look.
+   Works with the standard Mailchimp classes/ids in your snippet.
+*/
+
+/* Container */
+#mc_embed_signup {
+  background: #fff;
+  font: 14px/1.45 Helvetica, Arial, sans-serif;
+  color: #222;
+  max-width: 600px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  margin: 0 auto;
+}
+
+/* Heading */
+#mc_embed_signup h2 {
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+/* Small helper text */
+#mc_embed_signup .indicates-required,
+#mc_embed_signup .helper_text {
+  font-size: 12px;
+  color: #666;
+  margin: 6px 0 14px;
+}
+
+#mc_embed_signup .asterisk {
+  color: #e85c41;
+}
+
+/* Field groups */
+#mc_embed_signup .mc-field-group {
+  margin-bottom: 14px;
+}
+
+#mc_embed_signup label {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #222;
+}
+
+/* Inputs */
+#mc_embed_signup input[type="text"],
+#mc_embed_signup input[type="email"],
+#mc_embed_signup input[type="tel"],
+#mc_embed_signup input[type="url"],
+#mc_embed_signup textarea,
+#mc_embed_signup select {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font: inherit;
+  color: #222;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+#mc_embed_signup textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+#mc_embed_signup input:focus,
+#mc_embed_signup textarea:focus,
+#mc_embed_signup select:focus {
+  outline: none;
+  border-color: #2c9ab7;
+  box-shadow: 0 0 0 3px rgba(44,154,183,0.15);
+}
+
+/* Checkbox / radio groups */
+#mc_embed_signup .input-group {
+  margin-top: 10px;
+  flex-direction: column;
+}
+
+#mc_embed_signup .input-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+#mc_embed_signup .input-group li {
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#mc_embed_signup .input-group input[type="checkbox"],
+#mc_embed_signup .input-group input[type="radio"] {
+  margin: 0;
+}
+
+/* Submit button */
+#mc_embed_signup .button,
+#mc_embed_signup input[type="submit"],
+#mc_embed_signup button[type="submit"] {
+  display: inline-block;
+  border: 0;
+  border-radius: 4px;
+  background: #2c9ab7;           /* Mailchimp-ish teal */
+  color: #fff;
+  padding: 12px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+#mc_embed_signup .button:hover,
+#mc_embed_signup input[type="submit"]:hover,
+#mc_embed_signup button[type="submit"]:hover {
+  background: #258aa4;
+}
+
+#mc_embed_signup .button:disabled,
+#mc_embed_signup input[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responses */
+#mc_embed_signup #mce-responses {
+  margin-top: 12px;
+}
+
+#mc_embed_signup #mce-error-response {
+  color: #e85c41;
+  display: none; /* Mailchimp toggles this */
+  margin-top: 6px;
+}
+
+#mc_embed_signup #mce-success-response {
+  color: #2bb673; /* success green */
+  display: none;  /* Mailchimp toggles this */
+  margin-top: 6px;
+}
+
+/* Bot trap (keep hidden) */
+#mc_embed_signup [aria-hidden="true"][style*="left: -5000px"] {
+  position: absolute !important;
+  left: -5000px !important;
+}
+
+/* Utilities */
+#mc_embed_signup .clear { clear: both; }
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  #mc_embed_signup {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 20px 16px;
+  }
+
+  #mc_embed_signup h2 {
+    font-size: 20px;
+  }
+}
