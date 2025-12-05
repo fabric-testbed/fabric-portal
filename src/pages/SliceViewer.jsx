@@ -105,17 +105,11 @@ class SliceViewer extends Component {
     var jsonBlob = new Blob([ JSON.stringify(this.state.slice) ], { type: 'application/javascript;charset=utf-8' });
     saveAs( jsonBlob, `${this.state.sliceName}.json` );
   }
-  
+
   handleLeaseEndChange = (value) => {
-    const inputTime = moment(value).format();
-    // input format e.g. 2022-05-25T10:49:03-04:00
-    // output format should be 2022-05-25 10:49:03 -0400
-    const date = inputTime.substring(0, 10);
-    const time = inputTime.substring(11, 19);
-    const offset = inputTime.substring(19).replace(":", "");
-    const outputTime = [date, time, offset].join(" ");
+    const outputTime = moment(value).format('YYYY-MM-DD HH:mm:ss ZZ'); 
     this.setState({ leaseEndTime: outputTime });
-  }
+  };
 
   handleSliceExtend = async () => {
     this.setState({
