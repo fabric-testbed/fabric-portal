@@ -1554,3 +1554,28 @@ caption {
     font-size: 20px;
   }
 }
+
+/* 1) 让 widget 容器不要裁剪弹出菜单 */
+#snf-qa-bot-root,
+.snf-qa-bot,
+.qa-bot,
+.qa-bot-container,
+.qa-bot-header {
+  overflow: visible !important;
+}
+
+/* 2) 把整个 widget 提到最上层（避免被 portal 的 header/modal盖住） */
+#snf-qa-bot-root,
+.snf-qa-bot,
+.qa-bot-container {
+  position: fixed; /* 如果你们本来就是 fixed，就保留也行 */
+  z-index: 99999 !important;
+}
+
+/* 3) 如果菜单本身有类名（你用 devtools 看一下），也把它提上来 */
+.qa-bot-user-menu,
+.qa-user-menu,
+.user-menu,
+.dropdown-menu {
+  z-index: 100000 !important;
+}
