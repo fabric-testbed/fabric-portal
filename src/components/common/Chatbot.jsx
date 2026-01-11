@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
 import { QABot } from "@snf/qa-bot-core";
 import configData from "../../config.json";
+import { type } from 'jquery';
 
 export default function Chatbot({ isLoggedIn }) {
   const loginUrl = useMemo(() => {
     return `${window.location.origin}/login`;
   }, []);
+
+  console.log("Chatbot isLoggedIn:", isLoggedIn);
+  console.log(typeof isLoggedIn);
 
   return (
     <QABot
@@ -16,7 +20,8 @@ export default function Chatbot({ isLoggedIn }) {
       secondaryColor="#5798bc"
       botName="FABRIC Q&A Tool"
       logo="https://github.com/user-attachments/assets/9aae9370-4a7a-4c6e-b07e-8879120b4389"
-      enabled={isLoggedIn}
+      isLoggedIn={isLoggedIn}
+      allowAnonAccess={false}
       loginUrl={loginUrl}
     />
   );
