@@ -23,6 +23,8 @@ export default function Chatbot({ isLoggedIn }) {
       isLoggedIn={isLoggedIn}
       allowAnonAccess={false}
       loginUrl={loginUrl}
+      footerText="About this tool"
+      footerLink="https://learn.fabric-testbed.net/knowledge-base/fabric-qa-tool-information/"
     />
   );
 }
