@@ -1,5 +1,5 @@
 {
-  "version": "1.9.7",
+  "version": "1.9.8",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "projectTypeOptions": [
@@ -97,7 +97,8 @@
     "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
     "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
     "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/",
-    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/"
+    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/",
+    "guideForQATool": "https://learn.fabric-testbed.net/knowledge-base/fabric-qa-tool-information/"
   },
   "usernameOnImageMapping": {
     "default_centos8_stream": "centos",
@@ -128,7 +129,7 @@
     "production": "https://websession.fabric-testbed.net/"
   },
   "marketingWebsiteLinks": {
-    "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
+    "generalBrochure": "https://drive.google.com/file/d/1TSTNYTxcmQrFhj5riToWUxLDrY5YC7H-/preview"
   },
   "communityOptions": ["Networks", "Computer systems organization", "Information systems",
   "Security and privacy", "Human-centered computing", "Applied computing", "Hardware", "Software", "Theory of computation",

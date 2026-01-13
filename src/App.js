@@ -42,7 +42,6 @@ const JupyterHubAccess = lazy(() => import("./pages/static/JupyterHubAccess"));
 const LoginRequired = lazy(() => import("./pages/static/LoginRequired"));
 const Help = lazy(() => import("./pages/static/Help"));
 const AboutFABRIC = lazy(() => import("./pages/static/AboutFABRIC.jsx"));
-// const SAC = lazy(() => import("./pages/static/SAC.jsx")); 
 const Leadership = lazy(() => import("./pages/static/Leadership"));
 const FundingOpportunities = lazy(() => import("./pages/static/FundingOpportunities"));
 const NewsletterSignup = lazy(() => import("./pages/static/NewsletterSignup"));
@@ -232,7 +231,7 @@ class App extends React.Component {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
-          { localStorage.getItem("userStatus") === "active" && <Chatbot />}
+          <Chatbot isLoggedIn={localStorage.getItem("userStatus") === "active"}/>
           <Footer />
           <ToastContainer />
         </Router>
