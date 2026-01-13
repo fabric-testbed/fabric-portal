@@ -7,10 +7,7 @@ export default function Chatbot({ isLoggedIn }) {
   const loginUrl = useMemo(() => {
     return `${window.location.origin}/login`;
   }, []);
-
-  console.log("Chatbot isLoggedIn:", isLoggedIn);
-  console.log(typeof isLoggedIn);
-
+  
   return (
     <QABot
       apiKey={configData.qaToolApiKey}
