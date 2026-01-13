@@ -97,7 +97,8 @@
     "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
     "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
     "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/",
-    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/"
+    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/",
+    "guideForQATool": "https://learn.fabric-testbed.net/knowledge-base/fabric-qa-tool-information/"
   },
   "usernameOnImageMapping": {
     "default_centos8_stream": "centos",

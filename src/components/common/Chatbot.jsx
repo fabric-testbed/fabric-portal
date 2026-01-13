@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { QABot } from "@snf/qa-bot-core";
 import configData from "../../config.json";
-import { type } from 'jquery';
+import { default as portalData } from "../../services/portalData.json";
 
 export default function Chatbot({ isLoggedIn }) {
   const loginUrl = useMemo(() => {
     return `${window.location.origin}/login`;
   }, []);
-  
+
   return (
     <QABot
       apiKey={configData.qaToolApiKey}
@@ -21,7 +21,7 @@ export default function Chatbot({ isLoggedIn }) {
       allowAnonAccess={false}
       loginUrl={loginUrl}
       footerText="About this tool"
-      footerLink="https://learn.fabric-testbed.net/knowledge-base/fabric-qa-tool-information/"
+      footerLink={portalData.learnArticles.guideForQATool}
     />
   );
 }
