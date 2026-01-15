@@ -1,6 +1,7 @@
-import Header from '../components/Header';
 import Footer from '../components/Footer';
-import '../styles/App.scss';
+import '@/styles/custom.scss';
+import '@/styles/App.scss';
+import InitialLoader from "@/components/InitialLoader";
 
 export const metadata = {
   title: 'Fabric Portal',
@@ -11,8 +12,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     <body>
-      <Header />
-      <main>{children}</main>
+      <InitialLoader>
+        {children}
+      </InitialLoader>
       <Footer />
     </body>
   </html>

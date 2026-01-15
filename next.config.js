@@ -4,9 +4,9 @@ const nextConfig = {
     reactStrictMode: true,
   
     // Enable experimental App Router
-    experimental: {
-      appDir: true,
-    },
+    // experimental: {
+    //   appDir: true,
+    // },
   
     // Sass/SCSS support is built-in, so you can import .scss files directly
     // You can also add global SCSS via _app.js or _app.tsx

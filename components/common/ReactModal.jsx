@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import Parser from 'html-react-parser';
 
 function ReactModal(props) {
@@ -37,7 +37,7 @@ function ReactModal(props) {
           { Parser(props.content) }
         </Modal.Body>
         <Modal.Footer>
-          <NavLink to="/signup/1"><Button variant="primary" onClick={handleSignup}>Signup</Button></NavLink>
+          <Link href="/help/signup/1"><Button variant="primary" onClick={handleSignup}>Signup</Button></Link>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>

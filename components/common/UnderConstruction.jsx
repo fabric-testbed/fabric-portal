@@ -1,11 +1,10 @@
 import React from "react";
-import image from "../../assets/imgs/under-construction.png";
 
 const UnderConstruction = () => {
   return (
     <div className="d-flex flex-column align-items-start justify-content-center">
       <img
-        src={image}
+        src="/imgs/under-construction.png"
         width="350"
         height="350"
         className="d-inline-block align-top my-4"

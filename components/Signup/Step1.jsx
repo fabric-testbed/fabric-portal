@@ -1,14 +1,17 @@
+"use client"; 
 import React from "react";
-import { NavLink } from "react-router-dom";
-import checkPortalType from "../../utils/checkPortalType";
+import { Link } from "next/link";
+import checkPortalType from "../../lib/permissions/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
+import { usePathname } from "next/navigation";
 
-const Step1 = () => {
+export default function Step1() {
+  const pathname = usePathname();
   return (
     <div>
       <div>
         <p>Dear Experimenter,</p>
-        <p>Welcome to FABRIC! Before you sign up we would like you to familiarize yourself with our facility <NavLink to="/aup">Acceptable Use Policy (AUP)</NavLink>. </p>
+        <p>Welcome to FABRIC! Before you sign up we would like you to familiarize yourself with our facility <Link to="/useful-links/aup">Acceptable Use Policy (AUP)</Link>. </p>
         <p>
           In order to begin using FABRIC you will have to take the following steps:
         </p>
@@ -26,7 +29,7 @@ const Step1 = () => {
       <br></br>
       (<b>Note</b>: depending on the speed of your Internet connection the list may take a moment to populate beyond the default ORCID).
       </div>
-        <a href={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}>
+        <a href={portalData.selfEnrollRequest.links[checkPortalType(pathname)]}>
           <button
             className="btn btn-primary mt-2"
           >
@@ -37,5 +40,3 @@ const Step1 = () => {
     </div>
   )
 }
-
-export default Step1;

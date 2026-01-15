@@ -10,7 +10,7 @@ import { autoCreateTokens } from "../../utils/manageTokens";
 import { getSlices } from "../../services/sliceService.js";
 import { toast } from "react-toastify";
 import paginate from "../../utils/paginate";
-import checkPortalType from "../../utils/checkPortalType";
+import checkPortalType from "../../lib/permissions/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";
 

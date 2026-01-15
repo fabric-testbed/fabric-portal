@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
 import { getCookieConsentValue } from "react-cookie-consent";
-import checkPortalType from "../utils/checkPortalType";
+import checkPortalType from "../lib/permissions/checkPortalType";
 import ProfileModal from './ProfileModal';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -322,7 +322,7 @@ const Header = (props) => {
               Log in
             </button>
           </Link>
-          <Link href="/signup/1">
+          <Link href="/help/signup/1">
             <button
               className="btn btn-outline-primary ms-2"
             >

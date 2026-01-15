@@ -14,7 +14,7 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import checkGlobalRoles from "../utils/checkGlobalRoles"; 
+import checkGlobalRoles from "../lib/permissions/checkGlobalRoles"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
 import moment from 'moment';
@@ -210,7 +210,7 @@ class ProjectForm extends Form {
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
-        this.props.navigate("/not-found");
+        this.props.navigate("/about/not-found");
       }
     }
   }
@@ -580,8 +580,6 @@ class ProjectForm extends Form {
   }
 
   handleUpdateTopics = (newTopics) =>{
-    console.log("Project Form - handle update topics.");
-    console.log(newTopics);
     this.setState({ topics: newTopics });
   }
 

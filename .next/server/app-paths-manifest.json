@@ -1,9 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/resources/overview/page": "app/resources/overview/page.js",
+  "/help/page": "app/help/page.js",
   "/community/newsletter-signup/page": "app/community/newsletter-signup/page.js",
-  "/community/funding-opportunities/page": "app/community/funding-opportunities/page.js",
-  "/community/testbeds-and-facilities/page": "app/community/testbeds-and-facilities/page.js",
-  "/community/publications/page": "app/community/publications/page.js",
-  "/community/fabric-user-publications/page": "app/community/fabric-user-publications/page.js"
+  "/about/leadership/page": "app/about/leadership/page.js",
+  "/page": "app/page.js",
+  "/about/about-fabric/page": "app/about/about-fabric/page.js"
 }

@@ -20,10 +20,10 @@ class Footer extends React.Component {
             <ul>
               <li><b>Useful Links</b></li>
               <li>
-                <Link href="/aup">Acceptable Use Policy</Link>
+                <Link href="/useful-links/aup">Acceptable Use Policy</Link>
               </li>
-              <li><Link href="/cookie-policy">Cookie Policy</Link></li>
-              <li><Link href="/branding">Branding Resources</Link></li>
+              <li><Link href="/useful-links/cookie-policy">Cookie Policy</Link></li>
+              <li><Link href="/useful-links/branding">Branding Resources</Link></li>
             </ul>
           </Col>
           <Col>

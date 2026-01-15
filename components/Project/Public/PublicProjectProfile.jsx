@@ -20,7 +20,7 @@ class PublicProjectProfile extends Component {
     } catch (err) {
       toast.error("Failed to load project.");
       if (err.response && err.response.status === 404) {
-        this.props.navigate("/not-found");
+        this.props.navigate("/about/not-found");
       }
     }
   }
