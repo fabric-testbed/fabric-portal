@@ -1,5 +1,5 @@
 {
-  "version": "1.9.9",
+  "version": "1.9.8",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "projectTypeOptions": [
@@ -38,7 +38,8 @@
     "publicProjectDescription": " Public projects are visible to all FABRIC users while private projects are only visible to project members and facility operators.",
     "bootScriptDescription": "Boot Script (also called 'User Data Scripts') is used to customize the VM after it's provisioned.",
     "customImagesDescription": "Custom images contain docker, openvswitch, libibverbs, tcpdump, net-tools, python3.9, vim, iftop.",
-    "nodeNameDescription": "Sliver name regex allows strings consisting of alphanumeric characters, underscores, hyphens, and periods, with a length between 2 and 255 characters."
+    "nodeNameDescription": "Sliver name regex allows strings consisting of alphanumeric characters, underscores, hyphens, and periods, with a length between 2 and 255 characters.",
+    "projectReviewDescription": "New projects are NOT active when initially created. All new projects require review from FABRIC staff prior to activation"
   },
   "jiraLinks": {
     "projectLeadRequest":  "https://fabric-testbed.atlassian.net/servicedesk/customer/portal/2/group/11/create/41",
@@ -95,7 +96,9 @@
     "guideToSliceEditor": "https://learn.fabric-testbed.net/knowledge-base/slice-editor/",
     "guideToUseArtifactManager": "https://learn.fabric-testbed.net/knowledge-base/artifact-manager/",
     "guideToCommunityList": "https://learn.fabric-testbed.net/knowledge-base/project-science-domain-community-list/",
-    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/"
+    "guideToOtherIdentities": "https://learn.fabric-testbed.net/knowledge-base/add-other-identities-in-portal/",
+    "guideForProjectReview": "https://learn.fabric-testbed.net/knowledge-base/project-review-required/",
+    "guideForQATool": "https://learn.fabric-testbed.net/knowledge-base/fabric-qa-tool-information/"
   },
   "usernameOnImageMapping": {
     "default_centos8_stream": "centos",
@@ -126,7 +129,7 @@
     "production": "https://websession.fabric-testbed.net/"
   },
   "marketingWebsiteLinks": {
-    "generalBrochure": "https://drive.google.com/file/d/160vuCTzCdb5ipWpVAx8dfAmBil6GkxqM/view?usp=sharing"
+    "generalBrochure": "https://drive.google.com/file/d/1TSTNYTxcmQrFhj5riToWUxLDrY5YC7H-/preview"
   },
   "communityOptions": ["Networks", "Computer systems organization", "Information systems",
   "Security and privacy", "Human-centered computing", "Applied computing", "Hardware", "Software", "Theory of computation",

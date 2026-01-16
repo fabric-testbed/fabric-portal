@@ -9,8 +9,8 @@ import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../assets/data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import { NavLink } from "react-router-dom";
 import CookieConsent from "react-cookie-consent";
+import Chatbot from "../components/common/Chatbot";
 import Topomap from "../components/Resource/Topomap";
 import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import { getResources } from "../services/resourceService.js";
@@ -142,6 +142,7 @@ class Home extends React.Component {
             Please accept our Cookie Policy by clicking "OK". For more details, visit the <Link className="text-primary-light" href="/cookie-policy"><b>Cookie Policy Page</b></Link>.
           </div>
         </CookieConsent>
+        <Chatbot/>
         <ToastContainer />
       </div>
     );
