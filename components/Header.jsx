@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
 import { getCookieConsentValue } from "react-cookie-consent";
-import checkPortalType from "../lib/permissions/checkPortalType";
+import checkPortalType from "../lib/permissions/checkPortalType.js";
 import ProfileModal from './ProfileModal';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';

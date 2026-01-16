@@ -1,5 +1,5 @@
 import Joi from "joi-browser";
-import checkPortalType from "../../lib/permissions/checkPortalType";
+import checkPortalType from "../../lib/permissions/checkPortalType.js";
 import Form from "../common/Form/Form";
 import SpinnerWithText from "../common/SpinnerWithText";
 import { default as portalData } from "../../services/portalData.json";

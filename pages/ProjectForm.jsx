@@ -14,7 +14,7 @@ import NewProjectForm from "../components/Project/NewProjectForm";
 import { toast } from "react-toastify";
 import { default as portalData } from "../services/portalData.json";
 import { getCurrentUser } from "../services/peopleService.js";
-import checkGlobalRoles from "../lib/permissions/checkGlobalRoles"; 
+import checkGlobalRoles from "../lib/permissions/checkGlobalRoles.js"; 
 import SpinnerFullPage from "../components/common/SpinnerFullPage";
 import Slices from "../components/Experiment/Slices";
 import moment from 'moment';

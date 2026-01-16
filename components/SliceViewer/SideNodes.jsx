@@ -8,7 +8,7 @@ import validator from  "../../utils/sliceValidator";
 import { sitesNameMapping }  from "../../assets/data/sites";
 import Link from "next/link";
 import { default as portalData } from "../../services/portalData.json";
-import checkPortalType from "../../lib/permissions/checkPortalType";
+import checkPortalType from "../../lib/permissions/checkPortalType.js";
 
 
 class SideNodes extends React.Component {

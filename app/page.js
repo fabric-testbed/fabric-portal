@@ -15,7 +15,7 @@ import Topomap from "../components/Resource/Topomap";
 import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import { getResources } from "../services/resourceService.js";
 import { ToastContainer, toast } from "react-toastify";
-import checkPortalType from "../lib/permissions/checkPortalType";
+import checkPortalType from "../lib/permissions/checkPortalType.js";
 // import { getLinksData } from "../services/mockLinkData.js";
 // import linksParser from "../services/parser/linksParser";
 import LinkDetailTable from "../components/Resource/LinkDetailTable.jsx";

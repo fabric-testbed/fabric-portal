@@ -1,5 +1,5 @@
 import React from "react";
-import checkGlobalRoles from "../../lib/permissions/checkGlobalRoles"; 
+import checkGlobalRoles from "../../lib/permissions/checkGlobalRoles.js"; 
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { default as portalData } from "../../services/portalData.json";
 import _ from "lodash";

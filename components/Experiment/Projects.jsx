@@ -7,7 +7,7 @@ import RadioBtnGroup from "../common/RadioBtnGroup";
 import { getCurrentUser } from "../../services/peopleService.js";
 import { getProjects } from "../../services/projectService.js";
 import { default as portalData } from "../../services/portalData.json";
-import checkGlobalRoles from "../../lib/permissions/checkGlobalRoles"; 
+import checkGlobalRoles from "../../lib/permissions/checkGlobalRoles.js"; 
 import toLocaleTime from "../../utils/toLocaleTime";
 import Multiselect from 'multiselect-react-dropdown';
 import { toast } from "react-toastify";
