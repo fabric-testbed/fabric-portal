@@ -1,7 +1,7 @@
 "use client"; 
 import React from "react";
 import { Link } from "next/link";
-import checkPortalType from "../../lib/permissions/checkPortalType.js";
+import checkPortalType from "@/lib/permissions/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
 import { usePathname } from "next/navigation";
 

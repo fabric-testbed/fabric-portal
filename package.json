@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.2",
+  "version": "1.9.9",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",

@@ -4,11 +4,11 @@ import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import Select from 'react-select';
 import _ from "lodash";
-import validator from  "../../lib/slices/sliceValidator.js";
+import validator from  "@/lib/slices/sliceValidator";
 import { sitesNameMapping }  from "../../assets/data/sites";
 import Link from "next/link";
 import { default as portalData } from "../../services/portalData.json";
-import checkPortalType from "../../lib/permissions/checkPortalType.js";
+import checkPortalType from "@/lib/permissions/checkPortalType";
 
 
 class SideNodes extends React.Component {

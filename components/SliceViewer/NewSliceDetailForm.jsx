@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SingleComponent from './SingleComponent';
-import validator from  "../../lib/slices/sliceValidator.js";
+import validator from  "@/lib/slices/sliceValidator";
 import Dropfile from "../common/Dropfile";
 
 export default class NewSliceDetailForm extends Component {

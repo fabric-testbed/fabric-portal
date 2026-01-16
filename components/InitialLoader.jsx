@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { getWhoAmI, getCurrentUser } from "@/services/peopleService";
 import { getActiveMaintenanceNotice } from "@/services/announcementService";
-import { checkGlobalRoles } from "@/lib/permissions/checkGlobalRoles.js";
+import checkGlobalRoles from "@/lib/permissions/checkGlobalRoles";
 import portalData from "@/services/portalData.json";
 import Header from "@/components/Header";
 import Banner from "@/components/common/Banner";

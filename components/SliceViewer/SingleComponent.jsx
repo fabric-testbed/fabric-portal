@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import validator from  "../../lib/slices/sliceValidator.js";
+import validator from  "@/lib/slices/sliceValidator";
 import { default as portalData } from "../../services/portalData.json";
 
 export default class SingleComponent extends Component { 

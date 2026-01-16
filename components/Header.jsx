@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { default as portalData } from "../services/portalData.json";
 import { getCookieConsentValue } from "react-cookie-consent";
-import checkPortalType from "../lib/permissions/checkPortalType.js";
+import checkPortalType from "@/lib/permissions/checkPortalType";
 import ProfileModal from './ProfileModal';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -249,7 +249,7 @@ const Header = (props) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           { 
-            navItems.map((item, index) => {
+            navItems.length > 0 && navItems.map((item, index) => {
               if (item.child.length === 0) {
                 if (item.href) {
                   return  <Nav.Link href={item.href} key={`nav-item-${index}`}>{item.name}</Nav.Link>
