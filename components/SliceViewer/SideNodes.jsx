@@ -4,7 +4,7 @@ import SiteResourceTable from './SiteResourceTable';
 import SingleComponent from './SingleComponent';
 import Select from 'react-select';
 import _ from "lodash";
-import validator from  "../../utils/sliceValidator";
+import validator from  "../../lib/slices/sliceValidator.js";
 import { sitesNameMapping }  from "../../assets/data/sites";
 import Link from "next/link";
 import { default as portalData } from "../../services/portalData.json";

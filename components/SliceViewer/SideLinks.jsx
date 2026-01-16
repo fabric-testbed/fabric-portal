@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ServiceTypeTable from './ServiceTypeTable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import validator from  "../../utils/sliceValidator";
+import validator from  "../../lib/slices/sliceValidator.js";
 import { default as portalData } from "../../services/portalData.json";
 
 export default class SideLinks extends Component { 

@@ -1,11 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import BackgroundImage from "../../assets/imgs/network-bg.svg";
 
 const JupyterHubAccess = () => {
   return (
     <div className="container d-flex flex-row align-items-center justify-content-center">
-      <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
+      <img src="/imgs/network-bg.svg" alt={`static page background`} className="static-page-bg"/>
       <div className="d-flex flex-column align-items-center">
         <h1 className="fw-semibold lh-1">{`Ooops, you don't have access to JupyterHub.`}</h1>
         <p className="lead my-3">

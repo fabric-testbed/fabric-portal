@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SingleComponent from './SingleComponent';
-import validator from  "../../utils/sliceValidator";
+import validator from  "../../lib/slices/sliceValidator.js";
 
 export default class SliceEditorDetailForm extends Component {
   state = {
