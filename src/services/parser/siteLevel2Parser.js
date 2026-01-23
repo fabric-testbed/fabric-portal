@@ -1,7 +1,7 @@
 export default function siteParserLevel2(data, siteName, acronymToShortName) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
-  const links = abqm_elements.links;
+  const links = abqm_elements.links || abqm_elements.edges || [];
   const site = nodes.filter(n => n.Class === "CompositeNode" && n.Name === siteName);
   const hosts = nodes.filter(n => n.Class === "NetworkNode");
 

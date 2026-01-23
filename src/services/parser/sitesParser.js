@@ -16,7 +16,7 @@ const getSiteColor = (status) => {
 export default function parseSites(data, acronymToShortName) {
   let abqm_elements = JSON.parse(data.model);
   const nodes = abqm_elements.nodes;
-  const links = abqm_elements.links;
+  const links = abqm_elements.links || abqm_elements.edges || [];
   const parsedSites = [];
   const siteNames = [];
   const siteAcronyms = [];
