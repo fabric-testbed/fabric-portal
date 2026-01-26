@@ -139,7 +139,7 @@ class NewSliceForm extends React.Component {
       "multigraph": false,
       "graph": {},
       "nodes": this.state.sliceNodes,
-      "links": this.state.sliceLinks,
+      "edges": this.state.sliceLinks,
     }
 
     const requestBody = JSON.stringify(sliceJSON);
@@ -153,7 +153,7 @@ class NewSliceForm extends React.Component {
       "multigraph": false,
       "graph": {},
       "nodes": this.state.sliceNodes,
-      "links": this.state.sliceLinks,
+      "edges": this.state.sliceLinks,
     }
 
     let elements = sliceParser(sliceJSON, "new");
@@ -167,7 +167,7 @@ class NewSliceForm extends React.Component {
       "multigraph": false,
       "graph": {},
       "nodes": this.state.sliceNodes,
-      "links": this.state.sliceLinks,
+      "edges": this.state.sliceLinks,
     }
 
     localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON));
@@ -184,7 +184,7 @@ class NewSliceForm extends React.Component {
       "multigraph": false,
       "graph": {},
       "nodes": this.state.sliceNodes,
-      "links": this.state.sliceLinks,
+      "edges": this.state.sliceLinks,
     }
 
     var jsonBlob = new Blob([ JSON.stringify(sliceJSON) ], { type: 'application/javascript;charset=utf-8' });
