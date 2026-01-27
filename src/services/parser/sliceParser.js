@@ -8,12 +8,12 @@ export default function parseSlice(slice, sliceType) {
     abqm = JSON.parse(slice);
   }
 
-  if (abqm.nodes === undefined && abqm.links === undefined) {
+  if (!abqm?.nodes || (!abqm?.links && !abqm?.edges)) {
     return;
   }
 
   const nodes = abqm.nodes;
-  const links = abqm.links;
+  const links = abqm.links || abqm.edges || [];
   // 1. Site -> NetworkNode(VM) -> Component(NIC) -> NetworkService (OVS) -> ConnectionPoint
   // 2. Site -> Facility -> VLAN (NS) -> Facility Port
 
