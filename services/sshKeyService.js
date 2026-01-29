@@ -4,7 +4,7 @@ import { default as config } from "../assets/config.json";
 const apiEndpoint = `${config.fabricCoreApiUrl}/sshkeys`;
 
 export function getActiveKeys() {
-  const userID = localStorage.getItem("userID");
+  const userID = window !== 'undefined' ? localStorage.getItem("userID") : "";
   return http.get(`${apiEndpoint}?person_uuid=${userID}`);
 }
 

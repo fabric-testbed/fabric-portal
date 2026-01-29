@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.9",
+  "version": "1.9.10",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -47,7 +47,8 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.5.0",
-    "eslint": "^8.49.0"
+    "eslint": "^8.49.0",
+    "eslint-config-react-app": "^7.0.1"
   },
   "scripts": {
     "dev": "next dev",

@@ -1,22 +1,22 @@
-import Footer from '../components/Footer';
-import '@/styles/custom.scss';
-import '@/styles/App.scss';
-import InitialLoader from "@/components/InitialLoader";
+import Footer from "../components/Footer";
+import ClientOnlyLoader from "../components/ClientOnlyLoader";
+import "@/styles/custom.scss";
+import "@/styles/App.scss";
 
 export const metadata = {
-  title: 'Fabric Portal',
-  description: 'Portal for Fabric'
-}
+  title: "Fabric Portal",
+  description: "Portal for Fabric",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    <body>
-      <InitialLoader>
-        {children}
-      </InitialLoader>
-      <Footer />
-    </body>
-  </html>
-  )
+      <body>
+        <ClientOnlyLoader>
+          {children}
+        </ClientOnlyLoader>
+        <Footer />
+      </body>
+    </html>
+  );
 }
