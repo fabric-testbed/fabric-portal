@@ -103,6 +103,10 @@ const Header = (props) => {
         {
           name: "Blogs",
           href: portalData.knowledgeBaseBlogsLink,
+        },
+        {
+          name: "REU Site",
+          href: portalData.ReuSiteWebsiteLink,
         }
       ],
       path: "/community"
@@ -196,6 +200,10 @@ const Header = (props) => {
         {
           name: "Blogs",
           href: portalData.knowledgeBaseBlogsLink,
+        },
+        {
+          name: "REU Site",
+          href: portalData.ReuSiteWebsiteLink,
         }
       ],
       path: "/community"
