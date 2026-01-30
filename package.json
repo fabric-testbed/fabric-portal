@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.9",
+  "version": "1.9.10",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
