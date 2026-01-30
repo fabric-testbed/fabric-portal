@@ -51,9 +51,9 @@
     "eslint-config-react-app": "^7.0.1"
   },
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
+    "dev": "next dev -p 3000",
     "lint": "next lint"
   },
   "eslintConfig": {

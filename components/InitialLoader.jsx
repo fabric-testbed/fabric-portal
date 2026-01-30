@@ -114,17 +114,17 @@ export default function InitialLoader({ children, loaderData }) {
 
       {showSessionTimeoutModal1 && <SessionTimeoutModal modalId={1} timeLeft={300000} />}
       {showSessionTimeoutModal2 && <SessionTimeoutModal modalId={2} timeLeft={60000} />}
-    {/* <Home
-        userStatus={userStatus}
-        globalRoles={globalRoles}
-        searchQuery={searchQuery}
-        onQueryChange={handleQueryChange}
-    /> */}
-        {React.Children.map(children, (child) =>
-          React.isValidElement(child)
-            ? React.cloneElement(child, { loaderData })
-            : child
-        )}
+      {/* <Home
+          userStatus={userStatus}
+          globalRoles={globalRoles}
+          searchQuery={searchQuery}
+          onQueryChange={handleQueryChange}
+      /> */}
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(child, { loaderData })
+          : child
+      )}
     </div>
   );
 }

@@ -1,102 +1,96 @@
 "use client";
-import React from "react";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import SideNav from "../../components/common/SideNav";
 import Slices from "../../components/Experiment/Slices";
 import Projects from "../../components/Experiment/Projects";
 import Tokens from "../../components/Experiment/Tokens";
 import Keys from "../../components/Experiment/Keys";
 import ArtifactManager from "../../components/Experiment/ArtifactManager";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-class Experiments extends React.Component {
-  state = {
-    SideNavItems: [
-      { name: "PROJECTS & SLICES", hash: "#projects", active: true },
-      { name: "MY SLICES", hash: "#slices", active: false },
-      { name: "MANAGE TOKENS", hash: "tokens", active: false },
-      { name: "MANAGE SSH KEYS", hash: "sshKeys", active: false },
-      { name: "ARTIFACT MANAGER", hash: "artifacts", active: false },
-    ],
-    user: {},
-    people: {},
-    activeIndex: 0,
-    componentNames: [Projects, Slices, Tokens, Keys, ArtifactManager],
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+export default function Experiments() {
+  const router = useRouter();
+
+  const componentNames = [
+    Projects,
+    Slices,
+    Tokens,
+    Keys,
+    ArtifactManager,
+  ];
+
+  const hashToIndex = {
+    "#projects": 0,
+    "#slices": 1,
+    "#tokens": 2,
+    "#sshKeys": 3,
+    "#artifacts": 4,
   };
 
-  async componentDidMount() {
-    // url anchor: #slices, #tokens, #sshKeys
-    const hash =  window?.location?.hash || "";
-    const activeMap = {
-      "#projects": 0,
-      "#slices": 1,
-      "#tokens": 2,
-      "#sshKeys": 3,
-      "#artifacts": 4
-    }
-
-    if (hash) {
-      this.setState({ activeIndex: activeMap[hash] });
-      this.setState({ SideNavItems: [
-        { name: "PROJECTS & SLICES", active: hash === "#projects" },
-        { name: "MY SLICES", active: hash === "#slices" },
-        { name: "MANAGE TOKENS", active: hash === "#tokens" },
-        { name: "MANAGE SSH KEYS", active: hash === "#sshKeys" },
-        { name: "ARTIFACT MANAGER", active: hash === "#artifacts" },
-      ]})
-    }
-  }
-
-  handleChange = (newIndex) => {
-    const indexToHash = {
-      0: "#projects",
-      1: "#slices",
-      2: "#tokens",
-      3: "#sshKeys",
-      4: "#artifacts"
-    }
-    this.setState({ activeIndex: newIndex,
-      SideNavItems: [
-        { name: "PROJECTS & SLICES", active: newIndex === 0 },
-        { name: "MY SLICES", active: newIndex === 1 },
-        { name: "MANAGE TOKENS", active: newIndex === 2 },
-        { name: "MANAGE SSH KEYS", active: newIndex === 3 },
-        { name: "ARTIFACT MANAGER", active: newIndex === 4 },
-      ]
-    });
-    this.props.navigate(`/experiments${indexToHash[newIndex]}`);
+  const indexToHash = {
+    0: "#projects",
+    1: "#slices",
+    2: "#tokens",
+    3: "#sshKeys",
+    4: "#artifacts",
   };
-  
-  render() {
-    const TagName = this.state.componentNames[this.state.activeIndex];
-    const { loaderData } = this.props;
-    if (!loaderData) return null; // safeguard for initial render
-    const { globalRoles } = loaderData;
-    return (
-      <Container>
-        <Row>
-          <Col xs={3}>
-            <SideNav
-              items={this.state.SideNavItems}
-              handleChange={this.handleChange}
-            />
-          </Col>
-          <Col xs={9}>
-            <TagName
-              user={this.state.user}
-              people={this.state.people}
-              globalRoles={globalRoles}
-              styleProp={"col-9"}
-              parent={"Experiments"}
-              handleChange={this.handleChange}
-            />
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [sideNavItems, setSideNavItems] = useState([
+    { name: "PROJECTS & SLICES", active: true },
+    { name: "MY SLICES", active: false },
+    { name: "MANAGE TOKENS", active: false },
+    { name: "MANAGE SSH KEYS", active: false },
+    { name: "ARTIFACT MANAGER", active: false },
+  ]);
+
+  // Handle initial hash on load
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash in hashToIndex) {
+      const index = hashToIndex[hash];
+      setActiveIndex(index);
+      updateSideNav(index);
+    }
+  }, []);
+
+  const updateSideNav = (index) => {
+    setSideNavItems([
+      { name: "PROJECTS & SLICES", active: index === 0 },
+      { name: "MY SLICES", active: index === 1 },
+      { name: "MANAGE TOKENS", active: index === 2 },
+      { name: "MANAGE SSH KEYS", active: index === 3 },
+      { name: "ARTIFACT MANAGER", active: index === 4 },
+    ]);
+  };
+
+  const handleChange = (newIndex) => {
+    setActiveIndex(newIndex);
+    updateSideNav(newIndex);
+    router.push(`/experiments${indexToHash[newIndex]}`);
+  };
+
+  const ActiveComponent = componentNames[activeIndex];
+
+  return (
+    <Container>
+      <Row>
+        <Col xs={3}>
+          <SideNav items={sideNavItems} handleChange={handleChange} />
+        </Col>
+        <Col xs={9}>
+          <ActiveComponent
+            parent="Experiments"
+            handleChange={handleChange}
+          />
+        </Col>
+      </Row>
+    </Container>
+  );
 }
-
-export default Experiments;

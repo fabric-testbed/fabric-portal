@@ -198,8 +198,7 @@ class Projects extends React.Component {
 
   render() {
     const { pageSize, currentPage, projects, showSpinner,
-      projectsCount, searchQuery, filterOption, selectedList, options } = this.state;
-    const { globalRoles } = this.props;
+      projectsCount, searchQuery, filterOption, selectedList, options, globalRoles } = this.state;
 
     return (
       <div className="col-9">
@@ -322,18 +321,16 @@ class Projects extends React.Component {
             </div>    
             <div className="alert alert-warning mt-2" role="alert">
               <p className="mt-2">We could not find your project:</p>
-              <p>
-                <ul>
-                  <li>
-                    If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
-                    please <Link href="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
-                  </li>
-                  <li>
-                    If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">student or other contributor</a>, 
-                    please ask your project lead to add you to a project.
-                  </li>
-                </ul>
-              </p>
+              <ul>
+                <li>
+                  If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">professor or research staff member at your institution</a>, 
+                  please <Link href="/user">request to be FABRIC Project Lead</Link> from User Profile -&gt; My Roles &amp; Projects page then you can create a project.
+                </li>
+                <li>
+                  If you are a <a href={portalData.learnArticles.guideToProjectRoles} target="_blank" rel="noreferrer">student or other contributor</a>, 
+                  please ask your project lead to add you to a project.
+                </li>
+              </ul>
             </div>
           </div>
         }
