@@ -1,0 +1,38 @@
+services:
+
+  # Reverse proxy: SSL termination, Vouch auth_request, routes to portal-app
+  nginx:
+    image: nginx:1
+    container_name: portal-nginx
+    ports:
+      - "8080:80"    # HTTP → HTTPS redirect
+      - "8443:443"   # HTTPS entry point
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/ssl:ro
+    depends_on:
+      - portal-app
+      - vouch-proxy
+    restart: unless-stopped
+
+  # Next.js application (server-rendered, port 3000)
+  portal-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: portal-app
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  # OIDC authentication via CILogon (config in ./vouch/config.yml)
+  vouch-proxy:
+    container_name: portal-vouch
+    image: fabrictestbed/vouch-proxy:0.27.1
+    volumes:
+      - ./vouch:/config
+    restart: unless-stopped

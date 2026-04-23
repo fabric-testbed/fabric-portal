@@ -1,0 +1,13 @@
+# API url file
+# copy and paste this file as config.json
+{
+  "fabricCoreApiUrl": "https://<core-api-host>",
+  "credentialManagerApiUrl": "https://<credmgr-host>/credmgr/tokens",
+  "orchestratorApiUrl": "https://<orchestrator-host>",
+  "credentialManagerAppUrl": "https://<credmgr-host>",
+  "artifactManagerAppUrl": "https://<artifact-host>",
+  "artifactManagerApiUrl": "https://<artifact-host>/api/artifacts",
+  "publicationsTrackerApiUrl": "https://publications.fabric-testbed.net/api/publications",
+  "qaToolApiUrl": "https://<qa-tool-host>/api",
+  "qaToolApiKey": "<api-key>"
+}
