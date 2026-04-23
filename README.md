@@ -59,14 +59,13 @@ cp config.json.template config.json
 | `publicationsTrackerApiUrl` | Publications tracker API |
 | `qaToolApiUrl` | QA Bot tool API |
 | `qaToolApiKey` | QA Bot tool API key |
-| `resourceLinkApiUrl` | Resource Links API (not currently used; reserved for future work) |
 
 Environment variables (`FABRIC_CORE_API_URL`, `ORCHESTRATOR_API_URL`, etc.) override the corresponding `config.json` values when set.
 
 Optionally, copy the environment template for build-time settings:
 
 ```bash
-cp .env.template .env
+cp env.template .env
 ```
 
 The default sets `GENERATE_SOURCEMAP=false` to disable source maps in production builds.

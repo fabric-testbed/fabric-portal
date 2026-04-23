@@ -19,7 +19,7 @@ vouch:
     jwt:
         # Random string used to sign the JWT (≥44 chars / 256 bits).
         # All Vouch instances in a cluster must share the same secret.
-        secret: vouce_jwt_secret
+        secret: vouch_jwt_secret
 
     cookie:
         secure: false          # set true in production (requires HTTPS)
