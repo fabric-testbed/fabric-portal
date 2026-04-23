@@ -1,0 +1,103 @@
+# HTTP → HTTPS redirect
+server {
+    listen 80;
+    return 301 https://$host:8443$request_uri;
+}
+
+server {
+  listen 443 ssl http2;
+  server_name $host;
+
+  ssl_protocols  TLSv1.2 TLSv1.3;
+  ssl_certificate /etc/ssl/fullchain.pem;
+  ssl_certificate_key /etc/ssl/privkey.pem;
+
+  # ---------------------------------------------------------------------------
+  # Vouch Proxy authentication
+  # Every request (except /auth, /login, /logout) is validated via Vouch Proxy.
+  # On 401, the user is redirected to CILogon for login.
+  # ---------------------------------------------------------------------------
+  auth_request /validate;
+
+  location = /validate {
+    proxy_pass http://vouch-proxy:9090/validate;
+    proxy_set_header Host $http_host;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+
+    # Vouch user identity
+    auth_request_set $auth_resp_x_vouch_user $upstream_http_x_vouch_user;
+
+    # IdP tokens (passed through to the portal app)
+    auth_request_set $auth_resp_x_vouch_idp_idtoken $upstream_http_x_vouch_idp_idtoken;
+    auth_request_set $auth_resp_x_vouch_idp_accesstoken $upstream_http_x_vouch_idp_accesstoken;
+    auth_request_set $auth_resp_x_vouch_idp_refreshtoken $upstream_http_x_vouch_idp_refreshtoken;
+
+    # Used by @error401 to build the login redirect URL
+    auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+    auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+    auth_request_set $auth_resp_failcount $upstream_http_x_vouch_failcount;
+  }
+
+  # Unauthenticated users are redirected to Vouch Proxy → CILogon
+  error_page 401 = @error401;
+
+  location @error401 {
+    return 302 http://vouch-proxy:9090/login?url=$scheme://$http_host$request_uri&vouch-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err;
+  }
+
+  # ---------------------------------------------------------------------------
+  # Auth endpoints — all bypass auth_request to avoid redirect loops
+  # ---------------------------------------------------------------------------
+
+  # OAuth2 callback — Vouch processes the authorization code and sets cookies
+  location /auth {
+    auth_request off;
+    proxy_pass http://vouch-proxy:9090/auth;
+  }
+
+  # Explicit login trigger
+  location /login {
+    auth_request off;
+    proxy_pass http://vouch-proxy:9090/login?url=$scheme://$http_host;
+  }
+
+  # Logout: expire both cookies and proxy to Vouch to clear its server-side session
+  location /logout {
+    auth_request off;
+    add_header Set-Cookie "fabric-service-alpha=; Path=/; Domain=fabric-testbed.net; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure; HttpOnly" always;
+    add_header Set-Cookie "VouchSession=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure; HttpOnly" always;
+    proxy_pass http://vouch-proxy:9090/logout?url=$scheme://$http_host;
+  }
+
+  # ---------------------------------------------------------------------------
+  # Portal application
+  # ---------------------------------------------------------------------------
+  location / {
+    # docker-compose service name
+    proxy_pass http://portal-app:3000/;
+    # For local development, uncomment and set your Docker host IP:
+    #proxy_pass http://LOCAL_DOCKER_NETWORK:3000/;
+
+    proxy_set_header Host $host;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_cache_bypass $http_upgrade;
+
+    # Re-read auth vars set by /validate (required in this block per
+    # https://github.com/vouch/vouch-proxy/issues/26#issuecomment-425215810)
+    auth_request_set $auth_resp_x_vouch_user $upstream_http_x_vouch_user;
+    auth_request_set $auth_resp_x_vouch_idp_idtoken $upstream_http_x_vouch_idp_idtoken;
+    auth_request_set $auth_resp_x_vouch_idp_accesstoken $upstream_http_x_vouch_idp_accesstoken;
+    auth_request_set $auth_resp_x_vouch_idp_refreshtoken $upstream_http_x_vouch_idp_refreshtoken;
+
+    # Forward identity and tokens to the portal app
+    add_header X-Vouch-User $auth_resp_x_vouch_user;
+    add_header X-Vouch-IdP-IdToken $auth_resp_x_vouch_idp_idtoken;
+    add_header X-Vouch-IdP-AccessToken $auth_resp_x_vouch_idp_accesstoken;
+    add_header X-Vouch-IdP-RefreshToken $auth_resp_x_vouch_idp_refreshtoken;
+
+    add_header Cookie $http_cookie;
+  }
+}

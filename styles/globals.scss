@@ -1,0 +1,35 @@
+// Import custom variables as a namespacce
+@use "./custom" as c;
+
+// Load Boostrap with overrides
+@use "bootstrap/scss/bootstrap" with (
+ // Core theme colors
+ $theme-colors: c.$theme-colors,
+
+ // Individual color variables Bootstrap relies on
+ $primary: c.$primary,
+ $secondary: c.$secondary,
+ $success: c.$success,
+ $danger: c.$danger,
+ $warning: c.$warning,
+ $info: c.$info,
+ $dark: c.$dark,
+ $light: c.$light,
+
+ // Base colors
+ $white: c.$white,
+ $black: c.$black,
+
+ // Background helpers
+ $body-bg: c.$bg-light,
+
+ // Keep form inputs white even though body bg is gray.
+ // Disabled inputs stay gray via Bootstrap's $input-disabled-bg (not overridden here).
+ $input-bg: c.$white
+);
+
+// app-wide styles
+@use "./App";
+
+// CILogon styles
+@use "./FABRIC_CILogon.css";
