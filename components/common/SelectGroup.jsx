@@ -64,7 +64,7 @@ function SelectGroup({ name, tags, baseOptions, optionsMapping, onTagAdd }) {
               disabled={!isValid()}
               onClick={handleClick}
             >
-              <Plus size={16} className="me-2" />
+              <Plus size={16} />
             </button>
           </div>
         </div>

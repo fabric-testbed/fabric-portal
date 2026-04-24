@@ -9,7 +9,7 @@ const columns = {
     {
       label: "Slice Name",
       content: (slice) => (
-        <Link href={`/experiments/slices/${slice.slice_id}`}>{slice.name}</Link>
+        <Link href={`/experiments/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
       ),
     },
     { label: "Slice State", content: (slice) => <span>{slice.state}</span> },
@@ -41,7 +41,7 @@ const columns = {
     {
       label: "Slice Name",
       content: (slice) => (
-        <Link href={`/experiments/slices/${slice.slice_id}`}>{slice.name}</Link>
+        <Link href={`/experiments/slices/${slice.slice_id}/${slice.project_id}`}>{slice.name}</Link>
       ),
     },
     { label: "Slice State", content: (slice) => <span>{slice.state}</span> },

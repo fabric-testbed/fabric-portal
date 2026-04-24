@@ -12,13 +12,15 @@ function setCytoscape(cy){
   return cy;
 }
 
-export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, isNewSlice, onSaveJSON, onUseDraft, onSaveDraft, onClearGraph }) {
+export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, isNewSlice, onSaveJSON, onUseDraft, onSaveDraft, onClearGraph, className }) {
   const [w, setW] = useState(0);
   const [h, setH] = useState(0);
   const cyRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    setW(window.innerWidth * defaultSize.width);
+    const measuredW = containerRef.current?.offsetWidth;
+    setW(measuredW > 0 ? measuredW : window.innerWidth * defaultSize.width);
     setH(window.innerHeight * defaultSize.height);
     setUpListeners();
   }, []);
@@ -72,7 +74,7 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
   );
 
   return(
-    <div className="border">
+    <div className={`border${className ? ` ${className}` : ''}`} ref={containerRef}>
       <div className="d-flex flex-row justify-content-between">
         <button onClick={resetGraph} className="btn btn-sm btn-outline-primary">
           Reset Layout

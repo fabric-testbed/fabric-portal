@@ -16,7 +16,7 @@ import { Search } from "lucide-react";
 
 const Header = (props) => {
   const router = useRouter();
-  const navItems = (props.globalRoles && !props.globalRoles.isJupterhubUser) ? [
+  const navItems = (props.globalRoles && props.globalRoles.isActiveUser && !props.globalRoles.isJupterhubUser) ? [
     { 
       name: "Resources",
       path: "/resources",
@@ -45,7 +45,7 @@ const Header = (props) => {
     {
       name: "JupyterHub",
       child: [],
-      path: "/jupyter-no-access"
+      path: "/experiments/jupyter-no-access"
     },
     { name: "Contact Us", path: "/help", child: [] },
     {

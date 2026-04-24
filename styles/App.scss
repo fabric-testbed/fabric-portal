@@ -107,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .slice-page-container {
-  padding: 3rem 3% 2rem 3%;
+  padding: 3rem 5% 0 5%;
 }
 
 .w-35 { 
@@ -675,7 +675,16 @@ ul,
 }
 
 .slice-viewer-container {
-  min-height: 82vh;
+  min-height: unset;
+}
+
+.slice-detail-panel {
+  // Override DetailForm card margin — gap is handled by panel's marginLeft instead
+  > .card {
+    margin-left: 0 !important;
+    height: 100%;
+    overflow-y: auto;
+  }
 }
 
 .tab-content {

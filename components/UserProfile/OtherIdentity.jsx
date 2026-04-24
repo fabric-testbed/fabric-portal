@@ -112,7 +112,7 @@ function OtherIdentity({ other_identities, onIdentityUpdate }) {
             onClick={handleIdentityAdd}
             disabled={!isValid}
           >
-            <Plus size={16} className="me-2" />
+            <Plus size={16} />
           </button>
         </div>
       </div>

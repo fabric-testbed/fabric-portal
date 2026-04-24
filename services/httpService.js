@@ -2,6 +2,22 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { clearSession } from "@/utils/sessionCookies";
 
+// Attach the fabric token (stored in sessionStorage by autoCreateTokens) as a
+// Bearer Authorization header for orchestrator and POAS proxy routes. The proxy
+// already prefers this header over the (now-removed) fabric_token cookie, which
+// was causing "400 Request Header Or Cookie Too Large" errors on nginx.
+axios.interceptors.request.use((config) => {
+  const orchestratorRoutes = ["/api/slices", "/api/poas"];
+  if (orchestratorRoutes.some((route) => config.url?.startsWith(route))) {
+    const token = typeof window !== "undefined" && sessionStorage.getItem("fabric_token");
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 axios.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 401) {
       const errors = error.response.data?.errors;

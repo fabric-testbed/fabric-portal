@@ -132,7 +132,7 @@ export default function SingleComponent({ component, onSliceComponentAdd, onSlic
                 disabled={!validationResult.isValid}
                 onClick={handleComponentAdd}
               >
-                <Plus size={16} className="me-2" />
+                <Plus size={16} />
               </button>
             </div>
           </div>

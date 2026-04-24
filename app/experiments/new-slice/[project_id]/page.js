@@ -410,7 +410,7 @@ function NewSliceForm() {
       toast.success("Slice creation request submitted successfully.");
       // redirect users directly to the new slice page
       const slice_id = res.data[0].slice_id;
-      router.push(`/experiments/slices/${slice_id}`);
+      router.push(`/experiments/slices/${slice_id}/${params.project_id}`);
     } catch (ex) {
       toast.error("Failed to create slice.");
       setShowSliceSpinner(false);
@@ -672,7 +672,6 @@ function NewSliceForm() {
                   onJsonUpload={handleJsonUpload}
                 />
                 <Graph
-                  className="align-self-end"
                   isNewSlice={true}
                   elements={generateGraphElements()}
                   sliceName={sliceName === "" ? "new-slice" : sliceName}

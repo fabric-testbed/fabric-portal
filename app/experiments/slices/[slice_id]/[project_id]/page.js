@@ -19,7 +19,7 @@ import DetailForm from "@/components/SliceViewer/DetailForm";
 import ErrorMessageAccordion from "@/components/SliceViewer/ErrorMessageAccordion";
 
 // utils
-import sleep from "@/utils/sleep";
+import { autoCreateTokens } from "@/utils/manageTokens";
 
 // services
 import {
@@ -50,7 +50,6 @@ function SliceViewer() {
   });
   const [errors, setErrors] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
-  const [positionAddNode, setPositionAddNode] = useState({ x: 100, y: 600 });
   const [leaseStartTime, setLeaseStartTime] = useState("");
   const [leaseEndTime, setLeaseEndTime] = useState("");
   const [hasProject, setHasProject] = useState(true);
@@ -63,12 +62,16 @@ function SliceViewer() {
       setShowSpinner(true);
       setSpinnerText("Loading slice...");
       try {
-        const { data: res } = await getSliceById(params.id);
-        setElements(sliceParser(res.data[0]["model"]));
-        setSlice(res.data[0]);
-        setLeaseStartTime(res.data[0].lease_start_time);
-        setLeaseEndTime(res.data[0].lease_end_time);
-        setErrors(sliceErrorParser(res.data[0]["model"]));
+        // Create project-scoped token (with tags) before fetching — mirrors legacy behavior
+        // where project_id was in the URL and token was created first.
+        await autoCreateTokens(params.project_id);
+        const { data: res } = await getSliceById(params.slice_id);
+        const sliceData = res.data[0];
+        setElements(sliceParser(sliceData["model"]));
+        setSlice(sliceData);
+        setLeaseStartTime(sliceData.lease_start_time);
+        setLeaseEndTime(sliceData.lease_end_time);
+        setErrors(sliceErrorParser(sliceData["model"]));
         setShowSpinner(false);
         setSpinnerText("");
       } catch (err) {
@@ -78,7 +81,7 @@ function SliceViewer() {
       }
     };
     fetchSlice();
-  }, [params.id]);
+  }, [params.slice_id, params.project_id]);
 
   const generateEphemeralKey = async () => {
     const sliverId = selectedData && selectedData.properties && selectedData.properties.sliverId;
@@ -98,13 +101,17 @@ function SliceViewer() {
     setShowSpinner(true);
     setSpinnerText("Deleting Slice");
     try {
+      await autoCreateTokens(params.project_id);
       await deleteSlice(id);
-      // toast message to users when the api call is successfully done.
       toast.success("Slice deleted successfully.");
-      await sleep(1000);
-      window.location.reload();
+      // Optimistically reflect the backend transition — no reload needed.
+      setSlice(prev => ({ ...prev, state: "Closing" }));
+      setShowSpinner(false);
+      setSpinnerText("");
     } catch (err) {
       toast.error("Failed to delete the slice.");
+      setShowSpinner(false);
+      setSpinnerText("");
     }
   };
 
@@ -136,11 +143,14 @@ function SliceViewer() {
     setShowSpinner(true);
     setSpinnerText("Extending slice...");
     try {
+      await autoCreateTokens(params.project_id);
       await extendSlice(slice.slice_id, leaseEndTime);
-      // toast message to users when the api call is successfully done.
       toast.success("Slice has been successfully renewed.");
-      await sleep(1000);
-      window.location.reload();
+      // Optimistically set state to Modifying — triggers CountdownTimer which
+      // auto-reloads after 30s once the orchestrator has processed the renewal.
+      setSlice(prev => ({ ...prev, state: "Modifying" }));
+      setShowSpinner(false);
+      setSpinnerText("");
     } catch (err) {
       toast.error("Failed to renew the slice.");
       setLeaseEndTime(slice.lease_end_time);
@@ -187,7 +197,7 @@ function SliceViewer() {
         }
         {
           showSlice &&
-          <div className="mx-5 mb-4 slice-viewer-container">
+          <div className="mb-4 slice-viewer-container">
             <div className="d-flex flex-row justify-content-between align-items-center mt-2">
               <div className="d-flex flex-row justify-content-between align-items-center">
                 <h2 className="me-3">
@@ -248,22 +258,22 @@ function SliceViewer() {
                 errors={errors}
               />
             }
-            <div className="d-flex flex-row justify-content-center">
+            <div className="d-flex flex-row align-items-stretch" style={{ height: "calc(100vh - 200px)" }}>
               {
                 elements.length > 0 &&
                 <Graph
-                  className="align-self-end"
+                  className="flex-grow-1"
                   isNewSlice={false}
                   elements={elements}
                   sliceName={slice.name}
-                  defaultSize={{"width": 0.62, "height": 0.75, "zoom": 1}}
+                  defaultSize={{"width": 0.76, "height": 0.85, "zoom": 1}}
                   onNodeSelect={handleNodeSelect}
                   onSaveJSON={handleSaveJSON}
                 />
               }
               {
                 elements.length > 0 &&
-                <div style={{ minWidth: "280px", maxWidth: "320px", width: "100%" }}>
+                <div className="slice-detail-panel" style={{ width: "380px", flexShrink: 0, height: "100%", marginLeft: "1rem" }}>
                 <DetailForm
                   slice={slice}
                   leaseStartTime={leaseStartTime}
