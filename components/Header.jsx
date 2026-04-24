@@ -240,7 +240,7 @@ const Header = (props) => {
   const pathname = usePathname();
 
   return (
-    <Navbar expand="lg" className="bg-light">
+    <Navbar expand="lg" style={{ backgroundColor: "rgb(248, 249, 250)" }}>
       <Navbar.Brand href="/">
         <img
           src={getLogoSrc()}

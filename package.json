@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.13",
+  "version": "1.9.16",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -42,11 +42,11 @@
     "sass": "^1.90.0",
     "styled-components": "^5.3.1",
     "usehooks-ts": "^3.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^14.0.0"
   },
   "scripts": {
     "build": "next build",
-    "start": "next start -H 0.0.0.0 -p 3000",
+    "start": "HOST=0.0.0.0 PORT=3000 node .next/standalone/server.js",
     "dev": "next dev -p 3001",
     "lint": "eslint ."
   },

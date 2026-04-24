@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import Topomap from "../../../components/Resource/Topomap";
 import TestbedTable from "../../../components/Resource/TestbedTable";
 import NodeDetailTable from "../../../components/Resource/NodeDetailTable";
@@ -9,7 +10,6 @@ import SummaryTable from "../../../components/Resource/SummaryTable";
 import { sitesNameMapping } from "../../../assets/data/sites";
 import sitesParser from "../../../services/parser/sitesParser";
 import linksParser from "../../../services/parser/linksParser";
-import linksTableParser from "../../../services/parser/linksTableParser";
 import facilityPortsParser from "../../../services/parser/facilityPortsParser";
 import { getResources } from "../../../services/resourceService.js";
 import { getLinksData } from "../../../services/mockLinkData.js";
@@ -24,13 +24,10 @@ function Resources() {
   const [resources, setResources] = useState([]);
   const [sortColumn1, setSortColumn1] = useState({ path: "name", order: "desc" });
   const [sortColumn2, setSortColumn2] = useState({ path: "site", order: "desc" });
-  // const [sortColumn3, setSortColumn3] = useState({ path: "in_now_value", order: "desc" });
   const [currentPage1, setCurrentPage1] = useState(1);
   const [currentPage2, setCurrentPage2] = useState(1);
-  // const [currentPage3, setCurrentPage3] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQuery2, setSearchQuery2] = useState("");
-  // const [searchQuery3, setSearchQuery3] = useState("");
   const [activeDetailName, setActiveDetailName] = useState("StarLight");
   const [activeFrom, setActiveFrom] = useState("");
   const [activeTo, setActiveTo] = useState("");
@@ -53,7 +50,8 @@ function Resources() {
         setSiteColorMapping(parsedSites.siteColorMapping);
         setFacilityPorts(parsedFacilityPorts);
       } catch (err) {
-        // Silent failure — resources API requires auth in some environments
+        console.error("Failed to load resources:", err);
+        toast.error("Failed to load resource data. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -100,17 +98,6 @@ function Resources() {
     return resource ? resource : null;
   };
 
-  const handleLinkPageChange = (page, pagesCount) => {
-    // page: -1 -> prev page; page: -2 -> next page
-    if(page === -1 && currentPage3 > 1) {
-      setCurrentPage3(currentPage3 - 1);
-    } else if (page === -2 && currentPage3 < pagesCount) {
-      setCurrentPage3(currentPage3 + 1);
-    } else {
-      setCurrentPage3(page);
-    }
-  };
-
   const handleSitePageChange = (page, pagesCount) => {
     // page: -1 -> prev page; page: -2 -> next page
     if(page === -1 && currentPage1 > 1) {
@@ -143,21 +130,12 @@ function Resources() {
     setCurrentPage2(1);
   };
 
-  const handleLinkSearch = (query) => {
-    setSearchQuery3(query);
-    setCurrentPage3(1);
-  };
-
   const handleSortSite = (newSortColumn1) => {
     setSortColumn1(newSortColumn1);
   };
 
   const handleSortFP = (newSortColumn2) => {
     setSortColumn2(newSortColumn2);
-  };
-
-  const handleSortLink = (newSortColumn3) => {
-    setSortColumn3(newSortColumn3);
   };
 
   const handleFilterChange = (e) => {
@@ -242,35 +220,6 @@ function Resources() {
     const paginatedFacilityPorts = paginate(sorted, currentPage2, 10);
 
     return { totalFPCount: filtered.length, facilityPortData: paginatedFacilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
-  };
-
-  const getLinkData = () => {
-    const allLinks =  linksTableParser(getLinksData());
-
-    // filter -> sort -> paginate
-    // remove `-int` suffix in name if there is any
-    let filtered = allLinks;
-
-    if (searchQuery3 && !searchQuery3.includes("-")) {
-      filtered = allLinks.filter((l) =>
-        l.src_rack.toLowerCase().includes(searchQuery3.toLowerCase()) ||
-        l.dst_rack.toLowerCase().includes(searchQuery3.toLowerCase())
-      );
-    } else if (searchQuery3.includes("-")){
-      const res = searchQuery3.split("-");
-      filtered = allLinks.filter((l) =>
-        l.src_rack.toLowerCase() === res[0].toLowerCase() &&
-        l.dst_rack.toLowerCase() === res[1].toLowerCase()
-      );
-    }
-
-    let sorted = [];
-
-    sorted = _.orderBy(filtered, [sortColumn3.path], [sortColumn3.order]);
-
-    const links = paginate(sorted, currentPage3, 10);
-
-    return { totalLinkCount: filtered.length, links };
   };
 
   const { totalCount, siteData } = getSiteData();

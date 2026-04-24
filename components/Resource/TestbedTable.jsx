@@ -35,7 +35,7 @@ function TestbedTable({ sum }) {
           columns.map((col, index) => {
             return (
               <td key={`testbed-table-body-${index}`}>
-                {sum[col.path[0]] >= 0 ? `${sum[col.path[0]]} / ${sum[col.path[1]]}` : `loading...`}
+                {sum[col.path[0]] >= 0 ? `${sum[col.path[0]]} / ${sum[col.path[1]]}` : `N/A`}
               </td>
             )
           })

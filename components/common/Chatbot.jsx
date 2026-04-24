@@ -30,7 +30,7 @@ export default function Chatbot() {
       primaryColor="#1f6a8c"
       secondaryColor="#5798bc"
       botName="FABRIC Q&A Tool"
-      logo="https://github.com/user-attachments/assets/9aae9370-4a7a-4c6e-b07e-8879120b4389"
+      logo="https://github.com/user-attachments/assets/adaa9817-43c1-431e-9f82-75414420561b"
       isLoggedIn={userStatus === "active"}
       allowAnonAccess={false}
       loginUrl={loginUrl}

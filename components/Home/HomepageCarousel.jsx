@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { getActiveCarouselItems } from "../../services/announcementService";
 import Carousel from 'react-bootstrap/Carousel';
@@ -6,7 +7,7 @@ import Parser from 'html-react-parser';
 const placeholderItems = [
   {
     "announcement_type": "carousel",
-    "background_image_url": "https://github.com/fabric-testbed/fabric-portal/assets/37635744/f2365fff-d40e-4204-9a74-a4697ddefc08",
+    "background_image_url": "/imgs/homepage/bg1.jpeg",
     "button": "Learn More",
     "content": "<ul><li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li><li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li><li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li></ul>",
     "is_active": true,
@@ -26,9 +27,9 @@ function HomepageCarousel() {
       try {
         const { data: res } = await getActiveCarouselItems();
         const fetched = res.results || [];
-        // Always keep the fixed first item; append API items that aren't the same
-        const rest = fetched.filter(i => i.uuid !== placeholderItems[0].uuid);
-        setItems([placeholderItems[0], ...rest]);
+        if (fetched.length > 0) {
+          setItems(fetched);
+        }
       } catch {
         // Keep the initial placeholderItems already in state
       }
@@ -52,17 +53,19 @@ function HomepageCarousel() {
             <Carousel.Caption>
               <h3>{item.title}</h3>
               <div className="homepage-carousel-content">
-                {Parser(item.content)}
+                {item.content ? Parser(item.content) : null}
               </div>
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-warning"
-                role="button"
-              >
-                {item.button}
-              </a>
+              {item.link && item.button && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-warning"
+                  role="button"
+                >
+                  {item.button}
+                </a>
+              )}
             </Carousel.Caption>
           </Carousel.Item>
       )}

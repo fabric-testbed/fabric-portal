@@ -151,5 +151,5 @@ The portal will be available at `https://<your-domain>:8443`.
 | `npm install` | Install dependencies |
 | `npm run dev` | Development server with hot reload (port 3001) |
 | `npm run build` | Production build (Next.js standalone output) |
-| `npm start` | Production server (port 3000) |
+| `node .next/standalone/server.js` | Production server (port 3000, requires `npm run build` first) |
 | `npm run lint` | ESLint |
