@@ -68,8 +68,8 @@ export default function SiteDetailPage() {
       setShowSpinner(true);
       setSpinnerMessage("Loading resources...");
       try {
-        const { data: res1 } = await getResources(1);
-        const { data: res2 } = await getResources(2);
+        const { data: res1 } = await getResources(1, null, null, "sites");
+        const { data: res2 } = await getResources(2, null, null, "hosts");
         const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
         const siteName = pathname.split("s/")[1];
         const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
@@ -110,8 +110,8 @@ export default function SiteDetailPage() {
     setShowSpinner(true);
     setSpinnerMessage("Loading resources...");
     try {
-      const { data: res1 } = await getResources(1, startTime, endTime);
-      const { data: res2 } = await getResources(2, startTime, endTime);
+      const { data: res1 } = await getResources(1, startTime, endTime, "sites");
+      const { data: res2 } = await getResources(2, startTime, endTime, "hosts");
       const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = pathname.split("s/")[1];
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
@@ -222,7 +222,7 @@ export default function SiteDetailPage() {
          data.location && userStatus === "active" &&
          <tr>
            <th>Rack Location</th>
-           <td>{ JSON.parse(data.location).postal }</td>
+           <td>{ data.location }</td>
          </tr>
        }
        {

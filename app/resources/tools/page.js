@@ -33,7 +33,7 @@ const MeasurementMetrics = ()=> {
   return (
     <div className="container static-page pb-5">
       <img src="/imgs/network-bg.svg" alt={`static page background`} className="static-page-bg"/>
-      <h1 className="mb-4 mt-4">Measuring and Monitoring Tools</h1>
+      <h1 className="mb-4">Measuring and Monitoring Tools</h1>
       {
         toolsData.map((tool, index) =>
         <div className="tool-link-block mb-5" key={`tool-link-${index}`}>

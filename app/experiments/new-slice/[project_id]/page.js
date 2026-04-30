@@ -27,9 +27,10 @@ import validator from "@/lib/slices/sliceValidator.js";
 
 import { sitesNameMapping } from "@/assets/data/sites";
 import sitesParser from "@/services/parser/sitesParser";
+import facilityPortsParser from "@/services/parser/facilityPortsParser";
 
 import { getResources } from "@/services/resourceService.js";
-import { createSlice } from "@/services/sliceService.js";
+import { createSlice, getSlices } from "@/services/sliceService.js";
 import { getProjectById } from "@/services/projectService.js";
 
 import { autoCreateTokens } from "@/utils/manageTokens";
@@ -57,6 +58,7 @@ function NewSliceForm() {
   const [sliceLinks, setSliceLinks] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
   const [parsedResources, setParsedResources] = useState(null);
+  const [facilityPorts, setFacilityPorts] = useState([]);
   const [selectedCPs, setSelectedCPs] = useState([]);
   const [project, setProject] = useState({});
   const [projectTags, setProjectTags] = useState([]);
@@ -69,12 +71,14 @@ function NewSliceForm() {
       setShowProjectSpinner(true);
 
       try {
-        const { data: resources } = await getResources(1);
+        const { data: resources } = await getResources(1, null, null, "sites,facility_ports");
         const { data: keys } = await getActiveKeys();
         const { data: projectRes } = await getProjectById(params.project_id);
         const parsedObj = sitesParser(resources.data[0], sitesNameMapping.acronymToShortName);
+        const parsedFPs = facilityPortsParser(resources.data[0], {});
 
         setParsedResources(parsedObj);
+        setFacilityPorts(parsedFPs);
         setShowResourceSpinner(false);
         setSliverKeys(keys.results.filter(k => k.fabric_key_type === "sliver"));
         setProject(projectRes.results[0]);
@@ -407,10 +411,20 @@ function NewSliceForm() {
 
     try {
       const { data: res } = await createSlice(requestData, tokenResult.id_token);
+      let slice_id = res?.data?.[0]?.slice_id;
+      // For Facility Port-only slices, the creates endpoint returns empty slivers.
+      // Fall back to fetching the slice list to find the new slice by name.
+      if (!slice_id) {
+        const { data: listRes } = await getSlices("mySlices", true);
+        const match = (listRes?.data || []).find(s => s.name === sliceName);
+        slice_id = match?.slice_id;
+      }
       toast.success("Slice creation request submitted successfully.");
-      // redirect users directly to the new slice page
-      const slice_id = res.data[0].slice_id;
-      router.push(`/experiments/slices/${slice_id}/${params.project_id}`);
+      if (slice_id) {
+        router.push(`/experiments/slices/${slice_id}/${params.project_id}`);
+      } else {
+        router.push(`/experiments/slices`);
+      }
     } catch (ex) {
       toast.error("Failed to create slice.");
       setShowSliceSpinner(false);
@@ -511,6 +525,7 @@ function NewSliceForm() {
                           onFacilityAdd={handleFacilityAdd}
                           onSwitchAdd={handleSwitchAdd}
                           projectTags={projectTags}
+                          facilityPorts={facilityPorts}
                         />
                       }
                     </div>

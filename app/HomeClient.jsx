@@ -12,7 +12,6 @@ import { sitesNameMapping }  from "../assets/data/sites";
 import sitesParser from "../services/parser/sitesParser";
 import CookieConsent from "react-cookie-consent";
 import dynamic from "next/dynamic";
-const Chatbot = dynamic(() => import("../components/common/Chatbot"), { ssr: false });
 import Topomap from "../components/Resource/Topomap";
 import NodeDetailTable from "../components/Resource/NodeDetailTable";
 import { getResources } from "../services/resourceService.js";
@@ -35,7 +34,7 @@ function Home() {
   useEffect(() => {
     async function fetchResources() {
       try {
-        const { data: res } = await getResources(1);
+        const { data: res } = await getResources(1, null, null, "sites");
         const parsedObj = sitesParser(res.data[0], sitesNameMapping.acronymToShortName);
         setResources(parsedObj.parsedSites);
         setSiteNames(parsedObj.siteNames);
@@ -142,7 +141,6 @@ function Home() {
           Please accept our Cookie Policy by clicking "OK". For more details, visit the <Link className="text-primary-light" href="/cookie-policy"><b>Cookie Policy Page</b></Link>.
         </div>
       </CookieConsent>
-      <Chatbot/>
     </div>
   );
 }

@@ -8,84 +8,41 @@ import validator from  "@/lib/slices/sliceValidator";
 import { sitesNameMapping }  from "../../assets/data/sites";
 import Link from "next/link";
 import { default as portalData } from "../../services/portalData.json";
-import checkPortalType from "@/lib/permissions/checkPortalType";
 import { HelpCircle } from "lucide-react";
 
 const osImageToAbbr = {
   "CentOS Stream 8": "default_centos8_stream",
   "CentOS Stream 9": "default_centos9_stream",
+  "CentOS Stream 10": "default_centos10_stream",
   "Debian 11": "default_debian_11",
   "Debian 12": "default_debian_12",
+  "Debian 13": "default_debian_13",
   "Fedora 39": "default_fedora_39",
   "Fedora 40": "default_fedora_40",
-  "Freebsd 13": "default_freebsd_13_zfs",
-  "Freebsd 14": "default_freebsd_14_zfs",
+  "FreeBSD 13": "default_freebsd_13_zfs",
+  "FreeBSD 14": "default_freebsd_14_zfs",
   "Kali": "default_kali",
-  "Openbsd 7": "default_openbsd_7",
+  "OpenBSD 7": "default_openbsd_7",
   "Rocky 8": "default_rocky_8",
   "Rocky 9": "default_rocky_9",
+  "Rocky 10": "default_rocky_10",
   "Ubuntu 20": "default_ubuntu_20",
   "Ubuntu 22": "default_ubuntu_22",
   "Ubuntu 24": "default_ubuntu_24",
+  "Ubuntu 25": "default_ubuntu_25",
   "Custom Rocky 8": "docker_rocky_8",
   "Custom Rocky 9": "docker_rocky_9",
+  "Custom Rocky 10": "docker_rocky_10",
   "Custom Ubuntu 20": "docker_ubuntu_20",
   "Custom Ubuntu 22": "docker_ubuntu_22",
-  "BMv2 Ubuntu 20": "attestable_bmv2_v2_ubuntu_20"
+  "Custom Ubuntu 24": "docker_ubuntu_24",
+  "Custom Ubuntu 25": "docker_ubuntu_25",
+  "DPU Ubuntu 24": "dpu_ubuntu_24",
+  "BMv2 Ubuntu 20": "attestable_bmv2_ubuntu_20"
 };
 
-const facilityPortNames = {
-  "alpha": ['RENC-Chameleon', 'RENC-GSU'],
-  "beta": ['RENC-Chameleon', 'RENC-GSU', 'UKY-AL2S'],
-  "production": [
-  "Chameleon-StarLight",
-  "Chameleon-TACC",
-  "Cloud-Facility-AWS",
-  "Cloud-Facility-Azure",
-  "Cloud-Facility-Azure-Gov",
-  "Cloud-Facility-GCP",
-  "ESnet-StarLight",
-  "Internet2-StarLight",
-  "OCT-MGHPCC",
-  "RCNF",
-  "Utah-Cloudlab-Powder",
-  "CLemson-Cloudlab"
-]};
 
-const facilityPortVlanRanges = {
-  "Chameleon-StarLight": "3300-3309",
-  "Chameleon-TACC": "3210-3499",
-  "Cloud-Facility-AWS": "####-####",
-  "Cloud-Facility-Azure": "####-####",
-  "Cloud-Facility-Azure-Gov": "####-####",
-  "Cloud-Facility-GCP": "####-####",
-  "ESnet-StarLight": "3737-3739",
-  "Internet2-StarLight": "3727-3729",
-  "OCT-MGHPCC": "3110-3119",
-  "RCNF": "3741-3751",
-  "Utah-Cloudlab-Powder": "2100-3499",
-  "CLemson-Cloudlab": "1000-2599",
-  "RENC-GSU": "1000",
-  "RENC-Chameleon": "2000-2001",
-  "UKY-AL2S": "852-855"
-};
-
-const siteFacilityPortPairing = {
-  "STAR": ["Chameleon-StarLight", "ESnet-StarLight", "Internet2-StarLight"],
-  "TACC": ["Chameleon-TACC"],
-  "AWS": ["Cloud-Facility-AWS"],
-  "Azure": ["Cloud-Facility-Azure"],
-  "Azure-Gov": ["Cloud-Facility-Azure-Gov"],
-  "GCP": ["Cloud-Facility-GCP"],
-  "WASH": ["RCNF"],
-  "UTAH": ["Utah-Cloudlab-Powder"],
-  "CLEM": ["CLemson-Cloudlab"],
-  "RENC": ["RENC-GSU", "RENC-Chameleon"],
-  "UKY": ["UKY-AL2S"],
-  "MASS": ["OCT-MGHPCC"]
-};
-
-export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFacilityAdd, onSwitchAdd }) {
+export default function SideNodes({ resources, nodes, projectTags, facilityPorts, onVMAdd, onFacilityAdd, onSwitchAdd }) {
   const [selectedSite, setSelectedSite] = useState({ status: "" });
   const [selectedSiteOption, setSelectedSiteOption] = useState({});
   const [nodeName, setNodeName] = useState("");
@@ -126,19 +83,21 @@ export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFa
   }
 
   const getFacilityPortNames = () => {
-    const tags = projectTags;
     const fpNames = [];
-    for (const tag of tags) {
+    for (const tag of projectTags) {
       if (tag === "Net.AllFacilityPorts") {
-        const portalType = checkPortalType(window.location.href);
-        return facilityPortNames[portalType];
+        return (facilityPorts || []).map(fp => fp.name);
       }
       if (tag.includes("Net.FacilityPort")) {
         fpNames.push(tag.slice(17));
       }
     }
-
     return fpNames;
+  }
+
+  const getFacilityPortVlanRange = (name) => {
+    const fp = (facilityPorts || []).find(fp => fp.name === name);
+    return fp && fp.vlan_range && fp.vlan_range.length > 0 ? fp.vlan_range[0] : "";
   }
 
   const handleSliceComponentAdd = (component) => {
@@ -291,13 +250,19 @@ export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFa
     validator.validateVMNodeComponents(selectedSiteOption.value, nodeName, nodes, core, ram, disk, nodeComponents, BootScript);
   } else if (nodeType === "Facility") {
     validationResult = selectedSiteOption &&
-    validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, facilityPortVlanRanges[nodeName])
+    validator.validateFPNode(selectedSiteOption.value, nodeName, bandwidth, vlan, getFacilityPortVlanRange(nodeName))
   } else if (nodeType === "Switch") {
     validationResult = selectedSiteOption &&
     validator.validateSwitchNode(selectedSiteOption.value, nodeName, nodes);
   }
 
   const availableFPs = getFacilityPortNames();
+
+  const siteFPs = selectedSiteOption?.value
+    ? [...new Set(availableFPs.filter(name =>
+        (facilityPorts || []).some(fp => fp.name === name && fp.site === selectedSiteOption.value)
+      ))]
+    : [...new Set(availableFPs)];
 
   const renderTooltip = (id, content) => (
     <Tooltip id={id}>
@@ -417,16 +382,20 @@ export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFa
                     id="componentSelect"
                     value={nodeName}
                     onChange={handleFPNameChange}
+                    disabled={selectedSiteOption?.value && siteFPs.length === 0}
                   >
                     <option value="">Choose...</option>
                     {
-                       availableFPs.length > 0 && availableFPs.map((name, i) => {
-                        return (
-                          <option value={name} key={`fp-name-${i}`}>{name}</option>
-                        )
-                      })
+                      siteFPs.map((name, i) => (
+                        <option value={name} key={`fp-name-${i}`}>{name}</option>
+                      ))
                     }
                   </select>
+                  {selectedSiteOption?.value && siteFPs.length === 0 && (
+                    <div className="my-2 sm-alert">
+                      No facility ports are available at {selectedSiteOption.value} for this project.
+                    </div>
+                  )}
                 </div>
               }
             </div>
@@ -449,7 +418,7 @@ export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFa
                 </div>
                 <div className="form-group slice-builder-form-group col-md-8">
                   <label htmlFor="inputVlan" className="slice-builder-label">
-                    VLAN (Range: {facilityPortVlanRanges[nodeName] })
+                    VLAN (Range: {getFacilityPortVlanRange(nodeName)})
                   </label>
                   <input type="text" className="form-control form-control-sm" id="inputVlan"
                     value={vlan} onChange={handleVlanChange}/>
@@ -571,7 +540,7 @@ export default function SideNodes({ resources, nodes, projectTags, onVMAdd, onFa
             className="btn btn-sm btn-success mb-2"
             type="button"
             onClick={() => handleAddNode()}
-            disabled={!(selectedSiteOption && selectedSiteOption.value) || nodeName === "" || !validationResult.isValid}
+            disabled={!(selectedSiteOption && selectedSiteOption.value) || nodeName === "" || !validationResult.isValid || (nodeType === "Facility" && siteFPs.length === 0)}
           >
             Add Node
           </button>

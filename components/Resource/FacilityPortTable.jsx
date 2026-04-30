@@ -1,29 +1,30 @@
 import React from "react";
 import Table from "../common/Table";
-import CopyButton from "../common/CopyButton";
 
 const columns = [
   {
-    content: (fp) => (<span className="font-monospace">
-      <CopyButton
-        id={fp.name}
-        text=""
-        showCopiedValue={true}
-        btnStyle={"btn btn-sm me-2 btn-outline-primary"}
-      />
-      {fp.name}
-    </span>),
+    content: (fp) => <span className="font-monospace">{fp.name}</span>,
     path: "name",
     label: "Name",
   },
   {
-    content: (fp) => (<span className="font-monospace">{fp.site}</span>),
+    content: (fp) => <span className="font-monospace">{fp.site}</span>,
     path: "site",
     label: "Site",
   },
   {
+    content: (fp) => <span className="font-monospace">{fp.port}</span>,
+    path: "port",
+    label: "Port",
+  },
+  {
+    content: (fp) => <span className="font-monospace">{fp.switchPath}</span>,
+    path: "switchPath",
+    label: "Switch",
+  },
+  {
     content: (fp) => (
-      <div className="w-50">
+      <div>
         {
           fp.vlan_range && fp.vlan_range.length > 0 &&
           fp.vlan_range.map((range, index) =>
@@ -37,9 +38,7 @@ const columns = [
         }
         {
           !fp.vlan_range && fp.vlan &&
-          <span
-            className="font-monospace badge bg-primary me-1"
-          >
+          <span className="font-monospace badge bg-primary me-1">
             {fp.vlan}
           </span>
         }
@@ -50,7 +49,7 @@ const columns = [
   },
   {
     content: (fp) => (
-      <div className="w-25">
+      <div>
         {
           fp.allocated_vlan_range && fp.allocated_vlan_range.length > 0 &&
           fp.allocated_vlan_range.map((range, index) =>
@@ -65,12 +64,10 @@ const columns = [
       </div>
     ),
     path: "allocated_vlan_range",
-    label: "Allocated VLAN Range"
+    label: "Allocated VLANs"
   },
   {
-    content: (fp) => (
-      <span className="font-monospace">{fp.description}</span>
-    ),
+    content: (fp) => <span className="font-monospace">{fp.description}</span>,
     path: "description",
     label: "Description"
   }
@@ -96,7 +93,7 @@ const FacilityPortTable = ({ facilityPorts, totalCount, onChange, value, sortCol
           </div>
         </div>
       </div>
-      <div className="px-2 pb-1">
+      <div className="px-2 pb-1" style={{ overflowX: "auto" }}>
         <Table
           columns={columns}
           data={facilityPorts}

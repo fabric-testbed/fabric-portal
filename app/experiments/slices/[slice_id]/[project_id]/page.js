@@ -56,6 +56,7 @@ function SliceViewer() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [spinnerText, setSpinnerText] = useState("");
   const [ephemeralKey, setEphemeralKey] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchSlice = async () => {
@@ -188,6 +189,8 @@ function SliceViewer() {
           data={selectedData}
           ephemeralKey={ephemeralKey}
           onGenerateEphemeralKey={generateEphemeralKey}
+          show={showModal}
+          onHide={() => setShowModal(false)}
         />
         {
           showSpinner &&
@@ -284,6 +287,7 @@ function SliceViewer() {
                   clearSelectedData={() => clearSelectedData()}
                   onLeaseEndChange={handleLeaseEndChange}
                   onSliceExtend={handleSliceExtend}
+                  onOpenModal={() => setShowModal(true)}
                 />
                 </div>
               }

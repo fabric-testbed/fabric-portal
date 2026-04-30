@@ -1,141 +1,105 @@
-const getSiteColor = (status) => {
-  if (status === "Active") {
-    // Color: "primary" for "active" sites
+const getSiteColor = (state) => {
+  if (state === "Active") {
     return "#5798bc";
-  } else if (status === "Maint") {
-    // Color: "warning" for "maintenance" sites
+  } else if (state === "Maint") {
     return "#e94948";
-  } else if (status === "PreMaint" || status === "PartMaint") {
+  } else if (state === "PreMaint" || state === "PartMaint") {
     return "#ff8542";
   } else {
-    // Color: "secondary" for "down" sites
     return "#838385";
   }
 }
 
+const componentTypePrefixes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA"];
+
 export default function parseSites(data, acronymToShortName) {
-  let abqm_elements = JSON.parse(data.model);
-  const nodes = abqm_elements.nodes;
-  const links = abqm_elements.edges || abqm_elements.links || [];
+  const sites = data.sites || [];
   const parsedSites = [];
   const siteNames = [];
   const siteAcronyms = [];
   const siteColorMapping = {};
 
-  nodes.forEach(node => {
-    if (node.Class === "CompositeNode") {
-      const site = {};
-      site.id = node.id;
-      site.nodeId = node.NodeID;
-      site.name = node.Name;
-      site.location = node.Location;
-      site.ptp = node.Flags && JSON.parse(node.Flags).ptp;
-      // site.location = JSON.parse(node.Location)["postal"];
-      /************ retrieve site status in site node. ************/
-      const maintenance = JSON.parse(node.MaintenanceInfo);
-      if (Object.keys(maintenance).length === 1) {
-        // the site is active or the maintenance is at site level
-        site.status = maintenance[node.Name];
-        site.workers = [];
-      } else {
-        const workers = [];
-        let status = "PreMaint";
-        // the site is in partial maintenance state
-        // 1 or more workers are in maintenance
-        for (const [key, value] of Object.entries(maintenance)) {
-          if (key !== node.Name) {
-            workers.push({ [key]: value });
-          }
-          // if all workers are in PreMaint state, then PreMaint as the site state
-          // if a Maint worker exists, mark the site as in Maint too
-          if (value.state === "Maint") {
-            status = "PartMaint";
-          }
-        // the maintenance is at worker level
-        site.status = {
-          state: status,
-          deadline: null,
-          expected_end: null
-        }
-        site.workers = workers;
-        }
-      }
+  sites.forEach(site => {
+    const parsed = {};
+    parsed.name = site.name;
+    parsed.location = site.address;
+    parsed.coordinates = site.location;
+    parsed.ptp = site.ptp_capable;
+    parsed.status = { state: site.state, deadline: null, expected_end: null };
+    parsed.workers = [];
 
-      /************ retrieve site capacity in site node. ************/ 
-      const siteCapacityTypes = {
-        "CPU": "cpu",
-        "Core": "core",
-        "Disk": "disk",
-        "RAM": "ram",
-        "Unit": "unit",
-      }
+    // Core / Disk / RAM capacities
+    parsed.totalCore = site.cores_capacity || 0;
+    parsed.allocatedCore = site.cores_allocated || 0;
+    parsed.freeCore = site.cores_available || 0;
+    parsed.totalDisk = site.disk_capacity || 0;
+    parsed.allocatedDisk = site.disk_allocated || 0;
+    parsed.freeDisk = site.disk_available || 0;
+    parsed.totalRAM = site.ram_capacity || 0;
+    parsed.allocatedRAM = site.ram_allocated || 0;
+    parsed.freeRAM = site.ram_available || 0;
 
-      site.capacities = node.Capacities ? JSON.parse(node.Capacities) : {};
-      site.allocatedCapacities = node.CapacityAllocations ? JSON.parse(node.CapacityAllocations) : {};
-
-      for (const property in siteCapacityTypes) {
-        site[`total${property}`] = site.capacities[siteCapacityTypes[property]] || 0;
-        site[`allocated${property}`] = site.allocatedCapacities[siteCapacityTypes[property]] || 0;
-        site[`free${property}`] = site[`total${property}`] - site[`allocated${property}`];
-      }
-
-      /************ retrieve site component capacity by links. ************/ 
-      const componentTypes = ["GPU", "NVME", "SmartNIC", "SharedNIC", "FPGA", "Switch"];
-
-      // initiate site component properties to prevent undefined error.
-      for (const type of componentTypes) {
-        site[`total${type}`] = 0;
-        site[`allocated${type}`] = 0;
-        site[`free${type}`] = 0;
-        site[type] = []; // models for a type of component
-      }
-
-      // find site components.
-      links.forEach(link => {
-        if (link.source === site.id && link.Class === "has") {
-          // calculate component units based on target component type
-          const component = nodes.find(node => node.id === link.target);
-          component.capacities = component.Capacities ? JSON.parse(component.Capacities) : {};
-          component.allocatedCapacities = component.CapacityAllocations ? JSON.parse(component.CapacityAllocations) : {};
-
-          for (const type of componentTypes) {
-            if (component.Type === type) {
-              site[`total${type}`] += component.capacities.unit || 0;
-              site[`allocated${type}`] += component.allocatedCapacities.unit || 0;
-              site[type].push({
-                "model": component.Model,
-                "unit": component.capacities.unit || 0, 
-                "allocatedUnit": component.allocatedCapacities.unit || 0
-              })
-            } 
-          }
-        }
-      })
-
-      for (const type of componentTypes) {
-        site[`free${type}`] = site[`total${type}`] - site[`allocated${type}`];
-      }
-
-      parsedSites.push(site);
-      
-      try {
-        siteColorMapping[site.name] = getSiteColor(site.status.state);
-      } catch(err) {
-        console.log(`This site cannot be parsed correctly: ${site}`);
-      }
-
-      siteNames.push(acronymToShortName[site.name]);
-      siteAcronyms.push(site.name);
+    // Initialize component type buckets
+    for (const type of componentTypePrefixes) {
+      parsed[`total${type}`] = 0;
+      parsed[`allocated${type}`] = 0;
+      parsed[`free${type}`] = 0;
+      parsed[type] = [];
     }
-  })
+    parsed.totalSwitch = 0;
+    parsed.allocatedSwitch = 0;
+    parsed.freeSwitch = 0;
+    parsed.Switch = [];
 
+    // Map components dict (keyed by model name) to type buckets
+    const components = site.components || {};
+    for (const [model, counts] of Object.entries(components)) {
+      for (const type of componentTypePrefixes) {
+        if (model.startsWith(type)) {
+          parsed[`total${type}`] += counts.capacity || 0;
+          parsed[`allocated${type}`] += counts.allocated || 0;
+          parsed[type].push({
+            model,
+            unit: counts.capacity || 0,
+            allocatedUnit: counts.allocated || 0
+          });
+          break;
+        }
+      }
+    }
 
-  const parsedObj = {
-    "parsedSites": parsedSites.sort(),
-    "siteNames": siteNames,
-    "siteColorMapping": siteColorMapping,
-    "siteAcronyms": siteAcronyms
+    for (const type of componentTypePrefixes) {
+      parsed[`free${type}`] = parsed[`total${type}`] - parsed[`allocated${type}`];
+    }
+
+    // P4 switches
+    for (const sw of (site.p4_switches || [])) {
+      parsed.totalSwitch += sw.capacity || 0;
+      parsed.allocatedSwitch += sw.allocated || 0;
+      parsed.Switch.push({
+        model: sw.name,
+        unit: sw.capacity || 0,
+        allocatedUnit: sw.allocated || 0
+      });
+    }
+    parsed.freeSwitch = parsed.totalSwitch - parsed.allocatedSwitch;
+
+    parsedSites.push(parsed);
+
+    try {
+      siteColorMapping[site.name] = getSiteColor(site.state);
+    } catch (err) {
+      console.log(`This site cannot be parsed correctly: ${site.name}`);
+    }
+
+    siteNames.push(acronymToShortName[site.name]);
+    siteAcronyms.push(site.name);
+  });
+
+  return {
+    parsedSites: parsedSites.sort(),
+    siteNames,
+    siteColorMapping,
+    siteAcronyms
   };
-
-  return parsedObj;
 }

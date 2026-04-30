@@ -16,7 +16,7 @@ function sshCommandforSwitch(managementIp) {
   return `ssh -F <path to SSH config file> -i <path to private sliver key> fabric@${managementIp}`;
 }
 
-export default function DetailForm({ slice, data, leaseStartTime, leaseEndTime, onLeaseEndChange, onSliceExtend, clearSelectedData }) {
+export default function DetailForm({ slice, data, leaseStartTime, leaseEndTime, onLeaseEndChange, onSliceExtend, clearSelectedData, onOpenModal }) {
   const renderTooltip = (id, content) => (
     <Tooltip id={id}>{content}</Tooltip>
   );
@@ -105,7 +105,7 @@ export default function DetailForm({ slice, data, leaseStartTime, leaseEndTime, 
                         <HelpCircle className="mx-2" size={16} />
                       </a>
                       {slice.state === "StableOK" && (
-                        <button type="button" className="btn btn-sm btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#TerminalFormModalCenter">
+                        <button type="button" className="btn btn-sm btn-outline-primary ms-2" onClick={onOpenModal}>
                           Connect to VM
                         </button>
                       )}
@@ -152,7 +152,7 @@ export default function DetailForm({ slice, data, leaseStartTime, leaseEndTime, 
                   <div className="mb-2">
                     <label className="form-label">SSH Command
                       {slice.state === "StableOK" && (
-                        <button type="button" className="btn btn-sm btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#TerminalFormModalCenter">
+                        <button type="button" className="btn btn-sm btn-outline-primary ms-2" onClick={onOpenModal}>
                           Connect to Switch
                         </button>
                       )}

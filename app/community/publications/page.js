@@ -6,7 +6,7 @@ const Publications = () => {
   return (
     <div className="container static-page pb-5">
       <img src="/imgs/network-bg.svg" alt={`static page background`} className="static-page-bg"/>
-      <h1 className="mb-4 mt-4">Cite FABRIC</h1>
+      <h1 className="mb-4">Cite FABRIC</h1>
       <p>
         When publishing a paper that utilized FABRIC to obtain the results please cite the following paper:
       </p>

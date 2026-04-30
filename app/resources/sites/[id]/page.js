@@ -67,8 +67,8 @@ class SiteDetailPage extends React.Component {
 
   async componentDidMount() {
     try {
-      const { data: res1 } = await getResources(1);
-      const { data: res2 } = await getResources(2);
+      const { data: res1 } = await getResources(1, null, null, "sites");
+      const { data: res2 } = await getResources(2, null, null, "hosts");
       const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = this.props.siteId;
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
@@ -112,8 +112,8 @@ class SiteDetailPage extends React.Component {
     const { startTime, endTime } = this.state;
     this.setState({ showSpinner: true, spinnerMessage: "Loading resources..." });
     try {
-      const { data: res1 } = await getResources(1, startTime, endTime);
-      const { data: res2 } = await getResources(2, startTime, endTime);
+      const { data: res1 } = await getResources(1, startTime, endTime, "sites");
+      const { data: res2 } = await getResources(2, startTime, endTime, "hosts");
       const parsedObj1 = sitesParser(res1.data[0], sitesNameMapping.acronymToShortName);
       const siteName = this.props.siteId;
       const parsedObj2 = siteParserLevel2(res2.data[0], siteName, sitesNameMapping.acronymToShortName);
@@ -231,7 +231,7 @@ class SiteDetailPage extends React.Component {
              data.location && getSessionItem("userStatus") === "active" &&
              <tr>
                <th>Rack Location</th>
-               <td>{ JSON.parse(data.location).postal }</td>
+               <td>{ data.location }</td>
              </tr>
            }
            {
@@ -277,14 +277,14 @@ class SiteDetailPage extends React.Component {
          {
           getSessionItem("userStatus") !== "active" &&
           <div
-            className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center" 
+            className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center"
             role="alert"
           >
             Please log in to access resources filtering by time frame.
           </div>
          }
          {
-          getSessionItem("userStatus") === "active" && 
+          getSessionItem("userStatus") === "active" &&
           <div className="d-flex flex-row justify-content-center align-items-center">
             <span className="me-2">From</span>
             <CalendarDateTime

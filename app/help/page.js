@@ -19,7 +19,7 @@ export default function Help() {
         className="static-page-bg"
       />
 
-      <h1 className="mb-4 mt-4">Getting Help in FABRIC</h1>
+      <h1 className="mb-4">Getting Help in FABRIC</h1>
 
       <div className="alert alert-primary mt-3" role="alert">
         <div className="my-2">

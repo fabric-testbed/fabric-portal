@@ -1,26 +1,25 @@
-export default function parseSites(data, descriptions) {
-  let abqm_elements = JSON.parse(data.model);
-  const nodes = abqm_elements.nodes;
-  const facility_ports = nodes.filter(n => n.Type === "FacilityPort");
-  const facilities = nodes.filter(n => n.Type === "Facility");
-  const parsedFacilityPorts = [];
-  let site = "";
-  for (const fp of facility_ports) {
-    for (const f of facilities) {
-      if (f["NodeID"].concat("-int") === fp["NodeID"]) {
-        site = f.Site;
-      }
-    }
-    parsedFacilityPorts.push({
-      "id": fp["id"],
-      "name": fp["Name"],
-      "vlan_range": JSON.parse(fp["Labels"]).vlan_range,
-      "vlan": JSON.parse(fp["Labels"]).vlan,
-      "allocated_vlan_range": fp["LabelAllocations"] ? JSON.parse(fp["LabelAllocations"]).vlan : [],
-      "site": site ? site : fp["Name"].split('-')[0],
-      "description": descriptions[fp["Name"].replace(/-int$/, '')] ? descriptions[fp["Name"].replace(/-int$/, '')].description : ""
-    });
-  }
+export default function parseFacilityPorts(data, descriptions) {
+  const facilityPorts = data.facility_ports || [];
 
-  return parsedFacilityPorts;
+  return facilityPorts.map(fp => {
+    // Parse vlans string: "['3110-3119', '3221-3999']" → ["3110-3119", "3221-3999"]
+    let vlan_range = [];
+    try {
+      vlan_range = JSON.parse(fp.vlans.replace(/'/g, '"'));
+    } catch {
+      vlan_range = [];
+    }
+
+    const descKey = fp.name;
+    return {
+      name: fp.name,
+      port: `${fp.name}-${fp.port}`,
+      switchPath: fp.switch || "",
+      vlan_range,
+      vlan: vlan_range,
+      allocated_vlan_range: [],
+      site: fp.site,
+      description: descriptions[descKey] ? descriptions[descKey].description : ""
+    };
+  });
 }

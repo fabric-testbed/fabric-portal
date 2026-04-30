@@ -42,7 +42,7 @@ function Resources() {
   useEffect(() => {
     const fetchResources = async () => {
       try {
-        const { data: res } = await getResources(1);
+        const { data: res } = await getResources(1, null, null, "sites,facility_ports");
         const parsedSites = sitesParser(res.data[0], sitesNameMapping.acronymToShortName, "level1");
         const parsedFacilityPorts = facilityPortsParser(res.data[0], facilityPortDescription);
         setResources(parsedSites.parsedSites);
@@ -219,7 +219,7 @@ function Resources() {
 
     const paginatedFacilityPorts = paginate(sorted, currentPage2, 10);
 
-    return { totalFPCount: filtered.length, facilityPortData: paginatedFacilityPorts.map((p) => p.name.endsWith("-int") ? {...p, name: p.name.slice(0, -4) } : p )};
+    return { totalFPCount: filtered.length, facilityPortData: paginatedFacilityPorts };
   };
 
   const { totalCount, siteData } = getSiteData();

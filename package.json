@@ -1,6 +1,6 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.17",
+  "version": "1.9.18",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -56,6 +56,7 @@
     "eslint-config-next": "16.1.6"
   },
   "overrides": {
-    "d3-color": "^3.1.0"
+    "d3-color": "^3.1.0",
+    "postcss": ">=8.5.10"
   }
 }

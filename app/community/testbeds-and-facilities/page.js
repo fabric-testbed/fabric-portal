@@ -104,7 +104,7 @@ const Testbeds = () => {
     <div className="container pb-5 static-page">
       <img src="/imgs/network-bg.svg" alt={`static page background`} className="static-page-bg"/>
       <div className="static-page-content">
-        <h1 className="mb-4 mt-4">Participating Testbeds and Facilities</h1>
+        <h1 className="mb-4">Participating Testbeds and Facilities</h1>
         <p>
           FABRIC is a testbed of testbeds, helping users experiment using multiple testbeds. Like Lego blocks, users can get accounts on several testbeds and build an experiment using all of them.
         </p>

@@ -3,11 +3,9 @@ import React from "react";
 import Link from "next/link";
 import checkPortalType from "@/lib/permissions/checkPortalType";
 import { default as portalData } from "../../services/portalData.json";
-import { usePathname } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 
 export default function Step1() {
-  const pathname = usePathname();
   return (
     <div>
       <div>
@@ -30,7 +28,7 @@ export default function Step1() {
       <br></br>
       (<b>Note</b>: depending on the speed of your Internet connection the list may take a moment to populate beyond the default ORCID).
       </div>
-        <a href={portalData.selfEnrollRequest.links[checkPortalType(pathname)]}>
+        <a href={portalData.selfEnrollRequest.links[checkPortalType(window.location.href)]}>
           <button
             className="btn btn-primary mt-2"
           >

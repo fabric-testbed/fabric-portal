@@ -6,7 +6,7 @@ const NewsletterSignup = () => {
   return (
     <div className="container static-page pb-5">
       <img src={BackgroundImage} alt={`static page background`} className="static-page-bg"/>
-      <h1 className="mb-4 mt-4">Get Involved with FABRIC</h1>
+      <h1 className="mb-4">Get Involved with FABRIC</h1>
       <h2 className="text-primary mb-4">
         Newsletter Signup
       </h2>
