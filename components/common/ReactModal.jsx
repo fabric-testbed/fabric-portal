@@ -1,17 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import Link from "next/link";
 import Parser from "html-react-parser";
-
-// Prevent SSR for react-bootstrap components
-const Modal = dynamic(() => import("react-bootstrap/Modal"), {
-  ssr: false,
-});
-const Button = dynamic(() => import("react-bootstrap/Button"), {
-  ssr: false,
-});
 
 function ReactModal({ title, content }) {
   const [show, setShow] = useState(true);

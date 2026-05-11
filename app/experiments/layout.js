@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "@/lib/auth/AuthContext";
 import SideNav from "@/components/common/SideNav";
+import SpinnerWithText from "@/components/common/SpinnerWithText";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -35,7 +36,7 @@ export default function ExperimentsLayout({ children }) {
         pathname.startsWith("/experiments/ssh-keys") ||
         pathname.startsWith("/experiments/artifacts");
       if (isProtectedSubPath) {
-        window.location.href = "/login?url=" + encodeURIComponent(window.location.origin + "/");
+        router.push("/login-required");
       }
     }
   }, [userStatus, isLoading, pathname, router]);
@@ -50,7 +51,22 @@ export default function ExperimentsLayout({ children }) {
     pathname.startsWith("/experiments/jupyter-no-access");
 
   if (isSubPage) {
+    if (isLoading) {
+      return (
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+          <SpinnerWithText text="Loading..." />
+        </div>
+      );
+    }
     return <>{children}</>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+        <SpinnerWithText text="Loading..." />
+      </div>
+    );
   }
 
   const sideNavItems = navItems.map((item) => ({

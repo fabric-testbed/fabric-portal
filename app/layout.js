@@ -17,9 +17,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ClientOnlyLoader>
-          {children}
-        </ClientOnlyLoader>
+        <div className="main-content">
+          <ClientOnlyLoader>
+            {children}
+          </ClientOnlyLoader>
+        </div>
         <Footer />
       </body>
     </html>

@@ -24,9 +24,9 @@ axios.interceptors.response.use(null, (error) => {
       const details = errors?.[0]?.details || "";
 
       if (details.includes("Login required")) {
-        // Session expired — clear cached state then redirect to login
+        // Session expired — clear cached state then redirect to login-required
         clearSession();
-        window.location.href = "/login?url=" + encodeURIComponent(window.location.origin + "/");
+        window.location.href = "/login-required";
       }
 
       // All other 401s (enrollment required, credential manager, etc.) are
