@@ -1,11 +1,11 @@
 {
   "name": "fabric-portal",
-  "version": "1.9.19",
+  "version": "1.9.20",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@snf/qa-bot-core": "^0.2.5",
-    "axios": "^1.13.4",
+    "axios": "^1.16.1",
     "bootstrap": "^5.3.7",
     "cytoscape": "^3.30.4",
     "cytoscape-compound-drag-and-drop": "^1.0.0",
@@ -21,7 +21,7 @@
     "lucide-react": "^0.511.0",
     "moment": "^2.29.4",
     "multiselect-react-dropdown": "^2.0.25",
-    "next": "^15.5.11",
+    "next": "^15.5.18",
     "next-hubspot": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "^18.3.1",
@@ -57,6 +57,7 @@
   },
   "overrides": {
     "d3-color": "^3.1.0",
-    "postcss": ">=8.5.10"
+    "postcss": ">=8.5.10",
+    "uuid": "^14.0.0"
   }
 }

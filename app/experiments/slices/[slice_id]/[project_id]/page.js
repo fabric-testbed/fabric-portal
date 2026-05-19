@@ -71,7 +71,11 @@ function SliceViewer() {
         setElements(sliceParser(sliceData["model"]));
         setSlice(sliceData);
         setLeaseStartTime(sliceData.lease_start_time);
-        setLeaseEndTime(sliceData.lease_end_time);
+        const rawLeaseEnd = moment(sliceData.lease_end_time).format();
+        const leDate = rawLeaseEnd.substring(0, 10);
+        const leTime = rawLeaseEnd.substring(11, 19);
+        const leOffset = rawLeaseEnd.substring(19).replace(":", "");
+        setLeaseEndTime([leDate, leTime, leOffset].join(" "));
         setErrors(sliceErrorParser(sliceData["model"]));
         setShowSpinner(false);
         setSpinnerText("");
@@ -154,7 +158,11 @@ function SliceViewer() {
       setSpinnerText("");
     } catch (err) {
       toast.error("Failed to renew the slice.");
-      setLeaseEndTime(slice.lease_end_time);
+      const rawReset = moment(slice.lease_end_time).format();
+      const rlDate = rawReset.substring(0, 10);
+      const rlTime = rawReset.substring(11, 19);
+      const rlOffset = rawReset.substring(19).replace(":", "");
+      setLeaseEndTime([rlDate, rlTime, rlOffset].join(" "));
       setShowSpinner(false);
       setSpinnerText("");
     }

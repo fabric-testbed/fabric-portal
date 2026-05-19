@@ -30,7 +30,9 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
 
     const refreshLayout = _.debounce(() => {
       const layout = {name: 'fcose', infinite: false};
-      cyRef.current.layout(layout).run()
+      const l = cyRef.current.layout(layout);
+      l.one('layoutstop', () => { cyRef.current.fit(undefined, 40); });
+      l.run();
     }, SELECT_THRESHOLD);
 
     refreshLayout();
@@ -53,7 +55,9 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
 
     const refreshLayout = _.debounce(() => {
       const layout = {name: 'fcose', infinite: false};
-      cyRef.current.layout(layout).run()
+      const l = cyRef.current.layout(layout);
+      l.one('layoutstop', () => { cyRef.current.fit(undefined, 40); });
+      l.run();
     }, SELECT_THRESHOLD);
 
     refreshLayout();
@@ -132,6 +136,8 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
         elements={elements}
         zoom={defaultSize.zoom}
         pan={ { x: 350, y: 275 } }
+        minZoom={0.1}
+        maxZoom={2}
         wheelSensitivity={0.1}
         style={{ width: w, height: h }}
         cy={(cy) => {cyRef.current = setCytoscape(cy)}}

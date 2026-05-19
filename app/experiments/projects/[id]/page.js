@@ -23,6 +23,7 @@ import ProjectMemberships from "@/components/Project/Personnel/ProjectMembership
 import ProjectProfile from "@/components/Project/ProjectProfile";
 import ProjectBasicInfoTable from "@/components/Project/ProjectBasicInfoTable";
 import PersistentStorage from "@/components/Project/Storage/PersistentStorage";
+import Quotas from "@/components/Project/Quotas/Quotas";
 import NewProjectForm from "@/components/Project/NewProjectForm";
 import Slices from "@/components/Experiment/Slices";
 
@@ -187,6 +188,7 @@ export default function ProjectFormPage() {
     { name: "SLICES", active: false },
     { name: "PERSISTENT STORAGE", active: false },
     { name: "PROJECT ARTIFACTS", active: false },
+    // { name: "SERVICE UNIT", active: false }, // hidden pending policy design
   ]);
   const [owners, setOwners] = useState([]);
   const [members, setMembers] = useState([]);
@@ -263,6 +265,7 @@ export default function ProjectFormPage() {
         "#slices": 2,
         "#volumes": 3,
         "#artifacts": 4,
+        // "#quotas": 5, // hidden pending policy design
       };
 
       if (hash && activeMap[hash] !== undefined) {
@@ -273,6 +276,7 @@ export default function ProjectFormPage() {
           { name: "SLICES", active: hash === "#slices" },
           { name: "PERSISTENT STORAGE", active: hash === "#volumes" },
           { name: "PROJECT ARTIFACTS", active: hash === "#artifacts" },
+          // { name: "SERVICE UNIT", active: hash === "#quotas" }, // hidden pending policy design
         ]);
       }
 
@@ -381,7 +385,7 @@ export default function ProjectFormPage() {
   };
 
   const handleSideNavChange = (newIndex) => {
-    const indexToHash = { 0: "#info", 1: "#memberships", 2: "#slices", 3: "#volumes", 4: "#artifacts" };
+    const indexToHash = { 0: "#info", 1: "#memberships", 2: "#slices", 3: "#volumes", 4: "#artifacts", 5: "#quotas" };
     setActiveIndex(newIndex);
     setSideNavItems([
       { name: "BASIC INFORMATION", active: newIndex === 0 },
@@ -389,6 +393,7 @@ export default function ProjectFormPage() {
       { name: "SLICES", active: newIndex === 2 },
       { name: "PERSISTENT STORAGE", active: newIndex === 3 },
       { name: "PROJECT ARTIFACTS", active: newIndex === 4 },
+      // { name: "SERVICE UNIT", active: newIndex === 5 }, // hidden pending policy design
     ]);
     router.push(`/experiments/projects/${projectId}${indexToHash[newIndex]}`);
   };
@@ -873,6 +878,15 @@ export default function ProjectFormPage() {
             )}
           </div>
         </div>
+        {/* Service Unit tab hidden pending policy design
+        <div className={`${activeIndex === 5 ? "col-9 d-flex flex-row" : "d-none"}`}>
+          <div className="w-100">
+            {activeIndex === 5 && (
+              <Quotas projectId={data.uuid} canManage={globalRoles.isFacilityOperator || globalRoles.isProjectAdmin} />
+            )}
+          </div>
+        </div>
+        */}
       </div>
     </div>
   );

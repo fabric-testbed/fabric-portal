@@ -1261,6 +1261,18 @@ ul,
   padding: 0.15rem 0.5rem;
 }
 
+.resource-detail-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.resource-detail-table th,
+.resource-detail-table td {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal !important;
+}
+
 .resource-detail-table td {
   padding: 0.5rem 0.75rem !important;
 }
