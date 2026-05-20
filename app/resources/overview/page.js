@@ -86,7 +86,7 @@ function Resources() {
      name: "FABRIC Testbed",
    };
 
-   _.each(resources, (resource) => {
+   _.each(resources.filter(r => r.name !== "EDUKY"), (resource) => {
      _.each(selectedLabels, (label) => sum[label] = (sum[label] || 0) + resource[label]);
    });
 
@@ -238,11 +238,13 @@ function Resources() {
     <div className="container">
       <h1>Resources</h1>
       <div label="Testbed Resources">
-          <div className="row my-2">
-            <TestbedTable sum={getResourcesSum(resources)} />
+          <div className="row g-0 mb-2">
+            <div className="col-12 bg-info rounded">
+              <TestbedTable sum={getResourcesSum(resources)} />
+            </div>
           </div>
-          <div className="row my-2">
-            <div className="col-9">
+          <div className="row g-0 mt-4 mb-4 align-items-stretch">
+            <div className="col-9 pe-3">
               <Topomap
                 onNodeChange={handleActiveDetailChange}
                 // onLinkChange={handleLinkDetailChange}
@@ -268,7 +270,7 @@ function Resources() {
               }
             </div>
           </div>
-          <div className="row my-2">
+          <div className="row g-0 mt-0 mb-2">
             <div className="col-12 bg-info rounded">
               <SummaryTable
                 totalCount={totalCount}
@@ -306,7 +308,7 @@ function Resources() {
               />
             </div>
           </div> */}
-          <div className="row mt-4">
+          <div className="row g-0 mt-4">
             <div className="col-12 bg-info rounded">
               <FacilityPortTable
                 facilityPorts={facilityPortData}

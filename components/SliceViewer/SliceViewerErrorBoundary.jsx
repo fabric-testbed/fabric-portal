@@ -192,7 +192,7 @@ export default class SliceViewerErrorBoundary extends Component {
                           {
                             slice.state !=="StableOK" &&
                             <div className="slice-form-element">
-                              {utcToLocalTimeParser(leaseEndTime)}
+                              {leaseEndTime ? leaseEndTime.substring(0, 19) : ""}
                             </div>
                           }
                           {
@@ -200,14 +200,16 @@ export default class SliceViewerErrorBoundary extends Component {
                             <div>
                               <div className="slice-form-element mb-1">
                                 <CalendarDateTime
+                                  key={`sliceViewerCalendar-${leaseEndTime}`}
                                   id="sliceViewerCalendar"
                                   name="sliceViewerCalendar"
                                   offset={-1}
                                   onTimeChange={this.props.onLeaseEndChange}
-                                  time={new Date(utcToLocalTimeParser(leaseEndTime).replace(/-/g, "/"))}
+                                  time={new Date(leaseEndTime.substring(0, 19).replace(/-/g, "/"))}
                                 />
                               </div>
                               <button
+                                type="button"
                                 className="btn btn-sm btn-outline-primary mt-2 me-3"
                                 onClick={this.props.onSliceExtend}
                               >

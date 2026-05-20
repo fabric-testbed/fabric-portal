@@ -52,7 +52,7 @@ export function deleteSlice(id) {
 }
 
 export function extendSlice(id, lease_end_time) {
-  return http.post(`${apiEndpoint}/renew/${id}?lease_end_time=${lease_end_time}`, {});
+  return http.post(`${apiEndpoint}/renew/${id}?lease_end_time=${encodeURIComponent(lease_end_time)}`, {});
 }
 
 export function installEphemeralKey(sliverID, public_openssh) {

@@ -80,45 +80,98 @@ function Home() {
       <div className="home-colored-bg">
         <DynamicMetrics />
       </div>
-      <div className="home-lower row my-5">
+      <div className="home-lower row my-5 align-items-stretch">
         <div className="col-xl-9 col-lg-12">
           <div className="card homepage-card my-4">
             <div className="card-header text-center bg-primary-light">
               <b>Resources</b>
             </div>
             <div className="card-body">
-              <div className="row my-2">
-                <div className="col-xl-9 col-lg-8 col-sm-12 mb-4">
-                  <Topomap
-                    onNodeChange={handleActiveDetailChange}
-                    // onLinkChange={handleLinkDetailChange}
-                    sites={siteNames}
-                    siteColorMapping={siteColorMapping}
-                  />
-                </div>
-                <div className="col-xl-3 col-lg-4 col-sm-12">
-                  {
-                    activeDetailName !== "" &&
-                      <NodeDetailTable
-                        name={activeDetailName}
-                        resource={getResourceByName(resources, sitesNameMapping.shortNameToAcronym[activeDetailName])}
-                        parent="homepage"
-                      />
-                  }
-                 {
-                    activeFrom !== "" && activeTo !== "" &&
-                    <LinkDetailTable
-                      from={activeFrom}
-                      to={activeTo}
-                      data={linkData}
-                    />
-                  }
-                </div>
-              </div>
+              <Topomap
+                onNodeChange={handleActiveDetailChange}
+                sites={siteNames}
+                siteColorMapping={siteColorMapping}
+                mapHeight={430}
+              />
+              {activeDetailName !== "" && (() => {
+                const resource = getResourceByName(resources, sitesNameMapping.shortNameToAcronym[activeDetailName]);
+                const acronym = sitesNameMapping.shortNameToAcronym[activeDetailName] || activeDetailName.toUpperCase();
+                const isDown = !resource || resource.status?.state === "Maint";
+                const DEV_SITES = new Set(["LBNL", "UKY", "RENC"]);
+                const isDevSite = DEV_SITES.has(acronym);
+                const cols = [
+                  { label: "Cores",     fk: "freeCore",      tk: "totalCore"      },
+                  { label: "Disk (GB)", fk: "freeDisk",      tk: "totalDisk"      },
+                  { label: "RAM (GB)",  fk: "freeRAM",       tk: "totalRAM"       },
+                  { label: "GPU",       fk: "freeGPU",       tk: "totalGPU"       },
+                  { label: "NVME",      fk: "freeNVME",      tk: "totalNVME"      },
+                  { label: "SmartNIC",  fk: "freeSmartNIC",  tk: "totalSmartNIC"  },
+                  { label: "SharedNIC", fk: "freeSharedNIC", tk: "totalSharedNIC" },
+                  { label: "FPGA",      fk: "freeFPGA",      tk: "totalFPGA"      },
+                  { label: "Switch",    fk: "freeSwitch",    tk: "totalSwitch"    },
+                ];
+                const thStyle = { padding: "0.4rem 0.4rem", fontSize: "0.68rem", fontWeight: 600, color: "#838385", textTransform: "uppercase", letterSpacing: "0.04em", textAlign: "center" };
+                return (
+                  <div style={{ marginTop: "0.75rem", borderRadius: "0.5rem", border: "1px solid #a8c9dc", overflow: "hidden", background: "white" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                      <thead>
+                        <tr style={{ borderBottom: "1px solid #a8c9dc" }}>
+                          <th style={{ padding: "0.4rem 0.75rem", fontSize: "0.68rem", fontWeight: 600, color: "#838385", textTransform: "uppercase", letterSpacing: "0.04em" }}>Site</th>
+                          {isDown
+                            ? <>
+                                <th style={thStyle}>Status</th>
+                                <th style={thStyle}></th>
+                              </>
+                            : cols.map(({ label }) => (
+                                <th key={label} style={thStyle}>{label}</th>
+                              ))
+                          }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style={{ padding: "0.5rem 0.75rem", verticalAlign: "middle" }}>
+                            {resource
+                              ? <Link href={`/resources/sites/${resource.name}`} style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.04em", textDecoration: "none" }}>{acronym}</Link>
+                              : <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.04em" }}>{acronym}</span>
+                            }
+                          </td>
+                          {isDown
+                            ? <>
+                                <td style={{ padding: "0.5rem 0.75rem", verticalAlign: "middle", textAlign: "center" }}>
+                                  <span style={{ background: "#374955", color: "white", padding: "0.15rem 0.5rem", fontSize: "0.65rem", fontWeight: 700, borderRadius: "0.25rem", textTransform: "uppercase", letterSpacing: "0.04em" }}>Down</span>
+                                </td>
+                                <td style={{ padding: "0.5rem 0.75rem", verticalAlign: "middle", textAlign: "right" }}>
+                                  {isDevSite && (
+                                    <span style={{ fontSize: "0.8rem", color: "#838385", lineHeight: 1.4 }}>
+                                      This is a development site and not available for general use.
+                                    </span>
+                                  )}
+                                </td>
+                              </>
+                            : cols.map(({ label, fk, tk }) => {
+                                const free = resource[fk], total = resource[tk];
+                                const pct = total > 0 ? Math.round((free / total) * 100) : 0;
+                                return (
+                                  <td key={label} style={{ padding: "0.5rem 0.4rem", verticalAlign: "middle" }}>
+                                    <div style={{ position: "relative", height: "1.4rem", borderRadius: "0.25rem", background: "#e9ecef", overflow: "visible" }}>
+                                      {total > 0 && <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, background: "#5798bc", width: `${Math.min(pct, 100)}%`, borderRadius: "0.25rem" }} />}
+                                      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "0.62rem", fontFamily: "monospace", color: "#374955", whiteSpace: "nowrap", zIndex: 1 }}>{free}/{total}</span>
+                                    </div>
+                                  </td>
+                                );
+                              })
+                          }
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
-        <div className="col-xl-3 col-lg-12">
+        <div className="col-xl-3 col-lg-12" style={{ position: "relative" }}>
           <FacilityUpdates />
         </div>
       </div>

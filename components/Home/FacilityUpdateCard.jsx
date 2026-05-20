@@ -4,11 +4,11 @@ import SpinnerWithText from "../common/SpinnerWithText";
 
 const FacilityUpdateCard = ({ showSpinner, updates }) => {
   return (
-    <div className="homepage-card card my-4">
+    <div className="homepage-card card" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
       <div className="card-header text-center">
         <b>Facility Updates</b>
       </div>
-      <div className="card-body py-2">
+      <div className="card-body py-2" style={{ flex: 1, overflowY: "auto" }}>
         {
           showSpinner && <SpinnerWithText text={"Loading updates..."} />
         }

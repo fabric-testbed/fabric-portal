@@ -27,7 +27,7 @@ function FacilityUpdates() {
   }, []);
 
   return (
-    <div>
+    <div style={{ position: "absolute", top: "1.5rem", bottom: "1.5rem", left: "0.75rem", right: "0.75rem", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {
         updates.length === 0 ? <div className="mt-3 ms-4">No Facility Update available.</div> :
         <FacilityUpdateCard showSpinner={showSpinner} updates={updates} />

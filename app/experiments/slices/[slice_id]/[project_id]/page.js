@@ -70,12 +70,16 @@ function SliceViewer() {
         const sliceData = res.data[0];
         setElements(sliceParser(sliceData["model"]));
         setSlice(sliceData);
-        setLeaseStartTime(sliceData.lease_start_time);
-        const rawLeaseEnd = moment(sliceData.lease_end_time).format();
-        const leDate = rawLeaseEnd.substring(0, 10);
-        const leTime = rawLeaseEnd.substring(11, 19);
-        const leOffset = rawLeaseEnd.substring(19).replace(":", "");
-        setLeaseEndTime([leDate, leTime, leOffset].join(" "));
+        setLeaseStartTime(sliceData.lease_start_time ?? "");
+        if (sliceData.lease_end_time) {
+          const rawLeaseEnd = moment(sliceData.lease_end_time).format();
+          if (rawLeaseEnd !== "Invalid date") {
+            const leDate = rawLeaseEnd.substring(0, 10);
+            const leTime = rawLeaseEnd.substring(11, 19);
+            const leOffset = rawLeaseEnd.substring(19).replace(":", "");
+            setLeaseEndTime([leDate, leTime, leOffset].join(" "));
+          }
+        }
         setErrors(sliceErrorParser(sliceData["model"]));
         setShowSpinner(false);
         setSpinnerText("");
