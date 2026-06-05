@@ -124,6 +124,7 @@ const Topomap = props => {
                 key={name}
                 coordinates={topomap.coordinates[name]}
                 onMouseEnter={() => handleNodeHover(name)}
+                onClick={() => handleNodeHover(name)}
               >
                 <circle r={r * 2.2} fill={color} fillOpacity={isSelected ? 0.25 : 0.15} />
                 <circle r={isSelected ? r * 1.4 : r} fill={color} style={{ cursor: "pointer" }} />
@@ -160,7 +161,7 @@ const Topomap = props => {
       </div>
 
       {/* Legend */}
-      <div style={{ position: "absolute", bottom: "1rem", left: "1rem", display: "flex", flexDirection: "column", gap: "0.375rem", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(4px)", borderRadius: "0.5rem", padding: "0.5rem 0.75rem", border: "1px solid #a8c9dc", fontSize: "0.72rem", color: "#374955" }}>
+      <div style={{ position: "absolute", bottom: "1rem", left: "1rem", display: "flex", flexDirection: "column", gap: "0.375rem", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", borderRadius: "0.5rem", padding: "0.5rem 0.75rem", border: "1px solid #a8c9dc", fontSize: "0.72rem", color: "#374955" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <span style={{ display: "inline-block", width: "1.5rem", height: "2px", background: "#F5C518" }} />
           <span>Super Core</span>

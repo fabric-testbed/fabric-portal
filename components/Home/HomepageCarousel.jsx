@@ -49,7 +49,7 @@ function HomepageCarousel() {
       {
         sortedItems && sortedItems.length > 0 && sortedItems.map((item, index) =>
           <Carousel.Item key={`homepage-carousel-${index}`}>
-            <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100"/>
+            <img src={item.background_image_url} alt={`FABRIC Portal Homepage Slide ${index}`} className="d-block w-100 carousel-bg-image"/>
             <Carousel.Caption>
               <h3>{item.title}</h3>
               <div className="homepage-carousel-content">
@@ -67,6 +67,24 @@ function HomepageCarousel() {
                 </a>
               )}
             </Carousel.Caption>
+            {/* Mobile-only caption shown below the image */}
+            <div className="carousel-caption-mobile">
+              <h3>{item.title}</h3>
+              <div className="homepage-carousel-content">
+                {item.content ? Parser(item.content) : null}
+              </div>
+              {item.link && item.button && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-warning btn-sm"
+                  role="button"
+                >
+                  {item.button}
+                </a>
+              )}
+            </div>
           </Carousel.Item>
       )}
     </Carousel>

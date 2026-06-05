@@ -38,8 +38,8 @@ export default function TerminalFormModal({ data, ephemeralKey, onGenerateEpheme
       username: getSessionItem("bastionLogin"),
       privatekey: bastionPrivateKey,
     };
-    const cred_string = btoa(JSON.stringify(credentials));
-    const bast_string = btoa(JSON.stringify(bastion_credentials));
+    const cred_string = btoa(unescape(encodeURIComponent(JSON.stringify(credentials))));
+    const bast_string = btoa(unescape(encodeURIComponent(JSON.stringify(bastion_credentials))));
     document.cookie = `credentials=${cred_string};domain=${domain};SameSite=Strict;path=/`;
     document.cookie = `bastion-credentials=${bast_string};domain=${domain};SameSite=Strict;path=/`;
     setShowSpinner(true);

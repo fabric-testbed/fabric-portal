@@ -180,7 +180,7 @@ function NewSliceForm() {
       "edges": sliceLinks,
     };
 
-    localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON));
+    try { localStorage.setItem("sliceDraft", JSON.stringify(sliceJSON)); } catch { /* Safari private mode */ }
 
     if (toastMessage === "withMessage") {
       // Toast a successly saved message
@@ -206,7 +206,7 @@ function NewSliceForm() {
   };
 
   const handleUseDraft = () => {
-    const sliceDraft = JSON.parse(localStorage.getItem("sliceDraft"));
+    const sliceDraft = JSON.parse((() => { try { return localStorage.getItem("sliceDraft"); } catch { return null; } })());
     setSliceNodes(sliceDraft.nodes);
     setSliceLinks(sliceDraft.links);
     setGraphID(sliceDraft.nodes.length > 0 ? sliceDraft.nodes[0].GraphID : "");
@@ -450,26 +450,26 @@ function NewSliceForm() {
       {
         !showSliceSpinner &&
         <div>
-          <div className="d-flex flex-row justify-content-between mt-2">
-            <div className="align-self-start d-flex flex-row">
-              <h2 className="my-2">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-2 mb-2">
+            <div className="d-flex flex-row align-items-center">
+              <h2 className="mb-0">
                 Slice Builder
               </h2>
               <a
                 href={portalData.learnArticles.guideToSliceBuilder}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-3"
+                className="ms-2"
               >
-                <HelpCircle size={16} className="ms-1" />
+                <HelpCircle size={16} className="me-1" />
                 User Guide
               </a>
             </div>
-            <Link href={`/experiments/projects/${params.project_id}`} className="align-self-end">
+            <Link href={`/experiments/projects/${params.project_id}`}>
               <button
-                className="btn btn-sm btn-outline-primary my-3"
+                className="btn btn-sm btn-outline-primary"
               >
-                <LogIn size={14} className="me-2" />
+                <LogIn size={14} className="me-1" />
                 Back to Project
               </button>
             </Link>

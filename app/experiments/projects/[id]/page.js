@@ -508,12 +508,12 @@ export default function ProjectFormPage() {
           <div className="skeleton-block" style={{ width: "160px", height: "2rem" }} />
         </div>
         <div className="row mt-4">
-          <div className="col-3">
+          <div className="col-12 col-md-3">
             {[80, 90, 75, 85, 70].map((w, i) => (
               <div key={i} className="skeleton-text mb-4" style={{ width: `${w}%` }} />
             ))}
           </div>
-          <div className="col-9">
+          <div className="col-12 col-md-9">
             <div className="skeleton-text mb-1" style={{ width: "12%" }} />
             <div className="skeleton-block mb-4" style={{ height: "2.25rem" }} />
             <div className="skeleton-text mb-1" style={{ width: "18%" }} />
@@ -577,41 +577,41 @@ export default function ProjectFormPage() {
   // 3. Show detailed project form for PC/PO/PM or FO.
   return (
     <div className="container">
-      <div className="d-flex flex-row justify-content-between">
-        <h1>{originalProject.name}</h1>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+        <h1 className="mb-0">{originalProject.name}</h1>
         {canUpdate ? (
-          <div className="d-flex flex-row justify-content-end">
+          <div className="d-flex flex-wrap gap-2">
             <button
               type="button"
-              className="btn btn-sm btn-outline-success me-2 my-3"
+              className="btn btn-sm btn-outline-success"
               onClick={() =>
                 window.open(`${portalData.jiraLinks.projectPermissionRequest}?${urlSuffix}`, "_blank")
               }
             >
-              <LogIn size={14} className="me-2" />
+              <LogIn size={14} className="me-1" />
               Request Permissions
             </button>
             <button
               type="button"
-              className="btn btn-sm btn-outline-success me-2 my-3"
+              className="btn btn-sm btn-outline-success"
               onClick={() =>
                 window.open(`${portalData.jiraLinks.storageRequest}?${urlSuffix}`, "_blank")
               }
             >
-              <LogIn size={14} className="me-2" />
+              <LogIn size={14} className="me-1" />
               Request Storage
             </button>
             <Link href="/experiments/projects">
-              <button className="btn btn-sm btn-outline-primary my-3">
-                <LogIn size={14} className="me-2" />
+              <button className="btn btn-sm btn-outline-primary">
+                <LogIn size={14} className="me-1" />
                 Back to Project List
               </button>
             </Link>
           </div>
         ) : (
           <Link href="/experiments/projects">
-            <button className="btn btn-sm btn-outline-primary my-3">
-              <LogIn size={14} className="me-2" />
+            <button className="btn btn-sm btn-outline-primary">
+              <LogIn size={14} className="me-1" />
               Back to Project List
             </button>
           </Link>
@@ -669,10 +669,10 @@ export default function ProjectFormPage() {
         </div>
       )}
       <div className="row mt-4">
-        <div className="col-3">
+        <div className="col-12 col-md-3">
           <SideNav items={SideNavItems} handleChange={handleSideNavChange} />
         </div>
-        <div className={`${activeIndex === 0 ? "col-9" : "d-none"}`}>
+        <div className={`${activeIndex === 0 ? "col-12 col-md-9" : "d-none"}`}>
           {(globalRoles.isFacilityOperator || globalRoles.isProjectAdmin) && (
             <div
               className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center"
@@ -834,7 +834,7 @@ export default function ProjectFormPage() {
             </div>
           )}
         </div>
-        <div className={`${activeIndex === 1 ? "col-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 1 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             <ProjectMemberships
               key={membershipsKey}
@@ -852,7 +852,7 @@ export default function ProjectFormPage() {
             />
           </div>
         </div>
-        <div className={`${activeIndex === 2 ? "col-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 2 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 2 && (
               <Slices
@@ -864,14 +864,14 @@ export default function ProjectFormPage() {
             )}
           </div>
         </div>
-        <div className={`${activeIndex === 3 ? "col-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 3 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 3 && (
               <PersistentStorage parent="Projects" projectId={data.uuid} />
             )}
           </div>
         </div>
-        <div className={`${activeIndex === 4 ? "col-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 4 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 4 && (
               <ArtifactListPage parent="Projects" projectId={data.uuid} />

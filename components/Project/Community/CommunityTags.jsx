@@ -39,8 +39,8 @@ const CommunityTags = ({ communities, canUpdate, onCommunityUpdate }) => {
       <Form>
       {
         canUpdate &&
-          <Row>
-            <Col xs={4}>
+          <Row className="gy-2">
+            <Col xs={12} md={4}>
               <Form.Group controlId="communityAgencySelect">
                 <Form.Label>Science Domain</Form.Label>
                 <Form.Select
@@ -58,7 +58,7 @@ const CommunityTags = ({ communities, canUpdate, onCommunityUpdate }) => {
                 </Form.Select>
               </Form.Group>
             </Col>
-            <Col xs={7}>
+            <Col xs={12} md={6}>
               <Form.Group controlId="subdomainSelect">
                 <Form.Label>Science Domain</Form.Label>
                 <Form.Select
@@ -78,7 +78,7 @@ const CommunityTags = ({ communities, canUpdate, onCommunityUpdate }) => {
                 </Form.Select>
               </Form.Group>
             </Col>
-            <Col xs={1} className="d-flex align-items-end">
+            <Col xs={6} md={2} className="d-flex align-items-end">
               <Button variant="outline-success" type="button" onClick={handleCommunityAdd}>
                 Add
               </Button>

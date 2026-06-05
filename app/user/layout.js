@@ -26,10 +26,10 @@ function UserPageLayout({ children, sideNavItems, handleChange }) {
     <Container>
       <SpinnerFullPage text="Refreshing user roles..." showSpinner={showFullPageSpinner} />
       <Row>
-        <Col xs={3}>
+        <Col xs={12} md={3}>
           <SideNav items={sideNavItems} handleChange={handleChange} />
         </Col>
-        <Col xs={9}>{children}</Col>
+        <Col xs={12} md={9}>{children}</Col>
       </Row>
     </Container>
   );

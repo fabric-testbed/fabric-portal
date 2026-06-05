@@ -76,7 +76,7 @@ export default function Help() {
         </ul>
       </div>
 
-      <div className="row mt-5">
+      <div className="row mt-5 gy-3">
         <div className="col-sm-6">
           <div className="card contact-us-card">
             <div className="card-header d-flex justify-content-center">
@@ -115,12 +115,12 @@ export default function Help() {
                 </a>
                 .
               </p>
-              <div>
+              <div className="d-flex flex-wrap gap-2 justify-content-center">
                 <a
                   href={portalData.knowledgeBaseLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-outline-primary me-4"
+                  className="btn btn-outline-primary"
                 >
                   <LogIn className="me-2" size={16} />
                   Knowledge Base
@@ -171,7 +171,7 @@ export default function Help() {
           </div>
         </div>
       </div>
-      <div className="row my-5">
+      <div className="row my-5 gy-3">
         <div className="col-sm-6">
           <div className="card contact-us-card">
             <div className="card-header d-flex justify-content-center">

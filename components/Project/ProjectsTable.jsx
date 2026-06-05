@@ -114,7 +114,7 @@ function ProjectsTable({ projects, isPublic }) {
       columns={isPublic ? columns["public"] : columns["private"]}
       data={projects}
       tStyle={"table-md"}
-      tTableStyle={{ tableLayout: "fixed", width: "100%" }}
+      tTableStyle={{ minWidth: "600px" }}
     />
   );
 }

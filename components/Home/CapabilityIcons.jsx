@@ -40,7 +40,7 @@ const CapabilityIcons = () => {
 
   return (
     <div className="mt-3 mb-5 d-flex flex-column align-items-center">
-      <div className="d-flex flex-row justify-content-center align-items-center">
+      <div className="d-flex flex-row justify-content-center align-items-center flex-wrap">
         {
           capabilities.map((capability, index) => {
               return (

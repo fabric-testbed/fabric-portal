@@ -55,26 +55,24 @@ const columns = [
 function SummaryTable({ resources, sortColumn, onSort, totalCount, value, onChange, onFilter }) {
   return (
     <div>
-      <div className="d-flex flex-row justify-content-between p-2">
+      <div className="d-flex flex-column flex-sm-row justify-content-between p-2 gap-2">
         <div className="fw-bold font-monospace d-flex align-items-center">
           Sites ({totalCount})
         </div>
-        <div className="d-flex flex-row w-50 justify-content-end">
-          <div className="d-flex flex-row w-50">
-            <input
-              type="text"
-              name="query"
-              className="form-control form-control form-control-sm align-self-end"
-              placeholder={"Search by site name"}
-              value={value}
-              onChange={(e) => onChange(e.currentTarget.value)}
-            />
-          </div>
+        <div>
+          <input
+            type="text"
+            name="query"
+            className="form-control form-control-sm"
+            placeholder={"Search by site name"}
+            value={value}
+            onChange={(e) => onChange(e.currentTarget.value)}
+          />
         </div>
       </div>
-      <div className="mx-2 mb-2 p-2 pb-1 d-flex flex-row justify-content-between bg-light rounded font-monospace">
-        <div className="w-50">Component Available:</div>
-        <div className="w-75 d-flex flex-row justify-content-between">
+      <div className="mx-2 mb-2 p-2 pb-1 bg-light rounded font-monospace">
+        <div className="mb-1">Component Available:</div>
+        <div className="d-flex flex-wrap gap-2">
           <div className="form-check form-check-inline">
             <input className="form-check-input" type="checkbox" id="GPUCheckbox" value="GPU" onChange={(e) => onFilter(e)}/>
             <label className="form-check-label" htmlFor="GPUCheckbox">GPU</label>

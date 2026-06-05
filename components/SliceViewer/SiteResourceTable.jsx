@@ -1,5 +1,6 @@
 const SiteResourceTable = props => {
   return (
+    <div className="table-responsive">
     <table className="table table-sm">
       <thead>
         <tr>
@@ -28,6 +29,7 @@ const SiteResourceTable = props => {
         </tr>
       </tbody>
     </table>
+    </div>
   );
 }
 

@@ -42,13 +42,13 @@ function ProjectProfile({ project }) {
 
   return (
     <div>
-      <div className="d-flex flex-row justify-content-between">
-        <h1>{project.name}</h1>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+        <h1 className="mb-0">{project.name}</h1>
         <Link href="/experiments/projects">
           <button
-            className="btn btn-sm btn-outline-primary my-3"
+            className="btn btn-sm btn-outline-primary"
           >
-            <LogIn className="me-2" size={16} />
+            <LogIn className="me-1" size={16} />
             Back to Project List
           </button>
         </Link>

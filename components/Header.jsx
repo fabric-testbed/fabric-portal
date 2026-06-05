@@ -16,6 +16,11 @@ import { Search } from "lucide-react";
 
 const Header = (props) => {
   const router = useRouter();
+
+  const handleLogout = () => {
+    clearSession();
+    window.location.replace('/logout?url=' + encodeURIComponent(window.location.origin));
+  };
   const navItems = (props.globalRoles && props.globalRoles.isActiveUser && !props.globalRoles.isJupterhubUser) ? [
     { 
       name: "Resources",
@@ -318,8 +323,8 @@ const Header = (props) => {
           </button>
          </form>
       }
-      { props.userStatus !== "active" ? 
-        <form className="form-inline">
+      { props.userStatus !== "active" ?
+        <form className="form-inline d-flex flex-row align-items-center">
           <button
             type="button"
             onClick={handleLogin}
@@ -335,9 +340,19 @@ const Header = (props) => {
             </button>
           </Link>
         </form> :
-        <form className="form-inline">
-          <ProfileModal userName={props.userName} userEmail={props.userEmail} />
-        </form>
+        <>
+          <form className="form-inline d-none d-lg-block">
+            <ProfileModal userName={props.userName} userEmail={props.userEmail} />
+          </form>
+          <div className="d-lg-none d-flex flex-row align-items-center gap-2 px-3 py-2">
+            <Link href="/user" className="btn btn-sm btn-outline-primary">
+              User Profile
+            </Link>
+            <button className="btn btn-sm btn-outline-success" onClick={handleLogout}>
+              Log out
+            </button>
+          </div>
+        </>
       }
       </Navbar.Collapse>
   </Navbar>

@@ -56,11 +56,11 @@ const Leadership = () => {
       {
         leadershipMembers.map((member, index) => 
         <div className="row mb-5" key={`fabric-Leadership-member-${index}`}>
-          <div className="col-3">
+          <div className="col-12 col-md-3 text-center text-md-start mb-3 mb-md-0">
             <img src={`/imgs/leadership/${member.photo}.jpg`} alt={`FABRIC Leadership ${member.name}`} className="member-photo-round"/>
           </div>
-          <div className="col-9">
-            <h3 className="text-primary mb-3">
+          <div className="col-12 col-md-9">
+            <h3 className="text-primary mb-3 text-center text-md-start">
               {member.name}
             </h3>
             <p>
@@ -74,11 +74,11 @@ const Leadership = () => {
         Past Collaborators
       </h2>
       <div className="row my-5">
-          <div className="col-3">
+          <div className="col-12 col-md-3 text-center text-md-start mb-3 mb-md-0">
             <img src="/imgs/leadership/ilya-baldin.jpg" alt={`FABRIC Leadership Ilya`} className="member-photo-round"/>
           </div>
-          <div className="col-9">
-            <h3 className="text-primary mb-3">
+          <div className="col-12 col-md-9">
+            <h3 className="text-primary mb-3 text-center text-md-start">
               Ilya Baldin
             </h3>
             <p>

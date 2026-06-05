@@ -45,16 +45,21 @@ function CheckCookies() {
     }
   }, []);
 
-  const copyCookie = useCallback((e) => {
+  const copyCookie = useCallback(async (e) => {
     e.preventDefault();
-    const textarea = document.getElementById("checkCookieContent");
-    if (textarea) {
-      textarea.select();
-      document.execCommand("copy");
-      e.target.focus();
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(cookie, null, 4));
       setCopySuccess(true);
+    } catch {
+      // Fallback for environments without clipboard API
+      const textarea = document.getElementById("checkCookieContent");
+      if (textarea) {
+        textarea.select();
+        document.execCommand("copy");
+        setCopySuccess(true);
+      }
     }
-  }, []);
+  }, [cookie]);
 
   const isUnauthorized =
     !userStatus || userStatus === "unauthorized";

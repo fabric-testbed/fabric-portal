@@ -72,7 +72,7 @@ function SliceViewer() {
         setSlice(sliceData);
         setLeaseStartTime(sliceData.lease_start_time ?? "");
         if (sliceData.lease_end_time) {
-          const rawLeaseEnd = moment(sliceData.lease_end_time).format();
+          const rawLeaseEnd = moment(sliceData.lease_end_time, ["YYYY-MM-DD HH:mm:ss ZZ", "YYYY-MM-DD HH:mm:ss Z", moment.ISO_8601]).format();
           if (rawLeaseEnd !== "Invalid date") {
             const leDate = rawLeaseEnd.substring(0, 10);
             const leTime = rawLeaseEnd.substring(11, 19);
@@ -162,7 +162,7 @@ function SliceViewer() {
       setSpinnerText("");
     } catch (err) {
       toast.error("Failed to renew the slice.");
-      const rawReset = moment(slice.lease_end_time).format();
+      const rawReset = moment(slice.lease_end_time, ["YYYY-MM-DD HH:mm:ss ZZ", "YYYY-MM-DD HH:mm:ss Z", moment.ISO_8601]).format();
       const rlDate = rawReset.substring(0, 10);
       const rlTime = rawReset.substring(11, 19);
       const rlOffset = rawReset.substring(19).replace(":", "");
@@ -213,9 +213,9 @@ function SliceViewer() {
         {
           showSlice &&
           <div className="mb-4 slice-viewer-container">
-            <div className="d-flex flex-row justify-content-between align-items-center mt-2">
-              <div className="d-flex flex-row justify-content-between align-items-center">
-                <h2 className="me-3">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-2 mb-3">
+              <div className="d-flex flex-row align-items-center flex-wrap">
+                <h2 className="me-3 mb-0">
                   <b>{slice.name}</b>
                   <span className={`badge bg-${stateColors[slice.state]} ms-2`}>
                     {slice.state}
@@ -230,15 +230,7 @@ function SliceViewer() {
                   </a>
                 </h2>
               </div>
-              <div className="d-flex flex-row justify-content-between align-items-center">
-                  {/* <Link href={`/slice-editor/${slice.slice_id}/${slice.project_id}`}>
-                    <button
-                      className="btn btn-sm btn-outline-primary my-3 me-3"
-                    >
-                      <ArrowLeftRight size={14} className="me-2" />
-                      Edit Mode
-                    </button>
-                  </Link> */}
+              <div className="d-flex flex-wrap gap-2 align-items-center">
                 {
                   ["StableOK", "ModifyOK", "StableError", "ModifyError", "AllocatedOK", " AllocatedError"].includes(slice.state) &&
                   <DeleteModal
@@ -250,9 +242,9 @@ function SliceViewer() {
                 }
                 <Link href="/experiments/slices">
                   <button
-                    className="btn btn-sm btn-outline-primary my-3 ms-3"
+                    className="btn btn-sm btn-outline-primary"
                   >
-                    <LogIn size={14} className="me-2" />
+                    <LogIn size={14} className="me-1" />
                     Back to Slice List
                   </button>
                 </Link>
@@ -273,7 +265,7 @@ function SliceViewer() {
                 errors={errors}
               />
             }
-            <div className="d-flex flex-row align-items-stretch" style={{ height: "calc(100vh - 200px)" }}>
+            <div className="d-flex flex-column flex-lg-row align-items-stretch" style={{ minHeight: "calc(100vh - 200px)" }}>
               {
                 elements.length > 0 &&
                 <Graph
@@ -288,7 +280,7 @@ function SliceViewer() {
               }
               {
                 elements.length > 0 &&
-                <div className="slice-detail-panel" style={{ width: "380px", flexShrink: 0, height: "100%", marginLeft: "1rem" }}>
+                <div className="slice-detail-panel" style={{ width: "380px", flexShrink: 0, marginLeft: "1rem" }}>
                 <DetailForm
                   slice={slice}
                   leaseStartTime={leaseStartTime}

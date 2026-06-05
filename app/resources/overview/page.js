@@ -239,19 +239,19 @@ function Resources() {
       <h1>Resources</h1>
       <div label="Testbed Resources">
           <div className="row g-0 mb-2">
-            <div className="col-12 bg-info rounded">
+            <div className="col-12 bg-info rounded table-responsive">
               <TestbedTable sum={getResourcesSum(resources)} />
             </div>
           </div>
           <div className="row g-0 mt-4 mb-4 align-items-stretch">
-            <div className="col-9 pe-3">
+            <div className="col-12 col-lg-9 pe-lg-3 mb-3 mb-lg-0">
               <Topomap
                 onNodeChange={handleActiveDetailChange}
                 // onLinkChange={handleLinkDetailChange}
                 siteColorMapping={siteColorMapping}
               />
             </div>
-            <div className="col-3">
+            <div className="col-12 col-lg-3">
               {
                 activeDetailName !== "" &&
                 <NodeDetailTable
@@ -271,7 +271,7 @@ function Resources() {
             </div>
           </div>
           <div className="row g-0 mt-0 mb-2">
-            <div className="col-12 bg-info rounded">
+            <div className="col-12 bg-info rounded table-responsive">
               <SummaryTable
                 totalCount={totalCount}
                 resources={siteData}
@@ -309,7 +309,7 @@ function Resources() {
             </div>
           </div> */}
           <div className="row g-0 mt-4">
-            <div className="col-12 bg-info rounded">
+            <div className="col-12 bg-info rounded table-responsive">
               <FacilityPortTable
                 facilityPorts={facilityPortData}
                 totalCount={totalFPCount}

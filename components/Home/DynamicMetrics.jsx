@@ -82,7 +82,7 @@ function DynamicMetrics() {
 
   return (
     <div className="w-100 home-metrix">
-      <div className="d-flex flex-column align-item-center justify-content-center px-5 mb-2">
+      <div className="d-flex flex-column align-item-center justify-content-center px-3 px-md-5 mb-2">
         <div className="me-5 align-self-center">
           <img
             src="/imgs/logos/fabric-logo-without-text.png"
@@ -97,12 +97,12 @@ function DynamicMetrics() {
           </h2>
         </div>
       </div>
-      <div className="row w-100">
+      <div className="row w-100 justify-content-center">
         {
           metricsItems.map((i, index) => {
             return (
               <div
-                className="col d-flex flex-column align-items-center"
+                className="col-4 col-sm-4 col-md-4 col-lg mb-3 metrics-item"
                 key={`homepage-metrics-${index}`}
               >
                 <div className="hp-metrics-number">
@@ -112,7 +112,6 @@ function DynamicMetrics() {
                     formatValue={(n) => Intl.NumberFormat("en-US").format(n)}
                     style={{
                       transition: "0.8s ease-out",
-                      fontSize: 48,
                       transitionProperty: "background-color, color, opacity"
                     }}
                   />

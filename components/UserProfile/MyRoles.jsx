@@ -6,7 +6,7 @@ import { RefreshCw } from "lucide-react";
 
 function MyRoles({ user, onRoleRefresh }) {
   return (
-    <div className="col-9">
+    <div className="col-12 col-md-9">
       <div className="d-flex flex-row justify-content-start align-items-center">
         <h1>My Roles</h1>
         <button

@@ -12,6 +12,10 @@ function setCytoscape(cy){
   return cy;
 }
 
+function safeLocalStorageGet(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+
 export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, isNewSlice, onSaveJSON, onUseDraft, onSaveDraft, onClearGraph, className }) {
   const [w, setW] = useState(0);
   const [h, setH] = useState(0);
@@ -21,8 +25,15 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
   useEffect(() => {
     const measuredW = containerRef.current?.offsetWidth;
     setW(measuredW > 0 ? measuredW : window.innerWidth * defaultSize.width);
-    setH(window.innerHeight * defaultSize.height);
+    setH(Math.max(400, window.innerHeight * defaultSize.height));
     setUpListeners();
+
+    const handleResize = () => {
+      const newW = containerRef.current?.offsetWidth;
+      if (newW > 0) setW(newW);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const setUpListeners = () => {
@@ -45,7 +56,7 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
       refreshLayout();
     });
 
-    cyRef.current.on('click', 'node', (event) => {
+    cyRef.current.on('tap', 'node', (event) => {
       onNodeSelect(event.target["_private"].data);
     });
   }
@@ -79,11 +90,11 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
 
   return(
     <div className={`border${className ? ` ${className}` : ''}`} ref={containerRef}>
-      <div className="d-flex flex-row justify-content-between">
+      <div className="d-flex flex-wrap gap-1 justify-content-between p-1">
         <button onClick={resetGraph} className="btn btn-sm btn-outline-primary">
           Reset Layout
         </button>
-        <div className="d-flex flex-row-reverse">
+        <div className="d-flex flex-wrap gap-1">
           {
             isNewSlice &&
             <OverlayTrigger
@@ -91,12 +102,12 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
               delay={{ show: 100, hide: 300 }}
               overlay={renderTooltip("slice-download-tooltip", "Export the topology setup as JSON file.")}
             >
-              <button onClick={onSaveJSON} className="btn btn-sm btn-outline-primary ms-2">
+              <button onClick={onSaveJSON} className="btn btn-sm btn-outline-primary">
                 Download JSON
               </button>
             </OverlayTrigger>
           }
-          <button onClick={savePNG} className="btn btn-sm btn-outline-primary ms-2">Download PNG</button>
+          <button onClick={savePNG} className="btn btn-sm btn-outline-primary">Download PNG</button>
           {
             isNewSlice &&
             <OverlayTrigger
@@ -106,8 +117,8 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
             >
               <button
                 onClick={onUseDraft}
-                disabled={!localStorage.getItem("sliceDraft")}
-                className="btn btn-sm btn-outline-success ms-2"
+                disabled={!safeLocalStorageGet("sliceDraft")}
+                className="btn btn-sm btn-outline-success"
               >
                 Use Draft
               </button>
@@ -121,7 +132,7 @@ export default function Graph({ elements, defaultSize, onNodeSelect, sliceName, 
               overlay={renderTooltip("slice-save-draft-tooltip",
                 "Save this slice draft in your current browser. Newly saved draft will override the previous one.")}
             >
-              <button onClick={onSaveDraft} className="btn btn-sm btn-outline-success ms-2">
+              <button onClick={onSaveDraft} className="btn btn-sm btn-outline-success">
                 Save Draft
               </button>
             </OverlayTrigger>

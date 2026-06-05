@@ -160,51 +160,49 @@ function ArtifactListPage({ parent, user, projectId }) {
             <div className="d-flex flex-row-reverse">
               <span>{artifactsCount} results.</span>
             </div>
-            <table className="table table-striped">
-              <tbody>
-                {
-                 artifacts.map((item, idx) => (
-                  <tr key={idx} className="border rounded bg-light align-middle">
-                    <td className="px-3 py-2">
-                      <div className="mb-1 text-primary">
-                        <a
-                          href={artifactLinkPrefix ? `${artifactLinkPrefix}/${item.uuid}` : undefined}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-decoration-none text-primary"
-                          title={`View artifact ${item.title} details`}
-                        >
-                          {item.title}
-                        </a>
-                      </div>
-                      <div className="text-muted mb-2">{item.description_short}</div>
-                      <div className="d-flex align-items-center text-muted small">
-                        <span className="me-3">
-                          <Eye size={14} className="me-1" />
-                          {item.artifact_views}
-                        </span>
-                        <span className="me-3">
-                          <Download size={14} className="me-1" />
-                          {item.artifact_downloads_active} ({item.artifact_downloads_retired})
-                        </span>
-                        <span className="me-3">
-                          <Copy size={14} className="me-1" />
-                          {item.comments}
-                        </span>
-                        <span className="me-3">Modified at: {toLocaleTime(item.modified)}</span>
-                      </div>
-                    </td>
-                    <td className="text-end pe-4 align-middle">
-                      {item.tags.map((tag, i) => (
-                        <span key={i} className="badge bg-primary me-1 text-capitalize">
-                          {tag}
-                        </span>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="artifact-list">
+              {
+               artifacts.map((item, idx) => (
+                <div key={idx} className="artifact-card d-flex flex-column flex-md-row align-items-md-center border rounded bg-light mb-2 px-3 py-2">
+                  <div className="flex-grow-1">
+                    <div className="mb-1">
+                      <a
+                        href={artifactLinkPrefix ? `${artifactLinkPrefix}/${item.uuid}` : undefined}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-decoration-none text-primary"
+                        title={`View artifact ${item.title} details`}
+                      >
+                        {item.title}
+                      </a>
+                    </div>
+                    <div className="text-muted mb-2">{item.description_short}</div>
+                    <div className="d-flex flex-wrap align-items-center text-muted small gap-2">
+                      <span>
+                        <Eye size={14} className="me-1" />
+                        {item.artifact_views}
+                      </span>
+                      <span>
+                        <Download size={14} className="me-1" />
+                        {item.artifact_downloads_active} ({item.artifact_downloads_retired})
+                      </span>
+                      <span>
+                        <Copy size={14} className="me-1" />
+                        {item.comments}
+                      </span>
+                      <span>Modified at: {toLocaleTime(item.modified)}</span>
+                    </div>
+                  </div>
+                  <div className="d-flex flex-wrap gap-1 mt-2 mt-md-0 ms-md-3">
+                    {item.tags.map((tag, i) => (
+                      <span key={i} className="badge bg-primary text-capitalize">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
             <Pagination
               itemsCount={artifactsCount}
               pageSize={20}

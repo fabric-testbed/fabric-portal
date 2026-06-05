@@ -44,39 +44,36 @@ const Partners = () => {
   ];  
 
   return (
-    <div className="my-3 d-flex flex-column justify-content-center align-items-center">
-      <div className="my-2">
-        <span className="homepage-partner-header">Our Partners</span>
+    <div className="partners-section">
+      <div className="partners-heading">
+        <h2 className="homepage-partner-header">Our Partners</h2>
+        <p className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</p>
       </div>
-      <span className="homepage-partner-text">FABRIC is made possible by collaborations with the following organizations.</span>
-      <div className="homepage-partner-logo-containter">
+      <div className="partners-core-logos">
         <img
           src="/imgs/partners/renci.png"
           key={`partners-logo-renci`}
-          height="95"
-          className="d-inline-block align-top me-4"
-          alt=""
+          className="partner-logo-core partner-logo-lead"
+          alt="RENCI"
         />
         {
-          corePartnerLogos.map((logo, index) =>  
+          corePartnerLogos.map((logo, index) =>
             <img
               src={`/imgs/partners/${logo}`}
               key={`partners-logo-${index}`}
-              height="55"
-              className="d-inline-block align-top mx-4"
+              className="partner-logo-core"
               alt={`fabricPartnerLogo${logo}`}
             />
           )
         }
       </div>
-      <div className="mt-5 px-5">
+      <div className="partners-other-logos">
         {
-          partnerLogos.map((logo, index) =>  
+          partnerLogos.map((logo, index) =>
             <img
               key={`partner-logo-${index}`}
               src={`/imgs/partners/${logo}`}
-              height="30"
-              className="mx-4 my-3"
+              className="partner-logo-other"
               alt={`fabricPartnerLogo${logo}`}
             />
           )

@@ -276,7 +276,7 @@ function Slices(props) {
               </Link>
             }
           </div>
-          <div className="my-2 d-flex flex-row justify-content-between">
+          <div className="my-2 d-flex flex-wrap gap-2 justify-content-between align-items-center">
             <span>Showing {slicesCount} slices.</span>
             {
               props.parent === "Projects" && <Checkbox

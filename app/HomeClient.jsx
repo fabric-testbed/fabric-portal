@@ -112,8 +112,8 @@ function Home() {
                 ];
                 const thStyle = { padding: "0.4rem 0.4rem", fontSize: "0.68rem", fontWeight: 600, color: "#838385", textTransform: "uppercase", letterSpacing: "0.04em", textAlign: "center" };
                 return (
-                  <div style={{ marginTop: "0.75rem", borderRadius: "0.5rem", border: "1px solid #a8c9dc", overflow: "hidden", background: "white" }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <div style={{ marginTop: "0.75rem", borderRadius: "0.5rem", border: "1px solid #a8c9dc", overflow: "auto", background: "white", WebkitOverflowScrolling: "touch" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "600px" }}>
                       <thead>
                         <tr style={{ borderBottom: "1px solid #a8c9dc" }}>
                           <th style={{ padding: "0.4rem 0.75rem", fontSize: "0.68rem", fontWeight: 600, color: "#838385", textTransform: "uppercase", letterSpacing: "0.04em" }}>Site</th>
@@ -171,7 +171,7 @@ function Home() {
             </div>
           </div>
         </div>
-        <div className="col-xl-3 col-lg-12" style={{ position: "relative" }}>
+        <div className="col-xl-3 col-lg-12 facility-updates-wrapper">
           <FacilityUpdates />
         </div>
       </div>

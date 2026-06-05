@@ -11,7 +11,7 @@ function Footer() {
   return (
     <Container className="app-footer">
       <Row>
-        <Col>
+        <Col xs={6} md={3}>
           <ul>
             <li><b>Useful Links</b></li>
             <li>
@@ -21,7 +21,7 @@ function Footer() {
             <li><Link href="/useful-links/branding">Branding Resources</Link></li>
           </ul>
         </Col>
-        <Col>
+        <Col xs={6} md={3}>
           <ul>
             <li><b>Help &amp; Support</b></li>
             <li><a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">Knowledge Base</a></li>
@@ -36,56 +36,54 @@ function Footer() {
             </li>
           </ul>
         </Col>
-        <Col>
+        <Col xs={6} md={3}>
           <div>
             <ul>
               <li><b>Social</b></li>
               <li>
-                <div className="d-flex flex-row justify-content-between w-75 footer-social-icons">
+                <div className="d-flex flex-row gap-3 footer-social-icons">
                   <a href={portalData.fabricSocialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-                    <X size={30} className="text-black"/>
+                    <X size={24} className="text-black"/>
                   </a>
                   <a href={portalData.fabricSocialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <Github size={30} className="text-black"/>
+                    <Github size={24} className="text-black"/>
                   </a>
                   <a href={portalData.fabricSocialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <Youtube size={30} className="text-black"/>
+                    <Youtube size={24} className="text-black"/>
                   </a>
                   <a href="mailto:info@fabric-testbed.net" aria-label="Email">
-                    <Mail size={30} className="text-black"/>
+                    <Mail size={24} className="text-black"/>
                   </a>
                 </div>
               </li>
             </ul>
           </div>
         </Col>
-        <Col>
+        <Col xs={6} md={3} className="d-flex align-items-center justify-content-center">
           <img
             src="/imgs/trustedci.png"
-            width="175"
-            height="175"
-            className="d-inline-block align-top me-2"
-            alt=""
+            className="footer-trustedci-badge"
+            alt="Trusted CI"
           />
         </Col>
       </Row>
-      <Row className="mt-3">
-        <Col>
-          <ul>
-            <li><u><b>© FABRIC {new Date().getFullYear()}</b></u></li>
-          </ul>
-        </Col>
-        <Col className="d-flex flex-column align-items-center">
-          <div className="d-flex align-items-center my-4">
+      <Row className="mt-3 align-items-center">
+        <Col xs={12} md={8}>
+          <div className="d-flex align-items-center footer-nsf-row">
             <img
               src="/imgs/nsf.png"
-              width="45"
-              height="45"
-              className="d-inline-block align-top me-2"
-              alt=""
+              width="40"
+              height="40"
+              className="d-inline-block align-top me-2 flex-shrink-0"
+              alt="NSF"
             />
             <u className="text-sm-size">FABRIC is funded by NSF grants CNS-1935966, CNS-2029176, CNS-2029200, CNS-2029235, CNS-2029260, CNS-2029261 and CNS-2330891.</u>
           </div>
+        </Col>
+        <Col xs={12} md={4}>
+          <ul className="mb-0">
+            <li><u><b>© FABRIC {new Date().getFullYear()}</b></u></li>
+          </ul>
         </Col>
       </Row>
     </Container>

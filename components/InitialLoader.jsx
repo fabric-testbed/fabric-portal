@@ -14,9 +14,9 @@ export default function InitialLoader({ children, loaderData }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const checkNotExpired = (start, end) => {
-    const startUTC = start?.substring(0, 19);
+    const startUTC = start?.substring(0, 19).replace(" ", "T");
     const stillStartUTC = new Date(startUTC);
-    const endUTC = end?.substring(0, 19);
+    const endUTC = end?.substring(0, 19).replace(" ", "T");
     const stillEndUTC = new Date(endUTC);
     return stillEndUTC > new Date() && stillStartUTC < new Date();
   };

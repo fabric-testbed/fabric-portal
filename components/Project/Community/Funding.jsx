@@ -62,8 +62,8 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
       <Form>
       {
         canUpdate &&
-        <Row>
-          <Col xs={2}>
+        <Row className="gy-2">
+          <Col xs={6} md={2}>
             <Form.Group controlId="fundingAgencySelect">
               <Form.Label>Agency*</Form.Label>
               <Form.Select
@@ -83,7 +83,7 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
           </Col>
           {
             agency === "NSF" &&
-            <Col xs={3}>
+            <Col xs={6} md={3}>
               <Form.Group controlId="fundingAgencySelect">
                 <Form.Label>NSF Directorate</Form.Label>
                 <Form.Select
@@ -104,7 +104,7 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
           }
           {
             agency === "Other" &&
-            <Col xs={3}>
+            <Col xs={6} md={3}>
               <Form.Group controlId="fundingAgencySelect">
                 <Form.Label>Agency Name</Form.Label>
                 <Form.Control
@@ -115,7 +115,7 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
               </Form.Group>
             </Col>
           }
-          <Col xs={3}>
+          <Col xs={6} md={3}>
             <Form.Group controlId="fundingAgencySelect">
               <Form.Label>Award Number</Form.Label>
               <Form.Control
@@ -125,7 +125,7 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
               />
             </Form.Group>
           </Col>
-          <Col xs={3}>
+          <Col xs={6} md={3}>
             <Form.Group controlId="fundingAgencySelect">
               <Form.Label>Amount</Form.Label>
               <Form.Control
@@ -135,7 +135,7 @@ const Funding = ({ fundings, canUpdate, onFundingUpdate }) => {
               />
             </Form.Group>
           </Col>
-          <Col xs={1} className="d-flex align-items-end">
+          <Col xs={6} md={1} className="d-flex align-items-end">
             <Button
               variant="outline-success"
               type="button"

@@ -193,33 +193,33 @@ function Projects() {
   };
 
   return (
-    <div className="col-9">
-      <div className="d-flex flex-row justify-content-between">
-        <div className="d-flex flex-row">
-          <h1>Projects</h1>
+    <div className="col-12 col-md-9">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+        <div className="d-flex flex-row align-items-center">
+          <h1 className="mb-0">Projects</h1>
           <a
             href={portalData.learnArticles.guideToProjectPermissions}
             target="_blank"
             rel="noreferrer"
-            className="mt-3"
+            className="ms-2"
           >
-            <HelpCircle className="mx-2" size={16} />
+            <HelpCircle className="mx-1" size={16} />
             User Guide
           </a>
         </div>
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-wrap gap-2">
           <a
             href={portalData.jiraLinks.projectLeadRequest}
-            className="btn btn-primary my-2 me-2"
+            className="btn btn-primary btn-sm"
             target="_blank"
             rel="noreferrer"
           >
-            <LogIn className="me-2" size={16} />
+            <LogIn className="me-1" size={16} />
             Request a New Project
           </a>
           {
             (globalRoles.isFacilityOperator || globalRoles.isProjectAdmin) &&
-            <Link href="/projects/new" className="btn btn-primary create-project-btn my-2">
+            <Link href="/projects/new" className="btn btn-primary btn-sm create-project-btn">
               Create Project
             </Link>
           }

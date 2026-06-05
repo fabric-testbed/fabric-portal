@@ -71,10 +71,10 @@ export default function ExperimentsPage() {
   return (
     <Container>
       <Row>
-        <Col xs={2}>
+        <Col xs={12} md={2}>
           <SideNav items={sideNavItems} handleChange={handleChange} />
         </Col>
-        <Col xs={10}>
+        <Col xs={12} md={10}>
           <TagName
             styleProp="col-9"
             parent="PublicExperiments"
