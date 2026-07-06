@@ -48,6 +48,12 @@ const Header = (props) => {
       path: ""
     },
     {
+      name: "LoomAI",
+      href: "https://loomai.fabric-testbed.net/hub/login",
+      child: [],
+      path: ""
+    },
+    {
       name: "JupyterHub",
       child: [],
       path: "/experiments/jupyter-no-access"
@@ -136,6 +142,12 @@ const Header = (props) => {
     {
       name: "Knowledge Base",
       href: portalData.knowledgeBaseLink,
+      child: [],
+      path: ""
+    },
+    {
+      name: "LoomAI",
+      href: "https://loomai.fabric-testbed.net/hub/login",
       child: [],
       path: ""
     },
@@ -261,7 +273,7 @@ const Header = (props) => {
             navItems.length > 0 && navItems.map((item, index) => {
               if (item.child.length === 0) {
                 if (item.href) {
-                  return  <Nav.Link href={item.href} key={`nav-item-${index}`}>{item.name}</Nav.Link>
+                  return  <Nav.Link href={item.href} target="_blank" rel="noopener noreferrer" key={`nav-item-${index}`}>{item.name}</Nav.Link>
                 } else if (item.path) {
                   return <Nav.Link
                     as={Link}
@@ -291,9 +303,11 @@ const Header = (props) => {
                     } else {
                       return <NavDropdown.Item
                       key={`sub-nav-${sub_index}`}
-                      href={sub_item.href}>
+                      href={sub_item.href}
+                      target="_blank"
+                      rel="noopener noreferrer">
                         {sub_item.name}
-                      </NavDropdown.Item> 
+                      </NavDropdown.Item>
                     }
                    })}
               </NavDropdown>
