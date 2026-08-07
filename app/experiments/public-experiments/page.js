@@ -5,8 +5,6 @@ import SideNav from "../../../components/common/SideNav";
 import Projects from "../../../components/Project/Public/ProjectListPage";
 import Artifacts from "../../../components/Artifacts/ArtifactListPage.jsx";
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 function PublicExperiments() {
   const router = useRouter();
@@ -51,21 +49,20 @@ function PublicExperiments() {
   const TagName = componentNames[activeIndex];
   return (
     <Container>
-      <Row>
-        <Col xs={2}>
+      <div className="sidebar-layout">
+        <div className="sidebar-col">
           <SideNav
             items={SideNavItems}
             handleChange={handleChange}
           />
-        </Col>
-        <Col xs={10}>
+        </div>
+        <div className="main-col">
           <TagName
-            styleProp={"col-9"}
             parent={"PublicExperiments"}
             handleChange={handleChange}
           />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Container>
   );
 }

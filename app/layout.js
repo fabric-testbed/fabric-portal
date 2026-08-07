@@ -1,6 +1,9 @@
+import { Inter } from "next/font/google";
 import Footer from "../components/Footer";
 import ClientOnlyLoader from "../components/ClientOnlyLoader";
 import "@/styles/globals.scss";
+
+const inter = Inter({ subsets: ["latin", "latin-ext"], weight: ["300", "400", "500", "600", "700"] });
 
 export const metadata = {
   title: {
@@ -16,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         <div className="main-content">
           <ClientOnlyLoader>
             {children}

@@ -132,8 +132,8 @@ function Home() {
                         <tr>
                           <td style={{ padding: "0.5rem 0.75rem", verticalAlign: "middle" }}>
                             {resource
-                              ? <Link href={`/resources/sites/${resource.name}`} style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.04em", textDecoration: "none" }}>{acronym}</Link>
-                              : <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.04em" }}>{acronym}</span>
+                              ? <Link href={`/resources/sites/${resource.name}`} style={{ fontSize: "0.85rem", fontWeight: 700, color: "#2196C9", textTransform: "uppercase", letterSpacing: "0.04em", textDecoration: "none" }}>{acronym}</Link>
+                              : <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#2196C9", textTransform: "uppercase", letterSpacing: "0.04em" }}>{acronym}</span>
                             }
                           </td>
                           {isDown
@@ -155,8 +155,8 @@ function Home() {
                                 return (
                                   <td key={label} style={{ padding: "0.5rem 0.4rem", verticalAlign: "middle" }}>
                                     <div style={{ position: "relative", height: "1.4rem", borderRadius: "0.25rem", background: "#e9ecef", overflow: "visible" }}>
-                                      {total > 0 && <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, background: "#5798bc", width: `${Math.min(pct, 100)}%`, borderRadius: "0.25rem" }} />}
-                                      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "0.62rem", fontFamily: "monospace", color: "#374955", whiteSpace: "nowrap", zIndex: 1 }}>{free}/{total}</span>
+                                      {total > 0 && <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, background: "#2196C9", width: `${Math.min(pct, 100)}%`, borderRadius: "0.25rem" }} />}
+                                      <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "0.62rem", fontFamily: "monospace", color: pct > 55 ? "#fff" : "#374955", whiteSpace: "nowrap", zIndex: 1 }}>{free}/{total}</span>
                                     </div>
                                   </td>
                                 );

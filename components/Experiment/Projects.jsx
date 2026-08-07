@@ -193,7 +193,7 @@ function Projects() {
   };
 
   return (
-    <div className="col-12 col-md-9">
+    <div>
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
         <div className="d-flex flex-row align-items-center">
           <h1 className="mb-0">Projects</h1>

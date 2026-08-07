@@ -6,6 +6,7 @@ import { getPublications } from "../../services/publicationService.js";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
+import { default as portalData } from "../../services/portalData.json";
 
 function DynamicMetrics() {
   const [metricsItems, setMetricsItems] = useState([
@@ -29,7 +30,7 @@ function DynamicMetrics() {
     {
       name: "Publications Using FABRIC",
       count: 0,
-      link: "/community/fabric-user-publications"
+      link: portalData.fabricUserPublicationsLink
     }
   ]);
 
@@ -56,7 +57,7 @@ function DynamicMetrics() {
     items.push({
       name: "FABRIC User Publications",
       count: publicationMetrics.count,
-      link: "/community/fabric-user-publications"
+      link: portalData.fabricUserPublicationsLink
     });
 
     return items;
@@ -119,9 +120,14 @@ function DynamicMetrics() {
                 <div className="home-metrics-text">
                   {i.name}
                   {
-                    i.link && <Link href={i.link}>
-                      <LogIn className="ms-2" size={16} />
-                    </Link>
+                    i.link && (i.link.startsWith("http") ?
+                      <a href={i.link} target="_blank" rel="noopener noreferrer">
+                        <LogIn className="ms-2" size={16} />
+                      </a> :
+                      <Link href={i.link}>
+                        <LogIn className="ms-2" size={16} />
+                      </Link>
+                    )
                   }
                 </div>
             </div>

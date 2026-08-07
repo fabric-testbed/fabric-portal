@@ -155,7 +155,7 @@ const ProjectUserTable = ({ canUpdate, users, personnelType, inputText, operatio
       {
         canUpdate && <button
           onClick={() => onUpdateUsers(personnelType, checkedUserIDs, operation)}
-          className={operation === "add" ? "btn btn-sm btn-outline-primary" : "btn btn-sm btn-outline-danger"}
+          className={operation === "add" ? "btn btn-sm btn-outline-primary mt-2" : "btn btn-sm btn-outline-danger mt-2"}
           disabled={checkedUserIDs.length === 0}
         >
           {operation === "add" && `Add to ${personnelType}`}

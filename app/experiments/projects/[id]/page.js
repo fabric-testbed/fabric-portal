@@ -507,13 +507,13 @@ export default function ProjectFormPage() {
           <div className="skeleton-title" style={{ width: "35%" }} />
           <div className="skeleton-block" style={{ width: "160px", height: "2rem" }} />
         </div>
-        <div className="row mt-4">
-          <div className="col-12 col-md-3">
+        <div className="sidebar-layout mt-4">
+          <div className="sidebar-col">
             {[80, 90, 75, 85, 70].map((w, i) => (
               <div key={i} className="skeleton-text mb-4" style={{ width: `${w}%` }} />
             ))}
           </div>
-          <div className="col-12 col-md-9">
+          <div className="main-col">
             <div className="skeleton-text mb-1" style={{ width: "12%" }} />
             <div className="skeleton-block mb-4" style={{ height: "2.25rem" }} />
             <div className="skeleton-text mb-1" style={{ width: "18%" }} />
@@ -668,11 +668,11 @@ export default function ProjectFormPage() {
           )}
         </div>
       )}
-      <div className="row mt-4">
-        <div className="col-12 col-md-3">
+      <div className="sidebar-layout mt-4">
+        <div className="sidebar-col">
           <SideNav items={SideNavItems} handleChange={handleSideNavChange} />
         </div>
-        <div className={`${activeIndex === 0 ? "col-12 col-md-9" : "d-none"}`}>
+        <div className={`${activeIndex === 0 ? "main-col" : "d-none"}`}>
           {(globalRoles.isFacilityOperator || globalRoles.isProjectAdmin) && (
             <div
               className="alert alert-primary mb-2 d-flex flex-row justify-content-between align-items-center"
@@ -818,7 +818,7 @@ export default function ProjectFormPage() {
             onTagChange={handleUpdateTopics}
           />
           {globalRoles.isFacilityOperator && (
-            <div className="border-top my-2">
+            <div className="border-top mt-4 pt-2">
               <h5 className="my-2">Project Permissions</h5>
               <InputCheckboxes
                 allOptions={tagVocabulary}
@@ -834,7 +834,7 @@ export default function ProjectFormPage() {
             </div>
           )}
         </div>
-        <div className={`${activeIndex === 1 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 1 ? "main-col d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             <ProjectMemberships
               key={membershipsKey}
@@ -852,7 +852,7 @@ export default function ProjectFormPage() {
             />
           </div>
         </div>
-        <div className={`${activeIndex === 2 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 2 ? "main-col d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 2 && (
               <Slices
@@ -864,14 +864,14 @@ export default function ProjectFormPage() {
             )}
           </div>
         </div>
-        <div className={`${activeIndex === 3 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 3 ? "main-col d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 3 && (
               <PersistentStorage parent="Projects" projectId={data.uuid} />
             )}
           </div>
         </div>
-        <div className={`${activeIndex === 4 ? "col-12 col-md-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 4 ? "main-col d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 4 && (
               <ArtifactListPage parent="Projects" projectId={data.uuid} />
@@ -879,7 +879,7 @@ export default function ProjectFormPage() {
           </div>
         </div>
         {/* Service Unit tab hidden pending policy design
-        <div className={`${activeIndex === 5 ? "col-9 d-flex flex-row" : "d-none"}`}>
+        <div className={`${activeIndex === 5 ? "d-flex flex-row" : "d-none"}`}>
           <div className="w-100">
             {activeIndex === 5 && (
               <Quotas projectId={data.uuid} canManage={globalRoles.isFacilityOperator || globalRoles.isProjectAdmin} />

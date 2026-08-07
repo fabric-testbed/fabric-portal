@@ -155,7 +155,7 @@ export default function MyProfile() {
   );
 
   return (
-    <div className="col-12 col-md-9">
+    <div>
       <h1>My Profile</h1>
       <form onSubmit={handleSubmit}>
           <Input

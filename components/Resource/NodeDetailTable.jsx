@@ -33,12 +33,14 @@ function StatusBadge({ state }) {
 
 function ResourceBar({ free, total }) {
   const pct = total > 0 ? Math.round((free / total) * 100) : 0;
+  // White text only once the fill reaches the centered label (~55%)
+  const textColor = pct > 55 ? "#fff" : "#374955";
   return (
     <div style={{ position: "relative", height: "1.5rem", borderRadius: "0.25rem", background: "#e9ecef", overflow: "hidden" }}>
       {total > 0 && (
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, background: "#5798bc", width: `${Math.min(pct, 100)}%`, borderRadius: "0.25rem", transition: "width 150ms" }} />
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, background: "#2196C9", width: `${Math.min(pct, 100)}%`, borderRadius: "0.25rem", transition: "width 150ms" }} />
       )}
-      <span style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.72rem", fontFamily: "monospace", color: "#374955", whiteSpace: "nowrap" }}>
+      <span style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.72rem", fontFamily: "monospace", color: textColor, whiteSpace: "nowrap" }}>
         {free}/{total}
       </span>
     </div>
@@ -62,16 +64,16 @@ const NodeDetailTable = ({ name, resource, parent }) => {
   const isDevSite = DEV_SITES.has(acronym);
 
   return (
-    <div style={{ borderRadius: "0.75rem", border: "1px solid #a8c9dc", background: "white", display: "flex", flexDirection: "column", overflow: "hidden", height: "100%" }}>
+    <div style={{ borderRadius: "0.75rem", border: "1px solid rgba(33,150,201,0.3)", background: "white", display: "flex", flexDirection: "column", overflow: "hidden", height: "100%" }}>
       {/* Header */}
       <div style={{ padding: "0.75rem 1rem", borderBottom: "1px solid #a8c9dc" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
           {resource && !isSitePage ? (
-            <Link href={`/resources/sites/${resource.name}`} style={{ fontSize: "0.9rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.05em", textDecoration: "none" }}>
+            <Link href={`/resources/sites/${resource.name}`} style={{ fontSize: "0.9rem", fontWeight: 700, color: "#2196C9", textTransform: "uppercase", letterSpacing: "0.05em", textDecoration: "none" }}>
               {acronym}
             </Link>
           ) : (
-            <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "#1f6a8c", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "#2196C9", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               {acronym}
             </span>
           )}

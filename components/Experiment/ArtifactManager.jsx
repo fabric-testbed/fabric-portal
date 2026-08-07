@@ -6,7 +6,7 @@ import { ARTIFACT_MANAGER_APP_URL } from "@/lib/api/config";
 
 function ArtifactManager() {
   return (
-    <div className="col-9">
+    <div>
       <div>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h1 className="mb-4">Artifact Manager</h1>

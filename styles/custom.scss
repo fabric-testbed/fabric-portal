@@ -1,52 +1,77 @@
 $theme-colors: (
-  "primary": #5798bc,
-  "primary-dark": #1f6a8c,
-  "primary-light": #8ac9ef,
-  "secondary": #838385,
+  "primary": #2196C9,
+  "primary-dark": #1B3A5C,
+  "primary-light": #5BC4E5,
+  "secondary": #5A6370,
   "success": #008e7a,
   "danger": #b00020,
-  "warning": #ff8542,
-  "info": #a8c9dc,
-  "dark": #374955,
+  "warning": #F5C518,
+  "info": #2196C9,
+  "dark": #1B3A5C,
 );
 
-$primary: #5798bc;
-$primary-dark: #1f6a8c;
-$primary-light: #8ac9ef;
-$secondary: #838385;
+$primary: #2196C9;
+$primary-dark: #1B3A5C;
+$primary-light: #5BC4E5;
+$secondary: #5A6370;
 $success: #008e7a;
 $danger: #b00020;
-$warning: #ff8542;
-$info: #a8c9dc;
-$dark: #374955;
-$primary-color: #5798bc;
-$primary-color-dark: #1f6a8c;
-$primary-color-light: #8ac9ef;
+$warning: #F5C518;
+$info: #2196C9;
+$dark: #1B3A5C;
+$primary-color: #2196C9;
+$primary-color-dark: #1B3A5C;
+$primary-color-light: #5BC4E5;
 $white: #fff;
 $black: #000;
-$warning: #ff8542;
-$warning-light: #ffa562;
+$warning: #F5C518;
+$warning-light: #F7D34A;
 $success: #008e7a;
 $danger: #b00020;
-$dark: #374955;
-$light: #f8f9fa;
-$bg-light: #f8f9fa;
+$dark: #1B3A5C;
+$light: #F5F7FA;
+$bg-light: #F5F7FA;
 
-// Override default blue palette with FABRIC theme blue.
-$blue-lighten-6: #e4f4f8 !default;
-$blue-lighten-5: #bbe4ee !default;
-$blue-lighten-4: #95d2e4 !default;
-$blue-lighten-3: #78c0d8 !default;
-$blue-lighten-2: #68b3d1 !default;
-$blue-lighten-1: #5fa6ca !default;
-$blue-base: #5798bc !default;
-$blue-darken-1: #4d86a9 !default;
-$blue-darken-2: #477595 !default;
-$blue-darken-3: #3a5771 !default;
-$blue-accent-1: #94cbff !default;
-$blue-accent-2: #61b2ff !default;
-$blue-accent-3: #2e99ff !default;
-$blue-accent-4: #148cff !default;
+// Override default blue palette with FABRIC brand blue.
+$blue-lighten-6: #E8F4FB !default;
+$blue-lighten-5: #B8DDF2 !default;
+$blue-lighten-4: #88C6E9 !default;
+$blue-lighten-3: #5BC4E5 !default;
+$blue-lighten-2: #2196C9 !default;
+$blue-lighten-1: #1E88C0 !default;
+$blue-base: #1A73B5 !default;
+$blue-darken-1: #165F9A !default;
+$blue-darken-2: #134D80 !default;
+$blue-darken-3: #1B3A5C !default;
+$blue-accent-1: #5BC4E5 !default;
+$blue-accent-2: #2196C9 !default;
+$blue-accent-3: #1A73B5 !default;
+$blue-accent-4: #1B3A5C !default;
+
+// FABRIC brand palette
+$fabric-navy: #1B3A5C;
+$fabric-blue: #1A73B5;
+$fabric-teal: #2196C9;
+$fabric-sky: #5BC4E5;
+$fabric-yellow: #F5C518;
+$fabric-yellow-dark: #D4A800;
+$fabric-off-white: #F5F7FA;
+$fabric-light: #EAF4FB;
+$fabric-gray-100: #F0F2F5;
+$fabric-gray-200: #E2E6EA;
+$fabric-gray-400: #9BA3AE;
+$fabric-gray-600: #5A6370;
+$fabric-gray-800: #2D3540;
+$fabric-dark: #1A1F2B;
+
+// Disable Bootstrap input focus highlights
+$input-focus-border-color: null;
+$input-focus-box-shadow: none;
+$input-btn-focus-box-shadow: none;
+
+// Card shadows
+$card-shadow: 0 2px 12px rgba(27,58,92,0.08), 0 1px 3px rgba(27,58,92,0.06);
+$card-shadow-hover: 0 8px 32px rgba(27,58,92,0.14), 0 2px 8px rgba(27,58,92,0.08);
 
 // grey palette.
 $grey-lighten-5: #fafafa !default;

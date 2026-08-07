@@ -105,11 +105,11 @@ const ProjectBasicInfoTable = ({ project, projectTags, canUpdate, onDeleteProjec
           Save
         </button>
       }
-      <div className="table-responsive mt-3 border-top">
-        <h5 className="mt-2">Other Information</h5>
+      <div className="mt-3 border-top" style={{ overflow: "visible" }}>
+        <h5 className="mt-3 ms-2">Other Information</h5>
         {
           project && project.expired &&
-          <table className="table table-striped table-bordered mt-3">
+          <table className="table table-striped table-bordered mt-3" style={{ overflow: "visible" }}>
             <tbody>
               <tr>
                 <td>Project ID</td>

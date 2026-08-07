@@ -12,7 +12,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, ExternalLink } from "lucide-react";
 
 const Header = (props) => {
   const router = useRouter();
@@ -64,11 +64,11 @@ const Header = (props) => {
       child: [
         {
           name: "Overview",
-          path: "/about/about-fabric"
+          href: "https://www.whatisfabric.net/about",
         },
         {
           name: "Leadership",
-          path: "/about/leadership"
+          href: "https://www.whatisfabric.net/about/leadership",
         }
       ],
       path: "/about"
@@ -77,40 +77,36 @@ const Header = (props) => {
       name: "Community",
       child: [
         {
-          name: "News",
-          href: portalData.knowledgeBaseNewsLink,
-        },
-        {
           name: "KNIT",
           href: portalData.KNITWebsiteLink,
         },
         {
-          name: "Events",
-          href: portalData.knowledgeBaseEventsLink,
+          name: "Events & Workshops",
+          href: portalData.eventsAndWorkshopsLink,
+        },
+        {
+          name: "News & Blogs",
+          href: portalData.newsAndBlogsLink,
         },
         {
           name: "Newsletter Signup",
-          path: "/community/newsletter-signup"
+          href: portalData.newsletterSignupLink,
         },
         {
           name: "Funding Opportunities",
-          path: "/community/funding-opportunities"
+          href: portalData.fundingOpportunitiesLink,
         },
         {
           name: "Testbeds and Facilities",
-          path: "/community/testbeds-and-facilities"
+          href: portalData.testbedsAndFacilitiesLink,
         },
         {
           name: "Cite FABRIC",
-          path: "/community/publications"
+          href: portalData.citeFabricLink,
         },
         {
           name: "FABRIC User Publications",
-          path: "/community/fabric-user-publications"
-        },
-        {
-          name: "Blogs",
-          href: portalData.knowledgeBaseBlogsLink,
+          href: portalData.fabricUserPublicationsLink,
         },
         {
           name: "REU Site",
@@ -120,7 +116,7 @@ const Header = (props) => {
       path: "/community"
     }
   ] : [
-    { 
+    {
       name: "Resources",
       path: "/resources",
       child: [
@@ -163,11 +159,11 @@ const Header = (props) => {
       child: [
         {
           name: "Overview",
-          path: "/about/about-fabric"
-        }, 
+          href: "https://www.whatisfabric.net/about",
+        },
         {
           name: "Leadership",
-          path: "/about/leadership"
+          href: "https://www.whatisfabric.net/about/leadership",
         }
       ],
       path: "/about"
@@ -176,40 +172,36 @@ const Header = (props) => {
       name: "Community",
       child: [
         {
-          name: "News",
-          href: portalData.knowledgeBaseNewsLink,
-        },
-        {
           name: "KNIT",
           href: portalData.KNITWebsiteLink,
         },
         {
-          name: "Events",
-          href: portalData.knowledgeBaseEventsLink,
+          name: "Events & Workshops",
+          href: portalData.eventsAndWorkshopsLink,
+        },
+        {
+          name: "News & Blogs",
+          href: portalData.newsAndBlogsLink,
         },
         {
           name: "Newsletter Signup",
-          path: "/community/newsletter-signup"
+          href: portalData.newsletterSignupLink,
         },
         {
           name: "Funding Opportunities",
-          path: "/community/funding-opportunities"
+          href: portalData.fundingOpportunitiesLink,
         },
         {
           name: "Testbeds and Facilities",
-          path: "/community/testbeds-and-facilities"
+          href: portalData.testbedsAndFacilitiesLink,
         },
         {
           name: "Cite FABRIC",
-          path: "/community/publications"
+          href: portalData.citeFabricLink,
         },
         {
           name: "FABRIC User Publications",
-          path: "/community/fabric-user-publications"
-        },
-        {
-          name: "Blogs",
-          href: portalData.knowledgeBaseBlogsLink,
+          href: portalData.fabricUserPublicationsLink,
         },
         {
           name: "REU Site",
@@ -257,7 +249,7 @@ const Header = (props) => {
   const pathname = usePathname();
 
   return (
-    <Navbar expand="lg" style={{ backgroundColor: "rgb(248, 249, 250)" }}>
+    <Navbar expand="lg" style={{ backgroundColor: "#f8f9fa" }}>
       <Navbar.Brand href="/">
         <img
           src={getLogoSrc()}
@@ -273,7 +265,7 @@ const Header = (props) => {
             navItems.length > 0 && navItems.map((item, index) => {
               if (item.child.length === 0) {
                 if (item.href) {
-                  return  <Nav.Link href={item.href} target="_blank" rel="noopener noreferrer" key={`nav-item-${index}`}>{item.name}</Nav.Link>
+                  return  <Nav.Link href={item.href} target="_blank" rel="noopener noreferrer" key={`nav-item-${index}`}>{item.name} <ExternalLink size={12} /></Nav.Link>
                 } else if (item.path) {
                   return <Nav.Link
                     as={Link}
@@ -290,6 +282,7 @@ const Header = (props) => {
                   id={`nav-dropdown-${index}`}
                   className={pathname.includes(item.path) ? "active" : ""}
                   key={`nav-dropdown-${index}`}
+                  renderMenuOnMount
                 >
                 {
                   item.child.map((sub_item, sub_index) => {
@@ -306,7 +299,7 @@ const Header = (props) => {
                       href={sub_item.href}
                       target="_blank"
                       rel="noopener noreferrer">
-                        {sub_item.name}
+                        {sub_item.name} <ExternalLink size={12} />
                       </NavDropdown.Item>
                     }
                    })}

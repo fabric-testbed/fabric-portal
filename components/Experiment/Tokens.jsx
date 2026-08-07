@@ -5,7 +5,7 @@ import { CREDENTIAL_MANAGER_APP_URL } from "@/lib/api/config";
 
 function Tokens() {
   return (
-    <div className="col-9">
+    <div>
       <div>
         <h1 className="mb-4">Manage Token</h1>
         <div className="alert alert-primary mb-2" role="alert">

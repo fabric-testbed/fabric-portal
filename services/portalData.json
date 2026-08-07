@@ -1,5 +1,5 @@
 {
-  "version": "1.9.25",
+  "version": "1.10.0",
   "defaultFacility": "FABRIC",
   "facilityOptions": ["FABRIC"],
   "projectTypeOptions": [
@@ -64,15 +64,20 @@
     "production": "https://jupyter.fabric-testbed.net/"
   },
   "knowledgeBaseLink": "https://learn.fabric-testbed.net/",
-  "knowledgeBaseNewsLink": "https://learn.fabric-testbed.net/article-categories/news-archive/",
   "knowledgeBaseEventsLink": "https://learn.fabric-testbed.net/article-categories/events/",
-  "knowledgeBaseBlogsLink": "https://learn.fabric-testbed.net/article-categories/blogs/",
   "knowledgeBaseForumLink": "https://learn.fabric-testbed.net/forums/",
   "fabricAnnouncementsForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-announcements/",
   "educatorForumLink": "https://learn.fabric-testbed.net/forums/forum/fabric-educators/",
   "officeHourBookingLink": "https://outlook.office365.com/owa/calendar/FABRICOfficeHours@admin.live.unc.edu/bookings/",
   "KNITWebsiteLink": "https://knit.fabric-testbed.net/",
   "ReuSiteWebsiteLink": "https://reusite.renci.org/home",
+  "newsletterSignupLink": "https://www.whatisfabric.net/community/newsletter",
+  "fundingOpportunitiesLink": "https://www.whatisfabric.net/research/opportunities",
+  "testbedsAndFacilitiesLink": "https://www.whatisfabric.net/facilities/testbeds-and-facilities",
+  "newsAndBlogsLink": "https://www.whatisfabric.net/news-and-blogs",
+  "eventsAndWorkshopsLink": "https://www.whatisfabric.net/community/events",
+  "citeFabricLink": "https://www.whatisfabric.net/research/cite",
+  "fabricUserPublicationsLink": "https://www.whatisfabric.net/research/publications",
   "learnArticles": {
     "gettingStarted": "https://learn.fabric-testbed.net/knowledge-base/quick-start-guide/",
     "thingsToKnowForFirstTime": "https://learn.fabric-testbed.net/knowledge-base/things-to-know-when-using-fabric-for-the-first-time/",

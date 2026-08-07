@@ -10,6 +10,7 @@ export default function SshKeysPage() {
       sliverKeys={sliverKeys}
       bastionKeys={bastionKeys}
       disableKeyDelete={true}
+      parent="UserProfile"
     />
   );
 }

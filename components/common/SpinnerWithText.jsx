@@ -10,10 +10,10 @@ const SpinnerWithText = (props) => {
         size="sm"
         role="status"
         aria-hidden="true"
-        variant="primary"
+        variant="info"
         className="mt-1"
       />
-      <span className="text-primary ms-2"><b>{props.text}</b></span>
+      <span className="text-info ms-2"><b>{props.text}</b></span>
     </div>
   );
 };

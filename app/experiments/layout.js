@@ -6,8 +6,6 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import SideNav from "@/components/common/SideNav";
 import SpinnerWithText from "@/components/common/SpinnerWithText";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const navItems = [
   { name: "PROJECTS & SLICES", path: "/experiments/projects" },
@@ -80,12 +78,12 @@ export default function ExperimentsLayout({ children }) {
 
   return (
     <Container>
-      <Row>
-        <Col xs={12} md={3}>
+      <div className="sidebar-layout">
+        <div className="sidebar-col">
           <SideNav items={sideNavItems} handleChange={handleChange} />
-        </Col>
-        <Col xs={12} md={9}>{children}</Col>
-      </Row>
+        </div>
+        <div className="main-col">{children}</div>
+      </div>
     </Container>
   );
 }

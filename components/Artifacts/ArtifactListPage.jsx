@@ -118,7 +118,7 @@ function ArtifactListPage({ parent, user, projectId }) {
     : null;
 
   return (
-    <div className="mt-4">
+    <div>
       {
         ["UserProfile", "PublicExperiments"].includes(parent) && <h1>Artifacts</h1>
       }

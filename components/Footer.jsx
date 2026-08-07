@@ -18,7 +18,7 @@ function Footer() {
               <Link href="/useful-links/aup">Acceptable Use Policy</Link>
             </li>
             <li><Link href="/useful-links/cookie-policy">Cookie Policy</Link></li>
-            <li><Link href="/useful-links/branding">Branding Resources</Link></li>
+            <li><a href="https://www.whatisfabric.net/about/branding" target="_blank" rel="noopener noreferrer">Branding Resources</a></li>
           </ul>
         </Col>
         <Col xs={6} md={3}>
@@ -43,16 +43,16 @@ function Footer() {
               <li>
                 <div className="d-flex flex-row gap-3 footer-social-icons">
                   <a href={portalData.fabricSocialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-                    <X size={24} className="text-black"/>
+                    <X size={24} className="text-dark"/>
                   </a>
                   <a href={portalData.fabricSocialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <Github size={24} className="text-black"/>
+                    <Github size={24} className="text-dark"/>
                   </a>
                   <a href={portalData.fabricSocialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <Youtube size={24} className="text-black"/>
+                    <Youtube size={24} className="text-dark"/>
                   </a>
                   <a href="mailto:info@fabric-testbed.net" aria-label="Email">
-                    <Mail size={24} className="text-black"/>
+                    <Mail size={24} className="text-dark"/>
                   </a>
                 </div>
               </li>

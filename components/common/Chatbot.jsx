@@ -27,8 +27,8 @@ export default function Chatbot() {
       apiKey={config.qaToolApiKey}
       qaEndpoint={config.qaToolApiUrl}
       welcomeMessage="Hello! How can I help you with FABRIC today?"
-      primaryColor="#1f6a8c"
-      secondaryColor="#5798bc"
+      primaryColor="#2196C9"
+      secondaryColor="#2196C9"
       botName="FABRIC Q&A Tool"
       logo="https://github.com/user-attachments/assets/adaa9817-43c1-431e-9f82-75414420561b"
       isLoggedIn={userStatus === "active"}

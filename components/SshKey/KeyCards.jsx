@@ -3,28 +3,16 @@ import KeyCard from "./KeyCard";
 
 const KeyCards = ({ keys, disableKeyDelete }) => {
   return (
-    <div className="row text-sm-size">
+    <div className="row text-sm-size g-3">
       {
-        keys.map((key, index) => {
-          return (
-            index % 2 === 0 ? (
-              <div className="col" key={`sshkey-card-${index}`}>
-                <KeyCard
-                  data={key}
-                  disableKeyDelete={disableKeyDelete}
-                />
-              </div>
-            ): (
-              <div className="col" key={`sshkey-card-${index}`}>
-                <KeyCard
-                  data={key}
-                  disableKeyDelete={disableKeyDelete}
-                />
-                <div className="w-100"></div>
-              </div>
-            )
-          )
-        })
+        keys.map((key, index) => (
+          <div className="col-12 col-md-6" key={`sshkey-card-${index}`}>
+            <KeyCard
+              data={key}
+              disableKeyDelete={disableKeyDelete}
+            />
+          </div>
+        ))
       }
     </div>
   );

@@ -239,7 +239,7 @@ function Resources() {
       <h1>Resources</h1>
       <div label="Testbed Resources">
           <div className="row g-0 mb-2">
-            <div className="col-12 bg-info rounded table-responsive">
+            <div className="col-12 rounded table-responsive" style={{ background: "rgba(33,150,201,0.25)", padding: "3px" }}>
               <TestbedTable sum={getResourcesSum(resources)} />
             </div>
           </div>
@@ -271,7 +271,7 @@ function Resources() {
             </div>
           </div>
           <div className="row g-0 mt-0 mb-2">
-            <div className="col-12 bg-info rounded table-responsive">
+            <div className="col-12 rounded table-responsive" style={{ background: "rgba(33,150,201,0.25)", padding: "3px" }}>
               <SummaryTable
                 totalCount={totalCount}
                 resources={siteData}
@@ -309,7 +309,7 @@ function Resources() {
             </div>
           </div> */}
           <div className="row g-0 mt-4">
-            <div className="col-12 bg-info rounded table-responsive">
+            <div className="col-12 rounded table-responsive" style={{ background: "rgba(33,150,201,0.25)", padding: "3px" }}>
               <FacilityPortTable
                 facilityPorts={facilityPortData}
                 totalCount={totalFPCount}

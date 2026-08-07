@@ -86,7 +86,7 @@ function PublicProjectProfile() {
               </ul>
             }
             {
-              project.project_funding && project.project_funding.length === 0 && <span className="fst-italic">
+              project.project_funding && project.project_funding.length === 0 && <span className="text-muted">
                 This project has no funding added yet.
               </span>
             }
@@ -104,7 +104,7 @@ function PublicProjectProfile() {
               })
             }
             {
-              project.communities && project.communities.length === 0 && <span className="fst-italic">
+              project.communities && project.communities.length === 0 && <span className="text-muted">
                 This project has no community tag added yet.
               </span>
             }

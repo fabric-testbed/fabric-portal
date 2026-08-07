@@ -19,7 +19,7 @@ const zoomBtnStyle = {
   alignItems: "center",
   justifyContent: "center",
   background: "white",
-  border: "1px solid #a8c9dc",
+  border: "1px solid rgba(33,150,201,0.3)",
   borderRadius: "0.5rem",
   boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
   cursor: "pointer",
@@ -49,17 +49,17 @@ const Topomap = props => {
   }
 
   function getNodeColor(name, type) {
-    if (name === selectedNode) return "#008e7a";  // success
     const statusColor = props.siteColorMapping[sitesNameMapping.shortNameToAcronym[name]];
-    // Gray out down/unknown sites
-    if (!statusColor || statusColor === "#e94948" || statusColor === "#838385") return "#838385";  // secondary
+    // Use status color for maintenance/warning/down states
+    if (!statusColor) return "#838385";  // unknown/down
+    if (statusColor === "#838385" || statusColor === "#e94948" || statusColor === "#ff8542") return statusColor;
     // Type-based coloring for active sites
-    if (type === "us_core") return "#5798bc";  // primary
-    return "#1f6a8c";  // primary dark / edge (includes international)
+    if (type === "us_core") return "#2196C9";  // core = teal
+    return "#5BC4E5";  // edge = sky (includes international)
   }
 
   return (
-    <div style={{ position: "relative", borderRadius: "0.75rem", border: "1px solid #a8c9dc", overflow: "hidden", background: "#EAF4FB" }}>
+    <div style={{ position: "relative", borderRadius: "0.75rem", border: "1px solid rgba(33,150,201,0.3)", overflow: "hidden", background: "#EAF4FB" }}>
       <ComposableMap
         projection="geoEqualEarth"
         width={800}
@@ -126,8 +126,14 @@ const Topomap = props => {
                 onMouseEnter={() => handleNodeHover(name)}
                 onClick={() => handleNodeHover(name)}
               >
-                <circle r={r * 2.2} fill={color} fillOpacity={isSelected ? 0.25 : 0.15} />
-                <circle r={isSelected ? r * 1.4 : r} fill={color} style={{ cursor: "pointer" }} />
+                {isSelected && (
+                <>
+                  <circle r={r * 1.6} fill="white" />
+                  <circle r={r * 1.6} fill="none" stroke={color} strokeWidth={0.2} />
+                </>
+              )}
+                <circle r={r * 2.2} fill={color} fillOpacity={isSelected ? 0 : 0.15} />
+                <circle r={isSelected ? r * 1.1 : r} fill={color} style={{ cursor: "pointer" }} />
                 <text
                   textAnchor="middle"
                   y={markerOffset}
@@ -161,7 +167,7 @@ const Topomap = props => {
       </div>
 
       {/* Legend */}
-      <div style={{ position: "absolute", bottom: "1rem", left: "1rem", display: "flex", flexDirection: "column", gap: "0.375rem", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", borderRadius: "0.5rem", padding: "0.5rem 0.75rem", border: "1px solid #a8c9dc", fontSize: "0.72rem", color: "#374955" }}>
+      <div style={{ position: "absolute", bottom: "1rem", left: "1rem", display: "flex", flexDirection: "column", gap: "0.375rem", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", borderRadius: "0.5rem", padding: "0.5rem 0.75rem", border: "1px solid rgba(33,150,201,0.3)", fontSize: "0.72rem", color: "#374955" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <span style={{ display: "inline-block", width: "1.5rem", height: "2px", background: "#F5C518" }} />
           <span>Super Core</span>
@@ -171,11 +177,11 @@ const Topomap = props => {
           <span>L1/L2 Links</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ display: "inline-block", width: "0.5rem", height: "0.5rem", borderRadius: "50%", background: "#5798bc" }} />
+          <span style={{ display: "inline-block", width: "0.5rem", height: "0.5rem", borderRadius: "50%", background: "#2196C9" }} />
           <span>Core site</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ display: "inline-block", width: "0.5rem", height: "0.5rem", borderRadius: "50%", background: "#1f6a8c" }} />
+          <span style={{ display: "inline-block", width: "0.5rem", height: "0.5rem", borderRadius: "50%", background: "#5BC4E5" }} />
           <span>Edge site</span>
         </div>
       </div>

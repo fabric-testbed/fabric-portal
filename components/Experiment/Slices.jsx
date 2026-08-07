@@ -31,6 +31,7 @@ function Slices(props) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [spinnerText, setSpinnerText] = useState("");
   const [showAllSlices, setShowAllSlices] = useState(false);
+  const [checkedAllSlices, setCheckedAllSlices] = useState(false);
 
   const isProjectPage = () => window.location.href.includes("/projects");
 
@@ -126,6 +127,7 @@ function Slices(props) {
   const handleShowAllSlices = async () => {
     const newValue = !showAllSlices;
     setShowAllSlices(newValue);
+    setCheckedAllSlices(newValue);
     setCurrentPage(1);
     try {
       await fetchSlices(newValue);
@@ -191,8 +193,8 @@ function Slices(props) {
         props.parent === "Projects" &&
         !props.isProjectExpired &&
           <div>
-            <div className="d-flex flex-row">
-              <Link href={`/experiments/new-slice/${props.projectId}`} className="btn btn-primary me-4">
+            <div className="d-flex flex-row flex-wrap gap-2">
+              <Link href={`/experiments/new-slice/${props.projectId}`} className="btn btn-primary">
                 Create Slice in Portal
               </Link>
               <a
@@ -203,7 +205,19 @@ function Slices(props) {
               >
                 Create Slice in JupyterHub
               </a>
+              <button
+                className="btn btn-outline-primary"
+                onClick={handleShowAllSlices}
+                disabled={checkedAllSlices}
+              >
+                View All Project Slices
+              </button>
             </div>
+            {checkedAllSlices && (
+              <div className="alert alert-info mt-3" role="alert">
+                No slices found in this project from any project member.
+              </div>
+            )}
             <div className="alert alert-warning mt-3" role="alert">
               <p className="mt-2">
                 You have no slices in this project. Please create slices in Portal or&nbsp;
@@ -250,8 +264,8 @@ function Slices(props) {
       }
       {
         !showSpinner && hasProject && hasAnySlices && <div>
-          <div className="toolbar">
-            <div className="input-group my-3">
+          <div className="d-flex flex-wrap gap-2 align-items-center my-3">
+            <div className="input-group" style={{ flex: "1 1 0", minWidth: "200px" }}>
               <input
                 type="text"
                 className="form-control"
@@ -271,7 +285,7 @@ function Slices(props) {
             </div>
             {
               props.parent === "Projects" && !props.isProjectExpired &&
-              <Link href={`/experiments/new-slice/${props.projectId}`} className="btn btn-primary create-project-btn">
+              <Link href={`/experiments/new-slice/${props.projectId}`} className="btn btn-primary" style={{ whiteSpace: "nowrap" }}>
                 Create Slice
               </Link>
             }

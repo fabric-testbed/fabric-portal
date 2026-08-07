@@ -29,7 +29,7 @@ function Keys() {
   const { sliverKeys, bastionKeys } = getKeysData();
 
   return (
-    <div className="col-9" id="sshKeys">
+    <div id="sshKeys">
       <KeyTabs
         sliverKeys={sliverKeys}
         bastionKeys={bastionKeys}

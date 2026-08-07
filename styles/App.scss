@@ -10,6 +10,11 @@ body {
   flex: 1;
 }
 
+.form-check-input:checked {
+  background-color: custom.$fabric-teal;
+  border-color: custom.$fabric-teal;
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -67,11 +72,28 @@ body {
 html,
 body {
   height: 100%;
-  // font-family: "Roboto";
+  color: custom.$fabric-gray-800;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Montserrat";
+  font-family: "Inter", system-ui, sans-serif;
+  color: custom.$fabric-gray-800;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+label, .form-label {
+  font-weight: 400;
+}
+
+.font-monospace {
+  font-weight: 400;
+}
+
+.text-primary {
+  color: custom.$fabric-teal !important;
 }
 
 .container {
@@ -148,11 +170,16 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-.carousel-item img {
-  max-height: 32rem;
+.carousel-item {
+  background: custom.$fabric-gray-800;
 }
 
-.carousel-item a {
+.carousel-item img {
+  max-height: 32rem;
+  object-fit: cover;
+}
+
+.carousel-item a:not(.btn-warning) {
   color: #fff !important;
 }
 
@@ -179,6 +206,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .carousel-caption h3 {
   font-size: 1rem;
+  font-weight: 500;
+}
+
+.carousel-caption .btn-warning {
+  font-size: 0.85rem;
+  padding: 0.4rem 1.25rem;
 }
 
 .carousel-caption ul {
@@ -205,7 +238,9 @@ h1, h2, h3, h4, h5, h6 {
   /* Make App Footer always on top of the main-body background image */
   position: relative;
   z-index: 99;
-  background-color: rgb(248, 249, 250);
+  background-color: #f8f9fa;
+  color: custom.$fabric-gray-800;
+  font-weight: 400;
   /* Make App Footer layout */
   display: flex;
   flex-direction: column;
@@ -217,6 +252,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 25rem !important;
   max-height: 25rem !important;
   min-height: 25rem !important;
+
 }
 
 .footer-trustedci-badge {
@@ -277,7 +313,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 6px !important;
     height: 38.5px !important;
     font-size: 13px !important;
-    color:rgba(0, 0, 0, 0.5) !important;
+    color: custom.$fabric-gray-600 !important;
   }
 }
 
@@ -287,7 +323,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 13px !important;
     padding-right: 13px !important;
     height: 38.5px !important;
-    color:rgba(0, 0, 0, 0.5) !important;
+    color: custom.$fabric-gray-600 !important;
   }
 }
 
@@ -315,7 +351,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .carousel-caption h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .homepage-carousel-content {
@@ -348,7 +384,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .carousel-caption h3 {
-    font-size: 1.75rem;
+    font-size: 1.4rem;
   }
 
   .homepage-carousel-content {
@@ -385,9 +421,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.static-page {
-}
-
 .static-page p {
   margin: 1.5rem 0;
   line-height: 2rem;
@@ -414,9 +447,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .carousel-caption h1,
+.carousel-caption h3,
 .carousel-caption p,
 .carousel-caption li,
-.carousel-caption button {
+.carousel-caption button:not(.btn-warning) {
+  color: custom.$white;
+}
+
+.carousel-caption-mobile h3 {
   color: custom.$white;
 }
 
@@ -444,11 +482,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-social-icons a {
   margin-right: 1rem;
-  color: custom.$grey-darken-4;
+  color: custom.$fabric-gray-800;
 }
 
 .footer-social-icons a:hover {
-  color: custom.$grey-darken-2;
+  color: custom.$fabric-teal;
 }
 
 .app-footer ul {
@@ -458,7 +496,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Custom Radio Buttons */
 .custom-control-label::before {
-  background-color: custom.$primary-color;
+  background-color: custom.$fabric-teal;
 }
 
 .navbar {
@@ -471,26 +509,37 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   width: 100%;
   z-index: 100;
-  flex-wrap: nowrap !important;
 }
 
 @media (min-width: 992px) {
-  .nav-item a {
-    border-bottom: 3px custom.$bg-light solid;
+  .navbar {
+    flex-wrap: nowrap !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .nav-item > a,
+  .navbar-nav > .nav-link {
+    border-bottom: 3px transparent solid;
   }
 
-  .nav-item a.active,
-  .nav-item a:hover,
-  .navbar-nav a.active,
-  .nav-item.dropdown.active .nav-link {
-    border-bottom: 3px custom.$primary-color solid;
-    color: rgba(0, 0, 0, 0.5) !important;
+  .nav-item > a.active,
+  .nav-item > a:hover,
+  .navbar-nav > .nav-item > a.active,
+  .navbar-nav > .nav-link.active,
+  .nav-item.dropdown.active > .nav-link {
+    border-bottom: 3px custom.$fabric-yellow solid;
+    color: custom.$fabric-gray-600 !important;
+    text-decoration: none;
   }
 
-  .nav-item .dropdown-menu a.active,
-  .nav-item .dropdown-menu a:hover,
-  .navbar-nav a.nav-link:hover {
-    border-bottom: custom.$primary-color solid;
+  .nav-item .dropdown-menu a {
+    border-bottom: none;
+  }
+
+  .nav-item .dropdown-menu a:hover {
+    background-color: custom.$fabric-light;
+    text-decoration: none;
   }
 }
 
@@ -500,7 +549,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar .dropdown-menu .dropdown-item {
-  color: custom.$primary-color;
+  color: custom.$fabric-gray-600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid custom.$fabric-gray-200;
+  padding: 0.35rem 1rem;
+}
+
+.navbar .dropdown-menu .dropdown-item:first-child {
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.navbar .dropdown-menu .dropdown-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+@media (min-width: 992px) {
+  .navbar .nav-item.dropdown:hover > .dropdown-menu,
+  .navbar .nav-item.dropdown.show > .dropdown-menu {
+    display: block;
+    margin-top: 0;
+  }
+
+  .navbar .nav-item.dropdown > .dropdown-menu {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.badge.bg-primary {
+  background-color: custom.$fabric-teal !important;
 }
 
 .dropdown-item.active,
@@ -513,20 +593,52 @@ h1, h2, h3, h4, h5, h6 {
 .dropdown-menu {
   min-width: 16rem !important;
   font-size: 0.9rem !important;
+  border-radius: 0.75rem;
+  border-color: custom.$fabric-gray-200;
+  box-shadow: custom.$card-shadow;
+}
+
+/* Side Navbar Layout */
+@media (min-width: 768px) {
+  .sidebar-layout {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .sidebar-col {
+    flex: 0 0 190px;
+    width: 190px;
+    padding-top: 0.6rem;
+  }
+
+  .main-col {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .main-col > .container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 /* Side Navbar */
 .side-nav .nav-link.active,
 .side-nav .show > .nav-link {
-  color: custom.$primary-color;
+  color: custom.$fabric-teal;
   background-color: transparent;
-  border-left: 3px custom.$primary-color solid;
+  border-left: 3px custom.$fabric-teal solid;
 }
 
 .side-nav .nav-link {
   border-radius: 0;
   padding: 0.25rem 0.75rem;
   margin: 0.5rem 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .side-nav .nav-link {
@@ -562,17 +674,44 @@ h1, h2, h3, h4, h5, h6 {
   .side-nav .nav-link.active,
   .side-nav .show > .nav-link {
     border-left: none;
-    border-bottom: 2px solid custom.$primary-color;
+    border-bottom: 2px solid custom.$fabric-teal;
     font-weight: 600;
     background-color: transparent;
-    color: custom.$primary-color;
+    color: custom.$fabric-teal;
+  }
+}
+
+/* Cards */
+.card {
+  border-radius: 1rem;
+  border-color: custom.$fabric-gray-200;
+  box-shadow: custom.$card-shadow;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    box-shadow: custom.$card-shadow-hover;
   }
 }
 
 /* Collapsable Table */
 .card-header {
-  background-color: #e0e0e0 !important;
-  color: black !important;
+  background-color: custom.$fabric-gray-100 !important;
+  color: custom.$fabric-gray-800 !important;
+  border-radius: 1rem 1rem 0 0 !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.card-body h4,
+.card-body h5,
+.card-body h6 {
+  color: custom.$fabric-gray-800;
+}
+
+.card-body .table,
+.tab-pane .table {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 h6[aria-expanded="true"] .fa-plus {
@@ -584,18 +723,22 @@ h6[aria-expanded="false"] .fa-minus {
 }
 
 a {
-  color: custom.$primary-color-dark;
+  color: custom.$fabric-teal;
   text-decoration: none;
 }
 
-p a {
-  color: custom.$primary-color;
-  font-weight: 600;
+p a,
+li a {
+  color: custom.$fabric-teal;
+}
+
+.alert a {
+  color: custom.$fabric-teal !important;
 }
 
 a:hover {
-  color: custom.$primary-color-light;
-  text-decoration: none;
+  color: custom.$fabric-navy;
+  text-decoration: underline;
 }
 
 /* Project */
@@ -627,6 +770,7 @@ a:hover {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 0.75rem;
 }
 
 th,
@@ -660,7 +804,7 @@ ul,
 
 .input-tag__tags li {
   align-items: center;
-  background: custom.$primary-color;
+  background: custom.$fabric-teal;
   border-radius: 5px;
   color: white;
   display: flex;
@@ -779,11 +923,17 @@ ul,
 
 .key-card {
   width: 100%;
-  max-width: 25rem;
 }
 
 .slice-viewer-container {
   min-height: unset;
+
+  > .border {
+    border: 1px solid custom.$fabric-gray-200 !important;
+    border-radius: 0.75rem;
+    box-shadow: custom.$card-shadow;
+    overflow: hidden;
+  }
 }
 
 .slice-detail-panel {
@@ -796,10 +946,11 @@ ul,
 }
 
 .tab-content {
-  border-bottom: 1px solid #dee2e6;
-  border-left: 1px solid #dee2e6;
-  border-right: 1px solid #dee2e6;
-  padding: 1rem 0.5rem 0 0.5rem;
+  border: 1px solid custom.$fabric-gray-200;
+  border-top: none;
+  border-radius: 0 0 1rem 1rem;
+  padding: 1.25rem 1rem;
+  box-shadow: custom.$card-shadow;
 }
 
 /* Tabs style */
@@ -902,6 +1053,7 @@ ul,
 .slice-builder-label {
   font-size: 14px !important;
   margin-bottom: 0 !important;
+  font-weight: 400;
 }
 
 .slice-builder-form-group {
@@ -1001,7 +1153,7 @@ ul,
 
 .countdown-timer-link {
   cursor: pointer;
-  color: custom.$primary-color;;
+  color: custom.$fabric-teal;;
   font-weight: 600;
   margin-left: .5rem;
 }
@@ -1086,28 +1238,29 @@ ul,
 }
 
 .homepage-partner-header {
-  font-size: 2.5rem;
-  font-weight: 500;
-  border-bottom: 3px #5798bc solid;
+  font-size: 2rem;
+  font-weight: 400;
+  color: custom.$fabric-gray-800;
+  margin-bottom: 0.5rem;
 }
 
 .homepage-partner-text {
-  font-size: 1.25rem;
-  font-family: 'Montserrat';
-  color: custom.$primary-color-dark;
-  margin: 1rem auto;
+  font-size: 1rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: custom.$fabric-gray-600;
+  margin: 0 auto 1.5rem;
 }
 
 .partners-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 0;
+  padding: 2.5rem 2rem;
 }
 
 .partners-heading {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .partners-core-logos {
@@ -1115,8 +1268,10 @@ ul,
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem 2rem;
-  padding: 0.5rem 1rem;
+  gap: 2rem 2.5rem;
+  padding: 0.5rem 1rem 1.5rem;
+  border-bottom: 1px solid custom.$fabric-gray-200;
+  width: 100%;
 }
 
 .partner-logo-core {
@@ -1126,7 +1281,7 @@ ul,
 }
 
 .partner-logo-lead {
-  height: 70px;
+  height: 45px;
 }
 
 .partners-other-logos {
@@ -1134,20 +1289,15 @@ ul,
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem 1.5rem;
+  gap: 1.25rem 2rem;
   padding: 1.5rem 1rem 0;
+  width: 100%;
 }
 
 .partner-logo-other {
   height: 28px;
   width: auto;
   object-fit: contain;
-  opacity: 0.85;
-  transition: opacity 0.2s;
-}
-
-.partner-logo-other:hover {
-  opacity: 1;
 }
 
 @media (max-width: 767px) {
@@ -1160,7 +1310,7 @@ ul,
   }
 
   .partner-logo-lead {
-    height: 55px;
+    height: 35px;
   }
 
   .partners-other-logos {
@@ -1173,12 +1323,16 @@ ul,
   }
 
   .homepage-partner-header {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .homepage-partner-text {
-    font-size: 1rem;
-    padding: 0 1rem;
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
+
+  .partners-section {
+    padding: 1.5rem 1rem;
   }
 }
 
@@ -1188,7 +1342,7 @@ ul,
   }
 
   .partner-logo-lead {
-    height: 45px;
+    height: 28px;
   }
 
   .partner-logo-other {
@@ -1196,11 +1350,11 @@ ul,
   }
 
   .homepage-partner-header {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .homepage-partner-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -1212,7 +1366,7 @@ ul,
 .homepage-icon {
   display: inline;
   margin: 1.5rem;
-  background-color: custom.$primary-color;
+  background-color: custom.$fabric-teal;
   transform: scale(0.9);
   padding: 1.25rem;
   border-radius: 3px;
@@ -1243,11 +1397,11 @@ ul,
   display: none;
   color: custom.$warning;
   width: 100%;
-  font-weight: bold;
-  font-size: 2rem; 
+  font-weight: 400;
+  font-size: 2rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 2px);
   transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
 }
 
@@ -1255,9 +1409,9 @@ ul,
   opacity: 1;
   color: custom.$warning;
   width: 100%;
-  font-weight: bold;
-  font-size: 2rem; 
-  filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 3px);
+  font-weight: 400;
+  font-size: 2rem;
+  filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 2px);
   transition: background-color 250ms ease-out 0s, transform 250ms ease-in 0ms;
   margin-top: .75rem;
   margin-bottom: 1rem;
@@ -1265,7 +1419,7 @@ ul,
 
 .homepage-icon-heading-active::before {
   content: "FABRIC";
-  color: custom.$primary-color;
+  color: custom.$fabric-teal;
   font-weight: normal;
   font-size: 2rem;
   margin-right: 1rem;
@@ -1273,13 +1427,16 @@ ul,
 
 .homepage-icon-btn {
   width: 14rem;
-  background-color: custom.$warning;
-  color: #fff;
+  background-color: custom.$fabric-yellow;
+  color: custom.$white;
+  font-weight: 400;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(245,197,24,0.3);
 }
 
 .homepage-icon-btn:hover {
-  background-color: custom.$warning-light;
-  color: #fff;
+  background-color: custom.$fabric-yellow-dark;
+  color: custom.$white;
 }
 
 .carousel-row {
@@ -1349,7 +1506,7 @@ ul,
   min-height: 200px;
   max-height: 200px;
   background-color: #fff;
-  border: solid custom.$primary-color-light !important;
+  border: solid custom.$fabric-teal !important;
   border-width: 1px 1px 4px 1px !important;
   padding: 1rem;
   display: flex;
@@ -1379,7 +1536,7 @@ ul,
 .testbed-footer {
   display: flex;
   justify-content: flex-end;
-  background-color: custom.$primary-color-light;
+  background-color: custom.$fabric-teal;
   transition: background-color 250ms;
   height: 3rem;
 }
@@ -1402,7 +1559,7 @@ ul,
 .testbed-name-text {
   font-size: 1.5rem;
   font-weight: 600;
-  color: custom.$primary-color;
+  color: custom.$fabric-teal;
 }
 
 .user-profile-nav-btn {
@@ -1438,11 +1595,11 @@ ul,
 }
 
 .persistent-storage-card {
-  border-top: 2px custom.$primary-color solid;
+  border-top: 2px custom.$fabric-teal solid;
 }
 
 .branding-logo-container {
-  border: 1px solid custom.$primary-color;
+  border: 1px solid custom.$fabric-teal;
   border-radius: 0.25rem;
   padding: 1.5rem;
   margin: 0 1rem 0.5rem 0;
@@ -1509,7 +1666,7 @@ ul,
   font-size: clamp(28px, 4vw, 48px);
   line-height: 1.2em;
   font-weight: 700;
-  color: #5798bc;
+  color: custom.$fabric-teal;
   text-align: center;
 }
 
@@ -1517,8 +1674,8 @@ ul,
   font-size: clamp(14px, 2vw, 21px);
   margin-top: 0.5rem;
   line-height: 1.5em;
-  font-weight: 500;
-  color: #374955;
+  font-weight: 400;
+  color: custom.$fabric-gray-800;
   text-align: center;
 }
 
@@ -1575,6 +1732,9 @@ ul,
 
 .site-detail-table {
   margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .searchWrapper {
@@ -1632,6 +1792,12 @@ div:has(> #multiselectContainerReact) {
   box-shadow: none;
 }
 
+.accordion-body .table {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 .react-datetime-picker__inputGroup__input:invalid {
   background: rgba(255, 255, 255) !important;
 }
@@ -1651,12 +1817,14 @@ div:has(> #multiselectContainerReact) {
 }
 
 .active > .page-link {
-  background-color: #5798bc;
-  border-color: #5798bc;
+  background-color: custom.$fabric-teal;
+  border-color: custom.$fabric-teal;
+  box-shadow: none;
+  outline: none;
 }
 
 .page-link {
-  color: #5798bc;
+  color: custom.$fabric-teal;
 }
 
 .table-primary {
@@ -1673,15 +1841,62 @@ div:has(> #multiselectContainerReact) {
   --bs-btn-color: #fff !important;
 }
 
-.btn-outline-primary, .btn-outline-secondary, .btn-outline-success {
+.btn-outline-primary {
+  --bs-btn-color: #{custom.$fabric-teal};
+  --bs-btn-border-color: #{custom.$fabric-teal};
+  --bs-btn-hover-bg: #{custom.$fabric-teal};
+  --bs-btn-hover-border-color: #{custom.$fabric-teal};
+  --bs-btn-hover-color: #fff !important;
+}
+
+.btn-outline-secondary, .btn-outline-success {
   --bs-btn-hover-color: #fff !important;
 }
 
 .btn-primary:hover {
   transition: .3s;
-  background-color: #5798bc !important;
-  border: 1px solid #5798bc !important;
+  background-color: custom.$fabric-teal !important;
+  border: 1px solid custom.$fabric-teal !important;
   color: white;
+  filter: brightness(0.9);
+}
+
+.btn-warning {
+  --bs-btn-bg: #{custom.$fabric-yellow};
+  --bs-btn-border-color: #{custom.$fabric-yellow};
+  --bs-btn-hover-bg: #{custom.$fabric-yellow-dark};
+  --bs-btn-hover-border-color: #{custom.$fabric-yellow-dark};
+  --bs-btn-hover-color: #{custom.$fabric-navy};
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: rgb(27 58 92) !important;
+  padding: 0.6rem 1.5rem;
+  border-radius: 5rem;
+  box-shadow: 0 2px 8px rgba(245,197,24,0.3);
+}
+
+/* Focus ring on keyboard focus only (:focus-visible); mouse focus stays clean */
+.btn:focus-visible,
+a:focus-visible {
+  outline: 2px solid custom.$fabric-teal;
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid custom.$fabric-teal;
+  outline-offset: 2px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #dee2e6 !important;
+  box-shadow: none !important;
+}
+
+.input-group:focus-within {
+  box-shadow: none !important;
 }
 
 .carousel-control-prev, .carousel-control-next {
@@ -1715,7 +1930,7 @@ label {
 }
 
 .btn-link {
-  color: #5798bc;
+  color: custom.$fabric-teal;
   font-weight: 400;
   text-decoration: none;
 }
@@ -1960,9 +2175,9 @@ caption {
   .navbar-collapse {
     max-height: calc(100vh - 50px);
     overflow-y: auto;
-    background-color: rgb(248, 249, 250);
+    background-color: #f8f9fa;
     padding: 0.5rem 0;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid custom.$fabric-gray-200;
   }
 
   /* Remove the desktop bottom-border treatment on mobile */
@@ -1993,7 +2208,7 @@ caption {
   .navbar-collapse .nav-link:hover,
   .navbar-collapse .nav-link.active {
     background-color: rgba(87, 152, 188, 0.08);
-    color: custom.$primary-color-dark !important;
+    color: custom.$fabric-gray-600 !important;
   }
 
   .navbar-collapse .dropdown-menu {
@@ -2167,10 +2382,33 @@ caption {
 }
 
 // ─── Modern Table Styles ─────────────────────────────────────────────────────
+
+// Card-like wrapper for tables
+.table-responsive {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: custom.$card-shadow;
+  border: 1px solid custom.$fabric-gray-200;
+  overflow: hidden;
+
+  .table {
+    border-radius: 0;
+    box-shadow: none;
+    border: none !important;
+    background: transparent;
+  }
+}
+
 .table {
   border-collapse: collapse;
   font-size: 0.9rem;
   border: none !important;
+  margin-bottom: 0;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: custom.$card-shadow;
+  border: 1px solid custom.$fabric-gray-200 !important;
+  overflow: hidden;
 
   // Remove Bootstrap outer border on thead/tbody/tfoot
   > :not(caption) > * {
@@ -2180,38 +2418,42 @@ caption {
   // Header
   > thead > tr > th,
   > thead > tr > td {
-    background-color: #f4f7f9;
-    color: #374955;
+    background-color: custom.$fabric-gray-100;
+    color: custom.$fabric-navy;
     font-weight: 600;
     font-size: 0.82rem;
-    text-transform: uppercase;
     letter-spacing: 0.04em;
-    padding: 0.7rem 1rem;
+    padding: 0.75rem 1rem;
     border-top: none;
     border-left: none !important;
     border-right: none !important;
-    border-bottom: 2px solid #dde3e8 !important;
+    border-bottom: 2px solid custom.$fabric-gray-200 !important;
     white-space: nowrap;
   }
 
   // Body rows
   > tbody > tr {
-    transition: background-color 0.12s ease;
+    transition: background-color 0.15s ease;
 
     > td,
     > th {
-      padding: 0.7rem 1rem;
+      padding: 0.75rem 1rem;
       border-top: none;
       border-left: none !important;
       border-right: none !important;
-      border-bottom: 1px solid #edf0f3 !important;
+      border-bottom: 1px solid custom.$fabric-gray-200 !important;
       vertical-align: middle;
-      color: #374955;
+      color: custom.$fabric-gray-800;
     }
 
     &:last-child > td,
     &:last-child > th {
       border-bottom: none !important;
+    }
+
+    &:hover > td,
+    &:hover > th {
+      background-color: custom.$fabric-light;
     }
   }
 
@@ -2225,25 +2467,25 @@ caption {
 
     > :not(caption) > * > * {
       border-width: 0 0 1px !important;
-      border-color: #edf0f3 !important;
+      border-color: custom.$fabric-gray-200 !important;
     }
 
     > thead > * > * {
       border-bottom-width: 2px !important;
-      border-bottom-color: #dde3e8 !important;
+      border-bottom-color: custom.$fabric-gray-200 !important;
     }
   }
 
   // Subtle striped rows
   &.table-striped > tbody > tr:nth-of-type(odd) > * {
-    --bs-table-accent-bg: #f8fafb;
-    background-color: #f8fafb !important;
+    --bs-table-accent-bg: #{custom.$fabric-gray-100};
+    background-color: custom.$fabric-gray-100 !important;
   }
 
   // Hover tint using primary palette
   &.table-hover > tbody > tr:hover > * {
-    --bs-table-accent-bg: #eaf3f9;
-    background-color: #eaf3f9 !important;
+    --bs-table-accent-bg: #{custom.$fabric-light};
+    background-color: custom.$fabric-light !important;
   }
 
   // Small table padding

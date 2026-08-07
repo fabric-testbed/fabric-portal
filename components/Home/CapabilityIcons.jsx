@@ -1,5 +1,4 @@
 import { default as portalData } from "../../services/portalData.json";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from 'react'
 import { LogIn } from "lucide-react";
 
@@ -77,21 +76,21 @@ const CapabilityIcons = () => {
         }
       </div>
       <div className="fabric-capability-button">
-        <Link href="/about/about-fabric">
+        <a href="https://www.whatisfabric.net/about" target="_blank" rel="noopener noreferrer">
           <button className="btn btn-lg homepage-icon-btn">
             <LogIn className="me-2 mb-1" size={20} />About FABRIC
           </button>
-        </Link>
+        </a>
         <a href={portalData.knowledgeBaseLink} target="_blank" rel="noopener noreferrer">
           <button className="btn btn-lg homepage-icon-btn">
             <LogIn className="me-2 mb-1" size={20} />Knowledge Base
           </button>
         </a>
-        <Link href="/community/publications">
+        <a href={portalData.citeFabricLink} target="_blank" rel="noopener noreferrer">
           <button className="btn btn-lg homepage-icon-btn">
             <LogIn className="me-2 mb-1" size={20} />Cite FABRIC
           </button>
-        </Link>
+        </a>
       </div>
     </div>
   )

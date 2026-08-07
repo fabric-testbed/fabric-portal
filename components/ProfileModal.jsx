@@ -30,7 +30,7 @@ function ProfileModal(props) {
     <div>
       <Avatar
         name={userName || 'Anonymous User'}
-        color="rgb(87, 152, 188)"
+        color="#2196C9"
         size="35px"
         textMarginRatio={0.1}
         round
@@ -43,7 +43,7 @@ function ProfileModal(props) {
             <div className="col-3 mt-1">
               <Avatar
                 name={userName || 'Anonymous User'}
-                color="rgb(87, 152, 188)"
+                color="#2196C9"
                 size="40px"
                 textMarginRatio={0.1}
                 round

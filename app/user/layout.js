@@ -6,8 +6,6 @@ import SideNav from "@/components/common/SideNav";
 import SpinnerFullPage from "@/components/common/SpinnerFullPage";
 import SpinnerWithText from "@/components/common/SpinnerWithText";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { UserPageProvider, useUserPage } from "./UserContext";
 import { useAuth } from "@/lib/auth/AuthContext";
 import LoginRequired from "@/app/login-required/page";
@@ -25,12 +23,12 @@ function UserPageLayout({ children, sideNavItems, handleChange }) {
   return (
     <Container>
       <SpinnerFullPage text="Refreshing user roles..." showSpinner={showFullPageSpinner} />
-      <Row>
-        <Col xs={12} md={3}>
+      <div className="sidebar-layout">
+        <div className="sidebar-col">
           <SideNav items={sideNavItems} handleChange={handleChange} />
-        </Col>
-        <Col xs={12} md={9}>{children}</Col>
-      </Row>
+        </div>
+        <div className="main-col">{children}</div>
+      </div>
     </Container>
   );
 }

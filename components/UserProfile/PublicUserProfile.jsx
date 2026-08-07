@@ -83,8 +83,10 @@ function PublicUserProfile() {
             "description": role.description
           })
         } else {
+          const suffix = role.name.slice(-3);
+          const projectRole = projectRolesMapping[suffix];
+          if (!projectRole) continue;
           const projectID = role.name.substring(0, role.name.length - 3);
-          const projectRole = projectRolesMapping[role.name.slice(-3)];
           if (!Object.keys(projectRoles).includes(projectID)) {
             projectRoles[projectID] = {
               projectName: role.description,

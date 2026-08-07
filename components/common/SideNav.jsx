@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 
 function SideNav({ items, handleChange }) {
   return (
-    <div className="mt-4 side-nav">
+    <div className="side-nav">
       <Nav defaultActiveKey={items[0].hash} className="flex-row flex-md-column">
         {items.map((item, index) => {
           return (

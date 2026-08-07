@@ -29,7 +29,8 @@ const columns = [
           fp.vlan_range && fp.vlan_range.length > 0 &&
           fp.vlan_range.map((range, index) =>
             <span
-              className="font-monospace badge bg-primary me-1"
+              className="font-monospace badge me-1"
+              style={{ background: "#2196C9" }}
               key={`vlan-range-${index}`}
             >
               {`[${range}]`}
@@ -38,7 +39,8 @@ const columns = [
         }
         {
           !fp.vlan_range && fp.vlan &&
-          <span className="font-monospace badge bg-primary me-1">
+          <span className="font-monospace badge me-1"
+              style={{ background: "#2196C9" }}>
             {fp.vlan}
           </span>
         }
@@ -54,7 +56,8 @@ const columns = [
           fp.allocated_vlan_range && fp.allocated_vlan_range.length > 0 &&
           fp.allocated_vlan_range.map((range, index) =>
             <span
-              className="font-monospace badge bg-primary"
+              className="font-monospace badge"
+              style={{ background: "#2196C9" }}
               key={`allocate-vlan-range-${index}`}
             >
               {`${range}`}

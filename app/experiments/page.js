@@ -7,8 +7,6 @@ import SideNav from "@/components/common/SideNav";
 import ProjectListPage from "@/components/Project/Public/ProjectListPage";
 import ArtifactListPage from "@/components/Artifacts/ArtifactListPage";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const hashToPath = {
   "#projects": "/experiments/projects",
@@ -70,18 +68,17 @@ export default function ExperimentsPage() {
 
   return (
     <Container>
-      <Row>
-        <Col xs={12} md={2}>
+      <div className="sidebar-layout">
+        <div className="sidebar-col">
           <SideNav items={sideNavItems} handleChange={handleChange} />
-        </Col>
-        <Col xs={12} md={10}>
+        </div>
+        <div className="main-col">
           <TagName
-            styleProp="col-9"
             parent="PublicExperiments"
             handleChange={handleChange}
           />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Container>
   );
 }
