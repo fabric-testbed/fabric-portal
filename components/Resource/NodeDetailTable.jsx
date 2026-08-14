@@ -19,7 +19,7 @@ const STATUS_BADGE = {
   Active:    { background: "#e6f4f2", color: "#005a4e", border: "1px solid #008e7a", label: "Active" },
   Maint:     { background: "#374955", color: "#ffffff", border: "1px solid #374955", label: "Down" },
   PreMaint:  { background: "#fff3ec", color: "#7a3200", border: "1px solid #ff8542", label: "Pre-Maintenance" },
-  PartMaint: { background: "#fff3ec", color: "#7a3200", border: "1px solid #ff8542", label: "Partial Maint" },
+  PartMaint: { background: "#fff3ec", color: "#7a3200", border: "1px solid #ff8542", label: "Partial Maintenance" },
 };
 
 function StatusBadge({ state }) {
@@ -88,11 +88,11 @@ const NodeDetailTable = ({ name, resource, parent }) => {
       <div style={{ flex: 1, overflowY: "auto" }}>
         {(!resource || isDown) ? (
           <div style={{ padding: "0.75rem 1rem" }}>
-            {isDevSite && (
-              <p style={{ fontSize: "0.85rem", color: "#838385", margin: 0, lineHeight: 1.4 }}>
-                This is a development site and not available for general use.
-              </p>
-            )}
+            <p style={{ fontSize: "0.85rem", color: "#838385", margin: 0, lineHeight: 1.4 }}>
+              {isDevSite
+                ? "This is a development site and not available for general use."
+                : <>This site is currently down for maintenance. Please check the <a href="https://learn.fabric-testbed.net/forums/forum/fabric-announcements/" target="_blank" rel="noopener noreferrer" style={{ color: "#2196C9" }}>FABRIC announcements</a> for updates.</>}
+            </p>
           </div>
         ) : (
           <div style={{ padding: "0.5rem 0.75rem", display: "grid", gridTemplateColumns: "auto 1fr", columnGap: "0.75rem" }}>

@@ -1,9 +1,13 @@
 import Cookies from "js-cookie";
 
+// Expire app session cookies after 4 hours — matching the Vouch auth cookie
+// lifetime — so stale state doesn't persist after the auth session ends.
+const SESSION_HOURS = 4;
+
 const COOKIE_OPTIONS = {
   path: "/",
   sameSite: "lax",
-  // secure flag is set automatically by browsers for https origins
+  expires: SESSION_HOURS / 24,
 };
 
 /**

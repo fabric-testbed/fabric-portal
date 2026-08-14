@@ -131,20 +131,43 @@ export default function SiteDetailPage() {
     window.location.reload();
   }
 
-  const checkWorkerStatus = (workerName) => {
-    for (const worker of data.workers) {
-      if (workerName === Object.keys(worker)[0]) {
-        return { state: Object.values(worker)[0].state };
+  const getHostStatus = (host) => {
+    if (data.workers) {
+      for (const worker of data.workers) {
+        if (host.Name === Object.keys(worker)[0]) {
+          return { state: Object.values(worker)[0].state };
+        }
       }
+    }
+    if (host.state) {
+      return { state: host.state };
     }
     return { state: "Active" };
   }
 
-  const generateAccordionHeaderStyle = (workerName) => {
-    const status = checkWorkerStatus(workerName);
-    if (status.state === "Maint") return "text-danger";
-    if (["PreMaint", "PartMaint"].includes(status.state)) return "text-warning";
-    return "text-dark";
+  const getHostStatusStyle = (host) => {
+    const status = getHostStatus(host);
+    if (status.state === "Maint") {
+      return {
+        textClass: "text-danger",
+        borderClass: "host-maint",
+        badgeLabel: "Down",
+        badgeBg: "#b00020",
+        badgeColor: "#fff",
+        badgeBorder: "#b00020",
+      };
+    }
+    if (["PreMaint", "PartMaint"].includes(status.state)) {
+      return {
+        textClass: "text-warning",
+        borderClass: "host-pre-maint",
+        badgeLabel: status.state === "PreMaint" ? "Pre-Maintenance" : "Partial Maintenance",
+        badgeBg: "#fff3ec",
+        badgeColor: "#7a3200",
+        badgeBorder: "#ff8542",
+      };
+    }
+    return null;
   }
 
   return (
@@ -189,8 +212,6 @@ export default function SiteDetailPage() {
          <th>Status</th>
          <td>
            {
-             data.status["state"] !== "Active" ?
-             `${statusMapping[data.status.state].state} (${statusMapping[data.status.state].explanation})` :
              statusMapping[data.status.state].state
            }
          </td>
@@ -333,19 +354,42 @@ export default function SiteDetailPage() {
             </div>
             <Accordion defaultActiveKey="0">
             {
-              hosts && hosts.map((host, index) =>
-                <Accordion.Item
-                  key={`site-detial-host-${index}`}
-                  eventKey={index}
-                  className="AccordionItem"
-                  value={`host-${index}`}
-                >
-                  <Accordion.Header><span className={generateAccordionHeaderStyle(host.Name)}>{host.Name}</span></Accordion.Header>
-                  <Accordion.Body>
-                    <SiteDetailTable data={host} status={checkWorkerStatus(host.Name)} />
-                  </Accordion.Body>
-                </Accordion.Item>
-              )
+              hosts && hosts.map((host, index) => {
+                const hostStyle = getHostStatusStyle(host);
+                return (
+                  <Accordion.Item
+                    key={`site-detial-host-${index}`}
+                    eventKey={index}
+                    className={`AccordionItem ${hostStyle ? hostStyle.borderClass : ""}`}
+                    value={`host-${index}`}
+                  >
+                    <Accordion.Header>
+                      <span className={hostStyle ? hostStyle.textClass : "text-dark"}>{host.Name}</span>
+                      {hostStyle && (
+                        <span
+                          className="ms-2"
+                          style={{
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                            padding: "0.1rem 0.45rem",
+                            borderRadius: "0.25rem",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.04em",
+                            backgroundColor: hostStyle.badgeBg,
+                            color: hostStyle.badgeColor,
+                            border: `1px solid ${hostStyle.badgeBorder}`,
+                          }}
+                        >
+                          {hostStyle.badgeLabel}
+                        </span>
+                      )}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <SiteDetailTable data={host} status={getHostStatus(host)} />
+                    </Accordion.Body>
+                  </Accordion.Item>
+                );
+              })
             }
           </Accordion>
         </div>

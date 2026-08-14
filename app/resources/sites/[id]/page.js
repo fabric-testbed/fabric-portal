@@ -78,7 +78,8 @@ class SiteDetailPage extends React.Component {
         showSpinner: false,
         spinnerMessage: ""
       });
-    } catch (err) {
+
+} catch (err) {
       this.setState({ showSpinner: false, spinnerMessage: "" });
       // Silent failure — resources API requires auth in some environments
     }
@@ -134,20 +135,45 @@ class SiteDetailPage extends React.Component {
     window.location.reload();
   }
 
-  checkWorkerStatus = (workerName) => {
-    for (const worker of this.state.data.workers) {
-      if (workerName === Object.keys(worker)[0]) {
-        return { state: Object.values(worker)[0].state };
+  getHostStatus = (host) => {
+    // First check workers array (from MaintenanceInfo) for backward compat
+    if (this.state.data.workers) {
+      for (const worker of this.state.data.workers) {
+        if (host.Name === Object.keys(worker)[0]) {
+          return { state: Object.values(worker)[0].state };
+        }
       }
+    }
+    // Fall back to the host's own state from the level-2 summary
+    if (host.state) {
+      return { state: host.state };
     }
     return { state: "Active" };
   }
 
-  generateAccordionHeaderStyle = (workerName) => {
-    const status = this.checkWorkerStatus(workerName);
-    if (status.state === "Maint") return "text-danger";
-    if (["PreMaint", "PartMaint"].includes(status.state)) return "text-warning";
-    return "text-dark";
+  getHostStatusStyle = (host) => {
+    const status = this.getHostStatus(host);
+    if (status.state === "Maint") {
+      return {
+        textClass: "text-danger",
+        borderClass: "host-maint",
+        badgeLabel: "Down",
+        badgeBg: "#b00020",
+        badgeColor: "#fff",
+        badgeBorder: "#b00020",
+      };
+    }
+    if (["PreMaint", "PartMaint"].includes(status.state)) {
+      return {
+        textClass: "text-warning",
+        borderClass: "host-pre-maint",
+        badgeLabel: status.state === "PreMaint" ? "Pre-Maintenance" : "Partial Maintenance",
+        badgeBg: "#fff3ec",
+        badgeColor: "#7a3200",
+        badgeBorder: "#ff8542",
+      };
+    }
+    return null;
   }
 
   render () {
@@ -198,8 +224,6 @@ class SiteDetailPage extends React.Component {
              <th>Status</th>
              <td>
                {
-                 data.status["state"] !== "Active" ? 
-                 `${statusMapping[data.status.state].state} (${statusMapping[data.status.state].explanation})` : 
                  statusMapping[data.status.state].state
                }
              </td>
@@ -334,27 +358,50 @@ class SiteDetailPage extends React.Component {
                       hostCount={hosts.length}
                   />
                 }
-                <div className="d-flex flex-row align-items-center mt-4">
-                  <h5>
-                    Host Resources 
+                <div className="d-flex flex-row align-items-center mt-4 mb-3">
+                  <h5 className="mb-0 me-3">
+                    Host Resources
                   </h5>
-                  <span className="badge bg-primary ms-3 mb-2">{hosts && `${hosts.length} hosts`}</span>
+                  <span className="badge bg-primary" style={{ fontSize: "0.75rem" }}>{hosts && `${hosts.length} hosts`}</span>
                 </div>
                 <Accordion defaultActiveKey="0">
                 {
-                  hosts && hosts.map((host, index) =>
-                    <Accordion.Item
-                      key={`site-detial-host-${index}`} 
-                      eventKey={index}
-                      className="AccordionItem"
-                      value={`host-${index}`}
-                    >
-                      <Accordion.Header><span className={this.generateAccordionHeaderStyle(host.Name)}>{host.Name}</span></Accordion.Header>
-                      <Accordion.Body>
-                        <SiteDetailTable data={host} status={this.checkWorkerStatus(host.Name)} />
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  )
+                  hosts && hosts.map((host, index) => {
+                    const hostStyle = this.getHostStatusStyle(host);
+                    return (
+                      <Accordion.Item
+                        key={`site-detial-host-${index}`}
+                        eventKey={index}
+                        className={`AccordionItem ${hostStyle ? hostStyle.borderClass : ""}`}
+                        value={`host-${index}`}
+                      >
+                        <Accordion.Header>
+                          <span className={hostStyle ? hostStyle.textClass : "text-dark"}>{host.Name}</span>
+                          {hostStyle && (
+                            <span
+                              className="ms-2"
+                              style={{
+                                fontSize: "0.65rem",
+                                fontWeight: 700,
+                                padding: "0.1rem 0.45rem",
+                                borderRadius: "0.25rem",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.04em",
+                                backgroundColor: hostStyle.badgeBg,
+                                color: hostStyle.badgeColor,
+                                border: `1px solid ${hostStyle.badgeBorder}`,
+                              }}
+                            >
+                              {hostStyle.badgeLabel}
+                            </span>
+                          )}
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          <SiteDetailTable data={host} status={this.getHostStatus(host)} />
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    );
+                  })
                 }
               </Accordion>
             </div>

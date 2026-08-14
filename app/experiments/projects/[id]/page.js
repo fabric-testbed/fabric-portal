@@ -328,14 +328,14 @@ export default function ProjectFormPage() {
       if (fabricMatrix !== originalMatrix) {
         await updateMatrix(data.uuid, fabricMatrix);
       }
-      window.location.reload();
+      setShowSpinner(false);
+      setSpinner({ text: "", btnText: "", btnPath: "" });
       toast.success("Project updated successfully!");
     } catch (err) {
       setShowSpinner(false);
       setSpinner({ text: "", btnText: "", btnPath: "" });
       toast.error("Failed to save project.");
     }
-    router.push(`/projects/${data.uuid}`);
   };
 
   const handleTagCheck = (option) => {

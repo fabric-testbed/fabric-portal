@@ -603,6 +603,7 @@ label, .form-label {
   .sidebar-layout {
     display: flex;
     gap: 1rem;
+    padding-top: 1.5rem;
   }
 
   .sidebar-col {
@@ -1734,7 +1735,6 @@ ul,
   margin-bottom: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  border: none !important;
 }
 
 .searchWrapper {
@@ -1768,6 +1768,18 @@ div:has(> #multiselectContainerReact) {
 .optionListContainer {
   height: 50vh !important;
   width: 100% !important;
+}
+
+.AccordionItem {
+  border: none !important;
+}
+
+.AccordionItem.host-maint {
+  border-left: 4px solid #b00020 !important;
+}
+
+.AccordionItem.host-pre-maint {
+  border-left: 4px solid #ff8542 !important;
 }
 
 .AccordionItem button {

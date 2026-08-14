@@ -25,8 +25,30 @@ export default function parseSites(data, acronymToShortName) {
     parsed.location = site.address;
     parsed.coordinates = site.location;
     parsed.ptp = site.ptp_capable;
-    parsed.status = { state: site.state, deadline: null, expected_end: null };
-    parsed.workers = [];
+    // Parse MaintenanceInfo for site-level deadline/expected_end and worker states
+    let siteDeadline = null;
+    let siteExpectedEnd = null;
+    const workers = [];
+
+    if (site.maintenance_info) {
+      try {
+        const maint = typeof site.maintenance_info === "string"
+          ? JSON.parse(site.maintenance_info) : site.maintenance_info;
+        for (const [key, val] of Object.entries(maint)) {
+          if (key === site.name) {
+            siteDeadline = val.deadline || null;
+            siteExpectedEnd = val.expected_end || null;
+          } else {
+            workers.push({ [key]: val });
+          }
+        }
+      } catch (e) {
+        // ignore malformed MaintenanceInfo
+      }
+    }
+
+    parsed.status = { state: site.state, deadline: siteDeadline, expected_end: siteExpectedEnd };
+    parsed.workers = workers;
 
     // Core / Disk / RAM capacities
     parsed.totalCore = site.cores_capacity || 0;

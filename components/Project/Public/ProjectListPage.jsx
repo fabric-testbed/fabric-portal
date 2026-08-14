@@ -161,7 +161,7 @@ function PublicProjectsList() {
   };
 
   return (
-    <div className="mt-4">
+    <div>
       <div className="d-flex flex-row justify-content-between">
         <div className="d-flex flex-row">
           <h1>Projects</h1>
