@@ -65,7 +65,7 @@ function PublicProjectProfile() {
         <h1>{project.name}</h1>
       </div>
       <div className="card">
-        <h5 className="card-header">Project Details</h5>
+        <span className="card-header">Project Details</span>
         <div className="card-body">
           <h5 className="card-title pb-2 border-bottom text-primary">Description</h5>
           <p className="card-text mb-4"> {project.description ? Parser(project.description) : ""} </p>
