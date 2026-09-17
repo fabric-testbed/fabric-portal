@@ -1,100 +1,58 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { getActiveCarouselItems } from "../../services/announcementService";
-import Carousel from 'react-bootstrap/Carousel';
+import React from "react";
 import Parser from 'html-react-parser';
 
-const placeholderItems = [
-  {
-    "announcement_type": "carousel",
-    "background_image_url": "/imgs/homepage/bg1.jpeg",
-    "button": "Learn More",
-    "content": "<ul><li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li><li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li><li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li></ul>",
-    "is_active": true,
-    "link": "https://www.whatisfabric.net/about",
-    "sequence": 1,
-    "start_date": "2023-11-02 18:49:51.339756+00:00",
-    "title": "FABRIC Portal is your guide, helping make your experiment a success.",
-    "uuid": "e0d53c5f-0922-4e3d-8f43-8cd520921ea4"
-  }
-];
+const heroItem = {
+  backgroundImage: "/imgs/homepage/bg1.jpeg",
+  button: "Learn More",
+  content: "<ul><li>Build Community: Inspire others with your research, discover collaborators, and find opportunities to showcase your project.</li><li>Conduct Experiments: Take advantage of FABRIC resources to design, deploy, execute, and monitor your experiments.</li><li>Browse the Library: Learn more about FABRIC through publications and user documentation. Discover additional complimentary facilities and testbeds to expand your research.</li></ul>",
+  link: "https://www.whatisfabric.net/about",
+  title: "FABRIC Portal is your guide, helping make your experiment a success.",
+};
 
 function HomepageCarousel() {
-  const [items, setItems] = useState(placeholderItems);
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const { data: res } = await getActiveCarouselItems();
-        const fetched = res.results || [];
-        if (fetched.length > 0) {
-          setItems(fetched);
-        }
-      } catch {
-        // Keep the initial placeholderItems already in state
-      }
-    };
-    fetchItems();
-  }, []);
-
-  const parseItems = () => {
-    const parsed = items.sort((a,b) => (a.sequence > b.sequence) ? 1 : -1);
-    return parsed;
-  };
-
-  const sortedItems = parseItems();
-
   return (
-    <Carousel style={{"marginTop": "3rem"}} fade>
-      {
-        sortedItems && sortedItems.length > 0 && sortedItems.map((item, index) =>
-          <Carousel.Item key={`homepage-carousel-${index}`}>
-            <img
-              src={item.background_image_url}
-              alt={`FABRIC Portal Homepage Slide ${index}`}
-              className="d-block w-100 carousel-bg-image"
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchPriority={index === 0 ? "high" : "auto"}
-              decoding={index === 0 ? "sync" : "async"}
-            />
-            <Carousel.Caption>
-              <h3>{item.title}</h3>
-              <div className="homepage-carousel-content">
-                {item.content ? Parser(item.content) : null}
-              </div>
-              {item.link && item.button && (
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-warning"
-                  role="button"
-                >
-                  {item.button}
-                </a>
-              )}
-            </Carousel.Caption>
-            {/* Mobile-only caption shown below the image */}
-            <div className="carousel-caption-mobile">
-              <h3>{item.title}</h3>
-              <div className="homepage-carousel-content">
-                {item.content ? Parser(item.content) : null}
-              </div>
-              {item.link && item.button && (
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-warning btn-sm"
-                  role="button"
-                >
-                  {item.button}
-                </a>
-              )}
-            </div>
-          </Carousel.Item>
-      )}
-    </Carousel>
+    <div className="homepage-hero" style={{ marginTop: "3rem", position: "relative", background: "#374955" }}>
+      <img
+        src={heroItem.backgroundImage}
+        alt="FABRIC Portal Homepage"
+        className="d-block w-100 carousel-bg-image"
+        style={{ maxHeight: "32rem", objectFit: "cover" }}
+        loading="eager"
+        fetchPriority="high"
+        decoding="sync"
+      />
+      <div className="carousel-caption">
+        <h3>{heroItem.title}</h3>
+        <div className="homepage-carousel-content">
+          {Parser(heroItem.content)}
+        </div>
+        <a
+          href={heroItem.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-warning"
+          role="button"
+        >
+          {heroItem.button}
+        </a>
+      </div>
+      {/* Mobile-only caption shown below the image */}
+      <div className="carousel-caption-mobile">
+        <h3>{heroItem.title}</h3>
+        <div className="homepage-carousel-content">
+          {Parser(heroItem.content)}
+        </div>
+        <a
+          href={heroItem.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-warning btn-sm"
+          role="button"
+        >
+          {heroItem.button}
+        </a>
+      </div>
+    </div>
   );
 }
 

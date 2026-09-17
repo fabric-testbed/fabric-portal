@@ -11,11 +11,12 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import LoginRequired from "@/app/login-required/page";
 
 const navItems = [
-  { name: "MY PROFILE", path: "/user/profile" },
-  { name: "MY ROLES & PROJECTS", path: "/user/roles" },
-  { name: "MY SSH KEYS", path: "/user/ssh-keys" },
-  { name: "MY SLICES", path: "/user/slices" },
-  { name: "MY ARTIFACTS", path: "/user/artifacts" },
+  { name: "Profile", path: "/user/profile" },
+  { name: "Roles & Projects", path: "/user/roles" },
+  { name: "SSH Keys", path: "/user/ssh-keys" },
+  { name: "Slices", path: "/user/slices" },
+  { name: "Artifacts", path: "/user/artifacts" },
+  { name: "Publications", path: "/user/publications" },
 ];
 
 function UserPageLayout({ children, sideNavItems, handleChange }) {
@@ -23,6 +24,7 @@ function UserPageLayout({ children, sideNavItems, handleChange }) {
   return (
     <Container>
       <SpinnerFullPage text="Refreshing user roles..." showSpinner={showFullPageSpinner} />
+      <h1 className="mt-4 mb-3">User Profile</h1>
       <div className="sidebar-layout">
         <div className="sidebar-col">
           <SideNav items={sideNavItems} handleChange={handleChange} />

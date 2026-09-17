@@ -636,6 +636,10 @@ label, .form-label {
   border-radius: 0;
   padding: 0.25rem 0.75rem;
   margin: 0.5rem 0;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 
   &:first-child {
     margin-top: 0;
@@ -688,6 +692,7 @@ label, .form-label {
   border-color: custom.$fabric-gray-200;
   box-shadow: custom.$card-shadow;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
 
   &:hover {
     box-shadow: custom.$card-shadow-hover;

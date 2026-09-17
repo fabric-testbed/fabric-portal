@@ -1,7 +1,7 @@
 import React from "react";
 
 const Partners = () => {
-  const corePartnerLogos = ["uk.png", "clemson.png", "university-of-illinios.png", "esnet.png"]
+  const corePartnerLogos = ["uk.png", "binghamton-university.png", "university-of-illinios.png", "esnet.png"]
 
   const partnerLogos = [
     "columbia.png",

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Parser from 'html-react-parser';
 import { LogIn } from "lucide-react";
 import SpinnerWithText from "../../common/SpinnerWithText";
+import ProjectPublications from "../ProjectPublications";
 
 function PublicProjectProfile() {
   const router = useRouter();
@@ -113,6 +114,10 @@ function PublicProjectProfile() {
           <p className="card-text mb-4">
             { capitalizeFirstLetter(project.project_type) }
           </p>
+          <h5 className="card-title pb-2 border-bottom text-primary">Publications</h5>
+          <div className="card-text mb-4">
+            <ProjectPublications projectId={project.uuid} />
+          </div>
         </div>
       </div>
       <Link href="/experiments">

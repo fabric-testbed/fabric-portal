@@ -3,7 +3,8 @@ import KeyCards from "../SshKey/KeyCards";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { Link as LinkIcon } from "lucide-react";
+import { Link as LinkIcon, ExternalLink, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { getPublicationsByAuthor } from "@/services/publicationService";
 
 function PublicUserProfile() {
   const params = useParams();
@@ -56,6 +57,52 @@ function PublicUserProfile() {
 
     loadUser();
   }, []);
+
+  const [publications, setPublications] = useState([]);
+  const [pubSortField, setPubSortField] = useState("year");
+  const [pubSortDir, setPubSortDir] = useState("desc");
+
+  useEffect(() => {
+    if (!user.uuid) return;
+    const loadPublications = async () => {
+      try {
+        const { data } = await getPublicationsByAuthor(user.uuid);
+        setPublications(data.results || []);
+      } catch {
+        // silently fail — publications are supplementary
+      }
+    };
+    loadPublications();
+  }, [user.uuid]);
+
+  const handlePubSort = (field) => {
+    if (pubSortField === field) {
+      setPubSortDir(pubSortDir === "asc" ? "desc" : "asc");
+    } else {
+      setPubSortField(field);
+      setPubSortDir(field === "year" ? "desc" : "asc");
+    }
+  };
+
+  const getPubSortIcon = (field) => {
+    if (pubSortField !== field) return <ArrowUpDown size={14} className="ms-1 text-muted" />;
+    return pubSortDir === "asc" ? <ArrowUp size={14} className="ms-1" /> : <ArrowDown size={14} className="ms-1" />;
+  };
+
+  const getPubFieldValue = (pub, field) => {
+    if (field === "authors") {
+      return (pub.authors || []).map((a) => a.author_name || a.display_name).join(", ").toLowerCase();
+    }
+    if (field === "project_name") {
+      return (pub.project_name || "").toLowerCase();
+    }
+    return (pub[field] || "").toLowerCase();
+  };
+
+  const sortedPublications = [...publications].sort((a, b) => {
+    const dir = pubSortDir === "asc" ? 1 : -1;
+    return dir * getPubFieldValue(a, pubSortField).localeCompare(getPubFieldValue(b, pubSortField));
+  });
 
   const parseRoles = (roles) => {
     const projectRoles = {};
@@ -242,6 +289,73 @@ function PublicUserProfile() {
           user.sshkeys && user.sshkeys.length > 0 &&
           <KeyCards keys={user.sshkeys} disableKeyDelete={true} />
         }
+      </div>
+      <div className="mt-4">
+        <h2>Publications</h2>
+        {publications.length === 0 ? (
+          <div className="alert alert-primary mb-2" role="alert">
+            No publications found.
+          </div>
+        ) : (
+          <div>
+            <div className="text-end text-muted mb-2">
+              Displaying <strong>{publications.length}</strong> publications
+            </div>
+            <div className="table-responsive">
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th role="button" onClick={() => handlePubSort("title")} style={{ cursor: "pointer", minWidth: "250px" }}>
+                      TITLE {getPubSortIcon("title")}
+                    </th>
+                    <th role="button" onClick={() => handlePubSort("year")} style={{ cursor: "pointer", width: "80px" }}>
+                      YEAR {getPubSortIcon("year")}
+                    </th>
+                    <th role="button" onClick={() => handlePubSort("authors")} style={{ cursor: "pointer", minWidth: "200px" }}>
+                      RESEARCHERS {getPubSortIcon("authors")}
+                    </th>
+                    <th role="button" onClick={() => handlePubSort("venue")} style={{ cursor: "pointer", minWidth: "180px" }}>
+                      VENUE {getPubSortIcon("venue")}
+                    </th>
+                    <th role="button" onClick={() => handlePubSort("project_name")} style={{ cursor: "pointer", minWidth: "150px" }}>
+                      FABRIC PROJECT {getPubSortIcon("project_name")}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedPublications.map((pub) => {
+                    const authors = (pub.authors || []).map((a) => a.author_name || a.display_name).join(", ");
+                    return (
+                      <tr key={pub.uuid}>
+                        <td>
+                          {pub.link ? (
+                            <a href={pub.link} target="_blank" rel="noopener noreferrer">
+                              {pub.title} <ExternalLink size={14} className="ms-1" />
+                            </a>
+                          ) : (
+                            pub.title
+                          )}
+                        </td>
+                        <td>{pub.year}</td>
+                        <td>{authors}</td>
+                        <td>{pub.venue}</td>
+                        <td>
+                          {pub.project_uuid ? (
+                            <a href={`/experiments/projects/${pub.project_uuid}#info`}>
+                              {pub.project_name} <ExternalLink size={14} className="ms-1" />
+                            </a>
+                          ) : (
+                            pub.project_name || ""
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
