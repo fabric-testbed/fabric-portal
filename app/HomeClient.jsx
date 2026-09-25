@@ -10,7 +10,6 @@ import Partners from "../components/Home/Partners";
 import { default as portalData } from "../services/portalData.json";
 import { sitesNameMapping }  from "../assets/data/sites";
 import sitesParser from "../services/parser/sitesParser";
-import CookieConsent from "react-cookie-consent";
 import dynamic from "next/dynamic";
 import Topomap from "../components/Resource/Topomap";
 import NodeDetailTable from "../components/Resource/NodeDetailTable";
@@ -183,17 +182,6 @@ function Home() {
           <Partners />
         </div>
       </div>
-      <CookieConsent
-        location="bottom"
-        buttonText="OK"
-        cookieName="fabricPortalCookieConsent"
-      >
-        <span className="text-lg">This Website Uses Cookies.</span>
-        <div className="mt-1 text-sm">
-          We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
-          Please accept our Cookie Policy by clicking "OK". For more details, visit the <Link className="text-primary-light" href="/cookie-policy"><b>Cookie Policy Page</b></Link>.
-        </div>
-      </CookieConsent>
     </div>
   );
 }

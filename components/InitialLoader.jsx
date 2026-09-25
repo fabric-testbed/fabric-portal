@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
+import CookieConsent from "react-cookie-consent";
+import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthContext";
 import useSessionTimeout from "@/lib/hooks/useSessionTimeout";
 import Header from "@/components/Header";
@@ -69,6 +71,17 @@ export default function InitialLoader({ children, loaderData }) {
           : child
       )}
       <ToastContainer position="top-right" autoClose={10000} />
+      <CookieConsent
+        location="bottom"
+        buttonText="OK"
+        cookieName="fabricPortalCookieConsent"
+      >
+        <span className="text-lg">This Website Uses Cookies.</span>
+        <div className="mt-1 text-sm">
+          We require to use cookies to provide you access to FABRIC testbed resources and to personalize the content of this site. We do not share your personal information with anyone, other than providing anonymous aggregate facility usage statistics to our funders.
+          Please accept our Cookie Policy by clicking &quot;OK&quot;. For more details, visit the <Link className="text-primary-light" href="/cookie-policy"><b>Cookie Policy Page</b></Link>.
+        </div>
+      </CookieConsent>
     </div>
   );
 }
